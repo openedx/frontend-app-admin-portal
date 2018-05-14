@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 
 import CoursewareNav from './CoursewareNav';
 import CoursewareContent from './CoursewareContent';
+import VerticalNav from './CoursewareContent/VerticalNav'
 
 class Courseware extends React.Component {
   componentDidMount() {
@@ -12,11 +13,32 @@ class Courseware extends React.Component {
 
   renderCourseContent(routeProps) {
     if (this.props) {
+      let adjacentNodes = this.getAdjacentVerticalNodes(routeProps.location.state.node);
+      console.log(adjacentNodes);
       return (
-        <CoursewareContent node={routeProps.location.state.node} />
+        <div>
+          <CoursewareContent node={routeProps.location.state.node} />
+          <VerticalNav 
+            previousPath={`${this.props.match.url}/${adjacentNodes.previousNode.id}`}
+            previousNode={adjacentNodes.previousNode}
+            nextPath={`${this.props.match.url}/${adjacentNodes.nextNode.id}`}
+            nextNode={adjacentNodes.nextNode}
+          />
+        </div>
       );
     }
     return null;
+  }
+
+  getAdjacentVerticalNodes(node) {
+    return {
+      previousNode: this.props.courseOutline.descendants.filter(
+        descendant => descendant.verticalIndex == node.verticalIndex-1 
+      )[0],
+      nextNode: this.props.courseOutline.descendants.filter(
+        descendant => descendant.verticalIndex == node.verticalIndex+1 
+      )[0],
+    }
   }
 
   render() {

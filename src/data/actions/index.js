@@ -11,16 +11,17 @@ const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE 
 const getOutline = outline => ({ type: GET_COURSE_OUTLINE, outline });
 
 // Return object that contains nested descendant nodes
-const createTreeNode = (node, blocks) => (
+const createTreeNode = (node, blocks, verticalIndex=0) => (
   {
     id: node.id,
     displayName: node.display_name,
     displayUrl: node.student_view_url,
     type: node.type,
+    verticalIndex: (node.type == 'vertical' ? verticalIndex++ : undefined),
     descendants: node.descendants &&
       node.descendants
         .filter(descendant => blocks[descendant])
-        .map(descendant => createTreeNode(blocks[descendant], blocks)),
+        .map(descendant => createTreeNode(blocks[descendant], blocks, verticalIndex++)),
   }
 );
 
