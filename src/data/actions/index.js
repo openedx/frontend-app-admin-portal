@@ -5,6 +5,8 @@ import {
   FINISHED_FETCHING_COURSE_OUTLINE,
   GET_COURSE_OUTLINE,
 } from '../constants/ActionType';
+import { edxProvider } from '../../auth/providers/edx';
+import { AuthService } from '../../auth/service';
 
 const startedFetchingOutline = () => ({ type: STARTED_FETCHING_COURSE_OUTLINE });
 const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE });
@@ -30,16 +32,14 @@ const buildOutlineTree = (blockData) => {
   return outline;
 };
 
-const fetchCourseOutline = courseId => (
+const fetchCourseOutline = courseRunId => (
   (dispatch) => {
     dispatch(startedFetchingOutline());
-    const outlineUrl = `http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`;
+    const outlineUrl = `http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseRunId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`;
+    const token = AuthService.getAccessToken(edxProvider);
     return fetch(outlineUrl, {
-      credentials: 'include',
       headers: {
-        // TODO: get cookie from cookies.get('csrftoken'), which will assume login on
-        // LMS already and same-origin
-        'X-CSRFToken': 'axjfX6SquerIjJ9PogaRTOvYElCSWcW2ADxW0MSVhC8PpfysXJzFV3gmQuUsfcVd',
+        Authorization: `Bearer ${token}`
       },
     })
       // TODO: handle response error
@@ -55,3 +55,4 @@ const fetchCourseOutline = courseId => (
 export { // eslint-disable-line TODO: remove eslint disable when exporting more action creators
   fetchCourseOutline, // eslint-disable-line import/prefer-default-export
 };
+export * from './userActions';

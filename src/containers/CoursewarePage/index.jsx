@@ -6,10 +6,11 @@ import { fetchCourseOutline } from '../../data/actions';
 
 const mapStateToProps = state => ({
   courseOutline: state.courseOutline.outline,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCourseOutline: courseId => dispatch(fetchCourseOutline(courseId)),
+  getCourseOutline: courseRunId => dispatch(fetchCourseOutline(courseRunId)),
 });
 
 const CoursewarePage = connect(

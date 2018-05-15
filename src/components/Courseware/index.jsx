@@ -7,7 +7,7 @@ import CoursewareContent from './CoursewareContent';
 
 class Courseware extends React.Component {
   componentDidMount() {
-    this.props.getCourseOutline(this.props.match.params.courseId);
+    this.props.getCourseOutline(this.props.match.params.courseRunId);
   }
 
   renderCourseContent(routeProps) {
@@ -52,7 +52,7 @@ Courseware.propTypes = {
   getCourseOutline: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      courseId: PropTypes.string.isRequired,
+      courseRunId: PropTypes.string.isRequired,
     }).isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
