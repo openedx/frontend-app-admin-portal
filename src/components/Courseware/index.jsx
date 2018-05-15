@@ -14,7 +14,6 @@ class Courseware extends React.Component {
   renderCourseContent(routeProps) {
     if (this.props) {
       let adjacentNodes = this.getAdjacentVerticalNodes(routeProps.location.state.node);
-      console.log(adjacentNodes);
       return (
         <div>
           <CoursewareContent node={routeProps.location.state.node} />
@@ -31,14 +30,14 @@ class Courseware extends React.Component {
   }
 
   getAdjacentVerticalNodes(node) {
+    const nodeIndex = this.props.courseOutline.verticalNodeList.findIndex(
+      current => node.id == current.id
+    );
     return {
-      previousNode: this.props.courseOutline.descendants.filter(
-        descendant => descendant.verticalIndex == node.verticalIndex-1 
-      )[0],
-      nextNode: this.props.courseOutline.descendants.filter(
-        descendant => descendant.verticalIndex == node.verticalIndex+1 
-      )[0],
-    }
+      previousNode: nodeIndex > 0 ? this.props.courseOutline.verticalNodeList[nodeIndex-1] : {},
+      nextNode: nodeIndex < this.props.courseOutline.verticalNodeList.length-1 ? 
+        this.props.courseOutline.verticalNodeList[nodeIndex+1] : {},
+    };
   }
 
   render() {
@@ -65,6 +64,7 @@ Courseware.defaultProps = {
   courseOutline: {
     displayName: '',
     descendants: [],
+    verticalNodeList: [],
   },
   getCourseOutline: () => {},
 };

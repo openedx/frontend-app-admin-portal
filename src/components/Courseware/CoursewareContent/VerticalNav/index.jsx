@@ -9,7 +9,7 @@ const VerticalNav = function VerticalNav(props) {
     <div>
       <Link to={{
           pathname: props.previousPath,
-          state: props.previousNode,
+          state: {node: props.previousNode},
           }}
         >
         <Button label="Previous" />
@@ -17,7 +17,7 @@ const VerticalNav = function VerticalNav(props) {
       
       <Link to={{
           pathname: props.nextPath,
-          state: props.nextNode,
+          state: {node: props.nextNode},
           }}
         >
         <Button label="Next" />

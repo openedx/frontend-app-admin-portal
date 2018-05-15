@@ -11,23 +11,38 @@ const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE 
 const getOutline = outline => ({ type: GET_COURSE_OUTLINE, outline });
 
 // Return object that contains nested descendant nodes
-const createTreeNode = (node, blocks, verticalIndex=0) => (
-  {
+const createTreeNode = (node, blocks) => {
+  return {
     id: node.id,
     displayName: node.display_name,
     displayUrl: node.student_view_url,
     type: node.type,
-    verticalIndex: (node.type == 'vertical' ? verticalIndex++ : undefined),
     descendants: node.descendants &&
       node.descendants
         .filter(descendant => blocks[descendant])
-        .map(descendant => createTreeNode(blocks[descendant], blocks, verticalIndex++)),
+        .map(descendant => createTreeNode(blocks[descendant], blocks)),
+  };
+};
+
+
+const getVerticalNodeList = (node, blocks) => {
+  if (node.type == 'vertical') {
+    return [createTreeNode(node, blocks)];
+  } else if (!node.descendants) {
+    return [];
   }
-);
+
+  const reducer = (accumulator, currentValue) => {
+    return accumulator.concat(getVerticalNodeList(blocks[currentValue], blocks));
+  }
+
+  return node.descendants.reduce(reducer, []);
+}
 
 const buildOutlineTree = (blockData) => {
   const rootBlock = blockData.blocks[blockData.root];
-  const outline = createTreeNode(rootBlock, blockData.blocks);
+  let outline = createTreeNode(rootBlock, blockData.blocks);
+  outline['verticalNodeList'] = getVerticalNodeList(rootBlock, blockData.blocks);
   return outline;
 };
 
