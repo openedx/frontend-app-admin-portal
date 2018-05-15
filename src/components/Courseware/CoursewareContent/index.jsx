@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-const CoursewareContent = function CoursewareContent(props) {
+function CoursewareContent(props) {
   return (
     <div>
       <Helmet>
@@ -13,14 +13,14 @@ const CoursewareContent = function CoursewareContent(props) {
       </div>
     </div>
   );
-};
-
-CoursewareContent.defaultProps = {
-  node: {},
-};
+}
 
 CoursewareContent.propTypes = {
-  node: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  node: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayUrl: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CoursewareContent;

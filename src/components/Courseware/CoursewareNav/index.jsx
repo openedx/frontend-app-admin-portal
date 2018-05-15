@@ -46,8 +46,18 @@ class CoursewareNav extends React.Component {
   }
 }
 
+const nodeShape = PropTypes.shape({
+  displayName: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  descendants: PropTypes.array.isRequired,
+});
+
 CoursewareNav.propTypes = {
-  courseOutline: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  courseOutline: PropTypes.shape({
+    displayName: PropTypes.string.isRequired,
+    descendants: PropTypes.arrayOf(nodeShape).isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
   }).isRequired,
