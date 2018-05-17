@@ -5,6 +5,7 @@ import { fetchCourseOutline } from '../../data/actions';
 
 const mapStateToProps = state => ({
   courseOutline: state.courseOutline.outline,
+  unitNodeList: state.courseOutline.unitNodeList,
 });
 
 const mapDispatchToProps = dispatch => ({

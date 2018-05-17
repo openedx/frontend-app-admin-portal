@@ -8,15 +8,21 @@ import {
 
 const startedFetchingOutline = () => ({ type: STARTED_FETCHING_COURSE_OUTLINE });
 const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE });
-const getOutline = outline => ({ type: GET_COURSE_OUTLINE, outline });
+const getOutline = (outline, unitNodeList) => ({ type: GET_COURSE_OUTLINE, outline, unitNodeList });
 
-// Return object that contains nested descendant nodes
-const createTreeNode = (node, blocks) => {
+const transformNode = (node) => {
   return {
     id: node.id,
     displayName: node.display_name,
     displayUrl: node.student_view_url,
     type: node.type,
+  };
+}
+
+// Return object that contains nested descendant nodes
+const createTreeNode = (node, blocks) => {
+  return {
+    ...transformNode(node),
     descendants: node.descendants &&
       node.descendants
         .filter(descendant => blocks[descendant])
@@ -25,26 +31,27 @@ const createTreeNode = (node, blocks) => {
 };
 
 
-const getVerticalNodeList = (node, blocks) => {
+const createUnitNodeList = (node, blocks) => {
   if (node.type == 'vertical') {
-    return [createTreeNode(node, blocks)];
+    return [transformNode(node, blocks)];
   } else if (!node.descendants) {
     return [];
   }
 
   const reducer = (accumulator, currentValue) => {
-    return accumulator.concat(getVerticalNodeList(blocks[currentValue], blocks));
+    return accumulator.concat(createUnitNodeList(blocks[currentValue], blocks));
   }
 
   return node.descendants.reduce(reducer, []);
 }
 
-const buildOutlineTree = (blockData) => {
+const buildNavigationData = (blockData) => {
   const rootBlock = blockData.blocks[blockData.root];
-  let outline = createTreeNode(rootBlock, blockData.blocks);
-  outline['verticalNodeList'] = getVerticalNodeList(rootBlock, blockData.blocks);
-  return outline;
-};
+  return {
+    outline: createTreeNode(rootBlock, blockData.blocks),
+    unitNodeList: createUnitNodeList(rootBlock, blockData.blocks),
+  };
+}
 
 const fetchCourseOutline = courseId => (
   (dispatch) => {
@@ -59,9 +66,9 @@ const fetchCourseOutline = courseId => (
       },
     })
       // TODO: handle failure to fetch from LMS
-      .then(response => buildOutlineTree(response.data))
-      .then((outline) => {
-        dispatch(getOutline(outline));
+      .then(response => buildNavigationData(response.data))
+      .then(navigationData => {
+        dispatch(getOutline(navigationData.outline, navigationData.unitNodeList));
         dispatch(finishedFetchingOutline());
       });
   }
