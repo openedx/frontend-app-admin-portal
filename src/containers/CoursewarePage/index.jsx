@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withCookies } from 'react-cookie';
 
 import Courseware from '../../components/Courseware';
 import { fetchCourseOutline } from '../../data/actions';
@@ -17,4 +16,4 @@ const CoursewarePage = connect(
   mapDispatchToProps,
 )(Courseware);
 
-export default withCookies(CoursewarePage);
+export default CoursewarePage;
