@@ -3,12 +3,12 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import { fetchCourseOutline } from './index';
+import { fetchCourseOutline } from './courseOutline';
 import {
   STARTED_FETCHING_COURSE_OUTLINE,
   FINISHED_FETCHING_COURSE_OUTLINE,
   GET_COURSE_OUTLINE,
-} from '../constants/ActionType';
+} from '../constants/courseOutline';
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(axios);
