@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 import { fetchCourseOutline } from './index';
 import {
@@ -10,11 +11,12 @@ import {
 } from '../constants/ActionType';
 
 const mockStore = configureMockStore([thunk]);
+const axiosMock = new MockAdapter(axios);
 
 describe('actions', () => {
   afterEach(() => {
-    fetchMock.reset();
-    fetchMock.restore();
+    axiosMock.reset();
+    axiosMock.restore();
   });
 
   describe('fetchCourseOutline', () => {
@@ -53,10 +55,8 @@ describe('actions', () => {
           },
         },
       };
-      fetchMock.getOnce(`http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`, {
-        body: JSON.stringify(responseOutline),
-        headers: { 'content-type': 'application/json' },
-      });
+      axiosMock.onGet(`http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`)
+        .replyOnce(200, JSON.stringify(responseOutline));
 
       const generatedOutline = {
         id: 'course-123',

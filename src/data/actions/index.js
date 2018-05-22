@@ -1,4 +1,4 @@
-import 'whatwg-fetch';
+import axios from 'axios';
 
 import {
   STARTED_FETCHING_COURSE_OUTLINE,
@@ -34,17 +34,16 @@ const fetchCourseOutline = courseId => (
   (dispatch) => {
     dispatch(startedFetchingOutline());
     const outlineUrl = `http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`;
-    return fetch(outlineUrl, {
-      credentials: 'include',
+    return axios.get(outlineUrl, {
+      withCredentials: true,
       headers: {
         // TODO: get cookie from cookies.get('csrftoken'), which will assume login on
         // LMS already and same-origin
         'X-CSRFToken': 'axjfX6SquerIjJ9PogaRTOvYElCSWcW2ADxW0MSVhC8PpfysXJzFV3gmQuUsfcVd',
       },
     })
-      // TODO: handle response error
-      .then(response => response.json())
-      .then(data => buildOutlineTree(data))
+      // TODO: handle failure to fetch from LMS
+      .then(response => buildOutlineTree(response.data))
       .then((outline) => {
         dispatch(getOutline(outline));
         dispatch(finishedFetchingOutline());
