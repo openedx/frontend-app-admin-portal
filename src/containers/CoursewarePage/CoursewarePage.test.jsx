@@ -15,8 +15,11 @@ describe('CoursewarePage', () => {
   beforeEach(() => {
     const initialState = {
       courseOutline: {
-        descendants: [],
-        displayName: '',
+        outline: {
+          descendants: [],
+          displayName: '',
+        },
+        unitNodeList: [],
       },
     };
     store = mockStore(initialState);

@@ -6,7 +6,8 @@ import {
 } from '../constants/ActionType';
 
 const initialState = {
-  outline: {},
+  outline: undefined,
+  unitNodeList: undefined,
   startedFetching: false,
   finishedFetching: false,
 };

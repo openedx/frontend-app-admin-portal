@@ -29,28 +29,35 @@ describe('actions', () => {
             id: 'course-123',
             display_name: 'Root Node',
             student_view_url: 'http://www.example.com/',
-            type: 'Course',
+            type: 'course',
             descendants: ['chapter-1', 'chapter-2'],
           },
           'chapter-1': {
             id: 'chapter-1',
             display_name: 'Chapter 1',
             student_view_url: 'http://www.example.com/chapter1',
-            type: 'Chapter',
+            type: 'chapter',
             descendants: ['section-1'],
           },
           'chapter-2': {
             id: 'chapter-2',
             display_name: 'Chapter 2',
             student_view_url: 'http://www.example.com/chapter2',
-            type: 'Chapter',
+            type: 'chapter',
             descendants: [],
           },
           'section-1': {
             id: 'section-1',
             display_name: 'Section 1',
             student_view_url: 'http://www.example.com/chapter1/section2',
-            type: 'Section',
+            type: 'sequential',
+            descendants: ['unit-1'],
+          },
+          'unit-1': {
+            id: 'unit-1',
+            display_name: 'Unit 1',
+            student_view_url: 'http://www.example.com/chapter1/section2/unit1',
+            type: 'vertical',
             descendants: [],
           },
         },
@@ -62,20 +69,28 @@ describe('actions', () => {
         id: 'course-123',
         displayName: 'Root Node',
         displayUrl: 'http://www.example.com/',
-        type: 'Course',
+        type: 'course',
         descendants: [
           {
             id: 'chapter-1',
             displayName: 'Chapter 1',
             displayUrl: 'http://www.example.com/chapter1',
-            type: 'Chapter',
+            type: 'chapter',
             descendants: [
               {
                 id: 'section-1',
                 displayName: 'Section 1',
                 displayUrl: 'http://www.example.com/chapter1/section2',
-                type: 'Section',
-                descendants: [],
+                type: 'sequential',
+                descendants: [
+                  {
+                    id: 'unit-1',
+                    displayName: 'Unit 1',
+                    displayUrl: 'http://www.example.com/chapter1/section2/unit1',
+                    type: 'vertical',
+                    descendants: [],
+                  }
+                ],
               },
             ],
           },
@@ -83,15 +98,24 @@ describe('actions', () => {
             id: 'chapter-2',
             displayName: 'Chapter 2',
             displayUrl: 'http://www.example.com/chapter2',
-            type: 'Chapter',
+            type: 'chapter',
             descendants: [],
           },
         ],
       };
 
+      const generatedUnitNodeList = [
+        {
+          id: 'unit-1',
+          displayName: 'Unit 1',
+          displayUrl: 'http://www.example.com/chapter1/section2/unit1',
+          type: 'vertical',
+        }
+      ];
+
       const expectedActions = [
         { type: STARTED_FETCHING_COURSE_OUTLINE },
-        { type: GET_COURSE_OUTLINE, outline: generatedOutline },
+        { type: GET_COURSE_OUTLINE, outline: generatedOutline, unitNodeList: generatedUnitNodeList },
         { type: FINISHED_FETCHING_COURSE_OUTLINE },
       ];
       const store = mockStore();

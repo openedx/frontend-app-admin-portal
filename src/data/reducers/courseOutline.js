@@ -5,8 +5,8 @@ import {
 } from '../constants/ActionType';
 
 const courseOutline = (state = {
-  outline: {},
-  unitNodeList: [],
+  outline: undefined,
+  unitNodeList: undefined,
   startedFetching: false,
   finishedFetching: false,
 }, action) => {

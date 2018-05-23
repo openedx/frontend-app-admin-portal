@@ -15,6 +15,14 @@ function CoursewareContent(props) {
   );
 }
 
+CoursewareContent.defaultProps = {
+  node: {
+      id: '',
+      displayUrl: '',
+      displayName: '',
+  },
+};
+
 CoursewareContent.propTypes = {
   node: PropTypes.shape({
     id: PropTypes.string.isRequired,

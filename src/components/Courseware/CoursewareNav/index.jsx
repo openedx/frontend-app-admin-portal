@@ -43,6 +43,13 @@ class CoursewareNav extends React.Component {
   }
 }
 
+CoursewareNav.defaultProps = {
+  courseOutline: {
+    displayName: '',
+    descendants: [],
+  },
+};
+
 const nodeShape = PropTypes.shape({
   displayName: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
