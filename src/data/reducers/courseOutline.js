@@ -5,7 +5,8 @@ import {
 } from '../constants/ActionType';
 
 const courseOutline = (state = {
-  outline: {},
+  outline: undefined,
+  unitNodeList: undefined,
   startedFetching: false,
   finishedFetching: false,
 }, action) => {
@@ -14,6 +15,7 @@ const courseOutline = (state = {
       return {
         ...state,
         outline: action.outline,
+        unitNodeList: action.unitNodeList,
       };
     case STARTED_FETCHING_COURSE_OUTLINE:
       return {

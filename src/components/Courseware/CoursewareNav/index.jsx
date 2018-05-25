@@ -14,12 +14,9 @@ class CoursewareNav extends React.Component {
     }
     let content = node.displayName;
     if (node.type === 'vertical' && this.props.match) {
+      const baseUrl = this.props.match.url.replace(/\/$/, "");
       content = (
-        <Link to={{
-          pathname: `${this.props.match.url}/${node.id}`,
-          state: { node },
-          }}
-        >
+        <Link to={{pathname: `${baseUrl}/${node.id}`}}>
           {node.displayName}
         </Link>);
     }
@@ -45,6 +42,13 @@ class CoursewareNav extends React.Component {
     );
   }
 }
+
+CoursewareNav.defaultProps = {
+  courseOutline: {
+    displayName: '',
+    descendants: [],
+  },
+};
 
 const nodeShape = PropTypes.shape({
   displayName: PropTypes.string.isRequired,
