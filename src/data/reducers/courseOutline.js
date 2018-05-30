@@ -2,7 +2,7 @@ import {
   GET_COURSE_OUTLINE,
   STARTED_FETCHING_COURSE_OUTLINE,
   FINISHED_FETCHING_COURSE_OUTLINE,
-} from '../constants/ActionType';
+} from '../constants/courseOutline';
 
 const courseOutline = (state = {
   outline: undefined,

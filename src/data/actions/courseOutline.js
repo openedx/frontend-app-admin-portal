@@ -4,7 +4,7 @@ import {
   STARTED_FETCHING_COURSE_OUTLINE,
   FINISHED_FETCHING_COURSE_OUTLINE,
   GET_COURSE_OUTLINE,
-} from '../constants/ActionType';
+} from '../constants/courseOutline';
 
 const startedFetchingOutline = () => ({ type: STARTED_FETCHING_COURSE_OUTLINE });
 const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE });

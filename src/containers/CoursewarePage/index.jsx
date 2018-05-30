@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Courseware from '../../components/Courseware';
-import { fetchCourseOutline } from '../../data/actions';
+import { fetchCourseOutline } from '../../data/actions/courseOutline';
 
 const mapStateToProps = state => ({
   courseOutline: state.courseOutline.outline,
