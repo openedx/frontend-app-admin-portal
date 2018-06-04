@@ -7,7 +7,7 @@ exports[`App renders correctly 1`] = `
       className="navbar"
     >
       <div
-        className="container-fluid"
+        className="container"
       >
         <div
           className="navbar-header"
@@ -28,7 +28,7 @@ exports[`App renders correctly 1`] = `
     </nav>
   </header>
   <div
-    className="container-fluid"
+    className="container"
   >
     <h1>
       Rockin' the Home Page!
@@ -38,7 +38,7 @@ exports[`App renders correctly 1`] = `
     </p>
   </div>
   <footer
-    className="container-fluid"
+    className="container"
   >
     <div
       className="row justify-content-between"

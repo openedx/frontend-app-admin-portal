@@ -89,7 +89,7 @@ describe('actions', () => {
                     displayUrl: 'http://www.example.com/chapter1/section2/unit1',
                     type: 'vertical',
                     descendants: [],
-                  }
+                  },
                 ],
               },
             ],
@@ -110,12 +110,16 @@ describe('actions', () => {
           displayName: 'Unit 1',
           displayUrl: 'http://www.example.com/chapter1/section2/unit1',
           type: 'vertical',
-        }
+        },
       ];
 
       const expectedActions = [
         { type: STARTED_FETCHING_COURSE_OUTLINE },
-        { type: GET_COURSE_OUTLINE, outline: generatedOutline, unitNodeList: generatedUnitNodeList },
+        {
+          type: GET_COURSE_OUTLINE,
+          outline: generatedOutline,
+          unitNodeList: generatedUnitNodeList,
+        },
         { type: FINISHED_FETCHING_COURSE_OUTLINE },
       ];
       const store = mockStore();

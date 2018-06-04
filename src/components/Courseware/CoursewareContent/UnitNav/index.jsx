@@ -4,11 +4,13 @@ import { Button } from '@edx/paragon';
 
 
 function NavButton(props) {
-  if (props.onClick) {
-    return <Button label={props.label} className={['btn-primary']} onClick={props.onClick}/>
-  }
-
-  return <Button label={props.label} className={['btn-primary', 'disabled']}/>
+  return (
+    <Button
+      label={props.label}
+      className={['btn-primary', 'disabled']}
+      onClick={props.onClick}
+    />
+  );
 }
 
 function UnitNav(props) {
@@ -18,6 +20,15 @@ function UnitNav(props) {
       <NavButton onClick={props.next} label="Next" />
     </div>
   );
+}
+
+NavButton.defaultProps = {
+  onClick: () => {},
+};
+
+NavButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 UnitNav.defaultProps = {

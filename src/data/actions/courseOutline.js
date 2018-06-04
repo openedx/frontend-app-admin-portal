@@ -10,40 +10,40 @@ const startedFetchingOutline = () => ({ type: STARTED_FETCHING_COURSE_OUTLINE })
 const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE });
 const getOutline = (outline, unitNodeList) => ({ type: GET_COURSE_OUTLINE, outline, unitNodeList });
 
-const transformNode = (node) => {
-  return {
+const transformNode = node => (
+  {
     id: node.id,
     displayName: node.display_name,
     displayUrl: node.student_view_url,
     type: node.type,
-  };
-}
+  }
+);
 
 // Return object that contains nested descendant nodes
-const createTreeNode = (node, blocks) => {
-  return {
+const createTreeNode = (node, blocks) => (
+  {
     ...transformNode(node),
     descendants: node.descendants &&
       node.descendants
         .filter(descendant => blocks[descendant])
         .map(descendant => createTreeNode(blocks[descendant], blocks)),
-  };
-};
+  }
+);
 
 
 const createUnitNodeList = (node, blocks) => {
-  if (node.type == 'vertical') {
+  if (node.type === 'vertical') {
     return [transformNode(node, blocks)];
   } else if (!node.descendants) {
     return [];
   }
 
-  const reducer = (accumulator, currentValue) => {
-    return accumulator.concat(createUnitNodeList(blocks[currentValue], blocks));
-  }
+  const reducer = (accumulator, currentValue) => (
+    accumulator.concat(createUnitNodeList(blocks[currentValue], blocks))
+  );
 
   return node.descendants.reduce(reducer, []);
-}
+};
 
 const buildNavigationData = (blockData) => {
   const rootBlock = blockData.blocks[blockData.root];
@@ -51,7 +51,7 @@ const buildNavigationData = (blockData) => {
     outline: createTreeNode(rootBlock, blockData.blocks),
     unitNodeList: createUnitNodeList(rootBlock, blockData.blocks),
   };
-}
+};
 
 const fetchCourseOutline = courseId => (
   (dispatch) => {
@@ -67,7 +67,7 @@ const fetchCourseOutline = courseId => (
     })
       // TODO: handle failure to fetch from LMS
       .then(response => buildNavigationData(response.data))
-      .then(navigationData => {
+      .then((navigationData) => {
         dispatch(getOutline(navigationData.outline, navigationData.unitNodeList));
         dispatch(finishedFetchingOutline());
       });

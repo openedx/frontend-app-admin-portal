@@ -5,46 +5,26 @@ import { Route } from 'react-router-dom';
 
 import CoursewareNav from './CoursewareNav';
 import CoursewareContent from './CoursewareContent';
-import UnitNav from './CoursewareContent/UnitNav'
+import UnitNav from './CoursewareContent/UnitNav';
 
 class Courseware extends React.Component {
   componentDidMount() {
     this.props.getCourseOutline(this.props.match.params.courseId);
   }
 
-  renderCourseContent(routeProps) {
-    if (this.props.unitNodeList) {
-      const currentNode = this.props.unitNodeList.find(
-        current => current.id == routeProps.match.params.unitId
-      );
-      const adjacentUnits = this.getAdjacentUnits(routeProps.match.params.unitId);
-      return (
-        <div>
-          <CoursewareContent node={currentNode} />
-          <UnitNav 
-            previous={adjacentUnits.previous}
-            next={adjacentUnits.next}
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
   getAdjacentUnits(unitId) {
-    let previousPath, nextPath;
+    let previousPath;
+    let nextPath;
 
     if (this.props.unitNodeList) {
-      const nodeIndex = this.props.unitNodeList.findIndex(
-        current => current.id == unitId
-      );
+      const nodeIndex = this.props.unitNodeList.findIndex(current => current.id === unitId);
 
       if (nodeIndex > 0) {
-        previousPath = `${this.props.match.url}/${this.props.unitNodeList[nodeIndex-1].id}`;
+        previousPath = `${this.props.match.url}/${this.props.unitNodeList[nodeIndex - 1].id}`;
       }
 
       if (nodeIndex < this.props.unitNodeList.length - 1) {
-        nextPath = `${this.props.match.url}/${this.props.unitNodeList[nodeIndex+1].id}`;
+        nextPath = `${this.props.match.url}/${this.props.unitNodeList[nodeIndex + 1].id}`;
       }
     }
     return {
@@ -55,7 +35,7 @@ class Courseware extends React.Component {
 
   getUnitNavOnClick(path) {
     if (!path) {
-      return;
+      return () => {};
     }
 
     const unitNavOnClick = (e) => {
@@ -64,6 +44,25 @@ class Courseware extends React.Component {
     };
 
     return unitNavOnClick.bind(this);
+  }
+
+  renderCourseContent(routeProps) {
+    if (this.props.unitNodeList) {
+      const currentNode = (
+        this.props.unitNodeList.find(current => current.id === routeProps.match.params.unitId)
+      );
+      const adjacentUnits = this.getAdjacentUnits(routeProps.match.params.unitId);
+      return (
+        <div>
+          <CoursewareContent node={currentNode} />
+          <UnitNav
+            previous={adjacentUnits.previous}
+            next={adjacentUnits.next}
+          />
+        </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -97,7 +96,8 @@ Courseware.defaultProps = {
 
 Courseware.propTypes = {
   courseOutline: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  unitNodeList: PropTypes.array,
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  unitNodeList: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   getCourseOutline: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({

@@ -9,7 +9,7 @@ import './Footer.scss';
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <footer className="container-fluid">
+      <footer className="container">
         <div className="row justify-content-between">
           <div className="col-xs-12 col-md-4 logo-links">
             <Link className="logo" to="/">

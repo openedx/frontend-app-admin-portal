@@ -17,9 +17,9 @@ function CoursewareContent(props) {
 
 CoursewareContent.defaultProps = {
   node: {
-      id: '',
-      displayUrl: '',
-      displayName: '',
+    id: '',
+    displayUrl: '',
+    displayName: '',
   },
 };
 
@@ -28,7 +28,7 @@ CoursewareContent.propTypes = {
     id: PropTypes.string.isRequired,
     displayUrl: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
 export default CoursewareContent;

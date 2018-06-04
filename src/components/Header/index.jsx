@@ -11,7 +11,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     return (
       <header>
         <nav className="navbar">
-          <div className="container-fluid">
+          <div className="container">
             <div className="navbar-header">
               <Link className="navbar-brand" to="/">
                 <Img src={EnterpriseLogo} alt="Enterprise logo" />

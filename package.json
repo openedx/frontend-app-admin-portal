@@ -1,8 +1,8 @@
 {
-  "name": "edx-cookie-cutter",
+  "name": "edx-portal",
   "version": "0.1.0",
-  "description": "Starter app from the ground up",
-  "repository": "https://github.com/jaebradley/edx-cookie-cutter",
+  "description": "The edX Portal is a frontend that provides branded learning experiences.",
+  "repository": "https://github.com/edx/edx-portal",
   "scripts": {
     "build": "NODE_ENV=production BABEL_ENV=production webpack --config=config/webpack.prod.config.js",
     "build:gh-pages": "NODE_ENV=development BABEL_ENV=development webpack --config=config/webpack.dev.config.js",
@@ -13,7 +13,8 @@
     "prepublishOnly": "npm run build",
     "start": "NODE_ENV=development BABEL_ENV=development webpack-dev-server --config=config/webpack.dev.config.js --hot --inline --progress",
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "jest --coverage --passWithNoTests"
+    "test": "jest --coverage",
+    "snapshot": "jest --updateSnapshot"
   },
   "license": "AGPL-3.0",
   "dependencies": {
