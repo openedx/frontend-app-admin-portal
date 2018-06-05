@@ -9,7 +9,6 @@ function Img(props) {
   );
 }
 
-// We require the use of src and alt, only enforced by react in dev mode
 Img.propTypes = {
   src: PropTypes.oneOfType([
     PropTypes.string,

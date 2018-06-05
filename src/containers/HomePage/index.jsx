@@ -1,8 +1,10 @@
 import React from 'react';
 
+import H1 from '../../components/H1';
+
 const HomePage = () => (
   <div className="container">
-    <h1>Rockin&apos; the Home Page!</h1>
+    <H1>Rockin&apos; the Home Page!</H1>
     <p>Blah blah blah blah</p>
   </div>
 );

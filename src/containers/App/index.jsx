@@ -5,27 +5,29 @@ import { Switch, Route } from 'react-router-dom';
 import CoursewarePage from '../CoursewarePage';
 import HomePage from '../HomePage';
 import FAQSupportPage from '../FAQSupportPage';
+import CourseEnrollmentsPage from '../CourseEnrollmentsPage';
 import NotFoundPage from '../NotFoundPage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 import './App.scss';
 
-export default function App() {
-  return (
-    <div>
-      <Helmet
-        titleTemplate="%s - edX Portal"
-        defaultTitle="edX Portal"
-      />
-      <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/courses/:courseId" component={CoursewarePage} />
-        <Route path="/faq" component={FAQSupportPage} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
-      <Footer />
-    </div>
-  );
-}
+const App = () => (
+  <div>
+    <Helmet
+      titleTemplate="%s - edX Portal"
+      defaultTitle="edX Portal"
+    />
+    <Header />
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route path="/courses/:courseId" component={CoursewarePage} />
+      <Route path="/faq" component={FAQSupportPage} />
+      <Route path="/admin" component={CourseEnrollmentsPage} />
+      <Route path="" component={NotFoundPage} />
+    </Switch>
+    <Footer />
+  </div>
+);
+
+export default App;

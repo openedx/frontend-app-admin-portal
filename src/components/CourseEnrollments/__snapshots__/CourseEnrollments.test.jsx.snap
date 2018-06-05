@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CourseEnrollments /> renders correctly 1`] = `
+<div
+  className="container"
+>
+  <h1>
+    Course Enrollments
+  </h1>
+  <div
+    className="alert fade alert-warning show"
+    hidden={false}
+    role="alert"
+  >
+    <div
+      className="alert-dialog"
+    >
+      There are no course enrollments.
+    </div>
+  </div>
+</div>
+`;
