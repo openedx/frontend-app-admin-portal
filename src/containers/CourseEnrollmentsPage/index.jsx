@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCourseEnrollments: ({ enterpriseId, page, pageSize }) => {
-    dispatch(fetchCourseEnrollments({ enterpriseId, page, pageSize }));
+  getCourseEnrollments: (enterpriseId, options) => {
+    dispatch(fetchCourseEnrollments(enterpriseId, options));
   },
 });
 

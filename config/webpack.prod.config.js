@@ -3,7 +3,7 @@
 const Merge = require('webpack-merge');
 const commonConfig = require('./webpack.common.config.js');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = Merge.smart(commonConfig, {
@@ -20,6 +20,7 @@ module.exports = Merge.smart(commonConfig, {
       {
         test: /\.(js|jsx)$/,
         include: [
+          path.resolve(__dirname, '../node_modules'),
           path.resolve(__dirname, '../src'),
         ],
         loader: 'babel-loader',
@@ -36,29 +37,26 @@ module.exports = Merge.smart(commonConfig, {
       // increases build time.
       {
         test: /(.scss|.css)$/,
-        use: ExtractTextPlugin.extract({
-          // creates style nodes from JS strings, only used if extracting fails
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader', // translates CSS into CommonJS
-              options: {
-                sourceMap: true,
-                minimize: true,
-              },
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+            options: {
+              sourceMap: true,
+              minimize: true,
             },
-            {
-              loader: 'sass-loader', // compiles Sass to CSS
-              options: {
-                sourceMap: true,
-                includePaths: [
-                  path.join(__dirname, '../node_modules'),
-                  path.join(__dirname, '../src'),
-                ],
-              },
+          },
+          {
+            loader: 'sass-loader', // compiles Sass to CSS
+            options: {
+              sourceMap: true,
+              includePaths: [
+                path.join(__dirname, '../node_modules'),
+                path.join(__dirname, '../src'),
+              ],
             },
-          ],
-        }),
+          },
+        ],
       },
       // Webpack, by default, uses the url-loader for images and fonts that are required/included by
       // files it processes, which just base64 encodes them and inlines them in the javascript
@@ -97,15 +95,22 @@ module.exports = Merge.smart(commonConfig, {
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
       chunks: 'all',
     },
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
     // Writes the extracted CSS from each entry to a file in the output directory.
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: '[name].min.css',
-      allChunks: true,
     }),
     // Generates an HTML file in the output directory.
     new HtmlWebpackPlugin({

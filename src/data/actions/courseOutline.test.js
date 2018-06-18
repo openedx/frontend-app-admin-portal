@@ -2,12 +2,13 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import qs from 'query-string';
 
 import { fetchCourseOutline } from './courseOutline';
 import {
-  STARTED_FETCHING_COURSE_OUTLINE,
-  FINISHED_FETCHING_COURSE_OUTLINE,
-  GET_COURSE_OUTLINE,
+  FETCH_COURSE_OUTLINE_REQUEST,
+  FETCH_COURSE_OUTLINE_SUCCESS,
+  FETCH_COURSE_OUTLINE_FAILURE,
 } from '../constants/courseOutline';
 
 const mockStore = configureMockStore([thunk]);
@@ -16,12 +17,19 @@ const axiosMock = new MockAdapter(axios);
 describe('actions', () => {
   afterEach(() => {
     axiosMock.reset();
-    axiosMock.restore();
   });
 
   describe('fetchCourseOutline', () => {
+    const courseId = 'course-123 demo test course';
+    const options = {
+      course_id: courseId,
+      username: 'staff',
+      depth: 'all',
+      nav_depth: 3,
+      block_types_filter: 'course,chapter,sequential,vertical',
+    };
+
     it('fetches outline and converts flat map to nested tree', () => {
-      const courseId = 'course-123 demo test course';
       const responseOutline = {
         root: 'course-123',
         blocks: {
@@ -62,7 +70,8 @@ describe('actions', () => {
           },
         },
       };
-      axiosMock.onGet(`http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`)
+
+      axiosMock.onGet(`http://localhost:18000/api/courses/v1/blocks/?${qs.stringify(options)}`)
         .replyOnce(200, JSON.stringify(responseOutline));
 
       const generatedOutline = {
@@ -114,15 +123,73 @@ describe('actions', () => {
       ];
 
       const expectedActions = [
-        { type: STARTED_FETCHING_COURSE_OUTLINE },
+        { type: FETCH_COURSE_OUTLINE_REQUEST },
         {
-          type: GET_COURSE_OUTLINE,
-          outline: generatedOutline,
-          unitNodeList: generatedUnitNodeList,
+          type: FETCH_COURSE_OUTLINE_SUCCESS,
+          payload: {
+            outline: generatedOutline,
+            unitNodeList: generatedUnitNodeList,
+          },
         },
-        { type: FINISHED_FETCHING_COURSE_OUTLINE },
       ];
       const store = mockStore();
+
+      return store.dispatch(fetchCourseOutline(courseId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('fetches outline and converts flat map to empty nested tree', () => {
+      const responseOutline = {
+        root: 'course-123',
+        blocks: {
+          'course-123': {
+            id: 'course-123',
+            display_name: 'Root Node',
+            student_view_url: 'http://www.example.com/',
+            type: 'course',
+            descendants: [],
+          },
+        },
+      };
+
+      axiosMock.onGet(`http://localhost:18000/api/courses/v1/blocks/?${qs.stringify(options)}`)
+        .replyOnce(200, responseOutline);
+
+      const generatedOutline = {
+        id: 'course-123',
+        displayName: 'Root Node',
+        displayUrl: 'http://www.example.com/',
+        type: 'course',
+        descendants: [],
+      };
+
+      const expectedActions = [
+        { type: FETCH_COURSE_OUTLINE_REQUEST },
+        {
+          type: FETCH_COURSE_OUTLINE_SUCCESS,
+          payload: {
+            outline: generatedOutline,
+            unitNodeList: [],
+          },
+        },
+      ];
+      const store = mockStore();
+
+      return store.dispatch(fetchCourseOutline(courseId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches failure action after fetching course outline', () => {
+      const expectedActions = [
+        { type: FETCH_COURSE_OUTLINE_REQUEST },
+        { type: FETCH_COURSE_OUTLINE_FAILURE, payload: { error: Error('Network Error') } },
+      ];
+      const store = mockStore();
+
+      axiosMock.onGet(`http://localhost:18000/api/courses/v1/blocks/?${qs.stringify(options)}`)
+        .networkError();
 
       return store.dispatch(fetchCourseOutline(courseId)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);

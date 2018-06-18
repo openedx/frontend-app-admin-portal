@@ -1,15 +1,15 @@
 import courseOutline from './courseOutline';
 import {
-  STARTED_FETCHING_COURSE_OUTLINE,
-  GET_COURSE_OUTLINE,
-  FINISHED_FETCHING_COURSE_OUTLINE,
+  FETCH_COURSE_OUTLINE_REQUEST,
+  FETCH_COURSE_OUTLINE_SUCCESS,
+  FETCH_COURSE_OUTLINE_FAILURE,
 } from '../constants/courseOutline';
 
 const initialState = {
   outline: undefined,
   unitNodeList: undefined,
-  startedFetching: false,
-  finishedFetching: false,
+  loading: false,
+  error: null,
 };
 
 describe('courseOutline reducer', () => {
@@ -17,7 +17,17 @@ describe('courseOutline reducer', () => {
     expect(courseOutline(undefined, {})).toEqual(initialState);
   });
 
-  it('adds outline', () => {
+  it('updates fetch outline request state', () => {
+    const expected = {
+      ...initialState,
+      loading: true,
+    };
+    expect(courseOutline(undefined, {
+      type: FETCH_COURSE_OUTLINE_REQUEST,
+    })).toEqual(expected);
+  });
+
+  it('updates fetch outline success state', () => {
     const generatedOutline = {
       id: 'course-123',
       displayName: 'Root Node',
@@ -45,25 +55,23 @@ describe('courseOutline reducer', () => {
       ...initialState,
       outline: generatedOutline,
     };
-    expect(courseOutline(undefined, { type: GET_COURSE_OUTLINE, outline: generatedOutline }))
-      .toEqual(expected);
+    expect(courseOutline(undefined, {
+      type: FETCH_COURSE_OUTLINE_SUCCESS,
+      payload: {
+        outline: generatedOutline,
+      },
+    })).toEqual(expected);
   });
 
-  it('updates started fetching posts state', () => {
+  it('updates fetch outline failure state', () => {
+    const error = Error('Network Request');
     const expected = {
       ...initialState,
-      startedFetching: true,
-      finishedFetching: false,
+      error,
     };
-    expect(courseOutline(undefined, { type: STARTED_FETCHING_COURSE_OUTLINE })).toEqual(expected);
-  });
-
-  it('updates finished fetching posts state', () => {
-    const expected = {
-      ...initialState,
-      startedFetching: false,
-      finishedFetching: true,
-    };
-    expect(courseOutline(undefined, { type: FINISHED_FETCHING_COURSE_OUTLINE })).toEqual(expected);
+    expect(courseOutline(undefined, {
+      type: FETCH_COURSE_OUTLINE_FAILURE,
+      payload: { error },
+    })).toEqual(expected);
   });
 });

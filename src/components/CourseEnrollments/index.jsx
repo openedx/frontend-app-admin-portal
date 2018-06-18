@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 import moment from 'moment';
+import { omitBy, isNil } from 'lodash';
 import { Table, StatusAlert } from '@edx/paragon';
 
 import H1 from '../../components/H1';
@@ -19,6 +20,9 @@ const StatusMessage = props => (
 class CourseEnrollments extends React.Component {
   constructor(props) {
     super(props);
+
+    const { location } = this.props;
+    const queryParams = location ? qs.parse(location.search) : {};
 
     this.state = {
       columns: [
@@ -48,33 +52,23 @@ class CourseEnrollments extends React.Component {
         },
       ],
       enrollments: [],
-      currentPage: 1,
+      currentPage: queryParams.page,
+      pageSize: queryParams.page_size,
     };
 
     this.handleTablePageSelect = this.handleTablePageSelect.bind(this);
     this.renderTableContent = this.renderTableContent.bind(this);
   }
 
-  componentWillMount() {
-    const { location } = this.props;
-    const queryParams = location ? qs.parse(location.search) : {};
-    const { page } = queryParams;
-
-    if (page) {
-      this.setState({
-        currentPage: parseInt(page, 10),
-      });
-    }
-  }
-
   componentDidMount() {
     // TODO: enterprise uuid will be retrieved from data we get back about user
     // during authentication.
     const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
-    this.props.getCourseEnrollments({
-      enterpriseId,
+    const options = omitBy({
       page: this.state.currentPage,
-    });
+      page_size: this.state.pageSize,
+    }, isNil);
+    this.props.getCourseEnrollments(enterpriseId, options);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,12 +97,21 @@ class CourseEnrollments extends React.Component {
   }
 
   handleTablePageSelect(page) {
-    this.props.getCourseEnrollments(page).then(() => {
-      this.setState({
-        currentPage: page,
+    // TODO: enterprise uuid will be retrieved from data we get back about user
+    // during authentication.
+    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
+    const options = omitBy({
+      page,
+      page_size: this.state.pageSize,
+    }, isNil);
+
+    this.props.getCourseEnrollments(enterpriseId, options)
+      .then(() => {
+        this.setState({
+          currentPage: page,
+        });
+        this.props.history.push(`?${qs.stringify(options)}`);
       });
-      this.props.history.push(`?page=${page}`);
-    });
   }
 
   renderEmptyCourseEnrollmentsMessage() {

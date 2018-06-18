@@ -36,6 +36,12 @@ exports[`App renders correctly 1`] = `
     <p>
       Blah blah blah blah
     </p>
+    <a
+      href="/admin"
+      onClick={[Function]}
+    >
+      Admin Dashboard
+    </a>
   </div>
   <footer
     className="container"

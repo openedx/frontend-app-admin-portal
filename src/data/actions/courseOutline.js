@@ -1,14 +1,22 @@
-import axios from 'axios';
-
 import {
-  STARTED_FETCHING_COURSE_OUTLINE,
-  FINISHED_FETCHING_COURSE_OUTLINE,
-  GET_COURSE_OUTLINE,
+  FETCH_COURSE_OUTLINE_REQUEST,
+  FETCH_COURSE_OUTLINE_SUCCESS,
+  FETCH_COURSE_OUTLINE_FAILURE,
 } from '../constants/courseOutline';
+import LmsApiService from '../services/LmsApiService';
 
-const startedFetchingOutline = () => ({ type: STARTED_FETCHING_COURSE_OUTLINE });
-const finishedFetchingOutline = () => ({ type: FINISHED_FETCHING_COURSE_OUTLINE });
-const getOutline = (outline, unitNodeList) => ({ type: GET_COURSE_OUTLINE, outline, unitNodeList });
+const fetchCourseOutlineRequest = () => ({ type: FETCH_COURSE_OUTLINE_REQUEST });
+const fetchCourseOutlineSuccess = (outline, unitNodeList) => ({
+  type: FETCH_COURSE_OUTLINE_SUCCESS,
+  payload: {
+    outline,
+    unitNodeList,
+  },
+});
+const fetchCourseOutlineFailure = error => ({
+  type: FETCH_COURSE_OUTLINE_FAILURE,
+  payload: { error },
+});
 
 const transformNode = node => (
   {
@@ -55,21 +63,14 @@ const buildNavigationData = (blockData) => {
 
 const fetchCourseOutline = courseId => (
   (dispatch) => {
-    dispatch(startedFetchingOutline());
-    const outlineUrl = `http://localhost:18000/api/courses/v1/blocks/?course_id=${encodeURIComponent(courseId)}&username=staff&depth=all&nav_depth=3&block_types_filter=course,chapter,sequential,vertical`;
-    return axios.get(outlineUrl, {
-      withCredentials: true,
-      headers: {
-        // TODO: get cookie from cookies.get('csrftoken'), which will assume login on
-        // LMS already and same-origin
-        'X-CSRFToken': 'axjfX6SquerIjJ9PogaRTOvYElCSWcW2ADxW0MSVhC8PpfysXJzFV3gmQuUsfcVd',
-      },
-    })
-      // TODO: handle failure to fetch from LMS
+    dispatch(fetchCourseOutlineRequest());
+    return LmsApiService.fetchCourseOutline(courseId)
       .then(response => buildNavigationData(response.data))
       .then((navigationData) => {
-        dispatch(getOutline(navigationData.outline, navigationData.unitNodeList));
-        dispatch(finishedFetchingOutline());
+        dispatch(fetchCourseOutlineSuccess(navigationData.outline, navigationData.unitNodeList));
+      })
+      .catch((error) => {
+        dispatch(fetchCourseOutlineFailure(error));
       });
   }
 );

@@ -1,33 +1,36 @@
 import {
-  GET_COURSE_OUTLINE,
-  STARTED_FETCHING_COURSE_OUTLINE,
-  FINISHED_FETCHING_COURSE_OUTLINE,
+  FETCH_COURSE_OUTLINE_REQUEST,
+  FETCH_COURSE_OUTLINE_SUCCESS,
+  FETCH_COURSE_OUTLINE_FAILURE,
 } from '../constants/courseOutline';
 
 const courseOutline = (state = {
   outline: undefined,
   unitNodeList: undefined,
-  startedFetching: false,
-  finishedFetching: false,
+  loading: false,
+  error: null,
 }, action) => {
   switch (action.type) {
-    case GET_COURSE_OUTLINE:
+    case FETCH_COURSE_OUTLINE_REQUEST:
       return {
         ...state,
-        outline: action.outline,
-        unitNodeList: action.unitNodeList,
+        loading: true,
+        error: null,
       };
-    case STARTED_FETCHING_COURSE_OUTLINE:
+    case FETCH_COURSE_OUTLINE_SUCCESS:
       return {
         ...state,
-        startedFetching: true,
-        finishedFetching: false,
+        loading: false,
+        outline: action.payload.outline,
+        unitNodeList: action.payload.unitNodeList,
       };
-    case FINISHED_FETCHING_COURSE_OUTLINE:
+    case FETCH_COURSE_OUTLINE_FAILURE:
       return {
         ...state,
-        startedFetching: false,
-        finishedFetching: true,
+        loading: false,
+        error: action.payload.error,
+        outline: undefined,
+        unitNodeList: undefined,
       };
     default:
       return state;

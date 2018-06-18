@@ -8,6 +8,7 @@ import fetchCourseEnrollments from './courseEnrollments';
 import {
   FETCH_COURSE_ENROLLMENTS_REQUEST,
   FETCH_COURSE_ENROLLMENTS_SUCCESS,
+  FETCH_COURSE_ENROLLMENTS_FAILURE,
 } from '../constants/courseEnrollments';
 
 const mockStore = configureMockStore([thunk]);
@@ -16,19 +17,19 @@ const axiosMock = new MockAdapter(axios);
 describe('actions', () => {
   afterEach(() => {
     axiosMock.reset();
-    axiosMock.restore();
   });
 
   describe('fetchCourseEnrollments', () => {
-    it('fetches enrollments', () => {
-      const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
+    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
+
+    it('dispatches success action after fetching enrollments', () => {
       const responseData = {
-        count: 3,
+        count: 1,
         num_pages: 1,
         current_page: 1,
         results: [
           {
-            id: 2,
+            id: 1,
             enterprise_id: 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c',
             enterprise_name: 'Enterprise 1',
             lms_user_id: 11,
@@ -39,22 +40,35 @@ describe('actions', () => {
           },
         ],
       };
-
-      const params = {
-        page: 1,
-        page_size: 10,
-      };
-
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(params)}`)
-        .replyOnce(200, JSON.stringify(responseData));
-
       const expectedActions = [
         { type: FETCH_COURSE_ENROLLMENTS_REQUEST },
         { type: FETCH_COURSE_ENROLLMENTS_SUCCESS, payload: { enrollments: responseData } },
       ];
       const store = mockStore();
 
-      return store.dispatch(fetchCourseEnrollments({ enterpriseId })).then(() => {
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/`)
+        .replyOnce(200, JSON.stringify(responseData));
+
+      return store.dispatch(fetchCourseEnrollments(enterpriseId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches failure action after fetching enrollments', () => {
+      const expectedActions = [
+        { type: FETCH_COURSE_ENROLLMENTS_REQUEST },
+        { type: FETCH_COURSE_ENROLLMENTS_FAILURE, payload: { error: Error('Network Error') } },
+      ];
+      const store = mockStore();
+      const options = {
+        page: 2,
+        page_size: 10,
+      };
+
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
+        .networkError();
+
+      return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });

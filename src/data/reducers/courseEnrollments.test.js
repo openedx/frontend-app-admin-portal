@@ -55,7 +55,7 @@ describe('courseEnrollments reducer', () => {
   });
 
   it('updates fetch enrollments failure state', () => {
-    const error = Error('Network Requqest');
+    const error = Error('Network Request');
     const expected = {
       ...initialState,
       error,
