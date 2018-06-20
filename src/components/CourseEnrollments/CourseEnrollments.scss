@@ -1,0 +1,15 @@
+.table {
+    font-size: 14px;
+}
+
+// Pagination styles from Paragon.
+.page-link {
+    border-radius: 0 !important;
+    div {
+        display: inline-block;
+    }
+}
+
+.page-item > .btn {
+    transition: none;
+}

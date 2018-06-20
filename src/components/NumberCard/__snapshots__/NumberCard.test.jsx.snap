@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NumberCard /> renders correctly 1`] = `
+<div
+  className="card test-class"
+>
+  <div
+    className="card-body"
+  >
+    <h5
+      className="card-title d-flex align-items-center justify-content-between"
+    >
+      <span
+        className="title"
+      >
+        10
+      </span>
+      <div>
+        <span
+          aria-hidden={true}
+          className="fa fa-users d-flex align-items-center justify-content-center"
+          id="Icon1"
+        />
+      </div>
+    </h5>
+    <p
+      className="card-text"
+    >
+      This describes the data!
+    </p>
+  </div>
+</div>
+`;

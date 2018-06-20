@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import fetchCourseEnrollments from '../../data/actions/courseEnrollments';
-import CourseEnrollments from '../../components/CourseEnrollments';
+import ConnectedCourseEnrollments from '../../components/CourseEnrollments';
 
 const mapStateToProps = state => ({
   enrollments: state.courseEnrollments.enrollments,
@@ -15,9 +15,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const CourseEnrollmentsPage = connect(
+const CourseEnrollmentsTable = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CourseEnrollments);
+)(ConnectedCourseEnrollments);
 
-export default CourseEnrollmentsPage;
+export default CourseEnrollmentsTable;

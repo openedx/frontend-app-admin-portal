@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import CoursewarePage from '../CoursewarePage';
 import HomePage from '../HomePage';
 import FAQSupportPage from '../FAQSupportPage';
-import CourseEnrollmentsPage from '../CourseEnrollmentsPage';
+import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -23,7 +23,7 @@ const App = () => (
       <Route exact path="/" component={HomePage} />
       <Route path="/courses/:courseId" component={CoursewarePage} />
       <Route path="/faq" component={FAQSupportPage} />
-      <Route path="/admin" component={CourseEnrollmentsPage} />
+      <Route path="/admin" component={AdminPage} />
       <Route path="" component={NotFoundPage} />
     </Switch>
     <Footer />

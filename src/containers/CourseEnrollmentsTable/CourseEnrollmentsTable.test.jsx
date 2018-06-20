@@ -49,8 +49,7 @@ describe('CourseEnrollmentsPage', () => {
   });
 
   it('getCourseEnrollments dispatches fetchCourseEnrollments action', () => {
-    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
-    wrapper.props().getCourseEnrollments(enterpriseId);
+    wrapper.props().getCourseEnrollments('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

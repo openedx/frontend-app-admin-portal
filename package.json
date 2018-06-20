@@ -19,7 +19,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@edx/edx-bootstrap": "^0.4.3",
-    "@edx/paragon": "^2.7.0",
+    "@edx/paragon": "^3.3.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
     "babel-polyfill": "^6.26.0",
