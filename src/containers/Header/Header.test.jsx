@@ -32,6 +32,9 @@ describe('<Header />', () => {
         enterpriseSlug: 'test-enterprise',
         enterpriseLogo: 'https://test.url/image/1.png',
       },
+      login: {
+        email: 'test@example.com',
+      },
     });
 
     tree = renderer
@@ -45,6 +48,7 @@ describe('<Header />', () => {
   it('renders edX logo correctly', () => {
     store = mockStore({
       portalConfiguration: {},
+      login: {},
     });
     tree = renderer
       .create((

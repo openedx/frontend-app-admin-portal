@@ -10,7 +10,7 @@ import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
 const Header = (props) => {
-  const { enterpriseLogo, enterpriseSlug } = props;
+  const { enterpriseLogo, enterpriseSlug, email } = props;
 
   return (
     <header className="container">
@@ -21,15 +21,17 @@ const Header = (props) => {
         >
           <Img src={enterpriseLogo || EdxLogo} alt="" />
         </Link>
-        <Dropdown
-          title="edx@example.com"
-          menuItems={[
-            {
-              label: 'Logout',
-              href: '/',
-            },
-          ]}
-        />
+        {email &&
+          <Dropdown
+            title={email}
+            menuItems={[
+              {
+                label: 'Logout',
+                href: '/',
+              },
+            ]}
+          />
+        }
       </nav>
     </header>
   );
@@ -38,16 +40,19 @@ const Header = (props) => {
 Header.propTypes = {
   enterpriseSlug: PropTypes.string,
   enterpriseLogo: PropTypes.string,
+  email: PropTypes.string,
 };
 
 Header.defaultProps = {
   enterpriseSlug: null,
   enterpriseLogo: null,
+  email: null,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enterpriseLogo: state.portalConfiguration.enterpriseLogo,
+  email: state.login.email,
 });
 
 export default connect(mapStateToProps)(Header);

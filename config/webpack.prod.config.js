@@ -127,6 +127,7 @@ module.exports = Merge.smart(commonConfig, {
       NODE_ENV: 'production',
       LMS_BASE_URL: undefined,
       DATA_API_BASE_URL: undefined,
+      LMS_CLIENT_ID: undefined,
     }),
   ],
 });
