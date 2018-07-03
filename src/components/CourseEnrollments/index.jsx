@@ -1,12 +1,13 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import qs from 'query-string';
 import moment from 'moment';
-import { omitBy, isNil } from 'lodash';
-import { Table, StatusAlert } from '@edx/paragon';
+import { omitBy, isNaN } from 'lodash';
+import { Table, StatusAlert, Pagination } from '@edx/paragon';
+import 'font-awesome/css/font-awesome.css';
 
-import H1 from '../../components/H1';
+import './CourseEnrollments.scss';
 
 const StatusMessage = props => (
   <StatusAlert
@@ -17,12 +18,16 @@ const StatusMessage = props => (
   />
 );
 
-class CourseEnrollments extends React.Component {
+export class CourseEnrollments extends React.Component {
   constructor(props) {
     super(props);
 
-    const { location } = this.props;
-    const queryParams = location ? qs.parse(location.search) : {};
+    const { enrollments, location } = props;
+    const queryParams = this.formatOptions(qs.parse(location.search));
+
+    // TODO: enterprise uuid will be retrieved from data we get back about user
+    // during authentication.
+    this.enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
 
     this.state = {
       columns: [
@@ -47,11 +52,11 @@ class CourseEnrollments extends React.Component {
           key: 'has_passed',
         },
         {
-          label: 'Passed Date',
-          key: 'passed_timestamp',
+          label: 'Last Activity Date',
+          key: 'last_activity_date',
         },
       ],
-      enrollments: [],
+      enrollments: this.formatEnrollmentData(enrollments.results),
       currentPage: queryParams.page,
       pageSize: queryParams.page_size,
     };
@@ -63,12 +68,11 @@ class CourseEnrollments extends React.Component {
   componentDidMount() {
     // TODO: enterprise uuid will be retrieved from data we get back about user
     // during authentication.
-    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
-    const options = omitBy({
+    const options = this.formatOptions({
       page: this.state.currentPage,
       page_size: this.state.pageSize,
-    }, isNil);
-    this.props.getCourseEnrollments(enterpriseId, options);
+    });
+    this.props.getCourseEnrollments(this.enterpriseId, options);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,8 +83,15 @@ class CourseEnrollments extends React.Component {
     }
   }
 
-  formatTimestamp(timestamp) {
-    return moment(timestamp).format('MMMM D, YYYY');
+  formatOptions(options) {
+    return omitBy({
+      page: parseInt(options.page, 10),
+      page_size: parseInt(options.page_size, 10),
+    }, isNaN);
+  }
+
+  formatTimestamp({ timestamp, format = 'MMMM D, YYYY' }) {
+    return timestamp ? moment(timestamp).format(format) : null;
   }
 
   formatEnrollmentData(enrollments) {
@@ -90,28 +101,31 @@ class CourseEnrollments extends React.Component {
 
     return enrollments.map(enrollment => ({
       ...enrollment,
-      passed_timestamp: this.formatTimestamp(enrollment.passed_timestamp),
-      course_end: this.formatTimestamp(enrollment.course_end),
+      last_activity_date: this.formatTimestamp({ timestamp: enrollment.last_activity_date }),
+      course_start: this.formatTimestamp({ timestamp: enrollment.course_start }),
+      course_end: this.formatTimestamp({ timestamp: enrollment.course_end }),
+      enrollment_created_timestamp: this.formatTimestamp({
+        timestamp: enrollment.enrollment_created_timestamp,
+      }),
+      passed_timestamp: this.formatTimestamp({ timestamp: enrollment.passed_timestamp }),
+      user_account_creation_timestamp: this.formatTimestamp({
+        timestamp: enrollment.user_account_creation_timestamp,
+      }),
       has_passed: enrollment.has_passed ? 'Yes' : 'No',
     }));
   }
 
   handleTablePageSelect(page) {
-    // TODO: enterprise uuid will be retrieved from data we get back about user
-    // during authentication.
-    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
-    const options = omitBy({
+    const options = this.formatOptions({
       page,
       page_size: this.state.pageSize,
-    }, isNil);
+    });
 
-    this.props.getCourseEnrollments(enterpriseId, options)
-      .then(() => {
-        this.setState({
-          currentPage: page,
-        });
-        this.props.history.push(`?${qs.stringify(options)}`);
-      });
+    this.props.getCourseEnrollments(this.enterpriseId, options);
+    this.props.history.push(`?${qs.stringify(options)}`);
+    this.setState({
+      currentPage: page,
+    });
   }
 
   renderEmptyCourseEnrollmentsMessage() {
@@ -130,13 +144,27 @@ class CourseEnrollments extends React.Component {
     } = this.state;
 
     return (
-      <div>
-        <div className="table-responsive">
-          <Table
-            className={['table-sm', 'table-striped']}
-            columns={columns}
-            data={enrollments}
-          />
+      <div className={this.props.className}>
+        <div className="row">
+          <div className="col">
+            <div className="table-responsive">
+              <Table
+                className={['table-sm', 'table-striped']}
+                columns={columns}
+                data={enrollments}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row mt-2">
+          <div className="col d-flex justify-content-center">
+            <Pagination
+              paginationLabel="Course Enrollments Pagination"
+              pageCount={this.props.enrollments.num_pages}
+              onPageSelect={this.handleTablePageSelect}
+              currentPage={this.state.currentPage}
+            />
+          </div>
         </div>
       </div>
     );
@@ -153,16 +181,13 @@ class CourseEnrollments extends React.Component {
   render() {
     const { loading, error } = this.props;
     const { enrollments } = this.state;
-
     return (
-      <div className="container">
-        <Helmet>
-          <title>Course Enrollments</title>
-        </Helmet>
-        <H1>Course Enrollments</H1>
+      <div>
         {error && this.renderErrorMessage()}
         {loading && !enrollments.length && this.renderLoadingMessage()}
-        {!loading && !error && !enrollments.length && this.renderEmptyCourseEnrollmentsMessage()}
+        {!loading && !error && !enrollments.length &&
+          this.renderEmptyCourseEnrollmentsMessage()
+        }
         {enrollments.length > 0 && this.renderTableContent()}
       </div>
     );
@@ -173,12 +198,16 @@ CourseEnrollments.defaultProps = {
   enrollments: {},
   error: null,
   loading: false,
-  location: {},
+  location: {
+    search: '',
+  },
   history: {},
+  className: undefined,
 };
 
 CourseEnrollments.propTypes = {
   getCourseEnrollments: PropTypes.func.isRequired,
+  className: PropTypes.string,
   enrollments: PropTypes.shape({
     count: PropTypes.number,
     num_pages: PropTypes.number,
@@ -203,4 +232,4 @@ StatusMessage.propTypes = {
   alertType: PropTypes.string.isRequired,
 };
 
-export default CourseEnrollments;
+export default withRouter(CourseEnrollments);

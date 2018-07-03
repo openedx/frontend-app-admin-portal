@@ -1,22 +1,1197 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CourseEnrollments /> renders correctly 1`] = `
-<div
-  className="container"
->
-  <h1>
-    Course Enrollments
-  </h1>
+exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
+<div>
   <div
-    className="alert fade alert-warning show"
+    className={undefined}
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="table-responsive"
+        >
+          <table
+            className="table table-sm table-striped"
+          >
+            <thead
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Email
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Course
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Course End
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Mode
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Passed
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Last Activity Date
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  No
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  All about acceptance testing!
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  verified
+                </td>
+                <td
+                  className=""
+                >
+                  Yes
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-2"
+    >
+      <div
+        className="col d-flex justify-content-center"
+      >
+        <nav
+          aria-label="Course Enrollments Pagination"
+          className=""
+        >
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
+          >
+            Page 1, Current Page, of 2
+          </div>
+          <ul
+            className="pagination"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Previous"
+                className="btn previous page-link"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <div>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-left mr-2"
+                      id="pagination-2"
+                    />
+                  </div>
+                  Previous
+                </div>
+              </button>
+            </li>
+            <li
+              className="page-item"
+            >
+              <button
+                aria-label="Next, Page 2"
+                className="btn next page-link"
+                disabled={false}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex={undefined}
+                type="button"
+              >
+                <div>
+                  Next
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-right ml-2"
+                      id="pagination-3"
+                    />
+                  </div>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
+<div>
+  <div
+    className="alert fade alert-danger show"
     hidden={false}
     role="alert"
   >
     <div
       className="alert-dialog"
     >
-      There are no course enrollments.
+      There was a problem fetching course enrollments: Network Error
     </div>
+  </div>
+</div>
+`;
+
+exports[`<CourseEnrollments /> renders correctly with loading state 1`] = `
+<div>
+  <div
+    className="loading"
+  >
+    <p>
+      Loading...
+    </p>
   </div>
 </div>
 `;

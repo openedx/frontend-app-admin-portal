@@ -44,77 +44,81 @@ exports[`App renders correctly 1`] = `
     </a>
   </div>
   <footer
-    className="container"
+    className="pb-4"
   >
     <div
-      className="row justify-content-between"
+      className="container"
     >
       <div
-        className="col-xs-12 col-md-4 logo-links"
+        className="row justify-content-between align-items-center"
       >
-        <a
-          className="logo"
-          href="/"
-          onClick={[Function]}
+        <div
+          className="col-xs-12 col-md-4 logo-links"
         >
-          <img
-            alt="edX logo"
-            className=""
-            src="test-file-stub"
-          />
-        </a>
-        <a
-          className="logo"
-          href="/"
-          onClick={[Function]}
-        >
-          <img
-            alt="Enterprise logo"
-            className=""
-            src="test-file-stub"
-          />
-        </a>
-      </div>
-      <div
-        className="col-xs-12 col-md footer-links"
-      >
-        <nav>
-          <ul
-            className="nav justify-content-end"
+          <a
+            className="logo"
+            href="/"
+            onClick={[Function]}
           >
-            <li
-              className="nav-item"
+            <img
+              alt="edX logo"
+              className=""
+              src="test-file-stub"
+            />
+          </a>
+          <a
+            className="logo"
+            href="/"
+            onClick={[Function]}
+          >
+            <img
+              alt="Enterprise logo"
+              className=""
+              src="test-file-stub"
+            />
+          </a>
+        </div>
+        <div
+          className="col-xs-12 col-md footer-links"
+        >
+          <nav>
+            <ul
+              className="nav justify-content-end"
             >
-              <a
-                className="nav-link"
-                href="https://www.edx.org/edx-terms-service"
+              <li
+                className="nav-item"
               >
-                Terms of Service
-              </a>
-            </li>
-            <li
-              className="nav-item"
-            >
-              <a
-                className="nav-link"
-                href="https://www.edx.org/edx-privacy-policy"
+                <a
+                  className="nav-link"
+                  href="https://www.edx.org/edx-terms-service"
+                >
+                  Terms of Service
+                </a>
+              </li>
+              <li
+                className="nav-item"
               >
-                Privacy Policy
-              </a>
-            </li>
-            <li
-              className="nav-item"
-            >
-              <a
-                className="nav-link"
-                href="/faq"
-                onClick={[Function]}
+                <a
+                  className="nav-link"
+                  href="https://www.edx.org/edx-privacy-policy"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li
+                className="nav-item"
               >
-                FAQ & Support
-              </a>
-            </li>
-          </ul>
-        </nav>
+                <a
+                  className="nav-link"
+                  href="/faq"
+                  onClick={[Function]}
+                >
+                  FAQ & Support
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </footer>

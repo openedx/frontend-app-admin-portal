@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './H1.scss';
+import './H2.scss';
 
-const H1 = props => (
-  <h1>
+const H2 = props => (
+  <h2>
     {props.children}
-  </h1>
+  </h2>
 );
 
 
-H1.propTypes = {
+H2.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default H1;
+export default H2;

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FAQSupportPage /> renders correctly 1`] = `
+<div
+  className="container"
+>
+  <h1>
+    FAQ & Support
+  </h1>
+  <p>
+    Blah blah blah blah blah blah
+  </p>
+</div>
+`;
