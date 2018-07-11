@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import H1 from '../../components/H1';
 
 const NotFoundPage = () => (
-  <div className="container">
+  <div className="container mt-3">
     <Helmet>
       <title>Page Not Found</title>
     </Helmet>

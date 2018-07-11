@@ -1,9 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CourseEnrollments /> renders correctly calls getCourseEnrollments prop 1`] = `<div />`;
+exports[`<CourseEnrollments /> renders correctly calls getCourseEnrollments prop 1`] = `
+<div
+  className={null}
+/>
+`;
+
+exports[`<CourseEnrollments /> renders correctly with empty enrollment data 1`] = `
+<div
+  className={null}
+>
+  <div
+    className="alert fade alert-warning show"
+    hidden={false}
+    role="alert"
+  >
+    <div
+      className="alert-dialog"
+    >
+      <div
+        className="d-flex"
+      >
+        <div
+          className="icon mr-2"
+        >
+          <div>
+            <span
+              aria-hidden={true}
+              className="fa fa-exclamation-circle"
+              id="Icon1"
+            />
+          </div>
+        </div>
+        <div
+          className="message"
+        >
+          <span>
+            There are no course enrollments.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
-<div>
+<div
+  className={null}
+>
   <div
     className={null}
   >
@@ -26,40 +71,220 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 className=""
               >
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Email
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Course
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Course Title
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Course End
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Enrollment Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Mode
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Passed Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Passed
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Enrollment Mode
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Last Activity Date
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Course Price
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Coupon Name
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Enterprise Offers
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
               </tr>
             </thead>
@@ -82,7 +307,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -92,13 +322,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -116,7 +349,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  Has not passed
                 </td>
                 <td
                   className=""
@@ -126,13 +364,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  No
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -150,7 +391,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -160,13 +406,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -184,7 +433,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -194,13 +448,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -218,7 +475,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -228,13 +490,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -252,7 +517,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -262,13 +532,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -286,7 +559,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -296,13 +574,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -320,7 +601,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -330,13 +616,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -354,7 +643,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -364,13 +658,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -388,7 +685,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -398,13 +700,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -422,7 +727,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -432,13 +742,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -456,7 +769,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -466,13 +784,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -490,7 +811,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -500,13 +826,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -524,7 +853,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -534,13 +868,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -558,7 +895,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -568,13 +910,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -592,7 +937,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -602,13 +952,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -626,7 +979,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -636,13 +994,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -660,7 +1021,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -670,13 +1036,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -694,7 +1063,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -704,13 +1078,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -728,7 +1105,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -738,13 +1120,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -762,7 +1147,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -772,13 +1162,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -796,7 +1189,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -806,13 +1204,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -830,7 +1231,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -840,13 +1246,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -864,7 +1273,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -874,13 +1288,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -898,7 +1315,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -908,13 +1330,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -932,7 +1357,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -942,13 +1372,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -966,7 +1399,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -976,13 +1414,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -1000,7 +1441,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -1010,13 +1456,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -1034,7 +1483,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -1044,13 +1498,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
               <tr
                 className=""
@@ -1068,7 +1525,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  December 1, 2016
+                  June 27, 2014
+                </td>
+                <td
+                  className=""
+                >
+                  May 9, 2017
                 </td>
                 <td
                   className=""
@@ -1078,13 +1540,16 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  Yes
+                  $200
                 </td>
                 <td
                   className=""
                 >
-                  June 23, 2017
+                  Enterprise Entitlement Coupon
                 </td>
+                <td
+                  className=""
+                />
               </tr>
             </tbody>
           </table>
@@ -1098,7 +1563,7 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
         className="col d-flex justify-content-center"
       >
         <nav
-          aria-label="Course Enrollments Pagination"
+          aria-label="course enrollments pagination"
           className=""
         >
           <div
@@ -1171,7 +1636,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
 `;
 
 exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
-<div>
+<div
+  className={null}
+>
   <div
     className="alert fade alert-danger show"
     hidden={false}
@@ -1180,20 +1647,48 @@ exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
     <div
       className="alert-dialog"
     >
-      There was a problem fetching course enrollments: Network Error
+      <div
+        className="d-flex"
+      >
+        <div
+          className="icon mr-2"
+        >
+          <div>
+            <span
+              aria-hidden={true}
+              className="fa fa-times-circle"
+              id="Icon1"
+            />
+          </div>
+        </div>
+        <div
+          className="message"
+        >
+          <span
+            className="title"
+          >
+            Unable to load full report
+          </span>
+          <span>
+            Try refreshing your screen (Network Error)
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`<CourseEnrollments /> renders correctly with loading state 1`] = `
-<div>
+<div
+  className={null}
+>
   <div
-    className="loading"
+    className="course-enrollments loading d-flex align-items-center justify-content-center"
   >
-    <p>
+    <span>
       Loading...
-    </p>
+    </span>
   </div>
 </div>
 `;

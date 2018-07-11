@@ -89,7 +89,7 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
       </a>
       <a
         className="logo"
-        href="/test-enterprise/admin"
+        href="/test-enterprise"
         onClick={[Function]}
       >
         <img

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FAQSupportPage /> renders correctly 1`] = `
+exports[`<SupportPage /> renders correctly 1`] = `
 <div
-  className="container"
+  className="container mt-3"
 >
   <h1>
     Support

@@ -1,13 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import FAQSupportPage from './index';
+import SupportPage from './index';
 
-describe('<FAQSupportPage />', () => {
+describe('<SupportPage />', () => {
   it('renders correctly', () => {
     const tree = renderer
       .create((
-        <FAQSupportPage />
+        <SupportPage />
       ))
       .toJSON();
     expect(tree).toMatchSnapshot();

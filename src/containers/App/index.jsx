@@ -4,13 +4,11 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import CoursewarePage from '../CoursewarePage';
-import FAQSupportPage from '../FAQSupportPage';
+import SupportPage from '../SupportPage';
 import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 
 import fetchPortalConfiguration from '../../data/actions/portalConfiguration';
-
-import './App.scss';
 
 class App extends React.Component {
   componentDidMount() {
@@ -36,7 +34,7 @@ class App extends React.Component {
           />
           <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
           <Route exact path={`${baseUrl}/admin`} component={AdminPage} />
-          <Route exact path={`${baseUrl}/support`} component={FAQSupportPage} />
+          <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       </div>

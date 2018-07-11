@@ -2,7 +2,7 @@
 
 exports[`<NumberCard /> renders correctly 1`] = `
 <div
-  className="card test-class"
+  className="card number-card test-class"
 >
   <div
     className="card-body"
@@ -10,9 +10,7 @@ exports[`<NumberCard /> renders correctly 1`] = `
     <h5
       className="card-title d-flex align-items-center justify-content-between"
     >
-      <span
-        className="title"
-      >
+      <span>
         10
       </span>
       <div>

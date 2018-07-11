@@ -1,63 +1,68 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import moment from 'moment';
-import { omitBy, isNaN } from 'lodash';
-import { Table, StatusAlert, Pagination } from '@edx/paragon';
+import { withRouter } from 'react-router';
+
+import StatusAlert from '../StatusAlert';
+import LoadingMessage from '../LoadingMessage';
+import TableWithPagination from '../TableWithPagination';
+import { formatTableOptions, formatTimestamp } from '../../utils';
 
 import './CourseEnrollments.scss';
-
-const StatusMessage = props => (
-  <StatusAlert
-    alertType={props.alertType}
-    dismissible={false}
-    dialog={props.message}
-    open
-  />
-);
 
 export class CourseEnrollments extends React.Component {
   constructor(props) {
     super(props);
 
-    const { location, enrollments } = props;
-    const queryParams = this.formatOptions(qs.parse(location.search));
+    const { enrollments } = props;
 
     this.state = {
       columns: [
         {
           label: 'Email',
           key: 'user_email',
+          columnSortable: true,
         },
         {
-          label: 'Course',
+          label: 'Course Title',
           key: 'course_title',
+          columnSortable: true,
         },
         {
-          label: 'Course End',
-          key: 'course_end',
+          label: 'Enrollment Date',
+          key: 'enrollment_created_timestamp',
+          columnSortable: true,
         },
         {
-          label: 'Mode',
+          label: 'Passed Date',
+          key: 'passed_timestamp',
+          columnSortable: true,
+        },
+        {
+          label: 'Enrollment Mode',
           key: 'user_current_enrollment_mode',
+          columnSortable: true,
         },
         {
-          label: 'Passed',
-          key: 'has_passed',
+          label: 'Course Price',
+          key: 'course_price',
+          columnSortable: true,
         },
         {
-          label: 'Last Activity Date',
-          key: 'last_activity_date',
+          label: 'Coupon Name',
+          key: 'coupon_name',
+          columnSortable: true,
+        },
+        {
+          label: 'Enterprise Offers',
+          key: 'offer',
+          columnSortable: true,
         },
       ],
       enrollments: this.formatEnrollmentData(enrollments),
       pageCount: enrollments ? enrollments.num_pages : null,
-      currentPage: queryParams.page,
-      pageSize: queryParams.page_size,
     };
 
-    this.handleTablePageSelect = this.handleTablePageSelect.bind(this);
     this.renderTableContent = this.renderTableContent.bind(this);
   }
 
@@ -70,7 +75,7 @@ export class CourseEnrollments extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseId, enrollments } = this.props;
+    const { enterpriseId, enrollments, location } = this.props;
 
     if (enrollments !== prevProps.enrollments) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
@@ -80,70 +85,65 @@ export class CourseEnrollments extends React.Component {
     }
 
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
-      this.getCourseEnrollments(enterpriseId);
+      const options = qs.parse(location.search);
+      this.getCourseEnrollments(enterpriseId, formatTableOptions(options));
     }
   }
 
-  getCourseEnrollments(enterpriseId) {
-    const options = this.formatOptions({
-      page: this.state.currentPage,
-      page_size: this.state.pageSize,
-    });
+  getCourseEnrollments(enterpriseId, options) {
     this.props.getCourseEnrollments(enterpriseId, options);
   }
 
-  formatOptions(options) {
-    return omitBy({
-      page: parseInt(options.page, 10),
-      page_size: parseInt(options.page_size, 10),
-    }, isNaN);
-  }
-
-  formatTimestamp({ timestamp, format = 'MMMM D, YYYY' }) {
-    return timestamp ? moment(timestamp).format(format) : null;
+  formatPassedTimestamp(timestamp) {
+    if (timestamp) {
+      return formatTimestamp({ timestamp });
+    }
+    return 'Has not passed';
   }
 
   formatEnrollmentData(enrollments) {
-    if (!enrollments || !enrollments.results.length) {
+    if (!enrollments) {
       return null;
+    } else if (!enrollments.results.length) {
+      return [];
     }
 
     return enrollments.results.map(enrollment => ({
       ...enrollment,
-      last_activity_date: this.formatTimestamp({ timestamp: enrollment.last_activity_date }),
-      course_start: this.formatTimestamp({ timestamp: enrollment.course_start }),
-      course_end: this.formatTimestamp({ timestamp: enrollment.course_end }),
-      enrollment_created_timestamp: this.formatTimestamp({
+      last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
+      course_start: formatTimestamp({ timestamp: enrollment.course_start }),
+      course_end: formatTimestamp({ timestamp: enrollment.course_end }),
+      enrollment_created_timestamp: formatTimestamp({
         timestamp: enrollment.enrollment_created_timestamp,
       }),
-      passed_timestamp: this.formatTimestamp({ timestamp: enrollment.passed_timestamp }),
-      user_account_creation_timestamp: this.formatTimestamp({
+      passed_timestamp: this.formatPassedTimestamp(enrollment.passed_timestamp),
+      user_account_creation_timestamp: formatTimestamp({
         timestamp: enrollment.user_account_creation_timestamp,
       }),
       has_passed: enrollment.has_passed ? 'Yes' : 'No',
+      course_price: `$${enrollment.course_price}`,
     }));
   }
 
-  handleTablePageSelect(page) {
-    const options = this.formatOptions({
-      page,
-      page_size: this.state.pageSize,
-    });
-
-    this.props.getCourseEnrollments(this.props.enterpriseId, options);
-    this.props.history.push(`?${qs.stringify(options)}`);
-    this.setState({
-      currentPage: page,
-    });
-  }
-
   renderEmptyCourseEnrollmentsMessage() {
-    return <StatusMessage alertType="warning" message="There are no course enrollments." />;
+    return (
+      <StatusAlert
+        alertType="warning"
+        iconClassName={['fa', 'fa-exclamation-circle']}
+        message="There are no course enrollments."
+      />
+    );
   }
 
   renderErrorMessage() {
-    const message = `There was a problem fetching course enrollments: ${this.props.error.message}`;
-    return <StatusMessage alertType="danger" message={message} />;
+    return (
+      <StatusAlert
+        alertType="danger"
+        iconClassName={['fa', 'fa-times-circle']}
+        title="Unable to load full report"
+        message={`Try refreshing your screen (${this.props.error.message})`}
+      />
+    );
   }
 
   renderTableContent() {
@@ -154,48 +154,32 @@ export class CourseEnrollments extends React.Component {
     } = this.state;
 
     return (
-      <div className={this.props.className}>
-        <div className="row">
-          <div className="col">
-            <div className="table-responsive">
-              <Table
-                className={['table-sm', 'table-striped']}
-                columns={columns}
-                data={enrollments}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row mt-2">
-          <div className="col d-flex justify-content-center">
-            <Pagination
-              paginationLabel="Course Enrollments Pagination"
-              pageCount={pageCount}
-              onPageSelect={this.handleTablePageSelect}
-              currentPage={this.state.currentPage}
-            />
-          </div>
-        </div>
-      </div>
+      <TableWithPagination
+        columns={columns}
+        data={enrollments}
+        pageCount={pageCount}
+        paginationLabel="course enrollments pagination"
+        tableSortable
+        handleDataUpdate={options =>
+          this.getCourseEnrollments(this.props.enterpriseId, options)
+        }
+      />
     );
   }
 
   renderLoadingMessage() {
-    return (
-      <div className="loading">
-        <p>Loading...</p>
-      </div>
-    );
+    return <LoadingMessage className="course-enrollments" />;
   }
 
   render() {
-    const { loading, error } = this.props;
+    const { className, loading, error } = this.props;
     const { enrollments } = this.state;
+
     return (
-      <div>
+      <div className={className}>
         {error && this.renderErrorMessage()}
         {loading && !enrollments && this.renderLoadingMessage()}
-        {!loading && !error && enrollments && !enrollments.length &&
+        {!loading && !error && enrollments && enrollments.length === 0 &&
           this.renderEmptyCourseEnrollmentsMessage()
         }
         {enrollments && enrollments.length > 0 && this.renderTableContent()}
@@ -212,7 +196,6 @@ CourseEnrollments.defaultProps = {
   location: {
     search: null,
   },
-  history: {},
   className: null,
 };
 
@@ -234,14 +217,6 @@ CourseEnrollments.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }),
-};
-
-StatusMessage.propTypes = {
-  message: PropTypes.string.isRequired,
-  alertType: PropTypes.string.isRequired,
 };
 
 export default withRouter(CourseEnrollments);

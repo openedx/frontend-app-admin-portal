@@ -1,9 +1,7 @@
-const COURSE_ENROLLMENTS_COUNT = 30;
-
 const generateCourseEnrollments = () => {
   const enrollments = [];
 
-  for (let i = 1; i <= COURSE_ENROLLMENTS_COUNT; i += 1) {
+  for (let i = 1; i <= 30; i += 1) {
     enrollments.push({
       id: i,
       enterprise_id: 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c',
@@ -44,12 +42,13 @@ const generateCourseEnrollments = () => {
     has_passed: 0,
     passed_timestamp: null,
     letter_grade: null,
+    last_activity_date: null,
   };
   return enrollments;
 };
 
 const mockCourseEnrollments = {
-  count: COURSE_ENROLLMENTS_COUNT,
+  count: 30,
   current_page: 1,
   num_pages: 2,
   next: 'next_page_url',
@@ -58,7 +57,4 @@ const mockCourseEnrollments = {
   start: 0,
 };
 
-export {
-  mockCourseEnrollments,
-  COURSE_ENROLLMENTS_COUNT,
-};
+export default mockCourseEnrollments;

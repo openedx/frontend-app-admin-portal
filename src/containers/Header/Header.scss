@@ -1,8 +1,18 @@
 header {
-    margin: 0 0 1.5rem 0;
     border-bottom: 1px solid #d4d4d4;
 
     .navbar-brand {
         max-width: 200px;
+    }
+
+    .badge.beta {
+        background: #636c72;
+        color: #ffffff;
+    }
+    
+    .dropdown > button {
+        cursor: pointer;
+        color: #636c72;
+        background: #ffffff;
     }
 }

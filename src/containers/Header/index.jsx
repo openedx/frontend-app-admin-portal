@@ -16,7 +16,7 @@ const Header = (props) => {
     <header className="container">
       <nav className="navbar px-0 justify-content-between">
         <Link
-          to={enterpriseSlug ? `/${enterpriseSlug}/admin` : '/'}
+          to={enterpriseSlug ? `/${enterpriseSlug}` : '/'}
           className="navbar-brand"
         >
           <Img src={enterpriseLogo || EdxLogo} alt="" />

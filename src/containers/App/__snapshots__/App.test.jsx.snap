@@ -3,7 +3,7 @@
 exports[`App renders not found page correctly 1`] = `
 <div>
   <div
-    className="container"
+    className="container mt-3"
   >
     <h1>
       Page Not Found

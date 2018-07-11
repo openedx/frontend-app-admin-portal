@@ -21,10 +21,10 @@ class NumberCard extends React.Component {
       description,
     } = this.props;
     return (
-      <div className={classNames(['card', className])}>
+      <div className={classNames(['card', 'number-card', className])}>
         <div className="card-body">
           <h5 className="card-title d-flex align-items-center justify-content-between">
-            <span className="title">
+            <span>
               {this.formatTitle(title)}
             </span>
             {iconClassName &&
