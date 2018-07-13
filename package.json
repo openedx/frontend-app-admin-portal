@@ -31,7 +31,6 @@
     "prop-types": "^15.5.10",
     "query-string": "^6.1.0",
     "react": "^16.2.0",
-    "react-cookie": "^2.1.4",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
     "react-redux": "^5.0.7",

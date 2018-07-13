@@ -24,21 +24,25 @@ describe('<CourseEnrollments />', () => {
 
   describe('renders correctly', () => {
     it('calls getCourseEnrollments prop', () => {
-      const getCourseEnrollmentsMock = jest.fn();
-      mount((
-        CourseEnrollmentsWrapper({
-          getCourseEnrollments: getCourseEnrollmentsMock,
-        })
-      ));
-      expect(getCourseEnrollmentsMock).toHaveBeenCalled();
+      const mockGetCourseEnrollments = jest.fn();
+      const tree = renderer
+        .create((
+          <CourseEnrollmentsWrapper
+            getCourseEnrollments={mockGetCourseEnrollments}
+            enterpriseId="test-enterprise-id"
+          />
+        ))
+        .toJSON();
+      expect(mockGetCourseEnrollments).toHaveBeenCalled();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with enrollment data', () => {
       const tree = renderer
         .create((
-          CourseEnrollmentsWrapper({
-            enrollments: mockCourseEnrollments,
-          })
+          <CourseEnrollmentsWrapper
+            enrollments={mockCourseEnrollments}
+          />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -47,9 +51,7 @@ describe('<CourseEnrollments />', () => {
     it('with error state', () => {
       const tree = renderer
         .create((
-          CourseEnrollmentsWrapper({
-            error: Error('Network Error'),
-          })
+          <CourseEnrollmentsWrapper error={Error('Network Error')} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -58,9 +60,7 @@ describe('<CourseEnrollments />', () => {
     it('with loading state', () => {
       const tree = renderer
         .create((
-          CourseEnrollmentsWrapper({
-            loading: true,
-          })
+          <CourseEnrollmentsWrapper loading />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -83,28 +83,28 @@ describe('<CourseEnrollments />', () => {
       course_end: 'December 1, 2016',
       has_passed: 'No',
       last_activity_date: 'June 23, 2017',
-      passed_timestamp: null,
       enrollment_created_timestamp: 'June 27, 2014',
       user_account_creation_timestamp: 'February 12, 2015',
     }];
 
     beforeEach(() => {
       wrapper = shallow((
-        <MemoryRouter>
-          <CourseEnrollments
-            getCourseEnrollments={() => {}}
-            enrollments={mockCourseEnrollments}
-          />
-        </MemoryRouter>
+        <CourseEnrollmentsWrapper
+          enrollments={mockCourseEnrollments}
+        />
       )).find(CourseEnrollments);
     });
 
     it('handles empty enrollments data', () => {
-      wrapper.dive().setProps({
-        enrollments: {},
-      }, () => {
-        expect(wrapper.dive().state('enrollments')).toHaveLength(0);
-      });
+      wrapper = shallow((
+        <CourseEnrollmentsWrapper
+          enrollments={{
+            count: 0,
+            results: [],
+          }}
+        />
+      )).find(CourseEnrollments);
+      expect(wrapper.dive().state('enrollments')).toEqual(null);
     });
 
     it('handles non-empty enrollments data', () => {
@@ -115,6 +115,23 @@ describe('<CourseEnrollments />', () => {
       expect(enrollmentsData[1]).toEqual(expectedData[1]);
     });
 
+    it('overrides state enrollments when props enrollments changes with new enrollments', () => {
+      const currentState = wrapper.dive().state();
+
+      expect(currentState.enrollments[0]).toEqual(expectedData[0]);
+      expect(currentState.enrollments[1]).toEqual(expectedData[1]);
+
+      wrapper.dive().setProps({
+        enrollments: {
+          count: 0,
+          results: [],
+        },
+      }, () => {
+        expect(wrapper.dive().state('enrollments')).toEqual(null);
+        expect(wrapper.dive().state('pageCount')).toEqual(null);
+      });
+    });
+
     it('does not override state enrollments when props enrollments changes with existing enrollments', () => {
       const currentEnrollments = wrapper.dive().state('enrollments');
       expect(currentEnrollments[0]).toEqual(expectedData[0]);
@@ -122,19 +139,50 @@ describe('<CourseEnrollments />', () => {
 
       wrapper.dive().setProps({
         enrollments: mockCourseEnrollments,
-      }, () => {
-        const updatedEnrollments = wrapper.dive().state('enrollments');
-        expect(updatedEnrollments[0]).toEqual(expectedData[0]);
-        expect(updatedEnrollments[1]).toEqual(expectedData[1]);
       });
+
+      const updatedEnrollments = wrapper.dive().state('enrollments');
+      expect(updatedEnrollments[0]).toEqual(expectedData[0]);
+      expect(updatedEnrollments[1]).toEqual(expectedData[1]);
     });
+  });
+
+  it('handles change in enterpriseId prop', () => {
+    const mockGetCourseEnrollments = jest.fn();
+    wrapper = mount((
+      <CourseEnrollmentsWrapper
+        getCourseEnrollments={mockGetCourseEnrollments}
+        enterpriseId="test-enterprise-id"
+      />
+    ));
+
+    wrapper.setProps({
+      enterpriseId: 'test-enterprise-id-2',
+    });
+
+    expect(wrapper.prop('enterpriseId')).toEqual('test-enterprise-id-2');
+    expect(mockGetCourseEnrollments).toBeCalled();
+  });
+
+  it('pageCount state should be null when enrollments prop is null', () => {
+    wrapper = mount((
+      <CourseEnrollments
+        getCourseEnrollments={() => {}}
+        enrollments={mockCourseEnrollments}
+      />
+    ));
+
+    wrapper.setProps({
+      enrollments: null,
+    });
+
+    expect(wrapper.state('pageCount')).toEqual(null);
   });
 
   it('handles pagination correctly', () => {
     const mockHistoryPush = jest.fn();
     wrapper = mount((
-      <CourseEnrollments
-        getCourseEnrollments={() => {}}
+      <CourseEnrollmentsWrapper
         enrollments={mockCourseEnrollments}
         history={{ push: mockHistoryPush }}
       />

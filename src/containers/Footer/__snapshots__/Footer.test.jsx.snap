@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer /> renders edX logo correctly 1`] = `
+<footer
+  className="container pb-4"
+>
+  <div
+    className="row justify-content-between align-items-center"
+  >
+    <div
+      className="col-xs-12 col-md-4 logo-links"
+    >
+      <a
+        className="logo"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          className=""
+          src="test-file-stub"
+        />
+      </a>
+    </div>
+    <div
+      className="col-xs-12 col-md footer-links"
+    >
+      <nav>
+        <ul
+          className="nav justify-content-end"
+        >
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="https://www.edx.org/edx-terms-service"
+            >
+              Terms of Service
+            </a>
+          </li>
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="https://www.edx.org/edx-privacy-policy"
+            >
+              Privacy Policy
+            </a>
+          </li>
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="/support"
+              onClick={[Function]}
+            >
+              Support
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+`;
+
+exports[`<Footer /> renders enterprise logo correctly 1`] = `
+<footer
+  className="container pb-4"
+>
+  <div
+    className="row justify-content-between align-items-center"
+  >
+    <div
+      className="col-xs-12 col-md-4 logo-links"
+    >
+      <a
+        className="logo"
+        href="https://www.edx.org"
+      >
+        <img
+          alt="edX logo"
+          className=""
+          src="test-file-stub"
+        />
+      </a>
+      <a
+        className="logo"
+        href="/test-enterprise/admin"
+        onClick={[Function]}
+      >
+        <img
+          alt=""
+          className=""
+          src="https://test.url/image/1.png"
+        />
+      </a>
+    </div>
+    <div
+      className="col-xs-12 col-md footer-links"
+    >
+      <nav>
+        <ul
+          className="nav justify-content-end"
+        >
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="https://www.edx.org/edx-terms-service"
+            >
+              Terms of Service
+            </a>
+          </li>
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="https://www.edx.org/edx-privacy-policy"
+            >
+              Privacy Policy
+            </a>
+          </li>
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link"
+              href="/test-enterprise/support"
+              onClick={[Function]}
+            >
+              Support
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+`;

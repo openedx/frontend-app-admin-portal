@@ -8,9 +8,9 @@ import {
 const initialState = {
   loading: false,
   error: null,
-  enrolled_learners: undefined,
-  active_learners: undefined,
-  course_completions: undefined,
+  enrolled_learners: null,
+  active_learners: null,
+  course_completions: null,
 };
 
 describe('courseEnrollments reducer', () => {

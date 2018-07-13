@@ -5,7 +5,7 @@ import {
 } from '../constants/courseEnrollments';
 
 const initialState = {
-  enrollments: {},
+  enrollments: null,
   loading: false,
   error: null,
 };
@@ -29,7 +29,7 @@ const courseEnrollments = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
-        enrollments: {},
+        enrollments: null,
       };
     default:
       return state;

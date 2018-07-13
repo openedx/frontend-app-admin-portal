@@ -1,126 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App renders correctly 1`] = `
+exports[`App renders not found page correctly 1`] = `
 <div>
-  <header>
-    <nav
-      className="navbar"
-    >
-      <div
-        className="container"
-      >
-        <div
-          className="navbar-header"
-        >
-          <a
-            className="navbar-brand"
-            href="/"
-            onClick={[Function]}
-          >
-            <img
-              alt="Enterprise logo"
-              className=""
-              src="test-file-stub"
-            />
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
   <div
     className="container"
   >
     <h1>
-      Rockin' the Home Page!
+      Page Not Found
     </h1>
     <p>
-      Blah blah blah blah
+      You're at the end of the line, pal.
     </p>
-    <a
-      href="/admin"
-      onClick={[Function]}
-    >
-      Admin Dashboard
-    </a>
   </div>
-  <footer
-    className="pb-4"
-  >
-    <div
-      className="container"
-    >
-      <div
-        className="row justify-content-between align-items-center"
-      >
-        <div
-          className="col-xs-12 col-md-4 logo-links"
-        >
-          <a
-            className="logo"
-            href="/"
-            onClick={[Function]}
-          >
-            <img
-              alt="edX logo"
-              className=""
-              src="test-file-stub"
-            />
-          </a>
-          <a
-            className="logo"
-            href="/"
-            onClick={[Function]}
-          >
-            <img
-              alt="Enterprise logo"
-              className=""
-              src="test-file-stub"
-            />
-          </a>
-        </div>
-        <div
-          className="col-xs-12 col-md footer-links"
-        >
-          <nav>
-            <ul
-              className="nav justify-content-end"
-            >
-              <li
-                className="nav-item"
-              >
-                <a
-                  className="nav-link"
-                  href="https://www.edx.org/edx-terms-service"
-                >
-                  Terms of Service
-                </a>
-              </li>
-              <li
-                className="nav-item"
-              >
-                <a
-                  className="nav-link"
-                  href="https://www.edx.org/edx-privacy-policy"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li
-                className="nav-item"
-              >
-                <a
-                  className="nav-link"
-                  href="/faq"
-                  onClick={[Function]}
-                >
-                  FAQ & Support
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </footer>
 </div>
 `;

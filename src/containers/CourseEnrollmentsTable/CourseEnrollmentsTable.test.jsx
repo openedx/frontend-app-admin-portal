@@ -14,6 +14,9 @@ describe('CourseEnrollmentsPage', () => {
 
   beforeEach(() => {
     const initialState = {
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise-id',
+      },
       courseEnrollments: {
         enrollments: {
           count: 0,
@@ -28,11 +31,8 @@ describe('CourseEnrollmentsPage', () => {
     };
     store = mockStore(initialState);
     dispatchSpy = jest.spyOn(store, 'dispatch');
-    const mockMatch = {
-      url: 'http://www.test.com',
-    };
     wrapper = shallow((
-      <CourseEnrollmentsPage store={store} match={mockMatch} />
+      <CourseEnrollmentsPage store={store} />
     ));
   });
 

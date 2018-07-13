@@ -5,7 +5,6 @@ import qs from 'query-string';
 import moment from 'moment';
 import { omitBy, isNaN } from 'lodash';
 import { Table, StatusAlert, Pagination } from '@edx/paragon';
-import 'font-awesome/css/font-awesome.css';
 
 import './CourseEnrollments.scss';
 
@@ -22,12 +21,8 @@ export class CourseEnrollments extends React.Component {
   constructor(props) {
     super(props);
 
-    const { enrollments, location } = props;
+    const { location, enrollments } = props;
     const queryParams = this.formatOptions(qs.parse(location.search));
-
-    // TODO: enterprise uuid will be retrieved from data we get back about user
-    // during authentication.
-    this.enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
 
     this.state = {
       columns: [
@@ -56,7 +51,8 @@ export class CourseEnrollments extends React.Component {
           key: 'last_activity_date',
         },
       ],
-      enrollments: this.formatEnrollmentData(enrollments.results),
+      enrollments: this.formatEnrollmentData(enrollments),
+      pageCount: enrollments ? enrollments.num_pages : null,
       currentPage: queryParams.page,
       pageSize: queryParams.page_size,
     };
@@ -66,21 +62,34 @@ export class CourseEnrollments extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: enterprise uuid will be retrieved from data we get back about user
-    // during authentication.
+    const { enterpriseId } = this.props;
+
+    if (enterpriseId) {
+      this.getCourseEnrollments(enterpriseId);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { enterpriseId, enrollments } = this.props;
+
+    if (enrollments !== prevProps.enrollments) {
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
+        enrollments: this.formatEnrollmentData(enrollments),
+        pageCount: enrollments ? enrollments.num_pages : null,
+      });
+    }
+
+    if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
+      this.getCourseEnrollments(enterpriseId);
+    }
+  }
+
+  getCourseEnrollments(enterpriseId) {
     const options = this.formatOptions({
       page: this.state.currentPage,
       page_size: this.state.pageSize,
     });
-    this.props.getCourseEnrollments(this.enterpriseId, options);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.enrollments !== this.props.enrollments) {
-      this.setState({
-        enrollments: this.formatEnrollmentData(nextProps.enrollments.results),
-      });
-    }
+    this.props.getCourseEnrollments(enterpriseId, options);
   }
 
   formatOptions(options) {
@@ -95,11 +104,11 @@ export class CourseEnrollments extends React.Component {
   }
 
   formatEnrollmentData(enrollments) {
-    if (!enrollments || !enrollments.length) {
-      return [];
+    if (!enrollments || !enrollments.results.length) {
+      return null;
     }
 
-    return enrollments.map(enrollment => ({
+    return enrollments.results.map(enrollment => ({
       ...enrollment,
       last_activity_date: this.formatTimestamp({ timestamp: enrollment.last_activity_date }),
       course_start: this.formatTimestamp({ timestamp: enrollment.course_start }),
@@ -121,7 +130,7 @@ export class CourseEnrollments extends React.Component {
       page_size: this.state.pageSize,
     });
 
-    this.props.getCourseEnrollments(this.enterpriseId, options);
+    this.props.getCourseEnrollments(this.props.enterpriseId, options);
     this.props.history.push(`?${qs.stringify(options)}`);
     this.setState({
       currentPage: page,
@@ -141,6 +150,7 @@ export class CourseEnrollments extends React.Component {
     const {
       columns,
       enrollments,
+      pageCount,
     } = this.state;
 
     return (
@@ -160,7 +170,7 @@ export class CourseEnrollments extends React.Component {
           <div className="col d-flex justify-content-center">
             <Pagination
               paginationLabel="Course Enrollments Pagination"
-              pageCount={this.props.enrollments.num_pages}
+              pageCount={pageCount}
               onPageSelect={this.handleTablePageSelect}
               currentPage={this.state.currentPage}
             />
@@ -184,25 +194,26 @@ export class CourseEnrollments extends React.Component {
     return (
       <div>
         {error && this.renderErrorMessage()}
-        {loading && !enrollments.length && this.renderLoadingMessage()}
-        {!loading && !error && !enrollments.length &&
+        {loading && !enrollments && this.renderLoadingMessage()}
+        {!loading && !error && enrollments && !enrollments.length &&
           this.renderEmptyCourseEnrollmentsMessage()
         }
-        {enrollments.length > 0 && this.renderTableContent()}
+        {enrollments && enrollments.length > 0 && this.renderTableContent()}
       </div>
     );
   }
 }
 
 CourseEnrollments.defaultProps = {
-  enrollments: {},
+  enrollments: null,
+  enterpriseId: null,
   error: null,
   loading: false,
   location: {
-    search: '',
+    search: null,
   },
   history: {},
-  className: undefined,
+  className: null,
 };
 
 CourseEnrollments.propTypes = {
@@ -217,6 +228,7 @@ CourseEnrollments.propTypes = {
     previous: PropTypes.string,
     start: PropTypes.number,
   }),
+  enterpriseId: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   location: PropTypes.shape({

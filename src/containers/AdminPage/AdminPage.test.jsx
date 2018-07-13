@@ -14,6 +14,9 @@ describe('<AdminPage />', () => {
 
   beforeEach(() => {
     const initialState = {
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise',
+      },
       dashboardAnalytics: {
         active_learners: {
           past_month: 1,
@@ -25,11 +28,8 @@ describe('<AdminPage />', () => {
     };
     store = mockStore(initialState);
     dispatchSpy = jest.spyOn(store, 'dispatch');
-    const mockMatch = {
-      url: 'http://www.test.com',
-    };
     wrapper = shallow((
-      <AdminPage store={store} match={mockMatch} />
+      <AdminPage store={store} />
     ));
   });
 

@@ -1,33 +1,63 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import CoursewarePage from '../CoursewarePage';
-import HomePage from '../HomePage';
 import FAQSupportPage from '../FAQSupportPage';
 import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+
+import fetchPortalConfiguration from '../../data/actions/portalConfiguration';
 
 import './App.scss';
 
-const App = () => (
-  <div>
-    <Helmet
-      titleTemplate="%s - edX Portal"
-      defaultTitle="edX Portal"
-    />
-    <Header />
-    <Switch>
-      <Route exact path="/" component={HomePage} />
-      <Route path="/courses/:courseId" component={CoursewarePage} />
-      <Route path="/faq" component={FAQSupportPage} />
-      <Route path="/admin" component={AdminPage} />
-      <Route path="" component={NotFoundPage} />
-    </Switch>
-    <Footer />
-  </div>
-);
+class App extends React.Component {
+  componentDidMount() {
+    const { enterpriseSlug } = this.props.match.params;
 
-export default App;
+    this.props.getPortalConfiguration(enterpriseSlug);
+  }
+
+  removeTrailingSlash(path) {
+    return path.replace(/\/$/, '');
+  }
+
+  render() {
+    const baseUrl = this.props.match.url;
+
+    return (
+      <div>
+        <Switch>
+          <Redirect
+            exact
+            from={baseUrl}
+            to={`${this.removeTrailingSlash(baseUrl)}/admin`}
+          />
+          <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
+          <Route exact path={`${baseUrl}/admin`} component={AdminPage} />
+          <Route exact path={`${baseUrl}/support`} component={FAQSupportPage} />
+          <Route path="" component={NotFoundPage} />
+        </Switch>
+      </div>
+    );
+  }
+}
+
+App.propTypes = {
+  getPortalConfiguration: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      enterpriseSlug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+const mapDispatchToProps = dispatch => ({
+  getPortalConfiguration: (enterpriseSlug) => {
+    dispatch(fetchPortalConfiguration(enterpriseSlug));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(App);

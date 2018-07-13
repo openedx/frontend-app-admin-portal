@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> renders edX logo correctly 1`] = `
+<header
+  className="container"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <a
+      className="navbar-brand"
+      href="/"
+      onClick={[Function]}
+    >
+      <img
+        alt=""
+        className=""
+        src="test-file-stub"
+      />
+    </a>
+    <div
+      className="dropdown"
+    >
+      <button
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="btn dropdown-toggle btn-light"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        edx@example.com
+      </button>
+      <div
+        aria-hidden={true}
+        aria-label="edx@example.com"
+        className="dropdown-menu"
+        role="menu"
+      >
+        <a
+          className="dropdown-item"
+          href="/"
+          onKeyDown={[Function]}
+          role="menuitem"
+        >
+          Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+`;
+
+exports[`<Header /> renders enterprise logo correctly 1`] = `
+<header
+  className="container"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <a
+      className="navbar-brand"
+      href="/test-enterprise/admin"
+      onClick={[Function]}
+    >
+      <img
+        alt=""
+        className=""
+        src="https://test.url/image/1.png"
+      />
+    </a>
+    <div
+      className="dropdown"
+    >
+      <button
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="btn dropdown-toggle btn-light"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        edx@example.com
+      </button>
+      <div
+        aria-hidden={true}
+        aria-label="edx@example.com"
+        className="dropdown-menu"
+        role="menu"
+      >
+        <a
+          className="dropdown-item"
+          href="/"
+          onKeyDown={[Function]}
+          role="menuitem"
+        >
+          Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+`;

@@ -1,15 +1,18 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { MailtoLink } from '@edx/paragon';
 
 import H1 from '../../components/H1';
 
 const FAQSupportPage = () => (
   <div className="container">
     <Helmet>
-      <title>FAQ &amp; Support</title>
+      <title>Support</title>
     </Helmet>
-    <H1>FAQ &amp; Support</H1>
-    <p>Blah blah blah blah blah blah</p>
+    <H1>Support</H1>
+    <p>
+      For assistance, please contact edX Enterprise Support at <MailtoLink to="enterprise@edx.org" content=" enterprise@edx.org" />.
+    </p>
   </div>
 );
 

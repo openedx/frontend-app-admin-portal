@@ -45,8 +45,8 @@ class NumberCard extends React.Component {
 }
 
 NumberCard.defaultProps = {
-  className: undefined,
-  iconClassName: undefined,
+  className: null,
+  iconClassName: null,
 };
 
 NumberCard.propTypes = {

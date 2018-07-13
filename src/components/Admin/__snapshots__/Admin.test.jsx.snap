@@ -35,19 +35,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
       <h2>
         Full Report
       </h2>
-      <div>
-        <div
-          className="alert fade alert-warning show"
-          hidden={false}
-          role="alert"
-        >
-          <div
-            className="alert-dialog"
-          >
-            There are no course enrollments.
-          </div>
-        </div>
-      </div>
+      <div />
     </div>
   </div>
   <div
@@ -243,19 +231,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
       <h2>
         Full Report
       </h2>
-      <div>
-        <div
-          className="alert fade alert-warning show"
-          hidden={false}
-          role="alert"
-        >
-          <div
-            className="alert-dialog"
-          >
-            There are no course enrollments.
-          </div>
-        </div>
-      </div>
+      <div />
     </div>
   </div>
   <div
@@ -326,19 +302,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <h2>
         Full Report
       </h2>
-      <div>
-        <div
-          className="alert fade alert-warning show"
-          hidden={false}
-          role="alert"
-        >
-          <div
-            className="alert-dialog"
-          >
-            There are no course enrollments.
-          </div>
-        </div>
-      </div>
+      <div />
     </div>
   </div>
   <div
@@ -405,19 +369,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <h2>
         Full Report
       </h2>
-      <div>
-        <div
-          className="alert fade alert-warning show"
-          hidden={false}
-          role="alert"
-        >
-          <div
-            className="alert-dialog"
-          >
-            There are no course enrollments.
-          </div>
-        </div>
-      </div>
+      <div />
     </div>
   </div>
   <div

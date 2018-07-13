@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 
 import fetchCourseEnrollments from '../../data/actions/courseEnrollments';
-import ConnectedCourseEnrollments from '../../components/CourseEnrollments';
+import WrappedCourseEnrollments from '../../components/CourseEnrollments';
 
 const mapStateToProps = state => ({
   enrollments: state.courseEnrollments.enrollments,
+  enterpriseId: state.portalConfiguration.enterpriseId,
   loading: state.courseEnrollments.loading,
   error: state.courseEnrollments.error,
 });
@@ -18,6 +19,6 @@ const mapDispatchToProps = dispatch => ({
 const CourseEnrollmentsTable = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ConnectedCourseEnrollments);
+)(WrappedCourseEnrollments);
 
 export default CourseEnrollmentsTable;

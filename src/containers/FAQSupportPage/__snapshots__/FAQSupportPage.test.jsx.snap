@@ -5,10 +5,18 @@ exports[`<FAQSupportPage /> renders correctly 1`] = `
   className="container"
 >
   <h1>
-    FAQ & Support
+    Support
   </h1>
   <p>
-    Blah blah blah blah blah blah
+    For assistance, please contact edX Enterprise Support at 
+    <a
+      href="mailto:enterprise@edx.org"
+      onClick={null}
+      target="_self"
+    >
+       enterprise@edx.org
+    </a>
+    .
   </p>
 </div>
 `;

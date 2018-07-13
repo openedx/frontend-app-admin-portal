@@ -21,10 +21,18 @@ const StatusMessage = props => (
 
 class Admin extends React.Component {
   componentDidMount() {
-    // TODO: enterprise uuid will be retrieved from data we get back about user
-    // during authentication.
-    const enterpriseId = 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c';
-    this.props.getDashboardAnalytics(enterpriseId);
+    const { enterpriseId } = this.props;
+
+    if (enterpriseId) {
+      this.props.getDashboardAnalytics(enterpriseId);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { enterpriseId } = this.props;
+    if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
+      this.props.getDashboardAnalytics(enterpriseId);
+    }
   }
 
   hasAnalyticsData() {
@@ -137,10 +145,12 @@ Admin.defaultProps = {
   courseCompletions: null,
   activeLearners: null,
   enrolledLearners: null,
+  enterpriseId: null,
 };
 
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
+  enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
     past_month: PropTypes.number,

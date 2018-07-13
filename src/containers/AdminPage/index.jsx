@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   activeLearners: state.dashboardAnalytics.active_learners,
   enrolledLearners: state.dashboardAnalytics.enrolled_learners,
   courseCompletions: state.dashboardAnalytics.course_completions,
+  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 const mapDispatchToProps = dispatch => ({

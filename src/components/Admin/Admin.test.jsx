@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -12,15 +13,15 @@ const mockStore = configureMockStore([thunk]);
 class ContextProvider extends React.Component {
   static childContextTypes = {
     store: PropTypes.object.isRequired,
-    courseEnrollments: PropTypes.shape({
-      enrollments: PropTypes.object,
-    }),
   }
 
   getChildContext = () => ({
     store: mockStore({
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise-id',
+      },
       courseEnrollments: {
-        enrollments: {},
+        enrollments: null,
       },
     }),
   })
@@ -51,9 +52,10 @@ describe('<Admin />', () => {
       const mockGetDashboardAnalytics = jest.fn();
       const tree = renderer
         .create((
-          AdminWrapper({
-            getDashboardAnalytics: mockGetDashboardAnalytics,
-          })
+          <AdminWrapper
+            getDashboardAnalytics={mockGetDashboardAnalytics}
+            enterpriseId="test-enterprise-id"
+          />
         ))
         .toJSON();
       expect(mockGetDashboardAnalytics).toHaveBeenCalled();
@@ -63,14 +65,14 @@ describe('<Admin />', () => {
     it('with dashboard analytics data', () => {
       const tree = renderer
         .create((
-          AdminWrapper({
-            activeLearners: {
+          <AdminWrapper
+            activeLearners={{
               past_week: 1,
               past_month: 1,
-            },
-            enrolledLearners: 1,
-            courseCompletions: 1,
-          })
+            }}
+            enrolledLearners={1}
+            courseCompletions={1}
+          />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -79,9 +81,7 @@ describe('<Admin />', () => {
     it('with error state', () => {
       const tree = renderer
         .create((
-          AdminWrapper({
-            error: Error('Network Error'),
-          })
+          <AdminWrapper error={Error('Network Error')} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -90,12 +90,46 @@ describe('<Admin />', () => {
     it('with loading state', () => {
       const tree = renderer
         .create((
-          AdminWrapper({
-            loading: true,
-          })
+          <AdminWrapper loading />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
+    });
+  });
+
+  describe('handle changes to enterpriseId prop', () => {
+    it('handles non-empty change in enterpriseId prop', () => {
+      const mockGetDashboardAnalytics = jest.fn();
+      const wrapper = mount((
+        <AdminWrapper
+          getDashboardAnalytics={mockGetDashboardAnalytics}
+          enterpriseId="test-enterprise-id"
+        />
+      ));
+
+      wrapper.setProps({
+        enterpriseId: 'test-enterprise-id-2',
+      });
+
+      expect(wrapper.prop('enterpriseId')).toEqual('test-enterprise-id-2');
+      expect(mockGetDashboardAnalytics).toBeCalled();
+    });
+
+    it('handles empty change in enterpriseId prop', () => {
+      const mockGetDashboardAnalytics = jest.fn();
+      const wrapper = mount((
+        <AdminWrapper
+          getDashboardAnalytics={mockGetDashboardAnalytics}
+          enterpriseId="test-enterprise-id"
+        />
+      ));
+
+      wrapper.setProps({
+        enterpriseId: null,
+      });
+
+      expect(wrapper.prop('enterpriseId')).toEqual(null);
+      expect(mockGetDashboardAnalytics).toBeCalled();
     });
   });
 });

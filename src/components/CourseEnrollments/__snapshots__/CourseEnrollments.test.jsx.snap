@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<CourseEnrollments /> renders correctly calls getCourseEnrollments prop 1`] = `<div />`;
+
 exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
 <div>
   <div
-    className={undefined}
+    className={null}
   >
     <div
       className="row"

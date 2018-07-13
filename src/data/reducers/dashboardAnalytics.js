@@ -7,9 +7,9 @@ import {
 const initialState = {
   loading: false,
   error: null,
-  enrolled_learners: undefined,
-  active_learners: undefined,
-  course_completions: undefined,
+  enrolled_learners: null,
+  active_learners: null,
+  course_completions: null,
 };
 
 const dashboardAnalytics = (state = initialState, action) => {
@@ -33,9 +33,9 @@ const dashboardAnalytics = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
-        enrolled_learners: undefined,
-        active_learners: undefined,
-        course_completions: undefined,
+        enrolled_learners: null,
+        active_learners: null,
+        course_completions: null,
       };
     default:
       return state;

@@ -6,7 +6,7 @@ import {
 } from '../constants/courseEnrollments';
 
 const initialState = {
-  enrollments: {},
+  enrollments: null,
   loading: false,
   error: null,
 };
