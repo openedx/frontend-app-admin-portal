@@ -64,7 +64,7 @@ module.exports = Merge.smart(commonConfig, {
         loader: 'file-loader',
       },
       {
-        test: /\.(jpe?g|png|gif)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(jpe?g|png|gif|ico)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           'file-loader',
           {
@@ -93,6 +93,7 @@ module.exports = Merge.smart(commonConfig, {
     new HtmlWebpackPlugin({
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
+      favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

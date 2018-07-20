@@ -28,9 +28,9 @@ describe('<NumberCard />', () => {
         description="This describes the data!"
       />
     ));
-    expect(wrapper.find('.card-title span.title').text()).toEqual('10%');
+    expect(wrapper.find('.card-title span').text()).toEqual('10%');
 
     wrapper.setProps({ title: 1234 });
-    expect(wrapper.find('.card-title span.title').text()).toEqual('1,234');
+    expect(wrapper.find('.card-title span').text()).toEqual('1,234');
   });
 });

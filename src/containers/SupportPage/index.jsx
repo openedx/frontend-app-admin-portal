@@ -4,8 +4,8 @@ import { MailtoLink } from '@edx/paragon';
 
 import H1 from '../../components/H1';
 
-const FAQSupportPage = () => (
-  <div className="container">
+const SupportPage = () => (
+  <div className="container mt-3">
     <Helmet>
       <title>Support</title>
     </Helmet>
@@ -16,4 +16,4 @@ const FAQSupportPage = () => (
   </div>
 );
 
-export default FAQSupportPage;
+export default SupportPage;

@@ -1,0 +1,12 @@
+.loading {
+    background: #f2f8fb;
+    font-size: 1.125rem;
+    
+    &.course-enrollments {
+        height: 360px;
+    }
+
+    &.overview {
+        height: 180px;
+    }
+}

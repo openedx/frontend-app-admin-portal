@@ -35,7 +35,7 @@ const Footer = (props) => {
         <div className="col-xs-12 col-md-4 logo-links">
           {renderEdxLogo()}
           {enterpriseLogo && enterpriseSlug &&
-            <Link className="logo" to={`/${enterpriseSlug}/admin`}>
+            <Link className="logo" to={`/${enterpriseSlug}`}>
               <Img src={enterpriseLogo} alt="" />
             </Link>
           }

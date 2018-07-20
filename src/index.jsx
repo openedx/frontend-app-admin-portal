@@ -9,11 +9,12 @@ import { Helmet } from 'react-helmet';
 
 import App from './containers/App';
 import NotFoundPage from './containers/NotFoundPage';
-import FAQSupportPage from './containers/FAQSupportPage';
+import SupportPage from './containers/SupportPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
 
 import store from './data/store';
+import './index.scss';
 
 const history = createHistory();
 
@@ -28,7 +29,7 @@ const AppWrapper = () => (
           />
           <Header />
           <Switch>
-            <Route exact path="/support" component={FAQSupportPage} />
+            <Route exact path="/support" component={SupportPage} />
             <Route path="/:enterpriseSlug" component={App} />
             <Route path="" component={NotFoundPage} />
           </Switch>

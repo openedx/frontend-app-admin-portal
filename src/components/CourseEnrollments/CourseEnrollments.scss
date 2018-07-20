@@ -1,10 +1,11 @@
-.table {
-    font-size: 14px;
-}
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
 
 // Pagination styles from Paragon.
 .page-link {
+    border-color: $pagination-border-color !important;
     border-radius: 0 !important;
+    
     div {
         display: inline-block;
     }

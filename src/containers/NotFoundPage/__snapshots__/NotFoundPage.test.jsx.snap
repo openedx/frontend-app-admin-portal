@@ -2,7 +2,7 @@
 
 exports[`<NotFoundPage /> renders correctly 1`] = `
 <div
-  className="container"
+  className="container mt-3"
 >
   <h1>
     Page Not Found

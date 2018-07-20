@@ -61,7 +61,7 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
   >
     <a
       className="navbar-brand"
-      href="/test-enterprise/admin"
+      href="/test-enterprise"
       onClick={[Function]}
     >
       <img
