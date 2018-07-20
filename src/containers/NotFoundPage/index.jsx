@@ -8,8 +8,11 @@ const NotFoundPage = () => (
     <Helmet>
       <title>Page Not Found</title>
     </Helmet>
-    <H1>Page Not Found</H1>
-    <p>You&apos;re at the end of the line, pal.</p>
+    <div className="text-center py-5">
+      <H1>404</H1>
+      <p className="lead">Oops, sorry we can&apos;t find that page!</p>
+      <p>Either something went wrong or the page doesn&apos;t exist anymore.</p>
+    </div>
   </div>
 );
 
