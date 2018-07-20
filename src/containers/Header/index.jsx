@@ -21,17 +21,12 @@ const Header = (props) => {
         >
           <Img src={enterpriseLogo || EdxLogo} alt="" />
         </Link>
-        {email &&
-          <Dropdown
-            title={email}
-            menuItems={[
-              {
-                label: 'Logout',
-                href: '/',
-              },
-            ]}
-          />
-        }
+        {email && <Dropdown
+          title={email}
+          menuItems={[
+            <Link to="/logout" />,
+          ]}
+        />}
       </nav>
     </header>
   );
