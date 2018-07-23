@@ -123,7 +123,7 @@ module.exports = Merge.smart(commonConfig, {
       favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
     }),
     new webpack.EnvironmentPlugin({
-      // default values of undefined to force definition in the envrionment at build time
+      // default values of undefined to force definition in the environment at build time
       NODE_ENV: 'production',
       LMS_BASE_URL: undefined,
       DATA_API_BASE_URL: undefined,
