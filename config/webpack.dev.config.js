@@ -2,6 +2,7 @@
 // time at the expense of creating larger, unoptimized bundles.
 const Merge = require('webpack-merge');
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const commonConfig = require('./webpack.common.config.js');
@@ -94,6 +95,11 @@ module.exports = Merge.smart(commonConfig, {
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
       favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
+    }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      LMS_BASE_URL: 'http://localhost:18000',
+      DATA_API_BASE_URL: 'http://localhost:8000',
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
