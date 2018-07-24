@@ -3,6 +3,7 @@
 const Merge = require('webpack-merge');
 const commonConfig = require('./webpack.common.config.js');
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -120,6 +121,12 @@ module.exports = Merge.smart(commonConfig, {
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
       favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
+    }),
+    new webpack.EnvironmentPlugin({
+      // default values of undefined to force definition in the environment at build time
+      NODE_ENV: 'production',
+      LMS_BASE_URL: undefined,
+      DATA_API_BASE_URL: undefined,
     }),
   ],
 });
