@@ -2,38 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import { StatusAlert } from '@edx/paragon';
 
+import StatusAlert from '../../components/StatusAlert';
 import H1 from '../../components/H1';
 
 const ErrorPage = (props) => {
-  const { location } = props;
-  if (location.state && location.state.error) {
-    const { error } = location.state;
+  const error = props.location && props.location.state && props.location.state.error;
+  const errorMessage = (error && error.message) || 'An unknown error has occured.';
 
-    return (
-      <div className="container">
-        {error.status === 404 ? (
-          <Redirect to="/404" />
-        ) : (
-          <div>
-            <Helmet>
-              <title>Error</title>
-            </Helmet>
-            <H1>Error</H1>
-            {/* TODO: Replace with custom StatusAlert wrapper */}
-            <StatusAlert
-              alertType="danger"
-              dismissible={false}
-              dialog={location.state.error.message}
-              open
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
-  return <Redirect to="/" />;
+  return (
+    <div className="container">
+      {error && error.status === 404 ? (
+        <Redirect to="/404" />
+      ) : (
+        <div>
+          <Helmet>
+            <title>Error</title>
+          </Helmet>
+          <H1>Error</H1>
+          <StatusAlert
+            alertType="danger"
+            message={errorMessage}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
 ErrorPage.propTypes = {

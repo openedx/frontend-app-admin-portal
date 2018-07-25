@@ -21,27 +21,33 @@ class App extends React.Component {
     return path.replace(/\/$/, '');
   }
 
+  renderErrorRedirect(error) {
+    return (
+      <Redirect
+        push
+        to={{
+          pathname: '/error',
+          state: {
+            error: {
+              status: error.response && error.response.status,
+              message: error.message,
+            },
+          },
+        }}
+      />);
+  }
+
   render() {
     const { error, enterpriseId, match } = this.props;
     const baseUrl = match.url;
 
+    if (error) {
+      return this.renderErrorRedirect(error);
+    }
+
     return (
       <div>
-        {error &&
-          <Redirect
-            push
-            to={{
-              pathname: '/error',
-              state: {
-                error: {
-                  status: error.response.status,
-                  message: error.message,
-                },
-              },
-            }}
-          />
-        }
-        {!error && enterpriseId &&
+        {enterpriseId &&
           <Switch>
             <Redirect
               exact

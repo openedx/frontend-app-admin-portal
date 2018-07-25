@@ -11,7 +11,9 @@ import App from './index';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   dashboardAnalytics: {},
-  portalConfiguration: {},
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
+  },
   courseEnrollments: {},
 });
 
@@ -34,7 +36,7 @@ const AppWrapper = props => (
     <Route
       path={props.path}
       component={() => (
-        <App match={props.match} />
+        <App {...props} />
       )}
     />
   </ContextProvider>
