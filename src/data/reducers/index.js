@@ -4,6 +4,7 @@ import courseOutline from './courseOutline';
 import courseEnrollments from './courseEnrollments';
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
+import login from './loginForm';
 
 const rootReducer = combineReducers({
   routerReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   courseEnrollments,
   dashboardAnalytics,
   portalConfiguration,
+  login,
 });
 
 export default rootReducer;

@@ -12,7 +12,8 @@ import NotFoundPage from './containers/NotFoundPage';
 import SupportPage from './containers/SupportPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
-
+import LoginPage from './containers/LoginPage';
+import PrivateRoute from './containers/PrivateRoute';
 import store from './data/store';
 import './index.scss';
 
@@ -30,7 +31,8 @@ const AppWrapper = () => (
           <Header />
           <Switch>
             <Route exact path="/support" component={SupportPage} />
-            <Route path="/:enterpriseSlug" component={App} />
+            <Route path="/login" component={LoginPage} />
+            <PrivateRoute path="/:enterpriseSlug" component={App} />
             <Route path="" component={NotFoundPage} />
           </Switch>
           <Footer />

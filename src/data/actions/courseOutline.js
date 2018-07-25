@@ -38,7 +38,6 @@ const createTreeNode = (node, blocks) => (
   }
 );
 
-
 const createUnitNodeList = (node, blocks) => {
   if (node.type === 'vertical') {
     return [transformNode(node, blocks)];

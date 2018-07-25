@@ -18,36 +18,6 @@ exports[`<Header /> renders edX logo correctly 1`] = `
         src="test-file-stub"
       />
     </a>
-    <div
-      className="dropdown"
-    >
-      <button
-        aria-expanded={false}
-        aria-haspopup="true"
-        className="btn dropdown-toggle btn-light"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        type="button"
-      >
-        edx@example.com
-      </button>
-      <div
-        aria-hidden={true}
-        aria-label="edx@example.com"
-        className="dropdown-menu"
-        role="menu"
-      >
-        <a
-          className="dropdown-item"
-          href="/"
-          onKeyDown={[Function]}
-          role="menuitem"
-        >
-          Logout
-        </a>
-      </div>
-    </div>
   </nav>
 </header>
 `;
@@ -82,11 +52,11 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
         onKeyDown={[Function]}
         type="button"
       >
-        edx@example.com
+        test@example.com
       </button>
       <div
         aria-hidden={true}
-        aria-label="edx@example.com"
+        aria-label="test@example.com"
         className="dropdown-menu"
         role="menu"
       >
