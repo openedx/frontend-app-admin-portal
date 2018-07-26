@@ -3,10 +3,11 @@ import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
-} from '../constants/loginForm';
+  LOGOUT,
+} from '../constants/authentication';
 
 const cookies = new Cookies();
-const loginForm = (state = {
+const authentication = (state = {
   isAuthenticated: !!cookies.get('access_token'),
   loading: false,
   error: null,
@@ -34,8 +35,16 @@ const loginForm = (state = {
         error: action.payload.error,
         email: null,
       };
+    case LOGOUT:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: false,
+        error: null,
+        email: null,
+      };
     default:
       return state;
   }
 };
-export default loginForm;
+export default authentication;

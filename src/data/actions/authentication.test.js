@@ -3,12 +3,13 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import login from './loginForm';
+import { login } from './authentication';
+
 import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
-} from '../constants/loginForm';
+} from '../constants/authentication';
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(axios);
@@ -57,5 +58,7 @@ describe('actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
+
+    // TODO: test logout action
   });
 });

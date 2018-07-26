@@ -1,11 +1,15 @@
 import Cookies from 'universal-cookie';
+
 import configuration from '../../config';
 import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
-} from '../constants/loginForm';
+  LOGOUT,
+} from '../constants/authentication';
 import LmsApiService from '../services/LmsApiService';
+
+const cookieName = 'access_token';
 
 const fetchLoginRequest = () => ({
   type: FETCH_LOGIN_REQUEST,
@@ -28,7 +32,7 @@ const login = (email, password) => (
       .then((response) => {
         const cookies = new Cookies();
         cookies.set(
-          'access_token',
+          cookieName,
           response.data.access_token,
           { secure: configuration.SECURE_COOKIES },
         );
@@ -39,4 +43,19 @@ const login = (email, password) => (
       });
   }
 );
-export default login;
+
+const logoutEvent = () => ({
+  type: LOGOUT,
+});
+
+const logout = () => (
+  (dispatch) => {
+    const cookies = new Cookies();
+    cookies.remove(cookieName);
+    dispatch(logoutEvent());
+  });
+
+export {
+  login,
+  logout,
+};

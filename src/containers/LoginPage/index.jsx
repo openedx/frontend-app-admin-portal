@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import LoginForm from '../../components/LoginForm';
-import login from '../../data/actions/loginForm';
+import { login } from '../../data/actions/authentication';
 
 const mapStateToProps = state => ({
-  loading: state.login.loading,
-  isAuthenticated: state.login.isAuthenticated,
-  error: state.login.error,
+  loading: state.authentication.loading,
+  isAuthenticated: state.authentication.isAuthenticated,
+  error: state.authentication.error,
 });
 
 const mapDispatchToProps = dispatch => ({
