@@ -115,7 +115,7 @@ exports[`<LoginForm /> renders correctly with error state 1`] = `
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
-                    type="button"
+                    type="submit"
                   >
                     Sign In
                   </button>
@@ -260,7 +260,7 @@ exports[`<LoginForm /> renders correctly with inital (non loading) state 1`] = `
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
-                    type="button"
+                    type="submit"
                   >
                     Sign In
                   </button>
@@ -396,7 +396,7 @@ exports[`<LoginForm /> renders correctly with loading state 1`] = `
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
-                    type="button"
+                    type="submit"
                   >
                     Sign In
                   </button>
