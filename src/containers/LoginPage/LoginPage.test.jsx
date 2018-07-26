@@ -14,7 +14,7 @@ describe('<LoginPage />', () => {
 
   beforeEach(() => {
     const initialState = {
-      login: {
+      authentication: {
         loading: false,
         isAuthenticated: true,
         error: null,

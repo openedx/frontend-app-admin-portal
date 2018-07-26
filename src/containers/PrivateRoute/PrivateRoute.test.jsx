@@ -51,7 +51,7 @@ describe('PrivateRoute', () => {
 
   it('renders component if authenticated', () => {
     store = mockStore({
-      login: {
+      authentication: {
         isAuthenticated: true,
       },
     });
@@ -71,7 +71,7 @@ describe('PrivateRoute', () => {
 
   it('renders login page if not authenticated', () => {
     store = mockStore({
-      login: {
+      authentication: {
         isAuthenticated: false,
       },
     });
