@@ -90,7 +90,7 @@ class LoginForm extends React.Component {
                 <div className="form-addons">
                   <div className="row">
                     <div className="col-3">
-                      <Button buttonType="primary" label="Sign In" onClick={this.handleSubmit} />
+                      <Button buttonType="primary" label="Sign In" type="submit" onClick={this.handleSubmit} />
                     </div>
                     <div className="ml-2">
                       <LoadingSpinner loading={loading} />
