@@ -8,7 +8,7 @@ import SupportPage from '../SupportPage';
 import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 
-import fetchPortalConfiguration from '../../data/actions/portalConfiguration';
+import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
 
 class App extends React.Component {

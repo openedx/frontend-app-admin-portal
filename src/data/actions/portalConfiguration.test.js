@@ -3,11 +3,12 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import fetchPortalConfiguration from './portalConfiguration';
+import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
+  CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const mockStore = configureMockStore([thunk]);
@@ -58,6 +59,14 @@ describe('actions', () => {
       return store.dispatch(fetchPortalConfiguration(enterpriseSlug)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+    });
+  });
+
+  describe('clearPortalConfiguration', () => {
+    it('dispatches clearPortalConfiguration action', () => {
+      const store = mockStore();
+      store.dispatch(clearPortalConfiguration());
+      expect(store.getActions()).toEqual([{ type: CLEAR_PORTAL_CONFIGURATION }]);
     });
   });
 });

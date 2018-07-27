@@ -100,7 +100,7 @@ module.exports = Merge.smart(commonConfig, {
       NODE_ENV: 'development',
       LMS_BASE_URL: 'http://localhost:18000',
       DATA_API_BASE_URL: 'http://localhost:8000',
-      LMS_CLIENT_ID: 'ETuCLUANkbbAXXxJTrVfFyGuIz2eVNZbT0hbMvYy',
+      LMS_CLIENT_ID: '6cb72dc5675a1e7efe81',
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

@@ -3,6 +3,7 @@ import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
+  CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const initialState = {
@@ -11,6 +12,12 @@ const initialState = {
   enterpriseId: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
+};
+
+const portalConfigurationData = {
+  enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
+  enterprise_slug: 'test-enterprise',
+  logo: 'https://test.com/media/enterprise/branding/1/1_logo.png',
 };
 
 describe('portalConfiguration reducer', () => {
@@ -29,11 +36,6 @@ describe('portalConfiguration reducer', () => {
   });
 
   it('updates fetch portalConfiguration success state', () => {
-    const portalConfigurationData = {
-      enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
-      enterprise_slug: 'test-enterprise',
-      logo: 'https://test.com/media/enterprise/branding/1/1_logo.png',
-    };
     const expected = {
       ...initialState,
       enterpriseId: portalConfigurationData.enterprise_customer,
@@ -56,5 +58,16 @@ describe('portalConfiguration reducer', () => {
       type: FETCH_PORTAL_CONFIGURATION_FAILURE,
       payload: { error },
     })).toEqual(expected);
+  });
+
+  it('updates clear portalConfiguration state', () => {
+    portalConfiguration(undefined, {
+      type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
+      payload: { data: portalConfigurationData },
+    });
+
+    expect(portalConfiguration(undefined, {
+      type: CLEAR_PORTAL_CONFIGURATION,
+    })).toEqual(initialState);
   });
 });
