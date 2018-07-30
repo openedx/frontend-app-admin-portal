@@ -21,22 +21,45 @@ class App extends React.Component {
     return path.replace(/\/$/, '');
   }
 
+  renderErrorRedirect(error) {
+    return (
+      <Redirect
+        push
+        to={{
+          pathname: '/error',
+          state: {
+            error: {
+              status: error.response && error.response.status,
+              message: error.message,
+            },
+          },
+        }}
+      />);
+  }
+
   render() {
-    const baseUrl = this.props.match.url;
+    const { error, enterpriseId, match } = this.props;
+    const baseUrl = match.url;
+
+    if (error) {
+      return this.renderErrorRedirect(error);
+    }
 
     return (
       <div>
-        <Switch>
-          <Redirect
-            exact
-            from={baseUrl}
-            to={`${this.removeTrailingSlash(baseUrl)}/admin`}
-          />
-          <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
-          <Route exact path={`${baseUrl}/admin`} component={AdminPage} />
-          <Route exact path={`${baseUrl}/support`} component={SupportPage} />
-          <Route path="" component={NotFoundPage} />
-        </Switch>
+        {enterpriseId &&
+          <Switch>
+            <Redirect
+              exact
+              from={baseUrl}
+              to={`${this.removeTrailingSlash(baseUrl)}/admin`}
+            />
+            <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
+            <Route exact path={`${baseUrl}/admin`} component={AdminPage} />
+            <Route exact path={`${baseUrl}/support`} component={SupportPage} />
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+        }
       </div>
     );
   }
@@ -50,7 +73,19 @@ App.propTypes = {
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  error: PropTypes.instanceOf(Error),
+  enterpriseId: PropTypes.string,
 };
+
+App.defaultProps = {
+  error: null,
+  enterpriseId: null,
+};
+
+const mapStateToProps = state => ({
+  error: state.portalConfiguration.error,
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
 
 const mapDispatchToProps = dispatch => ({
   getPortalConfiguration: (enterpriseSlug) => {
@@ -58,4 +93,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

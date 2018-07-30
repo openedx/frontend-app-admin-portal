@@ -5,12 +5,21 @@ exports[`App renders not found page correctly 1`] = `
   <div
     className="container mt-3"
   >
-    <h1>
-      Page Not Found
-    </h1>
-    <p>
-      You're at the end of the line, pal.
-    </p>
+    <div
+      className="text-center py-5"
+    >
+      <h1>
+        404
+      </h1>
+      <p
+        className="lead"
+      >
+        Oops, sorry we can't find that page!
+      </p>
+      <p>
+        Either something went wrong or the page doesn't exist anymore.
+      </p>
+    </div>
   </div>
 </div>
 `;
