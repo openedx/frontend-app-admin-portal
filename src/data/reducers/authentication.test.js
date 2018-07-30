@@ -1,9 +1,9 @@
-import loginForm from './loginForm';
+import login from './authentication';
 import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
-} from '../constants/loginForm';
+} from '../constants/authentication';
 
 const initialState = {
   isAuthenticated: false,
@@ -12,45 +12,47 @@ const initialState = {
   email: null,
 };
 
-describe('loginForm reducer', () => {
+describe('authentication reducer', () => {
   it('has initial state', () => {
-    expect(loginForm(undefined, {})).toEqual(initialState);
+    expect(login(undefined, {})).toEqual(initialState);
   });
 
-  it('updates fetch loginForm request state', () => {
+  it('updates fetch login request state', () => {
     const expected = {
       ...initialState,
       loading: true,
     };
-    expect(loginForm(undefined, {
+    expect(login(undefined, {
       type: FETCH_LOGIN_REQUEST,
     })).toEqual(expected);
   });
 
-  it('updates fetch loginForm success state', () => {
-    const loginFormData = {
+  it('updates fetch login success state', () => {
+    const authenticationData = {
       email: 'test@example.com',
     };
     const expected = {
       ...initialState,
       isAuthenticated: true,
-      email: loginFormData.email,
+      email: authenticationData.email,
     };
-    expect(loginForm(undefined, {
+    expect(login(undefined, {
       type: FETCH_LOGIN_SUCCESS,
-      payload: loginFormData,
+      payload: authenticationData,
     })).toEqual(expected);
   });
 
-  it('updates fetch loginForm failure state', () => {
+  it('updates fetch login failure state', () => {
     const error = Error('Network Request');
     const expected = {
       ...initialState,
       error,
     };
-    expect(loginForm(undefined, {
+    expect(login(undefined, {
       type: FETCH_LOGIN_FAILURE,
       payload: { error },
     })).toEqual(expected);
   });
+
+  // TODO: logout reducer test
 });

@@ -62,9 +62,9 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
       >
         <a
           className="dropdown-item"
-          href="/"
+          href="/logout"
+          onClick={[Function]}
           onKeyDown={[Function]}
-          role="menuitem"
         >
           Logout
         </a>
