@@ -14,6 +14,7 @@ import Header from './containers/Header';
 import Footer from './containers/Footer';
 import LoginPage from './containers/LoginPage';
 import PrivateRoute from './containers/PrivateRoute';
+import LogoutHandler from './containers/LogoutHandler';
 import store from './data/store';
 import './index.scss';
 
@@ -32,6 +33,7 @@ const AppWrapper = () => (
           <Switch>
             <Route exact path="/support" component={SupportPage} />
             <Route path="/login" component={LoginPage} />
+            <Route exact path="/logout" component={LogoutHandler} />
             <PrivateRoute path="/:enterpriseSlug" component={App} />
             <Route path="" component={NotFoundPage} />
           </Switch>

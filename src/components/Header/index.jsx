@@ -12,7 +12,6 @@ const Header = (props) => {
     enterpriseLogo,
     enterpriseSlug,
     email,
-    logout,
   } = props;
 
   return (
@@ -27,7 +26,7 @@ const Header = (props) => {
         {email && <Dropdown
           title={email}
           menuItems={[
-            <Link to="/login" onClick={logout}>Logout</Link>,
+            <Link to="/logout">Logout</Link>,
           ]}
         />}
       </nav>
@@ -39,7 +38,6 @@ Header.propTypes = {
   enterpriseSlug: PropTypes.string,
   enterpriseLogo: PropTypes.string,
   email: PropTypes.string,
-  logout: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
