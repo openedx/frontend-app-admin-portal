@@ -52,7 +52,7 @@ class LoginForm extends React.Component {
   }
 
   redirectToReferrer() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { from } = this.props.location.state || { from: { pathname: '/enterprises' } };
     this.props.history.push(from.pathname);
   }
 

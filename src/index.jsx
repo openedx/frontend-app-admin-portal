@@ -19,6 +19,7 @@ import ErrorPage from './containers/ErrorPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
 import LoginPage from './containers/LoginPage';
+import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import PrivateRoute from './containers/PrivateRoute';
 import LogoutHandler from './containers/LogoutHandler';
 import store from './data/store';
@@ -42,6 +43,7 @@ const AppWrapper = () => (
             <Route exact path="/support" component={SupportPage} />
             <Route exact path="/404" component={NotFoundPage} />
             <Route exact path="/error" component={ErrorPage} />
+            <PrivateRoute path="/enterprises" component={EnterpriseIndexPage} />
             <PrivateRoute path="/:enterpriseSlug" component={App} />
             <Redirect from="" to="/404" />
           </Switch>

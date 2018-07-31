@@ -4,6 +4,7 @@ import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
+  CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const fetchPortalConfigurationRequest = () => ({ type: FETCH_PORTAL_CONFIGURATION_REQUEST });
@@ -15,6 +16,7 @@ const fetchPortalConfigurationFailure = error => ({
   type: FETCH_PORTAL_CONFIGURATION_FAILURE,
   payload: { error },
 });
+const clearPortalConfigurationEvent = () => ({ type: CLEAR_PORTAL_CONFIGURATION });
 
 const fetchPortalConfiguration = enterpriseSlug => (
   (dispatch) => {
@@ -30,4 +32,13 @@ const fetchPortalConfiguration = enterpriseSlug => (
   }
 );
 
-export default fetchPortalConfiguration;
+const clearPortalConfiguration = () => (
+  (dispatch) => {
+    dispatch(clearPortalConfigurationEvent());
+  }
+);
+
+export {
+  fetchPortalConfiguration,
+  clearPortalConfiguration,
+};

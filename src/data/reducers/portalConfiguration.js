@@ -2,6 +2,7 @@ import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
+  CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const initialState = {
@@ -33,6 +34,15 @@ const portalConfiguration = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+        enterpriseId: null,
+        enterpriseSlug: null,
+        enterpriseLogo: null,
+      };
+    case CLEAR_PORTAL_CONFIGURATION:
+      return {
+        ...state,
+        loading: false,
+        error: null,
         enterpriseId: null,
         enterpriseSlug: null,
         enterpriseLogo: null,

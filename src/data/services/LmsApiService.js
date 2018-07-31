@@ -39,6 +39,24 @@ class LmsApiService {
     });
   }
 
+  static fetchEnterpriseList(options) {
+    const queryParams = {
+      permissions: 'enterprise_data_api_access',
+      page: 1,
+      page_size: 50,
+      ...options,
+    };
+    const enterpriseListUrl = `${this.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
+    const jwtToken = getAccessToken();
+
+    return axios.get(enterpriseListUrl, {
+      withCredentials: true,
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
   static authenticate(email, password) {
     const loginData = {
       grant_type: 'password',
