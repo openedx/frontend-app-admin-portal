@@ -11,7 +11,7 @@ module.exports = Merge.smart(commonConfig, {
   mode: 'production',
   devtool: 'source-map',
   output: {
-    filename: '[name].min.js',
+    filename: '[name].[chunkhash].js',
   },
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
@@ -114,7 +114,7 @@ module.exports = Merge.smart(commonConfig, {
   plugins: [
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
-      filename: '[name].min.css',
+      filename: '[name].[chunkhash].css',
     }),
     // Generates an HTML file in the output directory.
     new HtmlWebpackPlugin({
