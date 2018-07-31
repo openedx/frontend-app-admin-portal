@@ -4,6 +4,7 @@ import {
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
   LOGOUT,
+  LOCAL_USER_LOADED,
 } from '../constants/authentication';
 
 const cookies = new Cookies();
@@ -42,6 +43,12 @@ const authentication = (state = {
         isAuthenticated: false,
         error: null,
         email: null,
+      };
+    case LOCAL_USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        email: action.payload.email,
       };
     default:
       return state;

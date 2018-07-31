@@ -9,12 +9,14 @@ import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 
 import fetchPortalConfiguration from '../../data/actions/portalConfiguration';
+import { getLocalUser } from '../../data/actions/authentication';
 
 class App extends React.Component {
   componentDidMount() {
     const { enterpriseSlug } = this.props.match.params;
 
     this.props.getPortalConfiguration(enterpriseSlug);
+    this.props.getLocalUser();
   }
 
   removeTrailingSlash(path) {
@@ -67,6 +69,7 @@ class App extends React.Component {
 
 App.propTypes = {
   getPortalConfiguration: PropTypes.func.isRequired,
+  getLocalUser: PropTypes.func.isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
@@ -90,6 +93,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getPortalConfiguration: (enterpriseSlug) => {
     dispatch(fetchPortalConfiguration(enterpriseSlug));
+  },
+  getLocalUser: () => {
+    dispatch(getLocalUser());
   },
 });
 
