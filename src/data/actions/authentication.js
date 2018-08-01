@@ -37,7 +37,10 @@ const login = (email, password) => (
         cookies.set(
           cookieName,
           response.data.access_token,
-          { secure: configuration.SECURE_COOKIES },
+          {
+            secure: configuration.SECURE_COOKIES,
+            path: '/',
+          },
         );
         dispatch(fetchLoginSuccess(email));
       })
