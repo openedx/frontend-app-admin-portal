@@ -157,7 +157,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                   className="card-title d-flex align-items-center justify-content-between"
                 >
                   <span>
-                    X
+                    3
                   </span>
                   <div>
                     <span

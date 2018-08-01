@@ -33,12 +33,13 @@ class Admin extends React.Component {
   hasAnalyticsData() {
     const {
       activeLearners,
+      numberOfUsers,
       courseCompletions,
       enrolledLearners,
     } = this.props;
     let hasAnalyticsData = false;
 
-    [activeLearners, courseCompletions, enrolledLearners].forEach((item) => {
+    [activeLearners, courseCompletions, enrolledLearners, numberOfUsers].forEach((item) => {
       hasAnalyticsData = item !== null || hasAnalyticsData;
     });
 
@@ -64,6 +65,7 @@ class Admin extends React.Component {
   render() {
     const {
       activeLearners,
+      numberOfUsers,
       courseCompletions,
       enrolledLearners,
       error,
@@ -89,7 +91,7 @@ class Admin extends React.Component {
                 <div className="row mt-3 equal-col-height">
                   <div className="col-xs-12 col-md-6 col-xl-3 mb-3">
                     <NumberCard
-                      title="X"
+                      title={numberOfUsers}
                       description="total number of learners registered"
                       iconClassName="fa fa-users"
                     />
@@ -163,6 +165,7 @@ Admin.defaultProps = {
   loading: false,
   courseCompletions: null,
   activeLearners: null,
+  numberOfUsers: null,
   enrolledLearners: null,
   enterpriseId: null,
   lastUpdatedDate: null,
@@ -177,6 +180,7 @@ Admin.propTypes = {
     past_month: PropTypes.number,
   }),
   enrolledLearners: PropTypes.number,
+  numberOfUsers: PropTypes.number,
   courseCompletions: PropTypes.number,
   lastUpdatedDate: PropTypes.string,
   loading: PropTypes.bool,

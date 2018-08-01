@@ -74,6 +74,7 @@ describe('<Admin />', () => {
             enrolledLearners={1}
             courseCompletions={1}
             lastUpdatedDate="2018-07-31T23:14:35Z"
+            numberOfUsers={3}
           />
         ))
         .toJSON();

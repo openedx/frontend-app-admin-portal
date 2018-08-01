@@ -10,6 +10,7 @@ const initialState = {
   error: null,
   enrolled_learners: null,
   active_learners: null,
+  number_of_users: null,
   course_completions: null,
   last_updated_date: null,
 };
@@ -36,12 +37,14 @@ describe('courseEnrollments reducer', () => {
         past_week: 1,
       },
       enrolled_learners: 1,
+      number_of_users: 3,
       course_completions: 1,
       last_updated_date: '2018-07-31T23:14:35Z',
     };
     const expected = {
       ...initialState,
       enrolled_learners: dashboardAnalyticsData.enrolled_learners,
+      number_of_users: dashboardAnalyticsData.number_of_users,
       active_learners: dashboardAnalyticsData.active_learners,
       course_completions: dashboardAnalyticsData.course_completions,
       last_updated_date: dashboardAnalyticsData.last_updated_date,
