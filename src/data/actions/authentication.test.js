@@ -70,7 +70,10 @@ describe('actions', () => {
         expect(mockCookies.set).toHaveBeenCalledWith(
           'access_token',
           responseData.access_token,
-          { secure: true },
+          {
+            secure: true,
+            path: '/',
+          },
         );
       });
     });
