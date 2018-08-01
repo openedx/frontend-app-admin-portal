@@ -10,6 +10,7 @@ const initialState = {
   enrolled_learners: null,
   active_learners: null,
   course_completions: null,
+  last_updated_date: null,
 };
 
 const dashboardAnalytics = (state = initialState, action) => {
@@ -27,6 +28,7 @@ const dashboardAnalytics = (state = initialState, action) => {
         enrolled_learners: action.payload.data.enrolled_learners,
         active_learners: action.payload.data.active_learners,
         course_completions: action.payload.data.course_completions,
+        last_updated_date: action.payload.data.last_updated_date,
       };
     case FETCH_DASHBOARD_ANALYTICS_FAILURE:
       return {
@@ -36,6 +38,7 @@ const dashboardAnalytics = (state = initialState, action) => {
         enrolled_learners: null,
         active_learners: null,
         course_completions: null,
+        last_updated_date: null,
       };
     default:
       return state;

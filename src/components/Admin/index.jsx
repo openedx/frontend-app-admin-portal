@@ -10,6 +10,8 @@ import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
 import CourseEnrollmentsTable from '../../containers/CourseEnrollmentsTable';
 
+import { formatTimestamp } from '../../utils';
+
 import './Admin.scss';
 
 class Admin extends React.Component {
@@ -68,6 +70,7 @@ class Admin extends React.Component {
       loading,
       downloadCsv,
       enterpriseId,
+      lastUpdatedDate,
     } = this.props;
 
     return (
@@ -119,20 +122,26 @@ class Admin extends React.Component {
           <div className="row mt-4">
             <div className="col">
               <H2>Full Report</H2>
-              <div className="row">
-                <div className="col-12 col-md-6 py-3 invisible">Showing data as of Month DD, YYYY</div>
-                <div className="col-12 col-md-6 text-md-right">
-                  <Button
-                    label={
-                      <span>
-                        <span className="fa fa-download" /> Download full report (CSV)
-                      </span>
-                    }
-                    onClick={() => downloadCsv(enterpriseId)}
-                    className={['btn-outline-primary']}
-                  />
+              {!error && !loading &&
+                <div className="row">
+                  {lastUpdatedDate &&
+                    <div className="col-12 col-md-6 py-3">
+                      Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                    </div>
+                  }
+                  <div className="col-12 col-md-6 text-md-right">
+                    <Button
+                      label={
+                        <span>
+                          <span className="fa fa-download" /> Download full report (CSV)
+                        </span>
+                      }
+                      onClick={() => downloadCsv(enterpriseId)}
+                      className={['btn-outline-primary']}
+                    />
+                  </div>
                 </div>
-              </div>
+              }
               <CourseEnrollmentsTable />
             </div>
           </div>
@@ -156,6 +165,7 @@ Admin.defaultProps = {
   activeLearners: null,
   enrolledLearners: null,
   enterpriseId: null,
+  lastUpdatedDate: null,
 };
 
 Admin.propTypes = {
@@ -168,6 +178,7 @@ Admin.propTypes = {
   }),
   enrolledLearners: PropTypes.number,
   courseCompletions: PropTypes.number,
+  lastUpdatedDate: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };

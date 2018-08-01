@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   activeLearners: state.dashboardAnalytics.active_learners,
   enrolledLearners: state.dashboardAnalytics.enrolled_learners,
   courseCompletions: state.dashboardAnalytics.course_completions,
+  lastUpdatedDate: state.dashboardAnalytics.last_updated_date,
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
