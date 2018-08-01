@@ -3,6 +3,9 @@ import {
   FETCH_COURSE_ENROLLMENTS_REQUEST,
   FETCH_COURSE_ENROLLMENTS_SUCCESS,
   FETCH_COURSE_ENROLLMENTS_FAILURE,
+  FETCH_CSV_REQUEST,
+  FETCH_CSV_SUCCESS,
+  FETCH_CSV_FAILURE,
 } from '../constants/courseEnrollments';
 
 const initialState = {
@@ -16,7 +19,7 @@ describe('courseEnrollments reducer', () => {
     expect(courseEnrollments(undefined, {})).toEqual(initialState);
   });
 
-  it('updates fetch enrollments request state', () => {
+  it('updates state when requesting course enrollments', () => {
     const expected = {
       ...initialState,
       loading: true,
@@ -26,7 +29,7 @@ describe('courseEnrollments reducer', () => {
     })).toEqual(expected);
   });
 
-  it('updates fetch enrollments success state', () => {
+  it('updates state when successfully fetched enrollments', () => {
     const enrollmentsData = {
       count: 3,
       num_pages: 1,
@@ -54,7 +57,7 @@ describe('courseEnrollments reducer', () => {
     })).toEqual(expected);
   });
 
-  it('updates fetch enrollments failure state', () => {
+  it('updates state when failing to fetch enrollments', () => {
     const error = Error('Network Request');
     const expected = {
       ...initialState,
@@ -63,6 +66,38 @@ describe('courseEnrollments reducer', () => {
     expect(courseEnrollments(undefined, {
       type: FETCH_COURSE_ENROLLMENTS_FAILURE,
       payload: { error },
+    })).toEqual(expected);
+  });
+
+  it('sets loading state when fetching enrollment csv', () => {
+    const expected = {
+      ...initialState,
+      loading: true,
+    };
+    expect(courseEnrollments(undefined, {
+      type: FETCH_CSV_REQUEST,
+    })).toEqual(expected);
+  });
+
+  it('removes loading state when successfully fetching enrollment csv', () => {
+    const expected = {
+      ...initialState,
+      loading: false,
+    };
+    expect(courseEnrollments(undefined, {
+      type: FETCH_CSV_SUCCESS,
+    })).toEqual(expected);
+  });
+
+  it('updates state when error fetching enrollment csv', () => {
+    const expected = {
+      ...initialState,
+      loading: false,
+      error: 'test error',
+    };
+    expect(courseEnrollments(undefined, {
+      type: FETCH_CSV_FAILURE,
+      payload: { error: 'test error' },
     })).toEqual(expected);
   });
 });

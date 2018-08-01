@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { MailtoLink } from '@edx/paragon';
+import { MailtoLink, Button } from '@edx/paragon';
 
 import H2 from '../../components/H2';
 import Hero from '../../components/Hero';
@@ -66,6 +66,8 @@ class Admin extends React.Component {
       enrolledLearners,
       error,
       loading,
+      downloadCsv,
+      enterpriseId,
     } = this.props;
 
     return (
@@ -117,10 +119,24 @@ class Admin extends React.Component {
           <div className="row mt-4">
             <div className="col">
               <H2>Full Report</H2>
-              <CourseEnrollmentsTable className="mt-3" />
+              <div className="row">
+                <div className="col-12 col-md-6 py-3 invisible">Showing data as of Month DD, YYYY</div>
+                <div className="col-12 col-md-6 text-md-right">
+                  <Button
+                    label={
+                      <span>
+                        <span className="fa fa-download" /> Download full report (CSV)
+                      </span>
+                    }
+                    onClick={() => downloadCsv(enterpriseId)}
+                    className={['btn-outline-primary']}
+                  />
+                </div>
+              </div>
+              <CourseEnrollmentsTable />
             </div>
           </div>
-          <div className="row mt-3">
+          <div className="row">
             <div className="col">
               <p>
                 For more information, contact edX Enterprise Support at <MailtoLink to="enterprise@edx.org" content=" enterprise@edx.org" />.
@@ -144,6 +160,7 @@ Admin.defaultProps = {
 
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
+  downloadCsv: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,

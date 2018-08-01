@@ -4,12 +4,13 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
-import fetchCourseEnrollments from './courseEnrollments';
+import { fetchCourseEnrollments } from './courseEnrollments';
 import {
   FETCH_COURSE_ENROLLMENTS_REQUEST,
   FETCH_COURSE_ENROLLMENTS_SUCCESS,
   FETCH_COURSE_ENROLLMENTS_FAILURE,
 } from '../constants/courseEnrollments';
+
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(axios);
@@ -45,11 +46,15 @@ describe('actions', () => {
         { type: FETCH_COURSE_ENROLLMENTS_SUCCESS, payload: { enrollments: responseData } },
       ];
       const store = mockStore();
+      const options = {
+        page: 1,
+        page_size: 10,
+      };
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments?${qs.stringify(options)}`)
         .replyOnce(200, JSON.stringify(responseData));
 
-      return store.dispatch(fetchCourseEnrollments(enterpriseId)).then(() => {
+      return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -65,7 +70,7 @@ describe('actions', () => {
         page_size: 10,
       };
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments?${qs.stringify(options)}`)
         .networkError();
 
       return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {

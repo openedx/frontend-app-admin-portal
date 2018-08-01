@@ -53,12 +53,37 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
           Full Report
         </h2>
         <div
-          className="mt-3"
-        />
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 py-3 invisible"
+          >
+            Showing data as of Month DD, YYYY
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span
+                  className="fa fa-download"
+                />
+                 Download full report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div />
       </div>
     </div>
     <div
-      className="row mt-3"
+      className="row"
     >
       <div
         className="col"
@@ -261,12 +286,37 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
           Full Report
         </h2>
         <div
-          className="mt-3"
-        />
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 py-3 invisible"
+          >
+            Showing data as of Month DD, YYYY
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span
+                  className="fa fa-download"
+                />
+                 Download full report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div />
       </div>
     </div>
     <div
-      className="row mt-3"
+      className="row"
     >
       <div
         className="col"
@@ -378,12 +428,37 @@ exports[`<Admin /> renders correctly with error state 1`] = `
           Full Report
         </h2>
         <div
-          className="mt-3"
-        />
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 py-3 invisible"
+          >
+            Showing data as of Month DD, YYYY
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span
+                  className="fa fa-download"
+                />
+                 Download full report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div />
       </div>
     </div>
     <div
-      className="row mt-3"
+      className="row"
     >
       <div
         className="col"
@@ -465,12 +540,37 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           Full Report
         </h2>
         <div
-          className="mt-3"
-        />
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 py-3 invisible"
+          >
+            Showing data as of Month DD, YYYY
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span
+                  className="fa fa-download"
+                />
+                 Download full report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div />
       </div>
     </div>
     <div
-      className="row mt-3"
+      className="row"
     >
       <div
         className="col"

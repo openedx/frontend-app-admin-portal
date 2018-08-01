@@ -40,6 +40,7 @@ const AdminWrapper = props => (
     <ContextProvider>
       <Admin
         getDashboardAnalytics={() => {}}
+        downloadCsv={() => {}}
         {...props}
       />
     </ContextProvider>

@@ -20,7 +20,6 @@ class LmsApiService {
     const jwtToken = getAccessToken();
 
     return axios.get(outlineUrl, {
-      withCredentials: true,
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -32,7 +31,6 @@ class LmsApiService {
     const jwtToken = getAccessToken();
 
     return axios.get(portalConfigurationUrl, {
-      withCredentials: true,
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
