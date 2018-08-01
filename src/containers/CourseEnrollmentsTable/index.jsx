@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import fetchCourseEnrollments from '../../data/actions/courseEnrollments';
+import { fetchCourseEnrollments } from '../../data/actions/courseEnrollments';
 import WrappedCourseEnrollments from '../../components/CourseEnrollments';
 
 const mapStateToProps = state => ({

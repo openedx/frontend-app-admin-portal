@@ -5,7 +5,7 @@ import { getAccessToken } from '../../utils';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
-  static enterpiseBaseUrl = `${config.DATA_API_BASE_URL}/enterprise/api/v0/enterprise/`;
+  static enterpriseBaseUrl = `${config.DATA_API_BASE_URL}/enterprise/api/v0/enterprise/`;
 
   static fetchCourseEnrollments(enterpriseId, options) {
     const queryParams = {
@@ -13,15 +13,20 @@ class EnterpriseDataApiService {
       page_size: 50,
       ...options,
     };
-    let enrollmentsUrl = `${this.enterpiseBaseUrl}${enterpriseId}/enrollments/`;
+    const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
-    if (options && typeof options === 'object') {
-      enrollmentsUrl += `?${qs.stringify(queryParams)}`;
-    }
-
     return axios.get(enrollmentsUrl, {
-      withCredentials: true,
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  static fetchCourseEnrollmentsCsv(enterpriseId) {
+    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv?no_page=true`;
+    const jwtToken = getAccessToken();
+    return axios.get(csvUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -29,11 +34,10 @@ class EnterpriseDataApiService {
   }
 
   static fetchDashboardAnalytics(enterpriseId) {
-    const analyticsUrl = `${this.enterpiseBaseUrl}${enterpriseId}/enrollments/overview/`;
+    const analyticsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
     const jwtToken = getAccessToken();
 
     return axios.get(analyticsUrl, {
-      withCredentials: true,
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },

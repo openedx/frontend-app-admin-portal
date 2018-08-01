@@ -172,11 +172,11 @@ export class CourseEnrollments extends React.Component {
   }
 
   render() {
-    const { className, loading, error } = this.props;
+    const { loading, error } = this.props;
     const { enrollments } = this.state;
 
     return (
-      <div className={className}>
+      <div>
         {error && this.renderErrorMessage()}
         {loading && !enrollments && this.renderLoadingMessage()}
         {!loading && !error && enrollments && enrollments.length === 0 &&
@@ -196,12 +196,10 @@ CourseEnrollments.defaultProps = {
   location: {
     search: null,
   },
-  className: null,
 };
 
 CourseEnrollments.propTypes = {
   getCourseEnrollments: PropTypes.func.isRequired,
-  className: PropTypes.string,
   enrollments: PropTypes.shape({
     count: PropTypes.number,
     num_pages: PropTypes.number,

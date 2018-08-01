@@ -1,15 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CourseEnrollments /> renders correctly calls getCourseEnrollments prop 1`] = `
-<div
-  className={null}
-/>
-`;
+exports[`<CourseEnrollments /> renders correctly calls getCourseEnrollments prop 1`] = `<div />`;
 
 exports[`<CourseEnrollments /> renders correctly with empty enrollment data 1`] = `
-<div
-  className={null}
->
+<div>
   <div
     className="alert fade alert-warning show"
     hidden={false}
@@ -46,9 +40,7 @@ exports[`<CourseEnrollments /> renders correctly with empty enrollment data 1`] 
 `;
 
 exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
-<div
-  className={null}
->
+<div>
   <div
     className={null}
   >
@@ -1636,9 +1628,7 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
 `;
 
 exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
-<div
-  className={null}
->
+<div>
   <div
     className="alert fade alert-danger show"
     hidden={false}
@@ -1680,9 +1670,7 @@ exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
 `;
 
 exports[`<CourseEnrollments /> renders correctly with loading state 1`] = `
-<div
-  className={null}
->
+<div>
   <div
     className="course-enrollments loading d-flex align-items-center justify-content-center"
   >
