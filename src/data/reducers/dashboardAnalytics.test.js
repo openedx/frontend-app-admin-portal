@@ -11,6 +11,7 @@ const initialState = {
   enrolled_learners: null,
   active_learners: null,
   course_completions: null,
+  last_updated_date: null,
 };
 
 describe('courseEnrollments reducer', () => {
@@ -36,12 +37,14 @@ describe('courseEnrollments reducer', () => {
       },
       enrolled_learners: 1,
       course_completions: 1,
+      last_updated_date: '2018-07-31T23:14:35Z',
     };
     const expected = {
       ...initialState,
       enrolled_learners: dashboardAnalyticsData.enrolled_learners,
       active_learners: dashboardAnalyticsData.active_learners,
       course_completions: dashboardAnalyticsData.course_completions,
+      last_updated_date: dashboardAnalyticsData.last_updated_date,
     };
     expect(dashboardAnalytics(undefined, {
       type: FETCH_DASHBOARD_ANALYTICS_SUCCESS,

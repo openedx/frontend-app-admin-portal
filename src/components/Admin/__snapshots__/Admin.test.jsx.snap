@@ -56,11 +56,6 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
           className="row"
         >
           <div
-            className="col-12 col-md-6 py-3 invisible"
-          >
-            Showing data as of Month DD, YYYY
-          </div>
-          <div
             className="col-12 col-md-6 text-md-right"
           >
             <button
@@ -289,9 +284,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
           className="row"
         >
           <div
-            className="col-12 col-md-6 py-3 invisible"
+            className="col-12 col-md-6 py-3"
           >
-            Showing data as of Month DD, YYYY
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -427,33 +423,6 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         <h2>
           Full Report
         </h2>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 col-md-6 py-3 invisible"
-          >
-            Showing data as of Month DD, YYYY
-          </div>
-          <div
-            className="col-12 col-md-6 text-md-right"
-          >
-            <button
-              className="btn btn-outline-primary"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              type="button"
-            >
-              <span>
-                <span
-                  className="fa fa-download"
-                />
-                 Download full report (CSV)
-              </span>
-            </button>
-          </div>
-        </div>
         <div />
       </div>
     </div>
@@ -539,33 +508,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <h2>
           Full Report
         </h2>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 col-md-6 py-3 invisible"
-          >
-            Showing data as of Month DD, YYYY
-          </div>
-          <div
-            className="col-12 col-md-6 text-md-right"
-          >
-            <button
-              className="btn btn-outline-primary"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              type="button"
-            >
-              <span>
-                <span
-                  className="fa fa-download"
-                />
-                 Download full report (CSV)
-              </span>
-            </button>
-          </div>
-        </div>
         <div />
       </div>
     </div>
