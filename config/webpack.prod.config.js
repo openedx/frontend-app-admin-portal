@@ -128,6 +128,7 @@ module.exports = Merge.smart(commonConfig, {
       LMS_BASE_URL: undefined,
       DATA_API_BASE_URL: undefined,
       LMS_CLIENT_ID: undefined,
+      SEGMENT_KEY: undefined,
     }),
   ],
 });
