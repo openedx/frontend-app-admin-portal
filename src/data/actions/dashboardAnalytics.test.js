@@ -28,6 +28,7 @@ describe('actions', () => {
           past_week: 1,
         },
         enrolled_learners: 1,
+        number_of_users: 3,
         course_completions: 1,
       };
       const expectedActions = [
