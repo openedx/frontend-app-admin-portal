@@ -11,7 +11,7 @@ const SupportPage = () => (
     </Helmet>
     <H1>Support</H1>
     <p>
-      For assistance, please contact edX Enterprise Support at <MailtoLink to="enterprise@edx.org" content=" enterprise@edx.org" />.
+      For assistance, please contact edX Enterprise Support at <MailtoLink to="customersuccess@edx.org" content=" customersuccess@edx.org" />.
     </p>
   </div>
 );

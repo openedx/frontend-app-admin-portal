@@ -86,11 +86,11 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
         <p>
           For more information, contact edX Enterprise Support at 
           <a
-            href="mailto:enterprise@edx.org"
+            href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             enterprise@edx.org
+             customersuccess@edx.org
           </a>
           .
         </p>
@@ -320,11 +320,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
         <p>
           For more information, contact edX Enterprise Support at 
           <a
-            href="mailto:enterprise@edx.org"
+            href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             enterprise@edx.org
+             customersuccess@edx.org
           </a>
           .
         </p>
@@ -435,11 +435,11 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         <p>
           For more information, contact edX Enterprise Support at 
           <a
-            href="mailto:enterprise@edx.org"
+            href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             enterprise@edx.org
+             customersuccess@edx.org
           </a>
           .
         </p>
@@ -520,11 +520,11 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <p>
           For more information, contact edX Enterprise Support at 
           <a
-            href="mailto:enterprise@edx.org"
+            href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             enterprise@edx.org
+             customersuccess@edx.org
           </a>
           .
         </p>
