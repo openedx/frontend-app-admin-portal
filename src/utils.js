@@ -9,6 +9,10 @@ const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   return null;
 };
 
+const formatPercentage = ({ decimal, numDecimals = 1 }) => (
+  decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : ''
+);
+
 const formatTableOptions = options => omitBy({
   ...options,
   page: parseInt(options.page, 10),
@@ -23,5 +27,6 @@ const getAccessToken = () => {
 export {
   formatTableOptions,
   formatTimestamp,
+  formatPercentage,
   getAccessToken,
 };

@@ -32,7 +32,7 @@ const generateCourseEnrollments = () => {
       last_activity_date: '2017-06-23',
       coupon_name: 'Enterprise Entitlement Coupon',
       coupon_code: 'PIPNJSUK33P7PTZH',
-      final_grade: 0.80,
+      current_grade: 0.80,
       course_price: 200.00,
       discount_price: 120.00,
     });
@@ -43,6 +43,7 @@ const generateCourseEnrollments = () => {
     passed_timestamp: null,
     letter_grade: null,
     last_activity_date: null,
+    current_grade: null,
   };
   return enrollments;
 };

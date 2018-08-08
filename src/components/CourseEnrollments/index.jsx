@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
-import { formatTableOptions, formatTimestamp } from '../../utils';
+import { formatTableOptions, formatTimestamp, formatPercentage } from '../../utils';
 
 import './CourseEnrollments.scss';
 
@@ -122,6 +122,7 @@ export class CourseEnrollments extends React.Component {
       }),
       has_passed: enrollment.has_passed ? 'Yes' : 'No',
       course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
+      current_grade: formatPercentage({ decimal: enrollment.current_grade }),
     }));
   }
 

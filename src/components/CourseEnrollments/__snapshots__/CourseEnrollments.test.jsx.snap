@@ -318,7 +318,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -360,7 +362,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  
+                </td>
                 <td
                   className=""
                 />
@@ -400,7 +404,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -442,7 +448,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -484,7 +492,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -526,7 +536,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -568,7 +580,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -610,7 +624,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -652,7 +668,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -694,7 +712,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -736,7 +756,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -778,7 +800,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -820,7 +844,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -862,7 +888,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -904,7 +932,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -946,7 +976,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -988,7 +1020,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1030,7 +1064,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1072,7 +1108,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1114,7 +1152,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1156,7 +1196,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1198,7 +1240,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1240,7 +1284,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1282,7 +1328,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1324,7 +1372,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1366,7 +1416,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1408,7 +1460,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1450,7 +1504,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1492,7 +1548,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
@@ -1534,7 +1592,9 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                />
+                >
+                  80%
+                </td>
                 <td
                   className=""
                 >
