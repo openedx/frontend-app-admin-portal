@@ -29,8 +29,18 @@ export class CourseEnrollments extends React.Component {
           columnSortable: true,
         },
         {
-          label: 'Enrollment Date',
-          key: 'enrollment_created_timestamp',
+          label: 'Course Price',
+          key: 'course_price',
+          columnSortable: true,
+        },
+        {
+          label: 'Start Date',
+          key: 'course_start',
+          columnSortable: true,
+        },
+        {
+          label: 'End Date',
+          key: 'course_end',
           columnSortable: true,
         },
         {
@@ -39,23 +49,13 @@ export class CourseEnrollments extends React.Component {
           columnSortable: true,
         },
         {
-          label: 'Enrollment Mode',
-          key: 'user_current_enrollment_mode',
+          label: 'Current Grade',
+          key: 'current_grade',
           columnSortable: true,
         },
         {
-          label: 'Course Price',
-          key: 'course_price',
-          columnSortable: true,
-        },
-        {
-          label: 'Coupon Name',
-          key: 'coupon_name',
-          columnSortable: true,
-        },
-        {
-          label: 'Enterprise Offers',
-          key: 'offer',
+          label: 'Last Activity Date',
+          key: 'last_activity_date',
           columnSortable: true,
         },
       ],
@@ -121,7 +121,7 @@ export class CourseEnrollments extends React.Component {
         timestamp: enrollment.user_account_creation_timestamp,
       }),
       has_passed: enrollment.has_passed ? 'Yes' : 'No',
-      course_price: `$${enrollment.course_price}`,
+      course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
     }));
   }
 

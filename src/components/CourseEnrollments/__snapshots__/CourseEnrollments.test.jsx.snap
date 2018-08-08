@@ -128,7 +128,61 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                     type="button"
                   >
                     <span>
-                      Enrollment Date
+                      Course Price
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Start Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      End Date
                       <span
                         className="sr-only"
                       >
@@ -182,7 +236,7 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                     type="button"
                   >
                     <span>
-                      Enrollment Mode
+                      Current Grade
                       <span
                         className="sr-only"
                       >
@@ -209,61 +263,7 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                     type="button"
                   >
                     <span>
-                      Course Price
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
-                       
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
-                    </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
-                >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Coupon Name
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
-                       
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
-                    </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
-                >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Enterprise Offers
+                      Last Activity Date
                       <span
                         className="sr-only"
                       >
@@ -299,7 +299,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -308,22 +318,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -341,7 +341,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -350,19 +360,7 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
+                />
                 <td
                   className=""
                 />
@@ -383,7 +381,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -392,22 +400,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -425,7 +423,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -434,22 +442,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -467,7 +465,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -476,22 +484,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -509,7 +507,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -518,22 +526,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -551,7 +549,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -560,22 +568,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -593,7 +591,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -602,22 +610,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -635,7 +633,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -644,22 +652,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -677,7 +675,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -686,22 +694,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -719,7 +717,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -728,22 +736,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -761,7 +759,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -770,22 +778,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -803,7 +801,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -812,22 +820,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -845,7 +843,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -854,22 +862,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -887,7 +885,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -896,22 +904,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -929,7 +927,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -938,22 +946,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -971,7 +969,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -980,22 +988,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1013,7 +1011,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1022,22 +1030,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1055,7 +1053,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1064,22 +1072,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1097,7 +1095,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1106,22 +1114,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1139,7 +1137,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1148,22 +1156,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1181,7 +1179,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1190,22 +1198,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1223,7 +1221,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1232,22 +1240,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1265,7 +1263,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1274,22 +1282,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1307,7 +1305,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1316,22 +1324,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1349,7 +1347,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1358,22 +1366,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1391,7 +1389,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1400,22 +1408,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1433,7 +1431,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1442,22 +1450,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1475,7 +1473,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1484,22 +1492,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
               <tr
                 className=""
@@ -1517,7 +1515,17 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 <td
                   className=""
                 >
-                  June 27, 2014
+                  $200
+                </td>
+                <td
+                  className=""
+                >
+                  September 1, 2016
+                </td>
+                <td
+                  className=""
+                >
+                  December 1, 2016
                 </td>
                 <td
                   className=""
@@ -1526,22 +1534,12 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 </td>
                 <td
                   className=""
-                >
-                  verified
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  Enterprise Entitlement Coupon
-                </td>
-                <td
-                  className=""
                 />
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
               </tr>
             </tbody>
           </table>

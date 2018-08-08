@@ -150,7 +150,7 @@ class Admin extends React.Component {
           <div className="row">
             <div className="col">
               <p>
-                For more information, contact edX Enterprise Support at <MailtoLink to="enterprise@edx.org" content=" enterprise@edx.org" />.
+                For more information, contact edX Enterprise Support at <MailtoLink to="customersuccess@edx.org" content=" customersuccess@edx.org" />.
               </p>
             </div>
           </div>
