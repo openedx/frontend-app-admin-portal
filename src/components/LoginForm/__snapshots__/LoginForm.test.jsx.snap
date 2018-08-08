@@ -12,9 +12,11 @@ exports[`<LoginForm /> renders correctly with error state 1`] = `
     className="row justify-content-center"
   >
     <div
-      className="col-4"
+      className="col-xs-12 col-sm-8 col-lg-4"
     >
-      <form>
+      <form
+        className="my-4"
+      >
         <div
           className="paragon-fieldset"
         >
@@ -28,7 +30,7 @@ exports[`<LoginForm /> renders correctly with error state 1`] = `
               <p
                 className="text-secondary"
               >
-                Log in to edX
+                Log in
               </p>
             </legend>
             <div
@@ -157,9 +159,11 @@ exports[`<LoginForm /> renders correctly with inital (non loading) state 1`] = `
     className="row justify-content-center"
   >
     <div
-      className="col-4"
+      className="col-xs-12 col-sm-8 col-lg-4"
     >
-      <form>
+      <form
+        className="my-4"
+      >
         <div
           className="paragon-fieldset"
         >
@@ -173,7 +177,7 @@ exports[`<LoginForm /> renders correctly with inital (non loading) state 1`] = `
               <p
                 className="text-secondary"
               >
-                Log in to edX
+                Log in
               </p>
             </legend>
             <div
@@ -293,9 +297,11 @@ exports[`<LoginForm /> renders correctly with loading state 1`] = `
     className="row justify-content-center"
   >
     <div
-      className="col-4"
+      className="col-xs-12 col-sm-8 col-lg-4"
     >
-      <form>
+      <form
+        className="my-4"
+      >
         <div
           className="paragon-fieldset"
         >
@@ -309,7 +315,7 @@ exports[`<LoginForm /> renders correctly with loading state 1`] = `
               <p
                 className="text-secondary"
               >
-                Log in to edX
+                Log in
               </p>
             </legend>
             <div

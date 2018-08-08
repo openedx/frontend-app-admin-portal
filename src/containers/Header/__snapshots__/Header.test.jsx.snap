@@ -7,17 +7,24 @@ exports[`<Header /> renders edX logo correctly 1`] = `
   <nav
     className="navbar px-0 justify-content-between"
   >
-    <a
-      className="navbar-brand"
-      href="/"
-      onClick={[Function]}
-    >
-      <img
-        alt=""
-        className=""
-        src="test-file-stub"
-      />
-    </a>
+    <div>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt=""
+          className=""
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
   </nav>
 </header>
 `;
@@ -29,17 +36,24 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
   <nav
     className="navbar px-0 justify-content-between"
   >
-    <a
-      className="navbar-brand"
-      href="/test-enterprise"
-      onClick={[Function]}
-    >
-      <img
-        alt=""
-        className=""
-        src="https://test.url/image/1.png"
-      />
-    </a>
+    <div>
+      <a
+        className="navbar-brand"
+        href="/test-enterprise"
+        onClick={[Function]}
+      >
+        <img
+          alt=""
+          className=""
+          src="https://test.url/image/1.png"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
     <div
       className="dropdown"
     >

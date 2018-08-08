@@ -3,7 +3,9 @@ import { Fieldset, InputText, Button } from '@edx/paragon';
 import { withRouter } from 'react-router';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+
 import LoadingSpinner from '../LoadingSpinner';
+import './LoginForm.scss';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -44,11 +46,6 @@ class LoginForm extends React.Component {
     event.preventDefault();
     const { email, password } = this.state;
     this.props.login(email, password);
-    // clear form
-    this.setState({
-      email: '',
-      password: '',
-    });
   }
 
   redirectToReferrer() {
@@ -64,10 +61,10 @@ class LoginForm extends React.Component {
           <title>Login</title>
         </Helmet>
         <div className="row justify-content-center">
-          <div className="col-4">
-            <form>
+          <div className="col-xs-12 col-sm-8 col-lg-4">
+            <form className="my-4">
               <Fieldset
-                legend={<p className="text-secondary">Log in to edX</p>}
+                legend={<p className="text-secondary">Log in</p>}
                 invalidMessage="Invalid username and/or password"
                 isValid={error === null}
                 variant={{ status: 'DANGER' }}

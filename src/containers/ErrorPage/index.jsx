@@ -19,11 +19,15 @@ const ErrorPage = (props) => {
           <Helmet>
             <title>Error</title>
           </Helmet>
-          <H1>Error</H1>
-          <StatusAlert
-            alertType="danger"
-            message={errorMessage}
-          />
+          <div className="row mt-4">
+            <div className="col">
+              <H1>Error</H1>
+              <StatusAlert
+                alertType="danger"
+                message={errorMessage}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

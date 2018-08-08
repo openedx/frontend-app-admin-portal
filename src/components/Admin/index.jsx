@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { MailtoLink, Button } from '@edx/paragon';
+import { MailtoLink, Button, Icon } from '@edx/paragon';
 
 import H2 from '../../components/H2';
 import Hero from '../../components/Hero';
@@ -126,25 +126,29 @@ class Admin extends React.Component {
               <H2>Full Report</H2>
               {!error && !loading &&
                 <div className="row">
-                  {lastUpdatedDate &&
-                    <div className="col-12 col-md-6 py-3">
-                      Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                    </div>
-                  }
+                  <div className="col-12 col-md-6 pt-1 pb-3">
+                    {lastUpdatedDate &&
+                      <span>
+                        Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                      </span>
+                    }
+                  </div>
                   <div className="col-12 col-md-6 text-md-right">
                     <Button
                       label={
                         <span>
-                          <span className="fa fa-download" /> Download full report (CSV)
+                          <Icon className={['fa', 'fa-download', 'mr-1']} /> Download full report (CSV)
                         </span>
                       }
                       onClick={() => downloadCsv(enterpriseId)}
-                      className={['btn-outline-primary']}
+                      className={['btn-outline-primary', 'download-btn']}
                     />
                   </div>
                 </div>
               }
-              <CourseEnrollmentsTable />
+              <div className="mt-3 mb-5">
+                <CourseEnrollmentsTable />
+              </div>
             </div>
           </div>
           <div className="row">

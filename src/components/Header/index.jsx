@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from '@edx/paragon';
 
 import Img from '../Img';
+import LinkWrapper from '../LinkWrapper';
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
@@ -17,16 +18,19 @@ const Header = (props) => {
   return (
     <header className="container">
       <nav className="navbar px-0 justify-content-between">
-        <Link
-          to={enterpriseSlug ? `/${enterpriseSlug}` : '/'}
-          className="navbar-brand"
-        >
-          <Img src={enterpriseLogo || EdxLogo} alt="" />
-        </Link>
+        <div>
+          <Link
+            to={enterpriseSlug ? `/${enterpriseSlug}` : '/'}
+            className="navbar-brand"
+          >
+            <Img src={enterpriseLogo || EdxLogo} alt="" />
+          </Link>
+          <span className="badge badge-secondary beta">Beta</span>
+        </div>
         {email && <Dropdown
           title={email}
           menuItems={[
-            <Link to="/logout">Logout</Link>,
+            <LinkWrapper to="/logout">Logout</LinkWrapper>,
           ]}
         />}
       </nav>

@@ -56,25 +56,36 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
           className="row"
         >
           <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          />
+          <div
             className="col-12 col-md-6 text-md-right"
           >
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary download-btn"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
               type="button"
             >
               <span>
-                <span
-                  className="fa fa-download"
-                />
+                <div>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-download mr-1"
+                    id="Icon1"
+                  />
+                </div>
                  Download full report (CSV)
               </span>
             </button>
           </div>
         </div>
-        <div />
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
       </div>
     </div>
     <div
@@ -284,31 +295,41 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
           className="row"
         >
           <div
-            className="col-12 col-md-6 py-3"
+            className="col-12 col-md-6 pt-1 pb-3"
           >
-            Showing data as of 
-            July 31, 2018
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
           >
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary download-btn"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
               type="button"
             >
               <span>
-                <span
-                  className="fa fa-download"
-                />
+                <div>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-download mr-1"
+                    id="Icon1"
+                  />
+                </div>
                  Download full report (CSV)
               </span>
             </button>
           </div>
         </div>
-        <div />
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
       </div>
     </div>
     <div
@@ -423,7 +444,11 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         <h2>
           Full Report
         </h2>
-        <div />
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
       </div>
     </div>
     <div
@@ -508,7 +533,11 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <h2>
           Full Report
         </h2>
-        <div />
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
       </div>
     </div>
     <div

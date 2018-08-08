@@ -2,7 +2,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Link, MemoryRouter, Redirect } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
-import { Table } from '@edx/paragon';
 
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
@@ -167,19 +166,5 @@ describe('<EnterpriseList />', () => {
       />
     ));
     expect(wrapper.find('EnterpriseList').instance().state.pageCount).toEqual(null);
-  });
-
-  it('handleDataUpdate callback function is properly called from <TableWithPagination />', () => {
-    const mockGetEnterpriseList = jest.fn();
-    wrapper = mount((
-      <EnterpriseListWrapper
-        getEnterpriseList={mockGetEnterpriseList}
-        enterprises={mockEnterpriseList}
-      />
-    ));
-
-    const table = wrapper.find(EnterpriseList).find(Table);
-    table.find('button').first().simulate('click'); // click first column header button
-    expect(mockGetEnterpriseList).toHaveBeenCalled();
   });
 });

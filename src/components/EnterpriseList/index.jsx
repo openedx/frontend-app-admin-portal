@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
+import H2 from '../H2';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
@@ -17,7 +19,6 @@ class EnterpriseList extends React.Component {
         {
           label: 'Enterprise',
           key: 'link',
-          columnSortable: true,
         },
       ],
       enterprises: this.formatEnterpriseData(enterprises),
@@ -107,7 +108,6 @@ class EnterpriseList extends React.Component {
         data={enterprises}
         pageCount={pageCount}
         paginationLabel="enterprise list pagination"
-        tableSortable
         handleDataUpdate={options =>
           this.getEnterpriseList(options)
         }
@@ -125,15 +125,27 @@ class EnterpriseList extends React.Component {
 
     return (
       <div>
-        {error && this.renderErrorMessage()}
-        {loading && !enterprises && this.renderLoadingMessage()}
-        {!loading && !error && enterprises && enterprises.length === 0 &&
-          this.renderEmptyEnterpriseListMessage()
-        }
-        {!loading && !error && enterprises && enterprises.length === 1 &&
-          this.renderRedirectToEnterpriseAdminPage()
-        }
-        {enterprises && enterprises.length > 0 && this.renderTableContent()}
+        <Helmet>
+          <title>Enterprise List</title>
+        </Helmet>
+        <div className="container">
+          <div className="row mt-4">
+            <div className="col">
+              <H2>Enterprise List</H2>
+              <div className="py-3">
+                {error && this.renderErrorMessage()}
+                {loading && !enterprises && this.renderLoadingMessage()}
+                {!loading && !error && enterprises && enterprises.length === 0 &&
+                  this.renderEmptyEnterpriseListMessage()
+                }
+                {!loading && !error && enterprises && enterprises.length === 1 &&
+                  this.renderRedirectToEnterpriseAdminPage()
+                }
+                {enterprises && enterprises.length > 0 && this.renderTableContent()}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

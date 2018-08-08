@@ -2,16 +2,16 @@ header {
     border-bottom: 1px solid #d4d4d4;
 
     .navbar-brand {
-        max-width: 200px;
+        max-width: 100px;
     }
 
     .badge.beta {
         background: #636c72;
         color: #ffffff;
+        font-size: 0.75rem;
     }
     
     .dropdown > button {
-        cursor: pointer;
         color: #636c72;
         background: #ffffff;
     }
