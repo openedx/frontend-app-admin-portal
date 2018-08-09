@@ -12,7 +12,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import { Helmet } from 'react-helmet';
 
-import App from './containers/App';
+import EnterpriseApp from './containers/EnterpriseApp';
 import NotFoundPage from './containers/NotFoundPage';
 import SupportPage from './containers/SupportPage';
 import ErrorPage from './containers/ErrorPage';
@@ -44,7 +44,8 @@ const AppWrapper = () => (
             <Route exact path="/404" component={NotFoundPage} />
             <Route exact path="/error" component={ErrorPage} />
             <PrivateRoute path="/enterprises" component={EnterpriseIndexPage} />
-            <PrivateRoute path="/:enterpriseSlug" component={App} />
+            <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
+            <Route exact path="/" component={EnterpriseIndexPage} />
             <Redirect from="" to="/404" />
           </Switch>
           <Footer />
