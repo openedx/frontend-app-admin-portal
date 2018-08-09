@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'query-string';
+
 import config from '../../config';
 import { getAccessToken } from '../../utils';
 
@@ -13,7 +14,7 @@ class EnterpriseDataApiService {
       page_size: 50,
       ...options,
     };
-    const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments?${qs.stringify(queryParams)}`;
+    const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
     return axios.get(enrollmentsUrl, {
@@ -24,7 +25,7 @@ class EnterpriseDataApiService {
   }
 
   static fetchCourseEnrollmentsCsv(enterpriseId) {
-    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv?no_page=true`;
+    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
     const jwtToken = getAccessToken();
     return axios.get(csvUrl, {
       headers: {

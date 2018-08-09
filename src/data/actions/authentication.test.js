@@ -39,7 +39,7 @@ describe('actions', () => {
         access_token: 'random_access_token_data',
       };
 
-      axiosMock.onPost('http://localhost:18000/oauth2/access_token')
+      axiosMock.onPost('http://localhost:18000/oauth2/access_token/')
         .replyOnce(200, JSON.stringify(responseData));
 
       const expectedActions = [
@@ -61,7 +61,7 @@ describe('actions', () => {
         access_token: 'random_access_token_data',
       };
 
-      axiosMock.onPost('http://localhost:18000/oauth2/access_token')
+      axiosMock.onPost('http://localhost:18000/oauth2/access_token/')
         .replyOnce(200, JSON.stringify(responseData));
 
       const store = mockStore();
@@ -85,7 +85,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onPost('http://localhost:18000/oauth2/access_token').networkError();
+      axiosMock.onPost('http://localhost:18000/oauth2/access_token/').networkError();
 
       return store.dispatch(login(email, password)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
