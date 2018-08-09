@@ -51,7 +51,7 @@ describe('actions', () => {
         page_size: 10,
       };
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments?${qs.stringify(options)}`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {
@@ -70,7 +70,7 @@ describe('actions', () => {
         page_size: 10,
       };
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments?${qs.stringify(options)}`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
         .networkError();
 
       return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'query-string';
+
 import configuration from '../../config';
 import { getAccessToken } from '../../utils';
 
@@ -63,7 +64,7 @@ class LmsApiService {
       client_id: this.clientId,
       token_type: 'jwt',
     };
-    const authUrl = `${this.baseUrl}/oauth2/access_token`;
+    const authUrl = `${this.baseUrl}/oauth2/access_token/`;
     return axios.post(authUrl, qs.stringify(loginData));
   }
 }
