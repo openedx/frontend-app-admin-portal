@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import StatusAlert from '../../components/StatusAlert';
 import H1 from '../../components/H1';
+import NotFoundPage from '../NotFoundPage';
 
 const ErrorPage = (props) => {
-  const error = props.location && props.location.state && props.location.state.error;
-  const errorMessage = (error && error.message) || 'An unknown error has occured.';
+  const errorMessage = props.message || 'An unknown error has occured.';
 
   return (
     <div className="container">
-      {error && error.status === 404 ? (
-        <Redirect to="/404" />
+      {props.status === 404 ? (
+        <NotFoundPage />
       ) : (
         <div>
           <Helmet>
@@ -35,18 +34,13 @@ const ErrorPage = (props) => {
 };
 
 ErrorPage.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      error: PropTypes.shape({
-        status: PropTypes.number,
-        message: PropTypes.string,
-      }),
-    }),
-  }),
+  status: PropTypes.number,
+  message: PropTypes.string,
 };
 
 ErrorPage.defaultProps = {
-  location: {},
+  status: null,
+  message: '',
 };
 
 export default ErrorPage;

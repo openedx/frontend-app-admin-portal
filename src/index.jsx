@@ -5,7 +5,6 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
@@ -15,7 +14,6 @@ import { Helmet } from 'react-helmet';
 import EnterpriseApp from './containers/EnterpriseApp';
 import NotFoundPage from './containers/NotFoundPage';
 import SupportPage from './containers/SupportPage';
-import ErrorPage from './containers/ErrorPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
 import LoginPage from './containers/LoginPage';
@@ -41,12 +39,10 @@ const AppWrapper = () => (
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutHandler} />
             <Route exact path="/support" component={SupportPage} />
-            <Route exact path="/404" component={NotFoundPage} />
-            <Route exact path="/error" component={ErrorPage} />
             <PrivateRoute path="/enterprises" component={EnterpriseIndexPage} />
             <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
             <Route exact path="/" component={EnterpriseIndexPage} />
-            <Redirect from="" to="/404" />
+            <Route component={NotFoundPage} />
           </Switch>
           <Footer />
         </div>
