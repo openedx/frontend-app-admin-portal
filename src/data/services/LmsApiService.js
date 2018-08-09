@@ -1,7 +1,7 @@
-import axios from 'axios';
 import qs from 'query-string';
 
 import configuration from '../../config';
+import httpClient from '../../httpClient';
 import { getAccessToken } from '../../utils';
 
 class LmsApiService {
@@ -20,7 +20,7 @@ class LmsApiService {
     const outlineUrl = `${this.baseUrl}/api/courses/v1/blocks/?${qs.stringify(options)}`;
     const jwtToken = getAccessToken();
 
-    return axios.get(outlineUrl, {
+    return httpClient.get(outlineUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -31,7 +31,7 @@ class LmsApiService {
     const portalConfigurationUrl = `${this.baseUrl}/enterprise/api/v1/enterprise-customer-branding/${enterpriseSlug}/`;
     const jwtToken = getAccessToken();
 
-    return axios.get(portalConfigurationUrl, {
+    return httpClient.get(portalConfigurationUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -48,7 +48,7 @@ class LmsApiService {
     const enterpriseListUrl = `${this.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
-    return axios.get(enterpriseListUrl, {
+    return httpClient.get(enterpriseListUrl, {
       withCredentials: true,
       headers: {
         Authorization: `JWT ${jwtToken}`,
@@ -65,7 +65,7 @@ class LmsApiService {
       token_type: 'jwt',
     };
     const authUrl = `${this.baseUrl}/oauth2/access_token/`;
-    return axios.post(authUrl, qs.stringify(loginData));
+    return httpClient.post(authUrl, qs.stringify(loginData));
   }
 }
 

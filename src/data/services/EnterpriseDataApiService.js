@@ -1,7 +1,7 @@
-import axios from 'axios';
 import qs from 'query-string';
 
 import config from '../../config';
+import httpClient from '../../httpClient';
 import { getAccessToken } from '../../utils';
 
 class EnterpriseDataApiService {
@@ -17,7 +17,7 @@ class EnterpriseDataApiService {
     const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
-    return axios.get(enrollmentsUrl, {
+    return httpClient.get(enrollmentsUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -27,7 +27,7 @@ class EnterpriseDataApiService {
   static fetchCourseEnrollmentsCsv(enterpriseId) {
     const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
     const jwtToken = getAccessToken();
-    return axios.get(csvUrl, {
+    return httpClient.get(csvUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
@@ -38,7 +38,7 @@ class EnterpriseDataApiService {
     const analyticsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
     const jwtToken = getAccessToken();
 
-    return axios.get(analyticsUrl, {
+    return httpClient.get(analyticsUrl, {
       headers: {
         Authorization: `JWT ${jwtToken}`,
       },
