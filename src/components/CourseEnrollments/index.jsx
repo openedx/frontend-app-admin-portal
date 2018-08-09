@@ -67,10 +67,11 @@ export class CourseEnrollments extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, location } = this.props;
 
     if (enterpriseId) {
-      this.getCourseEnrollments(enterpriseId);
+      const options = qs.parse(location.search);
+      this.getCourseEnrollments(enterpriseId, formatTableOptions(options));
     }
   }
 

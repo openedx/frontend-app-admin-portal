@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import qs from 'query-string';
 
 import H2 from '../H2';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
+import { formatTableOptions } from '../../utils';
 
 class EnterpriseList extends React.Component {
   constructor(props) {
@@ -29,8 +31,9 @@ class EnterpriseList extends React.Component {
   }
 
   componentDidMount() {
+    const options = qs.parse(this.props.location.search);
     this.clearPortalConfiguration();
-    this.getEnterpriseList();
+    this.getEnterpriseList(formatTableOptions(options));
     this.props.getLocalUser();
   }
 
@@ -122,7 +125,7 @@ class EnterpriseList extends React.Component {
 
   render() {
     const { loading, error } = this.props;
-    const { enterprises } = this.state;
+    const { enterprises, pageCount } = this.state;
 
     return (
       <div>
@@ -139,7 +142,7 @@ class EnterpriseList extends React.Component {
                 {!loading && !error && enterprises && enterprises.length === 0 &&
                   this.renderEmptyEnterpriseListMessage()
                 }
-                {!loading && !error && enterprises && enterprises.length === 1 &&
+                {!loading && !error && enterprises && enterprises.length === 1 && pageCount === 1 &&
                   this.renderRedirectToEnterpriseAdminPage()
                 }
                 {enterprises && enterprises.length > 0 && this.renderTableContent()}
@@ -156,6 +159,9 @@ EnterpriseList.defaultProps = {
   enterprises: null,
   error: null,
   loading: false,
+  location: {
+    search: null,
+  },
 };
 
 EnterpriseList.propTypes = {
@@ -173,6 +179,9 @@ EnterpriseList.propTypes = {
   }),
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }),
 };
 
 export default EnterpriseList;
