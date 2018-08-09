@@ -40,3 +40,44 @@ exports[`<ErrorPage /> renders correctly 1`] = `
   </div>
 </div>
 `;
+
+exports[`<ErrorPage /> renders correctly for 404 errors 1`] = `
+<div
+  className="container"
+>
+  <div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h1>
+          Error
+        </h1>
+        <div
+          className="alert fade alert-danger show"
+          hidden={false}
+          role="alert"
+        >
+          <div
+            className="alert-dialog"
+          >
+            <div
+              className=""
+            >
+              <div
+                className="message"
+              >
+                <span>
+                  Not Found
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

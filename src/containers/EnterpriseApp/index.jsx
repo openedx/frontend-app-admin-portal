@@ -7,6 +7,7 @@ import CoursewarePage from '../CoursewarePage';
 import SupportPage from '../SupportPage';
 import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
+import ErrorPage from '../ErrorPage';
 
 import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
@@ -23,19 +24,11 @@ class App extends React.Component {
     return path.replace(/\/$/, '');
   }
 
-  renderErrorRedirect(error) {
+  renderError(error) {
     return (
-      <Redirect
-        push
-        to={{
-          pathname: '/error',
-          state: {
-            error: {
-              status: error.response && error.response.status,
-              message: error.message,
-            },
-          },
-        }}
+      <ErrorPage
+        status={error.response && error.response.status}
+        message={error.message}
       />);
   }
 
@@ -44,7 +37,7 @@ class App extends React.Component {
     const baseUrl = match.url;
 
     if (error) {
-      return this.renderErrorRedirect(error);
+      return this.renderError(error);
     }
 
     return (
