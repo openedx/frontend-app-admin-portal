@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import App from './index';
+import EnterpriseApp from './index';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -36,7 +36,7 @@ const AppWrapper = props => (
     <Route
       path={props.path}
       component={() => (
-        <App {...props} />
+        <EnterpriseApp {...props} />
       )}
     />
   </ContextProvider>
@@ -56,7 +56,7 @@ AppWrapper.propTypes = {
   }).isRequired,
 };
 
-describe('App', () => {
+describe('EnterpriseApp', () => {
   it('renders not found page correctly', () => {
     const tree = renderer
       .create((
