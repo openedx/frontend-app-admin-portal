@@ -11,6 +11,7 @@ const EnterpriseListWrapper = props => (
     <EnterpriseList
       getEnterpriseList={() => {}}
       clearPortalConfiguration={() => {}}
+      getLocalUser={() => {}}
       {...props}
     />
   </MemoryRouter>
@@ -20,19 +21,22 @@ describe('<EnterpriseList />', () => {
   let wrapper;
 
   describe('renders correctly', () => {
-    it('calls getEnterpriseList and clearPortalConfiguration props', () => {
+    it('calls getEnterpriseList, clearPortalConfiguration and getLocalUser props', () => {
       const mockGetEnterpriseList = jest.fn();
       const mockClearPortalConfiguration = jest.fn();
+      const mockGetLocalUser = jest.fn();
       const tree = renderer
         .create((
           <EnterpriseListWrapper
             getEnterpriseList={mockGetEnterpriseList}
             clearPortalConfiguration={mockClearPortalConfiguration}
+            getLocalUser={mockGetLocalUser}
           />
         ))
         .toJSON();
       expect(mockGetEnterpriseList).toHaveBeenCalled();
       expect(mockClearPortalConfiguration).toHaveBeenCalled();
+      expect(mockGetLocalUser).toHaveBeenCalled();
       expect(tree).toMatchSnapshot();
     });
 
@@ -100,6 +104,7 @@ describe('<EnterpriseList />', () => {
             enterprises={oneEnterpriseListData}
             getEnterpriseList={() => {}}
             clearPortalConfiguration={() => {}}
+            getLocalUser={() => {}}
           />
         </MemoryRouter>
       ));

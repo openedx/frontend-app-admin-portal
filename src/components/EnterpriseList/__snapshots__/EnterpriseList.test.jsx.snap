@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EnterpriseList /> renders correctly calls getEnterpriseList and clearPortalConfiguration props 1`] = `
+exports[`<EnterpriseList /> renders correctly calls getEnterpriseList, clearPortalConfiguration and getLocalUser props 1`] = `
 <div>
   <div
     className="container"
