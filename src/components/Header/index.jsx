@@ -11,7 +11,6 @@ import './Header.scss';
 const Header = (props) => {
   const {
     enterpriseLogo,
-    enterpriseSlug,
     email,
   } = props;
 
@@ -20,7 +19,7 @@ const Header = (props) => {
       <nav className="navbar px-0 justify-content-between">
         <div>
           <Link
-            to={enterpriseSlug ? `/${enterpriseSlug}` : '/'}
+            to="/"
             className="navbar-brand"
           >
             <Img src={enterpriseLogo || EdxLogo} alt="" />
@@ -39,13 +38,11 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  enterpriseSlug: PropTypes.string,
   enterpriseLogo: PropTypes.string,
   email: PropTypes.string,
 };
 
 Header.defaultProps = {
-  enterpriseSlug: null,
   enterpriseLogo: null,
   email: null,
 };

@@ -39,9 +39,9 @@ const AppWrapper = () => (
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/logout" component={LogoutHandler} />
             <Route exact path="/support" component={SupportPage} />
-            <PrivateRoute path="/enterprises" component={EnterpriseIndexPage} />
+            <PrivateRoute exact path="/enterprises" component={EnterpriseIndexPage} />
             <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
-            <Route exact path="/" component={EnterpriseIndexPage} />
+            <PrivateRoute exact path="/" component={EnterpriseIndexPage} />
             <Route component={NotFoundPage} />
           </Switch>
           <Footer />
