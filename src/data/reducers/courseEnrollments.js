@@ -11,6 +11,8 @@ const initialState = {
   enrollments: null,
   loading: false,
   error: null,
+  csvLoading: false,
+  csvError: null,
 };
 
 const courseEnrollments = (state = initialState, action) => {
@@ -37,20 +39,20 @@ const courseEnrollments = (state = initialState, action) => {
     case FETCH_CSV_REQUEST:
       return {
         ...state,
-        loading: true,
-        error: null,
+        csvLoading: true,
+        csvError: null,
       };
     case FETCH_CSV_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: null,
+        csvLoading: false,
+        csvError: null,
       };
     case FETCH_CSV_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error,
+        csvLoading: false,
+        csvError: action.payload.error,
       };
     default:
       return state;

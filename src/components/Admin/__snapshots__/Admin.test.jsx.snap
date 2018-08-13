@@ -63,6 +63,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
           >
             <button
               className="btn btn-outline-primary download-btn"
+              disabled={null}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -72,7 +73,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
                 <div>
                   <span
                     aria-hidden={true}
-                    className="fa fa-download mr-1"
+                    className="fa mr-1 fa-download"
                     id="Icon1"
                   />
                 </div>
@@ -307,6 +308,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
           >
             <button
               className="btn btn-outline-primary download-btn"
+              disabled={null}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -316,7 +318,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                 <div>
                   <span
                     aria-hidden={true}
-                    className="fa fa-download mr-1"
+                    className="fa mr-1 fa-download"
                     id="Icon1"
                   />
                 </div>

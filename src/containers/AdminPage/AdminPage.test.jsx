@@ -26,6 +26,10 @@ describe('<AdminPage />', () => {
         number_of_users: 3,
         course_completions: 1,
       },
+      courseEnrollments: {
+        csvLoading: false,
+        csvError: null,
+      },
     };
     store = mockStore(initialState);
     dispatchSpy = jest.spyOn(store, 'dispatch');
