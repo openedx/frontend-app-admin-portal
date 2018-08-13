@@ -10,6 +10,13 @@ import {
 } from '../constants/courseEnrollments';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 
+const emptyEnrollments = {
+  count: 0,
+  num_pages: 0,
+  current_page: 0,
+  results: [],
+};
+
 const fetchCourseEnrollmentsRequest = () => ({ type: FETCH_COURSE_ENROLLMENTS_REQUEST });
 const fetchCourseEnrollmentsSuccess = enrollments => ({
   type: FETCH_COURSE_ENROLLMENTS_SUCCESS,
@@ -28,6 +35,12 @@ const fetchCourseEnrollments = (enterpriseId, options) => (
         dispatch(fetchCourseEnrollmentsSuccess(response.data));
       })
       .catch((error) => {
+        // This endpoint returns a 404 if no data exists,
+        // so we convert it to an empty response here.
+        if (error.response.status === 404) {
+          dispatch(fetchCourseEnrollmentsSuccess(emptyEnrollments));
+          return;
+        }
         dispatch(fetchCourseEnrollmentsFailure(error));
       });
   }

@@ -5,6 +5,16 @@ import {
 } from '../constants/dashboardAnalytics';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 
+const emptyDashboardAnalytics = {
+  active_learners: {
+    past_month: 0,
+    past_week: 0,
+  },
+  enrolled_learners: 0,
+  number_of_users: 0,
+  course_completions: 0,
+};
+
 const fetchDashboardAnalyticsRequest = () => ({ type: FETCH_DASHBOARD_ANALYTICS_REQUEST });
 const fetchDashboardAnalyticsSuccess = data => ({
   type: FETCH_DASHBOARD_ANALYTICS_SUCCESS,
@@ -23,6 +33,12 @@ const fetchDashboardAnalytics = enterpriseId => (
         dispatch(fetchDashboardAnalyticsSuccess(response.data));
       })
       .catch((error) => {
+        // This endpoint returns a 404 if no data exists,
+        // so we convert it to an empty response here.
+        if (error.response.status === 404) {
+          dispatch(fetchDashboardAnalyticsSuccess(emptyDashboardAnalytics));
+          return;
+        }
         dispatch(fetchDashboardAnalyticsFailure(error));
       });
   }
