@@ -12,6 +12,8 @@ const initialState = {
   enrollments: null,
   loading: false,
   error: null,
+  csvLoading: false,
+  csvError: null,
 };
 
 describe('courseEnrollments reducer', () => {
@@ -72,7 +74,7 @@ describe('courseEnrollments reducer', () => {
   it('sets loading state when fetching enrollment csv', () => {
     const expected = {
       ...initialState,
-      loading: true,
+      csvLoading: true,
     };
     expect(courseEnrollments(undefined, {
       type: FETCH_CSV_REQUEST,
@@ -82,7 +84,7 @@ describe('courseEnrollments reducer', () => {
   it('removes loading state when successfully fetching enrollment csv', () => {
     const expected = {
       ...initialState,
-      loading: false,
+      csvLoading: false,
     };
     expect(courseEnrollments(undefined, {
       type: FETCH_CSV_SUCCESS,
@@ -93,7 +95,7 @@ describe('courseEnrollments reducer', () => {
     const expected = {
       ...initialState,
       loading: false,
-      error: 'test error',
+      csvError: 'test error',
     };
     expect(courseEnrollments(undefined, {
       type: FETCH_CSV_FAILURE,

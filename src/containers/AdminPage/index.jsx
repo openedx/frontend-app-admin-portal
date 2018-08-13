@@ -13,6 +13,8 @@ const mapStateToProps = state => ({
   courseCompletions: state.dashboardAnalytics.course_completions,
   lastUpdatedDate: state.dashboardAnalytics.last_updated_date,
   enterpriseId: state.portalConfiguration.enterpriseId,
+  csvLoading: state.courseEnrollments.csvLoading,
+  csvError: state.courseEnrollments.csvError,
 });
 
 const mapDispatchToProps = dispatch => ({

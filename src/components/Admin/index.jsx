@@ -58,6 +58,18 @@ class Admin extends React.Component {
     );
   }
 
+  renderCsvErrorMessage() {
+    return (
+      <StatusAlert
+        className={['mt-3']}
+        alertType="danger"
+        iconClassName={['fa', 'fa-times-circle']}
+        title="Unable to Generate CSV Report"
+        message={`Please try again. (${this.props.csvError.message})`}
+      />
+    );
+  }
+
   renderLoadingMessage() {
     return <LoadingMessage className="overview mt-3" />;
   }
@@ -73,7 +85,11 @@ class Admin extends React.Component {
       downloadCsv,
       enterpriseId,
       lastUpdatedDate,
+      csvLoading,
+      csvError,
     } = this.props;
+
+    const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
 
     return (
       <div>
@@ -135,9 +151,10 @@ class Admin extends React.Component {
                   </div>
                   <div className="col-12 col-md-6 text-md-right">
                     <Button
+                      disabled={csvLoading}
                       label={
                         <span>
-                          <Icon className={['fa', 'fa-download', 'mr-1']} /> Download full report (CSV)
+                          <Icon className={['fa', 'mr-1'].concat(downloadButtonIconClasses)} /> Download full report (CSV)
                         </span>
                       }
                       onClick={() => downloadCsv(enterpriseId)}
@@ -146,6 +163,7 @@ class Admin extends React.Component {
                   </div>
                 </div>
               }
+              {csvError && this.renderCsvErrorMessage()}
               <div className="mt-3 mb-5">
                 <CourseEnrollmentsTable />
               </div>
@@ -173,6 +191,8 @@ Admin.defaultProps = {
   enrolledLearners: null,
   enterpriseId: null,
   lastUpdatedDate: null,
+  csvLoading: null,
+  csvError: null,
 };
 
 Admin.propTypes = {
@@ -189,6 +209,8 @@ Admin.propTypes = {
   lastUpdatedDate: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
+  csvError: PropTypes.instanceOf(Error),
+  csvLoading: PropTypes.bool,
 };
 
 export default Admin;
