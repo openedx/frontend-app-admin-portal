@@ -9,7 +9,7 @@ describe('<ErrorPage />', () => {
     const tree = renderer
       .create((
         <MemoryRouter>
-          <ErrorPage status="500" message="Something went terribly wrong" />
+          <ErrorPage status={500} message="Something went terribly wrong" />
         </MemoryRouter>
       ))
       .toJSON();
@@ -20,7 +20,7 @@ describe('<ErrorPage />', () => {
     const tree = renderer
       .create((
         <MemoryRouter>
-          <ErrorPage status="404" message="Not Found" />
+          <ErrorPage status={404} />
         </MemoryRouter>
       ))
       .toJSON();

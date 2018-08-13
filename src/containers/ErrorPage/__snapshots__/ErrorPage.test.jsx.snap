@@ -45,38 +45,23 @@ exports[`<ErrorPage /> renders correctly for 404 errors 1`] = `
 <div
   className="container"
 >
-  <div>
+  <div
+    className="container mt-3"
+  >
     <div
-      className="row mt-4"
+      className="text-center py-5"
     >
-      <div
-        className="col"
+      <h1>
+        404
+      </h1>
+      <p
+        className="lead"
       >
-        <h1>
-          Error
-        </h1>
-        <div
-          className="alert fade alert-danger show"
-          hidden={false}
-          role="alert"
-        >
-          <div
-            className="alert-dialog"
-          >
-            <div
-              className=""
-            >
-              <div
-                className="message"
-              >
-                <span>
-                  Not Found
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        Oops, sorry we can't find that page!
+      </p>
+      <p>
+        Either something went wrong or the page doesn't exist anymore.
+      </p>
     </div>
   </div>
 </div>

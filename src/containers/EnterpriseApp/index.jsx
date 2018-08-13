@@ -12,7 +12,7 @@ import ErrorPage from '../ErrorPage';
 import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
 
-class App extends React.Component {
+class EnterpriseApp extends React.Component {
   componentDidMount() {
     const { enterpriseSlug } = this.props.match.params;
 
@@ -60,7 +60,7 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+EnterpriseApp.propTypes = {
   getPortalConfiguration: PropTypes.func.isRequired,
   getLocalUser: PropTypes.func.isRequired,
   match: PropTypes.shape({
@@ -73,7 +73,7 @@ App.propTypes = {
   enterpriseId: PropTypes.string,
 };
 
-App.defaultProps = {
+EnterpriseApp.defaultProps = {
   error: null,
   enterpriseId: null,
 };
@@ -92,4 +92,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseApp);
