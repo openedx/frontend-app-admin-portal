@@ -16,10 +16,9 @@ import NotFoundPage from './containers/NotFoundPage';
 import SupportPage from './containers/SupportPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
-import LoginPage from './containers/LoginPage';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import PrivateRoute from './containers/PrivateRoute';
-import LogoutHandler from './containers/LogoutHandler';
+import LogoutRedirect from './components/LogoutRedirect'
 import store from './data/store';
 import './index.scss';
 
@@ -36,8 +35,7 @@ const AppWrapper = () => (
           />
           <Header />
           <Switch>
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/logout" component={LogoutHandler} />
+            <Route exact path="/logout" component={LogoutRedirect} />
             <Route exact path="/support" component={SupportPage} />
             <PrivateRoute exact path="/enterprises" component={EnterpriseIndexPage} />
             <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />

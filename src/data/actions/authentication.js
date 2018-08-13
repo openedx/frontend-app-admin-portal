@@ -12,7 +12,7 @@ import {
 } from '../constants/authentication';
 import LmsApiService from '../services/LmsApiService';
 
-const cookieName = 'access_token';
+const cookieName = 'edx-jwt-cookie';
 
 const fetchLoginRequest = () => ({
   type: FETCH_LOGIN_REQUEST,

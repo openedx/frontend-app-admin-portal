@@ -21,9 +21,7 @@ class LmsApiService {
     const jwtToken = getAccessToken();
 
     return httpClient.get(outlineUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
+      withCredentials: true,
     });
   }
 
@@ -32,9 +30,7 @@ class LmsApiService {
     const jwtToken = getAccessToken();
 
     return httpClient.get(portalConfigurationUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
+      withCredentials: true,
     });
   }
 
@@ -50,9 +46,6 @@ class LmsApiService {
 
     return httpClient.get(enterpriseListUrl, {
       withCredentials: true,
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
     });
   }
 

@@ -68,7 +68,7 @@ describe('actions', () => {
 
       return store.dispatch(login(email, password)).then(() => {
         expect(mockCookies.set).toHaveBeenCalledWith(
-          'access_token',
+          'edx-jwt-cookie',
           responseData.access_token,
           {
             secure: true,

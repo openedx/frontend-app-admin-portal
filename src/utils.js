@@ -21,7 +21,7 @@ const formatTableOptions = options => omitBy({
 
 const getAccessToken = () => {
   const cookies = new Cookies();
-  return cookies.get('access_token');
+  return cookies.get('edx-jwt-cookie');
 };
 
 export {
