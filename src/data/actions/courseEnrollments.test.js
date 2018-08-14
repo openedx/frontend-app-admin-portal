@@ -62,7 +62,7 @@ describe('actions', () => {
     it('dispatches failure action after fetching enrollments', () => {
       const expectedActions = [
         { type: FETCH_COURSE_ENROLLMENTS_REQUEST },
-        { type: FETCH_COURSE_ENROLLMENTS_FAILURE, payload: { error: Error('Network Error') } },
+        { type: FETCH_COURSE_ENROLLMENTS_FAILURE, payload: { error: Error('Request failed with status code 500') } },
       ];
       const store = mockStore();
       const options = {
@@ -71,7 +71,32 @@ describe('actions', () => {
       };
 
       axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
-        .networkError();
+        .replyOnce(500, JSON.stringify({}));
+
+      return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('dispatches success action after 404 response for fetching enrollments', () => {
+      const responseData = {
+        count: 0,
+        num_pages: 0,
+        current_page: 0,
+        results: [],
+      };
+      const expectedActions = [
+        { type: FETCH_COURSE_ENROLLMENTS_REQUEST },
+        { type: FETCH_COURSE_ENROLLMENTS_SUCCESS, payload: { enrollments: responseData } },
+      ];
+      const store = mockStore();
+      const options = {
+        page: 2,
+        page_size: 10,
+      };
+
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/?${qs.stringify(options)}`)
+        .replyOnce(404, JSON.stringify({}));
 
       return store.dispatch(fetchCourseEnrollments(enterpriseId, options)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);

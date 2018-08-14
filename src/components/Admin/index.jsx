@@ -37,13 +37,19 @@ class Admin extends React.Component {
       courseCompletions,
       enrolledLearners,
     } = this.props;
-    let hasAnalyticsData = false;
 
-    [activeLearners, courseCompletions, enrolledLearners, numberOfUsers].forEach((item) => {
-      hasAnalyticsData = item !== null || hasAnalyticsData;
-    });
+    return [activeLearners, courseCompletions, enrolledLearners, numberOfUsers]
+      .some(item => item !== null);
+  }
 
-    return hasAnalyticsData;
+  hasEmptyData() {
+    const {
+      numberOfUsers,
+      courseCompletions,
+      enrolledLearners,
+    } = this.props;
+
+    return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
   }
 
   renderErrorMessage() {
@@ -140,7 +146,7 @@ class Admin extends React.Component {
           <div className="row mt-4">
             <div className="col">
               <H2>Full Report</H2>
-              {!error && !loading &&
+              {!error && !loading && !this.hasEmptyData() &&
                 <div className="row">
                   <div className="col-12 col-md-6 pt-1 pb-3">
                     {lastUpdatedDate &&
