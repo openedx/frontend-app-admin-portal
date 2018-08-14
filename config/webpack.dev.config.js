@@ -12,6 +12,7 @@ module.exports = Merge.smart(commonConfig, {
   entry: [
     // enable react's custom hot dev client so we get errors reported in the browser
     require.resolve('react-dev-utils/webpackHotDevClient'),
+    path.resolve(__dirname, '../src/segment.js'),
     path.resolve(__dirname, '../src/index.jsx'),
   ],
   module: {
