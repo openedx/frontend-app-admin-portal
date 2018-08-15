@@ -22,6 +22,20 @@ import history from './data/history';
 import { isRoutePublic } from './utils';
 import './index.scss';
 
+const routes = [];
+const routeConfig = getRouteConfig();
+routeConfig.publicRoutes.forEach((publicRoute) => {
+  routes.push(<Route exact path={publicRoute.path} component={publicRoute.component} />);
+});
+routeConfig.privateRoutes.forEach((privateRoute) => {
+  routes.push(<PrivateRoute
+    path={privateRoute.path}
+    component={privateRoute.component}
+    authenticatedAPIClient={apiClient}
+    redirect={process.env.BASE_URL + privateRoute.path}
+  />);
+});
+
 const AppWrapper = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
