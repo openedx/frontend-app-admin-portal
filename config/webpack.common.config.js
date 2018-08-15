@@ -4,6 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
+    new_relic: path.resolve(__dirname, '../src/newRelic.js'),
     segment: path.resolve(__dirname, '../src/segment.js'),
     app: path.resolve(__dirname, '../src/index.jsx'),
   },

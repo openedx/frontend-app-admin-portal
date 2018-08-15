@@ -102,6 +102,9 @@ module.exports = Merge.smart(commonConfig, {
       LMS_BASE_URL: 'http://localhost:18000',
       DATA_API_BASE_URL: 'http://localhost:8000',
       LMS_CLIENT_ID: 'CMehRRNqfiBRVJKnPOkjBDjAvurtnHpELoehKAvZ',
+      SEGMENT_KEY: '',
+      NEW_RELIC_APP_ID: '',
+      NEW_RELIC_LICENSE_KEY: '',
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live
