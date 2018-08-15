@@ -1,7 +1,6 @@
 import Cookies from 'universal-cookie';
 import jwtDecode from 'jwt-decode';
 
-import configuration from '../../config';
 import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,
@@ -10,9 +9,9 @@ import {
   LOCAL_USER_LOADED,
   LOCAL_USER_MISSING,
 } from '../constants/authentication';
-import LmsApiService from '../services/LmsApiService';
+import AuthService from '../services/AuthService';
 
-const cookieName = 'access_token';
+const cookieName = 'edx-jwt-cookie-header-payload';
 
 const fetchLoginRequest = () => ({
   type: FETCH_LOGIN_REQUEST,
@@ -28,20 +27,17 @@ const fetchLoginFailure = error => ({
   payload: { error },
 });
 
+const authenticate = () => (
+  (dispatch) => {
+    
+  }
+);
+
 const login = (email, password) => (
   (dispatch) => {
     dispatch(fetchLoginRequest());
-    return LmsApiService.authenticate(email, password)
+    return AuthService.login(email, password)
       .then((response) => {
-        const cookies = new Cookies();
-        cookies.set(
-          cookieName,
-          response.data.access_token,
-          {
-            secure: configuration.SECURE_COOKIES,
-            path: '/',
-          },
-        );
         dispatch(fetchLoginSuccess(email));
       })
       .catch((error) => {
@@ -55,11 +51,10 @@ const logoutEvent = () => ({
 });
 
 const logout = () => ((dispatch) => {
-  const cookies = new Cookies();
-  cookies.remove(cookieName, {
-    path: '/',
-  });
-  dispatch(logoutEvent());
+  return AuthService.logout()
+    .then((response) => {
+      dispatch(logoutEvent());
+    });
 });
 
 // When loading user details from the JWT stored on the local browser

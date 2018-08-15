@@ -129,6 +129,7 @@ module.exports = Merge.smart(commonConfig, {
       DATA_API_BASE_URL: undefined,
       LMS_CLIENT_ID: undefined,
       SEGMENT_KEY: undefined,
+      ACCESS_TOKEN_COOKIE_NAME: undefined,
     }),
   ],
 });

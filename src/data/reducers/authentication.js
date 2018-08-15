@@ -9,7 +9,7 @@ import {
 
 const cookies = new Cookies();
 const authentication = (state = {
-  isAuthenticated: !!cookies.get('access_token'),
+  isAuthenticated: !!cookies.get('edx-jwt-cookie-header-payload'),
   loading: false,
   error: null,
   email: null,
