@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { isNaN, omitBy } from 'lodash';
-import Cookies from 'universal-cookie';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
@@ -19,14 +18,8 @@ const formatTableOptions = options => omitBy({
   page_size: parseInt(options.page_size, 10),
 }, isNaN);
 
-const getAccessToken = () => {
-  const cookies = new Cookies();
-  return cookies.get('access_token');
-};
-
 export {
   formatTableOptions,
   formatTimestamp,
   formatPercentage,
-  getAccessToken,
 };
