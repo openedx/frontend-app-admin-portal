@@ -19,6 +19,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@edx/edx-bootstrap": "^1.0.0",
+    "@edx/frontend-auth": "^1.0.3",
     "@edx/paragon": "^3.4.7",
     "@redux-beacon/segment": "^1.0.0",
     "axios": "^0.18.0",
@@ -51,7 +52,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^9.0.0",
     "babel-jest": "^22.4.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",

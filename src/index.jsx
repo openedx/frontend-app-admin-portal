@@ -8,18 +8,18 @@ import {
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
+import { PrivateRoute } from '@edx/frontend-auth';
 
-import EnterpriseApp from './containers/EnterpriseApp';
+import apiClient from './data/apiClient';
 import NotFoundPage from './containers/NotFoundPage';
-import SupportPage from './containers/SupportPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
-import LoginPage from './containers/LoginPage';
+import SupportPage from './containers/SupportPage';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
-import PrivateRoute from './containers/PrivateRoute';
-import LogoutHandler from './containers/LogoutHandler';
+import EnterpriseApp from './containers/EnterpriseApp';
 import store from './data/store';
 import history from './data/history';
+import { isRoutePublic } from './utils';
 import './index.scss';
 
 const AppWrapper = () => (
@@ -32,12 +32,25 @@ const AppWrapper = () => (
         />
         <Header />
         <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/logout" component={LogoutHandler} />
-          <Route exact path="/support" component={SupportPage} />
-          <PrivateRoute exact path="/enterprises" component={EnterpriseIndexPage} />
-          <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
-          <PrivateRoute exact path="/" component={EnterpriseIndexPage} />
+          <Route exact path="/public/support" component={SupportPage} />
+          <PrivateRoute
+            path="/enterprises"
+            component={EnterpriseIndexPage}
+            authenticatedAPIClient={apiClient}
+            redirect={`${process.env.BASE_URL}/enterprises`}
+          />
+          <PrivateRoute
+            path="/:enterpriseSlug"
+            component={EnterpriseApp}
+            authenticatedAPIClient={apiClient}
+            redirect={process.env.BASE_URL}
+          />
+          <PrivateRoute
+            path="/"
+            component={EnterpriseIndexPage}
+            authenticatedAPIClient={apiClient}
+            redirect={process.env.BASE_URL}
+          />
           <Route component={NotFoundPage} />
         </Switch>
         <Footer />
@@ -46,4 +59,9 @@ const AppWrapper = () => (
   </Provider>
 );
 
-ReactDOM.render(<AppWrapper />, document.getElementById('root'));
+const currentPath = window.location.pathname;
+if (isRoutePublic(currentPath) || apiClient.isAuthenticated()) {
+  ReactDOM.render(<AppWrapper />, document.getElementById('root'));
+} else {
+  apiClient.login(process.env.BASE_URL + currentPath);
+}
