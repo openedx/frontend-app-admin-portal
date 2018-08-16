@@ -6,6 +6,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackNewRelicPlugin = require('html-webpack-new-relic-plugin');
 
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
@@ -131,6 +132,11 @@ module.exports = Merge.smart(commonConfig, {
       SEGMENT_KEY: undefined,
       NEW_RELIC_APP_ID: undefined,
       NEW_RELIC_LICENSE_KEY: undefined,
+    }),
+    new HtmlWebpackNewRelicPlugin({
+      // we use non empty strings as defaults here to prevent errors for empty configs
+      license: process.env.NEW_RELIC_LICENSE_KEY || 'fake_app',
+      applicationID: process.env.NEW_RELIC_APP_ID || 'fake_license',
     }),
   ],
 });
