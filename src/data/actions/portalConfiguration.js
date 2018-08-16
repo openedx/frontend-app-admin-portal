@@ -1,34 +1,18 @@
-import LmsApiService from '../services/LmsApiService';
-
 import {
-  FETCH_PORTAL_CONFIGURATION_REQUEST,
-  FETCH_PORTAL_CONFIGURATION_SUCCESS,
-  FETCH_PORTAL_CONFIGURATION_FAILURE,
+  SET_PORTAL_CONFIGURATION,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
-const fetchPortalConfigurationRequest = () => ({ type: FETCH_PORTAL_CONFIGURATION_REQUEST });
-const fetchPortalConfigurationSuccess = data => ({
-  type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
+const setPortalConfigurationEvent = data => ({
+  type: SET_PORTAL_CONFIGURATION,
   payload: { data },
 });
-const fetchPortalConfigurationFailure = error => ({
-  type: FETCH_PORTAL_CONFIGURATION_FAILURE,
-  payload: { error },
-});
+
 const clearPortalConfigurationEvent = () => ({ type: CLEAR_PORTAL_CONFIGURATION });
 
-const fetchPortalConfiguration = enterpriseSlug => (
+const setPortalConfiguration = enterprise => (
   (dispatch) => {
-    dispatch(fetchPortalConfigurationRequest());
-
-    return LmsApiService.fetchPortalConfiguration(enterpriseSlug)
-      .then((response) => {
-        dispatch(fetchPortalConfigurationSuccess(response.data));
-      })
-      .catch((error) => {
-        dispatch(fetchPortalConfigurationFailure(error));
-      });
+    dispatch(setPortalConfigurationEvent(enterprise));
   }
 );
 
@@ -39,6 +23,6 @@ const clearPortalConfiguration = () => (
 );
 
 export {
-  fetchPortalConfiguration,
+  setPortalConfiguration,
   clearPortalConfiguration,
 };

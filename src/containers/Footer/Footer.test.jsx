@@ -29,6 +29,7 @@ describe('<Footer />', () => {
   it('renders enterprise logo correctly', () => {
     store = mockStore({
       portalConfiguration: {
+        enterpriseName: 'Test Enterprise',
         enterpriseSlug: 'test-enterprise',
         enterpriseLogo: 'https://test.url/image/1.png',
       },

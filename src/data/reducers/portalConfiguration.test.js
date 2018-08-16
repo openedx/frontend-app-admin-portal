@@ -1,23 +1,25 @@
 import portalConfiguration from './portalConfiguration';
 import {
-  FETCH_PORTAL_CONFIGURATION_REQUEST,
-  FETCH_PORTAL_CONFIGURATION_SUCCESS,
-  FETCH_PORTAL_CONFIGURATION_FAILURE,
+  SET_PORTAL_CONFIGURATION,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const initialState = {
-  loading: false,
-  error: null,
   enterpriseId: null,
+  enterpriseName: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
 };
 
-const portalConfigurationData = {
-  enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
-  enterprise_slug: 'test-enterprise',
-  logo: 'https://test.com/media/enterprise/branding/1/1_logo.png',
+const enterpriseData = {
+  uuid: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
+  name: 'Test Enterprise',
+  slug: 'test-enterprise',
+  branding_configuration: {
+    enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
+    enterprise_slug: 'test-enterprise',
+    logo: 'https://s3...',
+  },
 };
 
 describe('portalConfiguration reducer', () => {
@@ -25,45 +27,24 @@ describe('portalConfiguration reducer', () => {
     expect(portalConfiguration(undefined, {})).toEqual(initialState);
   });
 
-  it('updates fetch portalConfiguration request state', () => {
+  it('updates setPortalConfiguration state', () => {
     const expected = {
       ...initialState,
-      loading: true,
+      enterpriseId: enterpriseData.uuid,
+      enterpriseName: enterpriseData.name,
+      enterpriseSlug: enterpriseData.slug,
+      enterpriseLogo: enterpriseData.branding_configuration.logo,
     };
     expect(portalConfiguration(undefined, {
-      type: FETCH_PORTAL_CONFIGURATION_REQUEST,
+      type: SET_PORTAL_CONFIGURATION,
+      payload: { data: enterpriseData },
     })).toEqual(expected);
   });
 
-  it('updates fetch portalConfiguration success state', () => {
-    const expected = {
-      ...initialState,
-      enterpriseId: portalConfigurationData.enterprise_customer,
-      enterpriseSlug: portalConfigurationData.enterprise_slug,
-      enterpriseLogo: portalConfigurationData.logo,
-    };
-    expect(portalConfiguration(undefined, {
-      type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
-      payload: { data: portalConfigurationData },
-    })).toEqual(expected);
-  });
-
-  it('updates fetch portalConfiguration failure state', () => {
-    const error = Error('Network Request');
-    const expected = {
-      ...initialState,
-      error,
-    };
-    expect(portalConfiguration(undefined, {
-      type: FETCH_PORTAL_CONFIGURATION_FAILURE,
-      payload: { error },
-    })).toEqual(expected);
-  });
-
-  it('updates clear portalConfiguration state', () => {
+  it('updates clearPortalConfiguration state', () => {
     portalConfiguration(undefined, {
-      type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
-      payload: { data: portalConfigurationData },
+      type: SET_PORTAL_CONFIGURATION,
+      payload: { data: enterpriseData },
     });
 
     expect(portalConfiguration(undefined, {
