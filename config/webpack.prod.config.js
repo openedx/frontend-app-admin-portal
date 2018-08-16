@@ -129,6 +129,8 @@ module.exports = Merge.smart(commonConfig, {
       DATA_API_BASE_URL: undefined,
       LMS_CLIENT_ID: undefined,
       SEGMENT_KEY: undefined,
+      NEW_RELIC_APP_ID: undefined,
+      NEW_RELIC_LICENSE_KEY: undefined,
     }),
   ],
 });
