@@ -8,42 +8,53 @@ import LinkWrapper from '../LinkWrapper';
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
-const Header = (props) => {
-  const {
-    enterpriseLogo,
-    email,
-  } = props;
+class Header extends React.Component {
+  renderLogo() {
+    const { enterpriseLogo, enterpriseName } = this.props;
+    return (
+      <Img
+        src={enterpriseLogo || EdxLogo}
+        alt={`${enterpriseName || 'edX'} logo`}
+        onError={(e) => { e.target.src = EdxLogo; }}
+      />
+    );
+  }
 
-  return (
-    <header className="container">
-      <nav className="navbar px-0 justify-content-between">
-        <div>
-          <Link
-            to="/"
-            className="navbar-brand"
-          >
-            <Img src={enterpriseLogo || EdxLogo} alt="" />
-          </Link>
-          <span className="badge badge-secondary beta">Beta</span>
-        </div>
-        {email && <Dropdown
-          title={email}
-          menuItems={[
-            <LinkWrapper to="/logout">Logout</LinkWrapper>,
-          ]}
-        />}
-      </nav>
-    </header>
-  );
-};
+  render() {
+    const { email } = this.props;
+    return (
+      <header className="container">
+        <nav className="navbar px-0 justify-content-between">
+          <div>
+            <Link
+              to="/"
+              className="navbar-brand"
+            >
+              {this.renderLogo()}
+            </Link>
+            <span className="badge badge-secondary beta">Beta</span>
+          </div>
+          {email && <Dropdown
+            title={email}
+            menuItems={[
+              <LinkWrapper to="/logout">Logout</LinkWrapper>,
+            ]}
+          />}
+        </nav>
+      </header>
+    );
+  }
+}
 
 Header.propTypes = {
   enterpriseLogo: PropTypes.string,
+  enterpriseName: PropTypes.string,
   email: PropTypes.string,
 };
 
 Header.defaultProps = {
   enterpriseLogo: null,
+  enterpriseName: null,
   email: null,
 };
 

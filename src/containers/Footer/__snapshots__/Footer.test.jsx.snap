@@ -17,7 +17,6 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
       >
         <img
           alt="edX logo"
-          className=""
           src="test-file-stub"
         />
       </a>
@@ -79,11 +78,11 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
     >
       <a
         className="logo"
-        href="https://www.edx.org"
+        href="/"
+        onClick={[Function]}
       >
         <img
           alt="edX logo"
-          className=""
           src="test-file-stub"
         />
       </a>
@@ -93,8 +92,8 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
         onClick={[Function]}
       >
         <img
-          alt=""
-          className=""
+          alt="Test Enterprise logo"
+          onError={[Function]}
           src="https://test.url/image/1.png"
         />
       </a>
