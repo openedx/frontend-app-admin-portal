@@ -3,18 +3,24 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
+import isEmpty from 'lodash/isEmpty';
+import omitBy from 'lodash/omitBy';
 
 import H1 from '../H1';
 import StatusAlert from '../StatusAlert';
+import SearchBar from '../SearchBar';
 import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
+
 import { formatTableOptions } from '../../utils';
 
 class EnterpriseList extends React.Component {
   constructor(props) {
     super(props);
 
-    const { enterprises } = props;
+    const { enterprises, location } = props;
+
+    const queryParams = this.formatQueryParams(qs.parse(location.search));
 
     this.state = {
       columns: [
@@ -25,6 +31,8 @@ class EnterpriseList extends React.Component {
       ],
       enterprises: enterprises && enterprises.results,
       pageCount: enterprises && enterprises.num_pages,
+      searchQuery: queryParams.search || '',
+      searchSubmitted: !!queryParams.search,
     };
 
     this.formatEnterpriseData = this.formatEnterpriseData.bind(this);
@@ -38,13 +46,18 @@ class EnterpriseList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { enterprises } = this.props;
+    const { enterprises, searchQuery } = this.props;
 
     if (enterprises !== prevProps.enterprises) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
         enterprises: enterprises && enterprises.results,
         pageCount: enterprises && enterprises.num_pages,
       });
+    }
+    if (searchQuery !== prevProps.searchQuery) {
+      const options = this.formatQueryParams({ search: searchQuery });
+      this.props.history.push(`?${qs.stringify(options)}`);
+      this.getEnterpriseList(options);
     }
   }
 
@@ -54,6 +67,12 @@ class EnterpriseList extends React.Component {
 
   clearPortalConfiguration() {
     this.props.clearPortalConfiguration();
+  }
+
+  formatQueryParams(options) {
+    return omitBy({
+      search: options.search,
+    }, isEmpty);
   }
 
   formatEnterpriseData(enterprises) {
@@ -71,12 +90,41 @@ class EnterpriseList extends React.Component {
     }));
   }
 
+  handleSearch(query) {
+    this.props.setSearchQuery(query);
+    this.setState({
+      searchQuery: query,
+      searchSubmitted: true,
+    });
+  }
+
+  handleClear() {
+    this.props.setSearchQuery('');
+    this.setState({
+      searchQuery: '',
+    });
+  }
+
+  shouldRenderRedirectToEnterpriseAdminPage() {
+    const { loading, error } = this.props;
+    const { enterprises, pageCount, searchSubmitted } = this.state;
+    return (
+      !loading && !error && enterprises && enterprises.length === 1 &&
+        pageCount === 1 && !searchSubmitted
+    );
+  }
+
   renderEmptyEnterpriseListMessage() {
+    const { searchQuery } = this.props;
+    let emptyMessage = 'You do not have permission to view any enterprise customer data.';
+    if (searchQuery) {
+      emptyMessage = 'There are no enterprise customers that match your search.';
+    }
     return (
       <StatusAlert
         alertType="warning"
         iconClassName={['fa', 'fa-exclamation-circle']}
-        message="You do not have permission to view any enterprise customer data."
+        message={emptyMessage}
       />
     );
   }
@@ -126,8 +174,7 @@ class EnterpriseList extends React.Component {
 
   render() {
     const { loading, error } = this.props;
-    const { enterprises, pageCount } = this.state;
-
+    const { enterprises, searchQuery } = this.state;
     return (
       <div>
         <Helmet>
@@ -135,14 +182,25 @@ class EnterpriseList extends React.Component {
         </Helmet>
         <div className="container">
           <div className="row mt-4">
-            <div className="col">
+            <div className="col-sm-12 col-md">
               <H1>Enterprise List</H1>
+            </div>
+            <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
+              <SearchBar
+                onSearch={query => this.handleSearch(query)}
+                onClear={() => this.handleClear()}
+                value={searchQuery}
+              />
+            </div>
+          </div>
+          <div className="row mt-2">
+            <div className="col">
               {error && this.renderErrorMessage()}
               {loading && !enterprises && this.renderLoadingMessage()}
               {!loading && !error && enterprises && enterprises.length === 0 &&
                 this.renderEmptyEnterpriseListMessage()
               }
-              {!loading && !error && enterprises && enterprises.length === 1 && pageCount === 1 &&
+              {this.shouldRenderRedirectToEnterpriseAdminPage() &&
                 this.renderRedirectToEnterpriseAdminPage()
               }
               {enterprises && enterprises.length > 0 && this.renderTableContent()}
@@ -161,12 +219,17 @@ EnterpriseList.defaultProps = {
   location: {
     search: null,
   },
+  searchQuery: null,
+  history: {
+    push: () => {},
+  },
 };
 
 EnterpriseList.propTypes = {
   getEnterpriseList: PropTypes.func.isRequired,
   clearPortalConfiguration: PropTypes.func.isRequired,
   getLocalUser: PropTypes.func.isRequired,
+  setSearchQuery: PropTypes.func.isRequired,
   enterprises: PropTypes.shape({
     count: PropTypes.number,
     num_pages: PropTypes.number,
@@ -180,6 +243,10 @@ EnterpriseList.propTypes = {
   error: PropTypes.instanceOf(Error),
   location: PropTypes.shape({
     search: PropTypes.string,
+  }),
+  searchQuery: PropTypes.string,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }),
 };
 

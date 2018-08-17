@@ -55,4 +55,14 @@ describe('<EnterpriseIndexPage />', () => {
     wrapper.props().clearPortalConfiguration();
     expect(dispatchSpy).toHaveBeenCalled();
   });
+
+  it('getLocalUser dispatches getLocalUser action', () => {
+    wrapper.props().getLocalUser();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('setSearchQuery dispatches setEnterpriseListSearchQuery action', () => {
+    wrapper.props().setSearchQuery();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
 });

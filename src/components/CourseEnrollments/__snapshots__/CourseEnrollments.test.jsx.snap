@@ -18,13 +18,13 @@ exports[`<CourseEnrollments /> renders correctly with empty enrollment data 1`] 
         <div
           className="icon mr-2"
         >
-          <div>
+          <span>
             <span
               aria-hidden={true}
               className="fa fa-exclamation-circle"
               id="Icon1"
             />
-          </div>
+          </span>
         </div>
         <div
           className="message"
@@ -1641,13 +1641,13 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
                 type="button"
               >
                 <div>
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
                       id="pagination-2"
                     />
-                  </div>
+                  </span>
                   Previous
                 </div>
               </button>
@@ -1667,13 +1667,13 @@ exports[`<CourseEnrollments /> renders correctly with enrollment data 1`] = `
               >
                 <div>
                   Next
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
                       id="pagination-3"
                     />
-                  </div>
+                  </span>
                 </div>
               </button>
             </li>
@@ -1701,13 +1701,13 @@ exports[`<CourseEnrollments /> renders correctly with error state 1`] = `
         <div
           className="icon mr-2"
         >
-          <div>
+          <span>
             <span
               aria-hidden={true}
               className="fa fa-times-circle"
               id="Icon1"
             />
-          </div>
+          </span>
         </div>
         <div
           className="message"

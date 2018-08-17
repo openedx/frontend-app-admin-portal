@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchBar /> renders correctly 1`] = `
+<div
+  className="border search-field"
+  onBlur={[Function]}
+  onFocus={[Function]}
+>
+  <div
+    className="form-group form-inline"
+  >
+    <label
+      className=""
+      htmlFor="asInput2"
+      id="label-asInput2"
+    >
+      Search:
+    </label>
+    <div
+      className="input-group"
+    >
+      <div
+        className="input-group-prepend"
+      />
+      <input
+        aria-describedby="error-asInput2"
+        aria-invalid={false}
+        autoComplete="off"
+        className="form-control is-invalid-nodanger input no-clear-btn"
+        disabled={false}
+        id="asInput2"
+        name="search"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder=""
+        readOnly={false}
+        required={false}
+        themes={Array []}
+        type="search"
+        value=""
+      />
+      <div
+        className="input-group-append"
+      >
+        <button
+          className="btn search-btn"
+          disabled={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          <span>
+            <span
+              aria-hidden={true}
+              className="fa fa-search"
+              id="Icon1"
+            />
+            <span
+              className="sr-only"
+            >
+              Submit search
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      aria-live="polite"
+      className="invalid-feedback invalid-feedback-nodanger"
+      id="error-asInput2"
+    >
+      <span />
+    </div>
+  </div>
+</div>
+`;

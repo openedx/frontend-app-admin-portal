@@ -70,13 +70,13 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
               type="button"
             >
               <span>
-                <div>
+                <span>
                   <span
                     aria-hidden={true}
                     className="fa mr-1 fa-download"
                     id="Icon1"
                   />
-                </div>
+                </span>
                  Download full report (CSV)
               </span>
             </button>
@@ -171,13 +171,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                   <span>
                     3
                   </span>
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-users d-flex align-items-center justify-content-center"
                       id="Icon1"
                     />
-                  </div>
+                  </span>
                 </h5>
                 <p
                   className="card-text"
@@ -202,13 +202,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                   <span>
                     1
                   </span>
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-check d-flex align-items-center justify-content-center"
                       id="Icon1"
                     />
-                  </div>
+                  </span>
                 </h5>
                 <p
                   className="card-text"
@@ -233,13 +233,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                   <span>
                     1
                   </span>
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-eye d-flex align-items-center justify-content-center"
                       id="Icon1"
                     />
-                  </div>
+                  </span>
                 </h5>
                 <p
                   className="card-text"
@@ -264,13 +264,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                   <span>
                     1
                   </span>
-                  <div>
+                  <span>
                     <span
                       aria-hidden={true}
                       className="fa fa-trophy d-flex align-items-center justify-content-center"
                       id="Icon1"
                     />
-                  </div>
+                  </span>
                 </h5>
                 <p
                   className="card-text"
@@ -315,13 +315,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
               type="button"
             >
               <span>
-                <div>
+                <span>
                   <span
                     aria-hidden={true}
                     className="fa mr-1 fa-download"
                     id="Icon1"
                   />
-                </div>
+                </span>
                  Download full report (CSV)
               </span>
             </button>
@@ -412,13 +412,13 @@ exports[`<Admin /> renders correctly with error state 1`] = `
               <div
                 className="icon mr-2"
               >
-                <div>
+                <span>
                   <span
                     aria-hidden={true}
                     className="fa fa-times-circle"
                     id="Icon1"
                   />
-                </div>
+                </span>
               </div>
               <div
                 className="message"
