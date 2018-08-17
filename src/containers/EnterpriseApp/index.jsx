@@ -9,7 +9,7 @@ import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
-import fetchEnterpriseList from '../../data/actions/enterpriseList';
+import { fetchEnterpriseList } from '../../data/actions/enterpriseList';
 import { setPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
 

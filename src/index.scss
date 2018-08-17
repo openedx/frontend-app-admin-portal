@@ -3,3 +3,6 @@
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
+
+@import "~@edx/paragon/src/SearchField/SearchField";
+@import "~@edx/paragon/src/Pagination/Pagination";
