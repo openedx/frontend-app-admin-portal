@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 
-import H2 from '../H2';
+import H1 from '../H1';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
@@ -23,11 +23,11 @@ class EnterpriseList extends React.Component {
           key: 'link',
         },
       ],
-      enterprises: this.formatEnterpriseData(enterprises),
-      pageCount: enterprises ? enterprises.num_pages : null,
+      enterprises: enterprises && enterprises.results,
+      pageCount: enterprises && enterprises.num_pages,
     };
 
-    this.renderTableContent = this.renderTableContent.bind(this);
+    this.formatEnterpriseData = this.formatEnterpriseData.bind(this);
   }
 
   componentDidMount() {
@@ -42,8 +42,8 @@ class EnterpriseList extends React.Component {
 
     if (enterprises !== prevProps.enterprises) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
-        enterprises: this.formatEnterpriseData(enterprises),
-        pageCount: enterprises ? enterprises.num_pages : null,
+        enterprises: enterprises && enterprises.results,
+        pageCount: enterprises && enterprises.num_pages,
       });
     }
   }
@@ -59,12 +59,12 @@ class EnterpriseList extends React.Component {
   formatEnterpriseData(enterprises) {
     if (!enterprises) {
       return null;
-    } else if (!enterprises.results.length) {
+    } else if (!enterprises.length) {
       return [];
     }
 
-    return enterprises.results.map(enterprise => ({
-      link: (<Link to={`/${enterprise.slug}/admin`}>{enterprise.name}</Link>),
+    return enterprises.map(enterprise => ({
+      link: <Link to={`/${enterprise.slug}/admin`}>{enterprise.name}</Link>,
       name: enterprise.name,
       slug: enterprise.slug,
       uuid: enterprise.uuid,
@@ -115,6 +115,7 @@ class EnterpriseList extends React.Component {
         handleDataUpdate={options =>
           this.getEnterpriseList(options)
         }
+        formatData={this.formatEnterpriseData}
       />
     );
   }
@@ -135,18 +136,16 @@ class EnterpriseList extends React.Component {
         <div className="container">
           <div className="row mt-4">
             <div className="col">
-              <H2>Enterprise List</H2>
-              <div className="py-3">
-                {error && this.renderErrorMessage()}
-                {loading && !enterprises && this.renderLoadingMessage()}
-                {!loading && !error && enterprises && enterprises.length === 0 &&
-                  this.renderEmptyEnterpriseListMessage()
-                }
-                {!loading && !error && enterprises && enterprises.length === 1 && pageCount === 1 &&
-                  this.renderRedirectToEnterpriseAdminPage()
-                }
-                {enterprises && enterprises.length > 0 && this.renderTableContent()}
-              </div>
+              <H1>Enterprise List</H1>
+              {error && this.renderErrorMessage()}
+              {loading && !enterprises && this.renderLoadingMessage()}
+              {!loading && !error && enterprises && enterprises.length === 0 &&
+                this.renderEmptyEnterpriseListMessage()
+              }
+              {!loading && !error && enterprises && enterprises.length === 1 && pageCount === 1 &&
+                this.renderRedirectToEnterpriseAdminPage()
+              }
+              {enterprises && enterprises.length > 0 && this.renderTableContent()}
             </div>
           </div>
         </div>
