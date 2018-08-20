@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 import { Pagination, Table } from '@edx/paragon';
+import { orderBy } from 'lodash';
 import 'font-awesome/css/font-awesome.css';
 
 import { formatTableOptions } from '../../utils';
@@ -21,6 +22,7 @@ class TableWithPagination extends React.Component {
       currentPage: queryParams.page,
       pageSize: queryParams.page_size,
       ordering: queryParams.ordering,
+      tableData: this.props.data,
     };
 
     this.handleTablePageSelect = this.handleTablePageSelect.bind(this);
@@ -58,6 +60,7 @@ class TableWithPagination extends React.Component {
   }
 
   handleSortTableColumn({ key, direction }) {
+    const { pageCount } = this.props;
     const ordering = direction === 'asc' ? key : `-${key}`;
     const options = formatTableOptions({
       ordering,
@@ -66,23 +69,50 @@ class TableWithPagination extends React.Component {
     this.props.history.push(`?${qs.stringify(options)}`);
     this.setState({
       ordering,
-      currentPage: 1,
     });
-    this.props.handleDataUpdate(options);
+    if (pageCount > 1) {
+      this.setState({
+        currentPage: 1,
+      });
+      this.props.handleDataUpdate(options);
+    } else {
+      this.sortTableData({ key, direction });
+    }
+  }
+
+  sortTableData({ key, direction }) {
+    const { tableData } = this.state;
+    // `parseKeyValue` adjusts the key's value into its appropriate data type to ensure
+    // proper sorting and sort order (e.g., asc/desc). A numeric value (even if passed in
+    // as a string) must be parsed as an actual numeric value. An empty value (e.g., null,
+    // undefined) must be parsed as an empty string to ensure the empty values are forced
+    // to the top in an ascending sort order.
+    const parseKeyValue = (obj) => {
+      const value = obj[key] ? obj[key].trim() : '';
+      if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
+        return parseFloat(value);
+      }
+      return value;
+    };
+    const sortedTableData = orderBy(tableData, parseKeyValue, [direction]);
+    this.setState({
+      tableData: sortedTableData,
+    });
   }
 
   render() {
     const {
       className,
-      data,
       paginationLabel,
       pageCount,
       tableSortable,
+      formatData,
     } = this.props;
     const {
       columns,
       currentPage,
       ordering,
+      tableData,
     } = this.state;
 
     let sortDirection;
@@ -101,7 +131,7 @@ class TableWithPagination extends React.Component {
               <Table
                 className={['table-sm', 'table-striped']}
                 columns={columns}
-                data={data}
+                data={formatData(tableData)}
                 tableSortable={tableSortable}
                 defaultSortedColumn={sortColumn}
                 defaultSortDirection={sortDirection}
@@ -136,6 +166,7 @@ TableWithPagination.defaultProps = {
 TableWithPagination.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  formatData: PropTypes.func.isRequired,
   pageCount: PropTypes.number.isRequired,
   paginationLabel: PropTypes.string.isRequired,
   handleDataUpdate: PropTypes.func.isRequired,
