@@ -29,10 +29,11 @@ class TableWithPagination extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { handleDataUpdate, location } = this.props;
-    if (location !== prevProps.location) {
-      const options = formatTableOptions(qs.parse(location.search));
-      handleDataUpdate(options);
+    const { data } = this.props;
+    if (data !== prevProps.data) {
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
+        tableData: data,
+      });
     }
   }
 
