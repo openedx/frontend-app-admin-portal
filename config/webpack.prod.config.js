@@ -7,6 +7,9 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackNewRelicPlugin = require('html-webpack-new-relic-plugin');
+const ChunkRenamePlugin = require('chunk-rename-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
@@ -113,6 +116,10 @@ module.exports = Merge.smart(commonConfig, {
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
   plugins: [
+    // Cleans the dist directory before each build
+    new CleanWebpackPlugin(['dist'], {
+      root: path.join(__dirname, '../'),
+    }),
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
@@ -122,7 +129,9 @@ module.exports = Merge.smart(commonConfig, {
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
       favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
+      excludeAssets: [/\/demoDataLoader.*.js/],
     }),
+    new HtmlWebpackExcludeAssetsPlugin(),
     new webpack.EnvironmentPlugin({
       // default values of undefined to force definition in the environment at build time
       NODE_ENV: 'production',
@@ -137,6 +146,9 @@ module.exports = Merge.smart(commonConfig, {
       // we use non empty strings as defaults here to prevent errors for empty configs
       license: process.env.NEW_RELIC_LICENSE_KEY || 'fake_app',
       applicationID: process.env.NEW_RELIC_APP_ID || 'fake_license',
+    }),
+    new ChunkRenamePlugin({
+      demoDataLoader: 'demoDataLoader.js',
     }),
   ],
 });

@@ -14,6 +14,9 @@ module.exports = Merge.smart(commonConfig, {
     require.resolve('react-dev-utils/webpackHotDevClient'),
     path.resolve(__dirname, '../src/segment.js'),
     path.resolve(__dirname, '../src/index.jsx'),
+
+    // Uncomment this entrypoint to return static demo data instead of calling the data-api
+    // path.resolve(__dirname, '../src/demo/index.js'),
   ],
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
