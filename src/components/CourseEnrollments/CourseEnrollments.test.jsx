@@ -80,29 +80,7 @@ describe('<CourseEnrollments />', () => {
   });
 
   describe('formatEnrollmentData', () => {
-    const expectedData = [{
-      ...mockCourseEnrollments.results[0],
-      course_start: 'September 1, 2016',
-      course_end: 'December 1, 2016',
-      current_grade: '80%',
-      course_price: '$200',
-      has_passed: 'Yes',
-      last_activity_date: 'June 23, 2017',
-      passed_timestamp: 'May 9, 2017',
-      enrollment_created_timestamp: 'June 27, 2014',
-      user_account_creation_timestamp: 'February 12, 2015',
-    }, {
-      ...mockCourseEnrollments.results[1],
-      course_start: 'September 1, 2016',
-      course_end: 'December 1, 2016',
-      current_grade: '',
-      course_price: '$200',
-      has_passed: 'No',
-      last_activity_date: null,
-      passed_timestamp: 'Has not passed',
-      enrollment_created_timestamp: 'June 27, 2014',
-      user_account_creation_timestamp: 'February 12, 2015',
-    }];
+    const expectedData = mockCourseEnrollments.results;
 
     beforeEach(() => {
       wrapper = shallow((
