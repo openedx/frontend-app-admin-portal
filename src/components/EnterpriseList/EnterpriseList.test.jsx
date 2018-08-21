@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { MemoryRouter, Redirect } from 'react-router-dom';
+import { Link, MemoryRouter, Redirect } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
 
 import EnterpriseList from './index';
@@ -114,7 +114,13 @@ describe('<EnterpriseList />', () => {
   });
 
   describe('formatEnterpriseData', () => {
-    const expectedData = mockEnterpriseList.results;
+    const expectedData = [{
+      ...mockEnterpriseList.results[0],
+      link: (<Link replace={false} to="/enterprise-1/admin">Enterprise 1</Link>),
+    }, {
+      ...mockEnterpriseList.results[1],
+      link: (<Link replace={false} to="/enterprise-2/admin">Enterprise 2</Link>),
+    }];
 
     beforeEach(() => {
       wrapper = shallow((

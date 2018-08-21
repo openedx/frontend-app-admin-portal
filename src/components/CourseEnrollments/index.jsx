@@ -59,11 +59,11 @@ export class CourseEnrollments extends React.Component {
           columnSortable: true,
         },
       ],
-      enrollments: enrollments && enrollments.results,
-      pageCount: enrollments && enrollments.num_pages,
+      enrollments: this.formatEnrollmentData(enrollments),
+      pageCount: enrollments ? enrollments.num_pages : null,
     };
 
-    this.formatEnrollmentData = this.formatEnrollmentData.bind(this);
+    this.renderTableContent = this.renderTableContent.bind(this);
   }
 
   componentDidMount() {
@@ -80,8 +80,8 @@ export class CourseEnrollments extends React.Component {
 
     if (enrollments !== prevProps.enrollments) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
-        enrollments: enrollments && enrollments.results,
-        pageCount: enrollments && enrollments.num_pages,
+        enrollments: this.formatEnrollmentData(enrollments),
+        pageCount: enrollments ? enrollments.num_pages : null,
       });
     }
 
@@ -105,11 +105,11 @@ export class CourseEnrollments extends React.Component {
   formatEnrollmentData(enrollments) {
     if (!enrollments) {
       return null;
-    } else if (!enrollments.length) {
+    } else if (!enrollments.results.length) {
       return [];
     }
 
-    return enrollments.map(enrollment => ({
+    return enrollments.results.map(enrollment => ({
       ...enrollment,
       last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
       course_start: formatTimestamp({ timestamp: enrollment.course_start }),
@@ -165,7 +165,6 @@ export class CourseEnrollments extends React.Component {
         handleDataUpdate={options =>
           this.getCourseEnrollments(this.props.enterpriseId, options)
         }
-        formatData={this.formatEnrollmentData}
       />
     );
   }

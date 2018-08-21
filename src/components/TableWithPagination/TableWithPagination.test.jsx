@@ -13,7 +13,6 @@ const TableWithPaginationWrapper = props => (
       pageCount={props.pageCount}
       data={[]}
       paginationLabel="pagination"
-      formatData={data => data}
       {...props}
     />
   </MemoryRouter>
