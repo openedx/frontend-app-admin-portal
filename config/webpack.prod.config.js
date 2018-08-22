@@ -111,7 +111,10 @@ module.exports = Merge.smart(commonConfig, {
           enforce: true,
         },
       },
-      chunks: 'all',
+      chunks(chunk) {
+        // Exclude demoDataLoader from chunking
+        return chunk.name !== 'demoDataLoader';
+      },
     },
   },
   // Specify additional processing or side-effects done on the Webpack output bundles as a whole.
