@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from 'faker/locale/en';
 import courses from './courses';
 
 const numEnrollments = 330;
