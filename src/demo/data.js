@@ -2,13 +2,14 @@ import faker from 'faker/locale/en';
 import courses from './courses';
 
 const numEnrollments = 330;
-const percentPassed = 0.45;
+const percentPassed = 0.70;
 const percentActive = 0.35;
 
 const enrollments = [...Array(numEnrollments)].map((_, idx) => {
   // Although we don't pass first & lastname, this makes our emails more consistent
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
+  const provider = 'bestrun.com';
 
   const course = courses[faker.random.number({ max: courses.length - 1 })];
   const courseStart = faker.date.past();
@@ -20,7 +21,7 @@ const enrollments = [...Array(numEnrollments)].map((_, idx) => {
   // TODO: we could generate all columns so we could easily fake the csv call as well
   return {
     id: idx,
-    user_email: faker.internet.email(firstName, lastName),
+    user_email: faker.internet.email(firstName, lastName, provider),
     course_title: course.title,
     course_price: course.price,
     course_start: courseStart,
