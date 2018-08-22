@@ -89,7 +89,7 @@ class TableWithPagination extends React.Component {
     // undefined) must be parsed as an empty string to ensure the empty values are forced
     // to the top in an ascending sort order.
     const parseKeyValue = (obj) => {
-      const value = obj[key] ? obj[key].trim() : '';
+      const value = obj[key] || '';
       if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
         return parseFloat(value);
       }
