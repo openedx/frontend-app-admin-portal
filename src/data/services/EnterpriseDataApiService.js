@@ -2,7 +2,6 @@ import qs from 'query-string';
 
 import config from '../../config';
 import httpClient from '../../httpClient';
-import { getAccessToken } from '../../utils';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
@@ -15,34 +14,17 @@ class EnterpriseDataApiService {
       ...options,
     };
     const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/?${qs.stringify(queryParams)}`;
-    const jwtToken = getAccessToken();
-
-    return httpClient.get(enrollmentsUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
+    return httpClient.get(enrollmentsUrl);
   }
 
   static fetchCourseEnrollmentsCsv(enterpriseId) {
     const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
-    const jwtToken = getAccessToken();
-    return httpClient.get(csvUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
+    return httpClient.get(csvUrl);
   }
 
   static fetchDashboardAnalytics(enterpriseId) {
     const analyticsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
-    const jwtToken = getAccessToken();
-
-    return httpClient.get(analyticsUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
+    return httpClient.get(analyticsUrl);
   }
 }
 
