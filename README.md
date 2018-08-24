@@ -43,9 +43,7 @@ The edx-portal first needs permission to communicate with the LMS. These permiss
 5. Set the "Authorization grant type" to "Resource owner password-based"
 6. Click "Save"
 
-With the application created, you should take note of the "Client ID" value for the user you just created (it is a jumble of numbers and letters). In your `edx-portal` checkout, in `config/webpack.dev.config.js`, set the `LMS_CLIENT_ID` variable's value to the Client ID value.
-
-NOTE: if your edx-platform application is running when you update the `LMS_CLIENT_ID`, you will need to restart it.
+With the application created, you should take note of the "Client ID" value for the user you just created (it is a jumble of numbers and letters). In your `edx-portal` checkout, in `config/webpack.dev.config.js`, set the `LMS_CLIENT_ID` variable's value to the "Client ID" value.
 
 #### Enterprise Customer
 
@@ -75,7 +73,7 @@ $ npm start
 
 2. Login with credentials that you could log into your local edx-platform with
 
-3. See a data displayed that would
+3. See data displayed in the the portal
 
 ## Using Demo Data
 This frontend application uses the [edx-enterprise-data-api](https://github.com/edx/edx-analytics-data-api/) as a backend API for data.
