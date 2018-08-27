@@ -8,8 +8,6 @@ import LoadingMessage from '../LoadingMessage';
 import TableWithPagination from '../TableWithPagination';
 import { formatTableOptions, formatTimestamp, formatPercentage } from '../../utils';
 
-import './CourseEnrollments.scss';
-
 export class CourseEnrollments extends React.Component {
   constructor(props) {
     super(props);
