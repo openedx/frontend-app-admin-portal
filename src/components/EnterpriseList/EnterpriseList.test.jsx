@@ -12,6 +12,7 @@ const EnterpriseListWrapper = props => (
       getEnterpriseList={() => {}}
       clearPortalConfiguration={() => {}}
       getLocalUser={() => {}}
+      setSearchQuery={() => {}}
       {...props}
     />
   </MemoryRouter>
@@ -66,6 +67,23 @@ describe('<EnterpriseList />', () => {
       expect(tree).toMatchSnapshot();
     });
 
+    it('with search query and empty enrollment data', () => {
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper
+            enterprises={{
+              ...mockEnterpriseList,
+              count: 0,
+              results: [],
+            }}
+            searchQuery="enterprise name"
+            searchSubmitted
+          />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+
     it('with error state', () => {
       const tree = renderer
         .create((
@@ -105,6 +123,7 @@ describe('<EnterpriseList />', () => {
             getEnterpriseList={() => {}}
             clearPortalConfiguration={() => {}}
             getLocalUser={() => {}}
+            setSearchQuery={() => {}}
           />
         </MemoryRouter>
       ));
@@ -159,11 +178,65 @@ describe('<EnterpriseList />', () => {
   });
 
   it('pageCount state should be null when enterprises prop is null', () => {
-    wrapper = mount((
+    wrapper = shallow((
       <EnterpriseListWrapper
         enterprises={null}
       />
-    ));
-    expect(wrapper.find('EnterpriseList').instance().state.pageCount).toEqual(null);
+    )).find('EnterpriseList');
+    expect(wrapper.dive().state('pageCount')).toEqual(null);
+  });
+
+  describe('enterprise list search', () => {
+    const submitSearch = (searchQuery) => {
+      wrapper.find('SearchBar').find('input[type=\'search\']').simulate('change', { target: { value: searchQuery } });
+      expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual(searchQuery);
+      wrapper.find('SearchBar').find('.input-group-append').find('button').last()
+        .simulate('click');
+      expect(wrapper.find('EnterpriseList').instance().state.searchQuery).toEqual(searchQuery);
+      expect(wrapper.find('EnterpriseList').instance().state.searchSubmitted).toBeTruthy();
+    };
+
+    it('searchQuery state changes onSearch', () => {
+      wrapper = mount((
+        <EnterpriseListWrapper
+          enterprises={mockEnterpriseList}
+        />
+      ));
+
+      submitSearch('Enterprise 1');
+    });
+
+    it('searchQuery state changes onClear', () => {
+      wrapper = mount((
+        <EnterpriseListWrapper
+          enterprises={mockEnterpriseList}
+        />
+      ));
+
+      submitSearch('Enterprise 1');
+
+      wrapper.find('SearchBar').find('.input-group-append').find('button').first()
+        .simulate('click');
+      expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual('');
+      expect(wrapper.find('EnterpriseList').instance().state.searchQuery).toEqual('');
+    });
+
+    it('dispatches enterprise list request action when searchQuery prop changes', () => {
+      const searchQuery = 'enterprise name';
+      const mockGetEnterpriseList = jest.fn();
+      wrapper = shallow((
+        <EnterpriseListWrapper
+          enterprises={mockEnterpriseList}
+          getEnterpriseList={mockGetEnterpriseList}
+        />
+      )).find('EnterpriseList');
+
+      wrapper.dive().setProps({
+        searchQuery,
+      }, () => {
+        expect(wrapper.dive().state('searchQuery')).toEqual(searchQuery);
+        expect(mockGetEnterpriseList).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 });

@@ -13,13 +13,13 @@ exports[`<NumberCard /> renders correctly 1`] = `
       <span>
         10
       </span>
-      <div>
+      <span>
         <span
           aria-hidden={true}
           className="fa fa-users d-flex align-items-center justify-content-center"
           id="Icon1"
         />
-      </div>
+      </span>
     </h5>
     <p
       className="card-text"

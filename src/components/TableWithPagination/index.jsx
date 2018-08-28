@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 import { Pagination, Table } from '@edx/paragon';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import 'font-awesome/css/font-awesome.css';
 
 import { formatTableOptions } from '../../utils';

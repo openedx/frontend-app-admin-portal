@@ -3,12 +3,14 @@ import {
   FETCH_ENTERPRISE_LIST_REQUEST,
   FETCH_ENTERPRISE_LIST_SUCCESS,
   FETCH_ENTERPRISE_LIST_FAILURE,
+  SET_ENTERPRISE_LIST_SEARCH_QUERY,
 } from '../constants/enterpriseList';
 
 const initialState = {
   enterprises: null,
   loading: false,
   error: null,
+  searchQuery: null,
 };
 
 describe('enterpriseList reducer', () => {
@@ -60,6 +62,18 @@ describe('enterpriseList reducer', () => {
     expect(enterpriseList(undefined, {
       type: FETCH_ENTERPRISE_LIST_FAILURE,
       payload: { error },
+    })).toEqual(expected);
+  });
+
+  it('updates state on set search query', () => {
+    const searchQuery = 'foobar';
+    const expected = {
+      ...initialState,
+      searchQuery,
+    };
+    expect(enterpriseList(undefined, {
+      type: SET_ENTERPRISE_LIST_SEARCH_QUERY,
+      payload: { searchQuery },
     })).toEqual(expected);
   });
 });

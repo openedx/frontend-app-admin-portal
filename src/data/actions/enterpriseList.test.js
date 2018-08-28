@@ -4,11 +4,12 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
-import fetchEnterpriseList from './enterpriseList';
+import { fetchEnterpriseList, setEnterpriseListSearchQuery } from './enterpriseList';
 import {
   FETCH_ENTERPRISE_LIST_REQUEST,
   FETCH_ENTERPRISE_LIST_SUCCESS,
   FETCH_ENTERPRISE_LIST_FAILURE,
+  SET_ENTERPRISE_LIST_SEARCH_QUERY,
 } from '../constants/enterpriseList';
 
 const mockStore = configureMockStore([thunk]);
@@ -71,6 +72,15 @@ describe('actions', () => {
       return store.dispatch(fetchEnterpriseList(options)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+    });
+
+    it('dispatches setSearchQuery', () => {
+      const expectedActions = [
+        { type: SET_ENTERPRISE_LIST_SEARCH_QUERY, payload: { searchQuery: 'foobar' } },
+      ];
+      const store = mockStore();
+      store.dispatch(setEnterpriseListSearchQuery('foobar'));
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });

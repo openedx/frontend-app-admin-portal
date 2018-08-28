@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isNaN, omitBy } from 'lodash';
+import omitBy from 'lodash/omitBy';
 import Cookies from 'universal-cookie';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -17,7 +17,7 @@ const formatTableOptions = options => omitBy({
   ...options,
   page: parseInt(options.page, 10),
   page_size: parseInt(options.page_size, 10),
-}, isNaN);
+}, Number.isNaN);
 
 const getAccessToken = () => {
   const cookies = new Cookies();
