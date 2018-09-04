@@ -89,6 +89,7 @@ class Admin extends React.Component {
       error,
       loading,
       downloadCsv,
+      resetInitialState,
       enterpriseId,
       lastUpdatedDate,
       csvLoading,
@@ -106,7 +107,14 @@ class Admin extends React.Component {
         <div className="container">
           <div className="row mt-4">
             <div className="col">
-              <H2>Overview</H2>
+              <div className="row">
+                <H2>Overview</H2>
+                <Button
+                  label="RESET"
+                  onClick={() => resetInitialState(enterpriseId)}
+                  className={['btn-link']}
+                />
+              </div>
               {error && this.renderErrorMessage()}
               {loading && this.renderLoadingMessage()}
               {!loading && !error && this.hasAnalyticsData() &&
@@ -204,6 +212,7 @@ Admin.defaultProps = {
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
   downloadCsv: PropTypes.func.isRequired,
+  resetInitialState: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,

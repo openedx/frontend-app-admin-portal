@@ -24,6 +24,9 @@ const mapDispatchToProps = dispatch => ({
   downloadCsv: (enterpriseId) => {
     dispatch(fetchCsv(enterpriseId));
   },
+  resetInitialState: (enterpriseId) => {
+    dispatch(fetchDashboardAnalytics(enterpriseId));
+  },
 });
 
 const AdminPage = connect(
