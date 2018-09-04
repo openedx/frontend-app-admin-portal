@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { Button } from '@edx/paragon';
 
 import Admin from './index';
 
@@ -41,6 +42,7 @@ const AdminWrapper = props => (
       <Admin
         getDashboardAnalytics={() => {}}
         downloadCsv={() => {}}
+        resetInitialState={() => {}}
         {...props}
       />
     </ContextProvider>
@@ -97,6 +99,16 @@ describe('<Admin />', () => {
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
+    });
+
+    it('calls resetInitialState prop', () => {
+      const mockResetInitialState = jest.fn();
+      const wrapper = mount((
+        <Button onClick={mockResetInitialState}>RESET</Button>
+      ));
+
+      wrapper.find('button').at(0).simulate('click');
+      expect(mockResetInitialState).toHaveBeenCalledTimes(1);
     });
   });
 

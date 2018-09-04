@@ -51,4 +51,9 @@ describe('<AdminPage />', () => {
     wrapper.props().getDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
     expect(dispatchSpy).toHaveBeenCalled();
   });
+
+  it('resetInitialState dispatches fetchDashboardAnalytics action', () => {
+    wrapper.props().resetInitialState('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
 });
