@@ -10,6 +10,7 @@ import { formatTableOptions } from '../../utils';
 
 import './TableWithPagination.scss';
 
+
 class TableWithPagination extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +58,7 @@ class TableWithPagination extends React.Component {
     this.setState({
       currentPage: page,
     });
-    this.props.handleDataUpdate(options);
+    this.props.paginateTable(options);
   }
 
   handleSortTableColumn({ key, direction }) {
@@ -75,7 +76,7 @@ class TableWithPagination extends React.Component {
       this.setState({
         currentPage: 1,
       });
-      this.props.handleDataUpdate(options);
+      this.props.sortTable(options);
     } else {
       this.sortTableData({ key, direction });
     }
@@ -170,7 +171,8 @@ TableWithPagination.propTypes = {
   formatData: PropTypes.func.isRequired,
   pageCount: PropTypes.number.isRequired,
   paginationLabel: PropTypes.string.isRequired,
-  handleDataUpdate: PropTypes.func.isRequired,
+  paginateTable: PropTypes.func.isRequired,
+  sortTable: PropTypes.func.isRequired,
   className: PropTypes.string,
   location: PropTypes.shape({
     search: PropTypes.string,

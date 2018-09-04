@@ -8,7 +8,10 @@ import Hero from '../../components/Hero';
 import NumberCard from '../../components/NumberCard';
 import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
-import CourseEnrollmentsTable from '../../containers/CourseEnrollmentsTable';
+import TableContainer from '../../containers/TableContainer';
+
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+
 
 import { formatTimestamp } from '../../utils';
 
@@ -171,7 +174,7 @@ class Admin extends React.Component {
               }
               {csvError && this.renderCsvErrorMessage()}
               <div className="mt-3 mb-5">
-                <CourseEnrollmentsTable />
+                <TableContainer id="enrollments" fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments} />
               </div>
             </div>
           </div>
