@@ -1,31 +1,136 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<NumberCard /> renders correctly 1`] = `
+exports[`<NumberCard /> renders correctly with detail actions 1`] = `
 <div
-  className="card number-card test-class"
+  className="number-card has-details"
 >
   <div
-    className="card-body"
+    className="card test-class"
   >
-    <h5
-      className="card-title d-flex align-items-center justify-content-between"
+    <div
+      className="card-body"
+    >
+      <h5
+        className="card-title d-flex align-items-center justify-content-between"
+      >
+        <span>
+          10
+        </span>
+        <span>
+          <span
+            aria-hidden={true}
+            className="fa fa-users d-flex align-items-center justify-content-center"
+            id="Icon1"
+          />
+        </span>
+      </h5>
+      <p
+        className="card-text"
+      >
+        This describes the data!
+      </p>
+    </div>
+  </div>
+  <div
+    className="card-footer"
+  >
+    <div
+      className="footer-title d-flex justify-content-between align-items-center"
     >
       <span>
-        10
+        Details
       </span>
-      <span>
-        <span
-          aria-hidden={true}
-          className="fa fa-users d-flex align-items-center justify-content-center"
-          id="Icon1"
-        />
-      </span>
-    </h5>
-    <p
-      className="card-text"
+      <button
+        className="btn toggle-collapse btn-link"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        <span>
+          <span
+            aria-hidden={true}
+            className="fa fa-caret-down"
+            id="Icon1"
+          />
+          <span
+            className="sr-only"
+          >
+            Show details
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      className="footer-body  mt-1 d-none"
     >
-      This describes the data!
-    </p>
+      <a
+        className="btn btn-link"
+        href="/action-1"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      >
+        <div
+          className="d-flex justify-content-between align-items-center"
+        >
+          <span
+            className="label"
+          >
+            Action 1
+          </span>
+        </div>
+      </a>
+      <a
+        className="btn btn-link"
+        href="/action-2"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      >
+        <div
+          className="d-flex justify-content-between align-items-center"
+        >
+          <span
+            className="label"
+          >
+            Action 2
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<NumberCard /> renders correctly without detail actions 1`] = `
+<div
+  className="number-card"
+>
+  <div
+    className="card test-class"
+  >
+    <div
+      className="card-body"
+    >
+      <h5
+        className="card-title d-flex align-items-center justify-content-between"
+      >
+        <span>
+          10
+        </span>
+        <span>
+          <span
+            aria-hidden={true}
+            className="fa fa-users d-flex align-items-center justify-content-center"
+            id="Icon1"
+          />
+        </span>
+      </h5>
+      <p
+        className="card-text"
+      >
+        This describes the data!
+      </p>
+    </div>
   </div>
 </div>
 `;

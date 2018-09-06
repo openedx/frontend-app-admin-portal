@@ -144,6 +144,9 @@ module.exports = Merge.smart(commonConfig, {
       SEGMENT_KEY: undefined,
       NEW_RELIC_APP_ID: undefined,
       NEW_RELIC_LICENSE_KEY: undefined,
+      FEATURE_FLAGS: {
+        DASHBOARD_V2: false,
+      },
     }),
     new HtmlWebpackNewRelicPlugin({
       // we use non empty strings as defaults here to prevent errors for empty configs

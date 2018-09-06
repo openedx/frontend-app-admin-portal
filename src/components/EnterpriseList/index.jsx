@@ -37,7 +37,7 @@ class EnterpriseList extends React.Component {
   }
 
   formatEnterpriseData = enterprises => enterprises.map(enterprise => ({
-    link: <Link to={`/${enterprise.slug}/admin`}>{enterprise.name}</Link>,
+    link: <Link to={`/${enterprise.slug}/admin/learners`}>{enterprise.name}</Link>,
     name: enterprise.name,
     slug: enterprise.slug,
     uuid: enterprise.uuid,
@@ -70,7 +70,7 @@ class EnterpriseList extends React.Component {
   renderRedirectToEnterpriseAdminPage() {
     const { results } = this.props.enterprisesData;
     return (
-      <Redirect to={`/${results[0].slug}/admin`} />
+      <Redirect to={`/${results[0].slug}/admin/learners`} />
     );
   }
 

@@ -8,7 +8,9 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
     <div
       className="text-center py-5"
     >
-      <h1>
+      <h1
+        className={null}
+      >
         404
       </h1>
       <p

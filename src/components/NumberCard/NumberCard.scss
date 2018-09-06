@@ -1,16 +1,109 @@
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/_mixins.scss";
+
+$viewport-size-details-overlay: 'md';
+$number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+
 .number-card {
-    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    box-shadow: $number-card-box-shadow;
+    position: relative;
+
+    &.has-details {
+        .card {
+            border-bottom: 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    @include media-breakpoint-up($viewport-size-details-overlay) {
+        &.has-details {
+            margin-bottom: 53px; // height of collapsed .card-footer
+        }
+    }
     
     .card-title {
         font-size: 2.5rem;
     }
 
-    .fa {
-        background: #dceef7;
-        color: #005686;
-        font-size: 1.5rem;
-        border-radius: 100%;
-        width: 3.75rem;
-        height: 3.75rem;
+    .card-body {
+        .fa {
+            background: #dceef7;
+            color: #005686;
+            font-size: 1.5rem;
+            border-radius: 100%;
+            width: 3.75rem;
+            height: 3.75rem;
+        }
+    }
+
+    .card-footer {
+        position: relative;
+        font-size: 0.875rem;
+        background: #ffffff;
+        padding: 0.75em 0;
+        border: $card-border-width solid $card-border-color;
+        @include border-radius($card-border-radius);
+
+        @include media-breakpoint-up($viewport-size-details-overlay) {
+            & {
+                position: absolute;
+                z-index: 2000;
+                top: 100%;
+                width: 100%;
+                box-shadow: $number-card-box-shadow;
+            }
+        }
+    
+        .footer-title {
+            font-weight: 600;
+        }
+    
+        .footer-title {
+            padding: 0 1.25rem;
+        }
+    
+        .toggle-collapse {
+            color: #005686;
+            padding: 4px;
+    
+            &:focus {
+                box-shadow: $input-btn-focus-box-shadow;
+            }
+        }
+    
+        .footer-body {
+            .btn {
+                display: block;
+                width: 100%;
+                font-size: 0.875rem;
+                padding: 0.5rem 1.25rem;
+                text-align: left;
+                text-decoration: none;
+                border-radius: 0;
+                justify-content: space-between;
+                align-content: center;
+                color: #005686;
+    
+                &:hover {
+                    background: lighten(#dceef7, 3%);
+                    color: #005686;
+                }
+    
+                &:focus {
+                    box-shadow: $input-btn-focus-box-shadow;
+                    color: #005686;
+                }
+    
+                &.active {
+                    background: #dceef7;
+                }
+    
+                span.label {
+                    white-space: normal;
+                }
+            }
+        }
     }
 }

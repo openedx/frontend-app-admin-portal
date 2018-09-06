@@ -4,7 +4,9 @@ exports[`<SupportPage /> renders correctly 1`] = `
 <div
   className="container mt-3"
 >
-  <h1>
+  <h1
+    className={null}
+  >
     Support
   </h1>
   <p>

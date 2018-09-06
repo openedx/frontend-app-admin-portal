@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import fetchDashboardAnalytics from '../../data/actions/dashboardAnalytics';
 import fetchCsv from '../../data/actions/courseEnrollments';
@@ -26,9 +27,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const AdminPage = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Admin);
-
-export default AdminPage;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Admin));

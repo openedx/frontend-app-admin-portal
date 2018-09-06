@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { MailtoLink, Button, Icon } from '@edx/paragon';
+import { Link } from 'react-router-dom';
 
 import H2 from '../../components/H2';
+import H3 from '../../components/H3';
 import Hero from '../../components/Hero';
-import NumberCard from '../../components/NumberCard';
 import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
+import AdminCards from '../../containers/AdminCards';
 
 import { formatTimestamp } from '../../utils';
 
@@ -28,6 +30,56 @@ class Admin extends React.Component {
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.getDashboardAnalytics(enterpriseId);
     }
+  }
+
+  getMetadataForAction(actionSlug) {
+    const defaultData = {
+      title: 'Full Report',
+      component: <EnrollmentsTable />,
+    };
+
+    // TODO replace the component with the appropriate table component for the associated action.
+    const actionData = {
+      registered: {
+        title: 'Registered Learners Not Yet Enrolled in a Course',
+        component: <EnrollmentsTable />,
+      },
+      enrolled: {
+        title: 'Number of Courses Enrolled by Learners',
+        component: <EnrollmentsTable />,
+      },
+      unenrolled: {
+        title: 'Learners Not Enrolled in an Active Course',
+        description: 'Learners who have completed all of their courses and/or courses have ended.',
+        component: <EnrollmentsTable />,
+      },
+      active: {
+        title: 'Learners Enrolled in a Course',
+        subtitle: 'Top Active Learners',
+        component: <EnrollmentsTable />,
+      },
+      'inactive-week': {
+        title: 'Learners Enrolled in a Course',
+        subtitle: 'Not Active in Past Week',
+        component: <EnrollmentsTable />,
+      },
+      'inactive-month': {
+        title: 'Learners Enrolled in a Course',
+        subtitle: 'Not Active in Past Month',
+        component: <EnrollmentsTable />,
+      },
+      completed: {
+        title: 'Number of Courses Completed by Learner',
+        component: <EnrollmentsTable />,
+      },
+      'completed-week': {
+        title: 'Number of Courses Completed by Learner',
+        subtitle: 'Past Week',
+        component: <EnrollmentsTable />,
+      },
+    };
+
+    return actionData[actionSlug] || defaultData;
   }
 
   hasAnalyticsData() {
@@ -80,22 +132,61 @@ class Admin extends React.Component {
     return <LoadingMessage className="overview mt-3" />;
   }
 
-  render() {
+  renderResetButton() {
+    const { match: { url } } = this.props;
+
+    // Remove the slug from the url so it renders the full report
+    const path = url.split('/').slice(0, -1).join('/');
+
+    return (
+      <Link to={path} className="reset btn btn-sm btn-outline-primary ml-3">
+        <span>
+          <Icon className={['fa', 'fa-undo', 'mr-2']} />
+          Reset to {this.getMetadataForAction().title}
+        </span>
+      </Link>
+    );
+  }
+
+  // TODO refactor the CSV button into a new component that accepts a fetch method
+  renderDownloadCsvButton() {
     const {
-      activeLearners,
-      numberOfUsers,
-      courseCompletions,
-      enrolledLearners,
-      error,
-      loading,
+      csvLoading,
       downloadCsv,
       enterpriseId,
-      lastUpdatedDate,
-      csvLoading,
-      csvError,
+      match,
     } = this.props;
 
+    const { params: { slug } } = match;
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
+
+    return (
+      <Button
+        className={['btn-outline-primary', 'download-btn']}
+        disabled={csvLoading}
+        label={
+          <span>
+            <Icon className={['fa', 'mr-2'].concat(downloadButtonIconClasses)} />
+            Download {slug ? 'current' : 'full'} report (CSV)
+          </span>
+        }
+        onClick={() => downloadCsv(enterpriseId)}
+      />
+    );
+  }
+
+  render() {
+    const {
+      error,
+      loading,
+      enterpriseId,
+      lastUpdatedDate,
+      csvError,
+      match,
+    } = this.props;
+
+    const { params: { slug } } = match;
+    const tableData = this.getMetadataForAction(slug);
 
     return (
       <div>
@@ -107,45 +198,27 @@ class Admin extends React.Component {
           <div className="row mt-4">
             <div className="col">
               <H2>Overview</H2>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
               {error && this.renderErrorMessage()}
               {loading && this.renderLoadingMessage()}
               {!loading && !error && this.hasAnalyticsData() &&
-                <div className="row mt-3 equal-col-height">
-                  <div className="col-xs-12 col-md-6 col-xl-3 mb-3">
-                    <NumberCard
-                      title={numberOfUsers}
-                      description="total number of learners registered"
-                      iconClassName="fa fa-users"
-                    />
-                  </div>
-                  <div className="col-xs-12 col-md-6 col-xl-3 mb-3">
-                    <NumberCard
-                      title={enrolledLearners}
-                      description="learners enrolled in at least one course"
-                      iconClassName="fa fa-check"
-                    />
-                  </div>
-                  <div className="col-xs-12 col-md-6 col-xl-3 mb-3">
-                    <NumberCard
-                      title={activeLearners.past_week}
-                      description="active learners in the past week"
-                      iconClassName="fa fa-eye"
-                    />
-                  </div>
-                  <div className="col-xs-12 col-md-6 col-xl-3 mb-3">
-                    <NumberCard
-                      title={courseCompletions}
-                      description="course completions"
-                      iconClassName="fa fa-trophy"
-                    />
-                  </div>
-                </div>
+                <AdminCards />
               }
             </div>
           </div>
           <div className="row mt-4">
             <div className="col">
-              <H2>Full Report</H2>
+              <H2 className="table-title">{tableData.title}</H2>
+              {slug && this.renderResetButton()}
+              {tableData.subtitle && <H3>{tableData.subtitle}</H3>}
+              {tableData.description && <p>{tableData.description}</p>}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
               {!error && !loading && !this.hasEmptyData() &&
                 <div className="row">
                   <div className="col-12 col-md-6 pt-1 pb-3">
@@ -156,22 +229,13 @@ class Admin extends React.Component {
                     }
                   </div>
                   <div className="col-12 col-md-6 text-md-right">
-                    <Button
-                      disabled={csvLoading}
-                      label={
-                        <span>
-                          <Icon className={['fa', 'mr-1'].concat(downloadButtonIconClasses)} /> Download full report (CSV)
-                        </span>
-                      }
-                      onClick={() => downloadCsv(enterpriseId)}
-                      className={['btn-outline-primary', 'download-btn']}
-                    />
+                    {this.renderDownloadCsvButton()}
                   </div>
                 </div>
               }
               {csvError && this.renderCsvErrorMessage()}
               <div className="mt-3 mb-5">
-                {enterpriseId && <EnrollmentsTable />}
+                {enterpriseId && tableData.component}
               </div>
             </div>
           </div>
@@ -217,6 +281,12 @@ Admin.propTypes = {
   error: PropTypes.instanceOf(Error),
   csvError: PropTypes.instanceOf(Error),
   csvLoading: PropTypes.bool,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      slug: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Admin;

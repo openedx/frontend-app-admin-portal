@@ -4,9 +4,25 @@
 
     > [class*="col-"] {
         display: flex;
+
+        > div {
+            position: relative;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
     }
 
     .card {
         flex: 1;
     }
+}
+
+.table-title {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.reset {
+    margin-top: -5px;
 }

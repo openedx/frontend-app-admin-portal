@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-import configuration from '../../config';
+import { configuration } from '../../config';
 import httpClient from '../../httpClient';
 import { getAccessToken } from '../../utils';
 

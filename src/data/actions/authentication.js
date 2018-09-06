@@ -1,7 +1,7 @@
 import Cookies from 'universal-cookie';
 import jwtDecode from 'jwt-decode';
 
-import configuration from '../../config';
+import { configuration } from '../../config';
 import {
   FETCH_LOGIN_FAILURE,
   FETCH_LOGIN_REQUEST,

@@ -11,7 +11,9 @@ exports[`<ErrorPage /> renders correctly 1`] = `
       <div
         className="col"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Error
         </h1>
         <div
@@ -51,7 +53,9 @@ exports[`<ErrorPage /> renders correctly for 404 errors 1`] = `
     <div
       className="text-center py-5"
     >
-      <h1>
+      <h1
+        className={null}
+      >
         404
       </h1>
       <p

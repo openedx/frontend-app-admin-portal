@@ -11,7 +11,9 @@ exports[`<EnterpriseList /> renders correctly calls getEnterpriseList, clearPort
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>
@@ -118,7 +120,9 @@ exports[`<EnterpriseList /> renders correctly with empty enrollment data 1`] = `
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>
@@ -225,7 +229,9 @@ exports[`<EnterpriseList /> renders correctly with enrollment data 1`] = `
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>
@@ -314,7 +320,399 @@ exports[`<EnterpriseList /> renders correctly with enrollment data 1`] = `
       <div
         className="col"
       >
-        <div />
+        <div
+          className={null}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="table-responsive"
+              >
+                <table
+                  className="table table-sm table-striped"
+                >
+                  <thead
+                    className=""
+                  >
+                    <tr
+                      className=""
+                    >
+                      <th
+                        className=""
+                        scope="col"
+                      >
+                        Enterprise
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    className=""
+                  >
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-1/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 1
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-2/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 2
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-3/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 3
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-4/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 4
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-5/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 5
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-6/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 6
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-7/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 7
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-8/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 8
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-9/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 9
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-10/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 10
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-11/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 11
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-12/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 12
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-13/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 13
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-14/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 14
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-15/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 15
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-16/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 16
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-17/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 17
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-18/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 18
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-19/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 19
+                        </a>
+                      </td>
+                    </tr>
+                    <tr
+                      className=""
+                    >
+                      <td
+                        className=""
+                      >
+                        <a
+                          href="/enterprise-20/admin/learners"
+                          onClick={[Function]}
+                        >
+                          Enterprise 20
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row mt-2"
+          >
+            <div
+              className="col d-flex justify-content-center"
+            >
+              <nav
+                aria-label="enterprise list pagination"
+                className=""
+              >
+                <div
+                  aria-atomic={true}
+                  aria-live="polite"
+                  aria-relevant="text"
+                  className="sr-only"
+                >
+                  Page 1, Current Page, of 2
+                </div>
+                <ul
+                  className="pagination"
+                >
+                  <li
+                    className="page-item disabled"
+                  >
+                    <button
+                      aria-label="Previous"
+                      className="btn previous page-link"
+                      disabled={true}
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      tabIndex="-1"
+                      type="button"
+                    >
+                      <div>
+                        <span>
+                          <span
+                            aria-hidden={true}
+                            className="fa fa-chevron-left mr-2"
+                            id="pagination-4"
+                          />
+                        </span>
+                        Previous
+                      </div>
+                    </button>
+                  </li>
+                  <li
+                    className="page-item"
+                  >
+                    <button
+                      aria-label="Next, Page 2"
+                      className="btn next page-link"
+                      disabled={false}
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      tabIndex={undefined}
+                      type="button"
+                    >
+                      <div>
+                        Next
+                        <span>
+                          <span
+                            aria-hidden={true}
+                            className="fa fa-chevron-right ml-2"
+                            id="pagination-5"
+                          />
+                        </span>
+                      </div>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -332,7 +730,9 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>
@@ -439,7 +839,9 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>
@@ -546,7 +948,9 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enroll
       <div
         className="col-sm-12 col-md"
       >
-        <h1>
+        <h1
+          className={null}
+        >
           Enterprise List
         </h1>
       </div>

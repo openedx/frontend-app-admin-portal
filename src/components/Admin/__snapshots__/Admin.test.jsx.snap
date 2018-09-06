@@ -14,7 +14,9 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1>
+          <h1
+            className={null}
+          >
             Learner and Progress Report
           </h1>
         </div>
@@ -38,10 +40,19 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className={null}
+        >
           Overview
         </h2>
       </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      />
     </div>
     <div
       className="row mt-4"
@@ -49,9 +60,19 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className="table-title"
+        >
           Full Report
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="row"
         >
@@ -73,11 +94,13 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
                 <span>
                   <span
                     aria-hidden={true}
-                    className="fa mr-1 fa-download"
+                    className="fa mr-2 fa-download"
                     id="Icon1"
                   />
                 </span>
-                 Download full report (CSV)
+                Download 
+                full
+                 report (CSV)
               </span>
             </button>
           </div>
@@ -112,7 +135,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
 </div>
 `;
 
-exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
+exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
 <div>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
@@ -126,7 +149,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1>
+          <h1
+            className={null}
+          >
             Learner and Progress Report
           </h1>
         </div>
@@ -150,9 +175,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className={null}
+        >
           Overview
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="row mt-3 equal-col-height"
         >
@@ -160,30 +195,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="card number-card"
+              className="number-card"
             >
               <div
-                className="card-body"
+                className="card"
               >
-                <h5
-                  className="card-title d-flex align-items-center justify-content-between"
+                <div
+                  className="card-body"
                 >
-                  <span>
-                    3
-                  </span>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
-                    />
-                  </span>
-                </h5>
-                <p
-                  className="card-text"
-                >
-                  total number of learners registered
-                </p>
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -191,30 +230,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="card number-card"
+              className="number-card"
             >
               <div
-                className="card-body"
+                className="card"
               >
-                <h5
-                  className="card-title d-flex align-items-center justify-content-between"
+                <div
+                  className="card-body"
                 >
-                  <span>
-                    1
-                  </span>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
-                    />
-                  </span>
-                </h5>
-                <p
-                  className="card-text"
-                >
-                  learners enrolled in at least one course
-                </p>
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -222,30 +265,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="card number-card"
+              className="number-card"
             >
               <div
-                className="card-body"
+                className="card"
               >
-                <h5
-                  className="card-title d-flex align-items-center justify-content-between"
+                <div
+                  className="card-body"
                 >
-                  <span>
-                    1
-                  </span>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
-                    />
-                  </span>
-                </h5>
-                <p
-                  className="card-text"
-                >
-                  active learners in the past week
-                </p>
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -253,30 +300,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="card number-card"
+              className="number-card"
             >
               <div
-                className="card-body"
+                className="card"
               >
-                <h5
-                  className="card-title d-flex align-items-center justify-content-between"
+                <div
+                  className="card-body"
                 >
-                  <span>
-                    1
-                  </span>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
-                    />
-                  </span>
-                </h5>
-                <p
-                  className="card-text"
-                >
-                  course completions
-                </p>
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -289,9 +340,36 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
       <div
         className="col"
       >
-        <h2>
-          Full Report
+        <h2
+          className="table-title"
+        >
+          Number of Courses Enrolled by Learners
         </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="row"
         >
@@ -318,11 +396,2988 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
                 <span>
                   <span
                     aria-hidden={true}
-                    className="fa mr-1 fa-download"
+                    className="fa mr-2 fa-download"
                     id="Icon1"
                   />
                 </span>
-                 Download full report (CSV)
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Number of Courses Completed by Learner
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Number of Courses Completed by Learner
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+        <h3
+          className={null}
+        >
+          Past Week
+        </h3>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card has-details"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    Details
+                  </span>
+                  <button
+                    className="btn toggle-collapse btn-link"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card has-details"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    Details
+                  </span>
+                  <button
+                    className="btn toggle-collapse btn-link"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/unenrolled"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card has-details"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    Details
+                  </span>
+                  <button
+                    className="btn toggle-collapse btn-link"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/active"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card has-details"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    Details
+                  </span>
+                  <button
+                    className="btn toggle-collapse btn-link"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Full Report
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                full
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Full Report
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                full
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Learners Enrolled in a Course
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+        <h3
+          className={null}
+        >
+          Not Active in Past Month
+        </h3>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Learners Enrolled in a Course
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+        <h3
+          className={null}
+        >
+          Not Active in Past Week
+        </h3>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Learners Not Enrolled in an Active Course
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+        <p>
+          Learners who have completed all of their courses and/or courses have ended.
+        </p>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Registered Learners Not Yet Enrolled in a Course
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <p>
+          For more information, contact edX Enterprise Support at 
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+             customersuccess@edx.org
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
+<div>
+  <div
+    className="hero py-4 pt-md-5 pb-md-0"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12 col-md-9 mb-2 mb-md-1"
+        >
+          <h1
+            className={null}
+          >
+            Learner and Progress Report
+          </h1>
+        </div>
+        <div
+          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
+        >
+          <img
+            alt="edX for Business"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className={null}
+        >
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row mt-3 equal-col-height"
+        >
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      3
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-users d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    total number of learners registered
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-check d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    learners enrolled in at least one course
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-eye d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    active learners in the past week
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-xs-12 col-md-6 col-xl-3 mb-3"
+          >
+            <div
+              className="number-card"
+            >
+              <div
+                className="card"
+              >
+                <div
+                  className="card-body"
+                >
+                  <h5
+                    className="card-title d-flex align-items-center justify-content-between"
+                  >
+                    <span>
+                      1
+                    </span>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-trophy d-flex align-items-center justify-content-center"
+                        id="Icon1"
+                      />
+                    </span>
+                  </h5>
+                  <p
+                    className="card-text"
+                  >
+                    course completions
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="table-title"
+        >
+          Learners Enrolled in a Course
+        </h2>
+        <a
+          className="reset btn btn-sm btn-outline-primary ml-3"
+          href="/"
+          onClick={[Function]}
+        >
+          <span>
+            <span>
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon1"
+              />
+            </span>
+            Reset to 
+            Full Report
+          </span>
+        </a>
+        <h3
+          className={null}
+        >
+          Top Active Learners
+        </h3>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-6 pt-1 pb-3"
+          >
+            <span>
+              Showing data as of 
+              July 31, 2018
+            </span>
+          </div>
+          <div
+            className="col-12 col-md-6 text-md-right"
+          >
+            <button
+              className="btn btn-outline-primary download-btn"
+              disabled={null}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="fa mr-2 fa-download"
+                    id="Icon1"
+                  />
+                </span>
+                Download 
+                current
+                 report (CSV)
               </span>
             </button>
           </div>
@@ -369,7 +3424,9 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1>
+          <h1
+            className={null}
+          >
             Learner and Progress Report
           </h1>
         </div>
@@ -393,9 +3450,19 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className={null}
+        >
           Overview
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="mt-3 alert fade alert-danger show"
           hidden={false}
@@ -441,9 +3508,19 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className="table-title"
+        >
           Full Report
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="mt-3 mb-5"
         />
@@ -486,7 +3563,9 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1>
+          <h1
+            className={null}
+          >
             Learner and Progress Report
           </h1>
         </div>
@@ -510,9 +3589,19 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className={null}
+        >
           Overview
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="overview mt-3 loading d-flex align-items-center justify-content-center"
         >
@@ -528,9 +3617,19 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
-        <h2>
+        <h2
+          className="table-title"
+        >
           Full Report
         </h2>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
         <div
           className="mt-3 mb-5"
         />

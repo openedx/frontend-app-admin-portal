@@ -29,10 +29,12 @@ const updateUrl = (data) => {
     })}`);
   }
 };
+const removeTrailingSlash = path => path.replace(/\/$/, '');
 
 export {
   formatTimestamp,
   formatPercentage,
   getAccessToken,
   updateUrl,
+  removeTrailingSlash,
 };
