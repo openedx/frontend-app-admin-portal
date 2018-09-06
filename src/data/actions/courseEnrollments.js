@@ -55,10 +55,10 @@ const fetchCsvFailure = error => ({
   payload: { error },
 });
 
-const fetchCsv = enterpriseId => (
+const fetchCsv = (enterpriseId, options) => (
   (dispatch) => {
     dispatch(fetchCsvRequest());
-    return EnterpriseDataApiService.fetchCourseEnrollmentsCsv(enterpriseId)
+    return EnterpriseDataApiService.fetchCourseEnrollmentsCsv(enterpriseId, options)
       .then((response) => {
         saveAs(new Blob([response.data]), `${enterpriseId}_progress_report.csv`);
         dispatch(fetchCsvSuccess());

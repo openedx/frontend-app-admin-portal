@@ -15,6 +15,23 @@ import { formatTimestamp } from '../../utils';
 import './Admin.scss';
 
 class Admin extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedFilterKey: null,
+      cardFilters: {
+        courseCompletions: {
+          filters: [{
+            label: 'completions in past week',
+            options: { passed_date: 'last_week' },
+            selected: false,
+          }],
+        },
+      },
+    };
+  }
+
   componentDidMount() {
     const { enterpriseId } = this.props;
 
@@ -28,6 +45,23 @@ class Admin extends React.Component {
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.getDashboardAnalytics(enterpriseId);
     }
+  }
+
+  onCollapsibleFilterClick(selectedFilterKey, filterIndex) {
+    const { cardFilters } = this.state;
+
+    // TODO! set all other filter's selected to false
+    cardFilters[selectedFilterKey].filters[filterIndex].selected = true;
+
+    this.props.getCourseEnrollments(
+      this.props.enterpriseId,
+      cardFilters[selectedFilterKey].filters[filterIndex].options,
+    );
+
+    this.setState({
+      cardFilters,
+      selectedFilterKey,
+    });
   }
 
   hasAnalyticsData() {
@@ -97,6 +131,19 @@ class Admin extends React.Component {
 
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
 
+    let tableReportLabel = 'Full Report';
+    let tableReportCsvOptions = null;
+
+    if (this.state.selectedFilterKey) {
+      const cFilters = this.state.cardFilters[this.state.selectedFilterKey].filters;
+      cFilters.forEach((cFilter) => {
+        if (cFilter.selected) {
+          tableReportLabel = cFilter.label;
+          tableReportCsvOptions = cFilter.options;
+        }
+      });
+    }
+
     return (
       <div>
         <Helmet>
@@ -137,6 +184,10 @@ class Admin extends React.Component {
                       title={courseCompletions}
                       description="course completions"
                       iconClassName="fa fa-trophy"
+                      collapsible={this.state.cardFilters.courseCompletions}
+                      onCollapsibleFilterClick={
+                        index => this.onCollapsibleFilterClick('courseCompletions', index)
+                      }
                     />
                   </div>
                 </div>
@@ -145,7 +196,7 @@ class Admin extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col">
-              <H2>Full Report</H2>
+              <H2>{tableReportLabel}</H2>
               {!error && !loading && !this.hasEmptyData() &&
                 <div className="row">
                   <div className="col-12 col-md-6 pt-1 pb-3">
@@ -163,7 +214,7 @@ class Admin extends React.Component {
                           <Icon className={['fa', 'mr-1'].concat(downloadButtonIconClasses)} /> Download full report (CSV)
                         </span>
                       }
-                      onClick={() => downloadCsv(enterpriseId)}
+                      onClick={() => downloadCsv(enterpriseId, tableReportCsvOptions)}
                       className={['btn-outline-primary', 'download-btn']}
                     />
                   </div>
@@ -203,6 +254,7 @@ Admin.defaultProps = {
 
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
+  getCourseEnrollments: PropTypes.func.isRequired,
   downloadCsv: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
