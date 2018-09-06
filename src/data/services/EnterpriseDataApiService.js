@@ -24,8 +24,8 @@ class EnterpriseDataApiService {
     });
   }
 
-  static fetchCourseEnrollmentsCsv(enterpriseId) {
-    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
+  static fetchCourseEnrollmentsCsv(enterpriseId, options) {
+    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?${qs.stringify({ ...options, no_page: true })}`;
     const jwtToken = getAccessToken();
     return httpClient.get(csvUrl, {
       headers: {
