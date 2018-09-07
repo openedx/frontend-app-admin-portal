@@ -153,11 +153,6 @@ class EnterpriseList extends React.Component {
       enterprises,
       pageCount,
     } = this.state;
-    
-    const {
-      onSort,
-      onPaginate,
-    } = this.props;
 
     return (
       <TableWithPagination
@@ -165,8 +160,6 @@ class EnterpriseList extends React.Component {
         data={enterprises}
         pageCount={pageCount}
         paginationLabel="enterprise list pagination"
-        onSort={onSort}
-        onPaginate={onPaginate}
         handleDataUpdate={options =>
           this.getEnterpriseList(options)
         }

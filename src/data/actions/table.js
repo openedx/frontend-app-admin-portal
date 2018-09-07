@@ -27,9 +27,12 @@ const paginationFailure = (tableId, error) => ({
   },
 });
 
-const sortRequest = tableId => ({
+const sortRequest = (tableId, ordering) => ({
   type: SORT_REQUEST,
-  payload: { tableId },
+  payload: {
+    tableId,
+    ordering,
+  },
 });
 
 const sortSuccess = (tableId, data) => ({
@@ -47,8 +50,18 @@ const sortFailure = (tableId, error) => ({
   },
 });
 
-const paginateTable = (tableId, fetchMethod, options) => (
-  (dispatch) => {
+const fetchOptions = tableState => ({
+  page_size: tableState ? tableState.pageSize : 50,
+  page: tableState ? tableState.page : 1,
+  ordering: tableState ? tableState.ordering : null,
+});
+
+const paginateTable = (tableId, fetchMethod, pageNumber) => (
+  (dispatch, getState) => {
+    const options = {
+      ...fetchOptions(getState().table[tableId]),
+      page: pageNumber,
+    };
     dispatch(paginationRequest(tableId));
     return fetchMethod(options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data));
@@ -58,9 +71,16 @@ const paginateTable = (tableId, fetchMethod, options) => (
   }
 );
 
-const sortTable = (tableId, fetchMethod, options) => (
-  (dispatch) => {
-    dispatch(sortRequest(tableId));
+const sortTable = (tableId, fetchMethod, sortOptions) => (
+  (dispatch, getState) => {
+    // Paragon Table's onSort passing in options: key, direction
+    // Our Api is expecting single orderField
+    const ordering = sortOptions.direction === 'desc' ? `-${sortOptions.key}` : sortOptions.key;
+    const options = {
+      ...fetchOptions(getState().table[tableId]),
+      ordering,
+    };
+    dispatch(sortRequest(tableId, ordering));
     return fetchMethod(options).then((response) => {
       dispatch(sortSuccess(tableId, response.data));
     }).catch((error) => {

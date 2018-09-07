@@ -18,7 +18,8 @@ class EnterpriseDataApiService {
       page_size: 50,
       ...options,
     };
-    const enrollmentsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/?${qs.stringify(queryParams)}`;
+
+    const enrollmentsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
     return httpClient.get(enrollmentsUrl, {
@@ -29,7 +30,7 @@ class EnterpriseDataApiService {
   }
 
   static fetchCourseEnrollmentsCsv(enterpriseId) {
-    const csvUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
+    const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments.csv/?no_page=true`;
     const jwtToken = getAccessToken();
     return httpClient.get(csvUrl, {
       headers: {
@@ -39,7 +40,7 @@ class EnterpriseDataApiService {
   }
 
   static fetchDashboardAnalytics(enterpriseId) {
-    const analyticsUrl = `${this.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
+    const analyticsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
     const jwtToken = getAccessToken();
 
     return httpClient.get(analyticsUrl, {

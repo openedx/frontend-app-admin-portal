@@ -38,7 +38,7 @@ const tableReducer = (state = {}, action) => {
       return updateTable(state, action.payload.tableId, {
         loading: true,
         error: null,
-        sortBy: action.payload.sortBy,
+        ordering: action.payload.ordering,
       });
     case SORT_SUCCESS:
       return updateTable(state, action.payload.tableId, {
