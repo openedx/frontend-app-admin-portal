@@ -38,9 +38,22 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
       <div
         className="col"
       >
-        <h2>
-          Overview
-        </h2>
+        <div
+          className="row"
+        >
+          <h2>
+            Overview
+          </h2>
+          <button
+            className="btn btn-link"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            RESET
+          </button>
+        </div>
       </div>
     </div>
     <div
@@ -150,9 +163,22 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
       <div
         className="col"
       >
-        <h2>
-          Overview
-        </h2>
+        <div
+          className="row"
+        >
+          <h2>
+            Overview
+          </h2>
+          <button
+            className="btn btn-link"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            RESET
+          </button>
+        </div>
         <div
           className="row mt-3 equal-col-height"
         >
@@ -395,9 +421,22 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h2>
-          Overview
-        </h2>
+        <div
+          className="row"
+        >
+          <h2>
+            Overview
+          </h2>
+          <button
+            className="btn btn-link"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            RESET
+          </button>
+        </div>
         <div
           className="mt-3 alert fade alert-danger show"
           hidden={false}
@@ -514,9 +553,22 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
-        <h2>
-          Overview
-        </h2>
+        <div
+          className="row"
+        >
+          <h2>
+            Overview
+          </h2>
+          <button
+            className="btn btn-link"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            RESET
+          </button>
+        </div>
         <div
           className="overview mt-3 loading d-flex align-items-center justify-content-center"
         >
