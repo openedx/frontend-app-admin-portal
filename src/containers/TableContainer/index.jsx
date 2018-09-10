@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     data: tableState.data && tableState.data.results,
     currentPage: tableState.data && tableState.data.current_page,
     pageCount: tableState.data && tableState.data.num_pages,
+    ordering: tableState.ordering,
     loading: tableState.loading,
     error: tableState.error,
     tableId,

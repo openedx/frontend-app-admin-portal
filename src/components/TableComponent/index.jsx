@@ -19,11 +19,17 @@ class TableComponent extends React.Component {
       pageCount,
       tableSortable,
       data,
+      ordering,
       formatData,
       paginateTable,
       sortTable,
       id,
     } = this.props;
+
+    // Do not render until we've fetched data
+    if (!data) {
+      return null;
+    }
 
     const columnConfig = this.props.columns.map(column => ({
       ...column,
@@ -31,6 +37,13 @@ class TableComponent extends React.Component {
         sortTable({ key: column.key, direction });
       } : null,
     }));
+
+    let sortDirection;
+    let sortColumn;
+    if (tableSortable) {
+      sortDirection = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
+      sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[0].key;
+    }
 
     return (
       <div className={className}>
@@ -43,8 +56,8 @@ class TableComponent extends React.Component {
                 columns={columnConfig}
                 data={formatData(data)}
                 tableSortable={tableSortable}
-                defaultSortedColumn={columnConfig[0].key}
-                defaultSortDirection="desc"
+                defaultSortedColumn={sortColumn}
+                defaultSortDirection={sortDirection}
               />
             </div>
           </div>
@@ -67,6 +80,7 @@ class TableComponent extends React.Component {
 TableComponent.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})),
+  ordering: PropTypes.string,
   id: PropTypes.string.isRequired,
   formatData: PropTypes.func.isRequired,
   paginateTable: PropTypes.func.isRequired,
@@ -80,7 +94,8 @@ TableComponent.propTypes = {
 TableComponent.defaultProps = {
   className: null,
   tableSortable: false,
-  data: [],
+  data: undefined,
+  ordering: undefined,
   currentPage: undefined,
   pageCount: undefined,
 };

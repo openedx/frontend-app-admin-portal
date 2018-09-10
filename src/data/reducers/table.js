@@ -27,6 +27,7 @@ const tableReducer = (state = {}, action) => {
     case PAGINATION_SUCCESS:
       return updateTable(state, action.payload.tableId, {
         loading: false,
+        ordering: action.payload.ordering,
         data: action.payload.data,
       });
     case PAGINATION_FAILURE:
@@ -38,12 +39,12 @@ const tableReducer = (state = {}, action) => {
       return updateTable(state, action.payload.tableId, {
         loading: true,
         error: null,
-        ordering: action.payload.ordering,
       });
     case SORT_SUCCESS:
       return updateTable(state, action.payload.tableId, {
         loading: false,
         error: null,
+        ordering: action.payload.ordering,
         data: action.payload.data,
       });
     case SORT_FAILURE:
