@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPercentage } from '../../utils';
@@ -57,34 +56,27 @@ const EnrollmentsTable = () => {
     return 'Has not passed';
   };
 
-  const formatEnrollmentData = (enrollments) => {
-    if (!enrollments) {
-      return null;
-    } else if (!enrollments.length) {
-      return [];
-    }
-
-    return enrollments.map(enrollment => ({
-      ...enrollment,
-      last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
-      course_start: formatTimestamp({ timestamp: enrollment.course_start }),
-      course_end: formatTimestamp({ timestamp: enrollment.course_end }),
-      enrollment_created_timestamp: formatTimestamp({
-        timestamp: enrollment.enrollment_created_timestamp,
-      }),
-      passed_timestamp: formatPassedTimestamp(enrollment.passed_timestamp),
-      user_account_creation_timestamp: formatTimestamp({
-        timestamp: enrollment.user_account_creation_timestamp,
-      }),
-      has_passed: enrollment.has_passed ? 'Yes' : 'No',
-      course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
-      current_grade: formatPercentage({ decimal: enrollment.current_grade }),
-    }));
-  };
+  const formatEnrollmentData = enrollments => enrollments.map(enrollment => ({
+    ...enrollment,
+    last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
+    course_start: formatTimestamp({ timestamp: enrollment.course_start }),
+    course_end: formatTimestamp({ timestamp: enrollment.course_end }),
+    enrollment_created_timestamp: formatTimestamp({
+      timestamp: enrollment.enrollment_created_timestamp,
+    }),
+    passed_timestamp: formatPassedTimestamp(enrollment.passed_timestamp),
+    user_account_creation_timestamp: formatTimestamp({
+      timestamp: enrollment.user_account_creation_timestamp,
+    }),
+    has_passed: enrollment.has_passed ? 'Yes' : 'No',
+    course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
+    current_grade: formatPercentage({ decimal: enrollment.current_grade }),
+  }));
 
   return (
     <TableContainer
       id="enrollments"
+      className="enrollments"
       fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments}
       columns={enrollmentTableColumns}
       formatData={formatEnrollmentData}
@@ -92,7 +84,5 @@ const EnrollmentsTable = () => {
     />
   );
 };
-
-// TODO: proptypes
 
 export default EnrollmentsTable;

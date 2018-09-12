@@ -4,13 +4,13 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
-import { fetchEnterpriseList, setEnterpriseListSearchQuery } from './enterpriseList';
+import searchEnterpriseList from './enterpriseList';
 import {
-  FETCH_ENTERPRISE_LIST_REQUEST,
-  FETCH_ENTERPRISE_LIST_SUCCESS,
-  FETCH_ENTERPRISE_LIST_FAILURE,
-  SET_ENTERPRISE_LIST_SEARCH_QUERY,
-} from '../constants/enterpriseList';
+  PAGINATION_REQUEST,
+  PAGINATION_SUCCESS,
+  PAGINATION_FAILURE,
+} from '../../data/constants/table';
+
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(axios);
@@ -20,8 +20,8 @@ describe('actions', () => {
     axiosMock.reset();
   });
 
-  describe('fetchEnterpriseList', () => {
-    it('dispatches success action after fetching enterprises', () => {
+  describe('searchEnterpriseList', () => {
+    it('dispatches success action after searching enterprises', () => {
       const responseData = {
         count: 1,
         num_pages: 1,
@@ -36,51 +36,44 @@ describe('actions', () => {
         ],
       };
       const expectedActions = [
-        { type: FETCH_ENTERPRISE_LIST_REQUEST },
-        { type: FETCH_ENTERPRISE_LIST_SUCCESS, payload: { enterprises: responseData } },
+        { type: PAGINATION_REQUEST, payload: { search: 'test-search-string' } },
+        { type: PAGINATION_SUCCESS, payload: { enterprises: responseData } },
       ];
       const store = mockStore();
       const defaultOptions = {
         permissions: 'enterprise_data_api_access',
         page: 1,
         page_size: 50,
+        search: 'test-search-string',
       };
 
       axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(defaultOptions)}`)
         .replyOnce(200, JSON.stringify(responseData));
 
-      return store.dispatch(fetchEnterpriseList()).then(() => {
+      return store.dispatch(searchEnterpriseList({ search: 'test-search-string' })).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
 
     it('dispatches failure action after fetching enrollments', () => {
       const expectedActions = [
-        { type: FETCH_ENTERPRISE_LIST_REQUEST },
-        { type: FETCH_ENTERPRISE_LIST_FAILURE, payload: { error: Error('Network Error') } },
+        { type: PAGINATION_REQUEST, payload: { search: 'test-search-string' } },
+        { type: PAGINATION_FAILURE, payload: { error: Error('Network Error') } },
       ];
       const store = mockStore();
       const options = {
         permissions: 'enterprise_data_api_access',
         page: 2,
         page_size: 10,
+        search: 'test-search-string',
       };
 
       axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(options)}`)
         .networkError();
 
-      return store.dispatch(fetchEnterpriseList(options)).then(() => {
+      return store.dispatch(searchEnterpriseList(options)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
-    });
-
-    it('dispatches setSearchQuery', () => {
-      const expectedActions = [
-        { type: SET_ENTERPRISE_LIST_SEARCH_QUERY, payload: { searchQuery: 'foobar' } },
-      ];
-      const store = mockStore();
-      store.dispatch(setEnterpriseListSearchQuery('foobar'));
-      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });

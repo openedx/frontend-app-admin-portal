@@ -1,8 +1,8 @@
 import qs from 'query-string';
 import { orderBy } from 'lodash';
 
-import history from '../history';
-
+import { updateUrl } from '../../utils';
+import history from '../../data/history';
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
@@ -12,9 +12,12 @@ import {
   SORT_FAILURE,
 } from '../constants/table';
 
-const paginationRequest = tableId => ({
+const paginationRequest = (tableId, options) => ({
   type: PAGINATION_REQUEST,
-  payload: { tableId },
+  payload: {
+    tableId,
+    options,
+  },
 });
 
 const paginationSuccess = (tableId, data, ordering) => ({
@@ -85,15 +88,6 @@ const fetchOptions = (tableState) => {
   };
 };
 
-const updateUrl = (data) => {
-  if (data) {
-    history.push(`?${qs.stringify({
-      page: data.page !== 1 ? data.page : undefined,
-      ordering: data.ordering,
-    })}`);
-  }
-};
-
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
@@ -102,7 +96,7 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
       page: pageNumber,
     };
     updateUrl(options);
-    dispatch(paginationRequest(tableId));
+    dispatch(paginationRequest(tableId, options));
     return fetchMethod(options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {

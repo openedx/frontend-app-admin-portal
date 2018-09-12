@@ -1,45 +1,52 @@
 import {
-  FETCH_ENTERPRISE_LIST_REQUEST,
-  FETCH_ENTERPRISE_LIST_SUCCESS,
-  FETCH_ENTERPRISE_LIST_FAILURE,
-  SET_ENTERPRISE_LIST_SEARCH_QUERY,
-} from '../constants/enterpriseList';
+  PAGINATION_REQUEST,
+  PAGINATION_SUCCESS,
+  PAGINATION_FAILURE,
+} from '../constants/table';
+
+import { updateUrl } from '../../utils';
+
 import LmsApiService from '../services/LmsApiService';
 
-const fetchEnterpriseListRequest = () => ({ type: FETCH_ENTERPRISE_LIST_REQUEST });
-const fetchEnterpriseListSuccess = enterprises => ({
-  type: FETCH_ENTERPRISE_LIST_SUCCESS,
-  payload: { enterprises },
+const tableId = 'enterprise-list';
+
+const searchEnterpriseListRequest = options => ({
+  type: PAGINATION_REQUEST,
+  payload: {
+    tableId,
+    options,
+  },
 });
-const fetchEnterpriseListFailure = error => ({
-  type: FETCH_ENTERPRISE_LIST_FAILURE,
-  payload: { error },
+const searchEnterpriseListSuccess = data => ({
+  type: PAGINATION_SUCCESS,
+  payload: {
+    tableId,
+    data,
+  },
 });
-const setSearchQuery = searchQuery => ({
-  type: SET_ENTERPRISE_LIST_SEARCH_QUERY,
-  payload: { searchQuery },
+const searchEnterpriseListFailure = error => ({
+  type: PAGINATION_FAILURE,
+  payload: {
+    tableId,
+    error,
+  },
 });
 
-const fetchEnterpriseList = options => (
+// This is doing nearly the same thing the table actions do however this
+// is necessary so we can pass in the `search` parameter. We leverage the same
+// events as the table actions, so the same `table` reducers will be called.
+const searchEnterpriseList = options => (
   (dispatch) => {
-    dispatch(fetchEnterpriseListRequest());
+    updateUrl(options);
+    dispatch(searchEnterpriseListRequest(options));
     return LmsApiService.fetchEnterpriseList(options)
       .then((response) => {
-        dispatch(fetchEnterpriseListSuccess(response.data));
+        dispatch(searchEnterpriseListSuccess(response.data));
       })
       .catch((error) => {
-        dispatch(fetchEnterpriseListFailure(error));
+        dispatch(searchEnterpriseListFailure(error));
       });
   }
 );
 
-const setEnterpriseListSearchQuery = searchQuery => (
-  (dispatch) => {
-    dispatch(setSearchQuery(searchQuery));
-  }
-);
-
-export {
-  fetchEnterpriseList,
-  setEnterpriseListSearchQuery,
-};
+export default searchEnterpriseList;

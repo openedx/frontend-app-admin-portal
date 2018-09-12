@@ -9,9 +9,10 @@ import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
-import { fetchEnterpriseList } from '../../data/actions/enterpriseList';
+import { paginateTable } from '../../data/actions/table';
 import { setPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
+import LmsApiService from '../../data/services/LmsApiService';
 
 class EnterpriseApp extends React.Component {
   componentDidMount() {
@@ -107,14 +108,19 @@ EnterpriseApp.defaultProps = {
   enterprises: null,
 };
 
-const mapStateToProps = state => ({
-  error: state.portalConfiguration.error,
-  enterprises: state.enterpriseList && state.enterpriseList.enterprises,
-});
+const tableId = 'enterprise-list';
+const mapStateToProps = (state) => {
+  const enterpriseListState = state.table[tableId] || {};
+
+  return {
+    enterprises: enterpriseListState.data,
+    error: state.portalConfiguration.error,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchEnterpriseList: () => {
-    dispatch(fetchEnterpriseList());
+    dispatch(paginateTable(tableId, LmsApiService.fetchEnterpriseList));
   },
   setPortalConfiguration: (enterpriseSlug) => {
     dispatch(setPortalConfiguration(enterpriseSlug));

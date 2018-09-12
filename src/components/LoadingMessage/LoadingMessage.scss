@@ -2,11 +2,11 @@
     background: #f2f8fb;
     font-size: 1.125rem;
     
-    &.course-enrollments {
+    &.table-loading {
         height: 360px;
     }
 
-    &.overview, &.enterprise-list {
+    &.overview {
         height: 180px;
     }
 }

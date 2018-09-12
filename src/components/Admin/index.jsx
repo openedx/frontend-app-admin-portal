@@ -171,7 +171,7 @@ class Admin extends React.Component {
               }
               {csvError && this.renderCsvErrorMessage()}
               <div className="mt-3 mb-5">
-                {enterpriseId && <EnrollmentsTable enterpriseId={enterpriseId} />}
+                {enterpriseId && <EnrollmentsTable />}
               </div>
             </div>
           </div>

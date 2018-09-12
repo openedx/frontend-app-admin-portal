@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Pagination, Table } from '@edx/paragon';
-
 import 'font-awesome/css/font-awesome.css';
+
+import LoadingMessage from '../LoadingMessage';
+import StatusAlert from '../StatusAlert';
 import './TableComponent.scss';
 
 class TableComponent extends React.Component {
@@ -12,7 +14,7 @@ class TableComponent extends React.Component {
     this.props.paginateTable();
   }
 
-  render() {
+  renderTableContent() {
     const {
       className,
       currentPage,
@@ -25,11 +27,6 @@ class TableComponent extends React.Component {
       sortTable,
       id,
     } = this.props;
-
-    // Do not render until we've fetched data
-    if (!data) {
-      return null;
-    }
 
     const columnConfig = this.props.columns.map(column => ({
       ...column,
@@ -75,20 +72,69 @@ class TableComponent extends React.Component {
       </div>
     );
   }
+
+  renderLoadingMessage() {
+    return <LoadingMessage className="table-loading" />;
+  }
+
+  renderErrorMessage() {
+    return (
+      <StatusAlert
+        alertType="danger"
+        iconClassName={['fa', 'fa-times-circle']}
+        title="Unable to load full report"
+        message={`Try refreshing your screen (${this.props.error.message})`}
+      />
+    );
+  }
+
+  renderEmptyDataMessage() {
+    return (
+      <StatusAlert
+        alertType="warning"
+        iconClassName={['fa', 'fa-exclamation-circle']}
+        message="There are no results."
+      />
+    );
+  }
+
+  render() {
+    const {
+      data,
+      loading,
+      error,
+    } = this.props;
+
+    return (
+      <div>
+        {error && this.renderErrorMessage()}
+        {loading && !data && this.renderLoadingMessage()}
+        {!loading && !error && data && data.length === 0 &&
+          this.renderEmptyDataMessage()
+        }
+        {data && data.length > 0 && this.renderTableContent()}
+      </div>
+    );
+  }
 }
 
 TableComponent.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({})),
-  ordering: PropTypes.string,
+  // Props expected from consumer
   id: PropTypes.string.isRequired,
-  formatData: PropTypes.func.isRequired,
-  paginateTable: PropTypes.func.isRequired,
-  sortTable: PropTypes.func.isRequired,
   className: PropTypes.string,
+  columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  formatData: PropTypes.func.isRequired,
   tableSortable: PropTypes.bool,
+
+  // Props expected from TableContainer / redux store
+  data: PropTypes.arrayOf(PropTypes.shape({})),
   currentPage: PropTypes.number,
   pageCount: PropTypes.number,
+  ordering: PropTypes.string,
+  loading: PropTypes.bool,
+  error: PropTypes.instanceOf(Error),
+  paginateTable: PropTypes.func.isRequired,
+  sortTable: PropTypes.func.isRequired,
 };
 
 TableComponent.defaultProps = {
@@ -98,6 +144,8 @@ TableComponent.defaultProps = {
   ordering: undefined,
   currentPage: undefined,
   pageCount: undefined,
+  error: null,
+  loading: false,
 };
 
 export default TableComponent;

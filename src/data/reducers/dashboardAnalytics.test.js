@@ -15,7 +15,7 @@ const initialState = {
   last_updated_date: null,
 };
 
-describe('courseEnrollments reducer', () => {
+describe('dashboardAnalytics reducer', () => {
   it('has initial state', () => {
     expect(dashboardAnalytics(undefined, {})).toEqual(initialState);
   });

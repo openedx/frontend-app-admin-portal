@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import TableComponent from '../../components/TableComponent';
 import { paginateTable, sortTable } from '../../data/actions/table';
 
-const tableId = 'course-enrollments';
-
 const mapStateToProps = (state, ownProps) => {
   const tableState = state.table[ownProps.id] || {};
   return {
@@ -14,7 +12,6 @@ const mapStateToProps = (state, ownProps) => {
     ordering: tableState.ordering,
     loading: tableState.loading,
     error: tableState.error,
-    tableId,
   };
 };
 
