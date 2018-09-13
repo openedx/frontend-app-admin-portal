@@ -26,6 +26,9 @@ class Admin extends React.Component {
     if (enterpriseId) {
       this.props.getDashboardAnalytics(enterpriseId);
     }
+
+    // Enable sidebar for this component
+    this.props.enableSidebar();
   }
 
   componentDidUpdate(prevProps) {
@@ -83,6 +86,10 @@ class Admin extends React.Component {
     };
 
     return actionData[actionSlug] || defaultData;
+  }
+
+  componentWillUnmount() {
+    this.props.disableSidebar();
   }
 
   hasAnalyticsData() {
@@ -271,6 +278,8 @@ Admin.defaultProps = {
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
   downloadCsv: PropTypes.func.isRequired,
+  enableSidebar: PropTypes.func.isRequired,
+  disableSidebar: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,

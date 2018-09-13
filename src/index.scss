@@ -6,3 +6,21 @@ $fa-font-path: "~font-awesome/fonts";
 
 @import "~@edx/paragon/src/SearchField/SearchField";
 @import "~@edx/paragon/src/Pagination/Pagination";
+
+
+.portal-main-wrapper {
+    width: 100%;
+}
+
+#portal-main-content.with-sidebar {
+    width: calc(100% - 220px);
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#portal-main-content.without-sidebar {
+    width: 100%;
+}

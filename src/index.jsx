@@ -18,29 +18,34 @@ import LoginPage from './containers/LoginPage';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import PrivateRoute from './containers/PrivateRoute';
 import LogoutHandler from './containers/LogoutHandler';
+import SidebarContainer from './containers/SidebarContainer';
 import store from './data/store';
 import history from './data/history';
 import './index.scss';
 
+
 const AppWrapper = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
-        <Helmet
-          titleTemplate="%s - edX Portal"
-          defaultTitle="edX Portal"
-        />
-        <Header />
-        <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/logout" component={LogoutHandler} />
-          <Route exact path="/support" component={SupportPage} />
-          <PrivateRoute exact path="/enterprises" component={EnterpriseIndexPage} />
-          <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
-          <PrivateRoute exact path="/" component={EnterpriseIndexPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-        <Footer />
+      <div className="portal-main-wrapper">
+        <SidebarContainer />
+        <div id="portal-main-content">
+          <Helmet
+            titleTemplate="%s - edX Portal"
+            defaultTitle="edX Portal"
+          />
+          <Header />
+          <Switch>
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/logout" component={LogoutHandler} />
+            <Route exact path="/support" component={SupportPage} />
+            <PrivateRoute exact path="/enterprises" component={EnterpriseIndexPage} />
+            <PrivateRoute path="/:enterpriseSlug" component={EnterpriseApp} />
+            <PrivateRoute exact path="/" component={EnterpriseIndexPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+          <Footer />
+        </div>
       </div>
     </ConnectedRouter>
   </Provider>

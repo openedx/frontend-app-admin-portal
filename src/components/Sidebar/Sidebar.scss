@@ -1,0 +1,25 @@
+#sidebar {
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #fff;
+    transition: all 0.3s;
+
+    overflow-y: scroll;
+
+    -moz-box-shadow:    0 .125rem .25rem rgba(0,0,0,.075);
+    -webkit-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    box-shadow:         0 .125rem .25rem rgba(0,0,0,.075);
+}
+
+#sidebar.collapsed {
+    margin-left: -250px;
+}
+
+.sidebar-collapsed {
+    position: fixed;
+    z-index: 999;
+}
