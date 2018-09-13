@@ -22,12 +22,8 @@ class EnterpriseList extends React.Component {
   }
 
   componentDidMount() {
-    this.clearPortalConfiguration();
-    this.props.getLocalUser();
-  }
-
-  clearPortalConfiguration() {
     this.props.clearPortalConfiguration();
+    this.props.getLocalUser();
   }
 
   handleSearch(query) {

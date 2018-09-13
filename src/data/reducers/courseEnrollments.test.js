@@ -38,7 +38,7 @@ describe('courseEnrollments reducer', () => {
   it('updates state when error fetching enrollment csv', () => {
     const expected = {
       ...initialState,
-      loading: false,
+      csvLoading: false,
       csvError: 'test error',
     };
     expect(courseEnrollments(undefined, {

@@ -36,8 +36,20 @@ describe('actions', () => {
         ],
       };
       const expectedActions = [
-        { type: PAGINATION_REQUEST, payload: { search: 'test-search-string' } },
-        { type: PAGINATION_SUCCESS, payload: { enterprises: responseData } },
+        {
+          type: PAGINATION_REQUEST,
+          payload: {
+            tableId: 'enterprise-list',
+            options: { search: 'test-search-string' },
+          },
+        },
+        {
+          type: PAGINATION_SUCCESS,
+          payload: {
+            tableId: 'enterprise-list',
+            data: responseData,
+          },
+        },
       ];
       const store = mockStore();
       const defaultOptions = {
@@ -56,10 +68,6 @@ describe('actions', () => {
     });
 
     it('dispatches failure action after fetching enrollments', () => {
-      const expectedActions = [
-        { type: PAGINATION_REQUEST, payload: { search: 'test-search-string' } },
-        { type: PAGINATION_FAILURE, payload: { error: Error('Network Error') } },
-      ];
       const store = mockStore();
       const options = {
         permissions: 'enterprise_data_api_access',
@@ -67,6 +75,22 @@ describe('actions', () => {
         page_size: 10,
         search: 'test-search-string',
       };
+      const expectedActions = [
+        {
+          type: PAGINATION_REQUEST,
+          payload: {
+            tableId: 'enterprise-list',
+            options,
+          },
+        },
+        {
+          type: PAGINATION_FAILURE,
+          payload: {
+            tableId: 'enterprise-list',
+            error: Error('Network Error'),
+          },
+        },
+      ];
 
       axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(options)}`)
         .networkError();

@@ -1,20 +1,62 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
 import { MemoryRouter, Redirect } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
 
+const mockStore = configureMockStore([thunk]);
+
+class ContextProvider extends React.Component {
+  static childContextTypes = {
+    store: PropTypes.object.isRequired,
+  }
+
+  getChildContext = () => ({
+    store: mockStore({
+      paginateTable: () => {},
+      sortTable: () => {},
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise-id',
+      },
+      table: {
+        enrollments: {
+          data: {
+            results: [],
+            current_page: 1,
+            num_pages: 1,
+          },
+          ordering: null,
+          loading: false,
+          error: null,
+        },
+      },
+    }),
+  })
+
+  render() {
+    return this.props.children;
+  }
+}
+
+ContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 const EnterpriseListWrapper = props => (
   <MemoryRouter>
-    <EnterpriseList
-      getEnterpriseList={() => {}}
-      clearPortalConfiguration={() => {}}
-      getLocalUser={() => {}}
-      setSearchQuery={() => {}}
-      {...props}
-    />
+    <ContextProvider>
+      <EnterpriseList
+        searchEnterpriseList={() => {}}
+        clearPortalConfiguration={() => {}}
+        getLocalUser={() => {}}
+        {...props}
+      />
+    </ContextProvider>
   </MemoryRouter>
 );
 
@@ -23,19 +65,16 @@ describe('<EnterpriseList />', () => {
 
   describe('renders correctly', () => {
     it('calls getEnterpriseList, clearPortalConfiguration and getLocalUser props', () => {
-      const mockGetEnterpriseList = jest.fn();
       const mockClearPortalConfiguration = jest.fn();
       const mockGetLocalUser = jest.fn();
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            getEnterpriseList={mockGetEnterpriseList}
             clearPortalConfiguration={mockClearPortalConfiguration}
             getLocalUser={mockGetLocalUser}
           />
         ))
         .toJSON();
-      expect(mockGetEnterpriseList).toHaveBeenCalled();
       expect(mockClearPortalConfiguration).toHaveBeenCalled();
       expect(mockGetLocalUser).toHaveBeenCalled();
       expect(tree).toMatchSnapshot();
@@ -120,10 +159,9 @@ describe('<EnterpriseList />', () => {
         <MemoryRouter initialEntries={['/test']}>
           <EnterpriseList
             enterprises={oneEnterpriseListData}
-            getEnterpriseList={() => {}}
+            searchEnterpriseList={() => {}}
             clearPortalConfiguration={() => {}}
             getLocalUser={() => {}}
-            setSearchQuery={() => {}}
           />
         </MemoryRouter>
       ));

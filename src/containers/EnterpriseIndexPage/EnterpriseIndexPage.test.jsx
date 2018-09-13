@@ -13,21 +13,23 @@ describe('<EnterpriseIndexPage />', () => {
   let dispatchSpy;
 
   const initialState = {
-    enterpriseList: {
-      loading: false,
-      error: null,
-      enterprises: {
-        count: 3,
-        num_pages: 1,
-        current_page: 1,
-        results: [
-          {
-            uuid: 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c',
-            name: 'Enterprise 1',
-            slug: 'enterprise-1',
-            active: true,
-          },
-        ],
+    table: {
+      'enterprise-list': {
+        loading: false,
+        error: null,
+        data: {
+          count: 3,
+          num_pages: 1,
+          current_page: 1,
+          results: [
+            {
+              uuid: 'ee5e6b3a-069a-4947-bb8d-d2dbc323396c',
+              name: 'Enterprise 1',
+              slug: 'enterprise-1',
+              active: true,
+            },
+          ],
+        },
       },
     },
   };
@@ -43,11 +45,12 @@ describe('<EnterpriseIndexPage />', () => {
   it('sets the appropriate props', () => {
     expect(wrapper.props().loading).toEqual(false);
     expect(wrapper.props().error).toEqual(null);
-    expect(wrapper.props().enterprises).toEqual(initialState.enterpriseList.enterprises);
+    expect(wrapper.props().enterprises).toEqual(initialState.table['enterprise-list'].data);
   });
 
-  it('getEnterpriseList dispatches fetchEnterpriseList action', () => {
-    wrapper.props().getEnterpriseList();
+  it('searchEnterpriseList dispatches searchEnterpriseList action', () => {
+    wrapper.props().searchEnterpriseList();
+    // TODO: tohavebeencalledwith?
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
@@ -58,11 +61,6 @@ describe('<EnterpriseIndexPage />', () => {
 
   it('getLocalUser dispatches getLocalUser action', () => {
     wrapper.props().getLocalUser();
-    expect(dispatchSpy).toHaveBeenCalled();
-  });
-
-  it('setSearchQuery dispatches setEnterpriseListSearchQuery action', () => {
-    wrapper.props().setSearchQuery();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });
