@@ -51,6 +51,9 @@ const EnterpriseListWrapper = props => (
   <MemoryRouter>
     <ContextProvider>
       <EnterpriseList
+        enterprisesData={{
+          results: [],
+        }}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
         getLocalUser={() => {}}
@@ -84,7 +87,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={mockEnterpriseList}
+            enterprisesData={mockEnterpriseList}
           />
         ))
         .toJSON();
@@ -95,7 +98,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={{
+            enterprisesData={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -110,7 +113,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={{
+            enterprisesData={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -155,73 +158,22 @@ describe('<EnterpriseList />', () => {
         }],
         start: 0,
       };
+
       wrapper = mount((
         <MemoryRouter initialEntries={['/test']}>
-          <EnterpriseList
-            enterprises={oneEnterpriseListData}
-            searchEnterpriseList={() => {}}
-            clearPortalConfiguration={() => {}}
-            getLocalUser={() => {}}
-          />
+          <ContextProvider>
+            <EnterpriseList
+              enterprisesData={oneEnterpriseListData}
+              searchEnterpriseList={() => {}}
+              clearPortalConfiguration={() => {}}
+              getLocalUser={() => {}}
+            />
+          </ContextProvider>
         </MemoryRouter>
       ));
       const expectedRedirect = <Redirect to="/enterprise-99/admin" />;
       expect(wrapper.containsMatchingElement(expectedRedirect)).toEqual(true);
     });
-  });
-
-  describe('formatEnterpriseData', () => {
-    const expectedData = mockEnterpriseList.results;
-
-    beforeEach(() => {
-      wrapper = shallow((
-        <EnterpriseListWrapper
-          enterprises={mockEnterpriseList}
-        />
-      )).find(EnterpriseList);
-    });
-
-    it('overrides state enterprises when props enterprises changes with new enterprises', () => {
-      const currentState = wrapper.dive().state();
-
-      expect(currentState.enterprises[0]).toEqual(expectedData[0]);
-      expect(currentState.enterprises[1]).toEqual(expectedData[1]);
-      expect(currentState.pageCount).toEqual(mockEnterpriseList.num_pages);
-
-      wrapper.dive().setProps({
-        enterprises: {
-          count: 0,
-          num_pages: 0,
-          results: [],
-        },
-      }, () => {
-        expect(wrapper.dive().state('enterprises')).toEqual([]);
-        expect(wrapper.dive().state('pageCount')).toEqual(null);
-      });
-    });
-
-    it('does not override state enterprises when props enterprises changes with existing enterprises', () => {
-      const currentEnterprises = wrapper.dive().state('enterprises');
-      expect(currentEnterprises[0]).toEqual(expectedData[0]);
-      expect(currentEnterprises[1]).toEqual(expectedData[1]);
-
-      wrapper.dive().setProps({
-        enterprises: mockEnterpriseList,
-      });
-
-      const updatedEnterprises = wrapper.dive().state('enterprises');
-      expect(updatedEnterprises[0]).toEqual(expectedData[0]);
-      expect(updatedEnterprises[1]).toEqual(expectedData[1]);
-    });
-  });
-
-  it('pageCount state should be null when enterprises prop is null', () => {
-    wrapper = shallow((
-      <EnterpriseListWrapper
-        enterprises={null}
-      />
-    )).find('EnterpriseList');
-    expect(wrapper.dive().state('pageCount')).toEqual(null);
   });
 
   describe('enterprise list search', () => {

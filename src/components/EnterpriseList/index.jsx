@@ -68,7 +68,7 @@ class EnterpriseList extends React.Component {
       error,
     } = this.props;
     const { searchSubmitted } = this.state;
-    const enterprises = enterprisesData.results;
+    const enterprises = enterprisesData && enterprisesData.results;
 
     return (
       !loading && !error && enterprises && enterprises.length === 1 &&
@@ -113,6 +113,9 @@ class EnterpriseList extends React.Component {
           </div>
           <div className="row mt-2">
             <div className="col">
+              {this.shouldRenderRedirectToEnterpriseAdminPage() &&
+                this.renderRedirectToEnterpriseAdminPage()
+              }
               <TableContainer
                 id="enterprise-list"
                 className="enterprise-list"
