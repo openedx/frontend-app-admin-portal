@@ -5,6 +5,7 @@ import { Pagination, Table } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
 
 import LoadingMessage from '../LoadingMessage';
+import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import './TableComponent.scss';
 
@@ -26,6 +27,7 @@ class TableComponent extends React.Component {
       paginateTable,
       sortTable,
       id,
+      loading,
     } = this.props;
 
     const columnConfig = this.props.columns.map(column => ({
@@ -46,6 +48,7 @@ class TableComponent extends React.Component {
       <div className={className}>
         <div className="row">
           <div className="col">
+            { loading && <TableLoadingOverlay /> }
             <div className="table-responsive">
               <Table
                 id={id}

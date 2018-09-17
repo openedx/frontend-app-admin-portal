@@ -11,7 +11,6 @@ class EnterpriseDataApiService {
   static enterpriseBaseUrl = `${config.DATA_API_BASE_URL}/enterprise/api/v0/enterprise/`;
 
   static fetchCourseEnrollments(options) {
-    // TODO: feels weird to access store here
     const { enterpriseId } = store.getState().portalConfiguration;
     const queryParams = {
       page: 1,

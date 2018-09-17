@@ -32,15 +32,7 @@ class EnterpriseList extends React.Component {
       searchSubmitted: true,
     });
     this.props.searchEnterpriseList({
-      // Ternary used to turn empty string ('') into undefined so it does not get set in qs
-      search: query ? query : undefined, // eslint-disable-line no-unneeded-ternary
-    });
-  }
-
-  handleClear() {
-    this.setState({
-      searchQuery: '',
-      searchSubmitted: true,
+      search: query || undefined,
     });
   }
 
@@ -54,8 +46,7 @@ class EnterpriseList extends React.Component {
   fetchEnterprisesWithSearch = (options) => {
     const optionsWithSearch = {
       ...options,
-      // Ternary used to turn empty string ('') into undefined so it does not get set in qs
-      search: this.state.searchQuery ? this.state.searchQuery : undefined,
+      search: this.state.searchQuery || undefined,
     };
 
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
@@ -106,7 +97,7 @@ class EnterpriseList extends React.Component {
             <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
               <SearchBar
                 onSearch={query => this.handleSearch(query)}
-                onClear={() => this.handleClear()}
+                onClear={() => this.handleSearch('')}
                 value={searchQuery}
               />
             </div>

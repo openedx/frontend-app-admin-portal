@@ -29,14 +29,14 @@ const eventsMap = {
     name: 'Table Pagination',
     properties: {
       table: action.payload.tableId,
-      page: action.payload.page,
+      options: action.payload.options,
     },
   })),
   [SORT_REQUEST]: trackEvent(action => ({
     name: 'Table Sort',
     properties: {
       table: action.payload.tableId,
-      column: action.payload.column,
+      ordering: action.payload.ordering,
     },
   })),
 };

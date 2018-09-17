@@ -1,60 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 
 import EnrollmentsTable from './index';
-
+// import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+// import { mockEnrollmentFetchResponse } from './EnrollmentsTable.mocks';
 
 const mockStore = configureMockStore([thunk]);
-
-class ContextProvider extends React.Component {
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-
-  getChildContext = () => ({
-    store: mockStore({
-      paginateTable: () => {},
-      sortTable: () => {},
-      portalConfiguration: {
-        enterpriseId: 'test-enterprise-id',
+const store = mockStore({
+  table: {
+    enrollments: {
+      data: {
+        results: [],
+        current_page: 1,
+        num_pages: 1,
       },
-      table: {
-        enrollments: {
-          data: {
-            results: [],
-            current_page: 1,
-            num_pages: 1,
-          },
-          ordering: null,
-          loading: false,
-          error: null,
-        },
-      },
-    }),
-  })
-
-  render() {
-    return this.props.children;
-  }
-}
-
-ContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+      ordering: null,
+      loading: false,
+      error: null,
+    },
+  },
+});
 
 const EnrollmentsWrapper = props => (
-  <ContextProvider>
+  <Provider store={store}>
     <EnrollmentsTable
       {...props}
     />
-  </ContextProvider>
+  </Provider>
 );
 
-describe('<EnrollmentsTable />', () => {
-  it('renders correctly', () => {
+describe('EnrollmentsTable', () => {
+  it('renders empty state correctly', () => {
     const tree = renderer
       .create((
         <EnrollmentsWrapper />
@@ -63,5 +42,17 @@ describe('<EnrollmentsTable />', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  // TODO: additional tests or snapshots for other states (mulitple pages, loading states, ..)
+  // TODO: This test is not snapshotting the full table properly
+  // it('renders a full table correctly', () => {
+  //   EnterpriseDataApiService.fetchCourseEnrollments = jest.fn(() =>
+  //     Promise.resolve(mockEnrollmentFetchResponse));
+
+  //   const tree = renderer
+  //     .create((
+  //       <EnrollmentsWrapper />
+  //     ))
+  //     .toJSON();
+  //   expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalled();
+  //   expect(tree).toMatchSnapshot();
+  // });
 });

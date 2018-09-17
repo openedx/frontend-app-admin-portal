@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EnrollmentsTable /> renders correctly 1`] = `
+exports[`EnrollmentsTable renders empty state correctly 1`] = `
 <div>
   <div
     className="alert fade alert-warning show"

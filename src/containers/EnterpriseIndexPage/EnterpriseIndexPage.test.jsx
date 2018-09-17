@@ -50,7 +50,6 @@ describe('<EnterpriseIndexPage />', () => {
 
   it('searchEnterpriseList dispatches searchEnterpriseList action', () => {
     wrapper.props().searchEnterpriseList();
-    // TODO: tohavebeencalledwith?
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
