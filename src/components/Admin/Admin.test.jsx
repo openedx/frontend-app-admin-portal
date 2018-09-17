@@ -20,9 +20,7 @@ class ContextProvider extends React.Component {
       portalConfiguration: {
         enterpriseId: 'test-enterprise-id',
       },
-      courseEnrollments: {
-        enrollments: null,
-      },
+      table: {},
     }),
   })
 

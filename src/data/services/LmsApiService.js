@@ -17,7 +17,7 @@ class LmsApiService {
       block_types_filter: 'course,chapter,sequential,vertical',
     };
 
-    const outlineUrl = `${this.baseUrl}/api/courses/v1/blocks/?${qs.stringify(options)}`;
+    const outlineUrl = `${LmsApiService.baseUrl}/api/courses/v1/blocks/?${qs.stringify(options)}`;
     const jwtToken = getAccessToken();
 
     return httpClient.get(outlineUrl, {
@@ -28,7 +28,7 @@ class LmsApiService {
   }
 
   static fetchPortalConfiguration(enterpriseSlug) {
-    const portalConfigurationUrl = `${this.baseUrl}/enterprise/api/v1/enterprise-customer-branding/${enterpriseSlug}/`;
+    const portalConfigurationUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-branding/${enterpriseSlug}/`;
     const jwtToken = getAccessToken();
 
     return httpClient.get(portalConfigurationUrl, {
@@ -45,7 +45,7 @@ class LmsApiService {
       page_size: 50,
       ...options,
     };
-    const enterpriseListUrl = `${this.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
+    const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
     const jwtToken = getAccessToken();
 
     return httpClient.get(enterpriseListUrl, {
@@ -61,10 +61,10 @@ class LmsApiService {
       grant_type: 'password',
       username: email,
       password,
-      client_id: this.clientId,
+      client_id: LmsApiService.clientId,
       token_type: 'jwt',
     };
-    const authUrl = `${this.baseUrl}/oauth2/access_token/`;
+    const authUrl = `${LmsApiService.baseUrl}/oauth2/access_token/`;
     return httpClient.post(authUrl, qs.stringify(loginData));
   }
 }

@@ -1,20 +1,65 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
 import { MemoryRouter, Redirect } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
 
+const mockStore = configureMockStore([thunk]);
+
+class ContextProvider extends React.Component {
+  static childContextTypes = {
+    store: PropTypes.object.isRequired,
+  }
+
+  getChildContext = () => ({
+    store: mockStore({
+      paginateTable: () => {},
+      sortTable: () => {},
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise-id',
+      },
+      table: {
+        enrollments: {
+          data: {
+            results: [],
+            current_page: 1,
+            num_pages: 1,
+          },
+          ordering: null,
+          loading: false,
+          error: null,
+        },
+      },
+    }),
+  })
+
+  render() {
+    return this.props.children;
+  }
+}
+
+ContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 const EnterpriseListWrapper = props => (
   <MemoryRouter>
-    <EnterpriseList
-      getEnterpriseList={() => {}}
-      clearPortalConfiguration={() => {}}
-      getLocalUser={() => {}}
-      setSearchQuery={() => {}}
-      {...props}
-    />
+    <ContextProvider>
+      <EnterpriseList
+        enterprisesData={{
+          results: [],
+        }}
+        searchEnterpriseList={() => {}}
+        clearPortalConfiguration={() => {}}
+        getLocalUser={() => {}}
+        {...props}
+      />
+    </ContextProvider>
   </MemoryRouter>
 );
 
@@ -23,19 +68,16 @@ describe('<EnterpriseList />', () => {
 
   describe('renders correctly', () => {
     it('calls getEnterpriseList, clearPortalConfiguration and getLocalUser props', () => {
-      const mockGetEnterpriseList = jest.fn();
       const mockClearPortalConfiguration = jest.fn();
       const mockGetLocalUser = jest.fn();
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            getEnterpriseList={mockGetEnterpriseList}
             clearPortalConfiguration={mockClearPortalConfiguration}
             getLocalUser={mockGetLocalUser}
           />
         ))
         .toJSON();
-      expect(mockGetEnterpriseList).toHaveBeenCalled();
       expect(mockClearPortalConfiguration).toHaveBeenCalled();
       expect(mockGetLocalUser).toHaveBeenCalled();
       expect(tree).toMatchSnapshot();
@@ -45,7 +87,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={mockEnterpriseList}
+            enterprisesData={mockEnterpriseList}
           />
         ))
         .toJSON();
@@ -56,7 +98,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={{
+            enterprisesData={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -71,7 +113,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprises={{
+            enterprisesData={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -116,74 +158,22 @@ describe('<EnterpriseList />', () => {
         }],
         start: 0,
       };
+
       wrapper = mount((
         <MemoryRouter initialEntries={['/test']}>
-          <EnterpriseList
-            enterprises={oneEnterpriseListData}
-            getEnterpriseList={() => {}}
-            clearPortalConfiguration={() => {}}
-            getLocalUser={() => {}}
-            setSearchQuery={() => {}}
-          />
+          <ContextProvider>
+            <EnterpriseList
+              enterprisesData={oneEnterpriseListData}
+              searchEnterpriseList={() => {}}
+              clearPortalConfiguration={() => {}}
+              getLocalUser={() => {}}
+            />
+          </ContextProvider>
         </MemoryRouter>
       ));
       const expectedRedirect = <Redirect to="/enterprise-99/admin" />;
       expect(wrapper.containsMatchingElement(expectedRedirect)).toEqual(true);
     });
-  });
-
-  describe('formatEnterpriseData', () => {
-    const expectedData = mockEnterpriseList.results;
-
-    beforeEach(() => {
-      wrapper = shallow((
-        <EnterpriseListWrapper
-          enterprises={mockEnterpriseList}
-        />
-      )).find(EnterpriseList);
-    });
-
-    it('overrides state enterprises when props enterprises changes with new enterprises', () => {
-      const currentState = wrapper.dive().state();
-
-      expect(currentState.enterprises[0]).toEqual(expectedData[0]);
-      expect(currentState.enterprises[1]).toEqual(expectedData[1]);
-      expect(currentState.pageCount).toEqual(mockEnterpriseList.num_pages);
-
-      wrapper.dive().setProps({
-        enterprises: {
-          count: 0,
-          num_pages: 0,
-          results: [],
-        },
-      }, () => {
-        expect(wrapper.dive().state('enterprises')).toEqual([]);
-        expect(wrapper.dive().state('pageCount')).toEqual(null);
-      });
-    });
-
-    it('does not override state enterprises when props enterprises changes with existing enterprises', () => {
-      const currentEnterprises = wrapper.dive().state('enterprises');
-      expect(currentEnterprises[0]).toEqual(expectedData[0]);
-      expect(currentEnterprises[1]).toEqual(expectedData[1]);
-
-      wrapper.dive().setProps({
-        enterprises: mockEnterpriseList,
-      });
-
-      const updatedEnterprises = wrapper.dive().state('enterprises');
-      expect(updatedEnterprises[0]).toEqual(expectedData[0]);
-      expect(updatedEnterprises[1]).toEqual(expectedData[1]);
-    });
-  });
-
-  it('pageCount state should be null when enterprises prop is null', () => {
-    wrapper = shallow((
-      <EnterpriseListWrapper
-        enterprises={null}
-      />
-    )).find('EnterpriseList');
-    expect(wrapper.dive().state('pageCount')).toEqual(null);
   });
 
   describe('enterprise list search', () => {

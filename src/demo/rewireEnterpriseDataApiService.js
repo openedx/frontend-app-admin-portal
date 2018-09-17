@@ -2,7 +2,7 @@ import EnterpriseDataApiService from '../../src/data/services/EnterpriseDataApiS
 import { enrollments, overview } from './data';
 
 const rewire = () => {
-  EnterpriseDataApiService.fetchCourseEnrollments = (enterpriseId, options) => {
+  EnterpriseDataApiService.fetchCourseEnrollments = (options) => {
     const pageSize = options.page_size || 50;
     const page = options.page || 1;
     const start = (page - 1) * pageSize;

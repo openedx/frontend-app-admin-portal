@@ -15,7 +15,7 @@ describe('rewireEnterpriseDataApiService', () => {
   describe('fetchCourseEnrollments', () => {
     it('rewires fetchCourseEnrollments call', () => {
       rewire();
-      return EnterpriseDataApiService.fetchCourseEnrollments('test-enterprise-id', {}).then((results) => {
+      return EnterpriseDataApiService.fetchCourseEnrollments({}).then((results) => {
         // Only testing for data types, not actual values
         const expectedResults = {
           count: expect.any(Number),
@@ -28,7 +28,7 @@ describe('rewireEnterpriseDataApiService', () => {
     });
     it('supports sorting via options', () => {
       rewire();
-      return EnterpriseDataApiService.fetchCourseEnrollments('test-enterprise-id', { ordering: 'current_grade' }).then((results) => {
+      return EnterpriseDataApiService.fetchCourseEnrollments({ ordering: 'current_grade' }).then((results) => {
         let previous = results.data.results[0];
         results.data.results.forEach((enrollment) => {
           expect(enrollment.current_grade).toBeGreaterThanOrEqual(previous.current_grade);
@@ -38,7 +38,7 @@ describe('rewireEnterpriseDataApiService', () => {
     });
     it('supports pagination via options', () => {
       rewire();
-      return EnterpriseDataApiService.fetchCourseEnrollments('test-enterprise-id', { page: 2 }).then((results) => {
+      return EnterpriseDataApiService.fetchCourseEnrollments({ page: 2 }).then((results) => {
         expect(results.data.current_page).toEqual(2);
       });
     });

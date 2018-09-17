@@ -8,7 +8,7 @@ import Hero from '../../components/Hero';
 import NumberCard from '../../components/NumberCard';
 import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
-import CourseEnrollmentsTable from '../../containers/CourseEnrollmentsTable';
+import EnrollmentsTable from '../EnrollmentsTable';
 
 import { formatTimestamp } from '../../utils';
 
@@ -171,7 +171,7 @@ class Admin extends React.Component {
               }
               {csvError && this.renderCsvErrorMessage()}
               <div className="mt-3 mb-5">
-                <CourseEnrollmentsTable />
+                {enterpriseId && <EnrollmentsTable />}
               </div>
             </div>
           </div>

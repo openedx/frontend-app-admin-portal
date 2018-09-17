@@ -329,9 +329,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data 1`] = `
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -448,9 +446,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         </h2>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -537,9 +533,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         </h2>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div

@@ -15,6 +15,9 @@ const store = mockStore({
     enterpriseId: 'test-enterprise-id',
   },
   courseEnrollments: {},
+  table: {
+    'enterprise-list': {},
+  },
 });
 
 class ContextProvider extends React.Component {

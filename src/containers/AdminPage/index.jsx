@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import fetchDashboardAnalytics from '../../data/actions/dashboardAnalytics';
-import { fetchCsv } from '../../data/actions/courseEnrollments';
+import fetchCsv from '../../data/actions/courseEnrollments';
 import Admin from '../../components/Admin';
 
 const mapStateToProps = state => ({
