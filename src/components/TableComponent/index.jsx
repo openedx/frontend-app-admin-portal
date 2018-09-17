@@ -85,7 +85,7 @@ class TableComponent extends React.Component {
       <StatusAlert
         alertType="danger"
         iconClassName={['fa', 'fa-times-circle']}
-        title="Unable to load full report"
+        title="Unable to load data"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
     );
