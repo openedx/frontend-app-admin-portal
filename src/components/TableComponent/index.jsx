@@ -15,6 +15,10 @@ class TableComponent extends React.Component {
     this.props.paginateTable();
   }
 
+  componentWillUnmount() {
+    this.props.clearTable();
+  }
+
   renderTableContent() {
     const {
       className,
@@ -138,6 +142,7 @@ TableComponent.propTypes = {
   error: PropTypes.instanceOf(Error),
   paginateTable: PropTypes.func.isRequired,
   sortTable: PropTypes.func.isRequired,
+  clearTable: PropTypes.func.isRequired,
 };
 
 TableComponent.defaultProps = {
