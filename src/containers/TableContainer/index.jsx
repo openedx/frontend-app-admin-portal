@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
-import { paginateTable, sortTable } from '../../data/actions/table';
+import { paginateTable, sortTable, clearTable } from '../../data/actions/table';
 
 const mapStateToProps = (state, ownProps) => {
   const tableState = state.table[ownProps.id] || {};
@@ -22,9 +22,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   sortTable: (options) => {
     dispatch(sortTable(ownProps.id, ownProps.fetchMethod, options));
   },
+  clearTable: () => {
+    dispatch(clearTable(ownProps.id));
+  },
 });
 
-// TODO: proptypes for ownProps?
 const TableContainer = connect(
   mapStateToProps,
   mapDispatchToProps,

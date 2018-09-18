@@ -10,6 +10,7 @@ import {
   SORT_REQUEST,
   SORT_SUCCESS,
   SORT_FAILURE,
+  CLEAR_TABLE,
 } from '../constants/table';
 
 const paginationRequest = (tableId, options) => ({
@@ -153,7 +154,16 @@ const sortTable = (tableId, fetchMethod, sortOptions) => (
   }
 );
 
+const clearTable = tableId => dispatch => (dispatch({
+  type: CLEAR_TABLE,
+  payload: {
+    tableId,
+  },
+}));
+
+
 export {
   paginateTable,
   sortTable,
+  clearTable,
 };

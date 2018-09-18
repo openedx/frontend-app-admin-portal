@@ -5,6 +5,7 @@ import {
   SORT_REQUEST,
   SORT_SUCCESS,
   SORT_FAILURE,
+  CLEAR_TABLE,
 } from '../constants/table';
 
 // Tables state will be a map of tableId to that tables state
@@ -51,6 +52,13 @@ const tableReducer = (state = {}, action) => {
       return updateTable(state, action.payload.tableId, {
         loading: false,
         error: action.payload.error,
+      });
+    case CLEAR_TABLE:
+      return updateTable(state, action.payload.tableId, {
+        loading: false,
+        error: null,
+        ordering: null,
+        data: null,
       });
     default:
       return state;
