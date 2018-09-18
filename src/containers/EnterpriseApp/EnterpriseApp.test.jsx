@@ -15,7 +15,7 @@ const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
   },
-  courseEnrollments: {},
+  csv: {},
   table: {
     'enterprise-list': {},
   },

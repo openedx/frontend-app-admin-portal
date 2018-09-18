@@ -84,7 +84,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -105,6 +105,7 @@ exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -386,7 +387,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -401,12 +402,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -688,7 +690,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -703,12 +705,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -995,7 +998,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -1010,12 +1013,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -1548,7 +1552,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -1569,6 +1573,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -1833,7 +1838,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -1854,6 +1859,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -2140,7 +2146,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -2155,12 +2161,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -2447,7 +2454,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -2462,12 +2469,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -2752,7 +2760,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -2767,12 +2775,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -3054,7 +3063,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -3069,12 +3078,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -3361,7 +3371,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           >
             <button
               className="btn btn-outline-primary download-btn"
-              disabled={null}
+              disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -3376,12 +3386,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   />
                 </span>
                 Download 
-                current
+                full
                  report (CSV)
               </span>
             </button>
           </div>
         </div>
+        
         <div
           className="mt-3 mb-5"
         >
@@ -3523,6 +3534,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
+        
         <div
           className="mt-3 mb-5"
         >
@@ -3634,6 +3646,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
+        
         <div
           className="mt-3 mb-5"
         >

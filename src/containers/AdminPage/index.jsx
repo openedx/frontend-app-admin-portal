@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import fetchDashboardAnalytics from '../../data/actions/dashboardAnalytics';
-import fetchCsv from '../../data/actions/courseEnrollments';
 import Admin from '../../components/Admin';
 
 const mapStateToProps = state => ({
@@ -14,16 +13,12 @@ const mapStateToProps = state => ({
   courseCompletions: state.dashboardAnalytics.course_completions,
   lastUpdatedDate: state.dashboardAnalytics.last_updated_date,
   enterpriseId: state.portalConfiguration.enterpriseId,
-  csvLoading: state.courseEnrollments.csvLoading,
-  csvError: state.courseEnrollments.csvError,
+  csv: state.csv,
 });
 
 const mapDispatchToProps = dispatch => ({
   getDashboardAnalytics: (enterpriseId) => {
     dispatch(fetchDashboardAnalytics(enterpriseId));
-  },
-  downloadCsv: (enterpriseId) => {
-    dispatch(fetchCsv(enterpriseId));
   },
 });
 
