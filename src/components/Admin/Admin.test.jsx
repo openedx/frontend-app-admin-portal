@@ -33,7 +33,9 @@ const AdminWrapper = props => (
     <Provider store={store}>
       <Admin
         enterpriseId="test-enterprise"
+        slug="test-enterprise"
         getDashboardAnalytics={() => {}}
+        fetchPortalConfiguration={() => {}}
         fetchCsv={() => {}}
         match={{
           params: {},

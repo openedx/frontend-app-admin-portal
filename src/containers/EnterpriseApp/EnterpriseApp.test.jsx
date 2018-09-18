@@ -5,7 +5,6 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
 
 import EnterpriseApp from './index';
 
@@ -46,7 +45,7 @@ describe('EnterpriseApp', () => {
   it('renders not found page correctly', () => {
     const tree = renderer
       .create((
-        <MemoryRouter initialEntries={['/']}>
+        <MemoryRouter initialEntries={['/test-enterprise-id/admin']}>
           <AppWrapper
             path="/"
             match={{
@@ -59,24 +58,5 @@ describe('EnterpriseApp', () => {
         </MemoryRouter>))
       .toJSON();
     expect(tree).toMatchSnapshot();
-  });
-
-  it('gets portalConfiguration when componentDidMount', () => {
-    const enterpriseSlug = 'test-enterprise';
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
-    mount((
-      <MemoryRouter initialEntries={[`/${enterpriseSlug}`]}>
-        <AppWrapper
-          path={`/${enterpriseSlug}`}
-          match={{
-            url: `/${enterpriseSlug}`,
-            params: {
-              enterpriseSlug,
-            },
-          }}
-        />
-      </MemoryRouter>
-    ));
-    expect(dispatchSpy).toHaveBeenCalled();
   });
 });

@@ -27,17 +27,6 @@ class LmsApiService {
     });
   }
 
-  static fetchPortalConfiguration(enterpriseSlug) {
-    const portalConfigurationUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-branding/${enterpriseSlug}/`;
-    const jwtToken = getAccessToken();
-
-    return httpClient.get(portalConfigurationUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
-  }
-
   static fetchEnterpriseList(options) {
     const queryParams = {
       permissions: 'enterprise_data_api_access',
@@ -54,6 +43,14 @@ class LmsApiService {
         Authorization: `JWT ${jwtToken}`,
       },
     });
+  }
+
+  static fetchEnterpriseBySlug(slug) {
+    return this.fetchEnterpriseList({ slug })
+      // Because we expect only one enterprise by slug we return only the first result
+      .then(data => ({
+        data: data.data.results[0],
+      }));
   }
 
   static authenticate(email, password) {

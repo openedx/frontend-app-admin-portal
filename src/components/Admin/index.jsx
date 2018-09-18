@@ -28,10 +28,11 @@ import './Admin.scss';
 class Admin extends React.Component {
   componentDidMount() {
     const { enterpriseId } = this.props;
-
     if (enterpriseId) {
       this.props.getDashboardAnalytics(enterpriseId);
     }
+
+    this.props.fetchPortalConfiguration(this.props.slug);
   }
 
   componentDidUpdate(prevProps) {
@@ -277,6 +278,8 @@ Admin.defaultProps = {
 
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
+  fetchPortalConfiguration: PropTypes.func.isRequired,
+  slug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,

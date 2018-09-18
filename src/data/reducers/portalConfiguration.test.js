@@ -1,10 +1,13 @@
 import portalConfiguration from './portalConfiguration';
 import {
-  SET_PORTAL_CONFIGURATION,
+  FETCH_PORTAL_CONFIGURATION_SUCCESS,
+  FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const initialState = {
+  loading: false,
+  error: null,
   enterpriseId: null,
   enterpriseName: null,
   enterpriseSlug: null,
@@ -27,7 +30,7 @@ describe('portalConfiguration reducer', () => {
     expect(portalConfiguration(undefined, {})).toEqual(initialState);
   });
 
-  it('updates setPortalConfiguration state', () => {
+  it('updates fetch portal configuration success state', () => {
     const expected = {
       ...initialState,
       enterpriseId: enterpriseData.uuid,
@@ -36,14 +39,26 @@ describe('portalConfiguration reducer', () => {
       enterpriseLogo: enterpriseData.branding_configuration.logo,
     };
     expect(portalConfiguration(undefined, {
-      type: SET_PORTAL_CONFIGURATION,
+      type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
       payload: { data: enterpriseData },
+    })).toEqual(expected);
+  });
+
+  it('updates fetch portal configuration failure state', () => {
+    const error = Error('Network Request');
+    const expected = {
+      ...initialState,
+      error,
+    };
+    expect(portalConfiguration(undefined, {
+      type: FETCH_PORTAL_CONFIGURATION_FAILURE,
+      payload: { error },
     })).toEqual(expected);
   });
 
   it('updates clearPortalConfiguration state', () => {
     portalConfiguration(undefined, {
-      type: SET_PORTAL_CONFIGURATION,
+      type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
       payload: { data: enterpriseData },
     });
 

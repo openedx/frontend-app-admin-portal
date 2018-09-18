@@ -38,7 +38,7 @@ describe('<AdminPage />', () => {
     wrapper = mount((
       <MemoryRouter>
         <Provider store={store}>
-          <AdminPage />
+          <AdminPage slug="test-enterprise" />
         </Provider>
       </MemoryRouter>
     )).find('Admin');

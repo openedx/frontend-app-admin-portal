@@ -34,9 +34,10 @@ const EnterpriseListWrapper = props => (
   <MemoryRouter>
     <Provider store={store}>
       <EnterpriseList
-        enterprisesData={{
+        enterpriseList={{
           results: [],
         }}
+        fetchEnterpriseList={() => {}}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
         getLocalUser={() => {}}
@@ -70,7 +71,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprisesData={mockEnterpriseList}
+            enterpriseList={mockEnterpriseList}
           />
         ))
         .toJSON();
@@ -81,7 +82,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprisesData={{
+            enterpriseList={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -96,7 +97,7 @@ describe('<EnterpriseList />', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
-            enterprisesData={{
+            enterpriseList={{
               ...mockEnterpriseList,
               count: 0,
               results: [],
@@ -146,7 +147,8 @@ describe('<EnterpriseList />', () => {
         <MemoryRouter initialEntries={['/test']}>
           <Provider store={store}>
             <EnterpriseList
-              enterprisesData={oneEnterpriseListData}
+              enterpriseList={oneEnterpriseListData}
+              fetchEnterpriseList={() => {}}
               searchEnterpriseList={() => {}}
               clearPortalConfiguration={() => {}}
               getLocalUser={() => {}}

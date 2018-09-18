@@ -45,10 +45,11 @@ const sortRequest = (tableId, ordering) => ({
   },
 });
 
-const sortSuccess = (tableId, data) => ({
+const sortSuccess = (tableId, ordering, data) => ({
   type: SORT_SUCCESS,
   payload: {
     tableId,
+    ordering,
     data,
   },
 });
@@ -77,8 +78,8 @@ const fetchOptions = (tableState) => {
   if (!tableState) {
     const query = qs.parse(history.location.search);
     return {
-      page_size: query.page_size || defaults.pageSize,
-      page: query.page || defaults.page,
+      page_size: parseInt(query.page_size, 10) || defaults.pageSize,
+      page: parseInt(query.page, 10) || defaults.page,
       ordering: query.ordering || defaults.ordering,
     };
   }
@@ -92,10 +93,10 @@ const fetchOptions = (tableState) => {
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
-    const options = {
-      ...fetchOptions(tableState),
-      page: pageNumber,
-    };
+    const options = fetchOptions(tableState);
+    if (pageNumber) {
+      options.page = pageNumber;
+    }
     updateUrl(options);
     dispatch(paginationRequest(tableId, options));
     return fetchMethod(options).then((response) => {
@@ -153,7 +154,7 @@ const sortTable = (tableId, fetchMethod, sortOptions) => (
     }
 
     return fetchMethod(options).then((response) => {
-      dispatch(sortSuccess(tableId, response.data));
+      dispatch(sortSuccess(tableId, ordering, response.data));
     }).catch((error) => {
       dispatch(sortFailure(tableId, error));
     });
@@ -166,7 +167,6 @@ const clearTable = tableId => dispatch => (dispatch({
     tableId,
   },
 }));
-
 
 export {
   paginateTable,

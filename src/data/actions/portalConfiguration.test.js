@@ -1,17 +1,27 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
-import { clearPortalConfiguration, setPortalConfiguration } from './portalConfiguration';
+import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
-  SET_PORTAL_CONFIGURATION,
+  FETCH_PORTAL_CONFIGURATION_REQUEST,
+  FETCH_PORTAL_CONFIGURATION_SUCCESS,
+  FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const mockStore = configureMockStore([thunk]);
+const axiosMock = new MockAdapter(axios);
 
 describe('actions', () => {
-  it('dispatches setPortalConfiguration action', () => {
-    const enterpriseData = {
+  afterEach(() => {
+    axiosMock.reset();
+  });
+
+  it('dispatches success action after fetching portalConfiguration', () => {
+    const slug = 'test-enterprise';
+    const responseData = {
       uuid: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
       name: 'Test Enterprise',
       slug: 'test-enterprise',
@@ -23,15 +33,33 @@ describe('actions', () => {
     };
 
     const expectedActions = [
-      {
-        type: SET_PORTAL_CONFIGURATION,
-        payload: { data: enterpriseData },
-      },
+      { type: FETCH_PORTAL_CONFIGURATION_REQUEST },
+      { type: FETCH_PORTAL_CONFIGURATION_SUCCESS, payload: { data: responseData } },
+    ];
+    const store = mockStore();
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?page=1&page_size=50&permissions=enterprise_data_api_access&slug=${slug}`)
+      .replyOnce(200, JSON.stringify({ results: [responseData] }));
+
+
+    return store.dispatch(fetchPortalConfiguration(slug)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('dispatches failure action after failing to fetch portalConfiguration', () => {
+    const slug = 'test-enterprise';
+    const expectedActions = [
+      { type: FETCH_PORTAL_CONFIGURATION_REQUEST },
+      { type: FETCH_PORTAL_CONFIGURATION_FAILURE, payload: { error: Error('Request failed with status code 500') } },
     ];
     const store = mockStore();
 
-    store.dispatch(setPortalConfiguration(enterpriseData));
-    expect(store.getActions()).toEqual(expectedActions);
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?page=1&page_size=50&permissions=enterprise_data_api_access&slug=${slug}`)
+      .replyOnce(500, JSON.stringify({}));
+
+    return store.dispatch(fetchPortalConfiguration(slug)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 
   it('dispatches clearPortalConfiguration action', () => {
