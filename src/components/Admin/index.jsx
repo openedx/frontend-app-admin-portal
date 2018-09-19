@@ -15,6 +15,7 @@ import AdminCards from '../../containers/AdminCards';
 import { formatTimestamp } from '../../utils';
 
 import './Admin.scss';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -29,6 +30,15 @@ class Admin extends React.Component {
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.getDashboardAnalytics(enterpriseId);
+    }
+
+    const slug = this.props.match.params.slug;
+    if (slug && slug !== prevProps.match.params.slug) {
+      this.props.paginateTable(
+        'enrollments',
+        EnterpriseDataApiService.fetchCourseEnrollments,
+        this.getMetadataForAction(slug).fetchParams
+      );
     }
   }
 
@@ -56,17 +66,20 @@ class Admin extends React.Component {
       active: {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Top Active Learners',
-        component: <EnrollmentsTable />,
+        component: <EnrollmentsTable fetchParams={{learner_activity: 'active'}} />,
+        fetchParams: {learner_activity: 'active_past_week'}
       },
       'inactive-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Week',
         component: <EnrollmentsTable />,
+        fetchParams: {learner_activity: 'inactive_past_week'}
       },
       'inactive-month': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Month',
         component: <EnrollmentsTable />,
+        fetchParams: {learner_activity: 'active_past_month'}
       },
       completed: {
         title: 'Number of Courses Completed by Learner',
@@ -76,6 +89,7 @@ class Admin extends React.Component {
         title: 'Number of Courses Completed by Learner',
         subtitle: 'Past Week',
         component: <EnrollmentsTable />,
+        fetchParams: {passed_date: 'last_week'}
       },
     };
 

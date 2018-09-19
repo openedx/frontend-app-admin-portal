@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 
 import fetchDashboardAnalytics from '../../data/actions/dashboardAnalytics';
 import fetchCsv from '../../data/actions/courseEnrollments';
+import { paginateTable } from '../../data/actions/table';
 import Admin from '../../components/Admin';
 
 const mapStateToProps = state => ({
@@ -21,6 +22,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getDashboardAnalytics: (enterpriseId) => {
     dispatch(fetchDashboardAnalytics(enterpriseId));
+  },
+  paginateTable: (id, fetchMethod, fetchParams) => {
+    dispatch(paginateTable(id, fetchMethod, fetchParams));
   },
   downloadCsv: (enterpriseId) => {
     dispatch(fetchCsv(enterpriseId));

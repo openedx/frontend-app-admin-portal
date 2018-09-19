@@ -89,16 +89,18 @@ const fetchOptions = (tableState) => {
   };
 };
 
-const paginateTable = (tableId, fetchMethod, pageNumber) => (
+const paginateTable = (tableId, fetchMethod, fetchParams, pageNumber) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
     const options = {
       ...fetchOptions(tableState),
+      ...fetchParams,
       page: pageNumber,
     };
     updateUrl(options);
     dispatch(paginationRequest(tableId, options));
     return fetchMethod(options).then((response) => {
+      console.log('response.data', response.data);
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {
       dispatch(paginationFailure(tableId, error));

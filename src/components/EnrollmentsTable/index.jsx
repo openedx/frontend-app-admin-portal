@@ -4,7 +4,7 @@ import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const EnrollmentsTable = () => {
+const EnrollmentsTable = (props) => {
   const enrollmentTableColumns = [
     {
       label: 'Email',
@@ -80,6 +80,7 @@ const EnrollmentsTable = () => {
       fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments}
       columns={enrollmentTableColumns}
       formatData={formatEnrollmentData}
+      fetchParams={props.fetchParams}
       tableSortable
     />
   );

@@ -17,7 +17,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   paginateTable: (pageNumber) => {
-    dispatch(paginateTable(ownProps.id, ownProps.fetchMethod, pageNumber));
+    dispatch(paginateTable(ownProps.id, ownProps.fetchMethod, ownProps.fetchParams, pageNumber));
   },
   sortTable: (options) => {
     dispatch(sortTable(ownProps.id, ownProps.fetchMethod, options));
