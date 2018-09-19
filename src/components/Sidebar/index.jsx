@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SidebarToggle from '../SidebarToggle';
 import SidebarItem from '../SidebarItem';
-import LoadingMessage from '../LoadingMessage';
 
 import './Sidebar.scss';
 
@@ -84,83 +83,42 @@ const SIDEBAR_DATA = [
   },
 ];
 
-class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
+function Sidebar(props) {
+  const { sidebarEnabled, sidebarExpanded, sidebarData, toggleSidebar } = props;
 
-    this.state = {
-      data: null,
-    }
+  if (!sidebarEnabled) {
+    return null;
   }
 
-  componentDidMount() {
-    console.log('componentDidMount in Sidebar::enterpriseId >> ', enterpriseId);
-    // const { enterpriseId } = this.props;
-
-    // if (enterpriseId) {
-    //   this.props.getSidebarData(enterpriseId, {});
-    // }
-  }
-
-  renderErrorMessage() {
-    return (
-      <span classname="sidebar-data-fetch-error">SIDEBAR_DATA_FETCH_ERROR</span>
-    );
-  }
-
-  renderLoadingMessage() {
-    return <LoadingMessage className="sidebar-data-fetch-loading" />;
-  }
-
-  render() {
-    const { data } = this.state;
-    const { sidebarEnabled, sidebarExpanded, loading, error } = this.props;
-
-    debugger;
-    if (!sidebarEnabled) {
-      return null;
-    }
-
-    // return (
-    //   <div id="sidebar">
-    //     {error && this.renderErrorMessage()}
-    //     {loading && !data && this.renderLoadingMessage()}
-    //     {data && this.renderTableContent()}
-    //   </div>
-    // );
-
-    return sidebarExpanded ? (
-      <div id="sidebar" className={sidebarExpanded ? 'expanded' : 'collapsed'}>
-        <SidebarToggle expanded={sidebarExpanded} toggleSidebar={this.props.toggleSidebar} />
-        <div className="sidebar-items">
-          {
-            SIDEBAR_DATA.map(item => <SidebarItem itemData={item} key={item.category} />)
-          }
-        </div>
+  return sidebarExpanded ? (
+    <div id="sidebar" className={sidebarExpanded ? 'expanded' : 'collapsed'}>
+      <SidebarToggle expanded={sidebarExpanded} toggleSidebar={toggleSidebar} />
+      <div className="sidebar-items">
+        {
+          sidebarData.map(item => <SidebarItem itemData={item} key={item.category} />)
+        }
       </div>
-    ) :
-      (
-        <div className="sidebar-collapsed">
-          <SidebarToggle expanded={sidebarExpanded} toggleSidebar={this.props.toggleSidebar} />
-        </div>
-      );
-  }
+    </div>
+  ) :
+    (
+      <div className="sidebar-collapsed">
+        <SidebarToggle expanded={sidebarExpanded} toggleSidebar={toggleSidebar} />
+      </div>
+    );
 }
 
 Sidebar.defaultProps = {
   sidebarExpanded: false,
   sidebarEnabled: false,
-  enterpriseId: '',
+  sidebarData: [],
   toggleSidebar: () => {},
-  getSidebarData: () => {},
 };
 
 Sidebar.propTypes = {
   sidebarExpanded: PropTypes.bool,
   sidebarEnabled: PropTypes.bool,
-  enterpriseId: PropTypes.string,
+  sidebarData: PropTypes.array,
   toggleSidebar: PropTypes.func,
-  getSidebarData: PropTypes.func,
 };
 
 export default Sidebar;
