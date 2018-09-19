@@ -1,0 +1,42 @@
+import React from 'react';
+import renderer from 'react-test-renderer';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+
+import CompletedLearnersTable from '.';
+
+const mockStore = configureMockStore([thunk]);
+const store = mockStore({
+  table: {
+    'completed-learners': {
+      data: {
+        results: [],
+        current_page: 1,
+        num_pages: 1,
+      },
+      ordering: null,
+      loading: false,
+      error: null,
+    },
+  },
+});
+
+const CompletedLearnersWrapper = props => (
+  <Provider store={store}>
+    <CompletedLearnersTable
+      {...props}
+    />
+  </Provider>
+);
+
+describe('CompletedLearnersTable', () => {
+  it('renders empty state correctly', () => {
+    const tree = renderer
+      .create((
+        <CompletedLearnersWrapper />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+});

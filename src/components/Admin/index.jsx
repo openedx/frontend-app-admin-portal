@@ -12,6 +12,7 @@ import LoadingMessage from '../../components/LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
+import CompletedLearnersTable from '../CompletedLearnersTable';
 import AdminCards from '../../containers/AdminCards';
 
 import { formatTimestamp } from '../../utils';
@@ -72,7 +73,7 @@ class Admin extends React.Component {
       },
       completed: {
         title: 'Number of Courses Completed by Learner',
-        component: <EnrollmentsTable />,
+        component: <CompletedLearnersTable />,
       },
       'completed-week': {
         title: 'Number of Courses Completed by Learner',
