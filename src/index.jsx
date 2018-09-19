@@ -18,7 +18,7 @@ import LoginPage from './containers/LoginPage';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import PrivateRoute from './containers/PrivateRoute';
 import LogoutHandler from './containers/LogoutHandler';
-import SidebarContainer from './containers/SidebarContainer';
+import AdminSidebar from './containers/AdminSidebar';
 import store from './data/store';
 import history from './data/history';
 import './index.scss';
@@ -28,7 +28,7 @@ const AppWrapper = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <div className="portal-main-wrapper">
-        <SidebarContainer />
+        <AdminSidebar />
         <div id="portal-main-content">
           <Helmet
             titleTemplate="%s - edX Portal"

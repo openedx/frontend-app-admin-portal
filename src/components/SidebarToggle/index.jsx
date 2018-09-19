@@ -7,6 +7,7 @@ import classNames from 'classnames';
 function SidebarToggle(props) {
   return (
     <Button
+      className={['btn-toggle']}
       label={
         <span>
           <Icon

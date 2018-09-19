@@ -34,6 +34,8 @@ const AdminWrapper = props => (
         enterpriseId="test-enterprise"
         getDashboardAnalytics={() => {}}
         downloadCsv={() => {}}
+        enableSidebar={() => {}}
+        disableSidebar={() => {}}
         match={{
           params: {},
           url: '/',

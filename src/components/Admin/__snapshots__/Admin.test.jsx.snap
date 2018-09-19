@@ -378,7 +378,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -409,9 +409,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -680,7 +678,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -711,9 +709,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -987,7 +983,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -1018,9 +1014,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -1540,7 +1534,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -1571,9 +1565,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -1825,7 +1817,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -1856,9 +1848,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -2132,7 +2122,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -2163,9 +2153,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -2439,7 +2427,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -2470,9 +2458,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -2744,7 +2730,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -2775,9 +2761,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -3046,7 +3030,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div
@@ -3077,9 +3061,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -3353,7 +3335,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           >
             <span>
               Showing data as of 
-              July 31, 2018
+              August 1, 2018
             </span>
           </div>
           <div

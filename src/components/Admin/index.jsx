@@ -38,6 +38,10 @@ class Admin extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.disableSidebar();
+  }
+
   getMetadataForAction(actionSlug) {
     const defaultData = {
       title: 'Full Report',
@@ -86,10 +90,6 @@ class Admin extends React.Component {
     };
 
     return actionData[actionSlug] || defaultData;
-  }
-
-  componentWillUnmount() {
-    this.props.disableSidebar();
   }
 
   hasAnalyticsData() {

@@ -92,15 +92,18 @@ class SidebarItem extends React.Component {
   }
 
   render() {
-    const { category, showAllButton, items } = this.props.itemData;
+    const { itemsToShow } = this.props;
+    const {
+      category, showAllButton, items, action,
+    } = this.props.itemData;
     const categoryKey = category.replace(/\s+/g, '-').toLowerCase();
 
     const { showAllItems } = this.state;
     const showLabel = showAllItems ? 'show less' : 'show all';
-    const itemsToDisaplay = showAllItems ? items : items.slice(5);
+    const itemsToDisaplay = showAllItems ? items : items.slice(0, itemsToShow);
 
     return (
-      <section className="sidebar-item-wrapper">
+      <section className={`sidebar-item-wrapper ${categoryKey}`}>
         <SidebarItemHeader
           categoryKey={categoryKey}
           category={category}
@@ -113,6 +116,9 @@ class SidebarItem extends React.Component {
             {
               itemsToDisaplay.map(item => <SidebarItemChild item={item} key={item.title} />)
             }
+            {
+              action && <SidebarItemChild item={action} />
+            }
           </ul>
         </nav>
       </section>
@@ -121,18 +127,22 @@ class SidebarItem extends React.Component {
 }
 
 SidebarItem.defaultProps = {
+  itemsToShow: 0,
   itemData: {
     category: '',
     showAllButton: false,
     items: [],
+    action: undefined,
   },
 };
 
 SidebarItem.propTypes = {
+  itemsToShow: PropTypes.number,
   itemData: PropTypes.shape({
     category: PropTypes.string,
     showAllButton: PropTypes.bool,
-    items: PropTypes.array,
+    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    action: PropTypes.object,
   }),
 };
 

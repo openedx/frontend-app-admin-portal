@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Sidebar /> renders correctly when collapsed 1`] = `
+<div
+  className="collapsed"
+  id="sidebar"
+>
+  <button
+    className="btn btn-toggle"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    type="button"
+  >
+    <span>
+      <span>
+        <span
+          aria-hidden={true}
+          className="fa fa-bars"
+          id="Icon1"
+        />
+      </span>
+    </span>
+  </button>
+</div>
+`;
+
+exports[`<Sidebar /> renders correctly when expanded 1`] = `
+<div
+  id="sidebar"
+>
+  <button
+    className="btn btn-toggle"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    type="button"
+  >
+    <span>
+      <span>
+        <span
+          aria-hidden={true}
+          className="fa fa-times"
+          id="Icon1"
+        />
+      </span>
+    </span>
+  </button>
+  <div
+    className="sidebar-items"
+  >
+    <section
+      className="sidebar-item-wrapper catalogs"
+    >
+      <div
+        className="sidebar-item-header"
+      >
+        <h5
+          id="sidebar-item-catalogs"
+        >
+          Catalogs
+        </h5>
+        <button
+          className="btn btn-link"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          show all
+        </button>
+      </div>
+      <nav
+        aria-labelledby="sidebar-item-catalogs"
+        className="sidebar-item-childs"
+      >
+        <ul>
+          <li
+            className="sidebar-item-child"
+          >
+            <a
+              href="https://js.org/"
+            >
+              JS Catalog
+            </a>
+          </li>
+          <li
+            className="sidebar-item-child"
+          >
+            <a
+              href="https://www.python.org/"
+            >
+              PY Catalog
+            </a>
+          </li>
+          <li
+            className="sidebar-item-child btn-sidebar"
+          >
+            <a
+              href="https://reactjs.org/"
+              onClick={[Function]}
+              target="_self"
+            >
+              <span>
+                <span>
+                  <span
+                    aria-hidden={true}
+                    className="content-icon"
+                    id="Icon1"
+                  />
+                </span>
+                Create New Catalog
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+    <section
+      className="sidebar-item-wrapper management"
+    >
+      <div
+        className="sidebar-item-header"
+      >
+        <h5
+          id="sidebar-item-management"
+        >
+          Management
+        </h5>
+      </div>
+      <nav
+        aria-labelledby="sidebar-item-management"
+        className="sidebar-item-childs"
+      >
+        <ul>
+          <li
+            className="sidebar-item-child"
+          >
+            <a
+              href="https://edx.org/"
+            >
+              Peoeple & Groups
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`<Sidebar /> will not render if disabled 1`] = `null`;

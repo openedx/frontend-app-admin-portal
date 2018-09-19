@@ -1,9 +1,12 @@
 #sidebar {
-    width: 220px;
-    position: fixed;
+    width: 250px;
+    padding-top: 50px;
+    position: relative;
+    float: left;
     top: 0;
     left: 0;
     height: 100vh;
+    overflow: hidden;
     z-index: 9999;
     background: #fff;
     transition: all 0.3s;
@@ -13,10 +16,22 @@
     -moz-box-shadow:    0 .125rem .25rem rgba(0,0,0,.075);
     -webkit-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
     box-shadow:         0 .125rem .25rem rgba(0,0,0,.075);
-}
 
-#sidebar.collapsed {
-    margin-left: -250px;
+    .btn-toggle {
+        position: fixed;
+        left: 10px;
+        top: 5px;
+        background: transparent;
+    }
+
+    .sidebar-items {
+        height: 100%;
+        overflow: auto;
+    }
+
+    &.collapsed {
+        margin-left: -250px;
+    }
 }
 
 .sidebar-collapsed {
