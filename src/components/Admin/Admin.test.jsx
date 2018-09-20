@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
@@ -11,43 +11,27 @@ import Admin from './index';
 import { features } from '../../config';
 
 const mockStore = configureMockStore([thunk]);
-
-class ContextProvider extends React.Component {
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-
-  getChildContext = () => ({
-    store: mockStore({
-      portalConfiguration: {
-        enterpriseId: 'test-enterprise-id',
-      },
-      table: {},
-      dashboardAnalytics: {
-        active_learners: {
-          past_month: 1,
-          past_week: 1,
-        },
-        enrolled_learners: 1,
-        number_of_users: 3,
-        course_completions: 1,
-      },
-    }),
-  })
-
-  render() {
-    return this.props.children;
-  }
-}
-
-ContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
+  },
+  table: {},
+  dashboardAnalytics: {
+    active_learners: {
+      past_month: 1,
+      past_week: 1,
+    },
+    enrolled_learners: 1,
+    number_of_users: 3,
+    course_completions: 1,
+  },
+});
 
 const AdminWrapper = props => (
   <MemoryRouter>
-    <ContextProvider>
+    <Provider store={store}>
       <Admin
+        enterpriseId="test-enterprise"
         getDashboardAnalytics={() => {}}
         downloadCsv={() => {}}
         match={{
@@ -56,7 +40,7 @@ const AdminWrapper = props => (
         }}
         {...props}
       />
-    </ContextProvider>
+    </Provider>
   </MemoryRouter>
 );
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { MemoryRouter, Redirect } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
@@ -10,46 +10,29 @@ import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
 
 const mockStore = configureMockStore([thunk]);
-
-class ContextProvider extends React.Component {
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-
-  getChildContext = () => ({
-    store: mockStore({
-      paginateTable: () => {},
-      sortTable: () => {},
-      portalConfiguration: {
-        enterpriseId: 'test-enterprise-id',
+const store = mockStore({
+  paginateTable: () => {},
+  sortTable: () => {},
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
+  },
+  table: {
+    enrollments: {
+      data: {
+        results: [],
+        current_page: 1,
+        num_pages: 1,
       },
-      table: {
-        enrollments: {
-          data: {
-            results: [],
-            current_page: 1,
-            num_pages: 1,
-          },
-          ordering: null,
-          loading: false,
-          error: null,
-        },
-      },
-    }),
-  })
-
-  render() {
-    return this.props.children;
-  }
-}
-
-ContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+      ordering: null,
+      loading: false,
+      error: null,
+    },
+  },
+});
 
 const EnterpriseListWrapper = props => (
   <MemoryRouter>
-    <ContextProvider>
+    <Provider store={store}>
       <EnterpriseList
         enterprisesData={{
           results: [],
@@ -59,7 +42,7 @@ const EnterpriseListWrapper = props => (
         getLocalUser={() => {}}
         {...props}
       />
-    </ContextProvider>
+    </Provider>
   </MemoryRouter>
 );
 
@@ -83,7 +66,7 @@ describe('<EnterpriseList />', () => {
       expect(tree).toMatchSnapshot();
     });
 
-    it('with enrollment data', () => {
+    it('with enterprises data', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
@@ -94,7 +77,7 @@ describe('<EnterpriseList />', () => {
       expect(tree).toMatchSnapshot();
     });
 
-    it('with empty enrollment data', () => {
+    it('with empty enterprises data', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
@@ -109,7 +92,7 @@ describe('<EnterpriseList />', () => {
       expect(tree).toMatchSnapshot();
     });
 
-    it('with search query and empty enrollment data', () => {
+    it('with search query and empty enterprises data', () => {
       const tree = renderer
         .create((
           <EnterpriseListWrapper
@@ -161,14 +144,14 @@ describe('<EnterpriseList />', () => {
 
       wrapper = mount((
         <MemoryRouter initialEntries={['/test']}>
-          <ContextProvider>
+          <Provider store={store}>
             <EnterpriseList
               enterprisesData={oneEnterpriseListData}
               searchEnterpriseList={() => {}}
               clearPortalConfiguration={() => {}}
               getLocalUser={() => {}}
             />
-          </ContextProvider>
+          </Provider>
         </MemoryRouter>
       ));
       const expectedRedirect = <Redirect to="/enterprise-99/admin/learners" />;

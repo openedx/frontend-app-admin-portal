@@ -10,6 +10,8 @@ import Hero from '../../components/Hero';
 import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
+import RegisteredLearnersTable from '../RegisteredLearnersTable';
+import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import AdminCards from '../../containers/AdminCards';
 
 import { formatTimestamp } from '../../utils';
@@ -42,11 +44,11 @@ class Admin extends React.Component {
     const actionData = {
       registered: {
         title: 'Registered Learners Not Yet Enrolled in a Course',
-        component: <EnrollmentsTable />,
+        component: <RegisteredLearnersTable />,
       },
       enrolled: {
         title: 'Number of Courses Enrolled by Learners',
-        component: <EnrollmentsTable />,
+        component: <EnrolledLearnersTable />,
       },
       unenrolled: {
         title: 'Learners Not Enrolled in an Active Course',

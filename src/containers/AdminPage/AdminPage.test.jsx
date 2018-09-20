@@ -3,60 +3,44 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 
 import AdminPage from './index';
 
 const mockStore = configureMockStore([thunk]);
-
-class ContextProvider extends React.Component {
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-
-  static mockStore = mockStore({
-    portalConfiguration: {
-      enterpriseId: 'test-enterprise',
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise',
+  },
+  dashboardAnalytics: {
+    active_learners: {
+      past_month: 1,
+      past_week: 1,
     },
-    dashboardAnalytics: {
-      active_learners: {
-        past_month: 1,
-        past_week: 1,
-      },
-      enrolled_learners: 1,
-      number_of_users: 3,
-      course_completions: 1,
-    },
-    courseEnrollments: {
-      csvLoading: false,
-      csvError: null,
-    },
-  });
-
-  getChildContext = () => ({
-    store: ContextProvider.mockStore,
-  })
-
-  render() {
-    return this.props.children;
-  }
-}
-
-ContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+    enrolled_learners: 1,
+    number_of_users: 3,
+    course_completions: 1,
+  },
+  courseEnrollments: {
+    csvLoading: false,
+    csvError: null,
+  },
+  table: {
+    enrollments: {},
+  },
+});
 
 describe('<AdminPage />', () => {
   let wrapper;
   let dispatchSpy;
 
   beforeEach(() => {
-    dispatchSpy = jest.spyOn(ContextProvider.mockStore, 'dispatch');
+    dispatchSpy = jest.spyOn(store, 'dispatch');
     wrapper = mount((
       <MemoryRouter>
-        <ContextProvider>
+        <Provider store={store}>
           <AdminPage />
-        </ContextProvider>
+        </Provider>
       </MemoryRouter>
     )).find('Admin');
   });

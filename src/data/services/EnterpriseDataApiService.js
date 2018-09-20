@@ -48,6 +48,80 @@ class EnterpriseDataApiService {
       },
     });
   }
+
+  static fetchUnerolledRegisteredLearners(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const queryParams = {
+      page: 1,
+      page_size: 50,
+      has_enrollments: false,
+      ...options,
+    };
+
+    const analyticsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users/?${qs.stringify(queryParams)}`;
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(analyticsUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  // TODO wire this up with generic DownloadCsvButton component
+  static fetchUnerolledRegisteredLearnersCsv() {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const jwtToken = getAccessToken();
+    const queryParams = {
+      has_enrollments: false,
+      no_page: true,
+    };
+    const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users.csv/?${qs.stringify(queryParams)}`;
+
+    return httpClient.get(csvUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  static fetchEnrolledLearners(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const queryParams = {
+      page: 1,
+      page_size: 50,
+      has_enrollments: true,
+      extra_fields: 'enrollment_count',
+      ...options,
+    };
+
+    const analyticsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users/?${qs.stringify(queryParams)}`;
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(analyticsUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  // TODO wire this up with generic DownloadCsvButton component
+  static fetchEnrolledLearnersCsv() {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const jwtToken = getAccessToken();
+    const queryParams = {
+      has_enrollments: true,
+      extra_fields: 'enrollment_count',
+      no_page: true,
+    };
+    const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users.csv/?${qs.stringify(queryParams)}`;
+
+    return httpClient.get(csvUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
 }
 
 export default EnterpriseDataApiService;

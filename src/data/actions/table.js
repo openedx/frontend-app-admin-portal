@@ -77,13 +77,13 @@ const fetchOptions = (tableState) => {
   if (!tableState) {
     const query = qs.parse(history.location.search);
     return {
-      pageSize: query.page_size || defaults.pageSize,
+      page_size: query.page_size || defaults.pageSize,
       page: query.page || defaults.page,
       ordering: query.ordering || defaults.ordering,
     };
   }
   return {
-    pageSize: tableState.pageSize || defaults.pageSize,
+    page_size: tableState.pageSize || defaults.pageSize,
     page: tableState.page || defaults.page,
     ordering: tableState.ordering || defaults.ordering,
   };
@@ -101,6 +101,12 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
     return fetchMethod(options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {
+      // This endpoint returns a 404 if no data exists,
+      // so we convert it to an empty response here.
+      if (error.response.status === 404) {
+        dispatch(paginationSuccess(tableId, { results: [] }, options.ordering));
+        return;
+      }
       dispatch(paginationFailure(tableId, error));
     });
   }
