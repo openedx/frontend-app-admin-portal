@@ -1,11 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const EnrollmentsTable = () => {
-  const enrollmentTableColumns = [
+const LearnerActivityTable = (props) => {
+  const { activity, id } = props;
+  const tableColumns = [
     {
       label: 'Email',
       key: 'user_email',
@@ -48,7 +50,14 @@ const EnrollmentsTable = () => {
     },
   ];
 
-  const formatEnrollmentData = enrollments => enrollments.map(enrollment => ({
+  const getTableColumns = () => {
+    if (activity !== 'active_past_week') {
+      return tableColumns.filter(column => column.key !== 'passed_timestamp');
+    }
+    return tableColumns;
+  };
+
+  const formatTableData = enrollments => enrollments.map(enrollment => ({
     ...enrollment,
     last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
     course_start: formatTimestamp({ timestamp: enrollment.course_start }),
@@ -67,14 +76,21 @@ const EnrollmentsTable = () => {
 
   return (
     <TableContainer
-      id="enrollments"
-      className="enrollments"
-      fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments}
-      columns={enrollmentTableColumns}
-      formatData={formatEnrollmentData}
+      id={id}
+      className={id}
+      fetchMethod={() => EnterpriseDataApiService.fetchCourseEnrollments({
+        learner_activity: activity,
+      })}
+      columns={getTableColumns()}
+      formatData={formatTableData}
       tableSortable
     />
   );
 };
 
-export default EnrollmentsTable;
+LearnerActivityTable.propTypes = {
+  id: PropTypes.string.isRequired,
+  activity: PropTypes.string.isRequired,
+};
+
+export default LearnerActivityTable;

@@ -15,6 +15,13 @@ class TableComponent extends React.Component {
     this.props.paginateTable();
   }
 
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
+    if (id && id !== prevProps.id) {
+      this.props.paginateTable();
+    }
+  }
+
   componentWillUnmount() {
     this.props.clearTable();
   }
