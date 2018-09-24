@@ -122,6 +122,40 @@ class EnterpriseDataApiService {
       },
     });
   }
+
+  static fetchCompletedLearners(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const queryParams = {
+      page: 1,
+      page_size: 50,
+      ...options,
+    };
+
+    const analyticsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/learner_completed_courses/?${qs.stringify(queryParams)}`;
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(analyticsUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  // TODO wire this up with generic DownloadCsvButton component
+  static fetchCompletedLearnersCsv() {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const jwtToken = getAccessToken();
+    const queryParams = {
+      no_page: true,
+    };
+    const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/learner_completed_courses.csv/?${qs.stringify(queryParams)}`;
+
+    return httpClient.get(csvUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
 }
 
 export default EnterpriseDataApiService;
