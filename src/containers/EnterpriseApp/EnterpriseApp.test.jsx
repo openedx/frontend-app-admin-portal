@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -20,34 +21,16 @@ const store = mockStore({
   },
 });
 
-class ContextProvider extends React.Component {
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-
-  getChildContext = () => ({
-    store,
-  })
-
-  render() {
-    return this.props.children;
-  }
-}
-
 const AppWrapper = props => (
-  <ContextProvider>
+  <Provider store={store}>
     <Route
       path={props.path}
       component={() => (
         <EnterpriseApp {...props} />
       )}
     />
-  </ContextProvider>
+  </Provider>
 );
-
-ContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 AppWrapper.propTypes = {
   path: PropTypes.string.isRequired,
