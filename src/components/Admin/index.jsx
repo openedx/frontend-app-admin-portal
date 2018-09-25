@@ -13,6 +13,7 @@ import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import CompletedLearnersTable from '../CompletedLearnersTable';
+import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import AdminCards from '../../containers/AdminCards';
 
 import { formatTimestamp } from '../../utils';
@@ -78,7 +79,7 @@ class Admin extends React.Component {
       'completed-week': {
         title: 'Number of Courses Completed by Learner',
         subtitle: 'Past Week',
-        component: <EnrollmentsTable />,
+        component: <PastWeekPassedLearnersTable />,
       },
     };
 
