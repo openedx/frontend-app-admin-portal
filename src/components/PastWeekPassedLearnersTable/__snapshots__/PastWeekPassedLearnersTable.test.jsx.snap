@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
+<div>
+  <div
+    className="past-week-passed-learners"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="table-responsive"
+        >
+          <table
+            className="table table-sm table-striped"
+          >
+            <thead
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Email
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Course Title
+                </th>
+                <th
+                  className=""
+                  scope="col"
+                >
+                  Passed Date
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  awesome.me@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  Dive into ReactJS
+                </td>
+                <td
+                  className=""
+                >
+                  September 23, 2018
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  new@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  Redux with ReactJS
+                </td>
+                <td
+                  className=""
+                >
+                  September 22, 2018
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-2"
+    >
+      <div
+        className="col d-flex justify-content-center"
+      >
+        <nav
+          aria-label="past-week-passed-learners-pagination"
+          className=""
+        >
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
+          >
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            className="pagination"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Previous"
+                className="btn previous page-link"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <div>
+                  <span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-left mr-2"
+                      id="pagination-2"
+                    />
+                  </span>
+                  Previous
+                </div>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                className="btn next page-link"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <div>
+                  Next
+                  <span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-right ml-2"
+                      id="pagination-3"
+                    />
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+`;
