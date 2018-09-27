@@ -14,6 +14,8 @@ import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
+import LearnerActivityTable from '../LearnerActivityTable';
+
 import AdminCards from '../../containers/AdminCards';
 
 import { formatTimestamp } from '../../utils';
@@ -60,17 +62,17 @@ class Admin extends React.Component {
       active: {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Top Active Learners',
-        component: <EnrollmentsTable />,
+        component: <LearnerActivityTable id="active-week" activity="active_past_week" />,
       },
       'inactive-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Week',
-        component: <EnrollmentsTable />,
+        component: <LearnerActivityTable id="inactive-week" activity="inactive_past_week" />,
       },
       'inactive-month': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Month',
-        component: <EnrollmentsTable />,
+        component: <LearnerActivityTable id="inactive-month" activity="inactive_past_month" />,
       },
       completed: {
         title: 'Number of Courses Completed by Learner',

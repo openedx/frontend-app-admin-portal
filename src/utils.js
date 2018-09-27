@@ -11,6 +11,13 @@ const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   return null;
 };
 
+const formatPassedTimestamp = (timestamp) => {
+  if (timestamp) {
+    return formatTimestamp({ timestamp });
+  }
+  return 'Has not passed';
+};
+
 const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : ''
 );
@@ -34,6 +41,7 @@ const removeTrailingSlash = path => path.replace(/\/$/, '');
 
 export {
   formatPercentage,
+  formatPassedTimestamp,
   formatTimestamp,
   getAccessToken,
   removeTrailingSlash,

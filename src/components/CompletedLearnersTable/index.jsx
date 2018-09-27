@@ -8,10 +8,12 @@ const CompletedLearnersTable = () => {
     {
       label: 'Email',
       key: 'user_email',
+      columnSortable: true,
     },
     {
       label: 'Total Course Completed Count',
       key: 'completed_courses',
+      columnSortable: true,
     },
   ];
 
