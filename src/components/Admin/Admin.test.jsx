@@ -16,6 +16,7 @@ const store = mockStore({
     enterpriseId: 'test-enterprise-id',
   },
   table: {},
+  csv: {},
   dashboardAnalytics: {
     active_learners: {
       past_month: 1,
@@ -33,7 +34,7 @@ const AdminWrapper = props => (
       <Admin
         enterpriseId="test-enterprise"
         getDashboardAnalytics={() => {}}
-        downloadCsv={() => {}}
+        fetchCsv={() => {}}
         match={{
           params: {},
           url: '/',

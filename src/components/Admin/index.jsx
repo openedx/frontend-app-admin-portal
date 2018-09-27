@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { MailtoLink, Button, Icon } from '@edx/paragon';
+import { MailtoLink, Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
 import H2 from '../../components/H2';
@@ -17,6 +17,8 @@ import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 
 import AdminCards from '../../containers/AdminCards';
+import DownloadCsvButton from '../../containers/DownloadCsvButton';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 import { formatTimestamp } from '../../utils';
 
@@ -42,6 +44,8 @@ class Admin extends React.Component {
     const defaultData = {
       title: 'Full Report',
       component: <EnrollmentsTable />,
+      csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+      csvButtonId: 'enrollments',
     };
 
     // TODO replace the component with the appropriate table component for the associated action.
@@ -49,43 +53,67 @@ class Admin extends React.Component {
       registered: {
         title: 'Registered Learners Not Yet Enrolled in a Course',
         component: <RegisteredLearnersTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'registered-learners',
       },
       enrolled: {
         title: 'Number of Courses Enrolled by Learners',
         component: <EnrolledLearnersTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'enrolled-learners',
       },
       unenrolled: {
         title: 'Learners Not Enrolled in an Active Course',
         description: 'Learners who have completed all of their courses and/or courses have ended.',
         component: <EnrollmentsTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'unenrollments',
       },
       active: {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Top Active Learners',
         component: <LearnerActivityTable id="active-week" activity="active_past_week" />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'learner-activity',
       },
       'inactive-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Week',
         component: <LearnerActivityTable id="inactive-week" activity="inactive_past_week" />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'inactive-enrollments',
       },
       'inactive-month': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Month',
         component: <LearnerActivityTable id="inactive-month" activity="inactive_past_month" />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'inactive-month-enrollments',
       },
       completed: {
         title: 'Number of Courses Completed by Learner',
         component: <CompletedLearnersTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'completed-learners',
       },
       'completed-week': {
         title: 'Number of Courses Completed by Learner',
         subtitle: 'Past Week',
         component: <PastWeekPassedLearnersTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvButtonId: 'past-week-passed-learners',
       },
     };
 
     return actionData[actionSlug] || defaultData;
+  }
+
+  getCsvErrorMessage(id) {
+    const { csv } = this.props;
+    if (csv && csv[id] && csv[id].csvError) {
+      return csv[id].csvError.message;
+    }
+    return '';
   }
 
   hasAnalyticsData() {
@@ -122,14 +150,14 @@ class Admin extends React.Component {
     );
   }
 
-  renderCsvErrorMessage() {
+  renderCsvErrorMessage(message) {
     return (
       <StatusAlert
         className={['mt-3']}
         alertType="danger"
         iconClassName={['fa', 'fa-times-circle']}
         title="Unable to Generate CSV Report"
-        message={`Please try again. (${this.props.csvError.message})`}
+        message={`Please try again. (${message})`}
       />
     );
   }
@@ -154,45 +182,18 @@ class Admin extends React.Component {
     );
   }
 
-  // TODO refactor the CSV button into a new component that accepts a fetch method
-  renderDownloadCsvButton() {
-    const {
-      csvLoading,
-      downloadCsv,
-      enterpriseId,
-      match,
-    } = this.props;
-
-    const { params: { slug } } = match;
-    const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
-
-    return (
-      <Button
-        className={['btn-outline-primary', 'download-btn']}
-        disabled={csvLoading}
-        label={
-          <span>
-            <Icon className={['fa', 'mr-2'].concat(downloadButtonIconClasses)} />
-            Download {slug ? 'current' : 'full'} report (CSV)
-          </span>
-        }
-        onClick={() => downloadCsv(enterpriseId)}
-      />
-    );
-  }
-
   render() {
     const {
       error,
       loading,
       enterpriseId,
       lastUpdatedDate,
-      csvError,
       match,
     } = this.props;
 
     const { params: { slug } } = match;
     const tableData = this.getMetadataForAction(slug);
+    const csvErrorMessage = this.getCsvErrorMessage(tableData.csvButtonId);
 
     return (
       <div>
@@ -235,11 +236,14 @@ class Admin extends React.Component {
                     }
                   </div>
                   <div className="col-12 col-md-6 text-md-right">
-                    {this.renderDownloadCsvButton()}
+                    <DownloadCsvButton
+                      id={tableData.csvButtonId}
+                      fetchMethod={tableData.csvFetchMethod}
+                    />
                   </div>
                 </div>
               }
-              {csvError && this.renderCsvErrorMessage()}
+              {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
               <div className="mt-3 mb-5">
                 {enterpriseId && tableData.component}
               </div>
@@ -267,13 +271,11 @@ Admin.defaultProps = {
   enrolledLearners: null,
   enterpriseId: null,
   lastUpdatedDate: null,
-  csvLoading: null,
-  csvError: null,
+  csv: null,
 };
 
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
-  downloadCsv: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
@@ -285,8 +287,7 @@ Admin.propTypes = {
   lastUpdatedDate: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
-  csvError: PropTypes.instanceOf(Error),
-  csvLoading: PropTypes.bool,
+  csv: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
