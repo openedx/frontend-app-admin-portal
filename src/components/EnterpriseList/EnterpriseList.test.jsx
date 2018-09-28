@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { MemoryRouter, Redirect } from 'react-router-dom';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -192,24 +192,6 @@ describe('<EnterpriseList />', () => {
         .simulate('click');
       expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual('');
       expect(wrapper.find('EnterpriseList').instance().state.searchQuery).toEqual('');
-    });
-
-    it('dispatches enterprise list request action when searchQuery prop changes', () => {
-      const searchQuery = 'enterprise name';
-      const mockGetEnterpriseList = jest.fn();
-      wrapper = shallow((
-        <EnterpriseListWrapper
-          enterprises={mockEnterpriseList}
-          getEnterpriseList={mockGetEnterpriseList}
-        />
-      )).find('EnterpriseList');
-
-      wrapper.dive().setProps({
-        searchQuery,
-      }, () => {
-        expect(wrapper.dive().state('searchQuery')).toEqual(searchQuery);
-        expect(mockGetEnterpriseList).toHaveBeenCalledTimes(1);
-      });
     });
   });
 });
