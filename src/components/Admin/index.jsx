@@ -12,6 +12,7 @@ import LoadingMessage from '../../components/LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
+import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
@@ -62,12 +63,12 @@ class Admin extends React.Component {
         csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
         csvButtonId: 'enrolled-learners',
       },
-      unenrolled: {
+      'no-current-courses': {
         title: 'Learners Not Enrolled in an Active Course',
         description: 'Learners who have completed all of their courses and/or courses have ended.',
-        component: <EnrollmentsTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'unenrollments',
+        component: <EnrolledLearnersForInactiveCoursesTable />,
+        csvFetchMethod: EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCoursesCsv,
+        csvButtonId: 'learners-with-inactive-courses',
       },
       active: {
         title: 'Learners Enrolled in a Course',

@@ -1,0 +1,330 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1`] = `
+<div>
+  <div
+    className="alert fade alert-warning show"
+    hidden={false}
+    role="alert"
+  >
+    <div
+      className="alert-dialog"
+    >
+      <div
+        className="d-flex"
+      >
+        <div
+          className="icon mr-2"
+        >
+          <span>
+            <span
+              aria-hidden={true}
+              className="fa fa-exclamation-circle"
+              id="Icon1"
+            />
+          </span>
+        </div>
+        <div
+          className="message"
+        >
+          <span>
+            There are no results.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for inactive courses table correctly 1`] = `
+<div>
+  <div
+    className="enrolled-learners-for-inactive-courses"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="table-responsive"
+        >
+          <table
+            className="table table-sm table-striped"
+          >
+            <thead
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Total Course Enrollment Count
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Total Completed Courses Count
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  className="sortable"
+                  scope="col"
+                >
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className=""
+            >
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test_user_1@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  2
+                </td>
+                <td
+                  className=""
+                >
+                  1
+                </td>
+                <td
+                  className=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test_user_2@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  5
+                </td>
+                <td
+                  className=""
+                >
+                  5
+                </td>
+                <td
+                  className=""
+                >
+                  January 15, 2018
+                </td>
+              </tr>
+              <tr
+                className=""
+              >
+                <td
+                  className=""
+                >
+                  test_user_3@example.com
+                </td>
+                <td
+                  className=""
+                >
+                  6
+                </td>
+                <td
+                  className=""
+                >
+                  4
+                </td>
+                <td
+                  className=""
+                >
+                  November 18, 2017
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-2"
+    >
+      <div
+        className="col d-flex justify-content-center"
+      >
+        <nav
+          aria-label="enrolled-learners-for-inactive-courses-pagination"
+          className=""
+        >
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
+          >
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            className="pagination"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Previous"
+                className="btn previous page-link"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <div>
+                  <span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-left mr-2"
+                      id="pagination-2"
+                    />
+                  </span>
+                  Previous
+                </div>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                className="btn next page-link"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <div>
+                  Next
+                  <span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-right ml-2"
+                      id="pagination-3"
+                    />
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+`;

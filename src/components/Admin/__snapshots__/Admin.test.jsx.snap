@@ -1276,7 +1276,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   </a>
                   <a
                     className="btn btn-link"
-                    href="/unenrolled"
+                    href="/no-current-courses"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                   >

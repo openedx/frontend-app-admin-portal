@@ -126,7 +126,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'unenrolled',
+                  slug: 'no-current-courses',
                 },
               }}
             />
