@@ -26,6 +26,7 @@ const CompletedLearnersTable = () => {
       fetchMethod={EnterpriseDataApiService.fetchCompletedLearners}
       columns={tableColumns}
       formatData={formatLearnerData}
+      tableSortable
     />
   );
 };

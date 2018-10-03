@@ -87,7 +87,7 @@ describe('PastWeekPassedLearnersTable', () => {
 
     // Verify only expected columns are shown
     wrapper.find('.past-week-passed-learners thead th').forEach((column, index) => {
-      expect(column.text()).toEqual(columnTitles[index]);
+      expect(column.text()).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows

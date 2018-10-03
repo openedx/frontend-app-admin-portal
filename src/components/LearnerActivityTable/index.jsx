@@ -78,8 +78,9 @@ const LearnerActivityTable = (props) => {
     <TableContainer
       id={id}
       className={id}
-      fetchMethod={() => EnterpriseDataApiService.fetchCourseEnrollments({
+      fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
         learner_activity: activity,
+        ...options,
       })}
       columns={getTableColumns()}
       formatData={formatTableData}
