@@ -28,15 +28,17 @@ const PastWeekPassedLearnersTable = () => {
     passed_timestamp: formatTimestamp({ timestamp: learner.passed_timestamp }),
   }));
 
-  const options = { passed_date: 'last_week' };
-
   return (
     <TableContainer
       id="past-week-passed-learners"
       className="past-week-passed-learners"
-      fetchMethod={() => EnterpriseDataApiService.fetchCourseEnrollments(options)}
+      fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
+        passed_date: 'last_week',
+        ...options,
+      })}
       columns={tableColumns}
       formatData={formatLearnerData}
+      tableSortable
     />
   );
 };

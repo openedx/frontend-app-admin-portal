@@ -24,22 +24,85 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 className=""
               >
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Email
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Course Title
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Course Title
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
                 <th
-                  className=""
+                  className="sortable"
                   scope="col"
                 >
-                  Passed Date
+                  <button
+                    className="btn btn-header"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <span>
+                      Passed Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
+                    </span>
+                  </button>
                 </th>
               </tr>
             </thead>

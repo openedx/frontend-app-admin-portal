@@ -9,14 +9,17 @@ const EnrolledLearnersTable = () => {
     {
       label: 'Email',
       key: 'user_email',
+      columnSortable: true,
     },
     {
       label: 'Account Created',
       key: 'user_account_creation_timestamp',
+      columnSortable: true,
     },
     {
       label: 'Total Course Enrollment Count',
       key: 'enrollment_count',
+      columnSortable: true,
     },
   ];
 
@@ -34,6 +37,7 @@ const EnrolledLearnersTable = () => {
       fetchMethod={EnterpriseDataApiService.fetchEnrolledLearners}
       columns={tableColumns}
       formatData={formatLearnerData}
+      tableSortable
     />
   );
 };
