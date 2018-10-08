@@ -91,7 +91,7 @@ class EnterpriseDataApiService {
       page: 1,
       page_size: 50,
       has_enrollments: true,
-      extra_fields: 'enrollment_count',
+      extra_fields: ['enrollment_count'],
       ...options,
     };
 
@@ -111,7 +111,48 @@ class EnterpriseDataApiService {
     const jwtToken = getAccessToken();
     const queryParams = {
       has_enrollments: true,
-      extra_fields: 'enrollment_count',
+      extra_fields: ['enrollment_count'],
+      no_page: true,
+    };
+    const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users.csv/?${qs.stringify(queryParams)}`;
+
+    return httpClient.get(csvUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  static fetchEnrolledLearnersForInactiveCourses(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const queryParams = {
+      page: 1,
+      page_size: 50,
+      has_enrollments: true,
+      active_courses: false,
+      all_enrollments_passed: true,
+      extra_fields: ['enrollment_count', 'course_completion_count'],
+      ...options,
+    };
+
+    const analyticsUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users/?${qs.stringify(queryParams)}`;
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(analyticsUrl, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
+  static fetchEnrolledLearnersForInactiveCoursesCsv() {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    const jwtToken = getAccessToken();
+    const queryParams = {
+      has_enrollments: true,
+      active_courses: false,
+      all_enrollments_passed: true,
+      extra_fields: ['enrollment_count', 'course_completion_count'],
       no_page: true,
     };
     const csvUrl = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/users.csv/?${qs.stringify(queryParams)}`;

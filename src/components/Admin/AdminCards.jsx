@@ -28,7 +28,7 @@ class AdminCards extends React.Component {
           slug: 'enrolled',
         }, {
           label: 'Who is no longer enrolled in a current course?',
-          slug: 'unenrolled',
+          slug: 'no-current-courses',
         }],
       },
       activeLearners: {
