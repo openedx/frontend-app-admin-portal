@@ -28,12 +28,19 @@ const getAccessToken = () => {
 };
 
 const updateUrl = (data) => {
-  if (data) {
-    history.push(`?${qs.stringify({
-      page: data.page !== 1 ? data.page : undefined,
-      ordering: data.ordering,
-      search: data.search,
-    })}`);
+  if (!data) {
+    return;
+  }
+  const currentQuery = qs.parse(window.location.search);
+  const newQuery = qs.stringify({
+    ...currentQuery,
+    page: data.page !== 1 ? data.page : undefined,
+    ordering: data.ordering,
+    search: data.search,
+  });
+
+  if (newQuery !== window.location.search) {
+    history.push(`?${newQuery}`);
   }
 };
 
