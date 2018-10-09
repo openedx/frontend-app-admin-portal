@@ -29,6 +29,7 @@ class EnterpriseApp extends React.Component {
   render() {
     const { error, match } = this.props;
     const baseUrl = match.url;
+    const { enterpriseSlug } = match.params;
 
     if (error) {
       return this.renderError(error);
@@ -44,9 +45,17 @@ class EnterpriseApp extends React.Component {
           />
           <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
           {features.DASHBOARD_V2 ? (
-            <Route exact path={`${baseUrl}/admin/learners/:slug?`} component={AdminPage} />
+            <Route
+              exact
+              path={`${baseUrl}/admin/learners/:actionSlug?`}
+              render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
+            />
           ) : (
-            <Route exact path={`${baseUrl}/admin/learners`} component={AdminPage} />
+            <Route
+              exact
+              path={`${baseUrl}/admin/learners`}
+              render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
+            />
           )}
           <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
@@ -60,6 +69,9 @@ EnterpriseApp.propTypes = {
   getLocalUser: PropTypes.func.isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      enterpriseSlug: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   error: PropTypes.instanceOf(Error),
 };

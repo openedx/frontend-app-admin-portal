@@ -33,7 +33,7 @@ const AdminWrapper = props => (
     <Provider store={store}>
       <Admin
         enterpriseId="test-enterprise"
-        slug="test-enterprise"
+        enterpriseSlug="test-enterprise"
         getDashboardAnalytics={() => {}}
         fetchPortalConfiguration={() => {}}
         fetchCsv={() => {}}
@@ -94,7 +94,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'registered',
+                  actionSlug: 'registered',
                 },
               }}
             />
@@ -111,7 +111,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'enrolled',
+                  actionSlug: 'enrolled',
                 },
               }}
             />
@@ -128,7 +128,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'no-current-courses',
+                  actionSlug: 'no-current-courses',
                 },
               }}
             />
@@ -145,7 +145,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'active',
+                  actionSlug: 'active',
                 },
               }}
             />
@@ -162,7 +162,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'inactive-week',
+                  actionSlug: 'inactive-week',
                 },
               }}
             />
@@ -179,7 +179,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'inactive-month',
+                  actionSlug: 'inactive-month',
                 },
               }}
             />
@@ -196,7 +196,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'completed',
+                  actionSlug: 'completed',
                 },
               }}
             />
@@ -213,7 +213,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  slug: 'completed-week',
+                  actionSlug: 'completed-week',
                 },
               }}
             />

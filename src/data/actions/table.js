@@ -147,7 +147,7 @@ const sortTable = (tableId, fetchMethod, sortOptions) => (
 
     // If we can sort client-side because we have all of the data, do that
     if (tableState.data && tableState.data.num_pages === 1) {
-      return dispatch(sortSuccess(tableId, {
+      return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
         results: sortData(tableState.data.results, ordering),
       }));

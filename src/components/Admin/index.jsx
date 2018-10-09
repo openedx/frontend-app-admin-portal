@@ -32,7 +32,7 @@ class Admin extends React.Component {
       this.props.getDashboardAnalytics(enterpriseId);
     }
 
-    this.props.fetchPortalConfiguration(this.props.slug);
+    this.props.fetchPortalConfiguration(this.props.enterpriseSlug);
   }
 
   componentDidUpdate(prevProps) {
@@ -193,8 +193,8 @@ class Admin extends React.Component {
       match,
     } = this.props;
 
-    const { params: { slug } } = match;
-    const tableData = this.getMetadataForAction(slug);
+    const { params: { actionSlug } } = match;
+    const tableData = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableData.csvButtonId);
 
     return (
@@ -221,7 +221,7 @@ class Admin extends React.Component {
           <div className="row mt-4">
             <div className="col">
               <H2 className="table-title">{tableData.title}</H2>
-              {slug && this.renderResetButton()}
+              {actionSlug && this.renderResetButton()}
               {tableData.subtitle && <H3>{tableData.subtitle}</H3>}
               {tableData.description && <p>{tableData.description}</p>}
             </div>
@@ -279,7 +279,7 @@ Admin.defaultProps = {
 Admin.propTypes = {
   getDashboardAnalytics: PropTypes.func.isRequired,
   fetchPortalConfiguration: PropTypes.func.isRequired,
-  slug: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
@@ -295,7 +295,7 @@ Admin.propTypes = {
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
-      slug: PropTypes.string,
+      actionSlug: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };
