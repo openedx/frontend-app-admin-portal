@@ -141,7 +141,7 @@ class NumberCard extends React.Component {
 
   renderDetailActions() {
     const { detailActions, match } = this.props;
-    const { params: { slug } } = match;
+    const { params: { actionSlug } } = match;
 
     return detailActions.map((action, index) => (
       <Link
@@ -150,11 +150,11 @@ class NumberCard extends React.Component {
           'btn',
           'btn-link',
           {
-            active: action.slug === slug,
+            active: action.slug === actionSlug,
           },
         )}
         key={action.label}
-        to={slug ? action.slug : `${removeTrailingSlash(match.url)}/${action.slug}`}
+        to={actionSlug ? action.slug : `${removeTrailingSlash(match.url)}/${action.slug}`}
         onClick={() => { this.handleDetailsActionClick(); }}
         onKeyDown={event => this.handleDetailsActionKeyDown(event)}
       >
@@ -269,7 +269,7 @@ NumberCard.propTypes = {
   detailsExpanded: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      slug: PropTypes.string,
+      actionSlug: PropTypes.string,
     }),
   }).isRequired,
 };
