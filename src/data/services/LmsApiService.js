@@ -48,9 +48,13 @@ class LmsApiService {
   static fetchEnterpriseBySlug(slug) {
     return this.fetchEnterpriseList({ slug })
       // Because we expect only one enterprise by slug we return only the first result
-      .then(data => ({
-        data: data.data.results[0],
-      }));
+      .then((response) => {
+        const { data } = response;
+        const results = data && data.results;
+        return {
+          data: results && results.length && results[0],
+        };
+      });
   }
 
   static authenticate(email, password) {

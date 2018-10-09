@@ -11,6 +11,7 @@ import ErrorPage from '../ErrorPage';
 
 import { getLocalUser } from '../../data/actions/authentication';
 
+import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 class EnterpriseApp extends React.Component {
@@ -41,7 +42,7 @@ class EnterpriseApp extends React.Component {
           <Redirect
             exact
             from={baseUrl}
-            to={`${baseUrl}/admin/learners`}
+            to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
           />
           <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
           {features.DASHBOARD_V2 ? (
