@@ -15,10 +15,10 @@ import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
-import LearnerActivityTable from '../LearnerActivityTable';
 
 import AdminCards from '../../containers/AdminCards';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
+import LearnerActivityTable from '../../containers/LearnerActivityTable';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 import { formatTimestamp } from '../../utils';
@@ -46,64 +46,81 @@ class Admin extends React.Component {
     const defaultData = {
       title: 'Full Report',
       component: <EnrollmentsTable />,
-      csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+      csvFetchMethod: () => (
+        EnterpriseDataApiService.fetchCourseEnrollments({}, { csv: true })
+      ),
       csvButtonId: 'enrollments',
     };
 
-    // TODO replace the component with the appropriate table component for the associated action.
     const actionData = {
-      registered: {
+      'registered-unenrolled-learners': {
         title: 'Registered Learners Not Yet Enrolled in a Course',
         component: <RegisteredLearnersTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'registered-learners',
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchUnenrolledRegisteredLearners({}, { csv: true })
+        ),
+        csvButtonId: 'registered-unenrolled-learners',
       },
-      enrolled: {
+      'enrolled-learners': {
         title: 'Number of Courses Enrolled by Learners',
         component: <EnrolledLearnersTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchEnrolledLearners({}, { csv: true })
+        ),
         csvButtonId: 'enrolled-learners',
       },
-      'no-current-courses': {
+      'enrolled-learners-inactive-courses': {
         title: 'Learners Not Enrolled in an Active Course',
         description: 'Learners who have completed all of their courses and/or courses have ended.',
         component: <EnrolledLearnersForInactiveCoursesTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCoursesCsv,
-        csvButtonId: 'learners-with-inactive-courses',
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses({}, { csv: true })
+        ),
+        csvButtonId: 'enrolled-learners-inactive-courses',
       },
-      active: {
+      'learners-active-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Top Active Learners',
         component: <LearnerActivityTable id="active-week" activity="active_past_week" />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'learner-activity',
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'active_past_week' }, { csv: true })
+        ),
+        csvButtonId: 'learners-active-week',
       },
-      'inactive-week': {
+      'learners-inactive-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Week',
-        component: <LearnerActivityTable id="inactive-week" activity="inactive_past_week" />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'inactive-enrollments',
+        component: <LearnerActivityTable id="learners-inactive-week" activity="inactive_past_week" />,
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'inactive_past_week' }, { csv: true })
+        ),
+        csvButtonId: 'learners-inactive-week',
       },
-      'inactive-month': {
+      'learners-inactive-month': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Not Active in Past Month',
-        component: <LearnerActivityTable id="inactive-month" activity="inactive_past_month" />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'inactive-month-enrollments',
+        component: <LearnerActivityTable id="learners-inactive-month" activity="inactive_past_month" />,
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'inactive_past_month' }, { csv: true })
+        ),
+        csvButtonId: 'learners-inactive-month',
       },
-      completed: {
+      'completed-learners': {
         title: 'Number of Courses Completed by Learner',
         component: <CompletedLearnersTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchCompletedLearners({}, { csv: true })
+        ),
         csvButtonId: 'completed-learners',
       },
-      'completed-week': {
+      'completed-learners-week': {
         title: 'Number of Courses Completed by Learner',
         subtitle: 'Past Week',
         component: <PastWeekPassedLearnersTable />,
-        csvFetchMethod: EnterpriseDataApiService.fetchCourseEnrollmentsCsv,
-        csvButtonId: 'past-week-passed-learners',
+        csvFetchMethod: () => (
+          EnterpriseDataApiService.fetchCourseEnrollments({ passed_date: 'last_week' }, { csv: true })
+        ),
+        csvButtonId: 'completed-learners-week',
       },
     };
 
@@ -112,10 +129,24 @@ class Admin extends React.Component {
 
   getCsvErrorMessage(id) {
     const { csv } = this.props;
-    if (csv && csv[id] && csv[id].csvError) {
-      return csv[id].csvError.message;
+    const csvData = csv && csv[id];
+    return csvData && csvData.csvError;
+  }
+
+  getTableData(id = 'enrollments') {
+    const { table } = this.props;
+    const tableData = table && table[id];
+    return tableData && tableData.data;
+  }
+
+  shouldDisableCsvButton(id) {
+    const tableData = this.getTableData(id);
+    if (!tableData) {
+      return true;
     }
-    return '';
+    const isTableLoading = tableData.loading;
+    const isTableEmpty = tableData.results && !tableData.results.length;
+    return isTableLoading || isTableEmpty;
   }
 
   hasAnalyticsData() {
@@ -194,8 +225,8 @@ class Admin extends React.Component {
     } = this.props;
 
     const { params: { actionSlug } } = match;
-    const tableData = this.getMetadataForAction(actionSlug);
-    const csvErrorMessage = this.getCsvErrorMessage(tableData.csvButtonId);
+    const tableMetadata = this.getMetadataForAction(actionSlug);
+    const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
 
     return (
       <div>
@@ -220,10 +251,10 @@ class Admin extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col">
-              <H2 className="table-title">{tableData.title}</H2>
+              <H2 className="table-title">{tableMetadata.title}</H2>
               {actionSlug && this.renderResetButton()}
-              {tableData.subtitle && <H3>{tableData.subtitle}</H3>}
-              {tableData.description && <p>{tableData.description}</p>}
+              {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
+              {tableMetadata.description && <p>{tableMetadata.description}</p>}
             </div>
           </div>
           <div className="row">
@@ -239,15 +270,16 @@ class Admin extends React.Component {
                   </div>
                   <div className="col-12 col-md-6 text-md-right">
                     <DownloadCsvButton
-                      id={tableData.csvButtonId}
-                      fetchMethod={tableData.csvFetchMethod}
+                      id={tableMetadata.csvButtonId}
+                      fetchMethod={tableMetadata.csvFetchMethod}
+                      disabled={this.shouldDisableCsvButton(actionSlug)}
                     />
                   </div>
                 </div>
               }
               {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
               <div className="mt-3 mb-5">
-                {enterpriseId && tableData.component}
+                {enterpriseId && tableMetadata.component}
               </div>
             </div>
           </div>
@@ -274,6 +306,7 @@ Admin.defaultProps = {
   enterpriseId: null,
   lastUpdatedDate: null,
   csv: null,
+  table: null,
 };
 
 Admin.propTypes = {
@@ -298,6 +331,7 @@ Admin.propTypes = {
       actionSlug: PropTypes.string,
     }).isRequired,
   }).isRequired,
+  table: PropTypes.shape({}),
 };
 
 export default Admin;

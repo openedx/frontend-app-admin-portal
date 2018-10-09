@@ -16,7 +16,7 @@ class AdminCards extends React.Component {
         iconClassName: 'fa fa-users',
         actions: [{
           label: 'Which learners are registered but not yet enrolled in any courses?',
-          slug: 'registered',
+          slug: 'registered-unenrolled-learners',
         }],
       },
       enrolledLearners: {
@@ -25,10 +25,10 @@ class AdminCards extends React.Component {
         iconClassName: 'fa fa-check',
         actions: [{
           label: 'How many courses are learners enrolled in?',
-          slug: 'enrolled',
+          slug: 'enrolled-learners',
         }, {
           label: 'Who is no longer enrolled in a current course?',
-          slug: 'no-current-courses',
+          slug: 'enrolled-learners-inactive-courses',
         }],
       },
       activeLearners: {
@@ -37,13 +37,13 @@ class AdminCards extends React.Component {
         iconClassName: 'fa fa-eye',
         actions: [{
           label: 'Who are my top active learners?',
-          slug: 'active',
+          slug: 'learners-active-week',
         }, {
           label: 'Who has not been active for over a week?',
-          slug: 'inactive-week',
+          slug: 'learners-inactive-week',
         }, {
           label: 'Who has not been active for over a month?',
-          slug: 'inactive-month',
+          slug: 'learners-inactive-month',
         }],
       },
       courseCompletions: {
@@ -52,10 +52,10 @@ class AdminCards extends React.Component {
         iconClassName: 'fa fa-trophy',
         actions: [{
           label: 'How many courses have been completed by learners?',
-          slug: 'completed',
+          slug: 'completed-learners',
         }, {
           label: 'Who completed a course in the past week?',
-          slug: 'completed-week',
+          slug: 'completed-learners-week',
         }],
       },
     };

@@ -9,7 +9,7 @@ import RegisteredLearnersTable from '.';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   table: {
-    'unenrolled-registered-learners': {
+    'registered-unenrolled-learners': {
       data: {
         results: [],
         current_page: 1,

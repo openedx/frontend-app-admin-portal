@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
   lastUpdatedDate: state.dashboardAnalytics.last_updated_date,
   enterpriseId: state.portalConfiguration.enterpriseId,
   csv: state.csv,
+  table: state.table,
 });
 
 const mapDispatchToProps = dispatch => ({

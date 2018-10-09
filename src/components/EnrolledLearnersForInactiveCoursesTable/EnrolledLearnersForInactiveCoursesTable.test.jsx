@@ -10,7 +10,7 @@ import EnrolledLearnersForInactiveCoursesTable from '.';
 const mockStore = configureMockStore([thunk]);
 const enrolledLearnersForInactiveCoursesEmptyStore = mockStore({
   table: {
-    'enrolled-learners-for-inactive-courses': {
+    'enrolled-learners-inactive-courses': {
       data: {
         results: [],
         current_page: 1,
@@ -24,7 +24,7 @@ const enrolledLearnersForInactiveCoursesEmptyStore = mockStore({
 });
 const enrolledLearnersForInactiveCoursesStore = mockStore({
   table: {
-    'enrolled-learners-for-inactive-courses': {
+    'enrolled-learners-inactive-courses': {
       data: {
         count: 3,
         num_pages: 1,
@@ -120,7 +120,7 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
   });
 
   it('renders enrolled learners for inactive courses table with correct data', () => {
-    const tableId = 'enrolled-learners-for-inactive-courses';
+    const tableId = 'enrolled-learners-inactive-courses';
     const columnTitles = [
       'Email', 'Total Course Enrollment Count', 'Total Completed Courses Count', 'Last Activity Date',
     ];

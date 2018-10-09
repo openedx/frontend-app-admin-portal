@@ -37,8 +37,8 @@ const EnrolledLearnersForInactiveCoursesTable = () => {
 
   return (
     <TableContainer
-      id="enrolled-learners-for-inactive-courses"
-      className="enrolled-learners-for-inactive-courses"
+      id="enrolled-learners-inactive-courses"
+      className="enrolled-learners-inactive-courses"
       fetchMethod={EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses}
       columns={tableColumns}
       formatData={formatLearnerData}

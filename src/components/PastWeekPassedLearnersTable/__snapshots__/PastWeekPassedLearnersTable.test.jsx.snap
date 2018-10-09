@@ -3,7 +3,7 @@
 exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
 <div>
   <div
-    className="past-week-passed-learners"
+    className="completed-learners-week"
   >
     <div
       className="row"
@@ -159,7 +159,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
         className="col d-flex justify-content-center"
       >
         <nav
-          aria-label="past-week-passed-learners-pagination"
+          aria-label="completed-learners-week-pagination"
           className=""
         >
           <div

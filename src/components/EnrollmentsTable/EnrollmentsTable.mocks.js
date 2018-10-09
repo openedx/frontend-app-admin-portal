@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 const mockEnrollmentFetchResponse = {
   count: 330,
   current_page: 1,

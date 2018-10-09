@@ -30,8 +30,8 @@ const PastWeekPassedLearnersTable = () => {
 
   return (
     <TableContainer
-      id="past-week-passed-learners"
-      className="past-week-passed-learners"
+      id="completed-learners-week"
+      className="completed-learners-week"
       fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
         passed_date: 'last_week',
         ...options,

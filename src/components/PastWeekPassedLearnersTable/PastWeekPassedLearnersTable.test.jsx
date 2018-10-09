@@ -10,7 +10,7 @@ import PastWeekPassedLearnersTable from '.';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   table: {
-    'past-week-passed-learners': {
+    'completed-learners-week': {
       data: {
         count: 2,
         num_pages: 1,
@@ -64,6 +64,7 @@ describe('PastWeekPassedLearnersTable', () => {
   });
 
   it('renders table with correct data', () => {
+    const tableId = 'completed-learners-week';
     const columnTitles = ['Email', 'Course Title', 'Passed Date'];
     const rowsData = [
       [
@@ -83,18 +84,18 @@ describe('PastWeekPassedLearnersTable', () => {
     ));
 
     // Verify that table has correct number of columns
-    expect(wrapper.find('.past-week-passed-learners thead th').length).toEqual(3);
+    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(3);
 
     // Verify only expected columns are shown
-    wrapper.find('.past-week-passed-learners thead th').forEach((column, index) => {
+    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows
-    expect(wrapper.find('.past-week-passed-learners tbody tr').length).toEqual(2);
+    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
 
     // Verify each row in table has correct data
-    wrapper.find('.past-week-passed-learners tbody tr').forEach((row, rowIndex) => {
+    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
       row.find('td').forEach((cell, colIndex) => {
         expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
       });

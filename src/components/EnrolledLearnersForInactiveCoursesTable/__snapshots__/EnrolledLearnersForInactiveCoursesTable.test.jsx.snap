@@ -40,7 +40,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1
 exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for inactive courses table correctly 1`] = `
 <div>
   <div
-    className="enrolled-learners-for-inactive-courses"
+    className="enrolled-learners-inactive-courses"
   >
     <div
       className="row"
@@ -257,7 +257,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
         className="col d-flex justify-content-center"
       >
         <nav
-          aria-label="enrolled-learners-for-inactive-courses-pagination"
+          aria-label="enrolled-learners-inactive-courses-pagination"
           className=""
         >
           <div

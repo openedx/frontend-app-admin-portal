@@ -37,7 +37,9 @@ describe('<DownloadCsvButton />', () => {
   });
 
   it('fetchCsv dispatch action', () => {
-    wrapper.props().fetchCsv(EnterpriseDataApiService.fetchCourseEnrollmentsCsv);
+    wrapper.props().fetchCsv(() => (
+      EnterpriseDataApiService.fetchCourseEnrollments({}, { csv: true })
+    ));
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

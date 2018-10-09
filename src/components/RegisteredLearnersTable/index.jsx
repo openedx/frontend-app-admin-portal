@@ -28,9 +28,9 @@ const RegisteredLearnersTable = () => {
 
   return (
     <TableContainer
-      id="unenrolled-registered-learners"
-      className="unenrolled-registered-learners"
-      fetchMethod={EnterpriseDataApiService.fetchUnerolledRegisteredLearners}
+      id="registered-unenrolled-learners"
+      className="registered-unenrolled-learners"
+      fetchMethod={EnterpriseDataApiService.fetchUnenrolledRegisteredLearners}
       columns={tableColumns}
       formatData={formatLearnerData}
       tableSortable

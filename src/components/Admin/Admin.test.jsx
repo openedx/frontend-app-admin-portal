@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 
 import { features } from '../../config';
@@ -94,7 +95,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'registered',
+                  actionSlug: 'registered-unenrolled-learners',
                 },
               }}
             />
@@ -111,7 +112,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'enrolled',
+                  actionSlug: 'enrolled-learners',
                 },
               }}
             />
@@ -128,7 +129,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'no-current-courses',
+                  actionSlug: 'enrolled-learners-inactive-courses',
                 },
               }}
             />
@@ -145,7 +146,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'active',
+                  actionSlug: 'learners-active-week',
                 },
               }}
             />
@@ -162,7 +163,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'inactive-week',
+                  actionSlug: 'learners-inactive-week',
                 },
               }}
             />
@@ -179,7 +180,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'inactive-month',
+                  actionSlug: 'learners-inactive-month',
                 },
               }}
             />
@@ -196,7 +197,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'completed',
+                  actionSlug: 'completed-learners',
                 },
               }}
             />
@@ -213,7 +214,7 @@ describe('<Admin />', () => {
               match={{
                 url: '/',
                 params: {
-                  actionSlug: 'completed-week',
+                  actionSlug: 'completed-learners-week',
                 },
               }}
             />
@@ -292,6 +293,224 @@ describe('<Admin />', () => {
 
       expect(wrapper.prop('enterpriseId')).toEqual(null);
       expect(mockGetDashboardAnalytics).toBeCalled();
+    });
+  });
+
+  describe('calls download csv fetch method for table', () => {
+    let spy;
+
+    afterEach(() => {
+      spy.mockRestore();
+    });
+
+    it('enrollments', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            enrollments: {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('registered unenrolled learners', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchUnenrolledRegisteredLearners');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'registered-unenrolled-learners': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'registered-unenrolled-learners',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('enrolled learners', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchEnrolledLearners');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'enrolled-learners': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'enrolled-learners',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('enrolled learners inactive courses', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchEnrolledLearnersForInactiveCourses');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'enrolled-learners-inactive-courses': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'enrolled-learners-inactive-courses',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('learners active week', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'learners-active-week': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'learners-active-week',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('learners inactive week', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'learners-inactive-week': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'learners-inactive-week',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('learners inactive month', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'learners-inactive-month': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'learners-inactive-month',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('completed learners', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCompletedLearners');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'completed-learners': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'completed-learners',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('completed learners past week', () => {
+      spy = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
+      const wrapper = mount((
+        <AdminWrapper
+          enterpriseId="test-enterprise-id"
+          table={{
+            'completed-learners-week': {
+              data: {
+                results: [{ id: 1 }],
+              },
+            },
+          }}
+          match={{
+            url: '/',
+            params: {
+              actionSlug: 'completed-learners-week',
+            },
+          }}
+        />
+      ));
+      wrapper.find('.download-btn').simulate('click');
+      expect(spy).toHaveBeenCalled();
     });
   });
 });
