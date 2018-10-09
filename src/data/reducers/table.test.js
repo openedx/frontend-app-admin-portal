@@ -26,7 +26,7 @@ describe('table reducer', () => {
     })).toEqual(expected);
   });
 
-  it('PAGINATION_SUCESS sets data for the table', () => {
+  it('PAGINATION_SUCCESS sets data for the table', () => {
     const expectedData = {
       count: 330,
       current_page: 1,

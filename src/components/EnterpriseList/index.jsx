@@ -24,6 +24,7 @@ class EnterpriseList extends React.Component {
   componentDidMount() {
     this.props.clearPortalConfiguration();
     this.props.getLocalUser();
+    this.props.fetchEnterpriseList();
   }
 
   handleSearch(query) {
@@ -54,21 +55,21 @@ class EnterpriseList extends React.Component {
 
   shouldRenderRedirectToEnterpriseAdminPage() {
     const {
-      enterprisesData,
+      enterpriseList,
       loading,
       error,
     } = this.props;
     const { searchSubmitted } = this.state;
-    const enterprises = enterprisesData && enterprisesData.results;
+    const enterprises = enterpriseList && enterpriseList.results;
 
     return (
       !loading && !error && enterprises && enterprises.length === 1 &&
-        enterprisesData.num_pages === 1 && !searchSubmitted
+      enterpriseList.num_pages === 1 && !searchSubmitted
     );
   }
 
   renderRedirectToEnterpriseAdminPage() {
-    const { results } = this.props.enterprisesData;
+    const { results } = this.props.enterpriseList;
     return (
       <Redirect to={`/${results[0].slug}/admin/learners`} />
     );
@@ -125,7 +126,7 @@ class EnterpriseList extends React.Component {
 
 
 EnterpriseList.defaultProps = {
-  enterprisesData: null,
+  enterpriseList: null,
   location: {
     search: null,
   },
@@ -134,10 +135,11 @@ EnterpriseList.defaultProps = {
 };
 
 EnterpriseList.propTypes = {
+  fetchEnterpriseList: PropTypes.func.isRequired,
   clearPortalConfiguration: PropTypes.func.isRequired,
   getLocalUser: PropTypes.func.isRequired,
   searchEnterpriseList: PropTypes.func.isRequired,
-  enterprisesData: PropTypes.shape({
+  enterpriseList: PropTypes.shape({
     count: PropTypes.number,
     num_pages: PropTypes.number,
     current_page: PropTypes.number,

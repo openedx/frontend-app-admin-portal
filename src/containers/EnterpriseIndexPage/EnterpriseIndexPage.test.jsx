@@ -45,7 +45,7 @@ describe('<EnterpriseIndexPage />', () => {
   it('sets the appropriate props', () => {
     expect(wrapper.props().loading).toEqual(false);
     expect(wrapper.props().error).toEqual(null);
-    expect(wrapper.props().enterprises).toEqual(initialState.table['enterprise-list'].data);
+    expect(wrapper.props().enterpriseList).toEqual(initialState.table['enterprise-list'].data);
   });
 
   it('searchEnterpriseList dispatches searchEnterpriseList action', () => {

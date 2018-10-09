@@ -3,12 +3,15 @@ import EnterpriseList from '../../components/EnterpriseList';
 import { clearPortalConfiguration } from '../../data/actions/portalConfiguration';
 import { getLocalUser } from '../../data/actions/authentication';
 import searchEnterpriseList from '../../data/actions/enterpriseList';
+import { paginateTable } from '../../data/actions/table';
+import LmsApiService from '../../data/services/LmsApiService';
 
+const tableId = 'enterprise-list';
 const mapStateToProps = (state) => {
-  const tableState = state.table['enterprise-list'] || {};
+  const tableState = state.table[tableId] || {};
 
   return {
-    enterprises: tableState.data,
+    enterpriseList: tableState.data,
     loading: tableState.loading,
     error: tableState.error,
   };
@@ -20,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getLocalUser: () => {
     dispatch(getLocalUser());
+  },
+  fetchEnterpriseList: () => {
+    dispatch(paginateTable(tableId, LmsApiService.fetchEnterpriseList));
   },
   searchEnterpriseList: (options) => {
     dispatch(searchEnterpriseList(options));
