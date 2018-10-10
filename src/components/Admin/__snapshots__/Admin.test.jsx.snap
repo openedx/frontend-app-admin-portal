@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Admin /> renders correctly calls getDashboardAnalytics prop 1`] = `
+exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 <div>
   <div
     className="hero py-4 pt-md-5 pb-md-0"

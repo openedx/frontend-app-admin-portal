@@ -3,11 +3,15 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-import fetchDashboardAnalytics from './dashboardAnalytics';
+import {
+  clearDashboardAnalytics,
+  fetchDashboardAnalytics,
+} from './dashboardAnalytics';
 import {
   FETCH_DASHBOARD_ANALYTICS_REQUEST,
   FETCH_DASHBOARD_ANALYTICS_SUCCESS,
   FETCH_DASHBOARD_ANALYTICS_FAILURE,
+  CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 
 const mockStore = configureMockStore([thunk]);
@@ -82,6 +86,13 @@ describe('actions', () => {
       return store.dispatch(fetchDashboardAnalytics(enterpriseId)).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+    });
+
+    it('dispatches clear dashboard analytics action', () => {
+      const expectedActions = [{ type: CLEAR_DASHBOARD_ANALYTICS }];
+      const store = mockStore();
+      store.dispatch(clearDashboardAnalytics());
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });

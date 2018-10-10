@@ -53,8 +53,8 @@ describe('<AdminPage />', () => {
     });
   });
 
-  it('getDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
-    wrapper.props().getDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
+  it('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
+    wrapper.props().fetchDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

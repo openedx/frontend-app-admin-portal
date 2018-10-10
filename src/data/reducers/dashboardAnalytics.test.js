@@ -3,6 +3,7 @@ import {
   FETCH_DASHBOARD_ANALYTICS_REQUEST,
   FETCH_DASHBOARD_ANALYTICS_SUCCESS,
   FETCH_DASHBOARD_ANALYTICS_FAILURE,
+  CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 
 const initialState = {
@@ -13,6 +14,17 @@ const initialState = {
   number_of_users: null,
   course_completions: null,
   last_updated_date: null,
+};
+
+const dashboardAnalyticsData = {
+  active_learners: {
+    past_month: 1,
+    past_week: 1,
+  },
+  enrolled_learners: 1,
+  number_of_users: 3,
+  course_completions: 1,
+  last_updated_date: '2018-07-31T23:14:35Z',
 };
 
 describe('dashboardAnalytics reducer', () => {
@@ -31,16 +43,6 @@ describe('dashboardAnalytics reducer', () => {
   });
 
   it('updates fetch dashboard analytics success state', () => {
-    const dashboardAnalyticsData = {
-      active_learners: {
-        past_month: 1,
-        past_week: 1,
-      },
-      enrolled_learners: 1,
-      number_of_users: 3,
-      course_completions: 1,
-      last_updated_date: '2018-07-31T23:14:35Z',
-    };
     const expected = {
       ...initialState,
       enrolled_learners: dashboardAnalyticsData.enrolled_learners,
@@ -65,5 +67,23 @@ describe('dashboardAnalytics reducer', () => {
       type: FETCH_DASHBOARD_ANALYTICS_FAILURE,
       payload: { error },
     })).toEqual(expected);
+  });
+
+  it('updates clear dashboard analytics state', () => {
+    // dispatch success state such that data already exists
+    const state = dashboardAnalytics(undefined, {
+      type: FETCH_DASHBOARD_ANALYTICS_SUCCESS,
+      payload: { data: dashboardAnalyticsData },
+    });
+    expect(state).toEqual({
+      ...dashboardAnalyticsData,
+      error: null,
+      loading: false,
+    });
+
+    // dispatch clear state
+    expect(dashboardAnalytics(undefined, {
+      type: CLEAR_DASHBOARD_ANALYTICS,
+    })).toEqual(initialState);
   });
 });

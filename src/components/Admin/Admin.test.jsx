@@ -35,7 +35,8 @@ const AdminWrapper = props => (
       <Admin
         enterpriseId="test-enterprise"
         enterpriseSlug="test-enterprise"
-        getDashboardAnalytics={() => {}}
+        clearDashboardAnalytics={() => {}}
+        fetchDashboardAnalytics={() => {}}
         fetchPortalConfiguration={() => {}}
         fetchCsv={() => {}}
         match={{
@@ -50,17 +51,17 @@ const AdminWrapper = props => (
 
 describe('<Admin />', () => {
   describe('renders correctly', () => {
-    it('calls getDashboardAnalytics prop', () => {
-      const mockGetDashboardAnalytics = jest.fn();
+    it('calls fetchDashboardAnalytics prop', () => {
+      const mockFetchDashboardAnalytics = jest.fn();
       const tree = renderer
         .create((
           <AdminWrapper
-            getDashboardAnalytics={mockGetDashboardAnalytics}
+            fetchDashboardAnalytics={mockFetchDashboardAnalytics}
             enterpriseId="test-enterprise-id"
           />
         ))
         .toJSON();
-      expect(mockGetDashboardAnalytics).toHaveBeenCalled();
+      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
       expect(tree).toMatchSnapshot();
     });
 
@@ -262,10 +263,10 @@ describe('<Admin />', () => {
 
   describe('handle changes to enterpriseId prop', () => {
     it('handles non-empty change in enterpriseId prop', () => {
-      const mockGetDashboardAnalytics = jest.fn();
+      const mockFetchDashboardAnalytics = jest.fn();
       const wrapper = mount((
         <AdminWrapper
-          getDashboardAnalytics={mockGetDashboardAnalytics}
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
         />
       ));
@@ -275,14 +276,14 @@ describe('<Admin />', () => {
       });
 
       expect(wrapper.prop('enterpriseId')).toEqual('test-enterprise-id-2');
-      expect(mockGetDashboardAnalytics).toBeCalled();
+      expect(mockFetchDashboardAnalytics).toBeCalled();
     });
 
     it('handles empty change in enterpriseId prop', () => {
-      const mockGetDashboardAnalytics = jest.fn();
+      const mockFetchDashboardAnalytics = jest.fn();
       const wrapper = mount((
         <AdminWrapper
-          getDashboardAnalytics={mockGetDashboardAnalytics}
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
         />
       ));
@@ -292,7 +293,7 @@ describe('<Admin />', () => {
       });
 
       expect(wrapper.prop('enterpriseId')).toEqual(null);
-      expect(mockGetDashboardAnalytics).toBeCalled();
+      expect(mockFetchDashboardAnalytics).toBeCalled();
     });
   });
 

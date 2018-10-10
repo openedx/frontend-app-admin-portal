@@ -2,6 +2,7 @@ import {
   FETCH_DASHBOARD_ANALYTICS_REQUEST,
   FETCH_DASHBOARD_ANALYTICS_SUCCESS,
   FETCH_DASHBOARD_ANALYTICS_FAILURE,
+  CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 
@@ -44,4 +45,11 @@ const fetchDashboardAnalytics = enterpriseId => (
   }
 );
 
-export default fetchDashboardAnalytics;
+const clearDashboardAnalytics = () => dispatch => (dispatch({
+  type: CLEAR_DASHBOARD_ANALYTICS,
+}));
+
+export {
+  clearDashboardAnalytics,
+  fetchDashboardAnalytics,
+};

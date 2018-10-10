@@ -2,6 +2,7 @@ import {
   FETCH_DASHBOARD_ANALYTICS_REQUEST,
   FETCH_DASHBOARD_ANALYTICS_SUCCESS,
   FETCH_DASHBOARD_ANALYTICS_FAILURE,
+  CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 
 const initialState = {
@@ -37,6 +38,17 @@ const dashboardAnalytics = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+        enrolled_learners: null,
+        number_of_users: null,
+        active_learners: null,
+        course_completions: null,
+        last_updated_date: null,
+      };
+    case CLEAR_DASHBOARD_ANALYTICS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
         enrolled_learners: null,
         number_of_users: null,
         active_learners: null,

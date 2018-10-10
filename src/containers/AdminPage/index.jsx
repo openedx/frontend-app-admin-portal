@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import fetchDashboardAnalytics from '../../data/actions/dashboardAnalytics';
+import {
+  clearDashboardAnalytics,
+  fetchDashboardAnalytics,
+} from '../../data/actions/dashboardAnalytics';
 import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
 import Admin from '../../components/Admin';
 
@@ -22,8 +25,11 @@ const mapDispatchToProps = dispatch => ({
   fetchPortalConfiguration: (slug) => {
     dispatch(fetchPortalConfiguration(slug));
   },
-  getDashboardAnalytics: (enterpriseId) => {
+  fetchDashboardAnalytics: (enterpriseId) => {
     dispatch(fetchDashboardAnalytics(enterpriseId));
+  },
+  clearDashboardAnalytics: () => {
+    dispatch(clearDashboardAnalytics());
   },
 });
 

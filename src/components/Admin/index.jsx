@@ -29,7 +29,7 @@ class Admin extends React.Component {
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
-      this.props.getDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardAnalytics(enterpriseId);
     }
 
     this.props.fetchPortalConfiguration(this.props.enterpriseSlug);
@@ -38,8 +38,13 @@ class Admin extends React.Component {
   componentDidUpdate(prevProps) {
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
-      this.props.getDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardAnalytics(enterpriseId);
     }
+  }
+
+  componentWillUnmount() {
+    // Clear the overview data
+    this.props.clearDashboardAnalytics();
   }
 
   getMetadataForAction(actionSlug) {
@@ -310,8 +315,9 @@ Admin.defaultProps = {
 };
 
 Admin.propTypes = {
-  getDashboardAnalytics: PropTypes.func.isRequired,
+  fetchDashboardAnalytics: PropTypes.func.isRequired,
   fetchPortalConfiguration: PropTypes.func.isRequired,
+  clearDashboardAnalytics: PropTypes.func.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
