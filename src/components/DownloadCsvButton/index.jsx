@@ -12,10 +12,9 @@ class DownloadCsvButton extends React.Component {
       fetchMethod,
       fetchCsv,
       csvLoading,
-      match,
       disabled,
+      buttonLabel,
     } = this.props;
-    const { params: { slug } } = match;
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
       <Button
@@ -24,7 +23,7 @@ class DownloadCsvButton extends React.Component {
         label={
           <span>
             <Icon className={['fa', 'mr-2'].concat(downloadButtonIconClasses)} />
-            Download {slug ? 'current' : 'full'} report (CSV)
+            {buttonLabel}
           </span>
         }
         onClick={() => fetchCsv(fetchMethod)}
@@ -37,6 +36,7 @@ DownloadCsvButton.defaultProps = {
   csvLoading: false,
   fetchMethod: () => {},
   disabled: false,
+  buttonLabel: 'Download report (CSV)',
 };
 
 DownloadCsvButton.propTypes = {
@@ -44,13 +44,8 @@ DownloadCsvButton.propTypes = {
   fetchMethod: PropTypes.func,
   csvLoading: PropTypes.bool,
   clearCsv: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      slug: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
   disabled: PropTypes.bool,
+  buttonLabel: PropTypes.string,
 };
 
 export default DownloadCsvButton;

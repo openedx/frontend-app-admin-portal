@@ -278,6 +278,7 @@ class Admin extends React.Component {
                       id={tableMetadata.csvButtonId}
                       fetchMethod={tableMetadata.csvFetchMethod}
                       disabled={this.shouldDisableCsvButton(actionSlug)}
+                      buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
                     />
                   </div>
                 </div>

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 
 import { fetchCsv, clearCsv } from '../../data/actions/csv';
 import DownloadCsvButton from '../../components/DownloadCsvButton';
@@ -20,4 +19,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DownloadCsvButton));
+export default connect(mapStateToProps, mapDispatchToProps)(DownloadCsvButton);

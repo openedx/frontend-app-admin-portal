@@ -98,9 +98,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download full report (CSV)
               </span>
             </button>
           </div>
@@ -400,9 +398,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -702,9 +698,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -1009,9 +1003,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -1562,9 +1554,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download full report (CSV)
               </span>
             </button>
           </div>
@@ -1847,9 +1837,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download full report (CSV)
               </span>
             </button>
           </div>
@@ -2154,9 +2142,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -2461,9 +2447,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -2766,9 +2750,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -3068,9 +3050,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
@@ -3375,9 +3355,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     id="Icon1"
                   />
                 </span>
-                Download 
-                full
-                 report (CSV)
+                Download current report (CSV)
               </span>
             </button>
           </div>
