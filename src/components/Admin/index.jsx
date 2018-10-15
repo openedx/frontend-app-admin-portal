@@ -86,7 +86,7 @@ class Admin extends React.Component {
       'learners-active-week': {
         title: 'Learners Enrolled in a Course',
         subtitle: 'Top Active Learners',
-        component: <LearnerActivityTable id="active-week" activity="active_past_week" />,
+        component: <LearnerActivityTable id="learners-active-week" activity="active_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'active_past_week' }, { csv: true })
         ),
