@@ -1,0 +1,86 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.coupon {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,0.075);
+    transition: all 0.2s ease;
+
+    &.dimmed {
+        opacity: 0.5;
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+        }
+    }
+
+    &:not(.expanded) {
+        &:hover,
+        &:focus {
+            border-color: $gray-400 !important; // `!important` needed to override .border Bootstrap class
+        }
+    }
+
+    .metadata {
+        transition: background 0.2s ease;
+        position: relative;
+
+        &:hover,
+        &:focus {
+            background: $gray-100;
+            cursor: pointer;
+        }
+
+        .toggle-details-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            @include media-breakpoint-up(lg) {
+                position: relative;
+            }
+        }
+    }
+
+    &.expanded {
+        &:hover,
+        &:focus {
+            background: inherit;
+        }
+
+        .metadata {
+            background: #095686;
+            border-radius: 0.1875rem 0.1875rem 0 0;
+            color: #ffffff;
+        }
+    }
+
+    .details {
+        font-size: 1rem;
+
+        .loading {
+            font-size: inherit;
+        }
+
+        .alert {
+            margin-bottom: 0;
+        }
+
+        .table,
+        .pagination .btn {
+            font-size: 0.85rem;
+        }
+
+        .table {
+            td {
+                vertical-align: middle;
+            }
+
+            .btn {
+                font-size: inherit;
+                text-decoration: underline;
+            }
+        }
+    }
+}

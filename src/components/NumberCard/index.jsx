@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import './NumberCard.scss';
 
-import { removeTrailingSlash } from '../../utils';
+import { removeTrailingSlash, isTriggerKey } from '../../utils';
 
 export const triggerKeys = {
   OPEN_DETAILS: ['ArrowDown', 'Enter'],
@@ -17,10 +17,6 @@ export const triggerKeys = {
 };
 
 class NumberCard extends React.Component {
-  static isTriggerKey(action, keyName) {
-    return triggerKeys[action].indexOf(keyName) > -1;
-  }
-
   constructor(props) {
     super(props);
 
@@ -110,10 +106,10 @@ class NumberCard extends React.Component {
 
   handleToggleDetailsKeyDown(event) {
     const { detailsExpanded } = this.state;
-    if (!detailsExpanded && NumberCard.isTriggerKey('OPEN_DETAILS', event.key)) {
+    if (!detailsExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
       event.preventDefault();
       this.toggleDetails();
-    } else if (detailsExpanded && NumberCard.isTriggerKey('CLOSE_DETAILS', event.key)) {
+    } else if (detailsExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
       this.toggleDetails();
     }
   }
@@ -124,15 +120,15 @@ class NumberCard extends React.Component {
 
     event.preventDefault();
 
-    if (NumberCard.isTriggerKey('CLOSE_DETAILS', event.key)) {
+    if (isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
       this.toggleDetails();
-    } else if (NumberCard.isTriggerKey('SELECT_ACTION', event.key)) {
+    } else if (isTriggerKey({ triggerKeys, action: 'SELECT_ACTION', key: event.key })) {
       this.handleDetailsActionClick(event);
-    } else if (NumberCard.isTriggerKey('NAVIGATE_DOWN', event.key)) {
+    } else if (isTriggerKey({ triggerKeys, action: 'NAVIGATE_DOWN', key: event.key })) {
       this.setState({
         focusIndex: (focusIndex + 1) % detailActions.length,
       });
-    } else if (NumberCard.isTriggerKey('NAVIGATE_UP', event.key)) {
+    } else if (isTriggerKey({ triggerKeys, action: 'NAVIGATE_UP', key: event.key })) {
       this.setState({
         focusIndex: ((focusIndex - 1) + detailActions.length) % detailActions.length,
       });
