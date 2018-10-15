@@ -1,8 +1,7 @@
 import qs from 'query-string';
 import { orderBy } from 'lodash';
-
-import { updateUrl } from '../../utils';
 import history from '../../data/history';
+
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
@@ -61,12 +60,7 @@ const sortFailure = (tableId, error) => ({
   },
 });
 
-const fetchOptions = (tableState) => {
-  // Fetch options are determined:
-  // 1. If the redux state is already set, we use those
-  // 2. If redux state for this table is not set, we check the querystring to allow deep linking
-  // 3. Otherwise we use default values
-  //
+const fetchOptionsFromQS = () => {
   // TODO: this will not support multiple tables paging on a single page. Will need to prefix url
   // params with table id (or some other mechanism) if this becomes a feature requirement
   const defaults = {
@@ -74,30 +68,20 @@ const fetchOptions = (tableState) => {
     page: 1,
     ordering: undefined,
   };
-
-  if (!tableState) {
-    const query = qs.parse(history.location.search);
-    return {
-      page_size: parseInt(query.page_size, 10) || defaults.pageSize,
-      page: parseInt(query.page, 10) || defaults.page,
-      ordering: query.ordering || defaults.ordering,
-    };
-  }
+  const query = qs.parse(history.location.search);
   return {
-    page_size: tableState.pageSize || defaults.pageSize,
-    page: tableState.page || defaults.page,
-    ordering: tableState.ordering || defaults.ordering,
+    page_size: parseInt(query.page_size, 10) || defaults.pageSize,
+    page: parseInt(query.page, 10) || defaults.page,
+    ordering: query.ordering || defaults.ordering,
   };
 };
 
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
-  (dispatch, getState) => {
-    const tableState = getState().table[tableId];
-    const options = fetchOptions(tableState);
+  (dispatch) => {
+    const options = fetchOptionsFromQS();
     if (pageNumber) {
       options.page = pageNumber;
     }
-    updateUrl(options);
     dispatch(paginationRequest(tableId, options));
     return fetchMethod(options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
@@ -132,17 +116,13 @@ const sortData = (data, ordering) => {
   return orderBy(data, parseKeyValue, [direction]);
 };
 
-const sortTable = (tableId, fetchMethod, sortOptions) => (
+const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
-    // Paragon Table's onSort passing in options: key, direction
-    // Our Api is expecting single orderField
-    const ordering = sortOptions.direction === 'desc' ? `-${sortOptions.key}` : sortOptions.key;
     const tableState = getState().table[tableId];
     const options = {
-      ...fetchOptions(tableState),
+      ...fetchOptionsFromQS(),
       ordering,
     };
-    updateUrl(options);
     dispatch(sortRequest(tableId, ordering));
 
     // If we can sort client-side because we have all of the data, do that

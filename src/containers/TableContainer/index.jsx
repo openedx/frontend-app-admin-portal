@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import TableComponent from '../../components/TableComponent';
 import { paginateTable, sortTable, clearTable } from '../../data/actions/table';
@@ -19,8 +20,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   paginateTable: (pageNumber) => {
     dispatch(paginateTable(ownProps.id, ownProps.fetchMethod, pageNumber));
   },
-  sortTable: (options) => {
-    dispatch(sortTable(ownProps.id, ownProps.fetchMethod, options));
+  sortTable: (ordering) => {
+    dispatch(sortTable(ownProps.id, ownProps.fetchMethod, ordering));
   },
   clearTable: () => {
     dispatch(clearTable(ownProps.id));
@@ -32,4 +33,4 @@ const TableContainer = connect(
   mapDispatchToProps,
 )(TableComponent);
 
-export default TableContainer;
+export default withRouter(TableContainer);

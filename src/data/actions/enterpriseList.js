@@ -1,11 +1,12 @@
+import { push } from 'react-router-redux';
+
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
   PAGINATION_FAILURE,
 } from '../constants/table';
 
-import { updateUrl } from '../../utils';
-
+import { getQueryString } from '../../utils';
 import LmsApiService from '../services/LmsApiService';
 
 const tableId = 'enterprise-list';
@@ -37,7 +38,7 @@ const searchEnterpriseListFailure = error => ({
 // events as the table actions, so the same `table` reducers will be called.
 const searchEnterpriseList = options => (
   (dispatch) => {
-    updateUrl(options);
+    dispatch(push({ search: getQueryString(options) }));
     dispatch(searchEnterpriseListRequest(options));
     return LmsApiService.fetchEnterpriseList(options)
       .then((response) => {

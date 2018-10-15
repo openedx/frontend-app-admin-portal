@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import qs from 'query-string';
 
 import { Pagination, Table } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
@@ -7,6 +8,8 @@ import 'font-awesome/css/font-awesome.css';
 import LoadingMessage from '../LoadingMessage';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
+import { updateUrl } from '../../utils';
+
 import './TableComponent.scss';
 
 class TableComponent extends React.Component {
@@ -16,9 +19,25 @@ class TableComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id } = this.props;
+    const { id, location } = this.props;
+
+    // Handle the case where the table has changed by paginating the new table
     if (id && id !== prevProps.id) {
       this.props.paginateTable();
+    }
+
+    // Handle the case where the router has changed query params in the store. This is used when
+    // sorting & paging, but also when the back button is used. We need to determine if this is
+    // just a pagination request, or if we are sorting as we handle these as slightly differently
+    // actions in the action handlers.
+    if (location.search !== prevProps.location.search) {
+      const { ordering: prevOrdering } = qs.parse(prevProps.location.search);
+      const { page, ordering } = qs.parse(location.search);
+      if (ordering !== prevOrdering) {
+        this.props.sortTable(ordering);
+      } else {
+        this.props.paginateTable(parseInt(page, 10));
+      }
     }
   }
 
@@ -35,8 +54,6 @@ class TableComponent extends React.Component {
       data,
       ordering,
       formatData,
-      paginateTable,
-      sortTable,
       id,
       loading,
     } = this.props;
@@ -44,7 +61,10 @@ class TableComponent extends React.Component {
     const columnConfig = this.props.columns.map(column => ({
       ...column,
       onSort: column.columnSortable ? (direction) => {
-        sortTable({ key: column.key, direction });
+        updateUrl({
+          page: 1,
+          ordering: direction === 'desc' ? `-${column.key}` : column.key,
+        });
       } : null,
     }));
 
@@ -79,7 +99,11 @@ class TableComponent extends React.Component {
               paginationLabel={`${id}-pagination`}
               pageCount={pageCount}
               currentPage={currentPage}
-              onPageSelect={paginateTable}
+              onPageSelect={(page) => {
+                updateUrl({
+                  page,
+                });
+              }}
             />
           </div>
         </div>
@@ -150,6 +174,9 @@ TableComponent.propTypes = {
   paginateTable: PropTypes.func.isRequired,
   sortTable: PropTypes.func.isRequired,
   clearTable: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
 };
 
 TableComponent.defaultProps = {
