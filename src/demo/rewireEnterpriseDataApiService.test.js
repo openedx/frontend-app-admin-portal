@@ -102,7 +102,7 @@ describe('rewireEnterpriseDataApiService', () => {
         },
         course_completions: expect.any(Number),
         enrolled_learners: expect.any(Number),
-        last_update_date: expect.any(Date),
+        last_updated_date: expect.any(String),
         number_of_users: expect.any(Number),
       };
       expect(results.data).toEqual(expectedResults);
