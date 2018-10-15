@@ -2,29 +2,68 @@ import EnterpriseDataApiService from '../../src/data/services/EnterpriseDataApiS
 import rewire from './rewireEnterpriseDataApiService';
 
 describe('rewireEnterpriseDataApiService', () => {
-  const { fetchCourseEnrollments, fetchDashboardAnalytics } = EnterpriseDataApiService;
+  const {
+    fetchCompletedLearners,
+    fetchCourseEnrollments,
+    fetchEnrolledLearners,
+    fetchEnrolledLearnersForInactiveCourses,
+    fetchUnenrolledRegisteredLearners,
+    fetchCourseEnrollmentsCsv,
+    fetchDashboardAnalytics,
+  } = EnterpriseDataApiService;
 
   afterEach(() => {
     // rewire in the tests overrides the methods on EnterpriseDataApiService so we restore
     // them to their original method calls after each test. Ideally we would just save/restore
     // EnterpriseDataApiService but imports are considered read-only.
+    EnterpriseDataApiService.fetchCompletedLearners = fetchCompletedLearners;
     EnterpriseDataApiService.fetchCourseEnrollments = fetchCourseEnrollments;
+    EnterpriseDataApiService.fetchEnrolledLearners = fetchEnrolledLearners;
+    EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses = fetchEnrolledLearnersForInactiveCourses; // eslint-disable-line max-len
+    EnterpriseDataApiService.fetchUnenrolledRegisteredLearners = fetchUnenrolledRegisteredLearners;
+    EnterpriseDataApiService.fetchCourseEnrollmentsCsv = fetchCourseEnrollmentsCsv;
     EnterpriseDataApiService.fetchDashboardAnalytics = fetchDashboardAnalytics;
   });
 
-  describe('fetchCourseEnrollments', () => {
+  describe('fetchEnrollments', () => {
+    const verifyFetchMethodEnrollments = (fetchMethod, options = {}) => fetchMethod(options).then((results) => { // eslint-disable-line max-len
+      // Only testing for data types, not actual values
+      const expectedResults = {
+        count: expect.any(Number),
+        num_pages: expect.any(Number),
+        current_page: expect.any(Number),
+        results: expect.any(Array),
+      };
+      expect(results.data).toEqual(expectedResults);
+    });
     it('rewires fetchCourseEnrollments call', () => {
       rewire();
-      return EnterpriseDataApiService.fetchCourseEnrollments({}).then((results) => {
-        // Only testing for data types, not actual values
-        const expectedResults = {
-          count: expect.any(Number),
-          num_pages: expect.any(Number),
-          current_page: expect.any(Number),
-          results: expect.any(Array),
-        };
-        expect(results.data).toEqual(expectedResults);
-      });
+      return verifyFetchMethodEnrollments(EnterpriseDataApiService.fetchCourseEnrollments);
+    });
+    it('rewires fetchCourseEnrollments with options call', () => {
+      rewire();
+      return verifyFetchMethodEnrollments(
+        EnterpriseDataApiService.fetchCourseEnrollments,
+        {
+          learner_activity: 'active_past_week',
+        },
+      );
+    });
+    it('rewires fetchEnrolledLearners call', () => {
+      rewire();
+      return verifyFetchMethodEnrollments(EnterpriseDataApiService.fetchEnrolledLearners);
+    });
+    it('rewires filterEnrolledLearnersForInactiveCourses call', () => {
+      rewire();
+      return verifyFetchMethodEnrollments(EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses); // eslint-disable-line max-len
+    });
+    it('rewires fetchUnenrolledRegisteredLearners call', () => {
+      rewire();
+      return verifyFetchMethodEnrollments(EnterpriseDataApiService.fetchUnenrolledRegisteredLearners); // eslint-disable-line max-len
+    });
+    it('rewires fetchCompletedLearners call', () => {
+      rewire();
+      return verifyFetchMethodEnrollments(EnterpriseDataApiService.fetchCompletedLearners);
     });
     it('supports sorting via options', () => {
       rewire();
@@ -40,6 +79,15 @@ describe('rewireEnterpriseDataApiService', () => {
       rewire();
       return EnterpriseDataApiService.fetchCourseEnrollments({ page: 2 }).then((results) => {
         expect(results.data.current_page).toEqual(2);
+      });
+    });
+  });
+
+  describe('fetchCourseEnrollmentsCsv', () => {
+    it('rewires fetchCourseEnrollmentsCsv call', () => {
+      rewire();
+      return EnterpriseDataApiService.fetchCourseEnrollmentsCsv().then((results) => {
+        expect(results.data).toEqual(expect.any(String));
       });
     });
   });
