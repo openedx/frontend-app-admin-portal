@@ -12,13 +12,15 @@ const StatusAlert = (props) => {
     iconClassNames,
     title,
     message,
+    dismissible,
+    onClose,
   } = props;
 
   return (
     <Alert
       className={className}
       alertType={alertType}
-      dismissible={false}
+      dismissible={dismissible}
       dialog={
         <div className={
           classNames({
@@ -38,6 +40,7 @@ const StatusAlert = (props) => {
           </div>
         </div>
       }
+      onClose={onClose}
       open
     />
   );
@@ -49,12 +52,16 @@ StatusAlert.propTypes = {
   className: PropTypes.arrayOf(PropTypes.string),
   iconClassNames: PropTypes.arrayOf(PropTypes.string),
   title: PropTypes.string,
+  dismissible: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 StatusAlert.defaultProps = {
   className: [],
   iconClassNames: [],
   title: null,
+  dismissible: false,
+  onClose: () => {},
 };
 
 export default StatusAlert;

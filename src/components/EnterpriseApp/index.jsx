@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 
 import CoursewarePage from '../../containers/CoursewarePage';
 import AdminPage from '../../containers/AdminPage';
+import CodeManagementPage from '../../containers/CodeManagementPage';
+import RequestCodesPage from '../../containers/RequestCodesPage';
 import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
 import { removeTrailingSlash } from '../../utils';
+import { features } from '../../config';
 
 class EnterpriseApp extends React.Component {
   renderError(error) {
@@ -42,6 +45,24 @@ class EnterpriseApp extends React.Component {
             path={`${baseUrl}/admin/learners/:actionSlug?`}
             render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
           />
+          {features.CODE_MANAGEMENT &&
+            <React.Fragment>
+              <Route
+                exact
+                path={`${baseUrl}/admin/codes`}
+                render={routeProps =>
+                  <CodeManagementPage {...routeProps} enterpriseSlug={enterpriseSlug} />
+                }
+              />
+              <Route
+                exact
+                path={`${baseUrl}/admin/codes/request`}
+                render={routeProps =>
+                  <RequestCodesPage {...routeProps} enterpriseSlug={enterpriseSlug} />
+                }
+              />
+            </React.Fragment>
+          }
           <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
