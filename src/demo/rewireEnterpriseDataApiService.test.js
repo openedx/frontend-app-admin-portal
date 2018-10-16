@@ -93,19 +93,21 @@ describe('rewireEnterpriseDataApiService', () => {
   });
 
   describe('fetchDashboardAnalytics', () => {
-    rewire();
-    return EnterpriseDataApiService.fetchDashboardAnalytics().then((results) => {
-      const expectedResults = {
-        active_learners: {
-          past_month: expect.any(Number),
-          past_week: expect.any(Number),
-        },
-        course_completions: expect.any(Number),
-        enrolled_learners: expect.any(Number),
-        last_updated_date: expect.any(String),
-        number_of_users: expect.any(Number),
-      };
-      expect(results.data).toEqual(expectedResults);
+    it('rewires fetchDashboardAnalytics', () => {
+      rewire();
+      return EnterpriseDataApiService.fetchDashboardAnalytics().then((results) => {
+        const expectedResults = {
+          active_learners: {
+            past_month: expect.any(Number),
+            past_week: expect.any(Number),
+          },
+          course_completions: expect.any(Number),
+          enrolled_learners: expect.any(Number),
+          last_updated_date: expect.any(String),
+          number_of_users: expect.any(Number),
+        };
+        expect(results.data).toEqual(expectedResults);
+      });
     });
   });
 });
