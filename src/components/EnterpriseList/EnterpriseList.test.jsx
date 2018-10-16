@@ -38,7 +38,6 @@ const EnterpriseListWrapper = props => (
         enterpriseList={{
           results: [],
         }}
-        fetchEnterpriseList={() => {}}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
         getLocalUser={() => {}}
@@ -52,7 +51,7 @@ describe('<EnterpriseList />', () => {
   let wrapper;
 
   describe('renders correctly', () => {
-    it('calls getEnterpriseList, clearPortalConfiguration and getLocalUser props', () => {
+    it('call clearPortalConfiguration and getLocalUser props', () => {
       const mockClearPortalConfiguration = jest.fn();
       const mockGetLocalUser = jest.fn();
       const tree = renderer
@@ -103,8 +102,9 @@ describe('<EnterpriseList />', () => {
               count: 0,
               results: [],
             }}
-            searchQuery="enterprise name"
-            searchSubmitted
+            location={{
+              search: '?search=enterprise name',
+            }}
           />
         ))
         .toJSON();
@@ -149,7 +149,6 @@ describe('<EnterpriseList />', () => {
           <Provider store={store}>
             <EnterpriseList
               enterpriseList={oneEnterpriseListData}
-              fetchEnterpriseList={() => {}}
               searchEnterpriseList={() => {}}
               clearPortalConfiguration={() => {}}
               getLocalUser={() => {}}
