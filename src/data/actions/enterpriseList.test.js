@@ -40,7 +40,7 @@ describe('actions', () => {
           type: PAGINATION_REQUEST,
           payload: {
             tableId: 'enterprise-list',
-            options: { search: 'test-search-string' },
+            options: expect.objectContaining({ search: 'test-search-string' }),
           },
         },
         {

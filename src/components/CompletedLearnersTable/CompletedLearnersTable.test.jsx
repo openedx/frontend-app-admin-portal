@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -23,11 +24,13 @@ const store = mockStore({
 });
 
 const CompletedLearnersWrapper = props => (
-  <Provider store={store}>
-    <CompletedLearnersTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={store}>
+      <CompletedLearnersTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 describe('CompletedLearnersTable', () => {

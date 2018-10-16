@@ -31,11 +31,11 @@ class TableComponent extends React.Component {
     // just a pagination request, or if we are sorting as we handle these as slightly differently
     // actions in the action handlers.
     if (location.search !== prevProps.location.search) {
-      const { ordering: prevOrdering } = qs.parse(prevProps.location.search);
+      const { page: prevPage, ordering: prevOrdering } = qs.parse(prevProps.location.search);
       const { page, ordering } = qs.parse(location.search);
       if (ordering !== prevOrdering) {
         this.props.sortTable(ordering);
-      } else {
+      } else if (page !== prevPage) {
         this.props.paginateTable(parseInt(page, 10));
       }
     }
@@ -60,12 +60,10 @@ class TableComponent extends React.Component {
 
     const columnConfig = this.props.columns.map(column => ({
       ...column,
-      onSort: column.columnSortable ? (direction) => {
-        updateUrl({
-          page: 1,
-          ordering: direction === 'desc' ? `-${column.key}` : column.key,
-        });
-      } : null,
+      onSort: column.columnSortable ? direction => updateUrl({
+        page: 1,
+        ordering: direction === 'desc' ? `-${column.key}` : column.key,
+      }) : null,
     }));
 
     let sortDirection;
@@ -99,11 +97,7 @@ class TableComponent extends React.Component {
               paginationLabel={`${id}-pagination`}
               pageCount={pageCount}
               currentPage={currentPage}
-              onPageSelect={(page) => {
-                updateUrl({
-                  page,
-                });
-              }}
+              onPageSelect={page => updateUrl({ page })}
             />
           </div>
         </div>

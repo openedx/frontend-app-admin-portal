@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -72,19 +73,23 @@ const learnerActivityStore = mockStore({
 });
 
 const LearnerActivityEmptyTableWrapper = props => (
-  <Provider store={learnerActivityEmptyStore}>
-    <LearnerActivityTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={learnerActivityEmptyStore}>
+      <LearnerActivityTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 const LearnerActivityTableWrapper = props => (
-  <Provider store={learnerActivityStore}>
-    <LearnerActivityTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={learnerActivityStore}>
+      <LearnerActivityTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {

@@ -52,6 +52,22 @@ const updateUrl = (queryOptions) => {
   }
 };
 
+const getPageOptionsFromQS = () => {
+  // TODO: this will not support multiple tables paging on a single page. Will need to prefix url
+  // params with table id (or some other mechanism) if this becomes a feature requirement
+  const defaults = {
+    pageSize: 50,
+    page: 1,
+    ordering: undefined,
+  };
+  const query = qs.parse(window.location.search);
+  return {
+    page_size: parseInt(query.page_size, 10) || defaults.pageSize,
+    page: parseInt(query.page, 10) || defaults.page,
+    ordering: query.ordering || defaults.ordering,
+  };
+};
+
 const removeTrailingSlash = path => path.replace(/\/$/, '');
 
 export {
@@ -61,4 +77,5 @@ export {
   getAccessToken,
   removeTrailingSlash,
   updateUrl,
+  getPageOptionsFromQS,
 };

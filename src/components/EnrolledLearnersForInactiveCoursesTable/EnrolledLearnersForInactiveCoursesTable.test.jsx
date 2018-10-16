@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -85,19 +86,23 @@ const enrolledLearnersForInactiveCoursesStore = mockStore({
 });
 
 const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
-  <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-    <EnrolledLearnersForInactiveCoursesTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
+      <EnrolledLearnersForInactiveCoursesTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 const EnrolledLearnersForInactiveCoursesWrapper = props => (
-  <Provider store={enrolledLearnersForInactiveCoursesStore}>
-    <EnrolledLearnersForInactiveCoursesTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={enrolledLearnersForInactiveCoursesStore}>
+      <EnrolledLearnersForInactiveCoursesTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 describe('EnrolledLearnersForInactiveCoursesTable', () => {

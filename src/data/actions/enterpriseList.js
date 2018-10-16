@@ -1,13 +1,10 @@
-import { push } from 'react-router-redux';
-
+import LmsApiService from '../services/LmsApiService';
+import { getPageOptionsFromQS } from '../../utils';
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
   PAGINATION_FAILURE,
 } from '../constants/table';
-
-import { getQueryString } from '../../utils';
-import LmsApiService from '../services/LmsApiService';
 
 const tableId = 'enterprise-list';
 
@@ -36,9 +33,12 @@ const searchEnterpriseListFailure = error => ({
 // This is doing nearly the same thing the table actions do however this
 // is necessary so we can pass in the `search` parameter. We leverage the same
 // events as the table actions, so the same `table` reducers will be called.
-const searchEnterpriseList = options => (
+const searchEnterpriseList = searchOptions => (
   (dispatch) => {
-    dispatch(push({ search: getQueryString(options) }));
+    const options = {
+      ...getPageOptionsFromQS(),
+      ...searchOptions,
+    };
     dispatch(searchEnterpriseListRequest(options));
     return LmsApiService.fetchEnterpriseList(options)
       .then((response) => {

@@ -1,6 +1,5 @@
-import qs from 'query-string';
 import { orderBy } from 'lodash';
-import history from '../../data/history';
+import { getPageOptionsFromQS } from '../../utils';
 
 import {
   PAGINATION_REQUEST,
@@ -60,25 +59,9 @@ const sortFailure = (tableId, error) => ({
   },
 });
 
-const fetchOptionsFromQS = () => {
-  // TODO: this will not support multiple tables paging on a single page. Will need to prefix url
-  // params with table id (or some other mechanism) if this becomes a feature requirement
-  const defaults = {
-    pageSize: 50,
-    page: 1,
-    ordering: undefined,
-  };
-  const query = qs.parse(history.location.search);
-  return {
-    page_size: parseInt(query.page_size, 10) || defaults.pageSize,
-    page: parseInt(query.page, 10) || defaults.page,
-    ordering: query.ordering || defaults.ordering,
-  };
-};
-
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
   (dispatch) => {
-    const options = fetchOptionsFromQS();
+    const options = getPageOptionsFromQS();
     if (pageNumber) {
       options.page = pageNumber;
     }
@@ -120,7 +103,7 @@ const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
     const options = {
-      ...fetchOptionsFromQS(),
+      ...getPageOptionsFromQS(),
       ordering,
     };
     dispatch(sortRequest(tableId, ordering));
