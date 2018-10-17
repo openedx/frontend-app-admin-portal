@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -25,11 +26,13 @@ const store = mockStore({
 });
 
 const EnrollmentsWrapper = props => (
-  <Provider store={store}>
-    <EnrollmentsTable
-      {...props}
-    />
-  </Provider>
+  <MemoryRouter>
+    <Provider store={store}>
+      <EnrollmentsTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
 );
 
 describe('EnrollmentsTable', () => {

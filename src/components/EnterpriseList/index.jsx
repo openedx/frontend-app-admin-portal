@@ -8,6 +8,7 @@ import H1 from '../H1';
 import TableContainer from '../../containers/TableContainer';
 import LmsApiService from '../../data/services/LmsApiService';
 import SearchBar from '../SearchBar';
+import { updateUrl } from '../../utils';
 
 class EnterpriseList extends React.Component {
   constructor(props) {
@@ -24,7 +25,17 @@ class EnterpriseList extends React.Component {
   componentDidMount() {
     this.props.clearPortalConfiguration();
     this.props.getLocalUser();
-    this.props.fetchEnterpriseList();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+    if (location.search !== prevProps.location.search) {
+      const { search } = qs.parse(location.search);
+      const { search: prevSearch } = qs.parse(prevProps.location.search);
+      if (search !== prevSearch) {
+        this.handleSearch(search);
+      }
+    }
   }
 
   handleSearch(query) {
@@ -97,8 +108,11 @@ class EnterpriseList extends React.Component {
             </div>
             <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
               <SearchBar
-                onSearch={query => this.handleSearch(query)}
-                onClear={() => this.handleSearch('')}
+                onSearch={query => updateUrl({
+                  search: query,
+                  page: 1,
+                })}
+                onClear={() => updateUrl({ search: undefined })}
                 value={searchQuery}
               />
             </div>
@@ -135,7 +149,6 @@ EnterpriseList.defaultProps = {
 };
 
 EnterpriseList.propTypes = {
-  fetchEnterpriseList: PropTypes.func.isRequired,
   clearPortalConfiguration: PropTypes.func.isRequired,
   getLocalUser: PropTypes.func.isRequired,
   searchEnterpriseList: PropTypes.func.isRequired,

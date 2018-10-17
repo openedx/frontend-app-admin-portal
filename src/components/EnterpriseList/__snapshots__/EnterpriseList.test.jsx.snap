@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EnterpriseList /> renders correctly calls getEnterpriseList, clearPortalConfiguration and getLocalUser props 1`] = `
+exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration and getLocalUser props 1`] = `
 <div>
   <div
     className="container"
@@ -357,115 +357,6 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
           >
             <label
               className=""
-              htmlFor="asInput6"
-              id="label-asInput6"
-            >
-              Search:
-            </label>
-            <div
-              className="input-group"
-            >
-              <div
-                className="input-group-prepend"
-              />
-              <input
-                aria-describedby="error-asInput6"
-                aria-invalid={false}
-                autoComplete="off"
-                className="form-control is-invalid-nodanger input no-clear-btn"
-                disabled={false}
-                id="asInput6"
-                name="search"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onKeyPress={[Function]}
-                placeholder=""
-                readOnly={false}
-                required={false}
-                themes={Array []}
-                type="search"
-                value=""
-              />
-              <div
-                className="input-group-append"
-              >
-                <button
-                  className="btn search-btn"
-                  disabled={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  type="button"
-                >
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-search"
-                      id="Icon1"
-                    />
-                    <span
-                      className="sr-only"
-                    >
-                      Submit search
-                    </span>
-                  </span>
-                </button>
-              </div>
-            </div>
-            <div
-              aria-live="polite"
-              className="invalid-feedback invalid-feedback-nodanger"
-              id="error-asInput6"
-            >
-              <span />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-2"
-    >
-      <div
-        className="col"
-      >
-        <div />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
-<div>
-  <div
-    className="container"
-  >
-    <div
-      className="row mt-4"
-    >
-      <div
-        className="col-sm-12 col-md"
-      >
-        <h1
-          className={null}
-        >
-          Enterprise List
-        </h1>
-      </div>
-      <div
-        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
-      >
-        <div
-          className="border search-field"
-          onBlur={[Function]}
-          onFocus={[Function]}
-        >
-          <div
-            className="form-group form-inline"
-          >
-            <label
-              className=""
               htmlFor="asInput7"
               id="label-asInput7"
             >
@@ -545,7 +436,7 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 </div>
 `;
 
-exports[`<EnterpriseList /> renders correctly with search query and empty enterprises data 1`] = `
+exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 <div>
   <div
     className="container"
@@ -575,8 +466,8 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
           >
             <label
               className=""
-              htmlFor="asInput5"
-              id="label-asInput5"
+              htmlFor="asInput8"
+              id="label-asInput8"
             >
               Search:
             </label>
@@ -587,12 +478,12 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                 className="input-group-prepend"
               />
               <input
-                aria-describedby="error-asInput5"
+                aria-describedby="error-asInput8"
                 aria-invalid={false}
                 autoComplete="off"
                 className="form-control is-invalid-nodanger input no-clear-btn"
                 disabled={false}
-                id="asInput5"
+                id="asInput8"
                 name="search"
                 onBlur={[Function]}
                 onChange={[Function]}
@@ -633,7 +524,138 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
             <div
               aria-live="polite"
               className="invalid-feedback invalid-feedback-nodanger"
-              id="error-asInput5"
+              id="error-asInput8"
+            >
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-2"
+    >
+      <div
+        className="col"
+      >
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EnterpriseList /> renders correctly with search query and empty enterprises data 1`] = `
+<div>
+  <div
+    className="container"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col-sm-12 col-md"
+      >
+        <h1
+          className={null}
+        >
+          Enterprise List
+        </h1>
+      </div>
+      <div
+        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
+      >
+        <div
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
+        >
+          <div
+            className="form-group form-inline"
+          >
+            <label
+              className=""
+              htmlFor="asInput6"
+              id="label-asInput6"
+            >
+              Search:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput6"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input"
+                disabled={false}
+                id="asInput6"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                readOnly={false}
+                required={false}
+                themes={Array []}
+                type="search"
+                value="enterprise name"
+              />
+              <div
+                className="input-group-append"
+              >
+                <button
+                  className="btn clear-btn ml-1"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
+                >
+                  <small>
+                    <span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-times"
+                        id="icon-SearchField5"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Clear search
+                      </span>
+                    </span>
+                  </small>
+                </button>
+                <button
+                  className="btn search-btn border-left"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
+                >
+                  <span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-search"
+                      id="Icon1"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Submit search
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput6"
             >
               <span />
             </div>

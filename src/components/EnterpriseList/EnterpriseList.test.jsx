@@ -5,6 +5,7 @@ import { MemoryRouter, Redirect } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import qs from 'query-string';
 
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
@@ -37,7 +38,6 @@ const EnterpriseListWrapper = props => (
         enterpriseList={{
           results: [],
         }}
-        fetchEnterpriseList={() => {}}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
         getLocalUser={() => {}}
@@ -51,7 +51,7 @@ describe('<EnterpriseList />', () => {
   let wrapper;
 
   describe('renders correctly', () => {
-    it('calls getEnterpriseList, clearPortalConfiguration and getLocalUser props', () => {
+    it('call clearPortalConfiguration and getLocalUser props', () => {
       const mockClearPortalConfiguration = jest.fn();
       const mockGetLocalUser = jest.fn();
       const tree = renderer
@@ -102,8 +102,9 @@ describe('<EnterpriseList />', () => {
               count: 0,
               results: [],
             }}
-            searchQuery="enterprise name"
-            searchSubmitted
+            location={{
+              search: '?search=enterprise%20name',
+            }}
           />
         ))
         .toJSON();
@@ -148,7 +149,6 @@ describe('<EnterpriseList />', () => {
           <Provider store={store}>
             <EnterpriseList
               enterpriseList={oneEnterpriseListData}
-              fetchEnterpriseList={() => {}}
               searchEnterpriseList={() => {}}
               clearPortalConfiguration={() => {}}
               getLocalUser={() => {}}
@@ -167,11 +167,9 @@ describe('<EnterpriseList />', () => {
       expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual(searchQuery);
       wrapper.find('SearchBar').find('.input-group-append').find('button').last()
         .simulate('click');
-      expect(wrapper.find('EnterpriseList').instance().state.searchQuery).toEqual(searchQuery);
-      expect(wrapper.find('EnterpriseList').instance().state.searchSubmitted).toBeTruthy();
     };
 
-    it('searchQuery state changes onSearch', () => {
+    it('search querystring changes onSearch', () => {
       wrapper = mount((
         <EnterpriseListWrapper
           enterprises={mockEnterpriseList}
@@ -179,9 +177,11 @@ describe('<EnterpriseList />', () => {
       ));
 
       submitSearch('Enterprise 1');
+      const { search } = qs.parse(window.location.search);
+      expect(search).toEqual('Enterprise 1');
     });
 
-    it('searchQuery state changes onClear', () => {
+    it('search querystring clears onClear', () => {
       wrapper = mount((
         <EnterpriseListWrapper
           enterprises={mockEnterpriseList}
@@ -192,8 +192,8 @@ describe('<EnterpriseList />', () => {
 
       wrapper.find('SearchBar').find('.input-group-append').find('button').first()
         .simulate('click');
-      expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual('');
-      expect(wrapper.find('EnterpriseList').instance().state.searchQuery).toEqual('');
+      const { search } = qs.parse(window.location.search);
+      expect(search).toEqual(undefined);
     });
   });
 });
