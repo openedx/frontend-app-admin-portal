@@ -146,7 +146,7 @@ module.exports = Merge.smart(commonConfig, {
       DATA_API_BASE_URL: undefined,
       LMS_CLIENT_ID: undefined,
       ACCESS_TOKEN_COOKIE_NAME: undefined,
-      CSRF_COOKIE_NAME: 'csrftoken',
+      CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
       SEGMENT_KEY: undefined,
       NEW_RELIC_APP_ID: undefined,
       NEW_RELIC_LICENSE_KEY: undefined,

@@ -114,7 +114,7 @@ module.exports = Merge.smart(commonConfig, {
         DASHBOARD_V2: true,
       },
       ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-      CSRF_COOKIE_NAME: 'csrftoken',
+      CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

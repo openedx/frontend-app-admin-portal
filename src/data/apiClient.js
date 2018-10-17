@@ -6,7 +6,7 @@ const apiClient = getAuthenticatedAPIClient({
   logoutUrl: process.env.LOGOUT_URL,
   refreshAccessTokenEndpoint: process.env.REFRESH_ACCESS_TOKEN_ENDPOINT,
   accessTokenCookieName: process.env.ACCESS_TOKEN_COOKIE_NAME,
-  csrfCookieName: process.env.CSRF_COOKIE_NAME,
+  csrfTokenApiPath: process.env.CSRF_TOKEN_API_PATH,
 });
 
 export default apiClient;
