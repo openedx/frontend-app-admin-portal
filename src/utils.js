@@ -52,6 +52,8 @@ const updateUrl = (queryOptions) => {
   }
 };
 
+// Returns an object containing pagination options (page_size, page, ordering) based on the current
+// window location's query string, or, if not set in the window location uses defaults values.
 const getPageOptionsFromQS = () => {
   // TODO: this will not support multiple tables paging on a single page. Will need to prefix url
   // params with table id (or some other mechanism) if this becomes a feature requirement

@@ -103,7 +103,7 @@ describe('<EnterpriseList />', () => {
               results: [],
             }}
             location={{
-              search: '?search=enterprise name',
+              search: '?search=enterprise%20name',
             }}
           />
         ))

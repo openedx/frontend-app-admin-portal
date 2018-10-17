@@ -26,9 +26,9 @@ class TableComponent extends React.Component {
       this.props.paginateTable();
     }
 
-    // Handle the case where the queryparams have changed. This is used whensorting & paging, but
+    // Handle the case where the query params have changed. This is used when sorting & paging, but
     // also when the back button is used. We need to determine if this is a pagination or sorting
-    // request as we handle these as slightly differently actions in the action handlers.
+    // request as we handle these as slightly different actions in the action handlers.
     if (location.search !== prevProps.location.search) {
       const { page: prevPage, ordering: prevOrdering } = qs.parse(prevProps.location.search);
       const { page, ordering } = qs.parse(location.search);
