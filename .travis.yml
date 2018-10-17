@@ -24,8 +24,6 @@ script:
 - npm run test
 - npm run build
 - npm run is-es5
-after_success:
-- npm run build:gh-pages
 deploy:
   local-dir: "./dist"
   provider: pages
