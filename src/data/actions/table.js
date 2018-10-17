@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash';
-import { getPageOptionsFromQS } from '../../utils';
+import { getPageOptionsFromUrl } from '../../utils';
 
 import {
   PAGINATION_REQUEST,
@@ -15,7 +15,7 @@ const paginationRequest = (tableId, options) => ({
   type: PAGINATION_REQUEST,
   payload: {
     tableId,
-    options,
+    options, // options passed for tracking purposes by beacon in data/store.js
   },
 });
 
@@ -39,7 +39,7 @@ const sortRequest = (tableId, ordering) => ({
   type: SORT_REQUEST,
   payload: {
     tableId,
-    ordering,
+    ordering, // ordering passed for tracking purposes by beacon in data/store.js
   },
 });
 
@@ -61,7 +61,7 @@ const sortFailure = (tableId, error) => ({
 
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
   (dispatch) => {
-    const options = getPageOptionsFromQS();
+    const options = getPageOptionsFromUrl();
     if (pageNumber) {
       options.page = pageNumber;
     }
@@ -103,7 +103,7 @@ const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
     const options = {
-      ...getPageOptionsFromQS(),
+      ...getPageOptionsFromUrl(),
       ordering,
     };
     dispatch(sortRequest(tableId, ordering));

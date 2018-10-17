@@ -1,5 +1,5 @@
 import LmsApiService from '../services/LmsApiService';
-import { getPageOptionsFromQS } from '../../utils';
+import { getPageOptionsFromUrl } from '../../utils';
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
@@ -36,7 +36,7 @@ const searchEnterpriseListFailure = error => ({
 const searchEnterpriseList = searchOptions => (
   (dispatch) => {
     const options = {
-      ...getPageOptionsFromQS(),
+      ...getPageOptionsFromUrl(),
       ...searchOptions,
     };
     dispatch(searchEnterpriseListRequest(options));
