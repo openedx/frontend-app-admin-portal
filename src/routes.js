@@ -1,3 +1,5 @@
+import pathToRegexp from 'path-to-regexp';
+
 import EnterpriseApp from './containers/EnterpriseApp';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import SupportPage from './containers/SupportPage';
@@ -35,8 +37,15 @@ class RouteConfiguration {
   }
 
   isCurrentRoutePublic() {
-    const currentRoute = this._allRoutes.get(window.location.pathname);
-    return currentRoute ? !currentRoute.private : true;
+    const currentPath = window.location.pathname;
+    for (let i = 0; i < this.privateRoutes.length; i += 1) {
+      const route = this.privateRoutes[i];
+      const re = pathToRegexp(route.path);
+      if (re.test(currentPath)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 /* eslint-enable no-underscore-dangle */
