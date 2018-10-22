@@ -52,7 +52,7 @@ class EnterpriseApp extends React.Component {
               render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
             />
           )}
-          <Route exact path={`${baseUrl}/support`} component={SupportPage} />
+          <Route exact path={`${baseUrl}/public/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       </div>
