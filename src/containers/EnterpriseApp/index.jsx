@@ -9,10 +9,16 @@ import AdminPage from '../AdminPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
+import { getLocalUser } from '../../data/actions/authentication';
+
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 class EnterpriseApp extends React.Component {
+  componentDidMount() {
+    this.props.getLocalUser();
+  }
+
   renderError(error) {
     return (
       <ErrorPage
@@ -61,6 +67,7 @@ class EnterpriseApp extends React.Component {
 }
 
 EnterpriseApp.propTypes = {
+  getLocalUser: PropTypes.func.isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
@@ -84,4 +91,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(EnterpriseApp);
+const mapDispatchToProps = dispatch => ({
+  getLocalUser: () => {
+    dispatch(getLocalUser());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnterpriseApp);
