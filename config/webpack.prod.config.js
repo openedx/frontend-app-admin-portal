@@ -138,15 +138,9 @@ module.exports = Merge.smart(commonConfig, {
     new webpack.EnvironmentPlugin({
       // default values of undefined to force definition in the environment at build time
       NODE_ENV: 'production',
-      BASE_URL: null,
       LMS_BASE_URL: undefined,
-      LOGIN_URL: null,
-      LOGOUT_URL: null,
-      REFRESH_ACCESS_TOKEN_ENDPOINT: null,
       DATA_API_BASE_URL: undefined,
       LMS_CLIENT_ID: undefined,
-      ACCESS_TOKEN_COOKIE_NAME: undefined,
-      CSRF_COOKIE_NAME: 'csrftoken',
       SEGMENT_KEY: undefined,
       NEW_RELIC_APP_ID: undefined,
       NEW_RELIC_LICENSE_KEY: undefined,

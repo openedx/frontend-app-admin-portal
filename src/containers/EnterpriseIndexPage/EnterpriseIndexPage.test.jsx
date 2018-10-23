@@ -57,4 +57,9 @@ describe('<EnterpriseIndexPage />', () => {
     wrapper.props().clearPortalConfiguration();
     expect(dispatchSpy).toHaveBeenCalled();
   });
+
+  it('getLocalUser dispatches getLocalUser action', () => {
+    wrapper.props().getLocalUser();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
 });

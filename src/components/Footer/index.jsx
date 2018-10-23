@@ -63,7 +63,7 @@ class Footer extends React.Component {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={enterpriseSlug ? `/${enterpriseSlug}/support` : '/public/support'}>
+                  <Link className="nav-link" to={enterpriseSlug ? `/${enterpriseSlug}/support` : '/support'}>
                     Support
                   </Link>
                 </li>
