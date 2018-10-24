@@ -53,7 +53,7 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
           >
             <a
               className="nav-link"
-              href="/support"
+              href="/public/support"
               onClick={[Function]}
             >
               Support
