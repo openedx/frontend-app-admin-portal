@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
+import apiClient from '../apiClient';
 import {
   clearDashboardAnalytics,
   fetchDashboardAnalytics,
@@ -15,7 +15,7 @@ import {
 } from '../constants/dashboardAnalytics';
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(axios);
+const axiosMock = new MockAdapter(apiClient);
 
 describe('actions', () => {
   afterEach(() => {
