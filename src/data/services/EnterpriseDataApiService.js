@@ -1,7 +1,9 @@
 import qs from 'query-string';
 
-import apiClient from '../apiClient';
 import { configuration } from '../../config';
+import httpClient from '../../httpClient';
+import { getAccessToken } from '../../utils';
+
 import store from '../store';
 
 class EnterpriseDataApiService {
@@ -10,7 +12,13 @@ class EnterpriseDataApiService {
 
   static fetchDashboardAnalytics(enterpriseId) {
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 
   static fetchCourseEnrollments(options, { csv } = {}) {
@@ -24,7 +32,13 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 
   static fetchUnenrolledRegisteredLearners(options, { csv } = {}) {
@@ -39,7 +53,13 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 
   static fetchEnrolledLearners(options, { csv } = {}) {
@@ -55,7 +75,13 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 
   static fetchEnrolledLearnersForInactiveCourses(options, { csv } = {}) {
@@ -73,7 +99,13 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 
   static fetchCompletedLearners(options, { csv } = {}) {
@@ -87,7 +119,13 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(url, {
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
   }
 }
 
