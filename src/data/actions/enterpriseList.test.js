@@ -1,9 +1,9 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
-import apiClient from '../apiClient';
 import searchEnterpriseList from './enterpriseList';
 import {
   PAGINATION_REQUEST,
@@ -13,7 +13,7 @@ import {
 
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
+const axiosMock = new MockAdapter(axios);
 
 describe('actions', () => {
   afterEach(() => {
