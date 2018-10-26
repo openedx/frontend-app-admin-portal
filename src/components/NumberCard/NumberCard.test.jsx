@@ -71,14 +71,14 @@ describe('<NumberCard />', () => {
     });
 
     it('expands and collapses the actions', () => {
-      expect(getNumberCard(wrapper).find('.footer-title > span').text()).toEqual('Details');
+      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Details');
 
       wrapper.setProps({ detailsExpanded: true });
-      expect(getNumberCard(wrapper).find('.footer-title > span').text()).toEqual('Detailed breakdown');
+      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Detailed breakdown');
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
 
       wrapper.setProps({ detailsExpanded: false });
-      expect(getNumberCard(wrapper).find('.footer-title > span').text()).toEqual('Details');
+      expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Details');
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
     });
 

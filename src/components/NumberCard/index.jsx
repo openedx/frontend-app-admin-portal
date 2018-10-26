@@ -208,25 +208,24 @@ class NumberCard extends React.Component {
         </div>
         {detailActions &&
           <div className="card-footer">
-            <div className="footer-title d-flex justify-content-between align-items-center">
-              <span>
-                {detailsExpanded ? 'Detailed breakdown' : 'Details'}
-              </span>
+            <div className="footer-title">
               <Button
                 inputRef={(node) => { this.toggleDetailsBtnRef = node; }}
-                buttonType="link"
-                className={['toggle-collapse']}
+                className={['toggle-collapse', 'btn-block']}
                 label={
-                  <Icon
-                    className={[classNames(
-                      'fa',
-                      {
-                        'fa-caret-down': !detailsExpanded,
-                        'fa-close': detailsExpanded,
-                      },
-                    )]}
-                    screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
-                  />
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="details-btn-text">{detailsExpanded ? 'Detailed breakdown' : 'Details'}</span>
+                    <Icon
+                      className={[classNames(
+                        'fa',
+                        {
+                          'fa-caret-down': !detailsExpanded,
+                          'fa-close': detailsExpanded,
+                        },
+                      )]}
+                      screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
+                    />
+                  </div>
                 }
                 onClick={this.toggleDetails}
                 onKeyDown={this.handleToggleDetailsKeyDown}
