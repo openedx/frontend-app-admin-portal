@@ -12,7 +12,6 @@ import ErrorPage from '../ErrorPage';
 import { getLocalUser } from '../../data/actions/authentication';
 
 import { removeTrailingSlash } from '../../utils';
-import { features } from '../../config';
 
 class EnterpriseApp extends React.Component {
   componentDidMount() {
@@ -45,19 +44,11 @@ class EnterpriseApp extends React.Component {
             to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
           />
           <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
-          {features.DASHBOARD_V2 ? (
-            <Route
-              exact
-              path={`${baseUrl}/admin/learners/:actionSlug?`}
-              render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
-            />
-          ) : (
-            <Route
-              exact
-              path={`${baseUrl}/admin/learners`}
-              render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
-            />
-          )}
+          <Route
+            exact
+            path={`${baseUrl}/admin/learners/:actionSlug?`}
+            render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
+          />
           <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>

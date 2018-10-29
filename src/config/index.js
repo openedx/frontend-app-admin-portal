@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-const hasFeatureFlagEnabled = (featureFlag) => {
+const hasFeatureFlagEnabled = (featureFlag) => { // eslint-disable-line no-unused-vars
   const { features } = qs.parse(window.location.search);
   return features && features.split(',').includes(featureFlag);
 };
@@ -13,8 +13,6 @@ const configuration = {
   SEGMENT_KEY: process.env.SEGMENT_KEY,
 };
 
-const features = {
-  DASHBOARD_V2: process.env.FEATURE_FLAGS.DASHBOARD_V2 || hasFeatureFlagEnabled('DASHBOARD_V2'),
-};
+const features = {};
 
 export { configuration, features };
