@@ -91,9 +91,23 @@ const sortData = (data, ordering) => {
   // to the top in an ascending sort order.
   const parseKeyValue = (obj) => {
     const value = obj[column] || '';
-    if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
-      return parseFloat(value);
+    // If value is a string
+    if (typeof value === 'string') {
+      // Try to make it a date
+      const convertedDate = new Date(value);
+      // If the value is not a valid date
+      if (convertedDate === 'Invalid Date') {
+        // Special handling for NaN
+        if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
+          return parseFloat(value);
+        }
+        // Regular strings get returned here
+        return value;
+      }
+      // If thing IS a valid date, return the date
+      return convertedDate;
     }
+    // Non strings returned here (like course_completion_count)
     return value;
   };
   return orderBy(data, parseKeyValue, [direction]);
