@@ -106,9 +106,7 @@ module.exports = Merge.smart(commonConfig, {
       DATA_API_BASE_URL: 'http://localhost:8000',
       LMS_CLIENT_ID: 'CMehRRNqfiBRVJKnPOkjBDjAvurtnHpELoehKAvZ',
       SEGMENT_KEY: '',
-      FEATURE_FLAGS: {
-        DASHBOARD_V2: true,
-      },
+      FEATURE_FLAGS: {},
     }),
   ],
   // This configures webpack-dev-server which serves bundles from memory and provides live

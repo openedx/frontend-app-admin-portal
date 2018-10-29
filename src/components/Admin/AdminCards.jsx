@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import NumberCard from '../../components/NumberCard';
 
-import { features } from '../../config';
-
 class AdminCards extends React.Component {
   constructor(props) {
     super(props);
@@ -73,8 +71,7 @@ class AdminCards extends React.Component {
           title={title}
           description={card.description}
           iconClassName={card.iconClassName}
-          // Only use the card detail actions if the feature flag is enabled
-          detailActions={features.DASHBOARD_V2 ? card.actions : null}
+          detailActions={card.actions}
         />
       </div>
     );
