@@ -193,7 +193,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -222,13 +222,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -257,13 +314,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -292,13 +422,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -325,6 +544,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -493,7 +785,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -522,13 +814,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -557,13 +906,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -592,13 +1014,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -625,6 +1136,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -793,7 +1377,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -822,13 +1406,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -857,13 +1498,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -892,13 +1606,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -925,6 +1728,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -1673,7 +2549,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -1702,13 +2578,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -1737,13 +2670,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -1772,13 +2778,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -1805,6 +2900,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -1956,7 +3124,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -1985,13 +3153,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2020,13 +3245,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2055,13 +3353,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2088,6 +3475,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -2261,7 +3721,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2290,13 +3750,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2325,13 +3842,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2360,13 +3950,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2393,6 +4072,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -2566,7 +4318,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2595,13 +4347,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2630,13 +4439,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2665,13 +4547,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2698,6 +4669,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -2869,7 +4913,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2898,13 +4942,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2933,13 +5034,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -2968,13 +5142,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -3001,6 +5264,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -3169,7 +5505,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -3198,13 +5534,70 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/registered-unenrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Which learners are registered but not yet enrolled in any courses?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -3233,13 +5626,86 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses are learners enrolled in?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/enrolled-learners-inactive-courses"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who is no longer enrolled in a current course?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -3268,13 +5734,102 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </p>
                 </div>
               </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/learners-active-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who are my top active learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a week?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/learners-inactive-month"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who has not been active for over a month?
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div
             className="col-xs-12 col-md-6 col-xl-3 mb-3"
           >
             <div
-              className="number-card"
+              className="number-card has-details"
             >
               <div
                 className="card"
@@ -3301,6 +5856,79 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   >
                     course completions
                   </p>
+                </div>
+              </div>
+              <div
+                className="card-footer"
+              >
+                <div
+                  className="footer-title"
+                >
+                  <button
+                    className="btn toggle-collapse btn-block"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    type="button"
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="details-btn-text"
+                      >
+                        Details
+                      </span>
+                      <span>
+                        <span
+                          aria-hidden={true}
+                          className="fa fa-caret-down"
+                          id="Icon1"
+                        />
+                        <span
+                          className="sr-only"
+                        >
+                          Show details
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  className="footer-body  mt-1 d-none"
+                >
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        How many courses have been completed by learners?
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    className="btn btn-link"
+                    href="/completed-learners-week"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      <span
+                        className="label"
+                      >
+                        Who completed a course in the past week?
+                      </span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>

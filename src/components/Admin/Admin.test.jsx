@@ -9,8 +9,6 @@ import thunk from 'redux-thunk';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 
-import { features } from '../../config';
-
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
@@ -225,7 +223,6 @@ describe('<Admin />', () => {
       });
 
       it('renders collapsible cards', () => {
-        features.DASHBOARD_V2 = true;
         const tree = renderer
           .create((
             <AdminWrapper
@@ -238,7 +235,6 @@ describe('<Admin />', () => {
           ))
           .toJSON();
         expect(tree).toMatchSnapshot();
-        features.DASHBOARD_V2 = false;
       });
     });
 
