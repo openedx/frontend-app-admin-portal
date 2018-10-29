@@ -93,11 +93,9 @@ const sortData = (data, ordering) => {
     const value = obj[column] || '';
     // If value is a string
     if (typeof value === 'string') {
-      // Try to make it a date
-      const convertedDate = new Date(value);
       // If the value is not a valid date
-      if (convertedDate === 'Invalid Date') {
-        // Special handling for NaN
+      if (Number.isNaN(Date.parse(value))) {
+        // Special handling for NaN values
         if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
           return parseFloat(value);
         }
@@ -105,7 +103,7 @@ const sortData = (data, ordering) => {
         return value;
       }
       // If thing IS a valid date, return the date
-      return convertedDate;
+      return new Date(value);
     }
     // Non strings returned here (like course_completion_count)
     return value;
