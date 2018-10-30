@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import LearnerActivityTable from '../../components/LearnerActivityTable';
 import { clearTable } from '../../data/actions/table';
@@ -9,4 +10,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(null, mapDispatchToProps)(LearnerActivityTable);
+export default withRouter(connect(null, mapDispatchToProps)(LearnerActivityTable));
