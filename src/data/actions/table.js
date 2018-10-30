@@ -1,4 +1,3 @@
-import { orderBy } from 'lodash';
 import { getPageOptionsFromUrl } from '../../utils';
 
 import {
@@ -80,37 +79,6 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
   }
 );
 
-const sortData = (data, ordering) => {
-  const direction = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
-  const column = (ordering && ordering.replace('-', ''));
-
-  // `parseKeyValue` adjusts the key's value into its appropriate data type to ensure
-  // proper sorting and sort order (e.g., asc/desc). A numeric value (even if passed in
-  // as a string) must be parsed as an actual numeric value. An empty value (e.g., null,
-  // undefined) must be parsed as an empty string to ensure the empty values are forced
-  // to the top in an ascending sort order.
-  const parseKeyValue = (obj) => {
-    const value = obj[column] || '';
-    // If value is a string
-    if (typeof value === 'string') {
-      // If the value is not a valid date
-      if (Number.isNaN(Date.parse(value))) {
-        // Special handling for NaN values
-        if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
-          return parseFloat(value);
-        }
-        // Regular strings get returned here
-        return value;
-      }
-      // If thing IS a valid date, return the date
-      return new Date(value);
-    }
-    // Non strings returned here (like course_completion_count)
-    return value;
-  };
-  return orderBy(data, parseKeyValue, [direction]);
-};
-
 const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
@@ -120,11 +88,54 @@ const sortTable = (tableId, fetchMethod, ordering) => (
     };
     dispatch(sortRequest(tableId, ordering));
 
+    const isDesc = ordering.startsWith('-');
+    const orderField = isDesc ? ordering.substring(1) : ordering;
+    // customSort relies on orderField. Should orderField be handed to customSort or is this enough?
+    const customSort = (obj1, obj2) => {
+      let a = obj1[orderField] || '';
+      let b = obj2[orderField] || '';
+      // if both are strings
+      if (typeof a === 'string' && typeof b === 'string') {
+        // if both are dates
+        if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+          a = new Date(a).getTime();
+          b = new Date(b).getTime();
+          if (a > b) {
+            return 1;
+          }
+          if (a < b) {
+            return -1;
+          }
+          return 0;
+        }
+        // if A is a date and B is not
+        if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
+          return 1;
+        }
+        // if B is a date and A is not
+        if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+          return -1;
+        }
+        // if neither is a date
+        return a.localeCompare(b);
+      }
+      // Everything else (numbers. we should not mix datatypes within columns)
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+      return 0;
+    };
+
     // If we can sort client-side because we have all of the data, do that
     if (tableState.data && tableState.data.num_pages === 1) {
+      let result = tableState.data.results.sort(customSort);
+      result = isDesc ? result.reverse() : result;
       return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
-        results: sortData(tableState.data.results, ordering),
+        results: result,
       }));
     }
 
