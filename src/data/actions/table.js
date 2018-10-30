@@ -79,6 +79,47 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
   }
 );
 
+const customSort = (dataToSort, orderField) => {
+  const sortByOptions = (obj1, obj2) => {
+    let a = obj1[orderField] || '';
+    let b = obj2[orderField] || '';
+    // if both are strings
+    if (typeof a === 'string' && typeof b === 'string') {
+      // if both are dates
+      if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+        a = new Date(a).getTime();
+        b = new Date(b).getTime();
+        if (a > b) {
+          return 1;
+        }
+        if (a < b) {
+          return -1;
+        }
+        return 0;
+      }
+      // if A is a date and B is not
+      if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
+        return 1;
+      }
+      // if B is a date and A is not
+      if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+        return -1;
+      }
+      // if neither is a date
+      return a.localeCompare(b);
+    }
+    // Everything else (numbers. we should not mix datatypes within columns)
+    if (a > b) {
+      return 1;
+    }
+    if (a < b) {
+      return -1;
+    }
+    return 0;
+  };
+  return dataToSort.sort(sortByOptions);
+};
+
 const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
@@ -88,50 +129,11 @@ const sortTable = (tableId, fetchMethod, ordering) => (
     };
     dispatch(sortRequest(tableId, ordering));
 
-    const isDesc = ordering.startsWith('-');
-    const orderField = isDesc ? ordering.substring(1) : ordering;
-    // customSort relies on orderField. Should orderField be handed to customSort or is this enough?
-    const customSort = (obj1, obj2) => {
-      let a = obj1[orderField] || '';
-      let b = obj2[orderField] || '';
-      // if both are strings
-      if (typeof a === 'string' && typeof b === 'string') {
-        // if both are dates
-        if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
-          a = new Date(a).getTime();
-          b = new Date(b).getTime();
-          if (a > b) {
-            return 1;
-          }
-          if (a < b) {
-            return -1;
-          }
-          return 0;
-        }
-        // if A is a date and B is not
-        if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
-          return 1;
-        }
-        // if B is a date and A is not
-        if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
-          return -1;
-        }
-        // if neither is a date
-        return a.localeCompare(b);
-      }
-      // Everything else (numbers. we should not mix datatypes within columns)
-      if (a > b) {
-        return 1;
-      }
-      if (a < b) {
-        return -1;
-      }
-      return 0;
-    };
-
     // If we can sort client-side because we have all of the data, do that
     if (tableState.data && tableState.data.num_pages === 1) {
-      let result = tableState.data.results.sort(customSort);
+      const isDesc = ordering.startsWith('-');
+      const orderField = isDesc ? ordering.substring(1) : ordering;
+      let result = customSort(tableState.data.results, orderField);
       result = isDesc ? result.reverse() : result;
       return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
