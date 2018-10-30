@@ -19,14 +19,7 @@ class TableComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id, location } = this.props;
-
-    // Handle the case where the table has changed by clearing the
-    // previous table's data and paginating the new table
-    if (id && id !== prevProps.id) {
-      this.props.clearTable(prevProps.id);
-      this.props.paginateTable();
-    }
+    const { location } = this.props;
 
     // Handle the case where the query params have changed. This is used when sorting & paging, but
     // also when the back button is used. We need to determine if this is a pagination or sorting

@@ -23,8 +23,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   sortTable: (ordering) => {
     dispatch(sortTable(ownProps.id, ownProps.fetchMethod, ordering));
   },
-  clearTable: (tableId) => {
-    dispatch(clearTable(tableId || ownProps.id));
+  clearTable: () => {
+    dispatch(clearTable(ownProps.id));
   },
 });
 
