@@ -21,8 +21,10 @@ class TableComponent extends React.Component {
   componentDidUpdate(prevProps) {
     const { id, location } = this.props;
 
-    // Handle the case where the table has changed by paginating the new table
+    // Handle the case where the table has changed by clearing the
+    // previous table's data and paginating the new table
     if (id && id !== prevProps.id) {
+      this.props.clearTable(prevProps.id);
       this.props.paginateTable();
     }
 
