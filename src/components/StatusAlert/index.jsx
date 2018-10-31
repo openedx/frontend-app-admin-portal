@@ -34,7 +34,7 @@ const StatusAlert = (props) => {
             {title &&
               <span className="title">{title}</span>
             }
-            <span>{message}</span>
+            {message}
           </div>
         </div>
       }

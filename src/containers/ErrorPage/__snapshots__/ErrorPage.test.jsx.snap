@@ -4,36 +4,32 @@ exports[`<ErrorPage /> renders correctly 1`] = `
 <div
   className="container"
 >
-  <div>
+  <div
+    className="row mt-4"
+  >
     <div
-      className="row mt-4"
+      className="col"
     >
-      <div
-        className="col"
+      <h1
+        className={null}
       >
-        <h1
-          className={null}
-        >
-          Error
-        </h1>
+        Error
+      </h1>
+      <div
+        className="alert fade alert-danger show"
+        hidden={false}
+        role="alert"
+      >
         <div
-          className="alert fade alert-danger show"
-          hidden={false}
-          role="alert"
+          className="alert-dialog"
         >
           <div
-            className="alert-dialog"
+            className=""
           >
             <div
-              className=""
+              className="message"
             >
-              <div
-                className="message"
-              >
-                <span>
-                  Something went terribly wrong
-                </span>
-              </div>
+              Something went terribly wrong
             </div>
           </div>
         </div>

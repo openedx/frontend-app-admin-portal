@@ -4,10 +4,8 @@ import { clearPortalConfiguration } from '../../data/actions/portalConfiguration
 import { getLocalUser } from '../../data/actions/authentication';
 import searchEnterpriseList from '../../data/actions/enterpriseList';
 
-const tableId = 'enterprise-list';
 const mapStateToProps = (state) => {
-  const tableState = state.table[tableId] || {};
-
+  const tableState = state.table['enterprise-list'] || {};
   return {
     enterpriseList: tableState.data,
     loading: tableState.loading,

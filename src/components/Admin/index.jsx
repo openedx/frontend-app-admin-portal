@@ -234,7 +234,7 @@ class Admin extends React.Component {
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
 
     return (
-      <div>
+      <React.Fragment>
         <Helmet>
           <title>Learner and Progress Report</title>
         </Helmet>
@@ -297,7 +297,7 @@ class Admin extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

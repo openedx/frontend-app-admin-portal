@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -30,7 +30,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -91,15 +91,13 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download full report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download full report (CSV)
             </button>
           </div>
         </div>
@@ -129,12 +127,12 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -163,7 +161,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -683,15 +681,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -721,12 +717,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -755,7 +751,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -1275,15 +1271,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -1313,12 +1307,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1347,7 +1341,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -1872,15 +1866,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -1910,12 +1902,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1944,7 +1936,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -2447,15 +2439,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download full report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download full report (CSV)
             </button>
           </div>
         </div>
@@ -2485,12 +2475,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -2519,7 +2509,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -3022,15 +3012,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download full report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download full report (CSV)
             </button>
           </div>
         </div>
@@ -3060,12 +3048,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3094,7 +3082,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -3619,15 +3607,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -3657,12 +3643,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3691,7 +3677,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -4216,15 +4202,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -4254,12 +4238,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4288,7 +4272,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -4811,15 +4795,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -4849,12 +4831,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4883,7 +4865,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -5403,15 +5385,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -5441,12 +5421,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -5475,7 +5455,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -6000,15 +5980,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               type="button"
             >
               <span>
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon1"
-                  />
-                </span>
-                Download current report (CSV)
+                <span
+                  aria-hidden={true}
+                  className="fa mr-2 fa-download"
+                  id="Icon1"
+                />
               </span>
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -6038,12 +6016,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with error state 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -6072,7 +6050,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -6125,9 +6103,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 >
                   Unable to load overview
                 </span>
-                <span>
-                  Try refreshing your screen (Network Error)
-                </span>
+                Try refreshing your screen (Network Error)
               </div>
             </div>
           </div>
@@ -6179,12 +6155,12 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<Admin /> renders correctly with loading state 1`] = `
-<div>
+Array [
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -6213,7 +6189,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </div>,
   <div
     className="container"
   >
@@ -6290,6 +6266,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         </p>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;

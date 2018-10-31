@@ -25,7 +25,7 @@ import './index.scss';
 const AppWrapper = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
+      <React.Fragment>
         <Helmet
           titleTemplate="%s - edX Portal"
           defaultTitle="edX Portal"
@@ -41,7 +41,7 @@ const AppWrapper = () => (
           <Route component={NotFoundPage} />
         </Switch>
         <Footer />
-      </div>
+      </React.Fragment>
     </ConnectedRouter>
   </Provider>
 );

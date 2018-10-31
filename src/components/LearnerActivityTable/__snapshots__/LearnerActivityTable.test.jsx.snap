@@ -443,9 +443,7 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
         <div
           className="message"
         >
-          <span>
-            There are no results.
-          </span>
+          There are no results.
         </div>
       </div>
     </div>
