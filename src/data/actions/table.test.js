@@ -34,16 +34,16 @@ describe('actions', () => {
 
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      let expected = '2018-08-03T14:49:53.381Z';
-      let actual = store.getActions()[1].payload.data.results[0].last_activity_date;
-      expect(expected).toEqual(actual);
+      let actual = store.getActions()[1].payload.data.results;
+      expect(null).toEqual(actual[0].last_activity_date);
+      expect('2018-08-03T14:49:53.381Z').toEqual(actual[1].last_activity_date);
 
       ordering = '-last_activity_date';
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      expected = '2018-09-13T17:36:05.725Z';
-      actual = store.getActions()[3].payload.data.results[0].last_activity_date;
-      expect(expected).toEqual(actual);
+      actual = store.getActions()[3].payload.data.results;
+      expect(null).toEqual(actual.slice(-1)[0].last_activity_date);
+      expect('2018-09-13T17:36:05.725Z').toEqual(actual[0].last_activity_date);
     });
 
     it('sorts tables based on the current grade', () => {
@@ -61,16 +61,16 @@ describe('actions', () => {
 
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      let expected = 0.11;
-      let actual = store.getActions()[1].payload.data.results[0].current_grade;
-      expect(expected).toEqual(actual);
+      let actual = store.getActions()[1].payload.data.results;
+      expect(null).toEqual(actual[0].current_grade);
+      expect(0.11).toEqual(actual[1].current_grade);
 
       ordering = '-current_grade';
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      expected = 0.85;
-      actual = store.getActions()[3].payload.data.results[0].current_grade;
-      expect(expected).toEqual(actual);
+      actual = store.getActions()[3].payload.data.results;
+      expect(null).toEqual(actual.slice(-1)[0].current_grade);
+      expect(0.85).toEqual(actual[0].current_grade);
     });
 
     it('sorts tables based on the end date', () => {
@@ -88,16 +88,16 @@ describe('actions', () => {
 
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      let expected = '2018-05-06T21:29:02.027Z';
-      let actual = store.getActions()[1].payload.data.results[0].course_end;
-      expect(expected).toEqual(actual);
+      let actual = store.getActions()[1].payload.data.results;
+      expect(null).toEqual(actual[0].course_end);
+      expect('2018-05-06T21:29:02.027Z').toEqual(actual[1].course_end);
 
       ordering = '-course_end';
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      expected = '2019-06-22T04:23:47.264Z';
-      actual = store.getActions()[3].payload.data.results[0].course_end;
-      expect(expected).toEqual(actual);
+      actual = store.getActions()[3].payload.data.results;
+      expect(null).toEqual(actual.slice(-1)[0].course_end);
+      expect('2019-06-22T04:23:47.264Z').toEqual(actual[0].course_end);
     });
 
     it('sorts tables based on the passed date', () => {
@@ -115,16 +115,16 @@ describe('actions', () => {
 
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      let expected = null;
-      let actual = store.getActions()[1].payload.data.results[0].passed_timestamp;
-      expect(expected).toEqual(actual);
+      let actual = store.getActions()[1].payload.data.results;
+      expect(null).toEqual(actual[0].passed_timestamp);
+      expect(null).toEqual(actual[1].passed_timestamp);
 
       ordering = '-passed_timestamp';
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      expected = '2019-02-25T15:40:57.764Z';
-      actual = store.getActions()[3].payload.data.results[0].passed_timestamp;
-      expect(expected).toEqual(actual);
+      actual = store.getActions()[3].payload.data.results;
+      expect(null).toEqual(actual.slice(-1)[0].passed_timestamp);
+      expect('2019-02-25T15:40:57.764Z').toEqual(actual[0].passed_timestamp);
     });
 
     it('sorts tables based on the email', () => {
@@ -142,16 +142,14 @@ describe('actions', () => {
 
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      let expected = 'Abbey10@bestrun.com';
       let actual = store.getActions()[1].payload.data.results[0].user_email;
-      expect(expected).toEqual(actual);
+      expect('Abbey10@bestrun.com').toEqual(actual);
 
       ordering = '-user_email';
       store.dispatch(sortTable(tableId, fetchMethod, ordering));
 
-      expected = 'Aglae.Koelpin57@bestrun.com';
       actual = store.getActions()[3].payload.data.results[0].user_email;
-      expect(expected).toEqual(actual);
+      expect('nullguy@bestrun.com').toEqual(actual);
     });
   });
 });

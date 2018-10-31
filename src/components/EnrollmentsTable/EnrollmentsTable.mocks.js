@@ -124,6 +124,8 @@ const mockEnrollmentFetchSmallerResponse = {
       id: 43, user_email: 'Adolfo50@bestrun.com', course_title: 'u.lab: Leading Change in Times of Disruption', course_price: 49, course_start: '2018-07-24T14:11:14.137Z', course_end: '2019-06-22T04:23:47.264Z', passed_timestamp: '2019-02-25T15:40:57.764Z', has_passed: true, current_grade: 0.83, last_activity_date: '2018-09-13T17:36:05.725Z',
     }, {
       id: 248, user_email: 'Aglae.Koelpin57@bestrun.com', course_title: 'Introduction to the Internet of Things (IoT)', course_price: 99, course_start: '2017-09-25T09:18:18.146Z', course_end: '2018-07-12T09:19:37.098Z', passed_timestamp: '2017-10-14T06:57:33.233Z', has_passed: true, current_grade: 0.81, last_activity_date: '2018-09-10T12:02:13.938Z',
+    }, {
+      id: 999, user_email: 'nullguy@bestrun.com', course_title: 'Introduction to the Internet of Things (IoT)', course_price: null, course_start: null, course_end: null, passed_timestamp: null, has_passed: true, current_grade: null, last_activity_date: null,
     }],
 };
 
