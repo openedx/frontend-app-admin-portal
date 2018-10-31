@@ -84,7 +84,6 @@ const customSort = (dataToSort, orderField) => {
   const sortByOptions = (value1, value2) => {
     let a = value1[orderField] || '';
     let b = value2[orderField] || '';
-    // if both are strings
     if (typeof a === 'string' && typeof b === 'string') {
       // if both are dates
       if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
@@ -92,22 +91,20 @@ const customSort = (dataToSort, orderField) => {
         b = new Date(b).getTime();
         return a - b;
       }
-      // if A is a date and B is not
+      // if A is a date and B is not, we want the date to be "greater than" than the not date
       if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
         return 1;
       }
-      // if B is a date and A is not
+      // if B is a date and A is not, we want the not date to be "less than" the date
       if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
         return -1;
       }
-      // if both can be parsed as floats
       if (isFloatValue(a) && isFloatValue(b)) {
         return parseFloat(a) - parseFloat(b);
       }
       // if neither can be parsed as a date or float
       return a.localeCompare(b);
     }
-    // Everything else
     return a - b;
   };
   return dataToSort.sort(sortByOptions);
@@ -126,11 +123,10 @@ const sortTable = (tableId, fetchMethod, ordering) => (
     if (tableState.data && tableState.data.num_pages === 1) {
       const isDesc = ordering.startsWith('-');
       const orderField = isDesc ? ordering.substring(1) : ordering;
-      let result = customSort(tableState.data.results, orderField);
-      result = isDesc ? result.reverse() : result;
+      const result = customSort(tableState.data.results, orderField);
       return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
-        results: result,
+        results: isDesc ? result.reverse() : result,
       }));
     }
 

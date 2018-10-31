@@ -85,7 +85,7 @@ const mockEnrollmentFetchResponse = {
     }, {
       id: 150, user_email: 'Bettie.Kub90@bestrun.com', course_title: 'Foundations of Data Science: Computational Thinking with Python', course_price: '99.00', course_start: '2018-04-12T03:10:04.321Z', course_end: '2018-10-25T08:11:55.481Z', passed_timestamp: '2018-10-04T17:04:52.362Z', has_passed: true, current_grade: 0.76, last_activity_date: '2018-09-04T07:40:06.098Z',
     }, {
-      id: 239, user_email: 'Bill_Friesen26@bestrun.com', course_title: 'Reputation Management in a Digital World', course_price: 99, course_start: '2017-12-06T18:14:22.647Z', course_end: '2018-05-21T23:28:21.493Z', passed_timestamp: '2018-02-27T00:27:31.010Z', has_passed: true, current_grade: 0.86, last_activity_date: '2018-08-28T08:48:27.389Z',
+      id: 239, user_email: 'Bill_Friesen26@bestrun.com', course_title: 'Reputation Management in a Digital World', course_price: '99.00', course_start: '2017-12-06T18:14:22.647Z', course_end: '2018-05-21T23:28:21.493Z', passed_timestamp: '2018-02-27T00:27:31.010Z', has_passed: true, current_grade: 0.86, last_activity_date: '2018-08-28T08:48:27.389Z',
     }, {
       id: 81, user_email: 'Blair81@bestrun.com', course_title: 'Business Writing', course_price: '267.30', course_start: '2018-03-21T05:12:04.555Z', course_end: '2018-10-10T07:17:35.029Z', passed_timestamp: '2018-10-10T01:47:44.899Z', has_passed: true, current_grade: 0.9, last_activity_date: '2018-08-14T14:07:49.431Z',
     }, {
