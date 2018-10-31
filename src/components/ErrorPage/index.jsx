@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-import StatusAlert from '../../components/StatusAlert';
-import H1 from '../../components/H1';
+import StatusAlert from '../StatusAlert';
+import H1 from '../H1';
 import NotFoundPage from '../NotFoundPage';
 
 const ErrorPage = (props) => {
