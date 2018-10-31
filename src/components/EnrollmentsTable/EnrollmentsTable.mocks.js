@@ -107,7 +107,28 @@ const mockEnrollmentFetchResponse = {
     }],
 };
 
+const mockEnrollmentFetchSmallerResponse = {
+  count: 6,
+  current_page: 1,
+  num_pages: 1,
+  results: [
+    {
+      id: 270, user_email: 'Abbey10@bestrun.com', course_title: 'Product Management with Lean, Agile and System Design Thinking', course_price: 200, course_start: '2017-10-21T23:47:32.738Z', course_end: '2018-05-13T12:47:27.534Z', passed_timestamp: null, has_passed: false, current_grade: 0.44, last_activity_date: '2018-08-09T10:59:28.628Z',
+    }, {
+      id: 307, user_email: 'Abdullah_Considine43@bestrun.com', course_title: 'Design Thinking: Empathizing to Understand the Problem', course_price: 200, course_start: '2018-03-12T23:25:43.522Z', course_end: '2018-05-06T21:29:02.027Z', passed_timestamp: '2018-05-02T13:43:30.243Z', has_passed: true, current_grade: 0.77, last_activity_date: '2018-08-28T12:47:04.904Z',
+    }, {
+      id: 265, user_email: 'Abe_Hessel@bestrun.com', course_title: 'Product Management with Lean, Agile and System Design Thinking', course_price: 200, course_start: '2018-08-23T20:20:45.783Z', course_end: '2018-10-21T11:05:46.091Z', passed_timestamp: null, has_passed: false, current_grade: 0.11, last_activity_date: '2018-08-19T05:21:57.713Z',
+    }, {
+      id: 201, user_email: 'Adah_Ortiz78@bestrun.com', course_title: 'Becoming a Successful Leader (Inclusive Leadership Training)', course_price: 50, course_start: '2017-12-20T03:18:05.495Z', course_end: '2018-08-21T19:24:07.678Z', passed_timestamp: '2018-01-08T19:47:12.514Z', has_passed: true, current_grade: 0.85, last_activity_date: '2018-08-03T14:49:53.381Z',
+    }, {
+      id: 43, user_email: 'Adolfo50@bestrun.com', course_title: 'u.lab: Leading Change in Times of Disruption', course_price: 49, course_start: '2018-07-24T14:11:14.137Z', course_end: '2019-06-22T04:23:47.264Z', passed_timestamp: '2019-02-25T15:40:57.764Z', has_passed: true, current_grade: 0.83, last_activity_date: '2018-09-13T17:36:05.725Z',
+    }, {
+      id: 248, user_email: 'Aglae.Koelpin57@bestrun.com', course_title: 'Introduction to the Internet of Things (IoT)', course_price: 99, course_start: '2017-09-25T09:18:18.146Z', course_end: '2018-07-12T09:19:37.098Z', passed_timestamp: '2017-10-14T06:57:33.233Z', has_passed: true, current_grade: 0.81, last_activity_date: '2018-09-10T12:02:13.938Z',
+    }],
+};
+
 /* eslint-disable import/prefer-default-export, object-curly-newline */
 export {
   mockEnrollmentFetchResponse,
+  mockEnrollmentFetchSmallerResponse,
 };
