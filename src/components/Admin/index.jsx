@@ -181,7 +181,7 @@ class Admin extends React.Component {
       <StatusAlert
         className={['mt-3']}
         alertType="danger"
-        iconClassName={['fa', 'fa-times-circle']}
+        iconClassNames={['fa', 'fa-times-circle']}
         title="Unable to load overview"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -193,7 +193,7 @@ class Admin extends React.Component {
       <StatusAlert
         className={['mt-3']}
         alertType="danger"
-        iconClassName={['fa', 'fa-times-circle']}
+        iconClassNames={['fa', 'fa-times-circle']}
         title="Unable to Generate CSV Report"
         message={`Please try again. (${message})`}
       />

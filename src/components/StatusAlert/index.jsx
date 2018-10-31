@@ -9,7 +9,7 @@ const StatusAlert = (props) => {
   const {
     alertType,
     className,
-    iconClassName,
+    iconClassNames,
     title,
     message,
   } = props;
@@ -22,12 +22,12 @@ const StatusAlert = (props) => {
       dialog={
         <div className={
           classNames({
-            'd-flex': iconClassName && iconClassName.length > 0,
+            'd-flex': iconClassNames.length > 0,
           })}
         >
-          {iconClassName && iconClassName.length > 0 &&
+          {iconClassNames.length > 0 &&
             <div className="icon mr-2">
-              <Icon className={iconClassName} />
+              <Icon className={iconClassNames} />
             </div>
           }
           <div className="message">
@@ -47,13 +47,13 @@ StatusAlert.propTypes = {
   alertType: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   className: PropTypes.arrayOf(PropTypes.string),
-  iconClassName: PropTypes.arrayOf(PropTypes.string),
+  iconClassNames: PropTypes.arrayOf(PropTypes.string),
   title: PropTypes.string,
 };
 
 StatusAlert.defaultProps = {
   className: [],
-  iconClassName: null,
+  iconClassNames: [],
   title: null,
 };
 
