@@ -80,9 +80,9 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
 );
 
 const customSort = (dataToSort, orderField) => {
-  const sortByOptions = (obj1, obj2) => {
-    let a = obj1[orderField] || '';
-    let b = obj2[orderField] || '';
+  const sortByOptions = (value1, value2) => {
+    let a = value1[orderField] || '';
+    let b = value2[orderField] || '';
     // if both are strings
     if (typeof a === 'string' && typeof b === 'string') {
       // if both are dates
