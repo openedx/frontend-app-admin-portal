@@ -107,7 +107,7 @@ const customSort = (dataToSort, orderField) => {
       // if neither can be parsed as a date or float
       return a.localeCompare(b);
     }
-    // Everything else (numbers. we should not mix datatypes within columns)
+    // Everything else
     return a - b;
   };
   return dataToSort.sort(sortByOptions);
