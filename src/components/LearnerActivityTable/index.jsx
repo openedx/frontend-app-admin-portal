@@ -6,14 +6,6 @@ import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 class LearnerActivityTable extends React.Component {
-  componentDidUpdate(prevProps) {
-    const { id } = this.props;
-
-    if (id && id !== prevProps.id) {
-      this.props.clearTable(prevProps.id);
-    }
-  }
-
   getTableColumns() {
     const { activity } = this.props;
     const tableColumns = [
@@ -89,6 +81,7 @@ class LearnerActivityTable extends React.Component {
       <TableContainer
         id={id}
         className={id}
+        key={id}
         fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
           learner_activity: activity,
           ...options,
@@ -101,14 +94,9 @@ class LearnerActivityTable extends React.Component {
   }
 }
 
-LearnerActivityTable.defaultProps = {
-  clearTable: () => {},
-};
-
 LearnerActivityTable.propTypes = {
   id: PropTypes.string.isRequired,
   activity: PropTypes.string.isRequired,
-  clearTable: PropTypes.func,
 };
 
 export default LearnerActivityTable;

@@ -15,10 +15,10 @@ import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
+import LearnerActivityTable from '../LearnerActivityTable';
 
 import AdminCards from '../../containers/AdminCards';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
-import LearnerActivityTable from '../../containers/LearnerActivityTable';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 import { formatTimestamp } from '../../utils';
