@@ -1,27 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EnterpriseApp renders not found page correctly 1`] = `
-<div>
+<div
+  className="container mt-3"
+>
   <div
-    className="container mt-3"
+    className="text-center py-5"
   >
-    <div
-      className="text-center py-5"
+    <h1
+      className={null}
     >
-      <h1
-        className={null}
-      >
-        404
-      </h1>
-      <p
-        className="lead"
-      >
-        Oops, sorry we can't find that page!
-      </p>
-      <p>
-        Either something went wrong or the page doesn't exist anymore.
-      </p>
-    </div>
+      404
+    </h1>
+    <p
+      className="lead"
+    >
+      Oops, sorry we can't find that page!
+    </p>
+    <p>
+      Either something went wrong or the page doesn't exist anymore.
+    </p>
   </div>
 </div>
 `;
