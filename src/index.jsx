@@ -10,14 +10,15 @@ import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 
 import EnterpriseApp from './containers/EnterpriseApp';
-import NotFoundPage from './containers/NotFoundPage';
-import SupportPage from './containers/SupportPage';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
 import LoginPage from './containers/LoginPage';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import PrivateRoute from './containers/PrivateRoute';
 import LogoutHandler from './containers/LogoutHandler';
+import NotFoundPage from './components/NotFoundPage';
+import SupportPage from './components/SupportPage';
+
 import store from './data/store';
 import history from './data/history';
 import './index.scss';
