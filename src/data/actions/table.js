@@ -89,13 +89,7 @@ const customSort = (dataToSort, orderField) => {
       if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
         a = new Date(a).getTime();
         b = new Date(b).getTime();
-        if (a > b) {
-          return 1;
-        }
-        if (a < b) {
-          return -1;
-        }
-        return 0;
+        return a - b;
       }
       // if A is a date and B is not
       if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
@@ -109,13 +103,7 @@ const customSort = (dataToSort, orderField) => {
       return a.localeCompare(b);
     }
     // Everything else (numbers. we should not mix datatypes within columns)
-    if (a > b) {
-      return 1;
-    }
-    if (a < b) {
-      return -1;
-    }
-    return 0;
+    return a - b;
   };
   return dataToSort.sort(sortByOptions);
 };
