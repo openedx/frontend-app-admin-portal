@@ -107,7 +107,7 @@ class TableComponent extends React.Component {
     return (
       <StatusAlert
         alertType="danger"
-        iconClassName={['fa', 'fa-times-circle']}
+        iconClassNames={['fa', 'fa-times-circle']}
         title="Unable to load data"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -118,7 +118,7 @@ class TableComponent extends React.Component {
     return (
       <StatusAlert
         alertType="warning"
-        iconClassName={['fa', 'fa-exclamation-circle']}
+        iconClassNames={['fa', 'fa-exclamation-circle']}
         message="There are no results."
       />
     );
