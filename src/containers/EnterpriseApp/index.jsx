@@ -36,7 +36,7 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Switch>
           <Redirect
             exact
@@ -52,7 +52,7 @@ class EnterpriseApp extends React.Component {
           <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -72,9 +72,8 @@ EnterpriseApp.defaultProps = {
   error: null,
 };
 
-const tableId = 'enterprise-list';
 const mapStateToProps = (state) => {
-  const enterpriseListState = state.table[tableId] || {};
+  const enterpriseListState = state.table['enterprise-list'] || {};
 
   return {
     enterprises: enterpriseListState.data,

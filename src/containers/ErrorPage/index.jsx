@@ -14,7 +14,7 @@ const ErrorPage = (props) => {
       {props.status === 404 ? (
         <NotFoundPage />
       ) : (
-        <div>
+        <React.Fragment>
           <Helmet>
             <title>Error</title>
           </Helmet>
@@ -27,7 +27,7 @@ const ErrorPage = (props) => {
               />
             </div>
           </div>
-        </div>
+        </React.Fragment>
       )}
     </div>
   );

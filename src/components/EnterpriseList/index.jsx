@@ -97,7 +97,7 @@ class EnterpriseList extends React.Component {
     const { searchQuery } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         <Helmet>
           <title>Enterprise List</title>
         </Helmet>
@@ -133,7 +133,7 @@ class EnterpriseList extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -4,12 +4,12 @@ import LoadingMessage from '../LoadingMessage';
 import './TableLoadingOverlay.scss';
 
 const TableLoadingOverlay = () => (
-  <div>
+  <React.Fragment>
     <div className="table-loading-overlay" />
     <div className="table-loading-message d-flex align-items-center justify-content-center ">
       <LoadingMessage className="loading" />
     </div>
-  </div>
+  </React.Fragment>
 );
 
 export default TableLoadingOverlay;
