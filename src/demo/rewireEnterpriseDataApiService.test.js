@@ -1,4 +1,4 @@
-import EnterpriseDataApiService from '../../src/data/services/EnterpriseDataApiService';
+import EnterpriseDataApiService from '../data/services/EnterpriseDataApiService';
 import rewire from './rewireEnterpriseDataApiService';
 
 describe('rewireEnterpriseDataApiService', () => {
