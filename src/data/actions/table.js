@@ -80,6 +80,7 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
 );
 
 const customSort = (dataToSort, orderField) => {
+  const isFloatValue = value => !Number.isNaN(value) && !Number.isNaN(parseFloat(value));
   const sortByOptions = (value1, value2) => {
     let a = value1[orderField] || '';
     let b = value2[orderField] || '';
@@ -99,7 +100,11 @@ const customSort = (dataToSort, orderField) => {
       if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
         return -1;
       }
-      // if neither is a date
+      // if both can be parsed as floats
+      if (isFloatValue(a) && isFloatValue(b)) {
+        return parseFloat(a) - parseFloat(b);
+      }
+      // if neither can be parsed as a date or float
       return a.localeCompare(b);
     }
     // Everything else (numbers. we should not mix datatypes within columns)

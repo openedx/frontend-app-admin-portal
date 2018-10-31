@@ -73,6 +73,33 @@ describe('actions', () => {
       expect(0.85).toEqual(actual[0].current_grade);
     });
 
+    it('sorts tables based on the course price', () => {
+      let ordering = 'course_price';
+
+      const store = mockStore({
+        table: {
+          enrollments: {
+            data: mockEnrollmentFetchSmallerResponse,
+          },
+          fetchMethod,
+          ordering,
+        },
+      });
+
+      store.dispatch(sortTable(tableId, fetchMethod, ordering));
+
+      let actual = store.getActions()[1].payload.data.results;
+      expect(null).toEqual(actual[0].course_price);
+      expect('49.00').toEqual(actual[1].course_price);
+
+      ordering = '-course_price';
+      store.dispatch(sortTable(tableId, fetchMethod, ordering));
+
+      actual = store.getActions()[3].payload.data.results;
+      expect(null).toEqual(actual.slice(-1)[0].course_price);
+      expect('200.00').toEqual(actual[0].course_price);
+    });
+
     it('sorts tables based on the end date', () => {
       let ordering = 'course_end';
 
