@@ -55,12 +55,25 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
       </span>
     </div>
     <div
-      className="dropdown"
+      className="dropdown has-icon rounded border d-flex bg-white"
     >
+      <div
+        className={
+          Array [
+            "icon-container d-flex align-items-center justify-content-center border-right",
+          ]
+        }
+      >
+        <img
+          alt="Avatar icon for profile"
+          className="rounded-left"
+          src="test-file-stub"
+        />
+      </div>
       <button
         aria-expanded={false}
         aria-haspopup="true"
-        className="btn dropdown-toggle btn-light"
+        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}

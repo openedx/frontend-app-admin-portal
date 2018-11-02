@@ -7,6 +7,8 @@ import Img from '../Img';
 import LinkWrapper from '../LinkWrapper';
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
+import avatarIcon from '../../images/avatar.png';
+
 
 class Header extends React.Component {
   renderLogo() {
@@ -36,6 +38,7 @@ class Header extends React.Component {
           </div>
           {email && <Dropdown
             title={email}
+            iconElement={<img src={avatarIcon} alt="Avatar icon for profile" />}
             menuItems={[
               <LinkWrapper to="/logout">Logout</LinkWrapper>,
             ]}

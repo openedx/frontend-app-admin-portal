@@ -19,7 +19,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@edx/edx-bootstrap": "^1.0.0",
-    "@edx/paragon": "^3.4.7",
+    "@edx/paragon": "^3.7.0",
     "@redux-beacon/segment": "^1.0.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
