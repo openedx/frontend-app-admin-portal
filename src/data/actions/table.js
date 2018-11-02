@@ -1,4 +1,3 @@
-import { orderBy } from 'lodash';
 import { getPageOptionsFromUrl } from '../../utils';
 
 import {
@@ -80,23 +79,35 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
   }
 );
 
-const sortData = (data, ordering) => {
-  const direction = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
-  const column = (ordering && ordering.replace('-', ''));
-
-  // `parseKeyValue` adjusts the key's value into its appropriate data type to ensure
-  // proper sorting and sort order (e.g., asc/desc). A numeric value (even if passed in
-  // as a string) must be parsed as an actual numeric value. An empty value (e.g., null,
-  // undefined) must be parsed as an empty string to ensure the empty values are forced
-  // to the top in an ascending sort order.
-  const parseKeyValue = (obj) => {
-    const value = obj[column] || '';
-    if (!Number.isNaN(value) && !Number.isNaN(parseFloat(value))) {
-      return parseFloat(value);
+const sortBy = (dataToSort, orderField) => {
+  const isFloatValue = value => !Number.isNaN(value) && !Number.isNaN(parseFloat(value));
+  const sortByOptions = (value1, value2) => {
+    let a = value1[orderField] || '';
+    let b = value2[orderField] || '';
+    if (typeof a === 'string' && typeof b === 'string') {
+      // if both are dates
+      if (!Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+        a = new Date(a).getTime();
+        b = new Date(b).getTime();
+        return a - b;
+      }
+      // if A is a date and B is not, we want the date to be "greater than" than the not date
+      if (!Number.isNaN(Date.parse(a)) && Number.isNaN(Date.parse(b))) {
+        return 1;
+      }
+      // if B is a date and A is not, we want the not date to be "less than" the date
+      if (Number.isNaN(Date.parse(a)) && !Number.isNaN(Date.parse(b))) {
+        return -1;
+      }
+      if (isFloatValue(a) && isFloatValue(b)) {
+        return parseFloat(a) - parseFloat(b);
+      }
+      // if neither can be parsed as a date or float
+      return a.localeCompare(b);
     }
-    return value;
+    return a - b;
   };
-  return orderBy(data, parseKeyValue, [direction]);
+  return dataToSort.sort(sortByOptions);
 };
 
 const sortTable = (tableId, fetchMethod, ordering) => (
@@ -110,9 +121,13 @@ const sortTable = (tableId, fetchMethod, ordering) => (
 
     // If we can sort client-side because we have all of the data, do that
     if (tableState.data && tableState.data.num_pages === 1) {
+      const isDesc = ordering.startsWith('-');
+      const orderField = isDesc ? ordering.substring(1) : ordering;
+      const result = sortBy(tableState.data.results, orderField);
+
       return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
-        results: sortData(tableState.data.results, ordering),
+        results: isDesc ? result.reverse() : result,
       }));
     }
 
