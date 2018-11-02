@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Dropdown } from '@edx/paragon';
 
-import apiClient from '../../data/apiClient';
 import Img from '../Img';
+import LinkWrapper from '../LinkWrapper';
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
@@ -37,7 +37,7 @@ class Header extends React.Component {
           {email && <Dropdown
             title={email}
             menuItems={[
-              <button onClick={() => apiClient.logout()}>Logout</button>,
+              <LinkWrapper to="/logout">Logout</LinkWrapper>,
             ]}
           />}
         </nav>

@@ -11,6 +11,10 @@ import ErrorPage from '../ErrorPage';
 import { removeTrailingSlash } from '../../utils';
 
 class EnterpriseApp extends React.Component {
+  componentDidMount() {
+    this.props.getLocalUser();
+  }
+
   renderError(error) {
     return (
       <ErrorPage
@@ -51,6 +55,7 @@ class EnterpriseApp extends React.Component {
 }
 
 EnterpriseApp.propTypes = {
+  getLocalUser: PropTypes.func.isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
