@@ -79,7 +79,7 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
   }
 );
 
-const customSort = (dataToSort, orderField) => {
+const sortBy = (dataToSort, orderField) => {
   const isFloatValue = value => !Number.isNaN(value) && !Number.isNaN(parseFloat(value));
   const sortByOptions = (value1, value2) => {
     let a = value1[orderField] || '';
@@ -123,7 +123,8 @@ const sortTable = (tableId, fetchMethod, ordering) => (
     if (tableState.data && tableState.data.num_pages === 1) {
       const isDesc = ordering.startsWith('-');
       const orderField = isDesc ? ordering.substring(1) : ordering;
-      const result = customSort(tableState.data.results, orderField);
+      const result = sortBy(tableState.data.results, orderField);
+
       return dispatch(sortSuccess(tableId, ordering, {
         ...tableState.data,
         results: isDesc ? result.reverse() : result,
