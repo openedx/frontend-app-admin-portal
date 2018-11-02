@@ -1,5 +1,4 @@
 import moment from 'moment';
-import Cookies from 'universal-cookie';
 import qs from 'query-string';
 
 import history from './data/history';
@@ -21,11 +20,6 @@ const formatPassedTimestamp = (timestamp) => {
 const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : ''
 );
-
-const getAccessToken = () => {
-  const cookies = new Cookies();
-  return cookies.get('access_token');
-};
 
 const updateUrl = (queryOptions) => {
   if (!queryOptions) {
@@ -72,12 +66,14 @@ const getPageOptionsFromUrl = () => {
 
 const removeTrailingSlash = path => path.replace(/\/$/, '');
 
+const isRoutePublic = path => /^\/public.*$/.test(path);
+
 export {
   formatPercentage,
   formatPassedTimestamp,
   formatTimestamp,
-  getAccessToken,
   removeTrailingSlash,
   updateUrl,
   getPageOptionsFromUrl,
+  isRoutePublic,
 };

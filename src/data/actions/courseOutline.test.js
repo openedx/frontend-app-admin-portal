@@ -1,9 +1,9 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
+import apiClient from '../apiClient';
 import { fetchCourseOutline } from './courseOutline';
 import {
   FETCH_COURSE_OUTLINE_REQUEST,
@@ -12,7 +12,7 @@ import {
 } from '../constants/courseOutline';
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(axios);
+const axiosMock = new MockAdapter(apiClient);
 
 describe('actions', () => {
   afterEach(() => {
