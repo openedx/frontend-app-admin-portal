@@ -1,12 +1,10 @@
 import qs from 'query-string';
 
+import apiClient from '../apiClient';
 import { configuration } from '../../config';
-import httpClient from '../../httpClient';
-import { getAccessToken } from '../../utils';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
-  static clientId = configuration.LMS_CLIENT_ID;
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -18,13 +16,7 @@ class LmsApiService {
     };
 
     const outlineUrl = `${LmsApiService.baseUrl}/api/courses/v1/blocks/?${qs.stringify(options)}`;
-    const jwtToken = getAccessToken();
-
-    return httpClient.get(outlineUrl, {
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
+    return apiClient.get(outlineUrl);
   }
 
   static fetchEnterpriseList(options) {
@@ -35,14 +27,7 @@ class LmsApiService {
       ...options,
     };
     const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
-    const jwtToken = getAccessToken();
-
-    return httpClient.get(enterpriseListUrl, {
-      withCredentials: true,
-      headers: {
-        Authorization: `JWT ${jwtToken}`,
-      },
-    });
+    return apiClient.get(enterpriseListUrl);
   }
 
   static fetchEnterpriseBySlug(slug) {
@@ -55,18 +40,6 @@ class LmsApiService {
           data: results && results.length && results[0],
         };
       });
-  }
-
-  static authenticate(email, password) {
-    const loginData = {
-      grant_type: 'password',
-      username: email,
-      password,
-      client_id: LmsApiService.clientId,
-      token_type: 'jwt',
-    };
-    const authUrl = `${LmsApiService.baseUrl}/oauth2/access_token/`;
-    return httpClient.post(authUrl, qs.stringify(loginData));
   }
 }
 
