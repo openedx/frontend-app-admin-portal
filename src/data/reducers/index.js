@@ -6,6 +6,7 @@ import portalConfiguration from './portalConfiguration';
 import authentication from './authentication';
 import table from './table';
 import csv from './csv';
+import userProfile from './userProfile';
 
 const rootReducer = combineReducers({
   routerReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   authentication,
   table,
   csv,
+  userProfile,
 });
 
 export default rootReducer;

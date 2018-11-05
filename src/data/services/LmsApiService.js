@@ -45,6 +45,18 @@ class LmsApiService {
     });
   }
 
+  static fetchUserProfile(username) {
+    const userProfileUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts/${username}`;
+    const jwtToken = getAccessToken();
+
+    return httpClient.get(userProfileUrl, {
+      withCredentials: true,
+      headers: {
+        Authorization: `JWT ${jwtToken}`,
+      },
+    });
+  }
+
   static fetchEnterpriseBySlug(slug) {
     return this.fetchEnterpriseList({ slug })
       // Because we expect only one enterprise by slug we return only the first result

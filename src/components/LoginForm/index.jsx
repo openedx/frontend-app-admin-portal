@@ -26,6 +26,8 @@ class LoginForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.isAuthenticated && !prevProps.isAuthenticated) {
+      // TODO! add logic to get the username of currently loggedin user
+      this.props.fetchUserProfile('staff');
       this.redirectToReferrer();
     }
   }
@@ -110,6 +112,7 @@ class LoginForm extends React.Component {
 
 LoginForm.defaultProps = {
   login: () => {},
+  fetchUserProfile: () => {},
   history: {},
   error: null,
   location: {},
@@ -120,6 +123,7 @@ LoginForm.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   error: PropTypes.objectOf(PropTypes.string),
   login: PropTypes.func,
+  fetchUserProfile: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

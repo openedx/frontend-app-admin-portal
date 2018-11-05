@@ -6,6 +6,7 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enterpriseLogo: state.portalConfiguration.enterpriseLogo,
   email: state.authentication.email,
+  userProfile: state.userProfile.profile,
 });
 
 export default connect(mapStateToProps)(Header);
