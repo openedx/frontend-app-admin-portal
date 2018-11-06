@@ -36,6 +36,9 @@ describe('<Header />', () => {
       authentication: {
         email: 'test@example.com',
       },
+      userProfile: {
+        profile: null,
+      },
     });
 
     tree = renderer
@@ -50,6 +53,7 @@ describe('<Header />', () => {
     store = mockStore({
       portalConfiguration: {},
       authentication: {},
+      userProfile: {},
     });
     tree = renderer
       .create((

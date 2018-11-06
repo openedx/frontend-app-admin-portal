@@ -64,11 +64,16 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
           ]
         }
       >
-        <img
-          alt="Avatar icon for profile"
-          className="rounded-left"
-          src="test-file-stub"
+        <span
+          aria-hidden={true}
+          className="fa fa-user px-3 rounded-left"
+          id="Icon1"
         />
+        <span
+          className="sr-only"
+        >
+          Profile image for test@example.com
+        </span>
       </div>
       <button
         aria-expanded={false}

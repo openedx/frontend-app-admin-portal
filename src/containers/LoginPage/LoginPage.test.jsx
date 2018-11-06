@@ -19,6 +19,9 @@ describe('<LoginPage />', () => {
         isAuthenticated: true,
         error: null,
       },
+      userProfile: {
+        profile: null,
+      },
     };
     store = mockStore(initialState);
     dispatchSpy = jest.spyOn(store, 'dispatch');
