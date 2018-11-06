@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Dropdown } from '@edx/paragon';
-import { get } from 'lodash';
+import { Icon, Dropdown } from '@edx/paragon';
 
 import Img from '../Img';
 import LinkWrapper from '../LinkWrapper';
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
-import avatarImage from '../../images/avatar.png';
 
 
 class Header extends React.Component {
   getProfileIconElement() {
-    const profileImage = get(this.props.userProfile, 'profile_image.image_url_medium', avatarImage);
+    const { userProfile, email } = this.props;
+    const profileImage = userProfile && userProfile.image_url_medium;
+    const screenReaderText = `Profile image for ${email}`;
 
-    return <img src={profileImage} alt="Avatar icon for profile" />;
+    if (profileImage) {
+      return <Img src={profileImage} alt={screenReaderText} />;
+    }
+    return <Icon className={['fa', 'fa-user', 'px-3']} screenReaderText={screenReaderText} />;
   }
 
   renderLogo() {
@@ -60,7 +63,7 @@ Header.propTypes = {
   enterpriseLogo: PropTypes.string,
   enterpriseName: PropTypes.string,
   email: PropTypes.string,
-  userProfile: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  userProfile: PropTypes.shape({}), // eslint-disable-line react/forbid-prop-types
 };
 
 Header.defaultProps = {
