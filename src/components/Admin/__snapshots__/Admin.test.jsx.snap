@@ -90,13 +90,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download full report (CSV)
             </button>
           </div>
@@ -205,13 +203,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -241,17 +237,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -297,13 +291,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -333,17 +325,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -405,13 +395,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -441,17 +429,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -529,13 +515,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -565,17 +549,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -639,13 +621,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -680,13 +660,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -795,13 +773,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -831,17 +807,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -887,13 +861,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -923,17 +895,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -995,13 +965,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1031,17 +999,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1119,13 +1085,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1155,17 +1119,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1229,13 +1191,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -1270,13 +1230,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -1385,13 +1343,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1421,17 +1377,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1477,13 +1431,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1513,17 +1465,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1585,13 +1535,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1621,17 +1569,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1709,13 +1655,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -1745,17 +1689,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -1819,13 +1761,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -1865,13 +1805,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -1980,13 +1918,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2016,17 +1952,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2072,13 +2006,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2108,17 +2040,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2180,13 +2110,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2216,17 +2144,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2304,13 +2230,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2340,17 +2264,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2438,13 +2360,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download full report (CSV)
             </button>
           </div>
@@ -2553,13 +2473,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2589,17 +2507,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2645,13 +2561,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2681,17 +2595,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2753,13 +2665,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2789,17 +2699,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -2877,13 +2785,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -2913,17 +2819,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3011,13 +2915,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download full report (CSV)
             </button>
           </div>
@@ -3126,13 +3028,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3162,17 +3062,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3218,13 +3116,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3254,17 +3150,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3326,13 +3220,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3362,17 +3254,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3450,13 +3340,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3486,17 +3374,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3560,13 +3446,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -3606,13 +3490,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -3721,13 +3603,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3757,17 +3637,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3813,13 +3691,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3849,17 +3725,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -3921,13 +3795,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -3957,17 +3829,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4045,13 +3915,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4081,17 +3949,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4155,13 +4021,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -4201,13 +4065,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -4316,13 +4178,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4352,17 +4212,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4408,13 +4266,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4444,17 +4300,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4516,13 +4370,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4552,17 +4404,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4640,13 +4490,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4676,17 +4524,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -4750,13 +4596,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -4794,13 +4638,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -4909,13 +4751,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -4945,17 +4785,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5001,13 +4839,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5037,17 +4873,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5109,13 +4943,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5145,17 +4977,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5233,13 +5063,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5269,17 +5097,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5343,13 +5169,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -5384,13 +5208,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -5499,13 +5321,11 @@ Array [
                     <span>
                       3
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-users d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-users d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5535,17 +5355,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5591,13 +5409,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-check d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-check d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5627,17 +5443,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5699,13 +5513,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-eye d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-eye d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5735,17 +5547,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5823,13 +5633,11 @@ Array [
                     <span>
                       1
                     </span>
-                    <span>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-trophy d-flex align-items-center justify-content-center"
-                        id="Icon1"
-                      />
-                    </span>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-trophy d-flex align-items-center justify-content-center"
+                      id="Icon1"
+                    />
                   </h5>
                   <p
                     className="card-text"
@@ -5859,17 +5667,15 @@ Array [
                       >
                         Details
                       </span>
-                      <span>
-                        <span
-                          aria-hidden={true}
-                          className="fa fa-caret-down"
-                          id="Icon1"
-                        />
-                        <span
-                          className="sr-only"
-                        >
-                          Show details
-                        </span>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-caret-down"
+                        id="Icon1"
+                      />
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
                       </span>
                     </div>
                   </button>
@@ -5933,13 +5739,11 @@ Array [
           onClick={[Function]}
         >
           <span>
-            <span>
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon1"
-              />
-            </span>
+            <span
+              aria-hidden={true}
+              className="fa fa-undo mr-2"
+              id="Icon1"
+            />
             Reset to 
             Full Report
           </span>
@@ -5979,13 +5783,11 @@ Array [
               onKeyDown={[Function]}
               type="button"
             >
-              <span>
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon1"
-                />
-              </span>
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon1"
+              />
               Download current report (CSV)
             </button>
           </div>
@@ -6087,13 +5889,11 @@ Array [
               <div
                 className="icon mr-2"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-times-circle"
-                    id="Icon1"
-                  />
-                </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-times-circle"
+                  id="Icon1"
+                />
               </div>
               <div
                 className="message"

@@ -16,13 +16,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1
         <div
           className="icon mr-2"
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-exclamation-circle"
-              id="Icon1"
-            />
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-exclamation-circle"
+            id="Icon1"
+          />
         </div>
         <div
           className="message"
@@ -283,13 +281,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                 type="button"
               >
                 <div>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-left mr-2"
-                      id="pagination-2"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-left mr-2"
+                    id="pagination-2"
+                  />
                   Previous
                 </div>
               </button>
@@ -309,13 +305,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
               >
                 <div>
                   Next
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-right ml-2"
-                      id="pagination-3"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-right ml-2"
+                    id="pagination-3"
+                  />
                 </div>
               </button>
             </li>
