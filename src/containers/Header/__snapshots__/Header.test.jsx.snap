@@ -1,5 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Header /> renders default profile image correctly 1`] = `
+<header
+  className="container"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <div>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          onError={[Function]}
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
+    <div
+      className="dropdown has-icon rounded border d-flex bg-white"
+    >
+      <div
+        className={
+          Array [
+            "icon-container d-flex align-items-center justify-content-center border-right",
+          ]
+        }
+      >
+        <span
+          aria-hidden={true}
+          className="fa fa-user px-3 rounded-left"
+          id="Icon1"
+        />
+        <span
+          className="sr-only"
+        >
+          Profile image for staff@example.com
+        </span>
+      </div>
+      <button
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        staff@example.com
+      </button>
+      <div
+        aria-hidden={true}
+        aria-label="staff@example.com"
+        className="dropdown-menu"
+        role="menu"
+      >
+        <button
+          className="dropdown-item"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+`;
+
 exports[`<Header /> renders edX logo correctly 1`] = `
 <header
   className="container"
@@ -55,12 +131,30 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
       </span>
     </div>
     <div
-      className="dropdown"
+      className="dropdown has-icon rounded border d-flex bg-white"
     >
+      <div
+        className={
+          Array [
+            "icon-container d-flex align-items-center justify-content-center border-right",
+          ]
+        }
+      >
+        <span
+          aria-hidden={true}
+          className="fa fa-user px-3 rounded-left"
+          id="Icon1"
+        />
+        <span
+          className="sr-only"
+        >
+          Profile image for test@example.com
+        </span>
+      </div>
       <button
         aria-expanded={false}
         aria-haspopup="true"
-        className="btn dropdown-toggle btn-light"
+        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}
@@ -71,6 +165,77 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
       <div
         aria-hidden={true}
         aria-label="test@example.com"
+        className="dropdown-menu"
+        role="menu"
+      >
+        <button
+          className="dropdown-item"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+`;
+
+exports[`<Header /> renders profile image correctly 1`] = `
+<header
+  className="container"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <div>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          onError={[Function]}
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
+    <div
+      className="dropdown has-icon rounded border d-flex bg-white"
+    >
+      <div
+        className={
+          Array [
+            "icon-container d-flex align-items-center justify-content-center border-right",
+          ]
+        }
+      >
+        <img
+          alt="Profile image for staff@example.com"
+          className="rounded-left"
+          src="test-file-stub"
+        />
+      </div>
+      <button
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        staff@example.com
+      </button>
+      <div
+        aria-hidden={true}
+        aria-label="staff@example.com"
         className="dropdown-menu"
         role="menu"
       >

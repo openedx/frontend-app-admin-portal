@@ -16,13 +16,11 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
         <span>
           10
         </span>
-        <span>
-          <span
-            aria-hidden={true}
-            className="fa fa-users d-flex align-items-center justify-content-center"
-            id="Icon1"
-          />
-        </span>
+        <span
+          aria-hidden={true}
+          className="fa fa-users d-flex align-items-center justify-content-center"
+          id="Icon1"
+        />
       </h5>
       <p
         className="card-text"
@@ -52,17 +50,15 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
           >
             Details
           </span>
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-caret-down"
-              id="Icon1"
-            />
-            <span
-              className="sr-only"
-            >
-              Show details
-            </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-caret-down"
+            id="Icon1"
+          />
+          <span
+            className="sr-only"
+          >
+            Show details
           </span>
         </div>
       </button>
@@ -123,13 +119,11 @@ exports[`<NumberCard /> renders correctly without detail actions 1`] = `
         <span>
           10
         </span>
-        <span>
-          <span
-            aria-hidden={true}
-            className="fa fa-users d-flex align-items-center justify-content-center"
-            id="Icon1"
-          />
-        </span>
+        <span
+          aria-hidden={true}
+          className="fa fa-users d-flex align-items-center justify-content-center"
+          id="Icon1"
+        />
       </h5>
       <p
         className="card-text"

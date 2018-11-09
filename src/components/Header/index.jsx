@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Dropdown } from '@edx/paragon';
+import { Icon, Dropdown } from '@edx/paragon';
 
 import apiClient from '../../data/apiClient';
 import Img from '../Img';
@@ -9,6 +9,21 @@ import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
 class Header extends React.Component {
+  componentDidMount() {
+    this.props.fetchUserProfile(this.props.username);
+  }
+
+  getProfileIconElement() {
+    const { userProfile, email } = this.props;
+    const profileImage = userProfile && userProfile.profile_image;
+    const screenReaderText = `Profile image for ${email}`;
+
+    if (profileImage && profileImage.has_image) {
+      return <Img src={profileImage.image_url_medium} alt={screenReaderText} />;
+    }
+    return <Icon className={['fa', 'fa-user', 'px-3']} screenReaderText={screenReaderText} />;
+  }
+
   renderLogo() {
     const { enterpriseLogo, enterpriseName } = this.props;
     return (
@@ -36,6 +51,7 @@ class Header extends React.Component {
           </div>
           {email && <Dropdown
             title={email}
+            iconElement={this.getProfileIconElement()}
             menuItems={[
               <button onClick={() => apiClient.logout()}>Logout</button>,
             ]}
@@ -50,12 +66,18 @@ Header.propTypes = {
   enterpriseLogo: PropTypes.string,
   enterpriseName: PropTypes.string,
   email: PropTypes.string,
+  username: PropTypes.string,
+  fetchUserProfile: PropTypes.func,
+  userProfile: PropTypes.shape({}),
 };
 
 Header.defaultProps = {
   enterpriseLogo: null,
   enterpriseName: null,
   email: null,
+  username: null,
+  fetchUserProfile: () => {},
+  userProfile: null,
 };
 
 export default Header;

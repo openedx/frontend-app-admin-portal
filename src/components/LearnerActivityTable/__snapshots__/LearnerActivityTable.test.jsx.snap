@@ -372,13 +372,11 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 type="button"
               >
                 <div>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-left mr-2"
-                      id="pagination-2"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-left mr-2"
+                    id="pagination-2"
+                  />
                   Previous
                 </div>
               </button>
@@ -398,13 +396,11 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <div>
                   Next
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-right ml-2"
-                      id="pagination-3"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-right ml-2"
+                    id="pagination-3"
+                  />
                 </div>
               </button>
             </li>
@@ -432,13 +428,11 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
         <div
           className="icon mr-2"
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-exclamation-circle"
-              id="Icon1"
-            />
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-exclamation-circle"
+            id="Icon1"
+          />
         </div>
         <div
           className="message"
@@ -786,13 +780,11 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 type="button"
               >
                 <div>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-left mr-2"
-                      id="pagination-6"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-left mr-2"
+                    id="pagination-6"
+                  />
                   Previous
                 </div>
               </button>
@@ -812,13 +804,11 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <div>
                   Next
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-right ml-2"
-                      id="pagination-7"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-right ml-2"
+                    id="pagination-7"
+                  />
                 </div>
               </button>
             </li>
@@ -1165,13 +1155,11 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 type="button"
               >
                 <div>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-left mr-2"
-                      id="pagination-4"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-left mr-2"
+                    id="pagination-4"
+                  />
                   Previous
                 </div>
               </button>
@@ -1191,13 +1179,11 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <div>
                   Next
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-chevron-right ml-2"
-                      id="pagination-5"
-                    />
-                  </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-chevron-right ml-2"
+                    id="pagination-5"
+                  />
                 </div>
               </button>
             </li>
