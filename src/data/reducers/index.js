@@ -6,6 +6,7 @@ import portalConfiguration from './portalConfiguration';
 import table from './table';
 import csv from './csv';
 import coupons from './coupons';
+import requestCodes from './requestCodes';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   table,
   csv,
   coupons,
+  requestCodes,
 });
 
 export default rootReducer;
