@@ -211,6 +211,7 @@ class NumberCard extends React.Component {
             <div className="footer-title">
               <Button
                 inputRef={(node) => { this.toggleDetailsBtnRef = node; }}
+                buttonType="link"
                 className={['toggle-collapse', 'btn-block']}
                 label={
                   <div className="d-flex justify-content-between align-items-center">
