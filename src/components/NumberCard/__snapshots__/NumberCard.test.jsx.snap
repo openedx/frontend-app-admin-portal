@@ -38,7 +38,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       className="footer-title"
     >
       <button
-        className="btn toggle-collapse btn-block"
+        className="btn toggle-collapse btn-block btn-link"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}
