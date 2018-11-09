@@ -1,0 +1,9 @@
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+
+.form-cancel-btn {
+    text-decoration: underline;
+    &:focus {
+        box-shadow: $input-btn-focus-box-shadow;
+    }
+}

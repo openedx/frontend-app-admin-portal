@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Redirect } from 'react-router-dom';
-import { Button, InputText } from '@edx/paragon';
+import { Redirect, Link } from 'react-router-dom';
+import StatusAlert from '../StatusAlert';
+import RequestCodesForm from './RequestCodesForm';
+
+import './RequestCodesPage.scss';
 
 import Hero from '../Hero';
 
@@ -11,18 +14,43 @@ class RequestCodesPage extends React.Component {
     super(props);
 
     this.state = {
-      submitted: false,
+      numberOfCodes: null,
+      emailAddress: props.emailAddress,
     };
 
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  renderRedirect() {
+  componentDidMount() {
+    this.props.fetchPortalConfiguration(this.props.enterpriseSlug);
+  }
+
+  componentWillUnmount() {
+    this.props.clearRequestCodes();
+  }
+
+  getPathToCodeManagement() {
     const { match: { url } } = this.props;
 
     // Remove `/request` from the url so it renders Code Management page again
     const path = url.split('/').slice(0, -1).join('/');
+    return path;
+  }
 
+  renderErrorMessage() {
+    return (
+      <StatusAlert
+        className={['mt-3']}
+        alertType="danger"
+        iconClassName={['fa', 'fa-times-circle']}
+        title="Unable to request more codes"
+        message={`Try refreshing your screen (${this.props.error.message})`}
+      />
+    );
+  }
+
+  renderRedirect() {
+    const path = this.getPathToCodeManagement();
     return (
       <Redirect
         to={{
@@ -34,8 +62,13 @@ class RequestCodesPage extends React.Component {
   }
 
   render() {
-    const { submitted } = this.state;
-    const { emailAddress, enterpriseName } = this.props;
+    const { numberOfCodes, emailAddress } = this.state;
+    const {
+      enterpriseName,
+      error,
+      success,
+      requestCodes,
+    } = this.props;
 
     return (
       <React.Fragment>
@@ -44,33 +77,21 @@ class RequestCodesPage extends React.Component {
         </Helmet>
         <Hero title="Request More Codes" />
         <div className="container-fluid">
+          <div className="row">
+            <div className="col">
+              {error && this.renderErrorMessage()}
+            </div>
+          </div>
           <div className="row my-3">
             <div className="col-12 col-md-5">
-              <form>
-                <InputText
-                  name="email"
-                  label="Email Address"
-                  type="email"
-                  value={emailAddress || ''}
-                />
-                <InputText
-                  name="company"
-                  label="Company"
-                  value={enterpriseName || ''}
-                  disabled
-                />
-                <InputText
-                  name="number-of-codes"
-                  label="Number of Codes (optional)"
-                  type="number"
-                />
-                <Button
-                  label="Request Codes"
-                  buttonType="primary"
-                  onClick={() => this.setState({ submitted: true })}
-                />
-              </form>
-              {submitted && this.renderRedirect()}
+              <RequestCodesForm
+                onSubmit={requestCodes}
+                initialValues={{ emailAddress, enterpriseName, numberOfCodes }}
+              />
+              <Link className={['btn btn-link ml-3 form-cancel-btn']} to={this.getPathToCodeManagement()}>
+                Cancel
+              </Link>
+              {success && this.renderRedirect()}
             </div>
           </div>
         </div>
@@ -82,11 +103,19 @@ class RequestCodesPage extends React.Component {
 RequestCodesPage.defaultProps = {
   enterpriseName: null,
   emailAddress: null,
+  success: false,
+  error: null,
 };
 
 RequestCodesPage.propTypes = {
+  fetchPortalConfiguration: PropTypes.func.isRequired,
+  requestCodes: PropTypes.func.isRequired,
+  clearRequestCodes: PropTypes.func.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string,
   emailAddress: PropTypes.string,
+  success: PropTypes.bool,
+  error: PropTypes.instanceOf(Error),
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
   }).isRequired,
