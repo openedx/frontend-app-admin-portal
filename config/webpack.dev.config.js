@@ -108,7 +108,6 @@ module.exports = Merge.smart(commonConfig, {
       LOGOUT_URL: 'http://localhost:18000/login',
       REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login',
       DATA_API_BASE_URL: 'http://localhost:8000',
-      LMS_CLIENT_ID: 'CMehRRNqfiBRVJKnPOkjBDjAvurtnHpELoehKAvZ',
       SEGMENT_KEY: null,
       FEATURE_FLAGS: {},
       ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',

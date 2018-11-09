@@ -27,23 +27,8 @@ The application is now running and can be accessed in a web browser at http://lo
 
 For the edx-portal to function properly locally, the following parts need to be set up:
 
-1. OAuth communication between `edx-portal` and LMS
-2. At least 1 enterprise customer should exist in `edx-platform`
-3. `edx-analytics-data-api` needs data that would normally be piped from `edx-platform` via data pipelines
-
-
-#### OAuth
-
-The edx-portal first needs permission to communicate with the LMS. These permissions are handled with the Django OAuth Toolkit. To set up the OAuth permissions, you can do the following:
-
-1. Navigate to local LMS django admin's OAuth Application page (something like http://localhost:18000/admin/oauth2_provider/application/)
-2. Click the "Add Application" button
-3. Set the user to edx. This form takes the ID of the provisioned user, so it is advisable to use the search button next to the text field to search for "edx"
-4. Set the "Client type" to "public"
-5. Set the "Authorization grant type" to "Resource owner password-based"
-6. Click "Save"
-
-With the application created, you should take note of the "Client ID" value for the user you just created (it is a jumble of numbers and letters). In your `edx-portal` checkout, in `config/webpack.dev.config.js`, set the `LMS_CLIENT_ID` variable's value to the "Client ID" value.
+1. At least 1 enterprise customer should exist in `edx-platform`
+2. `edx-analytics-data-api` needs data that would normally be piped from `edx-platform` via data pipelines
 
 #### Enterprise Customer
 
