@@ -69,17 +69,15 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>
@@ -176,17 +174,15 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>
@@ -283,17 +279,15 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>
@@ -390,17 +384,15 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>
@@ -497,17 +489,15 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>
@@ -604,17 +594,15 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                 type="button"
               >
                 <small>
-                  <span>
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-times"
-                      id="icon-SearchField5"
-                    />
-                    <span
-                      className="sr-only"
-                    >
-                      Clear search
-                    </span>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-times"
+                    id="icon-SearchField5"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Clear search
                   </span>
                 </small>
               </button>
@@ -626,17 +614,15 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-search"
-                    id="Icon1"
-                  />
-                  <span
-                    className="sr-only"
-                  >
-                    Submit search
-                  </span>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-search"
+                  id="Icon1"
+                />
+                <span
+                  className="sr-only"
+                >
+                  Submit search
                 </span>
               </button>
             </div>

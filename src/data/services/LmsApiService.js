@@ -41,6 +41,10 @@ class LmsApiService {
         };
       });
   }
+
+  static fetchUserProfile(username) {
+    return apiClient.get(`${LmsApiService.baseUrl}/api/user/v1/accounts/${username}`);
+  }
 }
 
 export default LmsApiService;
