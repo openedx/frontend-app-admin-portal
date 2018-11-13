@@ -181,6 +181,7 @@ class CodeManagement extends React.Component {
                   </React.Fragment>
                 }
                 onClick={() => this.props.fetchCouponOrders()}
+                disabled={loading}
               />
               <Link
                 className="request-codes-btn btn btn-primary"
