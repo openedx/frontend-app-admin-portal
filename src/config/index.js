@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-const hasFeatureFlagEnabled = (featureFlag) => { // eslint-disable-line no-unused-vars
+const hasFeatureFlagEnabled = (featureFlag) => {
   const { features } = qs.parse(window.location.search);
   return features && features.split(',').includes(featureFlag);
 };
@@ -12,12 +12,16 @@ const configuration = {
   LOGOUT_URL: process.env.LOGOUT_URL,
   REFRESH_ACCESS_TOKEN_ENDPOINT: process.env.REFRESH_ACCESS_TOKEN_ENDPOINT,
   DATA_API_BASE_URL: process.env.DATA_API_BASE_URL,
+  ECOMMERCE_API_BASE_URL: process.env.ECOMMERCE_API_BASE_URL,
   SECURE_COOKIES: process.env.NODE_ENV !== 'development',
   SEGMENT_KEY: process.env.SEGMENT_KEY,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   CSRF_COOKIE_NAME: process.env.CSRF_COOKIE_NAME,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
-const features = {};
+const features = {
+  CODE_MANAGEMENT: process.env.FEATURE_FLAGS.CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
+};
 
 export { configuration, features };

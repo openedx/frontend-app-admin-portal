@@ -1,5 +1,6 @@
 import faker from 'faker/locale/en';
 import courses from './courses';
+import { coupons, codes } from './coupons';
 
 const numEnrollments = 330;
 const numPassed = 120;
@@ -176,4 +177,6 @@ export {
   filterUnenrolledRegisteredLearners,
   getEnrollmentsCsv,
   overview,
+  coupons,
+  codes,
 };

@@ -1,4 +1,5 @@
 import EnterpriseDataApiService from '../data/services/EnterpriseDataApiService';
+
 import {
   filterCompletedLearnerCourses,
   filteredEnrollments,
