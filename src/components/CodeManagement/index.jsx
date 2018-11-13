@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import createHistory from 'history/createBrowserHistory';
-import { Icon, Pagination } from '@edx/paragon';
+import { Button, Icon, Pagination } from '@edx/paragon';
 
 import H2 from '../H2';
 import Hero from '../Hero';
@@ -88,7 +88,7 @@ class CodeManagement extends React.Component {
       <StatusAlert
         className={['mt-3']}
         alertType="danger"
-        iconClassName={['fa', 'fa-times-circle']}
+        iconClassNames={['fa', 'fa-times-circle']}
         title="Unable to load coupons"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -102,7 +102,7 @@ class CodeManagement extends React.Component {
         {coupons.results.map((coupon, index) => (
           <Coupon
             ref={(node) => { this.couponRefs[index] = node; }}
-            key={coupon.title}
+            key={coupon.id}
             data={coupon}
             onExpand={() => this.handleCouponExpand(index)}
             onCollapse={() => this.handleCouponCollapse()}
@@ -119,7 +119,7 @@ class CodeManagement extends React.Component {
     );
   }
 
-  renderRequestSuccessMessage() {
+  renderRequestCodesSuccessMessage() {
     return (
       <StatusAlert
         className={['mt-3']}
@@ -160,14 +160,27 @@ class CodeManagement extends React.Component {
         </Helmet>
         <Hero title="Code Management" />
         <div className="container">
-          {locationState && locationState.hasRequestedCodes && this.renderRequestSuccessMessage()}
+          {locationState && locationState.hasRequestedCodes &&
+            this.renderRequestCodesSuccessMessage()
+          }
           <div className="row mt-4 mb-3">
-            <div className="col-12 col-md-6 mb-2 mb-md-0">
+            <div className="col-12 col-md-3 mb-2 mb-md-0">
               <H2>Overview</H2>
             </div>
-            <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
+            <div className="col-12 col-md-9 mb-2 mb-md-0 text-md-right">
+              <Button
+                className={['mr-2']}
+                buttonType="link"
+                label={
+                  <React.Fragment>
+                    <Icon className={['fa', 'fa-refresh', 'mr-2']} />
+                    Refresh data
+                  </React.Fragment>
+                }
+                onClick={() => this.props.fetchCouponOrders()}
+              />
               <Link
-                className="request-codes-btn btn btn-outline-primary"
+                className="request-codes-btn btn btn-primary"
                 to={`${match.path}/request`}
               >
                 <React.Fragment>

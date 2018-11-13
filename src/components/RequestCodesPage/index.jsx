@@ -29,7 +29,6 @@ class RequestCodesPage extends React.Component {
 
     return (
       <Redirect
-        push
         to={{
           pathname: path,
           state: { hasRequestedCodes: true },

@@ -1,0 +1,50 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+.coupon-details {
+    font-size: 1rem;
+
+    .loading {
+        font-size: inherit;
+    }
+
+    .alert {
+        margin-bottom: 0;
+        font-size: 0.85rem;
+
+        .fa {
+            font-size: 1rem;
+        }
+    }
+
+    .table,
+    .pagination .btn {
+        font-size: 0.85rem;
+    }
+
+    .table {
+        td {
+            vertical-align: middle;
+        }
+
+        .btn {
+            font-size: inherit;
+            text-decoration: underline;
+
+            &:focus {
+                box-shadow: $btn-focus-box-shadow;
+            }
+        }
+    }
+    
+    .bulk-actions {
+        .form-group {
+            display: inline-block;
+
+            &,
+            label {
+                margin: 0;
+            }
+        }
+    }
+}

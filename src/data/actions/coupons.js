@@ -5,6 +5,7 @@ import {
   CLEAR_COUPONS,
 } from '../constants/coupons';
 
+// TODO handle pagination using updateUrl
 // import { updateUrl } from '../../utils';
 
 import EcommerceApiService from '../services/EcommerceApiService';

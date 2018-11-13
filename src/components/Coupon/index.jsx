@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, Icon } from '@edx/paragon';
+import { Icon } from '@edx/paragon';
 
-import CouponDetails from './CouponDetails';
+import CouponDetails from '../../containers/CouponDetails';
 
 import { isTriggerKey } from '../../utils';
 
@@ -69,24 +69,21 @@ class Coupon extends React.Component {
   renderExpandCollapseIcon() {
     const { detailsExpanded } = this.state;
     const iconClass = detailsExpanded ? 'fa-chevron-up' : 'fa-chevron-down';
+    const iconColor = detailsExpanded ? 'text-white' : 'text-primary';
     const screenReaderText = detailsExpanded ? 'Close' : 'Open';
     return (
-      <Button
-        className={[classNames(
-          'toggle-details-btn',
-          'btn-sm',
-          {
-            'text-white': detailsExpanded,
-          },
-        )]}
-        buttonType="link"
-        label={
-          <Icon
-            className={['fa', iconClass]}
-            screenReaderText={`${screenReaderText} coupon details`}
-          />
-        }
-        tabIndex="-1"
+      <Icon
+        className={['fa', iconClass, iconColor]}
+        screenReaderText={`${screenReaderText} coupon details`}
+      />
+    );
+  }
+
+  renderErrorIcon() {
+    return (
+      <Icon
+        className={['fa', 'fa-exclamation-circle', 'text-danger', 'mr-2']}
+        screenReaderText="Coupon has an error."
       />
     );
   }
@@ -101,12 +98,20 @@ class Coupon extends React.Component {
           'coupon mb-3 mb-lg-2 rounded border',
           {
             expanded: detailsExpanded,
+            'border-danger': data.hasError && !detailsExpanded,
             dimmed,
           },
         )}
       >
         <div
-          className="metadata row no-gutters p-2 d-flex align-items-center"
+          className={classNames(
+            'metadata',
+            'row no-gutters p-2 d-flex align-items-center',
+            {
+              rounded: !detailsExpanded,
+              'rounded-top': detailsExpanded,
+            },
+          )}
           onClick={this.toggleCouponDetails}
           onKeyDown={this.handleCouponKeyDown}
           role="button"
@@ -145,11 +150,12 @@ class Coupon extends React.Component {
               </div>
             </div>
           </div>
-          <div className="col-lg-1 order-first order-lg-last text-right">
+          <div className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0">
+            {data.hasError && !detailsExpanded && this.renderErrorIcon()}
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {detailsExpanded && <CouponDetails />}
+        {detailsExpanded && <CouponDetails id={data.id} hasError={data.hasError} />}
       </div>
     );
   }

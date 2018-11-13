@@ -4,7 +4,7 @@
 
 .coupon {
     box-shadow: 0 .125rem .25rem rgba(0,0,0,0.075);
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease;
 
     &.dimmed {
         opacity: 0.5;
@@ -15,10 +15,21 @@
         }
     }
 
-    &:not(.expanded) {
+    &:not(.expanded):not(.border-danger) {
         &:hover,
         &:focus {
             border-color: $gray-400 !important; // `!important` needed to override .border Bootstrap class
+        }
+    }
+
+    &.border-danger {
+        .metadata {
+            background: lighten($danger, 45%);
+
+            &:hover,
+            &:focus {
+                background: lighten($danger, 43%);
+            }
         }
     }
 
@@ -32,7 +43,7 @@
             cursor: pointer;
         }
 
-        .toggle-details-btn {
+        .icons {
             position: absolute;
             top: 0;
             right: 0;
@@ -53,34 +64,6 @@
             background: #095686;
             border-radius: 0.1875rem 0.1875rem 0 0;
             color: #ffffff;
-        }
-    }
-
-    .details {
-        font-size: 1rem;
-
-        .loading {
-            font-size: inherit;
-        }
-
-        .alert {
-            margin-bottom: 0;
-        }
-
-        .table,
-        .pagination .btn {
-            font-size: 0.85rem;
-        }
-
-        .table {
-            td {
-                vertical-align: middle;
-            }
-
-            .btn {
-                font-size: inherit;
-                text-decoration: underline;
-            }
         }
     }
 }

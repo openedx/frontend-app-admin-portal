@@ -17,6 +17,7 @@ const configuration = {
   SEGMENT_KEY: process.env.SEGMENT_KEY,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   CSRF_COOKIE_NAME: process.env.CSRF_COOKIE_NAME,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 const features = {
