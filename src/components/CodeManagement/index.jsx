@@ -132,7 +132,7 @@ class CodeManagement extends React.Component {
         className={['mt-3']}
         alertType="success"
         iconClassNames={['fa', 'fa-check-circle']}
-        title="Request for more codes received."
+        title="Request for more codes received"
         message="The edX Customer Success team will contact you soon."
         dismissible
       />
