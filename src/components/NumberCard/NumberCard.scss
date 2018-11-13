@@ -61,13 +61,21 @@ $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
             font-weight: 600;
             color: #313131;
             font-size: 0.875rem;
-    
-            &:focus {
-                box-shadow: $input-btn-focus-box-shadow;
-            }
+            text-decoration: none;
 
             .fa {
                 font-size: 1rem;
+            }
+
+            &:hover,
+            &:focus {
+                .details-btn-text {
+                    text-decoration: underline;
+                }
+            }
+
+            &:focus {
+                box-shadow: $input-btn-focus-box-shadow;
             }
         }
     

@@ -36,6 +36,8 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       className="footer-title"
     >
       <button
+        aria-controls="footer-body-test-id"
+        aria-expanded={false}
         className="btn toggle-collapse btn-block btn-link"
         onBlur={[Function]}
         onClick={[Function]}
@@ -64,7 +66,8 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       </button>
     </div>
     <div
-      className="footer-body  mt-1 d-none"
+      className="footer-body mt-1 d-none"
+      id="footer-body-test-id"
     >
       <a
         className="btn btn-link"

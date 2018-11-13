@@ -174,6 +174,7 @@ class NumberCard extends React.Component {
       iconClassName,
       description,
       detailActions,
+      id,
     } = this.props;
 
     return (
@@ -226,12 +227,15 @@ class NumberCard extends React.Component {
                 }
                 onClick={this.toggleDetails}
                 onKeyDown={this.handleToggleDetailsKeyDown}
+                aria-expanded={detailsExpanded}
+                aria-controls={`footer-body-${id}`}
               />
             </div>
             <div
+              id={`footer-body-${id}`}
               className={classNames(
                 'footer-body',
-                ' mt-1',
+                'mt-1',
                 {
                   'd-none': !detailsExpanded,
                 },
@@ -256,6 +260,7 @@ NumberCard.defaultProps = {
 NumberCard.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   description: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   className: PropTypes.string,
   iconClassName: PropTypes.string,
   detailActions: PropTypes.arrayOf(PropTypes.shape({

@@ -68,6 +68,7 @@ class AdminCards extends React.Component {
         key={cardKey}
       >
         <NumberCard
+          id={cardKey}
           title={title}
           description={card.description}
           iconClassName={card.iconClassName}
