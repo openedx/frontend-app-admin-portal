@@ -223,6 +223,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -251,7 +253,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -311,6 +314,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -339,7 +344,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -415,6 +421,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -443,7 +451,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -535,6 +544,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -563,7 +574,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -793,6 +805,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -821,7 +835,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -881,6 +896,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -909,7 +926,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -985,6 +1003,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1013,7 +1033,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -1105,6 +1126,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1133,7 +1156,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -1363,6 +1387,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1391,7 +1417,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -1451,6 +1478,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1479,7 +1508,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -1555,6 +1585,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1583,7 +1615,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -1675,6 +1708,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1703,7 +1738,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -1938,6 +1974,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -1966,7 +2004,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -2026,6 +2065,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2054,7 +2095,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -2130,6 +2172,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2158,7 +2202,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -2250,6 +2295,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2278,7 +2325,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -2493,6 +2541,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2521,7 +2571,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -2581,6 +2632,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2609,7 +2662,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -2685,6 +2739,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2713,7 +2769,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -2805,6 +2862,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -2833,7 +2892,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -3048,6 +3108,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3076,7 +3138,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -3136,6 +3199,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3164,7 +3229,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -3240,6 +3306,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3268,7 +3336,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -3360,6 +3429,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3388,7 +3459,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -3623,6 +3695,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3651,7 +3725,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -3711,6 +3786,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3739,7 +3816,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -3815,6 +3893,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3843,7 +3923,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -3935,6 +4016,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -3963,7 +4046,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -4198,6 +4282,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4226,7 +4312,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -4286,6 +4373,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4314,7 +4403,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -4390,6 +4480,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4418,7 +4510,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -4510,6 +4603,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4538,7 +4633,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -4771,6 +4867,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4799,7 +4897,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -4859,6 +4958,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4887,7 +4988,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -4963,6 +5065,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -4991,7 +5095,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -5083,6 +5188,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -5111,7 +5218,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"
@@ -5341,6 +5449,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-numberOfUsers"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -5369,7 +5479,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-numberOfUsers"
                 >
                   <a
                     className="btn btn-link"
@@ -5429,6 +5540,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-enrolledLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -5457,7 +5570,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-enrolledLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -5533,6 +5647,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-activeLearners"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -5561,7 +5677,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-activeLearners"
                 >
                   <a
                     className="btn btn-link"
@@ -5653,6 +5770,8 @@ Array [
                   className="footer-title"
                 >
                   <button
+                    aria-controls="footer-body-courseCompletions"
+                    aria-expanded={false}
                     className="btn toggle-collapse btn-block btn-link"
                     onBlur={[Function]}
                     onClick={[Function]}
@@ -5681,7 +5800,8 @@ Array [
                   </button>
                 </div>
                 <div
-                  className="footer-body  mt-1 d-none"
+                  className="footer-body mt-1 d-none"
+                  id="footer-body-courseCompletions"
                 >
                   <a
                     className="btn btn-link"

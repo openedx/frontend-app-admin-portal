@@ -10,6 +10,7 @@ const getNumberCard = wrapper => wrapper.find('NumberCard');
 const NumberCardWrapper = props => (
   <MemoryRouter>
     <NumberCard
+      id="test-id"
       className="test-class"
       title={10}
       description="This describes the data!"

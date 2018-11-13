@@ -116,6 +116,8 @@ class Coupon extends React.Component {
           onKeyDown={this.handleCouponKeyDown}
           role="button"
           tabIndex="0"
+          aria-expanded={detailsExpanded}
+          aria-controls={`coupon-details-${data.id}`}
         >
           <div className="col-sm-12 col-lg-3 mb-2 mb-lg-0">
             <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Coupon Name</small>
@@ -155,7 +157,7 @@ class Coupon extends React.Component {
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {detailsExpanded && <CouponDetails id={data.id} hasError={data.hasError} />}
+        {<CouponDetails id={data.id} expanded={detailsExpanded} hasError={data.hasError} />}
       </div>
     );
   }
