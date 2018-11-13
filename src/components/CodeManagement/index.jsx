@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import createHistory from 'history/createBrowserHistory';
 import { Button, Icon, Pagination } from '@edx/paragon';
 
 import H2 from '../H2';
@@ -16,32 +15,40 @@ class CodeManagement extends React.Component {
     super(props);
 
     this.couponRefs = [];
+    this.state = {
+      hasRequestedCodes: false,
+    };
 
     this.handleCouponExpand = this.handleCouponExpand.bind(this);
   }
 
   componentDidMount() {
     const { enterpriseId, enterpriseSlug } = this.props;
-    const history = createHistory();
 
     if (enterpriseId) {
       this.props.fetchCouponOrders();
     }
 
     this.props.fetchPortalConfiguration(enterpriseSlug);
-
-    // Reset `hasRequestedCodes` so that status alert disappears
-    if (history.location.state && history.location.state.hasRequestedCodes) {
-      const state = { ...history.location.state };
-      delete state.hasRequestedCodes;
-      history.replace({ ...history.location, state });
-    }
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, location, history } = this.props;
+
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchCouponOrders();
+    }
+
+    if (location.state && location.state.hasRequestedCodes) {
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
+        hasRequestedCodes: location.state.hasRequestedCodes,
+      });
+
+      // reset location state so the "requested more codes" status alert disappears
+      history.replace({
+        ...location.pathname,
+        state: {},
+      });
     }
   }
 
@@ -148,10 +155,8 @@ class CodeManagement extends React.Component {
       error,
       loading,
       match,
-      location,
     } = this.props;
-
-    const { state: locationState } = location;
+    const { hasRequestedCodes } = this.state;
 
     return (
       <React.Fragment>
@@ -160,9 +165,7 @@ class CodeManagement extends React.Component {
         </Helmet>
         <Hero title="Code Management" />
         <div className="container">
-          {locationState && locationState.hasRequestedCodes &&
-            this.renderRequestCodesSuccessMessage()
-          }
+          {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
           <div className="row mt-4 mb-3">
             <div className="col-12 col-md-3 mb-2 mb-md-0">
               <H2>Overview</H2>
@@ -223,6 +226,9 @@ CodeManagement.propTypes = {
   }).isRequired,
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
   coupons: PropTypes.shape({}),
