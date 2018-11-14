@@ -111,7 +111,7 @@ module.exports = Merge.smart(commonConfig, {
       ECOMMERCE_API_BASE_URL: null,
       SEGMENT_KEY: null,
       ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-      CSRF_COOKIE_NAME: 'csrftoken',
+      USER_INFO_COOKIE_NAME: 'edx-user-info',
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
       },
