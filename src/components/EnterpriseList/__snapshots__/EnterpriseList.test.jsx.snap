@@ -98,9 +98,7 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;
@@ -203,9 +201,7 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;
@@ -308,9 +304,7 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;
@@ -413,9 +407,7 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;
@@ -518,9 +510,7 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;
@@ -643,9 +633,7 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
   >
     <div
       className="col"
-    >
-      <div />
-    </div>
+    />
   </div>
 </div>
 `;

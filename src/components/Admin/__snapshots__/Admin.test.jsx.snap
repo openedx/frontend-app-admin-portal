@@ -101,9 +101,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -632,15 +630,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
       </div>
     </div>
@@ -656,10 +652,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -683,9 +677,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -1214,15 +1206,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
       </div>
     </div>
@@ -1238,10 +1228,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -1265,9 +1253,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -1796,15 +1782,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
         <h3
           className={null}
@@ -1825,10 +1809,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -1852,9 +1834,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -2392,10 +2372,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -2419,9 +2397,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -2959,10 +2935,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -2986,9 +2960,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -3517,15 +3489,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
         <h3
           className={null}
@@ -3546,10 +3516,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -3573,9 +3541,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -4104,15 +4070,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
         <h3
           className={null}
@@ -4133,10 +4097,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -4160,9 +4122,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -4691,15 +4651,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
         <p>
           Learners who have completed all of their courses and/or courses have ended.
@@ -4718,10 +4676,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -4745,9 +4701,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -5276,15 +5230,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
       </div>
     </div>
@@ -5300,10 +5252,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -5327,9 +5277,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -5858,15 +5806,13 @@ Array [
           href="/"
           onClick={[Function]}
         >
-          <span>
-            <span
-              aria-hidden={true}
-              className="fa fa-undo mr-2"
-              id="Icon1"
-            />
-            Reset to 
-            Full Report
-          </span>
+          <span
+            aria-hidden={true}
+            className="fa fa-undo mr-2"
+            id="Icon1"
+          />
+          Reset to 
+          Full Report
         </a>
         <h3
           className={null}
@@ -5887,10 +5833,8 @@ Array [
           <div
             className="col-12 col-md-6 pt-1 pb-3"
           >
-            <span>
-              Showing data as of 
-              July 31, 2018
-            </span>
+            Showing data as of 
+            July 31, 2018
           </div>
           <div
             className="col-12 col-md-6 text-md-right"
@@ -5914,9 +5858,7 @@ Array [
         </div>
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -6051,9 +5993,7 @@ Array [
       >
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div
@@ -6133,11 +6073,9 @@ Array [
         className="col"
       >
         <div
-          className="overview mt-3 loading d-flex align-items-center justify-content-center"
+          className="loading d-flex align-items-center justify-content-center overview mt-3"
         >
-          <span>
-            Loading...
-          </span>
+          Loading...
         </div>
       </div>
     </div>
@@ -6162,9 +6100,7 @@ Array [
       >
         <div
           className="mt-3 mb-5"
-        >
-          <div />
-        </div>
+        />
       </div>
     </div>
     <div

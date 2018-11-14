@@ -1,32 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EnrollmentsTable renders empty state correctly 1`] = `
-<div>
+<div
+  className="alert fade alert-warning show"
+  hidden={false}
+  role="alert"
+>
   <div
-    className="alert fade alert-warning show"
-    hidden={false}
-    role="alert"
+    className="alert-dialog"
   >
     <div
-      className="alert-dialog"
+      className="d-flex"
     >
       <div
-        className="d-flex"
+        className="icon mr-2"
       >
-        <div
-          className="icon mr-2"
-        >
-          <span
-            aria-hidden={true}
-            className="fa fa-exclamation-circle"
-            id="Icon1"
-          />
-        </div>
-        <div
-          className="message"
-        >
-          There are no results.
-        </div>
+        <span
+          aria-hidden={true}
+          className="fa fa-exclamation-circle"
+          id="Icon1"
+        />
+      </div>
+      <div
+        className="message"
+      >
+        There are no results.
       </div>
     </div>
   </div>

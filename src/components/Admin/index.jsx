@@ -212,10 +212,8 @@ class Admin extends React.Component {
 
     return (
       <Link to={path} className="reset btn btn-sm btn-outline-primary ml-3">
-        <span>
-          <Icon className={['fa', 'fa-undo', 'mr-2']} />
-          Reset to {this.getMetadataForAction().title}
-        </span>
+        <Icon className={['fa', 'fa-undo', 'mr-2']} />
+        Reset to {this.getMetadataForAction().title}
       </Link>
     );
   }
@@ -268,9 +266,9 @@ class Admin extends React.Component {
                 <div className="row">
                   <div className="col-12 col-md-6 pt-1 pb-3">
                     {lastUpdatedDate &&
-                      <span>
+                      <React.Fragment>
                         Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                      </span>
+                      </React.Fragment>
                     }
                   </div>
                   <div className="col-12 col-md-6 text-md-right">

@@ -132,14 +132,14 @@ class TableComponent extends React.Component {
     } = this.props;
 
     return (
-      <div>
+      <React.Fragment>
         {error && this.renderErrorMessage()}
         {loading && !data && this.renderLoadingMessage()}
         {!loading && !error && data && data.length === 0 &&
           this.renderEmptyDataMessage()
         }
         {data && data.length > 0 && this.renderTableContent()}
-      </div>
+      </React.Fragment>
     );
   }
 }
