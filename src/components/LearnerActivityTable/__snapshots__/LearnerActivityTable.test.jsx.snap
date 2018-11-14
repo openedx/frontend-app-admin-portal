@@ -1,444 +1,440 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LearnerActivityTable renders active learners table correctly 1`] = `
-<div>
+<div
+  className="active-week"
+>
   <div
-    className="active-week"
+    className="row"
   >
     <div
-      className="row"
+      className="col"
     >
       <div
-        className="col"
+        className="table-responsive"
       >
-        <div
-          className="table-responsive"
+        <table
+          className="table table-sm table-striped"
         >
-          <table
-            className="table table-sm table-striped"
+          <thead
+            className=""
           >
-            <thead
+            <tr
               className=""
             >
-              <tr
-                className=""
+              <th
+                className="sortable"
+                scope="col"
               >
-                <th
-                  className="sortable"
-                  scope="col"
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Email
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        sort ascending
-                      </span>
+                  <span>
+                    Email
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort-asc"
-                      />
+                      sort ascending
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort-asc"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Title
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Title
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Price
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Price
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Start Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Start Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      End Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    End Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Passed Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Passed Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Current Grade
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Current Grade
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Last Activity Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Last Activity Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className=""
+          >
+            <tr
               className=""
             >
-              <tr
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  awesome.me@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Dive into ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  September 23, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  66%
-                </td>
-                <td
-                  className=""
-                >
-                  September 22, 2018
-                </td>
-              </tr>
-              <tr
+                awesome.me@example.com
+              </td>
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  new@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Redux with ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  September 22, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  80%
-                </td>
-                <td
-                  className=""
-                >
-                  September 25, 2018
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                Dive into ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                September 23, 2018
+              </td>
+              <td
+                className=""
+              >
+                66%
+              </td>
+              <td
+                className=""
+              >
+                September 22, 2018
+              </td>
+            </tr>
+            <tr
+              className=""
+            >
+              <td
+                className=""
+              >
+                new@example.com
+              </td>
+              <td
+                className=""
+              >
+                Redux with ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                September 22, 2018
+              </td>
+              <td
+                className=""
+              >
+                80%
+              </td>
+              <td
+                className=""
+              >
+                September 25, 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
+  <div
+    className="row mt-2"
+  >
     <div
-      className="row mt-2"
+      className="col d-flex justify-content-center"
     >
-      <div
-        className="col d-flex justify-content-center"
+      <nav
+        aria-label="active-week-pagination"
+        className=""
       >
-        <nav
-          aria-label="active-week-pagination"
-          className=""
+        <div
+          aria-atomic={true}
+          aria-live="polite"
+          aria-relevant="text"
+          className="sr-only"
         >
-          <div
-            aria-atomic={true}
-            aria-live="polite"
-            aria-relevant="text"
-            className="sr-only"
+          Page 1, Current Page, of 1
+        </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item disabled"
           >
-            Page 1, Current Page, of 1
-          </div>
-          <ul
-            className="pagination"
+            <button
+              aria-label="Previous"
+              className="btn previous page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
+            >
+              <div>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-left mr-2"
+                  id="pagination-2"
+                />
+                Previous
+              </div>
+            </button>
+          </li>
+          <li
+            className="page-item disabled"
           >
-            <li
-              className="page-item disabled"
+            <button
+              aria-label="Next"
+              className="btn next page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
             >
-              <button
-                aria-label="Previous"
-                className="btn previous page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-left mr-2"
-                    id="pagination-2"
-                  />
-                  Previous
-                </div>
-              </button>
-            </li>
-            <li
-              className="page-item disabled"
-            >
-              <button
-                aria-label="Next"
-                className="btn next page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  Next
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-right ml-2"
-                    id="pagination-3"
-                  />
-                </div>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <div>
+                Next
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-right ml-2"
+                  id="pagination-3"
+                />
+              </div>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>
 `;
 
 exports[`LearnerActivityTable renders empty state correctly 1`] = `
-<div>
+<div
+  className="alert fade alert-warning show"
+  hidden={false}
+  role="alert"
+>
   <div
-    className="alert fade alert-warning show"
-    hidden={false}
-    role="alert"
+    className="alert-dialog"
   >
     <div
-      className="alert-dialog"
+      className="d-flex"
     >
       <div
-        className="d-flex"
+        className="icon mr-2"
       >
-        <div
-          className="icon mr-2"
-        >
-          <span
-            aria-hidden={true}
-            className="fa fa-exclamation-circle"
-            id="Icon1"
-          />
-        </div>
-        <div
-          className="message"
-        >
-          There are no results.
-        </div>
+        <span
+          aria-hidden={true}
+          className="fa fa-exclamation-circle"
+          id="Icon1"
+        />
+      </div>
+      <div
+        className="message"
+      >
+        There are no results.
       </div>
     </div>
   </div>
@@ -446,750 +442,746 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
 `;
 
 exports[`LearnerActivityTable renders inactive past month learners table correctly 1`] = `
-<div>
+<div
+  className="inactive-month"
+>
   <div
-    className="inactive-month"
+    className="row"
   >
     <div
-      className="row"
+      className="col"
     >
       <div
-        className="col"
+        className="table-responsive"
       >
-        <div
-          className="table-responsive"
+        <table
+          className="table table-sm table-striped"
         >
-          <table
-            className="table table-sm table-striped"
+          <thead
+            className=""
           >
-            <thead
+            <tr
               className=""
             >
-              <tr
-                className=""
+              <th
+                className="sortable"
+                scope="col"
               >
-                <th
-                  className="sortable"
-                  scope="col"
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Email
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        sort ascending
-                      </span>
+                  <span>
+                    Email
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort-asc"
-                      />
+                      sort ascending
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort-asc"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Title
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Title
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Price
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Price
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Start Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Start Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      End Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    End Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Current Grade
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Current Grade
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Last Activity Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Last Activity Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className=""
+          >
+            <tr
               className=""
             >
-              <tr
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  awesome.me@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Dive into ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  66%
-                </td>
-                <td
-                  className=""
-                >
-                  September 22, 2018
-                </td>
-              </tr>
-              <tr
+                awesome.me@example.com
+              </td>
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  new@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Redux with ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  80%
-                </td>
-                <td
-                  className=""
-                >
-                  September 25, 2018
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                Dive into ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                66%
+              </td>
+              <td
+                className=""
+              >
+                September 22, 2018
+              </td>
+            </tr>
+            <tr
+              className=""
+            >
+              <td
+                className=""
+              >
+                new@example.com
+              </td>
+              <td
+                className=""
+              >
+                Redux with ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                80%
+              </td>
+              <td
+                className=""
+              >
+                September 25, 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
+  <div
+    className="row mt-2"
+  >
     <div
-      className="row mt-2"
+      className="col d-flex justify-content-center"
     >
-      <div
-        className="col d-flex justify-content-center"
+      <nav
+        aria-label="inactive-month-pagination"
+        className=""
       >
-        <nav
-          aria-label="inactive-month-pagination"
-          className=""
+        <div
+          aria-atomic={true}
+          aria-live="polite"
+          aria-relevant="text"
+          className="sr-only"
         >
-          <div
-            aria-atomic={true}
-            aria-live="polite"
-            aria-relevant="text"
-            className="sr-only"
+          Page 1, Current Page, of 1
+        </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item disabled"
           >
-            Page 1, Current Page, of 1
-          </div>
-          <ul
-            className="pagination"
+            <button
+              aria-label="Previous"
+              className="btn previous page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
+            >
+              <div>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-left mr-2"
+                  id="pagination-6"
+                />
+                Previous
+              </div>
+            </button>
+          </li>
+          <li
+            className="page-item disabled"
           >
-            <li
-              className="page-item disabled"
+            <button
+              aria-label="Next"
+              className="btn next page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
             >
-              <button
-                aria-label="Previous"
-                className="btn previous page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-left mr-2"
-                    id="pagination-6"
-                  />
-                  Previous
-                </div>
-              </button>
-            </li>
-            <li
-              className="page-item disabled"
-            >
-              <button
-                aria-label="Next"
-                className="btn next page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  Next
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-right ml-2"
-                    id="pagination-7"
-                  />
-                </div>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <div>
+                Next
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-right ml-2"
+                  id="pagination-7"
+                />
+              </div>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>
 `;
 
 exports[`LearnerActivityTable renders inactive past week learners table correctly 1`] = `
-<div>
+<div
+  className="inactive-week"
+>
   <div
-    className="inactive-week"
+    className="row"
   >
     <div
-      className="row"
+      className="col"
     >
       <div
-        className="col"
+        className="table-responsive"
       >
-        <div
-          className="table-responsive"
+        <table
+          className="table table-sm table-striped"
         >
-          <table
-            className="table table-sm table-striped"
+          <thead
+            className=""
           >
-            <thead
+            <tr
               className=""
             >
-              <tr
-                className=""
+              <th
+                className="sortable"
+                scope="col"
               >
-                <th
-                  className="sortable"
-                  scope="col"
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Email
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        sort ascending
-                      </span>
+                  <span>
+                    Email
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort-asc"
-                      />
+                      sort ascending
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort-asc"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Title
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Title
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Course Price
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Price
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Start Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Start Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      End Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    End Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Current Grade
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Current Grade
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-                <th
-                  className="sortable"
-                  scope="col"
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="btn btn-header"
-                    onBlur={[Function]}
-                    onClick={[Function]}
-                    onKeyDown={[Function]}
-                    type="button"
-                  >
-                    <span>
-                      Last Activity Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Last Activity Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            className=""
+          >
+            <tr
               className=""
             >
-              <tr
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  awesome.me@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Dive into ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  66%
-                </td>
-                <td
-                  className=""
-                >
-                  September 22, 2018
-                </td>
-              </tr>
-              <tr
+                awesome.me@example.com
+              </td>
+              <td
                 className=""
               >
-                <td
-                  className=""
-                >
-                  new@example.com
-                </td>
-                <td
-                  className=""
-                >
-                  Redux with ReactJS
-                </td>
-                <td
-                  className=""
-                >
-                  $200
-                </td>
-                <td
-                  className=""
-                >
-                  October 21, 2017
-                </td>
-                <td
-                  className=""
-                >
-                  May 13, 2018
-                </td>
-                <td
-                  className=""
-                >
-                  80%
-                </td>
-                <td
-                  className=""
-                >
-                  September 25, 2018
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                Dive into ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                66%
+              </td>
+              <td
+                className=""
+              >
+                September 22, 2018
+              </td>
+            </tr>
+            <tr
+              className=""
+            >
+              <td
+                className=""
+              >
+                new@example.com
+              </td>
+              <td
+                className=""
+              >
+                Redux with ReactJS
+              </td>
+              <td
+                className=""
+              >
+                $200
+              </td>
+              <td
+                className=""
+              >
+                October 21, 2017
+              </td>
+              <td
+                className=""
+              >
+                May 13, 2018
+              </td>
+              <td
+                className=""
+              >
+                80%
+              </td>
+              <td
+                className=""
+              >
+                September 25, 2018
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
+  <div
+    className="row mt-2"
+  >
     <div
-      className="row mt-2"
+      className="col d-flex justify-content-center"
     >
-      <div
-        className="col d-flex justify-content-center"
+      <nav
+        aria-label="inactive-week-pagination"
+        className=""
       >
-        <nav
-          aria-label="inactive-week-pagination"
-          className=""
+        <div
+          aria-atomic={true}
+          aria-live="polite"
+          aria-relevant="text"
+          className="sr-only"
         >
-          <div
-            aria-atomic={true}
-            aria-live="polite"
-            aria-relevant="text"
-            className="sr-only"
+          Page 1, Current Page, of 1
+        </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item disabled"
           >
-            Page 1, Current Page, of 1
-          </div>
-          <ul
-            className="pagination"
+            <button
+              aria-label="Previous"
+              className="btn previous page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
+            >
+              <div>
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-left mr-2"
+                  id="pagination-4"
+                />
+                Previous
+              </div>
+            </button>
+          </li>
+          <li
+            className="page-item disabled"
           >
-            <li
-              className="page-item disabled"
+            <button
+              aria-label="Next"
+              className="btn next page-link"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              tabIndex="-1"
+              type="button"
             >
-              <button
-                aria-label="Previous"
-                className="btn previous page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-left mr-2"
-                    id="pagination-4"
-                  />
-                  Previous
-                </div>
-              </button>
-            </li>
-            <li
-              className="page-item disabled"
-            >
-              <button
-                aria-label="Next"
-                className="btn next page-link"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                tabIndex="-1"
-                type="button"
-              >
-                <div>
-                  Next
-                  <span
-                    aria-hidden={true}
-                    className="fa fa-chevron-right ml-2"
-                    id="pagination-5"
-                  />
-                </div>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <div>
+                Next
+                <span
+                  aria-hidden={true}
+                  className="fa fa-chevron-right ml-2"
+                  id="pagination-5"
+                />
+              </div>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

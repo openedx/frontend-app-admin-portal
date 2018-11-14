@@ -7,8 +7,13 @@ import './LoadingMessage.scss';
 const LoadingMessage = (props) => {
   const { className } = props;
   return (
-    <div className={classNames(className, 'loading d-flex align-items-center justify-content-center')}>
-      <span>Loading...</span>
+    <div
+      className={classNames(
+        'loading d-flex align-items-center justify-content-center',
+        className,
+      )}
+    >
+      Loading...
     </div>
   );
 };
