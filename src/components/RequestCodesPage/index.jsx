@@ -17,10 +17,6 @@ class RequestCodesPage extends React.Component {
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchPortalConfiguration(this.props.enterpriseSlug);
-  }
-
   renderRedirect() {
     const { match: { url } } = this.props;
 
@@ -89,8 +85,6 @@ RequestCodesPage.defaultProps = {
 };
 
 RequestCodesPage.propTypes = {
-  fetchPortalConfiguration: PropTypes.func.isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string,
   emailAddress: PropTypes.string,
   match: PropTypes.shape({

@@ -23,13 +23,11 @@ class CodeManagement extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId, enterpriseSlug } = this.props;
+    const { enterpriseId } = this.props;
 
     if (enterpriseId) {
       this.props.fetchCouponOrders();
     }
-
-    this.props.fetchPortalConfiguration(enterpriseSlug);
   }
 
   componentDidUpdate(prevProps) {
@@ -216,8 +214,6 @@ CodeManagement.defaultProps = {
 };
 
 CodeManagement.propTypes = {
-  fetchPortalConfiguration: PropTypes.func.isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
   fetchCouponOrders: PropTypes.func.isRequired,
   clearCouponOrders: PropTypes.func.isRequired,
   location: PropTypes.shape({
