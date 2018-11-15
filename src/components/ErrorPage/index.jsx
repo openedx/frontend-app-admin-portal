@@ -10,7 +10,7 @@ const ErrorPage = (props) => {
   const errorMessage = props.message || 'An unknown error has occured.';
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       {props.status === 404 ? (
         <NotFoundPage />
       ) : (

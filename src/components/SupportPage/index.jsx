@@ -5,7 +5,7 @@ import { MailtoLink } from '@edx/paragon';
 import H1 from '../../components/H1';
 
 const SupportPage = () => (
-  <div className="container mt-3">
+  <div className="container-fluid mt-3">
     <Helmet>
       <title>Support</title>
     </Helmet>

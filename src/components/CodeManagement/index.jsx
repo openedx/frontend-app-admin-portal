@@ -164,7 +164,7 @@ class CodeManagement extends React.Component {
           <title>Code Management</title>
         </Helmet>
         <Hero title="Code Management" />
-        <div className="container">
+        <div className="container-fluid">
           {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
           <div className="row mt-4 mb-3">
             <div className="col-12 col-md-3 mb-2 mb-md-0">

@@ -100,7 +100,7 @@ class EnterpriseList extends React.Component {
         <Helmet>
           <title>Enterprise List</title>
         </Helmet>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row mt-4">
             <div className="col-sm-12 col-md">
               <H1>Enterprise List</H1>

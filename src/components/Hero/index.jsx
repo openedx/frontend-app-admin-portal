@@ -8,7 +8,7 @@ import './Hero.scss';
 
 const Hero = props => (
   <div className="hero py-4 pt-md-5 pb-md-0">
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-12 col-md-9 mb-2 mb-md-1">
           <H1>{props.title}</H1>

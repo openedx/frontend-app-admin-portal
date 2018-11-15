@@ -237,7 +237,7 @@ class Admin extends React.Component {
           <title>Learner and Progress Report</title>
         </Helmet>
         <Hero title="Learner and Progress Report" />
-        <div className="container">
+        <div className="container-fluid">
           <div className="row mt-4">
             <div className="col">
               <H2>Overview</H2>
