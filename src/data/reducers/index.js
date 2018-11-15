@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import courseOutline from './courseOutline';
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
 import table from './table';
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   // creating the store in data/store.js.
   authentication: identityReducer,
   routerReducer,
-  courseOutline,
   dashboardAnalytics,
   portalConfiguration,
   table,
