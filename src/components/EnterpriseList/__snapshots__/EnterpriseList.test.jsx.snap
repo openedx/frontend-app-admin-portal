@@ -2,7 +2,7 @@
 
 exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -105,7 +105,7 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
 
 exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -208,7 +208,7 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
 
 exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -311,7 +311,7 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
 
 exports[`<EnterpriseList /> renders correctly with error state 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -414,7 +414,7 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
 
 exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -517,7 +517,7 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 
 exports[`<EnterpriseList /> renders correctly with search query and empty enterprises data 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"

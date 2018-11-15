@@ -6,7 +6,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -32,7 +32,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -133,7 +133,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -159,7 +159,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -709,7 +709,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -735,7 +735,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -1285,7 +1285,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -1311,7 +1311,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -1866,7 +1866,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -1892,7 +1892,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -2429,7 +2429,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -2455,7 +2455,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -2992,7 +2992,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -3018,7 +3018,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -3573,7 +3573,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -3599,7 +3599,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -4154,7 +4154,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -4180,7 +4180,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -4733,7 +4733,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -4759,7 +4759,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -5309,7 +5309,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -5335,7 +5335,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -5890,7 +5890,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -5916,7 +5916,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"
@@ -6025,7 +6025,7 @@ Array [
     className="hero py-4 pt-md-5 pb-md-0"
   >
     <div
-      className="container"
+      className="container-fluid"
     >
       <div
         className="row"
@@ -6051,7 +6051,7 @@ Array [
     </div>
   </div>,
   <div
-    className="container"
+    className="container-fluid"
   >
     <div
       className="row mt-4"

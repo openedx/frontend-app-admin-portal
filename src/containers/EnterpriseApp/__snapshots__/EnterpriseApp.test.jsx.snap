@@ -2,7 +2,7 @@
 
 exports[`EnterpriseApp renders not found page correctly 1`] = `
 <div
-  className="container mt-3"
+  className="container-fluid mt-3"
 >
   <div
     className="text-center py-5"
