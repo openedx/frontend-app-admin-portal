@@ -2,7 +2,7 @@
 
 exports[`<ErrorPage /> renders correctly 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
     className="row mt-4"
@@ -41,10 +41,10 @@ exports[`<ErrorPage /> renders correctly 1`] = `
 
 exports[`<ErrorPage /> renders correctly for 404 errors 1`] = `
 <div
-  className="container"
+  className="container-fluid"
 >
   <div
-    className="container mt-3"
+    className="container-fluid mt-3"
   >
     <div
       className="text-center py-5"

@@ -2,7 +2,7 @@
 
 exports[`<Header /> renders default profile image correctly 1`] = `
 <header
-  className="container"
+  className="container-fluid"
 >
   <nav
     className="navbar px-0 justify-content-between"
@@ -78,7 +78,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
 
 exports[`<Header /> renders edX logo correctly 1`] = `
 <header
-  className="container"
+  className="container-fluid"
 >
   <nav
     className="navbar px-0 justify-content-between"
@@ -107,7 +107,7 @@ exports[`<Header /> renders edX logo correctly 1`] = `
 
 exports[`<Header /> renders enterprise logo correctly 1`] = `
 <header
-  className="container"
+  className="container-fluid"
 >
   <nav
     className="navbar px-0 justify-content-between"
@@ -183,7 +183,7 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
 
 exports[`<Header /> renders profile image correctly 1`] = `
 <header
-  className="container"
+  className="container-fluid"
 >
   <nav
     className="navbar px-0 justify-content-between"

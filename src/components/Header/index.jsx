@@ -38,7 +38,7 @@ class Header extends React.Component {
   render() {
     const { email } = this.props;
     return (
-      <header className="container">
+      <header className="container-fluid">
         <nav className="navbar px-0 justify-content-between">
           <div>
             <Link
