@@ -31,8 +31,6 @@ class Admin extends React.Component {
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
     }
-
-    this.props.fetchPortalConfiguration(this.props.enterpriseSlug);
   }
 
   componentDidUpdate(prevProps) {
@@ -315,9 +313,7 @@ Admin.defaultProps = {
 
 Admin.propTypes = {
   fetchDashboardAnalytics: PropTypes.func.isRequired,
-  fetchPortalConfiguration: PropTypes.func.isRequired,
   clearDashboardAnalytics: PropTypes.func.isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string,
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
@@ -329,7 +325,7 @@ Admin.propTypes = {
   lastUpdatedDate: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
-  csv: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  csv: PropTypes.shape({}),
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({

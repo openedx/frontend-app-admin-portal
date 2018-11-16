@@ -13,6 +13,14 @@ import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 class EnterpriseApp extends React.Component {
+  componentDidMount() {
+    const {
+      match: { params: { enterpriseSlug } },
+    } = this.props;
+
+    this.props.fetchPortalConfiguration(enterpriseSlug);
+  }
+
   renderError(error) {
     return (
       <ErrorPage
@@ -24,7 +32,6 @@ class EnterpriseApp extends React.Component {
   render() {
     const { error, match } = this.props;
     const baseUrl = match.url;
-    const { enterpriseSlug } = match.params;
 
     if (error) {
       return this.renderError(error);
@@ -41,26 +48,26 @@ class EnterpriseApp extends React.Component {
           <Route
             exact
             path={`${baseUrl}/admin/learners/:actionSlug?`}
-            render={routeProps => <AdminPage {...routeProps} enterpriseSlug={enterpriseSlug} />}
+            render={routeProps => <AdminPage {...routeProps} />}
           />
-          {features.CODE_MANAGEMENT &&
-            <React.Fragment>
-              <Route
-                exact
-                path={`${baseUrl}/admin/codes`}
-                render={routeProps =>
-                  <CodeManagementPage {...routeProps} enterpriseSlug={enterpriseSlug} />
-                }
-              />
-              <Route
-                exact
-                path={`${baseUrl}/admin/codes/request`}
-                render={routeProps =>
-                  <RequestCodesPage {...routeProps} enterpriseSlug={enterpriseSlug} />
-                }
-              />
-            </React.Fragment>
-          }
+          {features.CODE_MANAGEMENT && [
+            <Route
+              key="code-management"
+              exact
+              path={`${baseUrl}/admin/codes`}
+              render={routeProps =>
+                <CodeManagementPage {...routeProps} />
+              }
+            />,
+            <Route
+              key="request-codes"
+              exact
+              path={`${baseUrl}/admin/codes/request`}
+              render={routeProps =>
+                <RequestCodesPage {...routeProps} />
+              }
+            />,
+          ]}
           <Route exact path={`${baseUrl}/support`} component={SupportPage} />
           <Route path="" component={NotFoundPage} />
         </Switch>
@@ -76,6 +83,7 @@ EnterpriseApp.propTypes = {
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  fetchPortalConfiguration: PropTypes.func.isRequired,
   error: PropTypes.instanceOf(Error),
 };
 

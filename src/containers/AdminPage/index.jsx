@@ -5,7 +5,7 @@ import {
   clearDashboardAnalytics,
   fetchDashboardAnalytics,
 } from '../../data/actions/dashboardAnalytics';
-import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
+
 import Admin from '../../components/Admin';
 
 const mapStateToProps = state => ({
@@ -22,9 +22,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPortalConfiguration: (slug) => {
-    dispatch(fetchPortalConfiguration(slug));
-  },
   fetchDashboardAnalytics: (enterpriseId) => {
     dispatch(fetchDashboardAnalytics(enterpriseId));
   },
