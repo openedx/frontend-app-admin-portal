@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CoursewarePage from '../../containers/CoursewarePage';
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
@@ -39,7 +38,6 @@ class EnterpriseApp extends React.Component {
             from={baseUrl}
             to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
           />
-          <Route exact path={`${baseUrl}/courses/:courseId`} component={CoursewarePage} />
           <Route
             exact
             path={`${baseUrl}/admin/learners/:actionSlug?`}
