@@ -66,8 +66,6 @@ const getPageOptionsFromUrl = () => {
 
 const removeTrailingSlash = path => path.replace(/\/$/, '');
 
-const isRoutePublic = path => /^\/public.*$/.test(path);
-
 const isTriggerKey = ({ triggerKeys, action, key }) => (
   triggerKeys[action].indexOf(key) > -1
 );
@@ -79,6 +77,5 @@ export {
   removeTrailingSlash,
   updateUrl,
   getPageOptionsFromUrl,
-  isRoutePublic,
   isTriggerKey,
 };

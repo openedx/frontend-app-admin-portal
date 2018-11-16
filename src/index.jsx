@@ -20,7 +20,6 @@ import SupportPage from './components/SupportPage';
 import apiClient from './data/apiClient';
 import store from './data/store';
 import history from './data/history';
-import { isRoutePublic } from './utils';
 import './index.scss';
 
 const AppWrapper = () => (
@@ -60,9 +59,6 @@ const AppWrapper = () => (
   </Provider>
 );
 
-const currentPath = window.location.pathname;
-if (isRoutePublic(currentPath) || apiClient.isAuthenticated()) {
+if (apiClient.ensurePublicOrAuthencationAndCookies(window.location.pathname)) {
   ReactDOM.render(<AppWrapper />, document.getElementById('root'));
-} else {
-  apiClient.login(process.env.BASE_URL + currentPath);
 }
