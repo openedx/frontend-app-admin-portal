@@ -8,7 +8,6 @@ import table from './table';
 import csv from './csv';
 import userProfile from './userProfile';
 import coupons from './coupons';
-import requestCodes from './requestCodes';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
   csv,
   userProfile,
   coupons,
-  requestCodes,
 });
 
 export default rootReducer;

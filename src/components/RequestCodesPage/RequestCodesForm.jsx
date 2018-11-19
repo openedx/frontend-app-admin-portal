@@ -1,95 +1,156 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { Button, InputText } from '@edx/paragon';
+import isEmail from 'validator/lib/isEmail';
+import isEmpty from 'validator/lib/isEmpty';
+import isNumeric from 'validator/lib/isNumeric';
+import { Link, Redirect } from 'react-router-dom';
+import { Button, Icon } from '@edx/paragon';
 
-const required = value => (value || typeof value === 'number' ? undefined : 'Required');
-const maxLength = max => value =>
-  (value && value.length > max ? `Must be ${max} characters or less` : undefined);
-const maxLength255 = maxLength(255);
-export const minLength = min => value =>
-  (value && value.length < min ? `Must be ${min} characters or more` : undefined);
-export const minLength1 = minLength(1);
-const number = value =>
-  (value && Number.isNaN(Number(value)) ? 'Must be a number' : undefined);
-const minValue = min => value =>
-  (value && value < min ? `Must be at least ${min}` : undefined);
-const minValue1 = minValue(1);
-const email = value =>
-  (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email address'
-    : undefined);
-const alphaNumeric = value =>
-  (value && /[^a-zA-Z0-9 ]/i.test(value)
-    ? 'Only alphanumeric characters'
-    : undefined);
+import RenderField from './RenderField';
+import StatusAlert from '../StatusAlert';
 
-const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning },
-}) => (
-  <div>
-    <InputText {...input} type={type} label={label} />
-    { touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>)) }
-  </div>
-);
+const isRequired = value => (isEmpty(value) ? 'This field is required.' : null);
+const isValidEmail = value => (!isEmail(value) ? 'Must be a valid email address.' : null);
+const isValidNumber = value => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : null);
 
-const RequestCodesForm = (props) => {
-  const {
-    handleSubmit,
-    submitting,
-  } = props;
-  return (
-    <form>
-      <Field
-        name="emailAddress"
-        type="email"
-        component={renderField}
-        label="Email Address"
-        validate={[required, email]}
+class RequestCodesForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.renderRedirect = this.renderRedirect.bind(this);
+  }
+
+  getPathToCodeManagement() {
+    const { match: { url } } = this.props;
+
+    // Remove `/request` from the url so it renders Code Management page again
+    return url.split('/').slice(0, -1).join('/');
+  }
+
+  renderErrorMessage() {
+    const { error: { message } } = this.props;
+
+    return (
+      <StatusAlert
+        className={['mt-3']}
+        alertType="danger"
+        iconClassNames={['fa', 'fa-times-circle']}
+        title="Unable to request more codes"
+        message={`Try refreshing your screen (${message})`}
       />
-      <Field
-        name="enterpriseName"
-        type="text"
-        component={renderField}
-        label="Company"
-        validate={[required, maxLength255, minLength1]}
-        warn={alphaNumeric}
-      />
-      <Field
-        name="numberOfCodes"
-        type="number"
-        component={renderField}
-        label="Number of Codes (optional)"
-        validate={[number, minValue1]}
-      />
-      <div>
-        <Button label="Request Codes" onClick={handleSubmit} disabled={submitting} buttonType="primary">
-          Request Codes
-        </Button>
-      </div>
-    </form>
-  );
-};
+    );
+  }
 
-renderField.propTypes = {
-  input: PropTypes.shape({}).isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  meta: PropTypes.shape({
-    touched: PropTypes.bool,
-    error: PropTypes.string,
-    warning: PropTypes.string,
-  }).isRequired,
+  renderRedirect() {
+    return (
+      <Redirect
+        to={{
+          pathname: this.getPathToCodeManagement(),
+          state: { hasRequestedCodes: true },
+        }}
+      />
+    );
+  }
+
+  render() {
+    const {
+      handleSubmit,
+      submitting,
+      invalid,
+      submitSucceeded,
+      submitFailed,
+      error,
+    } = this.props;
+
+    return (
+      <React.Fragment>
+        {submitFailed && error && this.renderErrorMessage()}
+        <div className="request-codes-form row">
+          <div className="col-12 col-md-6 col-lg-4">
+            <form onSubmit={handleSubmit}>
+              <Field
+                name="emailAddress"
+                type="email"
+                component={RenderField}
+                label={
+                  <React.Fragment>
+                    Email Address
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired, isValidEmail]}
+                required
+              />
+              <Field
+                name="enterpriseName"
+                type="text"
+                component={RenderField}
+                label={
+                  <React.Fragment>
+                    Company
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired]}
+                required
+                disabled
+              />
+              <Field
+                name="numberOfCodes"
+                type="number"
+                component={RenderField}
+                label="Number of Codes"
+                validate={[isValidNumber]}
+              />
+              <Button
+                label={
+                  <React.Fragment>
+                    {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
+                    Request Codes
+                  </React.Fragment>
+                }
+                type="submit"
+                disabled={invalid || submitting}
+                buttonType="primary"
+              />
+              <Link
+                className={['btn btn-link ml-3 form-cancel-btn']}
+                to={this.getPathToCodeManagement()}
+              >
+                Cancel
+              </Link>
+            </form>
+          </div>
+        </div>
+        {submitSucceeded && this.renderRedirect()}
+      </React.Fragment>
+    );
+  }
+}
+
+RequestCodesForm.defaultProps = {
+  error: null,
 };
 
 RequestCodesForm.propTypes = {
-  handleSubmit: PropTypes.shape({}).isRequired,
+  // props From redux-form
+  handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  invalid: PropTypes.bool.isRequired,
+  submitSucceeded: PropTypes.bool.isRequired,
+  submitFailed: PropTypes.bool.isRequired,
+  error: PropTypes.instanceOf(Error),
+
+  // custom props
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+  }).isRequired,
+  initialValues: PropTypes.shape({ // eslint-disable-line react/no-unused-prop-types
+    emailAddress: PropTypes.string.isRequired,
+    enterpriseName: PropTypes.string.isRequired,
+    numberOfCodes: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default reduxForm({
-  form: 'RequestCodesForm',
-})(RequestCodesForm);
+export default reduxForm({ form: 'request-codes-form' })(RequestCodesForm);

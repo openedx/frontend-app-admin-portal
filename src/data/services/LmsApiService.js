@@ -30,17 +30,6 @@ class LmsApiService {
     return apiClient.get(enterpriseListUrl);
   }
 
-  static requestCodes(options) {
-    const postParams = {
-      email: options.emailAddress,
-      enterprise_name: options.enterpriseName,
-      number_of_codes: options.numberOfCodes,
-    };
-    const requestCodesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/request_codes`;
-    const format = 'json';
-    return apiClient.post(requestCodesUrl, postParams, format);
-  }
-
   static fetchEnterpriseBySlug(slug) {
     return this.fetchEnterpriseList({ slug })
       // Because we expect only one enterprise by slug we return only the first result
@@ -55,6 +44,16 @@ class LmsApiService {
 
   static fetchUserProfile(username) {
     return apiClient.get(`${LmsApiService.baseUrl}/api/user/v1/accounts/${username}`);
+  }
+
+  static requestCodes(options) {
+    const postParams = {
+      email: options.emailAddress,
+      enterprise_name: options.enterpriseName,
+      number_of_codes: options.numberOfCodes,
+    };
+    const requestCodesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/request_codes`;
+    return apiClient.post(requestCodesUrl, postParams, 'json');
   }
 }
 
