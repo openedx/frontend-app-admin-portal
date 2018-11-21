@@ -40,7 +40,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
             Valid From
           </small>
           <div>
-            
+            June 1, 2018
           </div>
         </div>
         <div
@@ -52,7 +52,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
             Valid To
           </small>
           <div>
-            
+            February 1, 2019
           </div>
         </div>
       </div>
@@ -170,7 +170,7 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
             Valid From
           </small>
           <div>
-            
+            June 1, 2018
           </div>
         </div>
         <div
@@ -182,7 +182,7 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
             Valid To
           </small>
           <div>
-            
+            February 1, 2019
           </div>
         </div>
       </div>
@@ -290,7 +290,7 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
             Valid From
           </small>
           <div>
-            
+            June 1, 2018
           </div>
         </div>
         <div
@@ -302,7 +302,7 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
             Valid To
           </small>
           <div>
-            
+            February 1, 2019
           </div>
         </div>
       </div>

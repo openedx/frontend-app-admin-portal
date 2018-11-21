@@ -1,6 +1,5 @@
 import faker from 'faker';
 
-import { formatTimestamp } from '../utils';
 import { configuration } from '../config';
 
 const couponsCount = 15;
@@ -23,10 +22,8 @@ const coupons = {
     return {
       id: index,
       title: faker.random.words(),
-      start_date: formatTimestamp({ timestamp: validFromDate.toUTCString() }),
-      end_date: formatTimestamp({
-        timestamp: faker.date.future(null, validFromDate).toUTCString(),
-      }),
+      start_date: validFromDate.toISOString(),
+      end_date: faker.date.future(null, validFromDate).toISOString(),
       num_unassigned: faker.random.number({ min: 1, max: 20 }),
       num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
       max_uses: faker.random.boolean() ? totalEnrollments : null,

@@ -25,8 +25,8 @@ const store = mockStore({
 const initialCouponData = {
   id: 1,
   title: 'Test Coupon',
-  start_date: '',
-  end_date: '',
+  start_date: '2018-06-01T12:00:00Z',
+  end_date: '2019-02-01T12:00:00Z',
   has_error: false,
   num_unassigned: 0,
   num_uses: 0,

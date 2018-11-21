@@ -5,7 +5,7 @@ import { Icon } from '@edx/paragon';
 
 import CouponDetails from '../../containers/CouponDetails';
 
-import { isTriggerKey } from '../../utils';
+import { isTriggerKey, formatTimestamp } from '../../utils';
 
 import './Coupon.scss';
 
@@ -150,11 +150,15 @@ class Coupon extends React.Component {
             <div className="row no-gutters">
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid From</small>
-                <div>{data.start_date}</div>
+                <div>
+                  {formatTimestamp({ timestamp: data.start_date })}
+                </div>
               </div>
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid To</small>
-                <div>{data.end_date}</div>
+                <div>
+                  {formatTimestamp({ timestamp: data.end_date })}
+                </div>
               </div>
             </div>
           </div>
