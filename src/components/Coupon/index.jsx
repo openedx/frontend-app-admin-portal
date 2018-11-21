@@ -102,7 +102,7 @@ class Coupon extends React.Component {
     if (maxUses) {
       const percentUsed = Math.round((numUses / maxUses) * 100);
       children.push((
-        <span className="ml-1">
+        <span key="percent-redemptions-used" className="ml-1">
           {`(${percentUsed}%)`}
         </span>
       ));
@@ -195,7 +195,7 @@ Coupon.propTypes = {
     start_date: PropTypes.string.isRequired,
     end_date: PropTypes.string.isRequired,
     has_error: PropTypes.bool.isRequired,
-    num_assigned: PropTypes.number.isRequired,
+    num_unassigned: PropTypes.number.isRequired,
     num_uses: PropTypes.number.isRequired,
     max_uses: PropTypes.number,
   }).isRequired,
