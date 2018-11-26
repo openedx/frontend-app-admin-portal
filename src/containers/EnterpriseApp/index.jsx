@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import EnterpriseApp from '../../components/EnterpriseApp';
 
 import { fetchPortalConfiguration } from '../../data/actions/portalConfiguration';
+import { toggleSidebarToggle } from '../../data/actions/sidebar';
 
 const mapStateToProps = (state) => {
   const enterpriseListState = state.table['enterprise-list'] || {};
@@ -16,6 +17,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   fetchPortalConfiguration: (slug) => {
     dispatch(fetchPortalConfiguration(slug));
+  },
+  toggleSidebarToggle: () => {
+    dispatch(toggleSidebarToggle());
   },
 });
 

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import Header from '../../components/Header';
 import fetchUserProfile from '../../data/actions/userProfile';
 
@@ -9,6 +10,7 @@ const mapStateToProps = state => ({
   email: state.authentication.email,
   username: state.authentication.username,
   userProfile: state.userProfile.profile,
+  hasSidebarToggle: state.sidebar.hasSidebarToggle,
 });
 
 const mapDispatchToProps = dispatch => ({

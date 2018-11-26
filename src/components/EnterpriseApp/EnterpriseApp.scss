@@ -1,0 +1,17 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.enterprise-app {
+    position: relative;
+
+    .content-wrapper {
+        padding: 10px;
+
+        @include media-breakpoint-up(lg) {
+            & {
+                padding-left: 51px;
+            }
+        }
+    }
+}

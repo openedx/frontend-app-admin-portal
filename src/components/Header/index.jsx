@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Icon, Dropdown } from '@edx/paragon';
 
-import apiClient from '../../data/apiClient';
+import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
+
+import apiClient from '../../data/apiClient';
+
 import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
@@ -36,11 +39,12 @@ class Header extends React.Component {
   }
 
   render() {
-    const { email } = this.props;
+    const { email, hasSidebarToggle } = this.props;
     return (
       <header className="container-fluid">
         <nav className="navbar px-0 justify-content-between">
           <div>
+            {hasSidebarToggle && <SidebarToggle />}
             <Link
               to="/"
               className="navbar-brand"
@@ -69,6 +73,7 @@ Header.propTypes = {
   username: PropTypes.string,
   fetchUserProfile: PropTypes.func,
   userProfile: PropTypes.shape({}),
+  hasSidebarToggle: PropTypes.bool,
 };
 
 Header.defaultProps = {
@@ -78,6 +83,7 @@ Header.defaultProps = {
   username: null,
   fetchUserProfile: () => {},
   userProfile: null,
+  hasSidebarToggle: false,
 };
 
 export default Header;
