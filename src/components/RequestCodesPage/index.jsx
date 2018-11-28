@@ -1,41 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Redirect } from 'react-router-dom';
-import { Button, InputText } from '@edx/paragon';
+import { SubmissionError } from 'redux-form';
 
+import RequestCodesForm from './RequestCodesForm';
 import Hero from '../Hero';
+import LoadingMessage from '../LoadingMessage';
+
+import LmsApiService from '../../data/services/LmsApiService';
+
+import './RequestCodesPage.scss';
 
 class RequestCodesPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      submitted: false,
-    };
-
-    this.renderRedirect = this.renderRedirect.bind(this);
-  }
-
-  renderRedirect() {
-    const { match: { url } } = this.props;
-
-    // Remove `/request` from the url so it renders Code Management page again
-    const path = url.split('/').slice(0, -1).join('/');
-
-    return (
-      <Redirect
-        to={{
-          pathname: path,
-          state: { hasRequestedCodes: true },
-        }}
-      />
-    );
+  hasEmailAndEnterpriseName() {
+    const { emailAddress, enterpriseName } = this.props;
+    return !!(emailAddress && enterpriseName);
   }
 
   render() {
-    const { submitted } = this.state;
-    const { emailAddress, enterpriseName } = this.props;
+    const {
+      emailAddress,
+      enterpriseName,
+      match,
+    } = this.props;
 
     return (
       <React.Fragment>
@@ -45,32 +32,18 @@ class RequestCodesPage extends React.Component {
         <Hero title="Request More Codes" />
         <div className="container-fluid">
           <div className="row my-3">
-            <div className="col-12 col-md-5">
-              <form>
-                <InputText
-                  name="email"
-                  label="Email Address"
-                  type="email"
-                  value={emailAddress || ''}
+            <div className="col">
+              {this.hasEmailAndEnterpriseName() ? (
+                <RequestCodesForm
+                  onSubmit={options => (
+                    LmsApiService.requestCodes(options)
+                      .then(response => response)
+                      .catch((error) => { throw new SubmissionError({ _error: error }); })
+                  )}
+                  initialValues={{ emailAddress, enterpriseName, numberOfCodes: '' }}
+                  match={match}
                 />
-                <InputText
-                  name="company"
-                  label="Company"
-                  value={enterpriseName || ''}
-                  disabled
-                />
-                <InputText
-                  name="number-of-codes"
-                  label="Number of Codes (optional)"
-                  type="number"
-                />
-                <Button
-                  label="Request Codes"
-                  buttonType="primary"
-                  onClick={() => this.setState({ submitted: true })}
-                />
-              </form>
-              {submitted && this.renderRedirect()}
+              ) : <LoadingMessage className="request-codes" />}
             </div>
           </div>
         </div>

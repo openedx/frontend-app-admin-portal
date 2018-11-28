@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
+
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
 import table from './table';
@@ -16,6 +18,7 @@ const rootReducer = combineReducers({
   // The authentication state is added as initialState when
   // creating the store in data/store.js.
   authentication: identityReducer,
+  form: formReducer,
   routerReducer,
   dashboardAnalytics,
   portalConfiguration,
