@@ -1,6 +1,5 @@
 import faker from 'faker';
 
-import { formatTimestamp } from '../utils';
 import { configuration } from '../config';
 
 const couponsCount = 15;
@@ -23,14 +22,12 @@ const coupons = {
     return {
       id: index,
       title: faker.random.words(),
-      validFromDate: formatTimestamp({ timestamp: validFromDate.toUTCString() }),
-      validToDate: formatTimestamp({
-        timestamp: faker.date.future(null, validFromDate).toUTCString(),
-      }),
-      unassignedCodes: faker.random.number({ min: 1, max: 20 }),
-      enrollmentsRedeemed: faker.random.number({ min: 1, max: totalEnrollments }),
-      totalEnrollments,
-      hasError: false,
+      start_date: validFromDate.toISOString(),
+      end_date: faker.date.future(null, validFromDate).toISOString(),
+      num_unassigned: faker.random.number({ min: 1, max: 20 }),
+      num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
+      max_uses: faker.random.boolean() ? totalEnrollments : null,
+      has_error: false,
     };
   }),
 };
@@ -60,6 +57,7 @@ const getCodes = (couponHasError = false) => {
       const codeHasError = couponHasError && index <= 1;
       const isAssigned = codeHasError || faker.random.boolean();
       const assignedTo = getAssignedTo(isAssigned);
+
       return {
         title: Math.random().toString(36).substring(2).toUpperCase(),
         assigned_to: assignedTo.name,
@@ -76,7 +74,7 @@ const getCodes = (couponHasError = false) => {
   };
 };
 
-coupons.results[0].hasError = firstCouponHasError;
+coupons.results[0].has_error = firstCouponHasError;
 
 export {
   coupons,

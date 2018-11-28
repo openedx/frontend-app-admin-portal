@@ -5,7 +5,7 @@ import { Icon } from '@edx/paragon';
 
 import CouponDetails from '../../containers/CouponDetails';
 
-import { isTriggerKey } from '../../utils';
+import { isTriggerKey, formatTimestamp } from '../../utils';
 
 import './Coupon.scss';
 
@@ -88,6 +88,29 @@ class Coupon extends React.Component {
     );
   }
 
+  renderEnrollmentsRedeemed() {
+    const {
+      data: {
+        num_uses: numUses,
+        max_uses: maxUses,
+      },
+    } = this.props;
+
+    const text = maxUses ? `${numUses} of ${maxUses}` : numUses;
+    const children = [text];
+
+    if (maxUses) {
+      const percentUsed = Math.round((numUses / maxUses) * 100);
+      children.push((
+        <span key="percent-redemptions-used" className="ml-1">
+          {`(${percentUsed}%)`}
+        </span>
+      ));
+    }
+
+    return children;
+  }
+
   render() {
     const { detailsExpanded, dimmed } = this.state;
     const { data } = this.props;
@@ -98,7 +121,7 @@ class Coupon extends React.Component {
           'coupon mb-3 mb-lg-2 rounded border',
           {
             expanded: detailsExpanded,
-            'border-danger': data.hasError && !detailsExpanded,
+            'border-danger': data.has_error && !detailsExpanded,
             dimmed,
           },
         )}
@@ -127,11 +150,15 @@ class Coupon extends React.Component {
             <div className="row no-gutters">
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid From</small>
-                <div>{data.validFromDate}</div>
+                <div>
+                  {formatTimestamp({ timestamp: data.start_date })}
+                </div>
               </div>
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid To</small>
-                <div>{data.validToDate}</div>
+                <div>
+                  {formatTimestamp({ timestamp: data.end_date })}
+                </div>
               </div>
             </div>
           </div>
@@ -139,25 +166,22 @@ class Coupon extends React.Component {
             <div className="row no-gutters">
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Unassigned Codes</small>
-                <div>{data.unassignedCodes}</div>
+                <div>{data.num_unassigned}</div>
               </div>
               <div className="col">
                 <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Enrollments Redeemed</small>
                 <div>
-                  {`${data.enrollmentsRedeemed} of ${data.totalEnrollments}`}
-                  <span className="ml-1">
-                    {`(${Math.round((data.enrollmentsRedeemed / data.totalEnrollments) * 100)}%)`}
-                  </span>
+                  {this.renderEnrollmentsRedeemed()}
                 </div>
               </div>
             </div>
           </div>
           <div className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0">
-            {data.hasError && !detailsExpanded && this.renderErrorIcon()}
+            {data.has_error && !detailsExpanded && this.renderErrorIcon()}
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {<CouponDetails id={data.id} expanded={detailsExpanded} hasError={data.hasError} />}
+        {<CouponDetails id={data.id} expanded={detailsExpanded} hasError={data.has_error} />}
       </div>
     );
   }
@@ -170,7 +194,14 @@ Coupon.defaultProps = {
 
 Coupon.propTypes = {
   data: PropTypes.shape({
-    // ...
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    start_date: PropTypes.string.isRequired,
+    end_date: PropTypes.string.isRequired,
+    has_error: PropTypes.bool.isRequired,
+    num_unassigned: PropTypes.number.isRequired,
+    num_uses: PropTypes.number.isRequired,
+    max_uses: PropTypes.number,
   }).isRequired,
   onExpand: PropTypes.func,
   onCollapse: PropTypes.func,

@@ -1,4 +1,6 @@
 import faker from 'faker/locale/en';
+import moment from 'moment';
+
 import courses from './courses';
 import { coupons, codes } from './coupons';
 
@@ -6,16 +8,13 @@ const numEnrollments = 330;
 const numPassed = 120;
 
 const getEnrollments = () => {
-  const fromPastWeekDate = new Date();
-  const fromPastMonthDate = new Date();
-  const toPastMonthDate = new Date();
-  fromPastWeekDate.setDate(fromPastWeekDate.getDate() - 7);
-  fromPastMonthDate.setDate(fromPastMonthDate.getDate() - 30);
-  toPastMonthDate.setDate(toPastMonthDate.getDate() - 60);
+  const fromPastWeekDate = moment().subtract(1, 'week');
+  const fromPastMonthDate = moment().subtract(1, 'month');
+  const toPastMonthDate = moment().subtract(2, 'months');
   const dateInPastMonths = faker.date.between(fromPastMonthDate, toPastMonthDate);
   const dateInPastMonth = faker.date.between(fromPastWeekDate, fromPastMonthDate);
 
-  let enrollmentsData = [...Array(numEnrollments)].map((_, idx) => {
+  let enrollmentsData = [...Array(numEnrollments)].map((_, index) => {
     // Although we don't pass first & lastname, this makes our emails more consistent
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
@@ -24,24 +23,24 @@ const getEnrollments = () => {
     const course = courses[faker.random.number({ max: courses.length - 1 })];
     const courseStart = faker.date.past();
     const courseEnd = faker.date.future();
-    const hasPassed = idx < numPassed;
+    const hasPassed = index < numPassed;
     const grade = hasPassed ? faker.random.number({ min: 70, max: 100 }) :
       faker.random.number({ max: 70 });
     const lastActivityDate = hasPassed ? faker.date.recent(7) : dateInPastMonths;
+    const passedTimestamp = hasPassed ? faker.date.recent(7) : null;
 
     return {
-      id: idx,
+      id: index,
       user_email: faker.internet.email(firstName, lastName, provider),
       consent_granted: true,
       course_title: course.title,
       course_price: course.price,
-      course_start: courseStart,
-      course_end: courseEnd,
-      passed_timestamp: hasPassed ? faker.date.recent(7)
-        : null,
+      course_start: courseStart.toISOString(),
+      course_end: courseEnd.toISOString(),
+      passed_timestamp: passedTimestamp && passedTimestamp.toISOString(),
       has_passed: hasPassed,
       current_grade: grade / 100,
-      last_activity_date: lastActivityDate,
+      last_activity_date: lastActivityDate && lastActivityDate.toISOString(),
     };
   });
 
@@ -89,7 +88,7 @@ const filterEnrolledLearners = () => enrollments.map(enrollment => ({
 }));
 
 const filterEnrolledLearnersForInactiveCourses = () => enrollments.filter(enrollment => (
-  enrollment.course_end.getTime() < new Date().getTime()
+  moment(enrollment.course_end) < moment()
 )).map(enrollment => ({
   user_email: enrollment.user_email,
   enrollment_count: getEnrollmentsForUser(enrollment.user_email).length,
@@ -104,32 +103,30 @@ const filterUnenrolledRegisteredLearners = () => enrollments.map(enrollment => (
 
 const filterLearnerActivity = (filterOption) => {
   let filteredLearnerEnrollments = enrollments;
-  const lastActivityDate = new Date();
+  let lastActivityDate = moment();
   if (filterOption === 'active_past_week') {
-    lastActivityDate.setDate(lastActivityDate.getDate() - 7);
+    lastActivityDate = lastActivityDate.subtract(1, 'week');
     filteredLearnerEnrollments = enrollments.filter(enrollment => (
-      enrollment.last_activity_date.getTime() >= lastActivityDate.getTime()
+      moment(enrollment.last_activity_date) >= lastActivityDate
     ));
   } else if (filterOption === 'inactive_past_week') {
-    lastActivityDate.setDate(lastActivityDate.getDate() - 7);
+    lastActivityDate = lastActivityDate.subtract(1, 'week');
     filteredLearnerEnrollments = enrollments.filter(enrollment => (
-      enrollment.last_activity_date.getTime() <= lastActivityDate.getTime()
+      moment(enrollment.last_activity_date) <= lastActivityDate
     ));
   } else if (filterOption === 'inactive_past_month') {
-    lastActivityDate.setDate(lastActivityDate.getDate() - 30);
+    lastActivityDate = lastActivityDate.subtract(1, 'month');
     filteredLearnerEnrollments = enrollments.filter(enrollment => (
-      enrollment.last_activity_date.getTime() <= lastActivityDate.getTime()
+      moment(enrollment.last_activity_date) <= lastActivityDate
     ));
   }
   return filteredLearnerEnrollments;
 };
 
 const filterPastWeekCompletions = () => {
-  const today = new Date();
-  const passedDateTime = new Date().setDate(today.getDate() - 7);
+  const pastWeekDate = moment().subtract(1, 'week');
   return completedEnrollments.filter(enrollment => (
-    enrollment.passed_timestamp.getTime() >= passedDateTime &&
-    enrollment.passed_timestamp.getTime() <= today.getTime()
+    moment(enrollment.passed_timestamp) >= pastWeekDate
   ));
 };
 
@@ -159,7 +156,7 @@ const overview = {
   },
   course_completions: filterCompletedLearnerCourses().length,
   enrolled_learners: filterEnrolledLearners().length,
-  last_updated_date: new Date().toString(),
+  last_updated_date: moment().toISOString(),
   number_of_users: allEnrollments.length,
 };
 

@@ -2,7 +2,7 @@ import EcommerceApiService from '../../src/data/services/EcommerceApiService';
 
 import { codes, coupons } from './data';
 
-const firstCouponHasError = coupons.results[0].hasError;
+const firstCouponHasError = coupons.results[0].has_error;
 
 const findCouponIndexById = couponId =>
   coupons.results.findIndex(coupon => coupon.id === couponId);
@@ -13,7 +13,7 @@ const rewire = () => {
   });
 
   EcommerceApiService.fetchCouponDetails = couponId => Promise.resolve({
-    data: coupons.results[findCouponIndexById(couponId)].hasError ?
+    data: coupons.results[findCouponIndexById(couponId)].has_error ?
       codes(firstCouponHasError) : codes(),
   });
 };

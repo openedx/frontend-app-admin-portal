@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Coupon /> renders correctly with error state 1`] = `
+<div
+  className="coupon mb-3 mb-lg-2 rounded border border-danger"
+>
+  <div
+    aria-controls="coupon-details-1"
+    aria-expanded={false}
+    className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    <div
+      className="col-sm-12 col-lg-3 mb-2 mb-lg-0"
+    >
+      <small
+        className="text-muted"
+      >
+        Coupon Name
+      </small>
+      <div>
+        Test Coupon
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid From
+          </small>
+          <div>
+            June 1, 2018
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid To
+          </small>
+          <div>
+            February 1, 2019
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Unassigned Codes
+          </small>
+          <div>
+            0
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Enrollments Redeemed
+          </small>
+          <div>
+            0 of 1
+            <span
+              className="ml-1"
+            >
+              (0%)
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
+    >
+      <span
+        aria-hidden={true}
+        className="fa fa-exclamation-circle text-danger mr-2"
+        id="Icon1"
+      />
+      <span
+        className="sr-only"
+      >
+        Coupon has an error.
+      </span>
+      <span
+        aria-hidden={true}
+        className="fa fa-chevron-down text-primary"
+        id="Icon1"
+      />
+      <span
+        className="sr-only"
+      >
+        Open coupon details
+      </span>
+    </div>
+  </div>
+  <div
+    className="coupon-details row no-gutters px-2 my-3 d-none"
+    id="coupon-details-1"
+  >
+    <div
+      className="col"
+    />
+  </div>
+</div>
+`;
+
+exports[`<Coupon /> renders correctly with max uses 1`] = `
+<div
+  className="coupon mb-3 mb-lg-2 rounded border"
+>
+  <div
+    aria-controls="coupon-details-1"
+    aria-expanded={false}
+    className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    <div
+      className="col-sm-12 col-lg-3 mb-2 mb-lg-0"
+    >
+      <small
+        className="text-muted"
+      >
+        Coupon Name
+      </small>
+      <div>
+        Test Coupon
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid From
+          </small>
+          <div>
+            June 1, 2018
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid To
+          </small>
+          <div>
+            February 1, 2019
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Unassigned Codes
+          </small>
+          <div>
+            0
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Enrollments Redeemed
+          </small>
+          <div>
+            0 of 1
+            <span
+              className="ml-1"
+            >
+              (0%)
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
+    >
+      <span
+        aria-hidden={true}
+        className="fa fa-chevron-down text-primary"
+        id="Icon1"
+      />
+      <span
+        className="sr-only"
+      >
+        Open coupon details
+      </span>
+    </div>
+  </div>
+  <div
+    className="coupon-details row no-gutters px-2 my-3 d-none"
+    id="coupon-details-1"
+  >
+    <div
+      className="col"
+    />
+  </div>
+</div>
+`;
+
+exports[`<Coupon /> renders correctly without max uses 1`] = `
+<div
+  className="coupon mb-3 mb-lg-2 rounded border"
+>
+  <div
+    aria-controls="coupon-details-1"
+    aria-expanded={false}
+    className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex="0"
+  >
+    <div
+      className="col-sm-12 col-lg-3 mb-2 mb-lg-0"
+    >
+      <small
+        className="text-muted"
+      >
+        Coupon Name
+      </small>
+      <div>
+        Test Coupon
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid From
+          </small>
+          <div>
+            June 1, 2018
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Valid To
+          </small>
+          <div>
+            February 1, 2019
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+    >
+      <div
+        className="row no-gutters"
+      >
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Unassigned Codes
+          </small>
+          <div>
+            0
+          </div>
+        </div>
+        <div
+          className="col"
+        >
+          <small
+            className="text-muted"
+          >
+            Enrollments Redeemed
+          </small>
+          <div>
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
+    >
+      <span
+        aria-hidden={true}
+        className="fa fa-chevron-down text-primary"
+        id="Icon1"
+      />
+      <span
+        className="sr-only"
+      >
+        Open coupon details
+      </span>
+    </div>
+  </div>
+  <div
+    className="coupon-details row no-gutters px-2 my-3 d-none"
+    id="coupon-details-1"
+  >
+    <div
+      className="col"
+    />
+  </div>
+</div>
+`;
