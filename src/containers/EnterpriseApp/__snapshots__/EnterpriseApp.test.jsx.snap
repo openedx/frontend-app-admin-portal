@@ -1,25 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EnterpriseApp renders not found page correctly 1`] = `
+exports[`EnterpriseApp renders error page correctly 1`] = `
 <div
-  className="container-fluid mt-3"
+  className="container-fluid"
 >
   <div
-    className="text-center py-5"
+    className="row mt-4"
   >
-    <h1
-      className={null}
+    <div
+      className="col"
     >
-      404
-    </h1>
-    <p
-      className="lead"
+      <h1
+        className={null}
+      >
+        Error
+      </h1>
+      <div
+        className="alert fade alert-danger show"
+        hidden={false}
+        role="alert"
+      >
+        <div
+          className="alert-dialog"
+        >
+          <div
+            className=""
+          >
+            <div
+              className="message"
+            >
+              test error
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EnterpriseApp renders not found page correctly 1`] = `
+<div
+  className="enterprise-app"
+>
+  <nav
+    aria-expanded={false}
+    className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
+    id="sidebar"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+    onMouseOver={[Function]}
+  >
+    <div
+      className="sidebar-content py-2"
     >
-      Oops, sorry we can't find that page!
-    </p>
-    <p>
-      Either something went wrong or the page doesn't exist anymore.
-    </p>
+      <ul
+        className="list-unstyled m-0"
+      >
+        <li
+          className="rounded-0"
+        >
+          <a
+            aria-current={null}
+            className="btn btn-link btn-block text-left text-secondary rounded-0"
+            href="//admin/learners"
+            onClick={[Function]}
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-line-chart"
+              id="Icon1"
+            />
+            <span
+              className="sr-only"
+            >
+              Learner Report
+            </span>
+          </a>
+        </li>
+        <li
+          className="rounded-0"
+        >
+          <a
+            aria-current={null}
+            className="btn btn-link btn-block text-left text-secondary rounded-0"
+            href="//admin/codes"
+            onClick={[Function]}
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-tags"
+              id="Icon1"
+            />
+            <span
+              className="sr-only"
+            >
+              Code Management
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    className="content-wrapper"
+    style={
+      Object {
+        "paddingLeft": 10,
+      }
+    }
+    tabIndex="-1"
+  >
+    <div
+      className="container-fluid mt-3"
+    >
+      <div
+        className="text-center py-5"
+      >
+        <h1
+          className={null}
+        >
+          404
+        </h1>
+        <p
+          className="lead"
+        >
+          Oops, sorry we can't find that page!
+        </p>
+        <p>
+          Either something went wrong or the page doesn't exist anymore.
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 `;

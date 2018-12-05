@@ -11,7 +11,7 @@ import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
-import { removeTrailingSlash } from '../../utils';
+import { breakpoints, removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 import './EnterpriseApp.scss';
@@ -86,8 +86,7 @@ class EnterpriseApp extends React.Component {
 
     return (
       <div className="enterprise-app">
-        {/* Bootstrap's breakpoint for large screens */}
-        <MediaQuery minWidth={992}>
+        <MediaQuery minWidth={breakpoints.large.minWidth}>
           {matches => (
             <React.Fragment>
               <Sidebar

@@ -33,7 +33,7 @@
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
     "prop-types": "^15.5.10",
-    "query-string": "^6.1.0",
+    "query-string": "^5.1.1",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-helmet": "^5.2.0",

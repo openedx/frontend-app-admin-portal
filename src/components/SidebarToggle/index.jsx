@@ -15,7 +15,7 @@ const SidebarToggle = (props) => {
 
   return (
     <Button
-      className={['sidebar-toggle-btn', 'mr-2']}
+      className={['sidebar-toggle-btn', 'mr-2', 'bg-white']}
       label={
         <React.Fragment>
           <Icon className={['fa', iconClass]} />
