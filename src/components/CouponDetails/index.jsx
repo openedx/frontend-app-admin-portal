@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
+import { Button, CheckBox, InputSelect } from '@edx/paragon';
 
 import H3 from '../H3';
 
-import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import StatusAlert from '../StatusAlert';
 
-import EcommerceApiService from '../../data/services/EcommerceApiService';
+import CouponDetailsTable from '../CouponDetailsTable'
 
 import './CouponDetails.scss';
 
@@ -43,34 +42,7 @@ class CouponDetails extends React.Component {
 
     this.toggleSelectRef = React.createRef();
 
-    this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
-  }
-
-  getActionButton(code) {
-    const { assigned_to: assignedTo, redemptions } = code;
-
-    if (redemptions.used === redemptions.available) {
-      return null;
-    }
-
-    const button = {
-      label: 'Assign',
-      onClick: () => {},
-    };
-
-    if (assignedTo) {
-      button.label = 'Revoke';
-      button.onClick = () => {};
-    }
-
-    return (
-      <Button
-        className={['btn-link', 'btn-sm', 'pl-0']}
-        label={button.label}
-        onClick={button.onClick}
-      />
-    );
   }
 
   isTableLoading() {
@@ -114,21 +86,6 @@ class CouponDetails extends React.Component {
         tableColumns,
       });
     }
-  }
-
-  formatCouponData(data) {
-    return data.map(code => ({
-      ...code,
-      assigned_to: code.error ? (
-        <span className="text-danger">
-          <Icon className={['fa', 'fa-exclamation-circle', 'mr-2']} screenReaderText="Error" />
-          {code.error}
-        </span>
-      ) : code.assigned_to,
-      redemptions: `${code.redemptions.used} of ${code.redemptions.available}`,
-      actions: this.getActionButton(code),
-      select: <CheckBox />,
-    }));
   }
 
   renderErrorMessage() {
@@ -225,13 +182,7 @@ class CouponDetails extends React.Component {
                   </div>
                 </div>
               }
-              <TableContainer
-                id="coupon-details"
-                className="coupon-details-table"
-                fetchMethod={() => EcommerceApiService.fetchCouponDetails(id)}
-                columns={tableColumns}
-                formatData={this.formatCouponData}
-              />
+               <CouponDetailsTable couponId={id} selectedFilter={selectedToggle} tableColumns={tableColumns}/>
             </React.Fragment>
           }
         </div>
