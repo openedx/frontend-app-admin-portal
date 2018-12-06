@@ -51,7 +51,6 @@ class Sidebar extends React.Component {
     );
 
     if (shouldUpdateSidebarWidth) {
-      // If sidebar becomes expanded via the toggle
       const width = this.getSidebarWidth();
       this.props.onWidthChange(width);
     }
@@ -95,9 +94,9 @@ class Sidebar extends React.Component {
           'd-none',
           'd-lg-flex',
           {
+            'd-flex': this.isSidebarExpanded(),
             expanded: this.isSidebarExpanded(),
             'has-shadow': !isExpandedByToggle || hasMobileShadow,
-            'd-flex': this.isSidebarExpanded(),
           },
         ])}
         onMouseOver={() => !this.isSidebarExpanded() && expandSidebar()}
