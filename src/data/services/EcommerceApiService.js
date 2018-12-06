@@ -12,7 +12,7 @@ class EcommerceApiService {
     });
   }
 
-  static fetchCouponDetails() {
+  static fetchCouponDetails(id, selectedFilter) {
     // TODO replace with fetching data from ecommerce API
     return Promise.resolve({
       data: {
