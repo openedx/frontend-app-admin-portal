@@ -101,7 +101,7 @@ describe('<Coupon />', () => {
 
       simulateCouponClick();
       expect(mockOnExpand).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('expanded')).toBeTruthy();
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
     });
 
     it('collapses on click of expanded coupon', () => {
@@ -113,11 +113,11 @@ describe('<Coupon />', () => {
       ));
 
       simulateCouponClick();
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('expanded')).toBeTruthy();
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
 
       simulateCouponClick();
       expect(mockOnCollapse).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('expanded')).toBeFalsy();
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeFalsy();
     });
   });
 });
