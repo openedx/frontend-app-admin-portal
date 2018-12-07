@@ -147,7 +147,7 @@ class CouponDetails extends React.Component {
                   </div>
                 </div>
               }
-              <CouponDetailsTable id={id} selectedFilter={selectedFilter}/>
+              <CouponDetailsTable couponId={id} selectedFilter={selectedFilter}/>
             </React.Fragment>
           }
         </div>

@@ -77,13 +77,14 @@ class CouponDetailsTable extends React.Component {
   }
 
   render() {
-    const { id, selectedFilter } = this.props;
-    // TODO: Confirm default, not-assigned and not-redeemed ... are all different endpoints.
+    const { couponId, selectedFilter } = this.props;
     return (
       <TableContainer
         id="coupon-details"
         className="coupon-details-table"
-        fetchMethod={() => EcommerceApiService.fetchCouponDetails(id, selectedFilter)}
+        fetchMethod={() => EcommerceApiService.fetchCouponDetails(couponId, {
+          code_filter: selectedFilter ? selectedFilter : 'default'
+        })}
         columns={this.tableColumns}
         formatData={this.formatCouponData}
       />
@@ -92,7 +93,7 @@ class CouponDetailsTable extends React.Component {
 };
 
 CouponDetailsTable.propTypes = {
-  id: PropTypes.number.isRequired,
+  couponId: PropTypes.number.isRequired,
   selectedFilter: PropTypes.string,
 }
 
