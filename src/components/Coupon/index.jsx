@@ -19,7 +19,7 @@ class Coupon extends React.Component {
     super(props);
 
     this.state = {
-      detailsExpanded: false,
+      isExpanded: false,
       dimmed: false,
     };
 
@@ -35,20 +35,20 @@ class Coupon extends React.Component {
 
   closeCouponDetails() {
     this.setState({
-      detailsExpanded: false,
+      isExpanded: false,
       dimmed: false,
     });
   }
 
   toggleCouponDetails() {
-    const detailsExpanded = !this.state.detailsExpanded;
+    const isExpanded = !this.state.isExpanded;
 
     this.setState({
-      detailsExpanded,
+      isExpanded,
       dimmed: false,
     });
 
-    if (detailsExpanded) {
+    if (isExpanded) {
       this.props.onExpand();
     } else {
       this.props.onCollapse();
@@ -56,21 +56,21 @@ class Coupon extends React.Component {
   }
 
   handleCouponKeyDown(event) {
-    const { detailsExpanded } = this.state;
-    if (!detailsExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
+    const { isExpanded } = this.state;
+    if (!isExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
       event.preventDefault();
       this.toggleCouponDetails();
-    } else if (detailsExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
+    } else if (isExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
       event.preventDefault();
       this.toggleCouponDetails();
     }
   }
 
   renderExpandCollapseIcon() {
-    const { detailsExpanded } = this.state;
-    const iconClass = detailsExpanded ? 'fa-chevron-up' : 'fa-chevron-down';
-    const iconColor = detailsExpanded ? 'text-white' : 'text-primary';
-    const screenReaderText = detailsExpanded ? 'Close' : 'Open';
+    const { isExpanded } = this.state;
+    const iconClass = isExpanded ? 'fa-chevron-up' : 'fa-chevron-down';
+    const iconColor = isExpanded ? 'text-white' : 'text-primary';
+    const screenReaderText = isExpanded ? 'Close' : 'Open';
     return (
       <Icon
         className={['fa', iconClass, iconColor]}
@@ -112,7 +112,7 @@ class Coupon extends React.Component {
   }
 
   render() {
-    const { detailsExpanded, dimmed } = this.state;
+    const { isExpanded, dimmed } = this.state;
     const { data } = this.props;
 
     return (
@@ -120,8 +120,8 @@ class Coupon extends React.Component {
         className={classNames(
           'coupon mb-3 mb-lg-2 rounded border',
           {
-            expanded: detailsExpanded,
-            'border-danger': data.has_error && !detailsExpanded,
+            expanded: isExpanded,
+            'border-danger': data.has_error && !isExpanded,
             dimmed,
           },
         )}
@@ -131,31 +131,31 @@ class Coupon extends React.Component {
             'metadata',
             'row no-gutters p-2 d-flex align-items-center',
             {
-              rounded: !detailsExpanded,
-              'rounded-top': detailsExpanded,
+              rounded: !isExpanded,
+              'rounded-top': isExpanded,
             },
           )}
           onClick={this.toggleCouponDetails}
           onKeyDown={this.handleCouponKeyDown}
           role="button"
           tabIndex="0"
-          aria-expanded={detailsExpanded}
+          aria-expanded={isExpanded}
           aria-controls={`coupon-details-${data.id}`}
         >
           <div className="col-sm-12 col-lg-3 mb-2 mb-lg-0">
-            <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Coupon Name</small>
+            <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Coupon Name</small>
             <div>{data.title}</div>
           </div>
           <div className="col-sm-12 col-lg-4 mb-2 mb-lg-0">
             <div className="row no-gutters">
               <div className="col">
-                <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid From</small>
+                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Valid From</small>
                 <div>
                   {formatTimestamp({ timestamp: data.start_date })}
                 </div>
               </div>
               <div className="col">
-                <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Valid To</small>
+                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Valid To</small>
                 <div>
                   {formatTimestamp({ timestamp: data.end_date })}
                 </div>
@@ -165,11 +165,11 @@ class Coupon extends React.Component {
           <div className="col-sm-12 col-lg-4 mb-2 mb-lg-0">
             <div className="row no-gutters">
               <div className="col">
-                <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Unassigned Codes</small>
+                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Unassigned Codes</small>
                 <div>{data.num_unassigned}</div>
               </div>
               <div className="col">
-                <small className={classNames({ 'text-muted': !detailsExpanded, 'text-light': detailsExpanded })}>Enrollments Redeemed</small>
+                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Enrollments Redeemed</small>
                 <div>
                   {this.renderEnrollmentsRedeemed()}
                 </div>
@@ -177,11 +177,11 @@ class Coupon extends React.Component {
             </div>
           </div>
           <div className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0">
-            {data.has_error && !detailsExpanded && this.renderErrorIcon()}
+            {data.has_error && !isExpanded && this.renderErrorIcon()}
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {<CouponDetails id={data.id} expanded={detailsExpanded} hasError={data.has_error} />}
+        {<CouponDetails id={data.id} isExpanded={isExpanded} hasError={data.has_error} />}
       </div>
     );
   }

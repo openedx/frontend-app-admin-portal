@@ -37,6 +37,7 @@
         }
     }
     
+    .toggles,
     .bulk-actions {
         .form-group {
             display: inline-block;
@@ -44,6 +45,10 @@
             &,
             label {
                 margin: 0;
+            }
+
+            label {
+                font-weight: 600;
             }
         }
     }
