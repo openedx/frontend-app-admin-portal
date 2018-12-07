@@ -66,7 +66,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
 exports[`<Sidebar /> renders correctly when expanded 1`] = `
 <nav
   aria-expanded={true}
-  className="sidebar border-right h-100 d-none d-lg-flex expanded has-shadow d-flex"
+  className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded has-shadow"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -121,7 +121,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
 exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
 <nav
   aria-expanded={true}
-  className="sidebar border-right h-100 d-none d-lg-flex expanded d-flex"
+  className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}

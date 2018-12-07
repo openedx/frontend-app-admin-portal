@@ -10,6 +10,8 @@
 
         @include media-breakpoint-up(lg) {
             & {
+                // If we change the width of the icon-only menu links in the Sidebar navigation, 
+                // we will also need to update the padding-left to ensure correct spacing.
                 padding-left: 51px;
             }
         }

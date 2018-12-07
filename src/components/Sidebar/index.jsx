@@ -24,6 +24,8 @@ class Sidebar extends React.Component {
         title: 'Code Management',
         to: `${baseUrl}/admin/codes`,
         iconClassName: 'fa-tags',
+        // TODO we can also use `shouldInclude` when determining whether to show the
+        // Code Management link in the sidebar navigation depending on the enterprise customer.
         shouldInclude: features.CODE_MANAGEMENT,
       },
     ];
