@@ -374,7 +374,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-2"
+                  id="pagination-3"
                 />
                 Previous
               </div>
@@ -398,7 +398,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-3"
+                  id="pagination-4"
                 />
               </div>
             </button>
@@ -778,7 +778,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-6"
+                  id="pagination-7"
                 />
                 Previous
               </div>
@@ -802,7 +802,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-7"
+                  id="pagination-8"
                 />
               </div>
             </button>
@@ -1151,7 +1151,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-4"
+                  id="pagination-5"
                 />
                 Previous
               </div>
@@ -1175,7 +1175,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-5"
+                  id="pagination-6"
                 />
               </div>
             </button>

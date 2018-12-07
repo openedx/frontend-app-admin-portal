@@ -11,8 +11,8 @@ exports[`<SearchBar /> renders correctly 1`] = `
   >
     <label
       className=""
-      htmlFor="asInput2"
-      id="label-asInput2"
+      htmlFor="asInput3"
+      id="label-asInput3"
     >
       Search:
     </label>
@@ -23,12 +23,12 @@ exports[`<SearchBar /> renders correctly 1`] = `
         className="input-group-prepend"
       />
       <input
-        aria-describedby="error-asInput2"
+        aria-describedby="error-asInput3"
         aria-invalid={false}
         autoComplete="off"
         className="form-control is-invalid-nodanger input no-clear-btn"
         disabled={false}
-        id="asInput2"
+        id="asInput3"
         name="search"
         onBlur={[Function]}
         onChange={[Function]}
@@ -67,7 +67,7 @@ exports[`<SearchBar /> renders correctly 1`] = `
     <div
       aria-live="polite"
       className="invalid-feedback invalid-feedback-nodanger"
-      id="error-asInput2"
+      id="error-asInput3"
     >
       <span />
     </div>
