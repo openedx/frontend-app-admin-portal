@@ -24,9 +24,9 @@ class Sidebar extends React.Component {
         title: 'Code Management',
         to: `${baseUrl}/admin/codes`,
         iconClassName: 'fa-tags',
-        // TODO we can also use `shouldInclude` when determining whether to show the
+        // TODO we can also use `hidden` when determining whether to show the
         // Code Management link in the sidebar navigation depending on the enterprise customer.
-        shouldInclude: features.CODE_MANAGEMENT,
+        hidden: !features.CODE_MANAGEMENT,
       },
     ];
 
@@ -110,7 +110,7 @@ class Sidebar extends React.Component {
       >
         <div className="sidebar-content py-2">
           <ul className="list-unstyled m-0">
-            {this.menuItems.filter(item => item.shouldInclude !== false).map(item => (
+            {this.menuItems.filter(item => !item.hidden).map(item => (
               <li key={item.to} className="rounded-0">
                 <IconLink
                   {...item}
