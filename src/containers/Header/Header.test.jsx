@@ -4,6 +4,7 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 
 import Header from './index';
 import EdxLogo from '../../images/edx-logo.png';
@@ -12,10 +13,11 @@ const mockStore = configureMockStore([thunk]);
 
 const HeaderWrapper = props => (
   <MemoryRouter>
-    <Header
-      store={props.store}
-      {...props}
-    />
+    <Provider store={props.store}>
+      <Header
+        {...props}
+      />
+    </Provider>
   </MemoryRouter>
 );
 
@@ -40,6 +42,7 @@ describe('<Header />', () => {
       userProfile: {
         profile: null,
       },
+      sidebar: {},
     });
 
     tree = renderer
@@ -55,6 +58,7 @@ describe('<Header />', () => {
       portalConfiguration: {},
       authentication: {},
       userProfile: {},
+      sidebar: {},
     });
     tree = renderer
       .create((
@@ -79,6 +83,7 @@ describe('<Header />', () => {
           },
         },
       },
+      sidebar: {},
     });
     tree = renderer
       .create((
@@ -102,6 +107,7 @@ describe('<Header />', () => {
           },
         },
       },
+      sidebar: {},
     });
     tree = renderer
       .create((
@@ -109,5 +115,43 @@ describe('<Header />', () => {
       ))
       .toJSON();
     expect(tree).toMatchSnapshot();
+  });
+
+  describe('renders sidebar toggle correctly', () => {
+    it('does not show toggle', () => {
+      store = mockStore({
+        portalConfiguration: {},
+        authentication: {},
+        userProfile: {},
+        sidebar: {
+          hasSidebarToggle: false,
+          isExpandedByToggle: false,
+        },
+      });
+      tree = renderer
+        .create((
+          <HeaderWrapper store={store} />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('does show toggle', () => {
+      store = mockStore({
+        portalConfiguration: {},
+        authentication: {},
+        userProfile: {},
+        sidebar: {
+          hasSidebarToggle: true,
+          isExpandedByToggle: false,
+        },
+      });
+      tree = renderer
+        .create((
+          <HeaderWrapper store={store} />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
   });
 });

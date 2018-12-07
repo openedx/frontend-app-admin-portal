@@ -70,7 +70,31 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
   triggerKeys[action].indexOf(key) > -1
 );
 
+// NOTE: These are the breakpoints used in Bootstrap v4.0.0 as seen in
+// the documentation (https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)
+const breakpoints = {
+  extraSmall: {
+    maxWidth: 575.98,
+  },
+  small: {
+    minWidth: 576,
+    maxWidth: 767.98,
+  },
+  medium: {
+    minWidth: 768,
+    maxWidth: 991.98,
+  },
+  large: {
+    minWidth: 992,
+    maxWidth: 1199.98,
+  },
+  extraLarge: {
+    minWidth: 1200,
+  },
+};
+
 export {
+  breakpoints,
   formatPercentage,
   formatPassedTimestamp,
   formatTimestamp,

@@ -25,8 +25,10 @@ module.exports = Merge.smart(commonConfig, {
       {
         test: /\.(js|jsx)$/,
         include: [
-          path.resolve(__dirname, '../node_modules'),
           path.resolve(__dirname, '../src'),
+        ],
+        exclude: [
+          path.resolve(__dirname, '../node_modules'),
         ],
         loader: 'babel-loader',
         options: {

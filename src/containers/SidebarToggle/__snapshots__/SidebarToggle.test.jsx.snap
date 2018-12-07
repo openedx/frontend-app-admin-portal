@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Sidebar /> renders correctly with close icon 1`] = `
+<button
+  aria-controls="sidebar"
+  className="btn sidebar-toggle-btn mr-2 bg-white"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  type="button"
+>
+  <span
+    aria-hidden={true}
+    className="fa fa-times"
+    id="Icon1"
+  />
+  <span
+    className="sr-only"
+  >
+    close menu
+  </span>
+</button>
+`;
+
+exports[`<Sidebar /> renders correctly with menu icon 1`] = `
+<button
+  aria-controls="sidebar"
+  className="btn sidebar-toggle-btn mr-2 bg-white"
+  onBlur={[Function]}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  type="button"
+>
+  <span
+    aria-hidden={true}
+    className="fa fa-bars"
+    id="Icon1"
+  />
+  <span
+    className="sr-only"
+  >
+    open menu
+  </span>
+</button>
+`;

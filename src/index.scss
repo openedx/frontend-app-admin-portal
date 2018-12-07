@@ -8,3 +8,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~@edx/paragon/src/Pagination/Pagination";
 @import "~@edx/paragon/src/Dropdown/Dropdown";
 @import "~@edx/paragon/src/ValidationMessage/ValidationMessage";
+
+body {
+    overflow-x: hidden;
+}

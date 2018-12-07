@@ -251,3 +251,80 @@ exports[`<Header /> renders profile image correctly 1`] = `
   </nav>
 </header>
 `;
+
+exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = `
+<header
+  className="container-fluid"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <div>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          onError={[Function]}
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
+  </nav>
+</header>
+`;
+
+exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
+<header
+  className="container-fluid"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <div>
+      <button
+        aria-controls="sidebar"
+        className="btn sidebar-toggle-btn mr-2 bg-white"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        type="button"
+      >
+        <span
+          aria-hidden={true}
+          className="fa fa-bars"
+          id="Icon1"
+        />
+        <span
+          className="sr-only"
+        >
+          open menu
+        </span>
+      </button>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          onError={[Function]}
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
+  </nav>
+</header>
+`;
