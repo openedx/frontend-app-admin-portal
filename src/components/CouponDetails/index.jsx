@@ -41,16 +41,13 @@ class CouponDetails extends React.Component {
     ];
 
     this.state = {
-      selectedFilter: null,
+      selectedToggle: 'not-assigned',
     };
 
-    this.formatCouponData = this.formatCouponData.bind(this);
-  }
+    this.toggleSelectRef = React.createRef();
 
-  setSelectedFilter(selectedFilter) {
-    this.setState({
-      selectedFilter,
-    });
+    this.formatCouponData = this.formatCouponData.bind(this);
+    this.handleToggleSelect = this.handleToggleSelect.bind(this);
   }
 
   getActionButton(code) {
@@ -96,6 +93,16 @@ class CouponDetails extends React.Component {
     return !this.isTableLoading() && [hasError].some(item => item);
   }
 
+  handleToggleSelect() {
+    const ref = this.toggleSelectRef && this.toggleSelectRef.current;
+
+    if (ref) {
+      this.setState({
+        selectedToggle: ref.state.value,
+      });
+    }
+  }
+
   formatCouponData(data) {
     return data.map(code => ({
       ...code,
@@ -122,8 +129,8 @@ class CouponDetails extends React.Component {
   }
 
   render() {
-    const { selectedFilter } = this.state;
-    const { id, hasError, expanded } = this.props;
+    const { selectedToggle } = this.state;
+    const { id, hasError, isExpanded } = this.props;
 
     return (
       <div
@@ -131,12 +138,12 @@ class CouponDetails extends React.Component {
         className={classNames([
           'coupon-details row no-gutters px-2 my-3',
           {
-            'd-none': !expanded,
+            'd-none': !isExpanded,
           },
         ])}
       >
         <div className="col">
-          {expanded &&
+          {isExpanded &&
             <React.Fragment>
               <div className="details-header row no-gutters mb-3">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
@@ -151,37 +158,28 @@ class CouponDetails extends React.Component {
                 </div>
               </div>
               <div className="row mb-3">
-                <div className="filters col-12 col-md-8">
+                <div className="toggles col-12 col-md-8">
                   <div className="row">
                     <div className="col">
-                      <div className="mb-1">Filter:</div>
-                      <Button
-                        className={['btn-sm', 'mr-2']}
-                        buttonType={selectedFilter === 'not-assigned' ? 'primary' : 'outline-primary'}
-                        label="Not Assigned"
-                        onClick={() => this.setSelectedFilter('not-assigned')}
+                      <InputSelect
+                        ref={this.toggleSelectRef}
+                        className={['mt-1']}
+                        name="table-view"
+                        label="Table View:"
+                        value={selectedToggle}
+                        options={[
+                          { label: 'Not Assigned', value: 'not-assigned' },
+                          { label: 'Not Redeemed', value: 'not-redeemed' },
+                        ]}
                         disabled={this.isTableLoading()}
                       />
                       <Button
-                        className={['btn-sm']}
-                        buttonType={selectedFilter === 'not-redeemed' ? 'primary' : 'outline-primary'}
-                        label="Not Redeemed"
-                        onClick={() => this.setSelectedFilter('not-redeemed')}
+                        className={['ml-2']}
+                        buttonType="primary"
+                        label="Go"
+                        onClick={this.handleToggleSelect}
                         disabled={this.isTableLoading()}
                       />
-                      {selectedFilter &&
-                        <Button
-                          className={['btn-sm', 'ml-2']}
-                          buttonType="outline-secondary"
-                          label={
-                            <React.Fragment>
-                              <Icon className={['fa', 'fa-close', 'mr-1']} />
-                              Clear filters
-                            </React.Fragment>
-                          }
-                          onClick={() => this.setSelectedFilter(null)}
-                        />
-                      }
                     </div>
                   </div>
                 </div>
@@ -230,14 +228,14 @@ class CouponDetails extends React.Component {
 }
 
 CouponDetails.defaultProps = {
-  expanded: false,
+  isExpanded: false,
   hasError: false,
   couponDetailsTable: {},
 };
 
 CouponDetails.propTypes = {
   id: PropTypes.number.isRequired,
-  expanded: PropTypes.bool,
+  isExpanded: PropTypes.bool,
   hasError: PropTypes.bool,
   couponDetailsTable: PropTypes.shape({}),
 };
