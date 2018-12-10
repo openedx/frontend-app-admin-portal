@@ -30,6 +30,15 @@ class EcommerceApiService {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/enterprise/coupons/${couponId}/${endpoint}/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
   }
+
+  static sendCodeAssignment(options) { // eslint-disable-line no-unused-vars
+    // TODO replace with sending data to ecommerce API
+    return Promise.resolve({
+      data: {
+        results: [],
+      },
+    });
+  }
 }
 
 export default EcommerceApiService;

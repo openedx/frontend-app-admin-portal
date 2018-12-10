@@ -10,7 +10,16 @@
 
     .alert {
         margin-bottom: 0;
-        font-size: 0.85rem;
+
+        &,
+        .btn-link {
+            font-size: 0.85rem;
+        }
+
+        .btn-link {
+            text-decoration: underline;
+            margin-top: -4px;
+        }
 
         .fa {
             font-size: 1rem;
