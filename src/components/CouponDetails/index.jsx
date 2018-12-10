@@ -17,31 +17,28 @@ class CouponDetails extends React.Component {
   constructor(props) {
     super(props);
 
-    this.tableColumns = [
-      {
-        label: <CheckBox />,
-        key: 'select',
-      },
-      {
-        label: 'Assigned To',
-        key: 'assigned_to',
-      },
-      {
-        label: 'Redemptions',
-        key: 'redemptions',
-      },
-      {
-        label: 'Code',
-        key: 'title',
-      },
-      {
-        label: 'Actions',
-        key: 'actions',
-      },
-    ];
+    this.defaultToggle = 'not-assigned';
 
     this.state = {
-      selectedToggle: 'not-assigned',
+      selectedToggle: this.defaultToggle,
+      tableColumns: [
+        {
+          label: <CheckBox />,
+          key: 'select',
+        },
+        {
+          label: 'Redemptions',
+          key: 'redemptions',
+        },
+        {
+          label: 'Code',
+          key: 'title',
+        },
+        {
+          label: 'Actions',
+          key: 'actions',
+        },
+      ],
     };
 
     this.toggleSelectRef = React.createRef();
@@ -94,11 +91,27 @@ class CouponDetails extends React.Component {
   }
 
   handleToggleSelect() {
+    const { tableColumns } = this.state;
     const ref = this.toggleSelectRef && this.toggleSelectRef.current;
+    const selectedToggle = ref && ref.state.value;
+    const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assigned_to');
 
-    if (ref) {
+    if (selectedToggle !== this.defaultToggle && assignedToColumnIndex === -1) {
+      // Add assigned_to column if it doesn't already exist and
+      // the toggle is something other than "Not Assigned".
+      tableColumns.splice(1, 0, {
+        label: 'Assigned To',
+        key: 'assigned_to',
+      });
+    } else if (selectedToggle === this.defaultToggle && assignedToColumnIndex > -1) {
+      // Remove assigned_to column if it already exists and the toggle is "Not Assigned".
+      tableColumns.splice(assignedToColumnIndex, 1);
+    }
+
+    if (selectedToggle) {
       this.setState({
-        selectedToggle: ref.state.value,
+        selectedToggle,
+        tableColumns,
       });
     }
   }
@@ -129,7 +142,7 @@ class CouponDetails extends React.Component {
   }
 
   render() {
-    const { selectedToggle } = this.state;
+    const { selectedToggle, tableColumns } = this.state;
     const { id, hasError, isExpanded } = this.props;
 
     return (
@@ -216,7 +229,7 @@ class CouponDetails extends React.Component {
                 id="coupon-details"
                 className="coupon-details-table"
                 fetchMethod={() => EcommerceApiService.fetchCouponDetails(id)}
-                columns={this.tableColumns}
+                columns={tableColumns}
                 formatData={this.formatCouponData}
               />
             </React.Fragment>
