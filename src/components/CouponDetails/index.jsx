@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
 
-import H3 from '../H3';
-
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
+import H3 from '../H3';
 import StatusAlert from '../StatusAlert';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -18,11 +17,19 @@ class CouponDetails extends React.Component {
   constructor(props) {
     super(props);
 
+    this.bulkActionSelectRef = React.createRef();
+    this.selectAllCheckBoxRef = React.createRef();
+
     this.state = {
       selectedToggle: 'unassigned',
       tableColumns: [
         {
-          label: <CheckBox />,
+          label: (
+            <CheckBox
+              onChange={checked => this.handleSelectAllCodes(checked)}
+              ref={this.selectAllCheckBoxRef}
+            />
+          ),
           key: 'select',
         },
         {
@@ -44,6 +51,7 @@ class CouponDetails extends React.Component {
       },
       isCodeAssignmentSuccessful: undefined,
       selectedCodes: [],
+      hasAllCodesSelected: false,
       /**
         * In some scenarios, we want to create a new instance of the table so that it recreates
         * checkboxes (clearing their states), refetches the data, and adjusts table columns
@@ -54,8 +62,6 @@ class CouponDetails extends React.Component {
         */
       refreshIndex: 0,
     };
-
-    this.bulkActionSelectRef = React.createRef();
 
     this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
@@ -133,6 +139,7 @@ class CouponDetails extends React.Component {
           onClick={() => this.setModalState({
             key: 'revoke',
             options: {
+              couponId: id,
               title: couponTitle,
               data: { /* pass along any data the revoke modal might need */ },
             },
@@ -151,7 +158,7 @@ class CouponDetails extends React.Component {
             couponId: id,
             title: couponTitle,
             data: {
-              code: code.code,
+              code,
               remainingUses: redemptions.available - redemptions.used,
             },
           },
@@ -175,6 +182,7 @@ class CouponDetails extends React.Component {
 
     this.setState({
       selectedCodes: [],
+      hasAllCodesSelected: false,
       refreshIndex: 0,
     });
   }
@@ -192,6 +200,8 @@ class CouponDetails extends React.Component {
 
   handleBulkActionSelect() {
     const { couponTitle, id, unassignedCodes } = this.props;
+    const { hasAllCodesSelected, selectedCodes } = this.state;
+
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
     const selectedBulkAction = ref && ref.state.value;
 
@@ -204,7 +214,8 @@ class CouponDetails extends React.Component {
           isBulkAssign: true,
           data: {
             unassignedCodes,
-            selectedCodes: this.state.selectedCodes,
+            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
+            hasAllCodesSelected,
           },
         },
       });
@@ -212,6 +223,7 @@ class CouponDetails extends React.Component {
       this.setModalState({
         key: 'revoke',
         options: {
+          couponId: id,
           title: couponTitle,
           data: { /* pass along any data the revoke modal might need */ },
         },
@@ -226,6 +238,22 @@ class CouponDetails extends React.Component {
         revoke: null,
       },
     });
+  }
+
+  shouldShowSelectAllStatusAlert() {
+    const { couponDetailsTable: { data: tableData } } = this.props;
+    const { selectedCodes, hasAllCodesSelected } = this.state;
+
+    if (!tableData) {
+      return false;
+    } else if (hasAllCodesSelected) {
+      return true;
+    }
+
+    return (
+      selectedCodes.length === tableData.results.length &&
+      selectedCodes.length !== tableData.count
+    );
   }
 
   hasStatusAlert() {
@@ -243,6 +271,7 @@ class CouponDetails extends React.Component {
     const hasStatusAlert = [
       hasError,
       isCodeAssignmentSuccessful,
+      this.shouldShowSelectAllStatusAlert(),
     ].some(item => item);
 
     return !this.isTableLoading() && hasStatusAlert;
@@ -298,23 +327,80 @@ class CouponDetails extends React.Component {
     });
   }
 
+  updateSelectAllCheckBox() {
+    const { selectedCodes, tableColumns } = this.state;
+    const { couponDetailsTable: { data: tableData } } = this.props;
+
+    const allCodesForPageSelected = selectedCodes.length === tableData.results.length;
+    const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
+
+    const selectColumn = tableColumns.shift();
+
+    selectColumn.label = React.cloneElement(selectColumn.label, {
+      checked: allCodesForPageSelected,
+      className: hasPartialSelection ? ['mixed'] : [],
+    });
+
+    // The Paragon `CheckBox` component does not currently support the mixed state. To
+    // get around this, we get the DOM node of the checkbox and replace the `aria-checked`
+    // attribute appropriately.
+    //
+    // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
+    const selectAllCheckBoxDOM = document.getElementById(selectColumn.label.ref.current.state.id);
+
+    if (selectAllCheckBoxDOM && hasPartialSelection) {
+      selectAllCheckBoxDOM.setAttribute('aria-checked', 'mixed');
+    } else if (selectAllCheckBoxDOM && !hasPartialSelection) {
+      selectAllCheckBoxDOM.setAttribute('aria-checked', allCodesForPageSelected);
+    }
+
+    this.setState({
+      tableColumns: [selectColumn, ...tableColumns],
+    });
+  }
+
   handleCodeSelection({ checked, code }) {
-    const { selectedCodes } = this.state;
+    let { selectedCodes, hasAllCodesSelected } = this.state;
 
     if (checked) {
       // Add code to selected codes array
-      this.setState({
-        selectedCodes: [...selectedCodes, code.code],
-      });
+      selectedCodes = [...selectedCodes, code];
     } else {
       // Remove code from selected codes array
-      this.setState({
-        selectedCodes: selectedCodes.filter(codeTitle => codeTitle !== code.code),
-      });
+      selectedCodes = selectedCodes.filter(selectedCode => selectedCode.code !== code.code);
+      hasAllCodesSelected = false;
     }
+
+    this.setState({
+      selectedCodes,
+      hasAllCodesSelected,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
+  }
+
+  handleSelectAllCodes(checked) {
+    const { couponDetailsTable: { data: tableData } } = this.props;
+    let { hasAllCodesSelected, selectedCodes } = this.state;
+
+    if (checked) {
+      selectedCodes = tableData.results;
+    } else {
+      selectedCodes = [];
+      hasAllCodesSelected = false;
+    }
+
+    this.setState({
+      selectedCodes,
+      hasAllCodesSelected,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
   }
 
   formatCouponData(data) {
+    const { selectedCodes } = this.state;
+
     return data.map(code => ({
       ...code,
       assigned_to: code.error ? (
@@ -325,7 +411,12 @@ class CouponDetails extends React.Component {
       ) : code.assigned_to,
       redemptions: `${code.redemptions.used} of ${code.redemptions.available}`,
       actions: this.getActionButton(code),
-      select: <CheckBox onChange={checked => this.handleCodeSelection({ checked, code })} />,
+      select: (
+        <CheckBox
+          onChange={checked => this.handleCodeSelection({ checked, code })}
+          checked={selectedCodes.find(selectedCode => selectedCode === code)}
+        />
+      ),
     }));
   }
 
@@ -362,19 +453,35 @@ class CouponDetails extends React.Component {
     );
   }
 
+  renderInfoMessage({ title, message }) {
+    const { hasError } = this.props;
+
+    return (
+      <StatusAlert
+        alertType="info"
+        className={[classNames({ 'mt-2': hasError })]}
+        title={title}
+        message={message}
+      />
+    );
+  }
+
   render() {
     const {
       selectedToggle,
+      selectedCodes,
       tableColumns,
       modals,
       isCodeAssignmentSuccessful,
       refreshIndex,
+      hasAllCodesSelected,
     } = this.state;
 
     const {
       id,
       hasError,
       isExpanded,
+      couponDetailsTable: { data: tableData },
     } = this.props;
 
     const bulkActionSelectOptions = this.getBulkActionSelectOptions();
@@ -454,7 +561,7 @@ class CouponDetails extends React.Component {
                         <React.Fragment>
                           To view the newly assigned code(s), filter by
                           <Button
-                            className={['filter-unredeemed-btn', 'p-0', 'pl-1', 'border-0']}
+                            className={['p-0', 'pl-1', 'border-0']}
                             buttonType="link"
                             label="unredeemed codes"
                             onClick={() => {
@@ -466,6 +573,23 @@ class CouponDetails extends React.Component {
                               });
                             }}
                           />.
+                        </React.Fragment>
+                      ),
+                    })}
+                    {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
+                      message: (
+                        <React.Fragment>
+                          {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
+                          {!hasAllCodesSelected && (
+                            <Button
+                              className={['p-0', 'pl-1', 'border-0']}
+                              buttonType="link"
+                              label={`Select all ${tableData.count} codes?`}
+                              onClick={() => this.setState({
+                                hasAllCodesSelected: true,
+                              })}
+                            />
+                          )}
                         </React.Fragment>
                       ),
                     })}

@@ -804,7 +804,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
               aria-relevant="text"
               className="sr-only"
             >
-              Page 1, Current Page, of 1
+              Page 1, Current Page, of 2
             </div>
             <ul
               className="pagination"
@@ -833,16 +833,15 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                 </button>
               </li>
               <li
-                className="page-item disabled"
+                className="page-item"
               >
                 <button
-                  aria-label="Next"
+                  aria-label="Next, Page 2"
                   className="btn next page-link"
-                  disabled={true}
+                  disabled={false}
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
-                  tabIndex="-1"
                   type="button"
                 >
                   <div>

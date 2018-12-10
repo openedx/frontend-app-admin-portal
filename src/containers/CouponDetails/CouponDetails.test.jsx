@@ -53,8 +53,8 @@ const sampleTableData = {
   loading: false,
   error: null,
   data: {
-    count: 3,
-    num_pages: 1,
+    count: 5,
+    num_pages: 2,
     current_page: 1,
     results: [
       sampleCodeData,
@@ -236,28 +236,68 @@ describe('CouponDetailsWrapper', () => {
     });
   });
 
-  it('handles individual code selection within table', () => {
-    const store = mockStore({
-      ...initialState,
-      table: {
-        'coupon-details': sampleTableData,
-      },
+  describe('code selection', () => {
+    let store;
+    let wrapper;
+
+    beforeEach(() => {
+      store = mockStore({
+        ...initialState,
+        table: {
+          'coupon-details': sampleTableData,
+        },
+      });
+      wrapper = mount((
+        <CouponDetailsWrapper
+          store={store}
+          isExpanded
+        />
+      ));
     });
-    const wrapper = mount((
-      <CouponDetailsWrapper
-        store={store}
-        isExpanded
-      />
-    ));
 
-    const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
+    const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
+      const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
+      selectAllCheckbox.simulate('change', { target: { value: isSelected } });
+      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
+    };
 
-    checkboxes.first().simulate('change', { target: { value: true } });
-    checkboxes.last().simulate('change', { target: { value: true } });
+    it('handles individual code selection within table', () => {
+      const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
 
-    expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
+      checkboxes.first().simulate('change', { target: { value: true } });
+      checkboxes.last().simulate('change', { target: { value: true } });
 
-    checkboxes.first().simulate('change', { target: { value: false } });
-    expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(1);
+      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
+
+      checkboxes.first().simulate('change', { target: { value: false } });
+      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(1);
+    });
+
+    it('handles select all checkbox click', () => {
+      // select all codes
+      selectAllCodesOnPage({
+        isSelected: true,
+        expectedSelectionLength: 3,
+      });
+
+      // unselect all codes
+      selectAllCodesOnPage({
+        isSelected: false,
+        expectedSelectionLength: 0,
+      });
+    });
+
+    it('handles select all codes across pages', () => {
+      selectAllCodesOnPage({
+        isSelected: true,
+        expectedSelectionLength: 3,
+      });
+
+      const alert = wrapper.find('CouponDetails').find('.alert');
+      expect(alert).toBeTruthy();
+      alert.find('.btn').simulate('click');
+
+      expect(wrapper.find('CouponDetails').instance().state.hasAllCodesSelected).toBeTruthy();
+    });
   });
 });
