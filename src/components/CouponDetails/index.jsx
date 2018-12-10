@@ -8,6 +8,7 @@ import H3 from '../H3';
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import StatusAlert from '../StatusAlert';
+import CodeAssignmentModal from '../CodeAssignmentModal';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
@@ -39,6 +40,7 @@ class CouponDetails extends React.Component {
           key: 'actions',
         },
       ],
+      modalProps: {},
     };
 
     this.toggleSelectRef = React.createRef();
@@ -48,6 +50,7 @@ class CouponDetails extends React.Component {
   }
 
   getActionButton(code) {
+    const { couponTitle } = this.props;
     const { assigned_to: assignedTo, redemptions } = code;
 
     if (redemptions.used === redemptions.available) {
@@ -56,7 +59,15 @@ class CouponDetails extends React.Component {
 
     const button = {
       label: 'Assign',
-      onClick: () => {},
+      onClick: () => this.setState({
+        modalProps: {
+          title: couponTitle,
+          isOpen: true,
+          code: code.title,
+          isBulkAssign: true,
+          redemptions,
+        },
+      }),
     };
 
     if (assignedTo) {
@@ -66,7 +77,7 @@ class CouponDetails extends React.Component {
 
     return (
       <Button
-        className={['btn-link', 'btn-sm', 'pl-0']}
+        className={['btn-link', 'btn-sm', 'px-0']}
         label={button.label}
         onClick={button.onClick}
       />
@@ -172,29 +183,25 @@ class CouponDetails extends React.Component {
               </div>
               <div className="row mb-3">
                 <div className="toggles col-12 col-md-8">
-                  <div className="row">
-                    <div className="col">
-                      <InputSelect
-                        ref={this.toggleSelectRef}
-                        className={['mt-1']}
-                        name="table-view"
-                        label="Table View:"
-                        value={selectedToggle}
-                        options={[
-                          { label: 'Not Assigned', value: 'not-assigned' },
-                          { label: 'Not Redeemed', value: 'not-redeemed' },
-                        ]}
-                        disabled={this.isTableLoading()}
-                      />
-                      <Button
-                        className={['ml-2']}
-                        buttonType="primary"
-                        label="Go"
-                        onClick={this.handleToggleSelect}
-                        disabled={this.isTableLoading()}
-                      />
-                    </div>
-                  </div>
+                  <InputSelect
+                    ref={this.toggleSelectRef}
+                    className={['mt-1']}
+                    name="table-view"
+                    label="Table View:"
+                    value={selectedToggle}
+                    options={[
+                      { label: 'Not Assigned', value: 'not-assigned' },
+                      { label: 'Not Redeemed', value: 'not-redeemed' },
+                    ]}
+                    disabled={this.isTableLoading()}
+                  />
+                  <Button
+                    className={['ml-2']}
+                    buttonType="primary"
+                    label="Go"
+                    onClick={this.handleToggleSelect}
+                    disabled={this.isTableLoading()}
+                  />
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
@@ -232,6 +239,7 @@ class CouponDetails extends React.Component {
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
+              {modalProps.isOpen && <CodeAssignmentModal {...modalProps} />}
             </React.Fragment>
           }
         </div>
