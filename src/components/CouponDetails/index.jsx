@@ -44,9 +44,12 @@ class CouponDetails extends React.Component {
     };
 
     this.toggleSelectRef = React.createRef();
+    this.bulkActionSelectRef = React.createRef();
 
     this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
+    this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
+    this.handleCodeAssignmentModalClose = this.handleCodeAssignmentModalClose.bind(this);
   }
 
   getActionButton(code) {
@@ -63,9 +66,10 @@ class CouponDetails extends React.Component {
         modalProps: {
           title: couponTitle,
           isOpen: true,
-          code: code.title,
-          isBulkAssign: true,
-          redemptions,
+          data: {
+            code: code.title,
+            remainingUses: redemptions.available - redemptions.used,
+          },
         },
       }),
     };
@@ -87,6 +91,31 @@ class CouponDetails extends React.Component {
   isTableLoading() {
     const { couponDetailsTable } = this.props;
     return couponDetailsTable && couponDetailsTable.loading;
+  }
+
+  handleBulkActionSelect() {
+    const { couponTitle, unassignedCodes } = this.props;
+    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
+    const seleectedBulkAction = ref && ref.state.value;
+
+    if (seleectedBulkAction === 'assign') {
+      this.setState({
+        modalProps: {
+          title: couponTitle,
+          isOpen: true,
+          isBulkAssign: true,
+          data: {
+            unassignedCodes,
+          },
+        },
+      });
+    }
+  }
+
+  handleCodeAssignmentModalClose() {
+    this.setState({
+      modalProps: {},
+    });
   }
 
   hasStatusAlert() {
@@ -153,7 +182,7 @@ class CouponDetails extends React.Component {
   }
 
   render() {
-    const { selectedToggle, tableColumns } = this.state;
+    const { selectedToggle, tableColumns, modalProps } = this.state;
     const { id, hasError, isExpanded } = this.props;
 
     return (
@@ -205,6 +234,7 @@ class CouponDetails extends React.Component {
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
+                    ref={this.bulkActionSelectRef}
                     className={['mt-1']}
                     name="bulk-action"
                     label="Bulk Action:"
@@ -220,7 +250,7 @@ class CouponDetails extends React.Component {
                     className={['ml-2']}
                     buttonType="primary"
                     label="Go"
-                    onClick={() => {}}
+                    onClick={this.handleBulkActionSelect}
                     disabled={this.isTableLoading()}
                   />
                 </div>
@@ -239,7 +269,13 @@ class CouponDetails extends React.Component {
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
-              {modalProps.isOpen && <CodeAssignmentModal {...modalProps} />}
+              {modalProps.isOpen &&
+                <CodeAssignmentModal
+                  {...modalProps}
+                  onClose={this.handleCodeAssignmentModalClose}
+                  onSubmit={() => {}}
+                />
+              }
             </React.Fragment>
           }
         </div>

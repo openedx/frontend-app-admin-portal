@@ -184,8 +184,9 @@ class Coupon extends React.Component {
         {<CouponDetails
           id={data.id}
           isExpanded={isExpanded}
-          hasError={data.has_error} 
+          hasError={data.has_error}
           couponTitle={data.title}
+          unassignedCodes={data.num_unassigned}
         />}
       </div>
     );

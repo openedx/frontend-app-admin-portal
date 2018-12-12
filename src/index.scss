@@ -13,3 +13,18 @@ $fa-font-path: "~font-awesome/fonts";
 body {
     overflow-x: hidden;
 }
+
+form {
+    label {
+        font-weight: 600;
+
+        .required {
+            color: $danger;
+            margin-left: 4px;
+        }
+    }
+
+    textarea {
+        resize: none;
+    }
+}

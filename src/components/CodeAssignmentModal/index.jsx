@@ -1,61 +1,109 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field, reduxForm } from 'redux-form';
+import classNames from 'classnames';
+import { Button, Icon, Modal } from '@edx/paragon';
 
-import { InputText, Modal, TextArea } from '@edx/paragon';
+import BulkAssignFields from './BulkAssignFields';
+import IndividualAssignFields from './IndividualAssignFields';
+import TextAreaAutoSize from './TextAreaAutoSize';
+
+import { isRequired } from '../../utils';
 
 import './CodeAssignmentModal.scss';
 
-class CodeAssignmentModal extends React.Component { // eslint-disable-line
-  renderBody() {
-    // TODO use redux-form!
-    const { code, isBulkAssign, redemptions } = this.props;
-    let remainingUses;
+const FORM_NAME = 'code-assignment-modal-form';
 
-    if (!isBulkAssign) {
-      remainingUses = redemptions.available - redemptions.used;
+class CodeAssignmentModal extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isOpen: false,
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.isOpen) {
+      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+        isOpen: true,
+      });
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { submitSucceeded } = this.props;
+
+    if (submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
+        isOpen: false,
+      });
+    }
+  }
+
+  hasIndividualAssignData() {
+    const { data } = this.props;
+    return ['code', 'remainingUses'].every(key => key in data);
+  }
+
+  renderBody() {
+    const {
+      data,
+      isBulkAssign,
+      handleSubmit,
+      submitFailed,
+      error,
+    } = this.props;
 
     return (
       <React.Fragment>
-        {isBulkAssign ? (
-          <p>Number of unassigned codes: XXX</p>
-        ) : (
-          <React.Fragment>
-            <p>Code: {code}</p>
-            <p>Remaining Uses: {remainingUses}</p>
-          </React.Fragment>
-        )}
+        {submitFailed && error && this.renderErrorMessage()}
+        <div className="assignment-details mb-4">
+          {isBulkAssign && data.unassignedCodes && (
+            <p>
+              <span className="detail-label mr-1">Unassigned Codes:</span>
+              {data.unassignedCodes}
+            </p>
+          )}
 
-        {isBulkAssign ? (
-          <React.Fragment>
-            <h3>Users</h3>
-            <TextArea
-              name="add-users"
-              label="Add Users"
-              description="To add more than one user, include each email address on a separate line."
+          {!isBulkAssign && this.hasIndividualAssignData() && (
+            <React.Fragment>
+              <p>Code: {data.code}</p>
+              <p>Remaining Uses: {data.remainingUses}</p>
+            </React.Fragment>
+          )}
+        </div>
+        <form
+          className={classNames({ bulk: isBulkAssign })}
+          onSubmit={handleSubmit}
+        >
+          {isBulkAssign && <BulkAssignFields />}
+          {!isBulkAssign && <IndividualAssignFields />}
+
+          <div className="mt-4">
+            <h3>Email</h3>
+            <Field
+              id="email-template"
+              name="email-template"
+              component={TextAreaAutoSize}
+              label={
+                <React.Fragment>
+                  Customize Message
+                  <span className="required">*</span>
+                </React.Fragment>
+              }
+              validate={[isRequired]}
+              required
             />
-            <p>Insert CSV upload</p>
-          </React.Fragment>
-        ) : (
-          <InputText
-            name="add-user"
-            label="Add User"
-            description="Enter an email address for this user."
-          />
-        )}
-
-        <TextArea
-          name="email-message"
-          label="Email Message"
-          description="Customize the message that will be sent via email."
-          value="[insert default email template!]"
-        />
+          </div>
+        </form>
       </React.Fragment>
     );
   }
 
   renderTitle() {
     const { title } = this.props;
+
     return (
       <React.Fragment>
         <span className="d-block">{title}</span>
@@ -65,29 +113,69 @@ class CodeAssignmentModal extends React.Component { // eslint-disable-line
   }
 
   render() {
-    const { isOpen } = this.props;
+    const { isOpen } = this.state;
+    const {
+      isBulkAssign,
+      onClose,
+      submit,
+      submitting,
+      invalid,
+    } = this.props;
+
     return (
-      <Modal
-        title={this.renderTitle()}
-        body={this.renderBody()}
-        open={isOpen}
-        onClose={() => {}}
-      />
+      <React.Fragment>
+        <Modal
+          title={this.renderTitle()}
+          body={this.renderBody()}
+          open={isOpen}
+          onClose={onClose}
+          buttons={[
+            <Button
+              label={
+                <React.Fragment>
+                  {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
+                  {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
+                </React.Fragment>
+              }
+              disabled={invalid || submitting}
+              buttonType="primary"
+              onClick={() => submit(FORM_NAME)}
+            />,
+          ]}
+        />
+      </React.Fragment>
     );
   }
 }
 
 CodeAssignmentModal.defaultProps = {
+  error: null,
   isBulkAssign: false,
   isOpen: false,
-  code: null,
+  data: {},
 };
 
 CodeAssignmentModal.propTypes = {
+  // props From redux-form
+  handleSubmit: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  invalid: PropTypes.bool.isRequired,
+  submitSucceeded: PropTypes.bool.isRequired,
+  submitFailed: PropTypes.bool.isRequired,
+  error: PropTypes.instanceOf(Error),
+
+  // custom props
   title: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
   isBulkAssign: PropTypes.bool,
   isOpen: PropTypes.bool,
-  code: PropTypes.string,
+  data: PropTypes.shape({}),
 };
 
-export default CodeAssignmentModal;
+export default reduxForm({
+  form: FORM_NAME,
+  initialValues: {
+    'email-template': '[insert default email template]',
+  },
+})(CodeAssignmentModal);

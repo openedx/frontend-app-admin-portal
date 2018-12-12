@@ -6,12 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import { breakpoints } from '@edx/paragon';
 
 import EnterpriseApp from './index';
 
 import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
-import { breakpoints } from '../../utils';
 import { features } from '../../config';
 
 features.CODE_MANAGEMENT = true;
