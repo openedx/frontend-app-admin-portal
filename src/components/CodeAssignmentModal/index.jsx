@@ -7,6 +7,7 @@ import { Button, Icon, Modal } from '@edx/paragon';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import TextAreaAutoSize from './TextAreaAutoSize';
+import StatusAlert from '../StatusAlert';
 
 import { isRequired } from '../../utils';
 
@@ -98,6 +99,16 @@ class CodeAssignmentModal extends React.Component {
           </div>
         </form>
       </React.Fragment>
+    );
+  }
+
+  renderErrorMessage() {
+    return (
+      <StatusAlert
+        alertType="danger"
+        iconClassNames={['fa', 'fa-times-circle']}
+        message="[insert error message]"
+      />
     );
   }
 
