@@ -5,11 +5,11 @@ import classNames from 'classnames';
 import { Button, Icon, Modal } from '@edx/paragon';
 
 import BulkAssignFields from './BulkAssignFields';
-import EMAIL_TEMPLATE from './EmailTemplate';
 import IndividualAssignFields from './IndividualAssignFields';
 import TextAreaAutoSize from './TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
+import emailTemplate from './emailTemplate';
 import { isRequired } from '../../utils';
 
 import './CodeAssignmentModal.scss';
@@ -188,6 +188,6 @@ CodeAssignmentModal.propTypes = {
 export default reduxForm({
   form: FORM_NAME,
   initialValues: {
-    'email-template': EMAIL_TEMPLATE,
+    'email-template': emailTemplate,
   },
 })(CodeAssignmentModal);
