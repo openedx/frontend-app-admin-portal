@@ -9,10 +9,14 @@ import { Provider } from 'react-redux';
 
 import Sidebar from './index';
 
+import { features } from '../../config';
+
 import {
   EXPAND_SIDEBAR,
   COLLAPSE_SIDEBAR,
 } from '../../data/constants/sidebar';
+
+features.CODE_MANAGEMENT = true;
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
