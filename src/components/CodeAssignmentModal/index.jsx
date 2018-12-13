@@ -35,12 +35,10 @@ class CodeAssignmentModal extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { submitSucceeded } = this.props;
+    const { submitSucceeded, onClose } = this.props;
 
     if (submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
-      this.setState({ // eslint-disable-line react/no-did-update-set-state
-        isOpen: false,
-      });
+      onClose();
     }
   }
 

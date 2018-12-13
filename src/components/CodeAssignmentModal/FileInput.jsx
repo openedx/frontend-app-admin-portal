@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Icon, ValidationMessage, Variant } from '@edx/paragon';
+
+import './FileInput.scss';
 
 class FileInput extends React.Component {
   constructor(props) {
@@ -16,11 +19,11 @@ class FileInput extends React.Component {
   }
 
   handleFileReaderOnLoad(fileReader) {
+    const { onFileLoad } = this.props;
     const { result: fileContents } = fileReader;
 
     if (fileContents) {
-      const emails = fileContents.split('\n');
-      console.log(emails);
+      onFileLoad(fileContents);
     }
   }
 
@@ -51,11 +54,11 @@ class FileInput extends React.Component {
       description,
       disabled,
       required,
-      meta: { touched, error },
+      meta: { error },
     } = this.props;
 
     return (
-      <div className="form-group">
+      <div className="file-input form-group">
         <label
           className="d-block"
           htmlFor={id}
@@ -63,7 +66,7 @@ class FileInput extends React.Component {
           {label}
         </label>
         <label
-          className="btn btn-outline-primary"
+          className="btn btn-outline-primary m-0"
           htmlFor={id}
         >
           <Icon className={['fa', 'fa-upload', 'mr-2']} />
@@ -79,14 +82,16 @@ class FileInput extends React.Component {
           required={required}
           onChange={this.handleOnChange}
         />
-        <ValidationMessage
-          id={`validation-${id}`}
-          isValid={!(touched && error)}
-          invalidMessage={error}
-          variant={{
-            status: Variant.status.DANGER,
-          }}
-        />
+        <div className={classNames({ 'is-invalid': error })}>
+          <ValidationMessage
+            id={`validation-${id}`}
+            isValid={!error}
+            invalidMessage={error}
+            variant={{
+              status: Variant.status.DANGER,
+            }}
+          />
+        </div>
         {description && (
           <small className="form-text" id={`description-${id}`}>
             {description}
@@ -102,19 +107,20 @@ FileInput.defaultProps = {
   description: undefined,
   disabled: false,
   required: false,
+  onFileLoad: () => {},
 };
 
 FileInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   meta: PropTypes.shape({
-    touched: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.string,
   }).isRequired,
   accept: PropTypes.string,
   description: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  onFileLoad: PropTypes.func,
 };
 
 export default FileInput;
