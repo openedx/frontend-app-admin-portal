@@ -1,18 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import isEmail from 'validator/lib/isEmail';
-import isEmpty from 'validator/lib/isEmpty';
-import isNumeric from 'validator/lib/isNumeric';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Icon } from '@edx/paragon';
 
-import RenderField from './RenderField';
+import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 
-const isRequired = value => (isEmpty(value) ? 'This field is required.' : null);
-const isValidEmail = value => (!isEmail(value) ? 'Must be a valid email address.' : null);
-const isValidNumber = value => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : null);
+import { isRequired, isValidEmail, isValidNumber } from '../../utils';
 
 class RequestCodesForm extends React.Component {
   constructor(props) {

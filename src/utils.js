@@ -1,5 +1,8 @@
 import moment from 'moment';
 import qs from 'query-string';
+import isEmail from 'validator/lib/isEmail';
+import isEmpty from 'validator/lib/isEmpty';
+import isNumeric from 'validator/lib/isNumeric';
 
 import history from './data/history';
 
@@ -70,31 +73,12 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
   triggerKeys[action].indexOf(key) > -1
 );
 
-// NOTE: These are the breakpoints used in Bootstrap v4.0.0 as seen in
-// the documentation (https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)
-const breakpoints = {
-  extraSmall: {
-    maxWidth: 575.98,
-  },
-  small: {
-    minWidth: 576,
-    maxWidth: 767.98,
-  },
-  medium: {
-    minWidth: 768,
-    maxWidth: 991.98,
-  },
-  large: {
-    minWidth: 992,
-    maxWidth: 1199.98,
-  },
-  extraLarge: {
-    minWidth: 1200,
-  },
-};
+// Validation functions
+const isRequired = (value = '') => (isEmpty(value) ? 'This field is required.' : null);
+const isValidEmail = (value = '') => (!isEmail(value) ? 'Must be a valid email address.' : null);
+const isValidNumber = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : null);
 
 export {
-  breakpoints,
   formatPercentage,
   formatPassedTimestamp,
   formatTimestamp,
@@ -102,4 +86,7 @@ export {
   updateUrl,
   getPageOptionsFromUrl,
   isTriggerKey,
+  isRequired,
+  isValidEmail,
+  isValidNumber,
 };

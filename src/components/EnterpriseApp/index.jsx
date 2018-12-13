@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import { breakpoints } from '@edx/paragon';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
@@ -11,7 +12,7 @@ import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 
-import { breakpoints, removeTrailingSlash } from '../../utils';
+import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 import './EnterpriseApp.scss';
