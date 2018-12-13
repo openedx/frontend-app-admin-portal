@@ -9,6 +9,7 @@ import IndividualAssignFields from './IndividualAssignFields';
 import TextAreaAutoSize from './TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
+import emailTemplate from './emailTemplate';
 import { isRequired } from '../../utils';
 
 import './CodeAssignmentModal.scss';
@@ -187,6 +188,6 @@ CodeAssignmentModal.propTypes = {
 export default reduxForm({
   form: FORM_NAME,
   initialValues: {
-    'email-template': '[insert default email template]',
+    'email-template': emailTemplate,
   },
 })(CodeAssignmentModal);
