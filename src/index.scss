@@ -8,23 +8,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~@edx/paragon/src/Pagination/Pagination";
 @import "~@edx/paragon/src/Dropdown/Dropdown";
 @import "~@edx/paragon/src/ValidationMessage/ValidationMessage";
-@import "~@edx/paragon/src/Modal/Modal";
 
 body {
     overflow-x: hidden;
-}
-
-form {
-    label {
-        font-weight: 600;
-
-        .required {
-            color: $danger;
-            margin-left: 4px;
-        }
-    }
-
-    textarea {
-        resize: none;
-    }
 }
