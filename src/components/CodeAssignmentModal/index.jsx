@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import classNames from 'classnames';
 import { Button, Icon, Modal } from '@edx/paragon';
 
+import H3 from '../H3';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import TextAreaAutoSize from './TextAreaAutoSize';
@@ -83,7 +84,7 @@ class CodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
 
           <div className="mt-4">
-            <h3>Email</h3>
+            <H3>Email Template</H3>
             <Field
               id="email-template"
               name="email-template"
