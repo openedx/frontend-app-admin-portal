@@ -6,7 +6,6 @@ const RenderField = ({
   input,
   label,
   type,
-  description,
   disabled,
   required,
   meta: { touched, error },
@@ -15,7 +14,6 @@ const RenderField = ({
     {...input}
     label={label}
     type={type}
-    description={description}
     disabled={disabled}
     required={required}
     isValid={!(touched && error)}

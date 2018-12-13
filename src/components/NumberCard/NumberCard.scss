@@ -1,6 +1,6 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/_mixins.scss";
 
 $viewport-size-details-overlay: 'md';
 $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
@@ -49,7 +49,7 @@ $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
         @include media-breakpoint-up($viewport-size-details-overlay) {
             & {
                 position: absolute;
-                z-index: $zindex-dropdown;
+                z-index: 2000;
                 top: 100%;
                 width: 100%;
                 box-shadow: $number-card-box-shadow;

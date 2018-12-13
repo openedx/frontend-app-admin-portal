@@ -181,13 +181,7 @@ class Coupon extends React.Component {
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {<CouponDetails
-          id={data.id}
-          isExpanded={isExpanded}
-          hasError={data.has_error}
-          couponTitle={data.title}
-          unassignedCodes={data.num_unassigned}
-        />}
+        {<CouponDetails id={data.id} isExpanded={isExpanded} hasError={data.has_error} />}
       </div>
     );
   }
