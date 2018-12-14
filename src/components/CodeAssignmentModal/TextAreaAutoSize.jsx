@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TextArea from 'react-textarea-autosize';
 import { ValidationMessage, Variant } from '@edx/paragon';
@@ -14,7 +13,7 @@ const TextAreaAutoSize = ({
   meta: { touched, error },
 }) => (
   <div className="form-group">
-    <label htmlFor="email-template">
+    <label htmlFor={id}>
       {label}
     </label>
     <TextArea
@@ -29,6 +28,7 @@ const TextAreaAutoSize = ({
       disabled={disabled}
       required={required}
       minRows={3}
+      maxRows={10}
     />
     <ValidationMessage
       id={`validation-${id}`}
@@ -45,9 +45,5 @@ const TextAreaAutoSize = ({
     )}
   </div>
 );
-
-TextAreaAutoSize.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-};
 
 export default TextAreaAutoSize;
