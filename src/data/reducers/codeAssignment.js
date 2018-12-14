@@ -1,8 +1,8 @@
 import {
-  INDIVIDUAL_ASSIGNMENT_REQUEST,
-  INDIVIDUAL_ASSIGNMENT_SUCCESS,
-  INDIVIDUAL_ASSIGNMENT_FAILURE,
-} from '../constants/individualAssignment';
+  CODE_ASSIGNMENT_REQUEST,
+  CODE_ASSIGNMENT_SUCCESS,
+  CODE_ASSIGNMENT_FAILURE,
+} from '../constants/codeAssignment';
 
 const initialState = {
   loading: false,
@@ -10,20 +10,20 @@ const initialState = {
   data: null,
 };
 
-const individualAssignmentReducer = (state = initialState, action) => {
+const codeAssignmentReducer = (state = initialState, action) => {
   switch (action.type) {
-    case INDIVIDUAL_ASSIGNMENT_REQUEST:
+    case CODE_ASSIGNMENT_REQUEST:
       return {
         loading: true,
         error: null,
       };
-    case INDIVIDUAL_ASSIGNMENT_SUCCESS:
+    case CODE_ASSIGNMENT_SUCCESS:
       return {
         loading: false,
         error: null,
         data: action.payload.data,
       };
-    case INDIVIDUAL_ASSIGNMENT_FAILURE:
+    case CODE_ASSIGNMENT_FAILURE:
       return {
         loading: false,
         error: action.payload.error,
@@ -33,4 +33,4 @@ const individualAssignmentReducer = (state = initialState, action) => {
   }
 };
 
-export default individualAssignmentReducer;
+export default codeAssignmentReducer;
