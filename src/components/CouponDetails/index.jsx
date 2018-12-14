@@ -8,7 +8,7 @@ import H3 from '../H3';
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import StatusAlert from '../StatusAlert';
-import CodeAssignmentModal from '../CodeAssignmentModal';
+import CodeAssignmentModal from '../../containers/CodeAssignmentModel';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 

@@ -51,8 +51,7 @@ class CodeAssignmentModal extends React.Component {
 
   handleFormSubmit() {
     return this.props.handleSubmit((data) => {
-      console.log(data);
-      // TODO: dispatch action!
+      this.props.sendCodeAssignment(data);
     });
   }
 
@@ -183,6 +182,7 @@ CodeAssignmentModal.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   isBulkAssign: PropTypes.bool,
+  sendCodeAssignment: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
   data: PropTypes.shape({}),
 };

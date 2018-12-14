@@ -7,13 +7,12 @@ import { sendCodeAssignment } from '../../data/actions/codeAssignment';
 const mapStateToProps = state => ({
   loading: state.coupons.loading,
   error: state.coupons.error,
-  enterpriseId: state.portalConfiguration.enterpriseId,
   coupons: state.coupons.data,
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendCodeAssignment: () => {
-    dispatch(sendCodeAssignment());
+  sendCodeAssignment: (formData) => {
+    dispatch(sendCodeAssignment(formData));
   },
 });
 
