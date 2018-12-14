@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const codeAssignmentReducer = (state = initialState, action) => {
+const codeAssignment = (state = initialState, action) => {
   switch (action.type) {
     case CODE_ASSIGNMENT_REQUEST:
       return {
@@ -33,4 +33,4 @@ const codeAssignmentReducer = (state = initialState, action) => {
   }
 };
 
-export default codeAssignmentReducer;
+export default codeAssignment;
