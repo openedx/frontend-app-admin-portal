@@ -24,6 +24,8 @@ class CodeAssignmentModal extends React.Component {
     this.state = {
       isOpen: false,
     };
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -47,11 +49,17 @@ class CodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
+  handleFormSubmit() {
+    return this.props.handleSubmit((data) => {
+      console.log(data);
+      // TODO: dispatch action!
+    });
+  }
+
   renderBody() {
     const {
       data,
       isBulkAssign,
-      handleSubmit,
       submitFailed,
       error,
     } = this.props;
@@ -74,10 +82,7 @@ class CodeAssignmentModal extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <form
-          className={classNames({ bulk: isBulkAssign })}
-          onSubmit={handleSubmit}
-        >
+        <form className={classNames({ bulk: isBulkAssign })}>
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
 
@@ -128,7 +133,6 @@ class CodeAssignmentModal extends React.Component {
     const {
       isBulkAssign,
       onClose,
-      submit,
       submitting,
       invalid,
     } = this.props;
@@ -150,7 +154,7 @@ class CodeAssignmentModal extends React.Component {
               }
               disabled={invalid || submitting}
               buttonType="primary"
-              onClick={() => submit(FORM_NAME)}
+              onClick={this.handleFormSubmit()}
             />,
           ]}
         />
@@ -169,7 +173,6 @@ CodeAssignmentModal.defaultProps = {
 CodeAssignmentModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   invalid: PropTypes.bool.isRequired,
   submitSucceeded: PropTypes.bool.isRequired,

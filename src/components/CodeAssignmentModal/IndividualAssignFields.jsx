@@ -9,7 +9,7 @@ const IndividualAssignFields = () => (
   <React.Fragment>
     <h3>Add User</h3>
     <Field
-      name="emailAddress"
+      name="email-address"
       type="email"
       component={RenderField}
       label={
