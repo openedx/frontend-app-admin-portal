@@ -27,7 +27,7 @@ const sendCodeAssignmentFailure = error => ({
 const sendCodeAssignment = options => (
   (dispatch) => {
     dispatch(sendCodeAssignmentRequest());
-    return EcommerceApiService.fetchCodeAssignment(options)
+    return EcommerceApiService.sendCodeAssignment(options)
       .then((response) => {
         dispatch(sendCodeAssignmentSuccess(response.data));
       })

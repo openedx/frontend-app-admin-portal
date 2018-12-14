@@ -20,6 +20,15 @@ class EcommerceApiService {
       },
     });
   }
+
+  static sendCodeAssignment() {
+    // TODO replace with sending data to ecommerce API
+    return Promise.resolve({
+      data: {
+        results: [],
+      },
+    });
+  }
 }
 
 export default EcommerceApiService;
