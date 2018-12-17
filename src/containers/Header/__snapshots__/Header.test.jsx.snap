@@ -130,53 +130,6 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
         Beta
       </span>
     </div>
-    <div
-      className="dropdown has-icon rounded border d-flex bg-white"
-    >
-      <div
-        className={
-          Array [
-            "icon-container d-flex align-items-center justify-content-center border-right",
-          ]
-        }
-      >
-        <span
-          aria-hidden={true}
-          className="fa fa-user px-3 rounded-left"
-          id="Icon1"
-        />
-        <span
-          className="sr-only"
-        >
-          Profile image for test@example.com
-        </span>
-      </div>
-      <button
-        aria-expanded={false}
-        aria-haspopup="true"
-        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        type="button"
-      >
-        test@example.com
-      </button>
-      <div
-        aria-hidden={true}
-        aria-label="test@example.com"
-        className="dropdown-menu"
-        role="menu"
-      >
-        <button
-          className="dropdown-item"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-        >
-          Logout
-        </button>
-      </div>
-    </div>
   </nav>
 </header>
 `;

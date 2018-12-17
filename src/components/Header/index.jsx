@@ -17,12 +17,11 @@ class Header extends React.Component {
   }
 
   getProfileIconElement() {
-    const { userProfile, email } = this.props;
-    const profileImage = userProfile && userProfile.profile_image;
+    const { email, userProfileImageUrl } = this.props;
     const screenReaderText = `Profile image for ${email}`;
 
-    if (profileImage && profileImage.has_image) {
-      return <Img src={profileImage.image_url_medium} alt={screenReaderText} />;
+    if (userProfileImageUrl) {
+      return <Img src={userProfileImageUrl} alt={screenReaderText} />;
     }
     return <Icon className={['fa', 'fa-user', 'px-3']} screenReaderText={screenReaderText} />;
   }
@@ -71,8 +70,8 @@ Header.propTypes = {
   enterpriseName: PropTypes.string,
   email: PropTypes.string,
   username: PropTypes.string,
+  userProfileImageUrl: PropTypes.string,
   fetchUserProfile: PropTypes.func,
-  userProfile: PropTypes.shape({}),
   hasSidebarToggle: PropTypes.bool,
 };
 
@@ -81,8 +80,8 @@ Header.defaultProps = {
   enterpriseName: null,
   email: null,
   username: null,
+  userProfileImageUrl: null,
   fetchUserProfile: () => {},
-  userProfile: null,
   hasSidebarToggle: false,
 };
 
