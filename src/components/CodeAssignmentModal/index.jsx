@@ -134,6 +134,7 @@ class CodeAssignmentModal extends React.Component {
       onClose,
       submitting,
       invalid,
+      loading,
     } = this.props;
 
     return (
@@ -147,7 +148,7 @@ class CodeAssignmentModal extends React.Component {
             <Button
               label={
                 <React.Fragment>
-                  {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
+                  {loading && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
                   {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
                 </React.Fragment>
               }
@@ -173,6 +174,7 @@ CodeAssignmentModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   invalid: PropTypes.bool.isRequired,
   submitSucceeded: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,

@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 
 import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
-import { sendCodeAssignment } from '../../data/actions/codeAssignment';
+import sendCodeAssignment from '../../data/actions/codeAssignment';
 
 const mapStateToProps = state => ({
-  loading: state.coupons.loading,
-  error: state.coupons.error,
-  coupons: state.coupons.data,
+  loading: state.codeAssignment.loading,
+  error: state.codeAssignment.error,
+  codeAssignments: state.codeAssignment.data,
 });
 
 const mapDispatchToProps = dispatch => ({
