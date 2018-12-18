@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import classNames from 'classnames';
 import { Button, Icon, Modal } from '@edx/paragon';
 
 import H3 from '../H3';
@@ -24,8 +23,6 @@ class CodeAssignmentModal extends React.Component {
     this.state = {
       isOpen: false,
     };
-
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -49,18 +46,13 @@ class CodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
-  handleFormSubmit() {
-    return this.props.handleSubmit((data) => {
-      this.props.sendCodeAssignment(data);
-    });
-  }
-
   renderBody() {
     const {
       data,
       isBulkAssign,
       submitFailed,
       error,
+      handleSubmit,
     } = this.props;
 
     return (
@@ -81,7 +73,7 @@ class CodeAssignmentModal extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <form className={classNames({ bulk: isBulkAssign })}>
+        <form onSubmit={handleSubmit}>
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
 
@@ -107,11 +99,14 @@ class CodeAssignmentModal extends React.Component {
   }
 
   renderErrorMessage() {
+    const { error: { message } } = this.props;
+
     return (
       <StatusAlert
         alertType="danger"
         iconClassNames={['fa', 'fa-times-circle']}
-        message="[insert error message]"
+        title="Unable to assign codes"
+        message={`Try refreshing your screen (${message})`}
       />
     );
   }
@@ -134,7 +129,7 @@ class CodeAssignmentModal extends React.Component {
       onClose,
       submitting,
       invalid,
-      loading,
+      submit,
     } = this.props;
 
     return (
@@ -148,13 +143,13 @@ class CodeAssignmentModal extends React.Component {
             <Button
               label={
                 <React.Fragment>
-                  {loading && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
+                  {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
                   {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
                 </React.Fragment>
               }
               disabled={invalid || submitting}
               buttonType="primary"
-              onClick={this.handleFormSubmit()}
+              onClick={submit}
             />,
           ]}
         />
@@ -174,17 +169,16 @@ CodeAssignmentModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
   invalid: PropTypes.bool.isRequired,
   submitSucceeded: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,
+  submit: PropTypes.func.isRequired,
   error: PropTypes.instanceOf(Error),
 
   // custom props
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   isBulkAssign: PropTypes.bool,
-  sendCodeAssignment: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
   data: PropTypes.shape({}),
 };

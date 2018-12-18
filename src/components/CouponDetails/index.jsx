@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { SubmissionError } from 'redux-form';
 import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
 
 import H3 from '../H3';
@@ -8,7 +9,7 @@ import H3 from '../H3';
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import StatusAlert from '../StatusAlert';
-import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
+import CodeAssignmentModal from '../CodeAssignmentModal';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
@@ -41,6 +42,8 @@ class CouponDetails extends React.Component {
         },
       ],
       modalProps: {},
+      codeAssignmentError: null,
+      codeAssignmentSuccess: null,
     };
 
     this.toggleSelectRef = React.createRef();
@@ -127,7 +130,8 @@ class CouponDetails extends React.Component {
     //      should go here as well.
 
     const { hasError } = this.props;
-    return !this.isTableLoading() && [hasError].some(item => item);
+    const { codeAssignmentError } = this.state;
+    return !this.isTableLoading() && [hasError, codeAssignmentError].some(item => item);
   }
 
   handleToggleSelect() {
@@ -171,18 +175,25 @@ class CouponDetails extends React.Component {
     }));
   }
 
-  renderErrorMessage() {
+  renderErrorMessage(errorMessage) {
     return (
       <StatusAlert
         alertType="danger"
         iconClassNames={['fa', 'fa-times-circle']}
-        message="One or more codes below have an error."
+        message={`Try refreshing your screen (${errorMessage})`}
       />
     );
   }
 
   render() {
-    const { selectedToggle, tableColumns, modalProps } = this.state;
+    const {
+      selectedToggle,
+      tableColumns,
+      modalProps,
+      codeAssignmentError,
+      codeAssignmentSuccess,
+    } = this.state;
+
     const { id, hasError, isExpanded } = this.props;
 
     return (
@@ -220,7 +231,8 @@ class CouponDetails extends React.Component {
                     value={selectedToggle}
                     options={[
                       { label: 'Not Assigned', value: 'not-assigned' },
-                      { label: 'Not Redeemed', value: 'not-redeemed' },
+                      { label: 'Assigned, Redemptions Available', value: 'not-redeemed' },
+                      { label: 'Assigned, Fully Redeemed', value: 'redeemed' },
                     ]}
                     disabled={this.isTableLoading()}
                   />
@@ -258,7 +270,9 @@ class CouponDetails extends React.Component {
               {this.hasStatusAlert() &&
                 <div className="row mb-3">
                   <div className="col">
-                    {hasError && this.renderErrorMessage()}
+                    {hasError && this.renderErrorMessage('One or more codes below have an error.')}
+                    {codeAssignmentError && this.renderErrorMessage(codeAssignmentError.message)}
+                    {codeAssignmentSuccess && this.renderErrorMessage(codeAssignmentError.message)}
                   </div>
                 </div>
               }
@@ -273,7 +287,19 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modalProps}
                   onClose={this.handleCodeAssignmentModalClose}
-                  onSubmit={() => {}}
+                  onSubmit={options => (
+                    EcommerceApiService.sendCodeAssignment(options)
+                      .then((response) => {
+                        this.setState({
+                          codeAssignmentSuccess: true,
+                        });
+                      })
+                      .catch((error) => {
+                        this.setState({
+                          codeAssignmentError: error,
+                        });
+                      })
+                  )}
                 />
               }
             </React.Fragment>
