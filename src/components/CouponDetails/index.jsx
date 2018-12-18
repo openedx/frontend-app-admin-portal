@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { SubmissionError } from 'redux-form';
 import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
 
 import H3 from '../H3';
@@ -41,10 +42,13 @@ class CouponDetails extends React.Component {
         },
       ],
       modalProps: {},
+      codeAssignmentError: null,
+      codeAssignmentSuccess: null,
     };
 
     this.toggleSelectRef = React.createRef();
     this.bulkActionSelectRef = React.createRef();
+    this.tableRef = null;
 
     this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
@@ -96,9 +100,9 @@ class CouponDetails extends React.Component {
   handleBulkActionSelect() {
     const { couponTitle, unassignedCodes } = this.props;
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const seleectedBulkAction = ref && ref.state.value;
+    const selectedBulkAction = ref && ref.state.value;
 
-    if (seleectedBulkAction === 'assign') {
+    if (selectedBulkAction === 'assign') {
       this.setState({
         modalProps: {
           title: couponTitle,
@@ -127,7 +131,9 @@ class CouponDetails extends React.Component {
     //      should go here as well.
 
     const { hasError } = this.props;
-    return !this.isTableLoading() && [hasError].some(item => item);
+    const { codeAssignmentError, codeAssignmentSuccess } = this.state;
+    const hasAlert = [hasError, codeAssignmentError, codeAssignmentSuccess].some(item => item);
+    return !this.isTableLoading() && hasAlert;
   }
 
   handleToggleSelect() {
@@ -171,18 +177,37 @@ class CouponDetails extends React.Component {
     }));
   }
 
-  renderErrorMessage() {
+  renderErrorMessage({ title, message }) {
     return (
       <StatusAlert
         alertType="danger"
         iconClassNames={['fa', 'fa-times-circle']}
-        message="One or more codes below have an error."
+        title={title}
+        message={`Try refreshing your screen (${message})`}
+      />
+    );
+  }
+
+  renderSuccessMessage({ title, message }) {
+    return (
+      <StatusAlert
+        alertType="success"
+        iconClassNames={['fa', 'fa-check']}
+        title={title}
+        message={`Woot! (${message})`}
       />
     );
   }
 
   render() {
-    const { selectedToggle, tableColumns, modalProps } = this.state;
+    const {
+      selectedToggle,
+      tableColumns,
+      modalProps,
+      codeAssignmentError,
+      codeAssignmentSuccess,
+    } = this.state;
+
     const { id, hasError, isExpanded } = this.props;
 
     return (
@@ -220,7 +245,8 @@ class CouponDetails extends React.Component {
                     value={selectedToggle}
                     options={[
                       { label: 'Not Assigned', value: 'not-assigned' },
-                      { label: 'Not Redeemed', value: 'not-redeemed' },
+                      { label: 'Assigned, Redemptions Available', value: 'not-redeemed' },
+                      { label: 'Assigned, Fully Redeemed', value: 'redeemed' },
                     ]}
                     disabled={this.isTableLoading()}
                   />
@@ -258,11 +284,24 @@ class CouponDetails extends React.Component {
               {this.hasStatusAlert() &&
                 <div className="row mb-3">
                   <div className="col">
-                    {hasError && this.renderErrorMessage()}
+                    {hasError && this.renderErrorMessage({
+                      message: 'One or more codes below have an error.',
+                    })}
+                    {codeAssignmentError && this.renderErrorMessage({
+                      title: 'Unable to assign codes',
+                      message: codeAssignmentError.message,
+                    })}
+                    {codeAssignmentSuccess && this.renderSuccessMessage({
+                      title: 'Successfully assigned codes',
+                      message: 'grats!',
+                    })}
                   </div>
                 </div>
               }
               <TableContainer
+                wrappedComponentRef={(node) => {
+                  this.tableRef = node && node.getWrappedInstance();
+                }}
                 id="coupon-details"
                 className="coupon-details-table"
                 fetchMethod={() => EcommerceApiService.fetchCouponDetails(id)}
@@ -273,7 +312,20 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modalProps}
                   onClose={this.handleCodeAssignmentModalClose}
-                  onSubmit={() => {}}
+                  onSubmit={options => (
+                    EcommerceApiService.sendCodeAssignment(options)
+                      .then((response) => {
+                        this.tableRef.props.paginateTable(1);
+                        this.setState({
+                          codeAssignmentSuccess: true,
+                        });
+                      })
+                      .catch((error) => {
+                        this.setState({
+                          codeAssignmentError: error,
+                        });
+                      })
+                  )}
                 />
               }
             </React.Fragment>
