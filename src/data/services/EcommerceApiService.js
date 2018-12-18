@@ -23,13 +23,13 @@ class EcommerceApiService {
 
   static sendCodeAssignment() {
     // TODO replace with sending data to ecommerce API
-    return Promise.reject(new Error('yo dawg!'));
+    // return Promise.reject(new Error('yo dawg!'));
 
-    // return Promise.resolve({
-    //   data: {
-    //     results: [],
-    //   },
-    // });
+    return Promise.resolve({
+      data: {
+        results: [],
+      },
+    });
   }
 }
 
