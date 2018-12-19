@@ -40,7 +40,9 @@ describe('<Header />', () => {
         email: 'test@example.com',
       },
       userProfile: {
-        profile: null,
+        email: null,
+        username: null,
+        userProfileImageUrl: null,
       },
       sidebar: {},
     });
@@ -76,12 +78,9 @@ describe('<Header />', () => {
         username: 'staff',
       },
       userProfile: {
-        profile: {
-          profile_image: {
-            has_image: true,
-            image_url_medium: EdxLogo,
-          },
-        },
+        email: 'staff@example.com',
+        username: 'staff',
+        userProfileImageUrl: EdxLogo,
       },
       sidebar: {},
     });
@@ -101,11 +100,9 @@ describe('<Header />', () => {
         username: 'staff',
       },
       userProfile: {
-        profile: {
-          profile_image: {
-            has_image: false,
-          },
-        },
+        email: 'staff@example.com',
+        username: 'staff',
+        userProfileImageUrl: null,
       },
       sidebar: {},
     });

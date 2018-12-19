@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
+import { userProfile } from '@edx/frontend-auth';
 
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
 import table from './table';
 import csv from './csv';
-import userProfile from './userProfile';
 import coupons from './coupons';
 import sidebar from './sidebar';
 
