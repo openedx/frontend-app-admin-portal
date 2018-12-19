@@ -74,7 +74,7 @@ class EnterpriseApp extends React.Component {
   }
 
   render() {
-    const { error, match } = this.props;
+    const { error, match, enableCodeManagementScreen } = this.props;
     const { sidebarWidth } = this.state;
 
     const baseUrl = match.url;
@@ -120,7 +120,7 @@ class EnterpriseApp extends React.Component {
                     path={`${baseUrl}/admin/learners/:actionSlug?`}
                     render={routeProps => <AdminPage {...routeProps} />}
                   />
-                  {features.CODE_MANAGEMENT && [
+                  {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
                     <Route
                       key="code-management"
                       exact
@@ -164,6 +164,7 @@ EnterpriseApp.propTypes = {
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({}).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
+  enableCodeManagementScreen: PropTypes.bool.isRequired,
   error: PropTypes.instanceOf(Error),
 };
 

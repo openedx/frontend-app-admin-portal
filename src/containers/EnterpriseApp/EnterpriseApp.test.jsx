@@ -21,6 +21,7 @@ const initialState = {
   dashboardAnalytics: {},
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enableCodeManagementScreen: true,
   },
   csv: {},
   table: {

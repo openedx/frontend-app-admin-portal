@@ -12,6 +12,7 @@ const initialState = {
   enterpriseName: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
+  enableCodeManagementScreen: false,
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -33,6 +34,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseLogo: action.payload.data.branding_configuration
           ? action.payload.data.branding_configuration.logo
           : null,
+        enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -43,6 +45,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseName: null,
         enterpriseSlug: null,
         enterpriseLogo: null,
+        enableCodeManagementScreen: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -51,6 +54,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseName: null,
         enterpriseSlug: null,
         enterpriseLogo: null,
+        enableCodeManagementScreen: false,
       };
     default:
       return state;

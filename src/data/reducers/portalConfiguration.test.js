@@ -12,6 +12,7 @@ const initialState = {
   enterpriseName: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
+  enableCodeManagementScreen: false,
 };
 
 const enterpriseData = {
@@ -23,6 +24,7 @@ const enterpriseData = {
     enterprise_slug: 'test-enterprise',
     logo: 'https://s3...',
   },
+  enable_portal_code_management_screen: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -37,6 +39,7 @@ describe('portalConfiguration reducer', () => {
       enterpriseName: enterpriseData.name,
       enterpriseSlug: enterpriseData.slug,
       enterpriseLogo: enterpriseData.branding_configuration.logo,
+      enableCodeManagementScreen: enterpriseData.enable_portal_code_management_screen,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,

@@ -63,6 +63,48 @@ exports[`<Sidebar /> renders correctly 1`] = `
 </nav>
 `;
 
+exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
+<nav
+  aria-expanded={false}
+  className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
+  id="sidebar"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onMouseLeave={[Function]}
+  onMouseOver={[Function]}
+>
+  <div
+    className="sidebar-content py-2"
+  >
+    <ul
+      className="list-unstyled m-0"
+    >
+      <li
+        className="rounded-0"
+      >
+        <a
+          aria-current={null}
+          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/learners"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-line-chart"
+            id="Icon1"
+          />
+          <span
+            className="sr-only"
+          >
+            Learner Report
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;
+
 exports[`<Sidebar /> renders correctly when expanded 1`] = `
 <nav
   aria-expanded={true}
