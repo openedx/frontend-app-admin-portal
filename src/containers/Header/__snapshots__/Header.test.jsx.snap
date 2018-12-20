@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Header /> does not render profile image or dropdown if unauthenticated 1`] = `
+<header
+  className="container-fluid"
+>
+  <nav
+    className="navbar px-0 justify-content-between"
+  >
+    <div>
+      <a
+        className="navbar-brand"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          onError={[Function]}
+          src="test-file-stub"
+        />
+      </a>
+      <span
+        className="badge badge-secondary beta"
+      >
+        Beta
+      </span>
+    </div>
+  </nav>
+</header>
+`;
+
 exports[`<Header /> renders default profile image correctly 1`] = `
 <header
   className="container-fluid"

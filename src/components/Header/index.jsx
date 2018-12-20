@@ -13,7 +13,9 @@ import './Header.scss';
 
 class Header extends React.Component {
   componentDidMount() {
-    this.props.fetchUserProfile(this.props.username);
+    if (this.props.username) {
+      this.props.fetchUserProfile(this.props.username);
+    }
   }
 
   getProfileIconElement() {
