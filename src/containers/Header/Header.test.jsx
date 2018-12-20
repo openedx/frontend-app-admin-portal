@@ -5,7 +5,9 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { mount } from 'enzyme';
 
+import apiClient from '../../data/apiClient';
 import Header from './index';
 import EdxLogo from '../../images/edx-logo.png';
 
@@ -112,6 +114,35 @@ describe('<Header />', () => {
       ))
       .toJSON();
     expect(tree).toMatchSnapshot();
+  });
+
+  it('does not render profile image or dropdown if unauthenticated', () => {
+    store = mockStore({
+      portalConfiguration: {},
+      authentication: {},
+      userProfile: {},
+      sidebar: {},
+    });
+    tree = renderer
+      .create((
+        <HeaderWrapper store={store} />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('does not call getUserProfile if not authenticated', () => {
+    store = mockStore({
+      portalConfiguration: {},
+      authentication: {},
+      userProfile: {},
+      sidebar: {},
+    });
+    const getUserProfileMock = jest.fn();
+    apiClient.getUserProfile = getUserProfileMock;
+
+    mount(<HeaderWrapper store={store} />);
+    expect(getUserProfileMock.mock.calls.length).toBe(0);
   });
 
   describe('renders sidebar toggle correctly', () => {
