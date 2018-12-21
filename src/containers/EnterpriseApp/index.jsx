@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
   return {
     enterprises: enterpriseListState.data,
     error: state.portalConfiguration.error,
+    enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
   };
 };
 

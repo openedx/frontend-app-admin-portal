@@ -24,6 +24,9 @@ const initialState = {
     isExpanded: false,
     isExpandedByToggle: false,
   },
+  portalConfiguration: {
+    enableCodeManagementScreen: true,
+  },
 };
 
 const SidebarWrapper = props => (
@@ -65,8 +68,27 @@ describe('<Sidebar />', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('renders correctly when code management is hidden', () => {
+    const store = mockStore({
+      sidebar: {
+        ...initialState.sidebar,
+      },
+      portalConfiguration: {
+        enableCodeManagementScreen: false,
+      },
+    });
+
+    const tree = renderer
+      .create((
+        <SidebarWrapper store={store} />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
   it('renders correctly when expanded', () => {
     const store = mockStore({
+      ...initialState,
       sidebar: {
         ...initialState.sidebar,
         isExpanded: true,
@@ -83,6 +105,7 @@ describe('<Sidebar />', () => {
 
   it('renders correctly when expanded by toggle', () => {
     const store = mockStore({
+      ...initialState,
       sidebar: {
         ...initialState.sidebar,
         isExpandedByToggle: true,
@@ -140,6 +163,7 @@ describe('<Sidebar />', () => {
 
     it('collapses on mouseout', () => {
       store = mockStore({
+        ...initialState,
         sidebar: {
           ...initialState.sidebar,
           isExpanded: true,
@@ -161,6 +185,7 @@ describe('<Sidebar />', () => {
 
     it('collapses on blur', () => {
       store = mockStore({
+        ...initialState,
         sidebar: {
           ...initialState.sidebar,
           isExpanded: true,

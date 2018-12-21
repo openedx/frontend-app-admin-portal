@@ -11,25 +11,6 @@ import './Sidebar.scss';
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
-
-    const { baseUrl } = props;
-
-    this.menuItems = [
-      {
-        title: 'Learner Report',
-        to: `${baseUrl}/admin/learners`,
-        iconClassName: 'fa-line-chart',
-      },
-      {
-        title: 'Code Management',
-        to: `${baseUrl}/admin/codes`,
-        iconClassName: 'fa-tags',
-        // TODO we can also use `hidden` when determining whether to show the
-        // Code Management link in the sidebar navigation depending on the enterprise customer.
-        hidden: !features.CODE_MANAGEMENT,
-      },
-    ];
-
     this.element = React.createRef();
   }
 
@@ -56,6 +37,24 @@ class Sidebar extends React.Component {
       const width = this.getSidebarWidth();
       this.props.onWidthChange(width);
     }
+  }
+
+  getMenuItems() {
+    const { baseUrl, enableCodeManagementScreen } = this.props;
+
+    return [
+      {
+        title: 'Learner Report',
+        to: `${baseUrl}/admin/learners`,
+        iconClassName: 'fa-line-chart',
+      },
+      {
+        title: 'Code Management',
+        to: `${baseUrl}/admin/codes`,
+        iconClassName: 'fa-tags',
+        hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+      },
+    ];
   }
 
   getSidebarWidth() {
@@ -110,7 +109,7 @@ class Sidebar extends React.Component {
       >
         <div className="sidebar-content py-2">
           <ul className="list-unstyled m-0">
-            {this.menuItems.filter(item => !item.hidden).map(item => (
+            {this.getMenuItems().filter(item => !item.hidden).map(item => (
               <li key={item.to} className="rounded-0">
                 <IconLink
                   {...item}
@@ -136,6 +135,7 @@ Sidebar.propTypes = {
   collapseSidebar: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   isExpandedByToggle: PropTypes.bool.isRequired,
+  enableCodeManagementScreen: PropTypes.bool.isRequired,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };
