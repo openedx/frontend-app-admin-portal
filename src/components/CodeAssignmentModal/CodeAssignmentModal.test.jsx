@@ -4,15 +4,13 @@ import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import EnzymeToJson from 'enzyme-to-json';
 import { mount } from 'enzyme';
 
 import CodeAssignmentModal from './index';
 // import { Form } from 'redux-form';
 // import BulkAssignFields from './BulkAssignFields';
 // import IndividualAssignFields from './IndividualAssignFields';
-
-// required to test Paragon modal component
-ReactDOM.createPortal = node => node;
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -51,57 +49,35 @@ describe('<CodeAssignmentModal />', () => {
 
   describe('renders correctly', () => {
     it('with isBulkAssign as true', () => {
-      const tree = renderer
-        .create((
-          <CodeAssignmentModalWrapper
-            title="My title"
-            onClose={() => {}}
-            isBulkAssign
-            data={
-              {
+      const wrapper = mount((
+        <CodeAssignmentModalWrapper
+          title="My title"
+          onClose={() => {}}
+          isBulkAssign
+          data={
+            {
                 unassignedCodes: 3,
-              }
             }
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+          }
+        />
+      ));
+      expect(EnzymeToJson(wrapper)).toMatchSnapshot();
     });
 
     it('with isBulkAssign as false', () => {
-      const tree = renderer
-        .create((
-          <CodeAssignmentModalWrapper
-            title="My title"
-            onClose={() => {}}
-            data={
-              {
-                code: 'XOKASOKDIO',
-                remainingUses: 1337,
-              }
+      const wrapper = mount((
+        <CodeAssignmentModalWrapper
+          title="My title"
+          onClose={() => {}}
+          isBulkAssign={false}
+          data={
+            {
+                unassignedCodes: 3,
             }
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-
-    it('with invalid as true', () => {
-      const tree = renderer
-        .create((
-          <CodeAssignmentModalWrapper
-            title="My title"
-            onClose={() => {}}
-            data={
-              {
-                code: 'XOKASOKDIO',
-                remainingUses: 1337,
-              }
-            }
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+          }
+        />
+      ));
+      expect(EnzymeToJson(wrapper)).toMatchSnapshot();
     });
   });
 
@@ -111,7 +87,6 @@ describe('<CodeAssignmentModal />', () => {
     };
 
     it('does not work when invalid is true', () => {
-      delete ReactDOM.createPortal;
       const mockSubmit = jest.fn();
       wrapper = mount((
         <CodeAssignmentModalWrapper
@@ -124,7 +99,6 @@ describe('<CodeAssignmentModal />', () => {
     });
 
     it('works when invalid is false', () => {
-      delete ReactDOM.createPortal;
       const mockSubmit = jest.fn();
       wrapper = mount((
         <CodeAssignmentModalWrapper
@@ -132,6 +106,7 @@ describe('<CodeAssignmentModal />', () => {
           invalid={false}
         />
       ));
+      console.log(wrapper);
       simulateSubmitClick();
       expect(mockSubmit).toBeCalledTimes(1);
     });
