@@ -1,0 +1,825 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CodeAssignmentModal /> renders correctly with invalid as true 1`] = `
+<div>
+  <div
+    className="fade"
+    role="presentation"
+  />
+  <div
+    className="modal js-close-modal-on-click fade"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <div
+      aria-labelledby="id6"
+      aria-modal={true}
+      className=""
+      role="dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h2
+            className="modal-title"
+            id="id6"
+          >
+            <span
+              className="d-block"
+            >
+              My title
+            </span>
+            <small>
+              Code Assignment
+            </small>
+          </h2>
+          <button
+            aria-labelledby="paragonCloseModalButton2"
+            className="btn p-1 js-close-modal-on-click"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times js-close-modal-on-click"
+              id="Icon1"
+            />
+          </button>
+        </div>
+        <div
+          className="modal-body"
+        >
+          <div
+            className="assignment-details mb-4"
+          >
+            <p>
+              Code: 
+              XOKASOKDIO
+            </p>
+            <p>
+              Remaining Uses: 
+              1337
+            </p>
+          </div>
+          <form
+            onSubmit={[Function]}
+          >
+            <h3>
+              Add User
+            </h3>
+            <div
+              className="form-group"
+            >
+              <label
+                className=""
+                htmlFor="asInput7"
+                id="label-asInput7"
+              >
+                Email Address
+                <span
+                  className="required"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-describedby="error-asInput7"
+                aria-invalid={false}
+                autoComplete="on"
+                className="form-control"
+                disabled={false}
+                id="asInput7"
+                name="email-address"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                readOnly={false}
+                required={true}
+                themes={
+                  Array [
+                    "danger",
+                  ]
+                }
+                type="email"
+                value=""
+              />
+              <div
+                aria-live="polite"
+                className="invalid-feedback"
+                id="error-asInput7"
+              >
+                <span />
+              </div>
+            </div>
+            <div
+              className="mt-4"
+            >
+              <h3
+                className={null}
+              >
+                Email Template
+              </h3>
+              <div
+                className="form-group"
+              >
+                <label
+                  htmlFor="email-template"
+                >
+                  Customize Message
+                  <span
+                    className="required"
+                  >
+                    *
+                  </span>
+                </label>
+                <textarea
+                  className="form-control"
+                  id="email-template"
+                  name="email-template"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
+                  required={true}
+                  style={
+                    Object {
+                      "height": 0,
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  aria-live="polite"
+                  className="invalid-feedback"
+                  id="validation-email-template"
+                >
+                  <span />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="modal-footer"
+        >
+          <button
+            className="btn btn-primary"
+            disabled={false}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Assign Code
+          </button>
+          <button
+            className="btn js-close-modal-on-click btn-secondary"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CodeAssignmentModal /> renders correctly with isBulkAssign as false 1`] = `
+<div>
+  <div
+    className="fade"
+    role="presentation"
+  />
+  <div
+    className="modal js-close-modal-on-click fade"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <div
+      aria-labelledby="id4"
+      aria-modal={true}
+      className=""
+      role="dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h2
+            className="modal-title"
+            id="id4"
+          >
+            <span
+              className="d-block"
+            >
+              My title
+            </span>
+            <small>
+              Code Assignment
+            </small>
+          </h2>
+          <button
+            aria-labelledby="paragonCloseModalButton2"
+            className="btn p-1 js-close-modal-on-click"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times js-close-modal-on-click"
+              id="Icon1"
+            />
+          </button>
+        </div>
+        <div
+          className="modal-body"
+        >
+          <div
+            className="assignment-details mb-4"
+          >
+            <p>
+              Code: 
+              XOKASOKDIO
+            </p>
+            <p>
+              Remaining Uses: 
+              1337
+            </p>
+          </div>
+          <form
+            onSubmit={[Function]}
+          >
+            <h3>
+              Add User
+            </h3>
+            <div
+              className="form-group"
+            >
+              <label
+                className=""
+                htmlFor="asInput5"
+                id="label-asInput5"
+              >
+                Email Address
+                <span
+                  className="required"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-describedby="error-asInput5"
+                aria-invalid={false}
+                autoComplete="on"
+                className="form-control"
+                disabled={false}
+                id="asInput5"
+                name="email-address"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                readOnly={false}
+                required={true}
+                themes={
+                  Array [
+                    "danger",
+                  ]
+                }
+                type="email"
+                value=""
+              />
+              <div
+                aria-live="polite"
+                className="invalid-feedback"
+                id="error-asInput5"
+              >
+                <span />
+              </div>
+            </div>
+            <div
+              className="mt-4"
+            >
+              <h3
+                className={null}
+              >
+                Email Template
+              </h3>
+              <div
+                className="form-group"
+              >
+                <label
+                  htmlFor="email-template"
+                >
+                  Customize Message
+                  <span
+                    className="required"
+                  >
+                    *
+                  </span>
+                </label>
+                <textarea
+                  className="form-control"
+                  id="email-template"
+                  name="email-template"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
+                  required={true}
+                  style={
+                    Object {
+                      "height": 0,
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  aria-live="polite"
+                  className="invalid-feedback"
+                  id="validation-email-template"
+                >
+                  <span />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="modal-footer"
+        >
+          <button
+            className="btn btn-primary"
+            disabled={false}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Assign Code
+          </button>
+          <button
+            className="btn js-close-modal-on-click btn-secondary"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CodeAssignmentModal /> renders correctly with isBulkAssign as true 1`] = `
+<div>
+  <div
+    className="fade"
+    role="presentation"
+  />
+  <div
+    className="modal js-close-modal-on-click fade"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <div
+      aria-labelledby="id3"
+      aria-modal={true}
+      className=""
+      role="dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h2
+            className="modal-title"
+            id="id3"
+          >
+            <span
+              className="d-block"
+            >
+              My title
+            </span>
+            <small>
+              Code Assignment
+            </small>
+          </h2>
+          <button
+            aria-labelledby="paragonCloseModalButton2"
+            className="btn p-1 js-close-modal-on-click"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times js-close-modal-on-click"
+              id="Icon1"
+            />
+          </button>
+        </div>
+        <div
+          className="modal-body"
+        >
+          <div
+            className="assignment-details mb-4"
+          >
+            <p>
+              <span
+                className="detail-label mr-1"
+              >
+                Unassigned Codes:
+              </span>
+              3
+            </p>
+          </div>
+          <form
+            onSubmit={[Function]}
+          >
+            <h3
+              className={null}
+            >
+              Add Users
+            </h3>
+            <p
+              className="mb-3"
+            >
+              To add users, enter their email addresses below or upload a CSV file.
+            </p>
+            <div
+              className="form-group"
+            >
+              <label
+                htmlFor="email-addresses"
+              >
+                Email Addresses
+              </label>
+              <textarea
+                className="form-control"
+                id="email-addresses"
+                name="email-addresses"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
+                onFocus={[Function]}
+                style={
+                  Object {
+                    "height": 0,
+                  }
+                }
+                value=""
+              />
+              <div
+                aria-live="polite"
+                className="invalid-feedback"
+                id="validation-email-addresses"
+              >
+                <span />
+              </div>
+              <small
+                className="form-text"
+                id="description-email-addresses"
+              >
+                Enter one email address per line.
+              </small>
+            </div>
+            <div
+              className="file-input form-group"
+            >
+              <label
+                className="d-block"
+                htmlFor="csv-file-upload"
+              >
+                Upload Email Addresses
+              </label>
+              <label
+                className="btn btn-outline-primary m-0"
+                htmlFor="csv-file-upload"
+              >
+                <span
+                  aria-hidden={true}
+                  className="fa fa-upload mr-2"
+                  id="Icon1"
+                />
+                Choose a file
+              </label>
+              <input
+                accept=".csv"
+                className="sr-only"
+                disabled={false}
+                id="csv-file-upload"
+                onChange={[Function]}
+                required={false}
+                type="file"
+              />
+              <div
+                className=""
+              >
+                <div
+                  aria-live="polite"
+                  className="invalid-feedback"
+                  id="validation-csv-file-upload"
+                >
+                  <span />
+                </div>
+              </div>
+              <small
+                className="form-text"
+                id="description-csv-file-upload"
+              >
+                The file must be a CSV containing a single column of email addresses.
+              </small>
+            </div>
+            <div
+              className="mt-4"
+            >
+              <h3
+                className={null}
+              >
+                Email Template
+              </h3>
+              <div
+                className="form-group"
+              >
+                <label
+                  htmlFor="email-template"
+                >
+                  Customize Message
+                  <span
+                    className="required"
+                  >
+                    *
+                  </span>
+                </label>
+                <textarea
+                  className="form-control"
+                  id="email-template"
+                  name="email-template"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
+                  required={true}
+                  style={
+                    Object {
+                      "height": 0,
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  aria-live="polite"
+                  className="invalid-feedback"
+                  id="validation-email-template"
+                >
+                  <span />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="modal-footer"
+        >
+          <button
+            className="btn btn-primary"
+            disabled={false}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Assign Codes
+          </button>
+          <button
+            className="btn js-close-modal-on-click btn-secondary"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CodeAssignmentModal /> with isBulkAssign as false 1`] = `
+<div>
+  <div
+    className="fade"
+    role="presentation"
+  />
+  <div
+    className="modal js-close-modal-on-click fade"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <div
+      aria-labelledby="id4"
+      aria-modal={true}
+      className=""
+      role="dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h2
+            className="modal-title"
+            id="id4"
+          >
+            <span
+              className="d-block"
+            >
+              My title
+            </span>
+            <small>
+              Code Assignment
+            </small>
+          </h2>
+          <button
+            aria-labelledby="paragonCloseModalButton2"
+            className="btn p-1 js-close-modal-on-click"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times js-close-modal-on-click"
+              id="Icon1"
+            />
+          </button>
+        </div>
+        <div
+          className="modal-body"
+        >
+          <div
+            className="assignment-details mb-4"
+          >
+            <p>
+              Code: 
+              XOKASOKDIO
+            </p>
+            <p>
+              Remaining Uses: 
+              1337
+            </p>
+          </div>
+          <form
+            onSubmit={[Function]}
+          >
+            <h3>
+              Add User
+            </h3>
+            <div
+              className="form-group"
+            >
+              <label
+                className=""
+                htmlFor="asInput5"
+                id="label-asInput5"
+              >
+                Email Address
+                <span
+                  className="required"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-describedby="error-asInput5"
+                aria-invalid={false}
+                autoComplete="on"
+                className="form-control"
+                disabled={false}
+                id="asInput5"
+                name="email-address"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                readOnly={false}
+                required={true}
+                themes={
+                  Array [
+                    "danger",
+                  ]
+                }
+                type="email"
+                value=""
+              />
+              <div
+                aria-live="polite"
+                className="invalid-feedback"
+                id="error-asInput5"
+              >
+                <span />
+              </div>
+            </div>
+            <div
+              className="mt-4"
+            >
+              <h3
+                className={null}
+              >
+                Email Template
+              </h3>
+              <div
+                className="form-group"
+              >
+                <label
+                  htmlFor="email-template"
+                >
+                  Customize Message
+                  <span
+                    className="required"
+                  >
+                    *
+                  </span>
+                </label>
+                <textarea
+                  className="form-control"
+                  id="email-template"
+                  name="email-template"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
+                  required={true}
+                  style={
+                    Object {
+                      "height": 0,
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  aria-live="polite"
+                  className="invalid-feedback"
+                  id="validation-email-template"
+                >
+                  <span />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="modal-footer"
+        >
+          <button
+            className="btn btn-primary"
+            disabled={false}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Assign Code
+          </button>
+          <button
+            className="btn js-close-modal-on-click btn-secondary"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
