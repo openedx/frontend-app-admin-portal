@@ -36,7 +36,7 @@ DownloadCsvButton.defaultProps = {
   csvLoading: false,
   fetchMethod: () => {},
   disabled: false,
-  buttonLabel: 'Download report (CSV)',
+  buttonLabel: 'Download full report (CSV)',
 };
 
 DownloadCsvButton.propTypes = {
