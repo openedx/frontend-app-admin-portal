@@ -12,8 +12,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCouponOrders: () => {
-    dispatch(fetchCouponOrders());
+  fetchCouponOrders: (options) => {
+    dispatch(fetchCouponOrders(options));
   },
   clearCouponOrders: () => {
     dispatch(clearCouponOrders());

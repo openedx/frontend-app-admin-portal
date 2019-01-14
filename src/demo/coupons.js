@@ -12,25 +12,55 @@ if (configuration.NODE_ENV === 'development') {
   firstCouponHasError = true;
 }
 
-const coupons = {
-  count: couponsCount,
-  num_pages: Math.ceil(couponsCount / 10),
-  current_page: 1,
-  results: [...Array(couponsCount)].map((_, index) => {
-    const validFromDate = faker.date.past();
-    const totalEnrollments = faker.random.number({ min: 1, max: 50 });
-    return {
-      id: index,
-      title: faker.random.words(),
-      start_date: validFromDate.toISOString(),
-      end_date: faker.date.future(null, validFromDate).toISOString(),
-      num_unassigned: faker.random.number({ min: 1, max: 20 }),
-      num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
-      max_uses: faker.random.boolean() ? totalEnrollments : null,
-      has_error: false,
-    };
-  }),
-};
+const couponTitles = [
+  '250ML - DEC2019',
+  'F100K - JAN2019',
+  'RN201 - FEB2019',
+  'LRK007 - MAR2019',
+  'LHE120 - 50CODES - JAN2019',
+  'SUK20 - 50CODES - JAN2019',
+  'INDUS10 - 20CODES - NOV2019',
+  'STJ60 20CODES DEC2019',
+  'NST100 - FEB2019',
+  'SCS13 15CODES MAR2019',
+  'MSCG10 - DEC2019',
+  'CCGS10 - DEC2019',
+  'SSPK - 20CODES - FEB2019',
+  'WRR30 20CODES JAN2019',
+  'RG007 - 20CODES - JAN2019',
+  'HOG90 - JAN2019',
+  'KNG49 - 20CODES',
+  'INOCHA10 - 20CODES - JUL2019',
+  'LKHM10 - 20CODES - JUN2019',
+  'R4KJ190 - JAN2019',
+  'HINK150 - 20CODES - APR2019',
+  'RIIN150 20 CODES MAR2019',
+  'SK120 - JAN2019',
+  'RPP10 - 60CODES - FEB2019',
+  'PML-K - JAN2019',
+  'PP-120 - APR2019',
+  'NA-207 - FEB2019',
+  'LGGR LTD FEB2019',
+  'NA-109 - MAY2019',
+  'PDM120 - 30CODES - SEP2019',
+];
+
+const coupons = [...Array(couponsCount)].map((_, index) => {
+  const validFromDate = faker.date.past();
+  const totalEnrollments = faker.random.number({ min: 1, max: 50 });
+  return {
+    id: index,
+    title: couponTitles[
+      faker.random.number({ min: 0, max: couponTitles.length - 1 })
+    ].toUpperCase(),
+    start_date: validFromDate.toISOString(),
+    end_date: faker.date.future(null, validFromDate).toISOString(),
+    num_unassigned: faker.random.number({ min: 1, max: 20 }),
+    num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
+    max_uses: faker.random.boolean() ? totalEnrollments : null,
+    has_error: false,
+  };
+});
 
 const getAssignedTo = (isAssigned = false) => {
   if (!isAssigned) {
@@ -49,34 +79,66 @@ const getAssignedTo = (isAssigned = false) => {
 
 const getCodes = (couponHasError = false) => {
   const redemptionsAvailablePerCode = faker.random.number({ min: 1, max: 5 });
-  return {
-    count: codesCount,
-    num_pages: Math.ceil(codesCount / 10),
-    current_page: 1,
-    results: [...Array(codesCount)].map((_, index) => {
-      const codeHasError = couponHasError && index <= 1;
-      const isAssigned = codeHasError || faker.random.boolean();
-      const assignedTo = getAssignedTo(isAssigned);
+  return [...Array(codesCount)].map((_, index) => {
+    const code = Math.random().toString(36).substring(2).toUpperCase();
+    const codeHasError = couponHasError && index <= 1;
+    const isAssigned = codeHasError || faker.random.boolean();
+    const assignedTo = getAssignedTo(isAssigned);
 
-      return {
-        title: Math.random().toString(36).substring(2).toUpperCase(),
-        assigned_to: assignedTo.name,
-        redemptions: {
-          available: redemptionsAvailablePerCode,
-          used: isAssigned ? faker.random.number({
-            min: 0,
-            max: codeHasError ? redemptionsAvailablePerCode - 1 : redemptionsAvailablePerCode,
-          }) : 0,
-        },
-        error: codeHasError ? `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})` : null,
-      };
-    }),
-  };
+    return {
+      title: code,
+      assigned_to: assignedTo.email,
+      redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
+      redemptions: {
+        available: redemptionsAvailablePerCode,
+        used: isAssigned ? faker.random.number({
+          min: 0,
+          max: codeHasError ? redemptionsAvailablePerCode - 1 : redemptionsAvailablePerCode,
+        }) : 0,
+      },
+      error: codeHasError ? `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})` : null,
+    };
+  });
 };
 
-coupons.results[0].has_error = firstCouponHasError;
+const allCodes = getCodes();
+
+const getCsvHeaders = () => Object.keys(allCodes[0]).reduce((csvData, codeKey) => {
+  let newData;
+  if (allCodes[0][codeKey] && typeof allCodes[0][codeKey] === 'object') {
+    const objectKeys = Object.keys(allCodes[0][codeKey]);
+    // Just to make in line with backend e.g redemptions.used.
+    newData = objectKeys.map(key => `${codeKey}.${key}`);
+  } else {
+    newData = codeKey;
+  }
+  if (csvData !== '') {
+    newData = `${csvData},${newData}`;
+  }
+  return newData;
+}, '');
+
+const getCsvRow = code => Object.keys(code).reduce((csvData, codeKey) => {
+  let newData;
+  if (code[codeKey] && typeof code[codeKey] === 'object') {
+    newData = Object.values(code[codeKey]).toString();
+  } else {
+    newData = code[codeKey];
+  }
+  if (csvData !== '') {
+    newData = `${csvData},${newData}`;
+  }
+  return newData;
+}, '');
+
+const getCodesCsv = () => allCodes.reduce((csvData, code) => (
+  `${csvData}${getCsvRow(code)}\n`
+), `${getCsvHeaders()}\n`);
+
+coupons[0].has_error = firstCouponHasError;
 
 export {
   coupons,
   getCodes as codes,
+  getCodesCsv as codesCsv,
 };

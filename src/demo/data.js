@@ -2,7 +2,7 @@ import faker from 'faker/locale/en';
 import moment from 'moment';
 
 import courses from './courses';
-import { coupons, codes } from './coupons';
+import { coupons, codes, codesCsv } from './coupons';
 
 const numEnrollments = 330;
 const numPassed = 120;
@@ -176,4 +176,5 @@ export {
   overview,
   coupons,
   codes,
+  codesCsv,
 };

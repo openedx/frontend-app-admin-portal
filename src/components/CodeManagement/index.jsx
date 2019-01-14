@@ -9,6 +9,7 @@ import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
 import StatusAlert from '../StatusAlert';
+import { updateUrl } from '../../utils';
 
 class CodeManagement extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class CodeManagement extends React.Component {
     this.couponRefs = [];
     this.state = {
       hasRequestedCodes: false,
+      currentPage: 1,
     };
 
     this.handleCouponExpand = this.handleCouponExpand.bind(this);
@@ -54,8 +56,27 @@ class CodeManagement extends React.Component {
     this.props.clearCouponOrders();
   }
 
+  paginateCouponOrders(pageNumber) {
+    const page = parseInt(pageNumber, 10);
+    if (page !== this.state.currentPage) {
+      this.props.fetchCouponOrders({ page });
+      this.setState({
+        currentPage: page,
+      });
+      updateUrl({ page });
+    }
+  }
+
   handleCouponExpand(selectedIndex) {
+    const { location, history } = this.props;
     const coupons = this.couponRefs;
+
+    // reset location state for paginated coupon orders.
+    history.replace({
+      ...location.pathname,
+      state: {},
+    });
+
     if (coupons.length) {
       coupons.forEach((ref, index) => {
         // close all coupons but the coupon that was selected
@@ -115,8 +136,9 @@ class CodeManagement extends React.Component {
         ))}
         <div className="d-flex mt-4 justify-content-center">
           <Pagination
-            onPageSelect={() => {}} // TODO replace with actual callback
+            onPageSelect={page => this.paginateCouponOrders(page)}
             pageCount={coupons.num_pages}
+            currentPage={coupons.current_page}
             paginationLabel="coupons pagination"
           />
         </div>
