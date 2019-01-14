@@ -16,7 +16,7 @@ module.exports = Merge.smart(commonConfig, {
     path.resolve(__dirname, '../src/index.jsx'),
 
     // Uncomment this entrypoint to return static demo data instead of calling the data-api
-    // path.resolve(__dirname, '../src/demo/index.js'),
+    path.resolve(__dirname, '../src/demo/index.js'),
   ],
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
@@ -103,12 +103,12 @@ module.exports = Merge.smart(commonConfig, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       BASE_URL: 'localhost:1991',
-      LMS_BASE_URL: 'http://localhost:18000',
-      LOGIN_URL: 'http://localhost:18000/login',
-      LOGOUT_URL: 'http://localhost:18000/login',
+      LMS_BASE_URL: 'http://localhost:8000',
+      LOGIN_URL: 'http://localhost:8000/login',
+      LOGOUT_URL: 'http://localhost:8000/login',
       CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-      REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login',
-      DATA_API_BASE_URL: 'http://localhost:8000',
+      REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:8000/login',
+      DATA_API_BASE_URL: 'http://localhost:18000',
       ECOMMERCE_API_BASE_URL: null,
       SEGMENT_KEY: null,
       ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
