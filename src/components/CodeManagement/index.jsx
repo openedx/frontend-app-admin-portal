@@ -9,6 +9,7 @@ import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
 import StatusAlert from '../StatusAlert';
+import { updateUrl } from '../../utils';
 
 class CodeManagement extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class CodeManagement extends React.Component {
     this.couponRefs = [];
     this.state = {
       hasRequestedCodes: false,
+      currentPage: 1,
     };
 
     this.handleCouponExpand = this.handleCouponExpand.bind(this);
@@ -54,7 +56,19 @@ class CodeManagement extends React.Component {
     this.props.clearCouponOrders();
   }
 
+  paginateCouponOrders(pageNumber) {
+    if (pageNumber != this.state.currentPage) {
+      this.props.fetchCouponOrders({ page: pageNumber })
+      this.setState(prevState => ({
+          ...prevState,
+          currentPage: parseInt(pageNumber)
+      }));
+      updateUrl({ page: pageNumber });
+    }
+  }
+
   handleCouponExpand(selectedIndex) {
+    const { location, history } = this.props;
     const coupons = this.couponRefs;
     if (coupons.length) {
       coupons.forEach((ref, index) => {
@@ -65,6 +79,11 @@ class CodeManagement extends React.Component {
         }
       });
     }
+    // reset location state for paginated coupon orders.
+    history.replace({
+      ...location.pathname,
+      state: {},
+    });
   }
 
   handleCouponCollapse() {
@@ -115,8 +134,9 @@ class CodeManagement extends React.Component {
         ))}
         <div className="d-flex mt-4 justify-content-center">
           <Pagination
-            onPageSelect={() => {}} // TODO replace with actual callback
+            onPageSelect={page => this.paginateCouponOrders(page)}
             pageCount={coupons.num_pages}
+            currentPage={coupons.current_page}
             paginationLabel="coupons pagination"
           />
         </div>

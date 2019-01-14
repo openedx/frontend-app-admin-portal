@@ -165,7 +165,7 @@ class CouponDetails extends React.Component {
                 <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
                   <DownloadCsvButton
                     id="coupon-details"
-                    fetchMethod={() => {}}
+                    fetchMethod={() => EcommerceApiService.fetchCouponDetails(id, {}, {csv: true})}
                     disabled={this.isTableLoading()}
                   />
                 </div>
@@ -226,9 +226,10 @@ class CouponDetails extends React.Component {
                 </div>
               }
               <TableContainer
-                id="coupon-details"
+                id={`coupon-details-${id}`}
+                key={id}
                 className="coupon-details-table"
-                fetchMethod={() => EcommerceApiService.fetchCouponDetails(id)}
+                fetchMethod={(options) => EcommerceApiService.fetchCouponDetails(id, options)}
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
