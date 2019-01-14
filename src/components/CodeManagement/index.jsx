@@ -120,6 +120,7 @@ class CodeManagement extends React.Component {
   }
 
   renderCoupons() {
+    const { couponId } = this.props.match.params;
     const { coupons } = this.props;
     return (
       <React.Fragment>
@@ -130,6 +131,7 @@ class CodeManagement extends React.Component {
             data={coupon}
             onExpand={() => this.handleCouponExpand(index)}
             onCollapse={() => this.handleCouponCollapse()}
+            isExpanded={parseInt(couponId) === coupon.id }
           />
         ))}
         <div className="d-flex mt-4 justify-content-center">

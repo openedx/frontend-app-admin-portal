@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@edx/paragon';
 
+import history from '../../data/history';
 import CouponDetails from '../../containers/CouponDetails';
 
 import { isTriggerKey, formatTimestamp } from '../../utils';
@@ -27,6 +28,16 @@ class Coupon extends React.Component {
     this.handleCouponKeyDown = this.handleCouponKeyDown.bind(this);
   }
 
+  componentDidMount() {
+    const { isExpanded } = this.props;
+    if (isExpanded) {
+      this.setState(prevState => ({
+        ...prevState,
+        isExpanded,
+      }));
+    }
+  }
+
   setCouponOpacity(dimmedStatus) {
     this.setState({
       dimmed: dimmedStatus,
@@ -38,6 +49,11 @@ class Coupon extends React.Component {
       isExpanded: false,
       dimmed: false,
     });
+  }
+
+  handleCouponDetails() {
+    // TODO: correctly set url.
+    history.push(`coupons/${this.props.data.id}/codes`);
   }
 
   toggleCouponDetails() {
@@ -135,7 +151,7 @@ class Coupon extends React.Component {
               'rounded-top': isExpanded,
             },
           )}
-          onClick={this.toggleCouponDetails}
+          onClick={() => this.handleCouponDetails()}
           onKeyDown={this.handleCouponKeyDown}
           role="button"
           tabIndex="0"

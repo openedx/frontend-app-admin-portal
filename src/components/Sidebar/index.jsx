@@ -50,7 +50,7 @@ class Sidebar extends React.Component {
       },
       {
         title: 'Code Management',
-        to: `${baseUrl}/admin/codes`,
+        to: `${baseUrl}/admin/coupons`,
         iconClassName: 'fa-tags',
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       },

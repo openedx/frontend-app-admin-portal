@@ -122,9 +122,17 @@ class EnterpriseApp extends React.Component {
                   />
                   {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
                     <Route
+                      key="coupon-management"
+                      exact
+                      path={`${baseUrl}/admin/coupons`}
+                      render={routeProps =>
+                        <CodeManagementPage {...routeProps} />
+                      }
+                    />,
+                    <Route
                       key="code-management"
                       exact
-                      path={`${baseUrl}/admin/codes`}
+                      path={`${baseUrl}/admin/coupons/:couponId/codes`}
                       render={routeProps =>
                         <CodeManagementPage {...routeProps} />
                       }
@@ -132,7 +140,7 @@ class EnterpriseApp extends React.Component {
                     <Route
                       key="request-codes"
                       exact
-                      path={`${baseUrl}/admin/codes/request`}
+                      path={`${baseUrl}/admin/coupons/request`}
                       render={routeProps =>
                         <RequestCodesPage {...routeProps} />
                       }
