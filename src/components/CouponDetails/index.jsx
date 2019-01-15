@@ -275,6 +275,7 @@ class CouponDetails extends React.Component {
     this.setState({
       isCodeAssignmentSuccessful: true,
       refreshIndex: this.state.refreshIndex + 1, // force new table instance
+      selectedCodes: [],
     });
   }
 

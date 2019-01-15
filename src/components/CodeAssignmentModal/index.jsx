@@ -54,7 +54,12 @@ class CodeAssignmentModal extends React.Component {
   }
 
   validateBulkAssign(formData) {
-    const { data: { unassignedCodes } } = this.props;
+    const {
+      data: {
+        unassignedCodes,
+        selectedCodes,
+      },
+    } = this.props;
 
     const textAreaKey = 'email-addresses';
     const csvFileKey = 'csv-email-addresses';
@@ -62,9 +67,12 @@ class CodeAssignmentModal extends React.Component {
     const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split('\n');
     const csvEmails = formData[csvFileKey];
 
-    const getTooManyAssignmentsMessage = ({ isCsv, emails }) => (
-      `You have ${unassignedCodes} ${unassignedCodes > 1 ? 'codes' : 'code'} left, but ${isCsv ? 'your file has' : 'you entered'} ${emails.length} emails. Please try again.`
+    const hasSelectedCodes = selectedCodes.length > 0;
+
+    const getTooManyAssignmentsMessage = ({ isCsv = false, emails, numAvailableCodes }) => (
+      `You have ${numAvailableCodes} ${numAvailableCodes > 1 ? 'codes' : 'code'} left, but ${isCsv ? 'your file has' : 'you entered'} ${emails.length} emails. Please try again.`
     );
+
     const invalidEmailsMessage = 'One or more email addresses is not valid. Please try again.';
 
     const errors = {
@@ -84,14 +92,40 @@ class CodeAssignmentModal extends React.Component {
       errors[textAreaKey] = invalidEmailsMessage;
       errors._error.push(invalidEmailsMessage);
     } else if (textAreaEmails && textAreaEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({ isCsv: false, emails: textAreaEmails });
+      const message = getTooManyAssignmentsMessage({
+        emails: textAreaEmails,
+        numAvailableCodes: unassignedCodes,
+      });
+
+      errors[textAreaKey] = message;
+      errors._error.push(message);
+    } else if (textAreaEmails && hasSelectedCodes && textAreaEmails.length > selectedCodes.length) {
+      const message = getTooManyAssignmentsMessage({
+        emails: textAreaEmails,
+        numAvailableCodes: selectedCodes.length,
+      });
+
       errors[textAreaKey] = message;
       errors._error.push(message);
     } else if (csvEmails && !csvEmails.every(email => isEmail(email))) {
       errors[csvFileKey] = invalidEmailsMessage;
       errors._error.push(invalidEmailsMessage);
     } else if (csvEmails && csvEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({ isCsv: true, emails: csvEmails });
+      const message = getTooManyAssignmentsMessage({
+        isCsv: true,
+        emails: csvEmails,
+        numAvailableCodes: unassignedCodes,
+      });
+
+      errors[csvFileKey] = message;
+      errors._error.push(message);
+    } else if (csvEmails && hasSelectedCodes && csvEmails.length > selectedCodes.length) {
+      const message = getTooManyAssignmentsMessage({
+        isCsv: true,
+        emails: csvEmails,
+        numAvailableCodes: selectedCodes.length,
+      });
+
       errors[csvFileKey] = message;
       errors._error.push(message);
     }
