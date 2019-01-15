@@ -24,15 +24,21 @@ const sendCodeAssignmentFailure = error => ({
   },
 });
 
-const sendCodeAssignment = options => (
+const sendCodeAssignment = ({
+  options,
+  onSuccess = () => {},
+  onError = () => {},
+}) => (
   (dispatch) => {
     dispatch(sendCodeAssignmentRequest());
     return EcommerceApiService.sendCodeAssignment(options)
       .then((response) => {
         dispatch(sendCodeAssignmentSuccess(response.data));
+        onSuccess(response.data);
       })
       .catch((error) => {
         dispatch(sendCodeAssignmentFailure(error));
+        onError(error);
       });
   }
 );

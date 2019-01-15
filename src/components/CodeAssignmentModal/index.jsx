@@ -10,8 +10,6 @@ import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 
-import EcommerceApiService from '../../data/services/EcommerceApiService';
-
 import emailTemplate from './emailTemplate';
 
 import './CodeAssignmentModal.scss';
@@ -156,7 +154,11 @@ class CodeAssignmentModal extends React.Component {
   }
 
   handleModalSubmit(formData) {
-    const { isBulkAssign, data } = this.props;
+    const {
+      isBulkAssign,
+      data,
+      sendCodeAssignment,
+    } = this.props;
 
     // Validate form data
     this.validateFormData(formData);
@@ -177,9 +179,9 @@ class CodeAssignmentModal extends React.Component {
       options.codes = [data.code];
     }
 
-    return EcommerceApiService.sendCodeAssignment(options)
-      .then(() => {
-        this.props.onSuccess();
+    return sendCodeAssignment(options)
+      .then((response) => {
+        this.props.onSuccess(response);
       })
       .catch((error) => {
         throw new SubmissionError({
@@ -324,6 +326,7 @@ CodeAssignmentModal.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
+  sendCodeAssignment: PropTypes.func.isRequired,
   isBulkAssign: PropTypes.bool,
   data: PropTypes.shape({}),
 };

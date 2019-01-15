@@ -7,17 +7,14 @@ import FileInput from '../FileInput';
 
 class BulkAssignFields extends React.Component {
   normalizeFileUpload(value) {
-    if (value) {
-      return value.split('\r\n');
-    }
-    return undefined;
+    return value && value.split('\r\n');
   }
 
   render() {
     return (
       <React.Fragment>
         <H3 className="mb-2">Add Users</H3>
-        <div className="pl-4">
+        <div className="pl-4 field-group">
           <Field
             id="email-addresses"
             name="email-addresses"
@@ -25,7 +22,7 @@ class BulkAssignFields extends React.Component {
             label="Email Addresses"
             description="To add more than one user, enter one email address per line."
           />
-          <p className="pb-2 font-weight-600">
+          <p className="pb-2">
             OR
           </p>
           <Field
