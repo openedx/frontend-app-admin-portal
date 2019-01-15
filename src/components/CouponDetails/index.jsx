@@ -165,7 +165,9 @@ class CouponDetails extends React.Component {
                 <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
                   <DownloadCsvButton
                     id="coupon-details"
-                    fetchMethod={() => {}}
+                    fetchMethod={() => EcommerceApiService.fetchCouponDetails(id, {}, {
+                      csv: true,
+                    })}
                     disabled={this.isTableLoading()}
                   />
                 </div>
