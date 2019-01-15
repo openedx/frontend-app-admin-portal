@@ -62,6 +62,7 @@ class TableComponent extends React.Component {
 
     let sortDirection;
     let sortColumn;
+
     if (tableSortable) {
       sortDirection = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
       sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[0].key;
@@ -71,7 +72,7 @@ class TableComponent extends React.Component {
       <div className={className}>
         <div className="row">
           <div className="col">
-            { loading && <TableLoadingOverlay /> }
+            {loading && <TableLoadingOverlay />}
             <div className="table-responsive">
               <Table
                 id={id}

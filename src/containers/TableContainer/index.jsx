@@ -31,6 +31,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const TableContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  { withRef: true },
 )(TableComponent);
 
 export default withRouter(TableContainer);
