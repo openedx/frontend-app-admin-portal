@@ -657,7 +657,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   <td
                     className=""
                   >
-                    test-title-1
+                    test-code-1
                   </td>
                   <td
                     className=""
@@ -717,7 +717,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   <td
                     className=""
                   >
-                    test-title-2
+                    test-code-2
                   </td>
                   <td
                     className=""
@@ -767,7 +767,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   <td
                     className=""
                   >
-                    test-title-3
+                    test-code-3
                   </td>
                   <td
                     className=""

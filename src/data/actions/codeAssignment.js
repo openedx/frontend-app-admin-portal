@@ -25,13 +25,14 @@ const sendCodeAssignmentFailure = error => ({
 });
 
 const sendCodeAssignment = ({
+  couponId,
   options,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendCodeAssignmentRequest());
-    return EcommerceApiService.sendCodeAssignment(options)
+    return EcommerceApiService.sendCodeAssignment(couponId, options)
       .then((response) => {
         dispatch(sendCodeAssignmentSuccess(response.data));
         onSuccess(response.data);

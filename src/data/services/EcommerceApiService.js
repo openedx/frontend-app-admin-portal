@@ -31,13 +31,9 @@ class EcommerceApiService {
     return apiClient.get(url);
   }
 
-  static sendCodeAssignment(options) { // eslint-disable-line no-unused-vars
-    // TODO replace with sending data to ecommerce API
-    return Promise.resolve({
-      data: {
-        results: [],
-      },
-    });
+  static sendCodeAssignment(couponId, options) {
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/assign/`;
+    return apiClient.post(url, options, 'json');
   }
 }
 
