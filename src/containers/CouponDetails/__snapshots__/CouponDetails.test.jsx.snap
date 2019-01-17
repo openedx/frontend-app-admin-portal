@@ -663,7 +663,17 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     <button
-                      className="btn btn-link btn-sm px-0"
+                      className="btn btn-link btn-sm px-0 remind-button"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      type="button"
+                    >
+                      Remind
+                    </button>
+                    |
+                    <button
+                      className="btn btn-link btn-sm px-0 revoke-button"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -773,7 +783,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     <button
-                      className="btn btn-link btn-sm px-0"
+                      className="btn btn-link btn-sm px-0 assignment-button"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}

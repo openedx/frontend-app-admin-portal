@@ -154,8 +154,7 @@ describe('CouponDetailsWrapper', () => {
     let wrapper;
 
     const openModalByActionButton = ({ key, label }) => {
-      const buttons = wrapper.find('table').find('button');
-      const actionButton = key === 'revoke' ? buttons.first() : buttons.last();
+      const actionButton = wrapper.find('table').find('button').find(`.${key}-button`);
       expect(actionButton.prop('children')).toEqual(label);
       actionButton.simulate('click');
       expect(wrapper.find('CouponDetails').instance().state.modals[key]).toBeTruthy();
@@ -177,6 +176,13 @@ describe('CouponDetailsWrapper', () => {
       ));
     });
 
+    it('sets remind modal state on Revoke button click', () => {
+      openModalByActionButton({
+        key: 'remind',
+        label: 'Remind',
+      });
+    });
+
     it('sets revoke modal state on Revoke button click', () => {
       openModalByActionButton({
         key: 'revoke',
@@ -189,6 +195,17 @@ describe('CouponDetailsWrapper', () => {
         key: 'assignment',
         label: 'Assign',
       });
+    });
+
+    it('sets remind modal state on bulk remind click', () => {
+      wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
+      expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
+
+      wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'remind' } });
+      expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('remind');
+
+      wrapper.find('.bulk-actions .btn').simulate('click');
+      expect(wrapper.find('CouponDetails').instance().state.modals.remind).toBeTruthy();
     });
 
     it('sets revoke modal state on bulk revoke click', () => {
