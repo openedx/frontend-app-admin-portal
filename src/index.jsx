@@ -16,6 +16,7 @@ import Footer from './containers/Footer';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import NotFoundPage from './components/NotFoundPage';
 import SupportPage from './components/SupportPage';
+import { withErrorBoundary } from './components/ErrorBoundary';
 
 import apiClient from './data/apiClient';
 import store from './data/store';
@@ -59,6 +60,8 @@ const AppWrapper = () => (
   </Provider>
 );
 
+const PortalAppWrapper = withErrorBoundary(AppWrapper);
+
 if (apiClient.ensurePublicOrAuthencationAndCookies(window.location.pathname)) {
-  ReactDOM.render(<AppWrapper />, document.getElementById('root'));
+  ReactDOM.render(<PortalAppWrapper />, document.getElementById('root'));
 }

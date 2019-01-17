@@ -9,6 +9,8 @@ import LoadingMessage from '../LoadingMessage';
 
 import LmsApiService from '../../data/services/LmsApiService';
 
+import NewRelicService from '../../data/services/NewRelicService';
+
 import './RequestCodesPage.scss';
 
 class RequestCodesPage extends React.Component {
@@ -38,7 +40,10 @@ class RequestCodesPage extends React.Component {
                   onSubmit={options => (
                     LmsApiService.requestCodes(options)
                       .then(response => response)
-                      .catch((error) => { throw new SubmissionError({ _error: error }); })
+                      .catch((error) => {
+                        NewRelicService.logAPIErrorResponse(error);
+                        throw new SubmissionError({ _error: error });
+                      })
                   )}
                   initialValues={{ emailAddress, enterpriseName, numberOfCodes: '' }}
                   match={match}

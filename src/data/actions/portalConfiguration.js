@@ -5,6 +5,7 @@ import {
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 import LmsApiService from '../services/LmsApiService';
+import NewRelicService from '../services/NewRelicService';
 
 const fetchPortalConfigurationRequest = () => ({
   type: FETCH_PORTAL_CONFIGURATION_REQUEST,
@@ -30,6 +31,7 @@ const fetchPortalConfiguration = slug => (
         dispatch(fetchPortalConfigurationSuccess(response.data));
       })
       .catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
         dispatch(fetchPortalConfigurationFailure(error));
       });
   }
