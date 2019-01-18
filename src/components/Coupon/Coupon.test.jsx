@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
 import Coupon from './index';
@@ -47,6 +47,14 @@ const CouponWrapper = props => (
 describe('<Coupon />', () => {
   let wrapper;
 
+  const simulateCouponClick = () => {
+    wrapper.find(Coupon).find('.metadata').simulate('click');
+  };
+
+  const simulateCouponKeyDown = (key) => {
+    wrapper.find(Coupon).find('.metadata').simulate('keydown', { key });
+  };
+
   describe('renders correctly', () => {
     it('with max uses', () => {
       const tree = renderer
@@ -87,10 +95,6 @@ describe('<Coupon />', () => {
   });
 
   describe('expands and collapses correctly', () => {
-    const simulateCouponClick = () => {
-      wrapper.find(Coupon).find('.metadata').simulate('click');
-    };
-
     it('expands on click of collapsed coupon', () => {
       const mockOnExpand = jest.fn();
       wrapper = mount((
@@ -119,5 +123,71 @@ describe('<Coupon />', () => {
       expect(mockOnCollapse).toBeCalledTimes(1);
       expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeFalsy();
     });
+
+    it('expands on keydown of collapsed coupon', () => {
+      const mockOnExpand = jest.fn();
+      wrapper = mount((
+        <CouponWrapper
+          onExpand={mockOnExpand}
+        />
+      ));
+
+      simulateCouponKeyDown('Enter');
+      expect(mockOnExpand).toBeCalledTimes(1);
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
+    });
+
+    it('collapses on keydown of expanded coupon', () => {
+      const mockOnCollapse = jest.fn();
+      wrapper = mount((
+        <CouponWrapper
+          onCollapse={mockOnCollapse}
+        />
+      ));
+
+      simulateCouponKeyDown('Enter');
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
+
+      simulateCouponKeyDown('Enter');
+      expect(mockOnCollapse).toBeCalledTimes(1);
+      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeFalsy();
+    });
+
+    it('does not handle unknown keydown event', () => {
+      const mockOnExpandOrOnCollapse = jest.fn();
+      const mockOnCollapse = jest.fn();
+      wrapper = mount((
+        <CouponWrapper
+          onCollapse={mockOnExpandOrOnCollapse}
+          onExpand={mockOnExpandOrOnCollapse}
+        />
+      ));
+
+      simulateCouponKeyDown('A');
+
+      expect(mockOnCollapse).toBeCalledTimes(0);
+    });
+  });
+
+  it('sets state correctly on setCouponOpacity()', () => {
+    wrapper = shallow(<CouponWrapper />);
+    const instance = wrapper.find(Coupon).dive().instance();
+
+    expect(instance.state.dimmed).toBeFalsy();
+    instance.setCouponOpacity(true);
+    expect(instance.state.dimmed).toBeTruthy();
+  });
+
+  it('sets state correctly on closeCouponDetails()', () => {
+    wrapper = shallow(<CouponWrapper />);
+    const instance = wrapper.find(Coupon).dive().instance();
+
+    instance.setState({
+      isExpanded: true,
+    });
+
+    expect(instance.state.isExpanded).toBeTruthy();
+    instance.closeCouponDetails(true);
+    expect(instance.state.isExpanded).toBeFalsy();
   });
 });
