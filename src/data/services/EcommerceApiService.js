@@ -15,7 +15,7 @@ class EcommerceApiService {
       ...options,
     };
 
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/enterprise/coupons/${enterpriseId}/overview/?${qs.stringify(queryParams)}`;
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${enterpriseId}/overview/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
   }
 
@@ -27,7 +27,7 @@ class EcommerceApiService {
       ...options,
     };
 
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/enterprise/coupons/${couponId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/${endpoint}/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
   }
 
