@@ -83,6 +83,7 @@ describe('EnterpriseApp', () => {
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
+        ...initialState.portalConfiguration,
         error: Error('test error'),
       },
     });
