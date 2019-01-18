@@ -155,7 +155,7 @@ describe('<Coupon />', () => {
 
     it('does not handle unknown keydown event', () => {
       const mockOnExpandOrOnCollapse = jest.fn();
-      const mockOnCollapse = jest.fn();
+
       wrapper = mount((
         <CouponWrapper
           onCollapse={mockOnExpandOrOnCollapse}
@@ -165,7 +165,7 @@ describe('<Coupon />', () => {
 
       simulateCouponKeyDown('A');
 
-      expect(mockOnCollapse).toBeCalledTimes(0);
+      expect(mockOnExpandOrOnCollapse).toBeCalledTimes(0);
     });
   });
 
