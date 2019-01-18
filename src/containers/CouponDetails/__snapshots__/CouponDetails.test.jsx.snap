@@ -1,0 +1,865 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CouponDetailsWrapper renders with collapsed coupon details 1`] = `
+<div
+  className="coupon-details row no-gutters px-2 my-3 d-none"
+  id="coupon-details-1"
+>
+  <div
+    className="col"
+  />
+</div>
+`;
+
+exports[`CouponDetailsWrapper renders with error 1`] = `
+<div
+  className="coupon-details row no-gutters px-2 my-3"
+  id="coupon-details-1"
+>
+  <div
+    className="col"
+  >
+    <div
+      className="details-header row no-gutters mb-3"
+    >
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0"
+      >
+        <h3
+          className={null}
+        >
+          Coupon Details
+        </h3>
+      </div>
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
+      >
+        <button
+          className="btn btn-outline-primary download-btn"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          <span
+            aria-hidden={true}
+            className="fa mr-2 fa-download"
+            id="Icon1"
+          />
+          Download full report (CSV)
+        </button>
+      </div>
+    </div>
+    <div
+      className="row mb-3"
+    >
+      <div
+        className="toggles col-12 col-md-8"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput5"
+            id="label-asInput5"
+          >
+            Filter by Code Status:
+          </label>
+          <select
+            aria-describedby="error-asInput5"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput5"
+            name="table-view"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="unassigned"
+          >
+            <option
+              value="unassigned"
+            >
+              Unassigned
+            </option>
+            <option
+              value="unredeemed"
+            >
+              Unredeemed
+            </option>
+            <option
+              value="partially-redeemed"
+            >
+              Partially Redeemed
+            </option>
+            <option
+              value="redeemed"
+            >
+              Redeemed
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput5"
+          >
+            <span />
+          </div>
+        </div>
+      </div>
+      <div
+        className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput6"
+            id="label-asInput6"
+          >
+            Bulk Action:
+          </label>
+          <select
+            aria-describedby="error-asInput6"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput6"
+            name="bulk-action"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="assign"
+          >
+            <option
+              disabled={false}
+              value="assign"
+            >
+              Assign
+            </option>
+            <option
+              disabled={true}
+              value="remind"
+            >
+              Remind
+            </option>
+            <option
+              disabled={true}
+              value="revoke"
+            >
+              Revoke
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput6"
+          >
+            <span />
+          </div>
+        </div>
+        <button
+          className="btn ml-2 btn-primary"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          Go
+        </button>
+      </div>
+    </div>
+    <div
+      className="row mb-3"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="alert fade alert-danger show"
+          hidden={false}
+          role="alert"
+        >
+          <div
+            className="alert-dialog"
+          >
+            <div
+              className="d-flex"
+            >
+              <div
+                className="icon mr-2"
+              >
+                <span
+                  aria-hidden={true}
+                  className="fa fa-times-circle"
+                  id="Icon1"
+                />
+              </div>
+              <div
+                className="message"
+              >
+                One or more codes below have an error.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
+<div
+  className="coupon-details row no-gutters px-2 my-3"
+  id="coupon-details-1"
+>
+  <div
+    className="col"
+  >
+    <div
+      className="details-header row no-gutters mb-3"
+    >
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0"
+      >
+        <h3
+          className={null}
+        >
+          Coupon Details
+        </h3>
+      </div>
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
+      >
+        <button
+          className="btn btn-outline-primary download-btn"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          <span
+            aria-hidden={true}
+            className="fa mr-2 fa-download"
+            id="Icon1"
+          />
+          Download full report (CSV)
+        </button>
+      </div>
+    </div>
+    <div
+      className="row mb-3"
+    >
+      <div
+        className="toggles col-12 col-md-8"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput3"
+            id="label-asInput3"
+          >
+            Filter by Code Status:
+          </label>
+          <select
+            aria-describedby="error-asInput3"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput3"
+            name="table-view"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="unassigned"
+          >
+            <option
+              value="unassigned"
+            >
+              Unassigned
+            </option>
+            <option
+              value="unredeemed"
+            >
+              Unredeemed
+            </option>
+            <option
+              value="partially-redeemed"
+            >
+              Partially Redeemed
+            </option>
+            <option
+              value="redeemed"
+            >
+              Redeemed
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput3"
+          >
+            <span />
+          </div>
+        </div>
+      </div>
+      <div
+        className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput4"
+            id="label-asInput4"
+          >
+            Bulk Action:
+          </label>
+          <select
+            aria-describedby="error-asInput4"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput4"
+            name="bulk-action"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="assign"
+          >
+            <option
+              disabled={false}
+              value="assign"
+            >
+              Assign
+            </option>
+            <option
+              disabled={true}
+              value="remind"
+            >
+              Remind
+            </option>
+            <option
+              disabled={true}
+              value="revoke"
+            >
+              Revoke
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput4"
+          >
+            <span />
+          </div>
+        </div>
+        <button
+          className="btn ml-2 btn-primary"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          Go
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CouponDetailsWrapper renders with table data 1`] = `
+<div
+  className="coupon-details row no-gutters px-2 my-3"
+  id="coupon-details-1"
+>
+  <div
+    className="col"
+  >
+    <div
+      className="details-header row no-gutters mb-3"
+    >
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0"
+      >
+        <h3
+          className={null}
+        >
+          Coupon Details
+        </h3>
+      </div>
+      <div
+        className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
+      >
+        <button
+          className="btn btn-outline-primary download-btn"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          <span
+            aria-hidden={true}
+            className="fa mr-2 fa-download"
+            id="Icon1"
+          />
+          Download full report (CSV)
+        </button>
+      </div>
+    </div>
+    <div
+      className="row mb-3"
+    >
+      <div
+        className="toggles col-12 col-md-8"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput7"
+            id="label-asInput7"
+          >
+            Filter by Code Status:
+          </label>
+          <select
+            aria-describedby="error-asInput7"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput7"
+            name="table-view"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="unassigned"
+          >
+            <option
+              value="unassigned"
+            >
+              Unassigned
+            </option>
+            <option
+              value="unredeemed"
+            >
+              Unredeemed
+            </option>
+            <option
+              value="partially-redeemed"
+            >
+              Partially Redeemed
+            </option>
+            <option
+              value="redeemed"
+            >
+              Redeemed
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput7"
+          >
+            <span />
+          </div>
+        </div>
+      </div>
+      <div
+        className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className=""
+            htmlFor="asInput8"
+            id="label-asInput8"
+          >
+            Bulk Action:
+          </label>
+          <select
+            aria-describedby="error-asInput8"
+            className="form-control is-invalid-nodanger mt-1"
+            disabled={false}
+            id="asInput8"
+            name="bulk-action"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="select"
+            value="assign"
+          >
+            <option
+              disabled={false}
+              value="assign"
+            >
+              Assign
+            </option>
+            <option
+              disabled={true}
+              value="remind"
+            >
+              Remind
+            </option>
+            <option
+              disabled={true}
+              value="revoke"
+            >
+              Revoke
+            </option>
+          </select>
+          <div
+            aria-live="polite"
+            className="invalid-feedback invalid-feedback-nodanger"
+            id="error-asInput8"
+          >
+            <span />
+          </div>
+        </div>
+        <button
+          className="btn ml-2 btn-primary"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          type="button"
+        >
+          Go
+        </button>
+      </div>
+    </div>
+    <div
+      className="coupon-details-table"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col"
+        >
+          <div
+            className="table-responsive"
+          >
+            <table
+              className="table table-sm table-striped"
+            >
+              <thead
+                className=""
+              >
+                <tr
+                  className=""
+                >
+                  <th
+                    className=""
+                    scope="col"
+                  >
+                    <div
+                      className="form-check"
+                    >
+                      <input
+                        aria-checked={false}
+                        checked={false}
+                        className={
+                          Array [
+                            "form-check-input is-invalid-nodanger",
+                          ]
+                        }
+                        disabled={false}
+                        id="asInput9"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="asInput9"
+                        id="label-asInput9"
+                      />
+                      <div
+                        aria-live="polite"
+                        className="invalid-feedback invalid-feedback-nodanger"
+                        id="error-asInput9"
+                      >
+                        <span />
+                      </div>
+                    </div>
+                  </th>
+                  <th
+                    className=""
+                    scope="col"
+                  >
+                    Redemptions
+                  </th>
+                  <th
+                    className=""
+                    scope="col"
+                  >
+                    Code
+                  </th>
+                  <th
+                    className=""
+                    scope="col"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                className=""
+              >
+                <tr
+                  className=""
+                >
+                  <td
+                    className=""
+                  >
+                    <div
+                      className="form-check"
+                    >
+                      <input
+                        aria-checked={false}
+                        checked={false}
+                        className={
+                          Array [
+                            "form-check-input is-invalid-nodanger",
+                          ]
+                        }
+                        disabled={false}
+                        id="asInput10"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="asInput10"
+                        id="label-asInput10"
+                      />
+                      <div
+                        aria-live="polite"
+                        className="invalid-feedback invalid-feedback-nodanger"
+                        id="error-asInput10"
+                      >
+                        <span />
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className=""
+                  >
+                    10 of 100
+                  </td>
+                  <td
+                    className=""
+                  >
+                    test-title-1
+                  </td>
+                  <td
+                    className=""
+                  >
+                    <button
+                      className="btn btn-link btn-sm px-0"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      type="button"
+                    >
+                      Revoke
+                    </button>
+                  </td>
+                </tr>
+                <tr
+                  className=""
+                >
+                  <td
+                    className=""
+                  >
+                    <div
+                      className="form-check"
+                    >
+                      <input
+                        aria-checked={false}
+                        checked={false}
+                        className={
+                          Array [
+                            "form-check-input is-invalid-nodanger",
+                          ]
+                        }
+                        disabled={false}
+                        id="asInput11"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="asInput11"
+                        id="label-asInput11"
+                      />
+                      <div
+                        aria-live="polite"
+                        className="invalid-feedback invalid-feedback-nodanger"
+                        id="error-asInput11"
+                      >
+                        <span />
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className=""
+                  >
+                    100 of 100
+                  </td>
+                  <td
+                    className=""
+                  >
+                    test-title-2
+                  </td>
+                  <td
+                    className=""
+                  />
+                </tr>
+                <tr
+                  className=""
+                >
+                  <td
+                    className=""
+                  >
+                    <div
+                      className="form-check"
+                    >
+                      <input
+                        aria-checked={false}
+                        checked={false}
+                        className={
+                          Array [
+                            "form-check-input is-invalid-nodanger",
+                          ]
+                        }
+                        disabled={false}
+                        id="asInput12"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="asInput12"
+                        id="label-asInput12"
+                      />
+                      <div
+                        aria-live="polite"
+                        className="invalid-feedback invalid-feedback-nodanger"
+                        id="error-asInput12"
+                      >
+                        <span />
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className=""
+                  >
+                    10 of 100
+                  </td>
+                  <td
+                    className=""
+                  >
+                    test-title-3
+                  </td>
+                  <td
+                    className=""
+                  >
+                    <button
+                      className="btn btn-link btn-sm px-0"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      type="button"
+                    >
+                      Assign
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div
+        className="row mt-2"
+      >
+        <div
+          className="col d-flex justify-content-center"
+        >
+          <nav
+            aria-label="coupon-details-pagination"
+            className=""
+          >
+            <div
+              aria-atomic={true}
+              aria-live="polite"
+              aria-relevant="text"
+              className="sr-only"
+            >
+              Page 1, Current Page, of 1
+            </div>
+            <ul
+              className="pagination"
+            >
+              <li
+                className="page-item disabled"
+              >
+                <button
+                  aria-label="Previous"
+                  className="btn previous page-link"
+                  disabled={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  tabIndex="-1"
+                  type="button"
+                >
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-left mr-2"
+                      id="pagination-13"
+                    />
+                    Previous
+                  </div>
+                </button>
+              </li>
+              <li
+                className="page-item disabled"
+              >
+                <button
+                  aria-label="Next"
+                  className="btn next page-link"
+                  disabled={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  tabIndex="-1"
+                  type="button"
+                >
+                  <div>
+                    Next
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-chevron-right ml-2"
+                      id="pagination-14"
+                    />
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
