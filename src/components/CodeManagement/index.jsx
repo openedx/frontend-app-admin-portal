@@ -37,7 +37,7 @@ class CodeManagement extends React.Component {
       this.props.fetchCouponOrders();
     }
 
-    if (location.state && location.state.hasRequestedCodes) {
+    if (location.state && location.state.hasRequestedCodes && location !== prevProps.location) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
         hasRequestedCodes: location.state.hasRequestedCodes,
       });
