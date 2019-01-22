@@ -5,7 +5,7 @@ import { configuration } from '../../config';
 import store from '../store';
 
 class EcommerceApiService {
-  static ecommerceBaseUrl = configuration.ECOMMERCE_API_BASE_URL;
+  static ecommerceBaseUrl = configuration.ECOMMERCE_BASE_URL;
 
   static fetchCouponOrders(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
