@@ -459,7 +459,7 @@ class CouponDetails extends React.Component {
                 key={`table-${selectedToggle}-${refreshIndex}`}
                 id="coupon-details"
                 className="coupon-details-table"
-                fetchMethod={() => EcommerceApiService.fetchCouponDetails(id)}
+                fetchMethod={options => EcommerceApiService.fetchCouponDetails(id, options)}
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
