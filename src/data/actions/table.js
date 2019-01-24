@@ -70,12 +70,6 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {
       NewRelicService.logAPIErrorResponse(error);
-      // This endpoint returns a 404 if no data exists,
-      // so we convert it to an empty response here.
-      if (error.response.status === 404) {
-        dispatch(paginationSuccess(tableId, { results: [] }, options.ordering));
-        return;
-      }
       dispatch(paginationFailure(tableId, error));
     });
   }
