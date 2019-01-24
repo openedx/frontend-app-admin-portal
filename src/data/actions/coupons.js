@@ -4,6 +4,7 @@ import {
   COUPONS_FAILURE,
   CLEAR_COUPONS,
 } from '../constants/coupons';
+import NewRelicService from '../services/NewRelicService';
 
 // TODO handle pagination using updateUrl
 // import { updateUrl } from '../../utils';
@@ -38,6 +39,7 @@ const fetchCouponOrders = options => (
         dispatch(fetchCouponOrdersSuccess(response.data));
       })
       .catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
         // This endpoint returns a 404 if no data exists,
         // so we convert it to an empty response here.
         if (error.response.status === 404) {
