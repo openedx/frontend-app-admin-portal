@@ -32,7 +32,10 @@ const rewire = () => {
       });
     }
     const couponData = coupons[findCouponIndexById(couponId)].has_error ?
-      codes(firstCouponHasError) : codes();
+      codes({
+        codeFilter: options.code_filter,
+        couponHasError: firstCouponHasError,
+      }) : codes({ codeFilter: options.code_filter });
     return fetchData(options, couponData);
   };
 };
