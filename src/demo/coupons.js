@@ -3,7 +3,10 @@ import faker from 'faker';
 import { configuration } from '../config';
 
 const couponsCount = 15;
-const codesCount = 15;
+const codesCount = 65;
+
+const minRedemptionsCount = 0;
+const maxRedemptionsCount = 5;
 
 let firstCouponHasError = false;
 
@@ -11,6 +14,12 @@ let firstCouponHasError = false;
 if (configuration.NODE_ENV === 'development') {
   firstCouponHasError = true;
 }
+
+// Coupon details filter.
+const unassignedCodesFilter = 'unassigned';
+const unredeemedCodesFilter = 'unredeemed';
+const partiallyRedeemedCodesFilter = 'partially-redeemed';
+const redeemedCodesFilter = 'redeemed';
 
 const couponTitles = [
   '250ML - DEC2019',
@@ -77,31 +86,65 @@ const getAssignedTo = (isAssigned = false) => {
   };
 };
 
-const getCodes = (couponHasError = false) => {
-  const redemptionsAvailablePerCode = faker.random.number({ min: 1, max: 5 });
-  return [...Array(codesCount)].map((_, index) => {
-    const code = Math.random().toString(36).substring(2).toUpperCase();
-    const codeHasError = couponHasError && index <= 1;
-    const isAssigned = codeHasError || faker.random.boolean();
-    const assignedTo = getAssignedTo(isAssigned);
+const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, index) => {
+  const code = Math.random().toString(36).substring(2).toUpperCase();
+  const codeHasError = couponHasError && index <= 1;
+  const isAssigned = codeHasError || faker.random.boolean();
+  const assignedTo = getAssignedTo(isAssigned);
 
-    return {
-      title: code,
-      assigned_to: assignedTo.email,
-      redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
-      redemptions: {
-        available: redemptionsAvailablePerCode,
-        used: isAssigned ? faker.random.number({
-          min: 0,
-          max: codeHasError ? redemptionsAvailablePerCode - 1 : redemptionsAvailablePerCode,
-        }) : 0,
-      },
-      error: codeHasError ? `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})` : null,
-    };
+  const redemptionsAvailablePerCode = faker.random.number({
+    min: minRedemptionsCount,
+    max: maxRedemptionsCount,
   });
-};
 
-const allCodes = getCodes();
+  const maxUsed = maxRedemptionsCount - redemptionsAvailablePerCode;
+  const redemptionsUsedPerCode = isAssigned ? faker.random.number({
+    min: minRedemptionsCount + 1,
+    max: codeHasError ? redemptionsAvailablePerCode : maxUsed,
+  }) : minRedemptionsCount;
+
+  const errorMessage = `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})`;
+  return {
+    title: code,
+    assigned_to: assignedTo.email,
+    redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
+    redemptions: {
+      available: redemptionsAvailablePerCode,
+      used: redemptionsUsedPerCode,
+    },
+    error: codeHasError ? errorMessage : null,
+  };
+});
+
+const allCodes = getAllCodes();
+
+const unassignedCodes = allCodes.filter(code => (
+  code.redemptions.available > minRedemptionsCount && code.redemptions.used < maxRedemptionsCount
+));
+const unredeemedCodes = allCodes.filter(code => (
+  (code.redemptions.available === minRedemptionsCount &&
+    code.redemptions.used > minRedemptionsCount && code.redemptions.used < maxRedemptionsCount)
+));
+const partiallyRedeemedCodes = allCodes.filter(code => (
+  code.redemptions.available > minRedemptionsCount && code.redemptions.used > minRedemptionsCount
+));
+const redeemedCodes = allCodes.filter(code => (
+  (code.redemptions.available === minRedemptionsCount &&
+    code.redemptions.used === minRedemptionsCount)
+));
+
+const getCodes = ({ codeFilter = unassignedCodesFilter, couponHasError = false }) => {
+  if (codeFilter === unassignedCodesFilter) {
+    return unassignedCodes;
+  } else if (codeFilter === unredeemedCodesFilter) {
+    return unredeemedCodes;
+  } else if (codeFilter === partiallyRedeemedCodesFilter) {
+    return partiallyRedeemedCodes;
+  } else if (codeFilter === redeemedCodesFilter) {
+    return redeemedCodes;
+  }
+  return getAllCodes(couponHasError);
+};
 
 const getCsvHeaders = () => Object.keys(allCodes[0]).reduce((csvData, codeKey) => {
   let newData;
