@@ -3,7 +3,7 @@ import faker from 'faker';
 import { configuration } from '../config';
 
 const couponsCount = 15;
-const codesCount = 65;
+const codesCount = 115;
 
 const minRedemptionsCount = 1;
 const maxRedemptionsCount = 5;
@@ -101,7 +101,7 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
   const redemptionsUsedPerCode = isAssigned ? faker.random.number({
     min: minRedemptionsCount,
     max: codeHasError ? maxUsed : redemptionsAvailablePerCode,
-  }) : faker.random.number({ min: minRedemptionsCount - 1, max: minRedemptionsCount });
+  }) : minRedemptionsCount - 1;
 
   const errorMessage = `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})`;
   return {
@@ -125,7 +125,7 @@ const unredeemedCodes = allCodes.filter(code => (
   code.assigned_to !== undefined && code.redemptions.used < code.redemptions.available
 ));
 const partiallyRedeemedCodes = allCodes.filter(code => (
-  (code.redemptions.used >= minRedemptionsCount &&
+  (code.redemptions.used > minRedemptionsCount &&
     code.redemptions.used < code.redemptions.available)
 ));
 const redeemedCodes = allCodes.filter(code => (
