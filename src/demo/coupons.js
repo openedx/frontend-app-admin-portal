@@ -105,7 +105,7 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
 
   const errorMessage = `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})`;
   return {
-    title: code,
+    code,
     assigned_to: assignedTo.email,
     redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
     redemptions: {

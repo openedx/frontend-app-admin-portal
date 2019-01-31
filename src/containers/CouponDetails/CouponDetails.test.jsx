@@ -40,7 +40,7 @@ CouponDetailsWrapper.propTypes = {
 };
 
 const sampleCodeData = {
-  title: 'test-title-1',
+  code: 'test-code-1',
   assigned_to: 'test@bestrun.com',
   redemptions: {
     available: 100,
@@ -60,7 +60,7 @@ const sampleTableData = {
       sampleCodeData,
       {
         ...sampleCodeData,
-        title: 'test-title-2',
+        code: 'test-code-2',
         redemptions: {
           available: 100,
           used: 100,
@@ -68,7 +68,7 @@ const sampleTableData = {
       },
       {
         ...sampleCodeData,
-        title: 'test-title-3',
+        code: 'test-code-3',
         assigned_to: null,
       },
     ],

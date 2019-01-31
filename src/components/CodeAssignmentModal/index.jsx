@@ -190,6 +190,7 @@ class CodeAssignmentModal extends React.Component {
   handleModalSubmit(formData) {
     const {
       isBulkAssign,
+      couponId,
       data,
       sendCodeAssignment,
     } = this.props;
@@ -213,7 +214,7 @@ class CodeAssignmentModal extends React.Component {
       options.codes = [data.code];
     }
 
-    return sendCodeAssignment(options)
+    return sendCodeAssignment(couponId, options)
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -357,6 +358,7 @@ CodeAssignmentModal.propTypes = {
   error: PropTypes.arrayOf(PropTypes.string),
 
   // custom props
+  couponId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,

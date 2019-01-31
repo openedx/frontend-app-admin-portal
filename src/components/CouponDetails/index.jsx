@@ -31,7 +31,7 @@ class CouponDetails extends React.Component {
         },
         {
           label: 'Code',
-          key: 'title',
+          key: 'code',
         },
         {
           label: 'Actions',
@@ -112,7 +112,7 @@ class CouponDetails extends React.Component {
   }
 
   getActionButton(code) {
-    const { couponTitle } = this.props;
+    const { couponTitle, id } = this.props;
     const {
       assigned_to: assignedTo,
       redemptions,
@@ -148,9 +148,10 @@ class CouponDetails extends React.Component {
         onClick={() => this.setModalState({
           key: 'assignment',
           options: {
+            couponId: id,
             title: couponTitle,
             data: {
-              code: code.title,
+              code: code.code,
               remainingUses: redemptions.available - redemptions.used,
             },
           },
@@ -190,7 +191,7 @@ class CouponDetails extends React.Component {
   }
 
   handleBulkActionSelect() {
-    const { couponTitle, unassignedCodes } = this.props;
+    const { couponTitle, id, unassignedCodes } = this.props;
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
     const selectedBulkAction = ref && ref.state.value;
 
@@ -198,6 +199,7 @@ class CouponDetails extends React.Component {
       this.setModalState({
         key: 'assignment',
         options: {
+          couponId: id,
           title: couponTitle,
           isBulkAssign: true,
           data: {
@@ -285,12 +287,12 @@ class CouponDetails extends React.Component {
     if (checked) {
       // Add code to selected codes array
       this.setState({
-        selectedCodes: [...selectedCodes, code.title],
+        selectedCodes: [...selectedCodes, code.code],
       });
     } else {
       // Remove code from selected codes array
       this.setState({
-        selectedCodes: selectedCodes.filter(codeTitle => codeTitle !== code.title),
+        selectedCodes: selectedCodes.filter(codeTitle => codeTitle !== code.code),
       });
     }
   }
