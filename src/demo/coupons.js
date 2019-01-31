@@ -3,9 +3,9 @@ import faker from 'faker';
 import { configuration } from '../config';
 
 const couponsCount = 15;
-const codesCount = 65;
+const codesCount = 115;
 
-const minRedemptionsCount = 0;
+const minRedemptionsCount = 1;
 const maxRedemptionsCount = 5;
 
 let firstCouponHasError = false;
@@ -15,7 +15,7 @@ if (configuration.NODE_ENV === 'development') {
   firstCouponHasError = true;
 }
 
-// Coupon details filter.
+// Coupon details filters.
 const unassignedCodesFilter = 'unassigned';
 const unredeemedCodesFilter = 'unredeemed';
 const partiallyRedeemedCodesFilter = 'partially-redeemed';
@@ -99,9 +99,9 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
 
   const maxUsed = maxRedemptionsCount - redemptionsAvailablePerCode;
   const redemptionsUsedPerCode = isAssigned ? faker.random.number({
-    min: minRedemptionsCount + 1,
-    max: codeHasError ? redemptionsAvailablePerCode : maxUsed,
-  }) : minRedemptionsCount;
+    min: minRedemptionsCount,
+    max: codeHasError ? maxUsed : redemptionsAvailablePerCode,
+  }) : minRedemptionsCount - 1;
 
   const errorMessage = `Unable to deliver email to ${assignedTo.name} (${assignedTo.email})`;
   return {
@@ -119,18 +119,17 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
 const allCodes = getAllCodes();
 
 const unassignedCodes = allCodes.filter(code => (
-  code.redemptions.available > minRedemptionsCount && code.redemptions.used < maxRedemptionsCount
+  code.assigned_to === undefined && code.redemptions.used < code.redemptions.available
 ));
 const unredeemedCodes = allCodes.filter(code => (
-  (code.redemptions.available === minRedemptionsCount &&
-    code.redemptions.used > minRedemptionsCount && code.redemptions.used < maxRedemptionsCount)
+  code.assigned_to !== undefined && code.redemptions.used < code.redemptions.available
 ));
 const partiallyRedeemedCodes = allCodes.filter(code => (
-  code.redemptions.available > minRedemptionsCount && code.redemptions.used > minRedemptionsCount
+  (code.redemptions.used > minRedemptionsCount &&
+    code.redemptions.used < code.redemptions.available)
 ));
 const redeemedCodes = allCodes.filter(code => (
-  (code.redemptions.available === minRedemptionsCount &&
-    code.redemptions.used === minRedemptionsCount)
+  code.redemptions.available === code.redemptions.used
 ));
 
 const getCodes = ({ codeFilter = unassignedCodesFilter, couponHasError = false }) => {
