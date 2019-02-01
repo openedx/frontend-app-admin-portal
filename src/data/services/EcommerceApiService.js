@@ -40,6 +40,11 @@ class EcommerceApiService {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/remind/`;
     return apiClient.post(url, options, 'json');
   }
+
+  static sendCodeRevoke(couponId, options) {
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/revoke/`;
+    return apiClient.post(url, options, 'json');
+  }
 }
 
 export default EcommerceApiService;

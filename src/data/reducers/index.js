@@ -10,6 +10,7 @@ import csv from './csv';
 import coupons from './coupons';
 import sidebar from './sidebar';
 import codeAssignment from './codeAssignment';
+import codeRevoke from './codeRevoke';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   coupons,
   sidebar,
   codeAssignment,
+  codeRevoke,
 });
 
 export default rootReducer;
