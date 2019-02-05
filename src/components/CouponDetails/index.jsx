@@ -316,6 +316,9 @@ class CouponDetails extends React.Component {
       tableColumns,
       selectedToggle: value,
       selectedCodes: [],
+      hasAllCodesSelected: false,
+    }, () => {
+      this.updateSelectAllCheckBox();
     });
   }
 
@@ -331,7 +334,7 @@ class CouponDetails extends React.Component {
     const { selectedCodes, tableColumns } = this.state;
     const { couponDetailsTable: { data: tableData } } = this.props;
 
-    const allCodesForPageSelected = selectedCodes.length === tableData.results.length;
+    const allCodesForPageSelected = tableData && selectedCodes.length === tableData.results.length;
     const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
 
     const selectColumn = tableColumns.shift();
@@ -346,7 +349,10 @@ class CouponDetails extends React.Component {
     // attribute appropriately.
     //
     // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
-    const selectAllCheckBoxDOM = document.getElementById(selectColumn.label.ref.current.state.id);
+    const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
+    const selectAllCheckBoxDOM = (
+      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.state.id)
+    );
 
     if (selectAllCheckBoxDOM && hasPartialSelection) {
       selectAllCheckBoxDOM.setAttribute('aria-checked', 'mixed');
