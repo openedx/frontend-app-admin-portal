@@ -250,20 +250,37 @@ class CouponDetails extends React.Component {
 
   handleToggleSelect(newValue) {
     const { tableColumns, selectedToggle } = this.state;
-    const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assigned_to');
 
     const value = newValue || selectedToggle;
+    const assignedToColumnLabel = value === 'unredeemed' ? 'Assigned To' : 'Redeemed By';
 
-    if (value !== 'unassigned' && assignedToColumnIndex === -1) {
-      // Add assigned_to column if it doesn't already exist and
-      // the toggle is something other than "Unassigned".
+    const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
+
+    // `assigned_to` column
+    if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
+      // Add `assigned_to` column if it doesn't already exist
       tableColumns.splice(1, 0, {
-        label: 'Assigned To',
+        label: assignedToColumnLabel,
         key: 'assigned_to',
       });
-    } else if (value === 'unassigned' && assignedToColumnIndex > -1) {
-      // Remove assigned_to column if it already exists and the toggle is "Unassigned".
-      tableColumns.splice(assignedToColumnIndex, 1);
+    } else if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
+      // Update `assigned_to` column with the appropriate label
+      tableColumns[1].label = assignedToColumnLabel;
+    } else if (value === 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
+      // Remove `assigned_to` column if it already exists
+      tableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
+    }
+
+    // `actions` column
+    if (value !== 'redeemed' && getColumnIndexForKey('actions') === -1) {
+      // Add `actions` column if it doesn't already exist
+      tableColumns.splice(tableColumns.length, 0, {
+        label: 'Actions',
+        key: 'actions',
+      });
+    } else if (value === 'redeemed' && getColumnIndexForKey('actions') > -1) {
+      // Remove `actions` column if it already exists
+      tableColumns.splice(getColumnIndexForKey('actions'), 1);
     }
 
     this.setState({
