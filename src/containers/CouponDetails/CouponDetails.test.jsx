@@ -25,6 +25,7 @@ const CouponDetailsWrapper = props => (
       <CouponDetails
         id={1}
         couponTitle="test-title"
+        unassignedCodes={10}
         {...props}
       />
     </Provider>

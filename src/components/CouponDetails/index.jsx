@@ -87,6 +87,7 @@ class CouponDetails extends React.Component {
 
   getBulkActionSelectOptions() {
     const { selectedToggle } = this.state;
+    const { unassignedCodes } = this.props;
 
     const isAssignView = selectedToggle === 'unassigned';
     const isRedeemedView = selectedToggle === 'redeemed';
@@ -94,7 +95,7 @@ class CouponDetails extends React.Component {
     return [{
       label: 'Assign',
       value: 'assign',
-      disabled: !isAssignView || isRedeemedView,
+      disabled: !isAssignView || isRedeemedView || unassignedCodes === 0,
     }, {
       label: 'Remind',
       value: 'remind',
@@ -490,8 +491,6 @@ class CouponDetails extends React.Component {
       couponDetailsTable: { data: tableData },
     } = this.props;
 
-    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
-
     return (
       <div
         id={`coupon-details-${id}`}
@@ -543,7 +542,7 @@ class CouponDetails extends React.Component {
                     name="bulk-action"
                     label="Bulk Action:"
                     value={this.getBulkActionSelectValue()}
-                    options={bulkActionSelectOptions}
+                    options={this.getBulkActionSelectOptions()}
                     disabled={this.isBulkAssignSelectDisabled()}
                   />
                   <Button
@@ -646,6 +645,7 @@ CouponDetails.defaultProps = {
 
 CouponDetails.propTypes = {
   id: PropTypes.number.isRequired,
+  unassignedCodes: PropTypes.number.isRequired,
   isExpanded: PropTypes.bool,
   hasError: PropTypes.bool,
   couponDetailsTable: PropTypes.shape({}),
