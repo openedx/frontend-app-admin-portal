@@ -154,7 +154,7 @@ describe('CouponDetailsWrapper', () => {
     let wrapper;
 
     const openModalByActionButton = ({ key, label }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-button`);
+      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
       expect(actionButton.prop('children')).toEqual(label);
       actionButton.simulate('click');
       expect(wrapper.find('CouponDetails').instance().state.modals[key]).toBeTruthy();

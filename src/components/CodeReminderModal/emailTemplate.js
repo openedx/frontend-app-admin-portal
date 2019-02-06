@@ -1,4 +1,4 @@
-const emailTemplate = `This is a reminder email that your learning manager has provided you with a access code to take a course at edX. You have redeemed this code {REDEEMED_OFFER_COUNT} of times out of {TOTAL_OFFER_COUNT} number of available course redemptions.
+const emailTemplate = `This is a reminder email that your learning manager has provided you with an access code to take a course at edX. You have redeemed this code {REDEEMED_OFFER_COUNT} time(s) out of {TOTAL_OFFER_COUNT} number of available course redemptions.
 
 edX Login: {USER_EMAIL}
 Enrollment URL: {ENROLLMENT_URL}

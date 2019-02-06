@@ -663,7 +663,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     <button
-                      className="btn btn-link btn-sm px-0 remind-button"
+                      className="btn btn-link btn-sm px-0 remind-btn"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -673,7 +673,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     </button>
                     |
                     <button
-                      className="btn btn-link btn-sm px-0 revoke-button"
+                      className="btn btn-link btn-sm px-0 revoke-btn"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -783,7 +783,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     <button
-                      className="btn btn-link btn-sm px-0 assignment-button"
+                      className="btn btn-link btn-sm px-0 assignment-btn"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}

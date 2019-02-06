@@ -6,8 +6,8 @@ import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
+import CodeReminderModal from '../../containers/CodeReminderModal';
 import H3 from '../H3';
-import AssignmentReminderModal from '../../containers/AssignmentReminderModal';
 import StatusAlert from '../StatusAlert';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -52,7 +52,7 @@ class CouponDetails extends React.Component {
         remind: null,
       },
       isCodeAssignmentSuccessful: undefined,
-      isAssignmentReminderSuccessful: undefined,
+      isCodeReminderSuccessful: undefined,
       selectedCodes: [],
       hasAllCodesSelected: false,
       /**
@@ -71,7 +71,7 @@ class CouponDetails extends React.Component {
     this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
     this.resetModals = this.resetModals.bind(this);
     this.handleAssignmentSuccess = this.handleAssignmentSuccess.bind(this);
-    this.handleAssignmentReminderSuccess = this.handleAssignmentReminderSuccess.bind(this);
+    this.handleCodeReminderSuccess = this.handleCodeReminderSuccess.bind(this);
     this.resetCodeAssignmentStatus = this.resetCodeAssignmentStatus.bind(this);
   }
 
@@ -139,7 +139,7 @@ class CouponDetails extends React.Component {
       return (
         <React.Fragment>
           <Button
-            className={buttonClassNames.concat(['remind-button'])}
+            className={[...buttonClassNames, 'remind-btn']}
             label="Remind"
             onClick={() => this.setModalState({
               key: 'remind',
@@ -155,7 +155,7 @@ class CouponDetails extends React.Component {
           />
            |
           <Button
-            className={buttonClassNames.concat(['revoke-button'])}
+            className={[...buttonClassNames, 'revoke-btn']}
             label="Revoke"
             onClick={() => this.setModalState({
               key: 'revoke',
@@ -171,7 +171,7 @@ class CouponDetails extends React.Component {
 
     return (
       <Button
-        className={buttonClassNames.concat(['assignment-button'])}
+        className={[...buttonClassNames, 'assignment-btn']}
         label="Assign"
         onClick={() => this.setModalState({
           key: 'assignment',
@@ -255,7 +255,7 @@ class CouponDetails extends React.Component {
         options: {
           couponId: id,
           title: couponTitle,
-          isBulkAssign: true,
+          isBulkRemind: true,
           data: {
             selectedCodes: this.state.selectedCodes,
           },
@@ -301,13 +301,13 @@ class CouponDetails extends React.Component {
 
     const { hasError } = this.props;
     const { isCodeAssignmentSuccessful } = this.state;
-    const { isAssignmentReminderSuccessful } = this.state;
+    const { isCodeReminderSuccessful } = this.state;
 
     const hasStatusAlert = [
       hasError,
       isCodeAssignmentSuccessful,
+      isCodeReminderSuccessful,
       this.shouldShowSelectAllStatusAlert(),
-      isAssignmentReminderSuccessful,
     ].some(item => item);
 
     return !this.isTableLoading() && hasStatusAlert;
@@ -401,9 +401,9 @@ class CouponDetails extends React.Component {
     });
   }
 
-  handleAssignmentReminderSuccess() {
+  handleCodeReminderSuccess() {
     this.setState({
-      isAssignmentReminderSuccessful: true,
+      isCodeReminderSuccessful: true,
       refreshIndex: this.state.refreshIndex + 1, // force new table instance
       selectedCodes: [],
     });
@@ -523,7 +523,7 @@ class CouponDetails extends React.Component {
       tableColumns,
       modals,
       isCodeAssignmentSuccessful,
-      isAssignmentReminderSuccessful,
+      isCodeReminderSuccessful,
       refreshIndex,
       hasAllCodesSelected,
     } = this.state;
@@ -627,7 +627,7 @@ class CouponDetails extends React.Component {
                         </React.Fragment>
                       ),
                     })}
-                    {isAssignmentReminderSuccessful && this.renderSuccessMessage({
+                    {isCodeReminderSuccessful && this.renderSuccessMessage({
                       title: 'Reminder request processed.',
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
@@ -679,10 +679,10 @@ class CouponDetails extends React.Component {
                 />
               }
               {modals.remind &&
-                <AssignmentReminderModal
+                <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
-                  onSuccess={this.handleAssignmentReminderSuccess}
+                  onSuccess={this.handleCodeReminderSuccess}
                 />
               }
             </React.Fragment>

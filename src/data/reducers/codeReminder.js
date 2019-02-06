@@ -1,8 +1,8 @@
 import {
-  ASSIGNMENT_REMINDER_REQUEST,
-  ASSIGNMENT_REMINDER_SUCCESS,
-  ASSIGNMENT_REMINDER_FAILURE,
-} from '../constants/assignmentReminder';
+  CODE_REMINDER_REQUEST,
+  CODE_REMINDER_SUCCESS,
+  CODE_REMINDER_FAILURE,
+} from '../constants/codeReminder';
 
 const initialState = {
   loading: false,
@@ -10,20 +10,20 @@ const initialState = {
   data: null,
 };
 
-const assignmentReminder = (state = initialState, action) => {
+const codeReminder = (state = initialState, action) => {
   switch (action.type) {
-    case ASSIGNMENT_REMINDER_REQUEST:
+    case CODE_REMINDER_REQUEST:
       return {
         loading: true,
         error: null,
       };
-    case ASSIGNMENT_REMINDER_SUCCESS:
+    case CODE_REMINDER_SUCCESS:
       return {
         loading: false,
         error: null,
         data: action.payload.data,
       };
-    case ASSIGNMENT_REMINDER_FAILURE:
+    case CODE_REMINDER_FAILURE:
       return {
         loading: false,
         error: action.payload.error,
@@ -33,4 +33,4 @@ const assignmentReminder = (state = initialState, action) => {
   }
 };
 
-export default assignmentReminder;
+export default codeReminder;

@@ -9,9 +9,9 @@ import StatusAlert from '../StatusAlert';
 
 import emailTemplate from './emailTemplate';
 
-import './AssignmentReminderModal.scss';
+import './CodeReminderModal.scss';
 
-class AssignmentReminderModal extends React.Component {
+class CodeReminderModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -68,7 +68,7 @@ class AssignmentReminderModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
-  hasIndividualAssignData() {
+  hasIndividualRemindData() {
     const { data } = this.props;
     return ['code', 'email'].every(key => key in data);
   }
@@ -76,9 +76,9 @@ class AssignmentReminderModal extends React.Component {
   handleModalSubmit(formData) {
     const {
       couponId,
-      isBulkAssign,
+      isBulkRemind,
       data,
-      sendAssignmentReminder,
+      sendCodeReminder,
     } = this.props;
 
     // Validate form data
@@ -89,7 +89,7 @@ class AssignmentReminderModal extends React.Component {
       template: formData['email-template'],
     };
 
-    if (isBulkAssign) {
+    if (isBulkRemind) {
       options.assignments = data.selectedCodes.map(code => ({
         email: code.assigned_to,
         code: code.code,
@@ -97,7 +97,7 @@ class AssignmentReminderModal extends React.Component {
     } else {
       options.assignments = [{ email: data.email, code: data.code }];
     }
-    return sendAssignmentReminder(couponId, options)
+    return sendCodeReminder(couponId, options)
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -111,7 +111,7 @@ class AssignmentReminderModal extends React.Component {
   renderBody() {
     const {
       data,
-      isBulkAssign,
+      isBulkRemind,
       submitFailed,
     } = this.props;
 
@@ -119,10 +119,15 @@ class AssignmentReminderModal extends React.Component {
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
-          {!isBulkAssign && this.hasIndividualAssignData() && (
+          {!isBulkRemind && this.hasIndividualRemindData() && (
             <React.Fragment>
               <p>Code: {data.code}</p>
               <p>Email: {data.email}</p>
+            </React.Fragment>
+          )}
+          {isBulkRemind && data.selectedCodes && (
+            <React.Fragment>
+              {data.selectedCodes.length > 0 && <p>Selected Codes: {data.selectedCodes.length}</p>}
             </React.Fragment>
           )}
         </div>
@@ -216,13 +221,13 @@ class AssignmentReminderModal extends React.Component {
   }
 }
 
-AssignmentReminderModal.defaultProps = {
+CodeReminderModal.defaultProps = {
   error: null,
-  isBulkAssign: false,
+  isBulkRemind: false,
   data: {},
 };
 
-AssignmentReminderModal.propTypes = {
+CodeReminderModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -235,15 +240,15 @@ AssignmentReminderModal.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  sendAssignmentReminder: PropTypes.func.isRequired,
-  isBulkAssign: PropTypes.bool,
+  sendCodeReminder: PropTypes.func.isRequired,
+  isBulkRemind: PropTypes.bool,
   data: PropTypes.shape({}),
 };
 
 export default reduxForm({
-  form: 'code-assignment-modal-form',
+  form: 'code-reminder-modal-form',
   initialValues: {
     'email-template': emailTemplate,
   },
 
-})(AssignmentReminderModal);
+})(CodeReminderModal);

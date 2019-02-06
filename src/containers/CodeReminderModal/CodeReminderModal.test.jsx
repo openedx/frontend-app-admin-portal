@@ -6,15 +6,15 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import AssignmentReminderModal from './index';
+import CodeReminderModal from './index';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {};
 
-const AssignmentReminderModalWrapper = props => (
+const CodeReminderModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <AssignmentReminderModal
+      <CodeReminderModal
         title="AABBCC"
         onClose={() => {}}
         onSuccess={() => {}}
@@ -24,22 +24,22 @@ const AssignmentReminderModalWrapper = props => (
   </MemoryRouter>
 );
 
-AssignmentReminderModalWrapper.defaultProps = {
+CodeReminderModalWrapper.defaultProps = {
   store: mockStore({ ...initialState }),
 };
 
-AssignmentReminderModalWrapper.propTypes = {
+CodeReminderModalWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
-describe('AssignmentReminderModalWrapper', () => {
+describe('CodeReminderModalWrapper', () => {
   it('renders individual assignment reminder modal', () => {
-    const wrapper = mount(<AssignmentReminderModalWrapper />);
+    const wrapper = mount(<CodeReminderModalWrapper />);
     expect(wrapper.find('.assignment-detail').find('p')).toBeTruthy();
   });
 
   it('renders bulk assignment reminder modal', () => {
-    const wrapper = mount(<AssignmentReminderModalWrapper isBulkAssign />);
+    const wrapper = mount(<CodeReminderModalWrapper isBulkRemind />);
     expect(wrapper.find('#email-template')).toBeTruthy();
   });
 });
