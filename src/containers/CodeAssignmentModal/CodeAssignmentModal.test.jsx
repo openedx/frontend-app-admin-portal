@@ -9,12 +9,22 @@ import { mount } from 'enzyme';
 import CodeAssignmentModal from './index';
 
 const mockStore = configureMockStore([thunk]);
-const initialState = {};
+const initialState = {
+  table: {
+    'coupon-details': {
+      data: {
+        count: 0,
+        results: [],
+      },
+    },
+  },
+};
 
 const CodeAssignmentModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
       <CodeAssignmentModal
+        couponId={1}
         title="AABBCC"
         onClose={() => {}}
         onSuccess={() => {}}

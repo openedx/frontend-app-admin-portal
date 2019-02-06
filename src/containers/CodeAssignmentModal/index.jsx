@@ -4,6 +4,10 @@ import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
 import sendCodeAssignment from '../../data/actions/codeAssignment';
 
+const mapStateToProps = state => ({
+  couponDetailsTable: state.table['coupon-details'],
+});
+
 const mapDispatchToProps = dispatch => ({
   sendCodeAssignment: (couponId, options) => new Promise((resolve, reject) => {
     dispatch(sendCodeAssignment({
@@ -15,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(null, mapDispatchToProps)(CodeAssignmentModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CodeAssignmentModal);

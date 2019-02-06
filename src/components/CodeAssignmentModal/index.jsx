@@ -23,6 +23,7 @@ class CodeAssignmentModal extends React.Component {
 
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
   }
 
   componentDidMount() {
@@ -53,13 +54,22 @@ class CodeAssignmentModal extends React.Component {
     }
   }
 
-  validateBulkAssign(formData) {
+  getNumberOfSelectedCodes() {
     const {
       data: {
-        unassignedCodes,
         selectedCodes,
+        hasAllCodesSelected,
       },
+      couponDetailsTable: { data: tableData },
     } = this.props;
+
+    const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
+
+    return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
+  }
+
+  validateBulkAssign(formData) {
+    const { data: { unassignedCodes } } = this.props;
 
     const textAreaKey = 'email-addresses';
     const csvFileKey = 'csv-email-addresses';
@@ -67,11 +77,23 @@ class CodeAssignmentModal extends React.Component {
     const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split('\n');
     const csvEmails = formData[csvFileKey];
 
-    const hasSelectedCodes = selectedCodes.length > 0;
+    const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
-    const getTooManyAssignmentsMessage = ({ isCsv = false, emails, numAvailableCodes }) => (
-      `You have ${numAvailableCodes} ${numAvailableCodes > 1 ? 'codes' : 'code'} left, but ${isCsv ? 'your file has' : 'you entered'} ${emails.length} emails. Please try again.`
-    );
+    const getTooManyAssignmentsMessage = ({
+      isCsv = false,
+      emails,
+      numCodes,
+      selected,
+    }) => {
+      let message = `You have ${numCodes}`;
+
+      message += ` ${numCodes > 1 ? 'codes' : 'code'}`;
+      message += ` ${selected ? 'selected' : 'remaining'}`;
+      message += `, but ${isCsv ? 'your file has' : 'you entered'}`;
+      message += ` ${emails.length} emails. Please try again.`;
+
+      return message;
+    };
 
     const invalidEmailsMessage = 'One or more email addresses is not valid. Please try again.';
 
@@ -94,15 +116,16 @@ class CodeAssignmentModal extends React.Component {
     } else if (textAreaEmails && textAreaEmails.length > unassignedCodes) {
       const message = getTooManyAssignmentsMessage({
         emails: textAreaEmails,
-        numAvailableCodes: unassignedCodes,
+        numCodes: unassignedCodes,
       });
 
       errors[textAreaKey] = message;
       errors._error.push(message);
-    } else if (textAreaEmails && hasSelectedCodes && textAreaEmails.length > selectedCodes.length) {
+    } else if (textAreaEmails && textAreaEmails.length > numberOfSelectedCodes) {
       const message = getTooManyAssignmentsMessage({
         emails: textAreaEmails,
-        numAvailableCodes: selectedCodes.length,
+        numCodes: numberOfSelectedCodes,
+        selected: true,
       });
 
       errors[textAreaKey] = message;
@@ -114,16 +137,17 @@ class CodeAssignmentModal extends React.Component {
       const message = getTooManyAssignmentsMessage({
         isCsv: true,
         emails: csvEmails,
-        numAvailableCodes: unassignedCodes,
+        numCodes: unassignedCodes,
       });
 
       errors[csvFileKey] = message;
       errors._error.push(message);
-    } else if (csvEmails && hasSelectedCodes && csvEmails.length > selectedCodes.length) {
+    } else if (csvEmails && csvEmails.length > numberOfSelectedCodes) {
       const message = getTooManyAssignmentsMessage({
         isCsv: true,
         emails: csvEmails,
-        numAvailableCodes: selectedCodes.length,
+        numCodes: numberOfSelectedCodes,
+        selected: true,
       });
 
       errors[csvFileKey] = message;
@@ -196,7 +220,11 @@ class CodeAssignmentModal extends React.Component {
     const {
       isBulkAssign,
       couponId,
-      data,
+      data: {
+        code,
+        selectedCodes,
+        hasAllCodesSelected,
+      },
       sendCodeAssignment,
     } = this.props;
 
@@ -212,11 +240,13 @@ class CodeAssignmentModal extends React.Component {
       const hasTextAreaEmails = !!formData['email-addresses'];
       options.emails = hasTextAreaEmails ? formData['email-addresses'].split('\n') : formData['csv-email-addresses'];
 
-      // TODO get selected codes OR ignore this key if assigning all available codes
-      options.codes = data.selectedCodes;
+      // Only includes `codes` in `options` if not all codes are selected.
+      if (!hasAllCodesSelected) {
+        options.codes = selectedCodes;
+      }
     } else {
       options.emails = [formData['email-address']];
-      options.codes = [data.code];
+      options.codes = [code];
     }
 
     return sendCodeAssignment(couponId, options)
@@ -237,6 +267,8 @@ class CodeAssignmentModal extends React.Component {
       submitFailed,
     } = this.props;
 
+    const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
@@ -244,12 +276,12 @@ class CodeAssignmentModal extends React.Component {
           {isBulkAssign && this.hasBulkAssignData() && (
             <React.Fragment>
               <p>Unassigned Codes: {data.unassignedCodes}</p>
-              {data.selectedCodes.length > 0 && <p>Selected Codes: {data.selectedCodes.length}</p>}
+              {numberOfSelectedCodes > 0 && <p>Selected Codes: {numberOfSelectedCodes}</p>}
             </React.Fragment>
           )}
           {!isBulkAssign && this.hasIndividualAssignData() && (
             <React.Fragment>
-              <p>Code: {data.code}</p>
+              <p>Code: {data.code.code}</p>
               <p>Remaining Uses: {data.remainingUses}</p>
             </React.Fragment>
           )}
@@ -368,6 +400,11 @@ CodeAssignmentModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendCodeAssignment: PropTypes.func.isRequired,
+  couponDetailsTable: PropTypes.shape({
+    data: PropTypes.shape({
+      count: PropTypes.number,
+    }),
+  }).isRequired,
   isBulkAssign: PropTypes.bool,
   data: PropTypes.shape({}),
 };
