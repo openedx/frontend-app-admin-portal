@@ -109,7 +109,7 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
     assigned_to: assignedTo.email,
     redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
     redemptions: {
-      available: redemptionsAvailablePerCode,
+      total: redemptionsAvailablePerCode,
       used: redemptionsUsedPerCode,
     },
     error: codeHasError ? errorMessage : null,

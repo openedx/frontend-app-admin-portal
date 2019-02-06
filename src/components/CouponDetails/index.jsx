@@ -126,8 +126,8 @@ class CouponDetails extends React.Component {
 
     const buttonClassNames = ['btn-link', 'btn-sm', 'px-0'];
 
-    // Don't show a button if all available redemptions have been used
-    if (redemptions.used === redemptions.available) {
+    // Don't show a button if all total redemptions have been used
+    if (redemptions.used === redemptions.total) {
       return null;
     }
 
@@ -159,7 +159,7 @@ class CouponDetails extends React.Component {
             title: couponTitle,
             data: {
               code,
-              remainingUses: redemptions.available - redemptions.used,
+              remainingUses: redemptions.total - redemptions.used,
             },
           },
         })}
@@ -415,7 +415,7 @@ class CouponDetails extends React.Component {
           {code.error}
         </span>
       ) : code.assigned_to,
-      redemptions: `${code.redemptions.used} of ${code.redemptions.available}`,
+      redemptions: `${code.redemptions.used} of ${code.redemptions.total}`,
       actions: this.getActionButton(code),
       select: (
         <CheckBox
