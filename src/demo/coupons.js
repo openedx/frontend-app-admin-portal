@@ -109,7 +109,7 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
     assigned_to: assignedTo.email,
     redeem_url: `https://bestrun.com/coupons/offer/?code=${code}`,
     redemptions: {
-      available: redemptionsAvailablePerCode,
+      total: redemptionsAvailablePerCode,
       used: redemptionsUsedPerCode,
     },
     error: codeHasError ? errorMessage : null,
@@ -119,17 +119,17 @@ const getAllCodes = (couponHasError = false) => [...Array(codesCount)].map((_, i
 const allCodes = getAllCodes();
 
 const unassignedCodes = allCodes.filter(code => (
-  code.assigned_to === undefined && code.redemptions.used < code.redemptions.available
+  code.assigned_to === undefined && code.redemptions.used < code.redemptions.total
 ));
 const unredeemedCodes = allCodes.filter(code => (
-  code.assigned_to !== undefined && code.redemptions.used < code.redemptions.available
+  code.assigned_to !== undefined && code.redemptions.used < code.redemptions.total
 ));
 const partiallyRedeemedCodes = allCodes.filter(code => (
   (code.redemptions.used > minRedemptionsCount &&
-    code.redemptions.used < code.redemptions.available)
+    code.redemptions.used < code.redemptions.total)
 ));
 const redeemedCodes = allCodes.filter(code => (
-  code.redemptions.available === code.redemptions.used
+  code.redemptions.total === code.redemptions.used
 ));
 
 const getCodes = ({ codeFilter = unassignedCodesFilter, couponHasError = false }) => {

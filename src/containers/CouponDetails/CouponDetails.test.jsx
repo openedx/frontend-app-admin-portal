@@ -43,7 +43,7 @@ const sampleCodeData = {
   code: 'test-code-1',
   assigned_to: 'test@bestrun.com',
   redemptions: {
-    available: 100,
+    total: 100,
     used: 10,
   },
   error: null,
@@ -62,7 +62,7 @@ const sampleTableData = {
         ...sampleCodeData,
         code: 'test-code-2',
         redemptions: {
-          available: 100,
+          total: 100,
           used: 100,
         },
       },
