@@ -1,4 +1,8 @@
 .modal {
+    .modal-dialog {
+        max-width: 650px;
+    }
+
     .modal-title {
         span {
             font-weight: 600;
