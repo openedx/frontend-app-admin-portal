@@ -150,6 +150,18 @@ describe('CouponDetailsWrapper', () => {
     expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
   });
 
+  it('sets disabled to true when unassignedCodes === 0', () => {
+    const wrapper = mount(<CouponDetailsWrapper isExpanded unassignedCodes={0} />);
+    expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
+    expect(wrapper.find('select').last().prop('disabled')).toEqual(true);
+  });
+
+  it('sets disabled to false when unassignedCodes !== 0', () => {
+    const wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
+    expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
+  });
+
   describe('modals', () => {
     let store;
     let wrapper;
