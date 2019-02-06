@@ -182,6 +182,11 @@ class CodeAssignmentModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  hasBulkAssignData() {
+    const { data } = this.props;
+    return ['unassignedCodes', 'selectedCodes'].every(key => key in data);
+  }
+
   hasIndividualAssignData() {
     const { data } = this.props;
     return ['code', 'remainingUses'].every(key => key in data);
@@ -236,7 +241,7 @@ class CodeAssignmentModal extends React.Component {
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
-          {isBulkAssign && data.unassignedCodes && (
+          {isBulkAssign && this.hasBulkAssignData() && (
             <React.Fragment>
               <p>Unassigned Codes: {data.unassignedCodes}</p>
               {data.selectedCodes.length > 0 && <p>Selected Codes: {data.selectedCodes.length}</p>}
