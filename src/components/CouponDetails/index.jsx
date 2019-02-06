@@ -373,7 +373,7 @@ class CouponDetails extends React.Component {
       selectedCodes = [...selectedCodes, code];
     } else {
       // Remove code from selected codes array
-      selectedCodes = selectedCodes.filter(selectedCode => selectedCode.code !== code.code);
+      selectedCodes = selectedCodes.filter(selectedCode => selectedCode !== code);
       hasAllCodesSelected = false;
     }
 
