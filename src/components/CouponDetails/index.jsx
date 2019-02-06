@@ -6,6 +6,7 @@ import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
+import CodeReminderModal from '../../containers/CodeReminderModal';
 import H3 from '../H3';
 import StatusAlert from '../StatusAlert';
 
@@ -48,8 +49,10 @@ class CouponDetails extends React.Component {
       modals: {
         assignment: null,
         revoke: null,
+        remind: null,
       },
       isCodeAssignmentSuccessful: undefined,
+      isCodeReminderSuccessful: undefined,
       selectedCodes: [],
       hasAllCodesSelected: false,
       /**
@@ -68,6 +71,7 @@ class CouponDetails extends React.Component {
     this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
     this.resetModals = this.resetModals.bind(this);
     this.handleAssignmentSuccess = this.handleAssignmentSuccess.bind(this);
+    this.handleCodeReminderSuccess = this.handleCodeReminderSuccess.bind(this);
     this.resetCodeAssignmentStatus = this.resetCodeAssignmentStatus.bind(this);
   }
 
@@ -133,24 +137,41 @@ class CouponDetails extends React.Component {
 
     if (assignedTo) {
       return (
-        <Button
-          className={buttonClassNames}
-          label="Revoke"
-          onClick={() => this.setModalState({
-            key: 'revoke',
-            options: {
-              couponId: id,
-              title: couponTitle,
-              data: { /* pass along any data the revoke modal might need */ },
-            },
-          })}
-        />
+        <React.Fragment>
+          <Button
+            className={[...buttonClassNames, 'remind-btn']}
+            label="Remind"
+            onClick={() => this.setModalState({
+              key: 'remind',
+              options: {
+                couponId: id,
+                title: couponTitle,
+                data: {
+                  code: code.code,
+                  email: code.assigned_to,
+                  },
+              },
+            })}
+          />
+           |
+          <Button
+            className={[...buttonClassNames, 'revoke-btn']}
+            label="Revoke"
+            onClick={() => this.setModalState({
+              key: 'revoke',
+              options: {
+                title: couponTitle,
+                data: { /* pass along any data the revoke modal might need */ },
+              },
+            })}
+          />
+        </React.Fragment>
       );
     }
 
     return (
       <Button
-        className={buttonClassNames}
+        className={[...buttonClassNames, 'assignment-btn']}
         label="Assign"
         onClick={() => this.setModalState({
           key: 'assignment',
@@ -228,6 +249,18 @@ class CouponDetails extends React.Component {
           data: { /* pass along any data the revoke modal might need */ },
         },
       });
+    } else if (selectedBulkAction === 'remind') {
+      this.setModalState({
+        key: 'remind',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRemind: true,
+          data: {
+            selectedCodes: this.state.selectedCodes,
+          },
+        },
+      });
     }
   }
 
@@ -236,6 +269,7 @@ class CouponDetails extends React.Component {
       modals: {
         assignment: null,
         revoke: null,
+        remind: null,
       },
     });
   }
@@ -267,10 +301,12 @@ class CouponDetails extends React.Component {
 
     const { hasError } = this.props;
     const { isCodeAssignmentSuccessful } = this.state;
+    const { isCodeReminderSuccessful } = this.state;
 
     const hasStatusAlert = [
       hasError,
       isCodeAssignmentSuccessful,
+      isCodeReminderSuccessful,
       this.shouldShowSelectAllStatusAlert(),
     ].some(item => item);
 
@@ -362,6 +398,14 @@ class CouponDetails extends React.Component {
 
     this.setState({
       tableColumns: [selectColumn, ...tableColumns],
+    });
+  }
+
+  handleCodeReminderSuccess() {
+    this.setState({
+      isCodeReminderSuccessful: true,
+      refreshIndex: this.state.refreshIndex + 1, // force new table instance
+      selectedCodes: [],
     });
   }
 
@@ -479,6 +523,7 @@ class CouponDetails extends React.Component {
       tableColumns,
       modals,
       isCodeAssignmentSuccessful,
+      isCodeReminderSuccessful,
       refreshIndex,
       hasAllCodesSelected,
     } = this.state;
@@ -582,6 +627,9 @@ class CouponDetails extends React.Component {
                         </React.Fragment>
                       ),
                     })}
+                    {isCodeReminderSuccessful && this.renderSuccessMessage({
+                      title: 'Reminder request processed.',
+                    })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
                         <React.Fragment>
@@ -628,6 +676,13 @@ class CouponDetails extends React.Component {
                   {...modals.revoke}
                   onClose={this.resetModals}
                   onSuccess={() => {}}
+                />
+              }
+              {modals.remind &&
+                <CodeReminderModal
+                  {...modals.remind}
+                  onClose={this.resetModals}
+                  onSuccess={this.handleCodeReminderSuccess}
                 />
               }
             </React.Fragment>
