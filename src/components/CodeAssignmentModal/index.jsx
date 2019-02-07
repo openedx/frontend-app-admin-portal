@@ -121,7 +121,10 @@ class CodeAssignmentModal extends React.Component {
 
       errors[textAreaKey] = message;
       errors._error.push(message);
-    } else if (textAreaEmails && textAreaEmails.length > numberOfSelectedCodes) {
+    } else if (
+      textAreaEmails && numberOfSelectedCodes &&
+      textAreaEmails.length > numberOfSelectedCodes
+    ) {
       const message = getTooManyAssignmentsMessage({
         emails: textAreaEmails,
         numCodes: numberOfSelectedCodes,
@@ -142,7 +145,7 @@ class CodeAssignmentModal extends React.Component {
 
       errors[csvFileKey] = message;
       errors._error.push(message);
-    } else if (csvEmails && csvEmails.length > numberOfSelectedCodes) {
+    } else if (csvEmails && numberOfSelectedCodes && csvEmails.length > numberOfSelectedCodes) {
       const message = getTooManyAssignmentsMessage({
         isCsv: true,
         emails: csvEmails,

@@ -72,10 +72,10 @@ class CouponDetails extends React.Component {
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
     this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
     this.resetModals = this.resetModals.bind(this);
-    this.handleAssignmentSuccess = this.handleAssignmentSuccess.bind(this);
+    this.handleCodeAssignmentSuccess = this.handleCodeAssignmentSuccess.bind(this);
     this.handleCodeReminderSuccess = this.handleCodeReminderSuccess.bind(this);
     this.handleCodeRevokeSuccess = this.handleCodeRevokeSuccess.bind(this);
-    this.resetCodeAssignmentStatus = this.resetCodeAssignmentStatus.bind(this);
+    this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -207,7 +207,7 @@ class CouponDetails extends React.Component {
 
   reset() {
     this.resetModals();
-    this.resetCodeAssignmentStatus();
+    this.resetCodeActionStatus();
 
     this.setState({
       selectedCodes: [],
@@ -373,19 +373,13 @@ class CouponDetails extends React.Component {
     });
   }
 
-  handleAssignmentSuccess() {
-    this.setState({
-      isCodeAssignmentSuccessful: true,
-      refreshIndex: this.state.refreshIndex + 1, // force new table instance
-      selectedCodes: [],
-    });
-  }
-
   updateSelectAllCheckBox() {
     const { selectedCodes, tableColumns } = this.state;
     const { couponDetailsTable: { data: tableData } } = this.props;
 
-    const allCodesForPageSelected = tableData && selectedCodes.length === tableData.results.length;
+    const allCodesForPageSelected = (
+      tableData && tableData.results && selectedCodes.length === tableData.results.length
+    );
     const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
 
     const selectColumn = tableColumns.shift();
@@ -417,6 +411,7 @@ class CouponDetails extends React.Component {
   }
 
   handleCodeReminderSuccess() {
+    this.resetCodeActionStatus();
     this.setState({
       isCodeReminderSuccessful: true,
       refreshIndex: this.state.refreshIndex + 1, // force new table instance
@@ -425,8 +420,18 @@ class CouponDetails extends React.Component {
   }
 
   handleCodeRevokeSuccess() {
+    this.resetCodeActionStatus();
     this.setState({
       isCodeRevokeSuccessful: true,
+      refreshIndex: this.state.refreshIndex + 1, // force new table instance
+      selectedCodes: [],
+    });
+  }
+
+  handleCodeAssignmentSuccess() {
+    this.resetCodeActionStatus();
+    this.setState({
+      isCodeAssignmentSuccessful: true,
       refreshIndex: this.state.refreshIndex + 1, // force new table instance
       selectedCodes: [],
     });
@@ -493,9 +498,11 @@ class CouponDetails extends React.Component {
     }));
   }
 
-  resetCodeAssignmentStatus() {
+  resetCodeActionStatus() {
     this.setState({
       isCodeAssignmentSuccessful: undefined,
+      isCodeReminderSuccessful: undefined,
+      isCodeRevokeSuccessful: undefined,
     });
   }
 
@@ -520,7 +527,7 @@ class CouponDetails extends React.Component {
         iconClassNames={['fa', 'fa-check']}
         title={title}
         message={message}
-        onClose={this.resetCodeAssignmentStatus}
+        onClose={this.resetCodeActionStatus}
         dismissible
       />
     );
@@ -643,7 +650,7 @@ class CouponDetails extends React.Component {
                               this.setState({
                                 selectedToggle: 'unredeemed',
                               }, () => {
-                                this.resetCodeAssignmentStatus();
+                                this.resetCodeActionStatus();
                                 this.handleToggleSelect();
                               });
                             }}
@@ -696,7 +703,7 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
-                  onSuccess={this.handleAssignmentSuccess}
+                  onSuccess={this.handleCodeAssignmentSuccess}
                 />
               }
               {modals.revoke &&
