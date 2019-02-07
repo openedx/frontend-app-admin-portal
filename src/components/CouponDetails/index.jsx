@@ -363,6 +363,8 @@ class CouponDetails extends React.Component {
       tableColumns.splice(getColumnIndexForKey('actions'), 1);
     }
 
+    this.resetCodeActionStatus();
+
     this.setState({
       tableColumns,
       selectedToggle: value,
@@ -650,7 +652,6 @@ class CouponDetails extends React.Component {
                               this.setState({
                                 selectedToggle: 'unredeemed',
                               }, () => {
-                                this.resetCodeActionStatus();
                                 this.handleToggleSelect();
                               });
                             }}
