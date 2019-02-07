@@ -7,6 +7,7 @@ import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
+import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import H3 from '../H3';
 import StatusAlert from '../StatusAlert';
 
@@ -53,6 +54,7 @@ class CouponDetails extends React.Component {
       },
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
+      isCodeRevokeSuccessful: undefined,
       selectedCodes: [],
       hasAllCodesSelected: false,
       /**
@@ -72,6 +74,7 @@ class CouponDetails extends React.Component {
     this.resetModals = this.resetModals.bind(this);
     this.handleAssignmentSuccess = this.handleAssignmentSuccess.bind(this);
     this.handleCodeReminderSuccess = this.handleCodeReminderSuccess.bind(this);
+    this.handleCodeRevokeSuccess = this.handleCodeRevokeSuccess.bind(this);
     this.resetCodeAssignmentStatus = this.resetCodeAssignmentStatus.bind(this);
   }
 
@@ -150,7 +153,7 @@ class CouponDetails extends React.Component {
                 data: {
                   code: code.code,
                   email: code.assigned_to,
-                  },
+                },
               },
             })}
           />
@@ -161,8 +164,12 @@ class CouponDetails extends React.Component {
             onClick={() => this.setModalState({
               key: 'revoke',
               options: {
+                couponId: id,
                 title: couponTitle,
-                data: { /* pass along any data the revoke modal might need */ },
+                data: {
+                  code: code.code,
+                  assigned_to: code.assigned_to,
+                },
               },
             })}
           />
@@ -247,7 +254,10 @@ class CouponDetails extends React.Component {
         options: {
           couponId: id,
           title: couponTitle,
-          data: { /* pass along any data the revoke modal might need */ },
+          isBulkRevoke: true,
+          data: {
+            selectedCodes: this.state.selectedCodes,
+          },
         },
       });
     } else if (selectedBulkAction === 'remind') {
@@ -301,13 +311,17 @@ class CouponDetails extends React.Component {
     //      should go here as well.
 
     const { hasError } = this.props;
-    const { isCodeAssignmentSuccessful } = this.state;
-    const { isCodeReminderSuccessful } = this.state;
+    const {
+      isCodeAssignmentSuccessful,
+      isCodeReminderSuccessful,
+      isCodeRevokeSuccessful,
+    } = this.state;
 
     const hasStatusAlert = [
       hasError,
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
+      isCodeRevokeSuccessful,
       this.shouldShowSelectAllStatusAlert(),
     ].some(item => item);
 
@@ -405,6 +419,14 @@ class CouponDetails extends React.Component {
   handleCodeReminderSuccess() {
     this.setState({
       isCodeReminderSuccessful: true,
+      refreshIndex: this.state.refreshIndex + 1, // force new table instance
+      selectedCodes: [],
+    });
+  }
+
+  handleCodeRevokeSuccess() {
+    this.setState({
+      isCodeRevokeSuccessful: true,
       refreshIndex: this.state.refreshIndex + 1, // force new table instance
       selectedCodes: [],
     });
@@ -525,6 +547,7 @@ class CouponDetails extends React.Component {
       modals,
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
+      isCodeRevokeSuccessful,
       refreshIndex,
       hasAllCodesSelected,
     } = this.state;
@@ -628,6 +651,11 @@ class CouponDetails extends React.Component {
                     })}
                     {isCodeReminderSuccessful && this.renderSuccessMessage({
                       title: 'Reminder request processed.',
+                      message: '',
+                    })}
+                    {isCodeRevokeSuccessful && this.renderSuccessMessage({
+                      title: 'Successfully revoked code(s)',
+                      message: '',
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
@@ -670,11 +698,10 @@ class CouponDetails extends React.Component {
                 />
               }
               {modals.revoke &&
-                // TODO: Add RevokeAssignmentModal
-                <CodeAssignmentModal
+                <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
-                  onSuccess={() => {}}
+                  onSuccess={this.handleCodeRevokeSuccess}
                 />
               }
               {modals.remind &&
