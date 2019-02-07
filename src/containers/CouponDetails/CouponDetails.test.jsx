@@ -77,6 +77,15 @@ const sampleTableData = {
 };
 
 describe('CouponDetailsWrapper', () => {
+  let wrapper;
+  let store;
+
+  const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
+    const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
+    selectAllCheckbox.simulate('change', { target: { value: isSelected } });
+    expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
+  };
+
   describe('renders', () => {
     it('with collapsed coupon details', () => {
       const tree = renderer
@@ -106,7 +115,7 @@ describe('CouponDetailsWrapper', () => {
     });
 
     it('with table data', () => {
-      const store = mockStore({
+      store = mockStore({
         ...initialState,
         table: {
           'coupon-details': sampleTableData,
@@ -125,7 +134,7 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('handles isExpanded prop change', () => {
-    const wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    wrapper = mount(<CouponDetailsWrapper isExpanded />);
     expect(wrapper.find(CouponDetails).prop('isExpanded')).toBeTruthy();
 
     wrapper.setProps({
@@ -140,7 +149,7 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('properly handles changes to selected toggle input', () => {
-    const wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    wrapper = mount(<CouponDetailsWrapper isExpanded />);
     expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
 
     wrapper.find('select').first().simulate('change', { target: { value: 'redeemed' } });
@@ -151,21 +160,18 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('sets disabled to true when unassignedCodes === 0', () => {
-    const wrapper = mount(<CouponDetailsWrapper isExpanded unassignedCodes={0} />);
+    wrapper = mount(<CouponDetailsWrapper isExpanded unassignedCodes={0} />);
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(true);
   });
 
   it('sets disabled to false when unassignedCodes !== 0', () => {
-    const wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    wrapper = mount(<CouponDetailsWrapper isExpanded />);
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
   });
 
   describe('modals', () => {
-    let store;
-    let wrapper;
-
     const openModalByActionButton = ({ key, label }) => {
       const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
       expect(actionButton.prop('children')).toEqual(label);
@@ -214,6 +220,11 @@ describe('CouponDetailsWrapper', () => {
       wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
       expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
 
+      selectAllCodesOnPage({
+        isSelected: true,
+        expectedSelectionLength: 3,
+      });
+
       wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'remind' } });
       expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('remind');
 
@@ -224,6 +235,11 @@ describe('CouponDetailsWrapper', () => {
     it('sets revoke modal state on bulk revoke click', () => {
       wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
       expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
+
+      selectAllCodesOnPage({
+        isSelected: true,
+        expectedSelectionLength: 3,
+      });
 
       wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'revoke' } });
       expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('revoke');
@@ -267,9 +283,6 @@ describe('CouponDetailsWrapper', () => {
   });
 
   describe('code selection', () => {
-    let store;
-    let wrapper;
-
     beforeEach(() => {
       store = mockStore({
         ...initialState,
@@ -284,12 +297,6 @@ describe('CouponDetailsWrapper', () => {
         />
       ));
     });
-
-    const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
-      const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
-      selectAllCheckbox.simulate('change', { target: { value: isSelected } });
-      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
-    };
 
     it('handles individual code selection within table', () => {
       const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
