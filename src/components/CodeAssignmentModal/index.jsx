@@ -242,11 +242,11 @@ class CodeAssignmentModal extends React.Component {
 
       // Only includes `codes` in `options` if not all codes are selected.
       if (!hasAllCodesSelected) {
-        options.codes = selectedCodes;
+        options.codes = selectedCodes.map(selectedCode => selectedCode.code);
       }
     } else {
       options.emails = [formData['email-address']];
-      options.codes = [code];
+      options.codes = [code.code];
     }
 
     return sendCodeAssignment(couponId, options)
