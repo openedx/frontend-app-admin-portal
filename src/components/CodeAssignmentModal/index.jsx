@@ -246,7 +246,7 @@ class CodeAssignmentModal extends React.Component {
       }
     } else {
       options.emails = [formData['email-address']];
-      options.codes = [code];
+      options.codes = [code.code];
     }
 
     return sendCodeAssignment(couponId, options)
