@@ -96,7 +96,7 @@ class CodeRevokeModal extends React.Component {
 
     if (isBulkRevoke) {
       if (!data.selectedCodes.length) {
-        errors._error.push('No code is selected.');
+        errors._error.push('At least one code must be selected.');
         throw new SubmissionError(errors);
       }
 

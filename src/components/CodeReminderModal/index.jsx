@@ -52,8 +52,7 @@ class CodeReminderModal extends React.Component {
 
   validateFormData(formData) {
     const emailTemplateKey = 'email-template';
-
-    let errors = {}; // eslint-disable-line prefer-const
+    const errors = {};
 
     /* eslint-disable no-underscore-dangle */
     if (!formData[emailTemplateKey]) {
@@ -81,6 +80,11 @@ class CodeReminderModal extends React.Component {
       sendCodeReminder,
     } = this.props;
 
+    /* eslint-disable no-underscore-dangle */
+    const errors = {
+      _error: [],
+    };
+
     // Validate form data
     this.validateFormData(formData);
 
@@ -90,6 +94,11 @@ class CodeReminderModal extends React.Component {
     };
 
     if (isBulkRemind) {
+      if (!data.selectedCodes.length) {
+        errors._error.push('At least one code must be selected.');
+        throw new SubmissionError(errors);
+      }
+
       options.assignments = data.selectedCodes.map(code => ({
         email: code.assigned_to,
         code: code.code,
@@ -106,6 +115,7 @@ class CodeReminderModal extends React.Component {
           _error: [error.message],
         });
       });
+    /* eslint-enable no-underscore-dangle */
   }
 
   renderBody() {
@@ -127,7 +137,7 @@ class CodeReminderModal extends React.Component {
           )}
           {isBulkRemind && data.selectedCodes && (
             <React.Fragment>
-              {data.selectedCodes.length > 0 && <p>Selected Codes: {data.selectedCodes.length}</p>}
+              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">Selected Codes: {data.selectedCodes.length}</p>}
             </React.Fragment>
           )}
         </div>
