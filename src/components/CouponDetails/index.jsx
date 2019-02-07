@@ -93,7 +93,7 @@ class CouponDetails extends React.Component {
   }
 
   getBulkActionSelectOptions() {
-    const { selectedToggle } = this.state;
+    const { selectedToggle, selectedCodes } = this.state;
     const { unassignedCodes } = this.props;
 
     const isAssignView = selectedToggle === 'unassigned';
@@ -106,11 +106,11 @@ class CouponDetails extends React.Component {
     }, {
       label: 'Remind',
       value: 'remind',
-      disabled: isAssignView || isRedeemedView,
+      disabled: isAssignView || isRedeemedView || selectedCodes.length === 0,
     }, {
       label: 'Revoke',
       value: 'revoke',
-      disabled: isAssignView || isRedeemedView,
+      disabled: isAssignView || isRedeemedView || selectedCodes.length === 0,
     }];
   }
 
