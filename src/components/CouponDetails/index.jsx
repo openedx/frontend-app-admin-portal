@@ -287,9 +287,9 @@ class CouponDetails extends React.Component {
 
   shouldShowSelectAllStatusAlert() {
     const { couponDetailsTable: { data: tableData } } = this.props;
-    const { selectedCodes, hasAllCodesSelected } = this.state;
+    const { selectedToggle, selectedCodes, hasAllCodesSelected } = this.state;
 
-    if (!tableData) {
+    if (!tableData || selectedToggle !== 'unassigned') {
       return false;
     } else if (hasAllCodesSelected) {
       return true;
@@ -579,9 +579,11 @@ class CouponDetails extends React.Component {
                 <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
                   <DownloadCsvButton
                     id="coupon-details"
-                    fetchMethod={() => EcommerceApiService.fetchCouponDetails(id, {}, {
-                      csv: true,
-                    })}
+                    fetchMethod={() => EcommerceApiService.fetchCouponDetails(
+                      id,
+                      { code_filter: selectedToggle },
+                      { csv: true },
+                    )}
                     disabled={this.isTableLoading()}
                   />
                 </div>
