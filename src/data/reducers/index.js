@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import { userProfile } from '@edx/frontend-auth';
+import { userAccount } from '@edx/frontend-auth';
 
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   portalConfiguration,
   table,
   csv,
-  userProfile,
+  userAccount,
   coupons,
   sidebar,
   codeAssignment,
