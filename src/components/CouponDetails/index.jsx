@@ -305,10 +305,8 @@ class CouponDetails extends React.Component {
     // The following are the scenarios where a status alert will be shown. Note, the coupon
     // details table must be finished loading for status alert to show:
     //  - Coupon has an error
-    //  - Code assignment status (error or success)
-    //  - Code selection status (e.g., "8 codes selected"). Note that the selection logic is not
-    //      currently implemented, but the logic for when the code selection alert is displayed
-    //      should go here as well.
+    //  - Code assignment/remind/revoke status (error or success)
+    //  - Code selection status (e.g., "50 codes selected. Select all 65 codes?")
 
     const { hasError } = this.props;
     const {
@@ -380,7 +378,8 @@ class CouponDetails extends React.Component {
     const { couponDetailsTable: { data: tableData } } = this.props;
 
     const allCodesForPageSelected = (
-      tableData && tableData.results && selectedCodes.length === tableData.results.length
+      tableData && tableData.results && tableData.results.length !== 0 &&
+      selectedCodes.length === tableData.results.length
     );
     const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
 
