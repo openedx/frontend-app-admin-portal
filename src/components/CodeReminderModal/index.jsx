@@ -52,7 +52,9 @@ class CodeReminderModal extends React.Component {
 
   validateFormData(formData) {
     const emailTemplateKey = 'email-template';
-    const errors = {};
+    const errors = {
+      _error: [],
+    };
 
     /* eslint-disable no-underscore-dangle */
     if (!formData[emailTemplateKey]) {
@@ -61,7 +63,7 @@ class CodeReminderModal extends React.Component {
       errors._error.push(message);
     }
 
-    if (Object.keys(errors).length) {
+    if (errors._error.length > 0) {
       throw new SubmissionError(errors);
     }
     /* eslint-enable no-underscore-dangle */
