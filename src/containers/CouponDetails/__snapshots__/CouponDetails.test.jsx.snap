@@ -124,7 +124,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <select
             aria-describedby="error-asInput6"
             className="form-control is-invalid-nodanger mt-1"
-            disabled={false}
+            disabled={true}
             id="asInput6"
             name="bulk-action"
             onBlur={[Function]}
@@ -133,7 +133,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
             value="assign"
           >
             <option
-              disabled={false}
+              disabled={true}
               value="assign"
             >
               Assign
@@ -161,7 +161,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         </div>
         <button
           className="btn ml-2 btn-primary"
-          disabled={false}
+          disabled={true}
           onBlur={[Function]}
           onClick={[Function]}
           onKeyDown={[Function]}
@@ -324,7 +324,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           <select
             aria-describedby="error-asInput4"
             className="form-control is-invalid-nodanger mt-1"
-            disabled={false}
+            disabled={true}
             id="asInput4"
             name="bulk-action"
             onBlur={[Function]}
@@ -333,7 +333,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
             value="assign"
           >
             <option
-              disabled={false}
+              disabled={true}
               value="assign"
             >
               Assign
@@ -361,7 +361,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
         </div>
         <button
           className="btn ml-2 btn-primary"
-          disabled={false}
+          disabled={true}
           onBlur={[Function]}
           onClick={[Function]}
           onKeyDown={[Function]}

@@ -20,6 +20,7 @@ class CodeReminderModal extends React.Component {
 
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +51,21 @@ class CodeReminderModal extends React.Component {
     }
   }
 
+  getNumberOfSelectedCodes() {
+    const {
+      data: { selectedCodes },
+      couponDetailsTable: { data: tableData },
+    } = this.props;
+
+    let numberOfSelectedCodes = 0;
+    if (selectedCodes && selectedCodes.length) {
+      numberOfSelectedCodes = selectedCodes.length;
+    } else if (tableData && tableData.count) {
+      numberOfSelectedCodes = tableData.count;
+    }
+    return numberOfSelectedCodes;
+  }
+
   validateFormData(formData) {
     const emailTemplateKey = 'email-template';
     const errors = {
@@ -78,14 +94,10 @@ class CodeReminderModal extends React.Component {
     const {
       couponId,
       isBulkRemind,
+      selectedToggle,
       data,
       sendCodeReminder,
     } = this.props;
-
-    /* eslint-disable no-underscore-dangle */
-    const errors = {
-      _error: [],
-    };
 
     // Validate form data
     this.validateFormData(formData);
@@ -95,12 +107,9 @@ class CodeReminderModal extends React.Component {
       template: formData['email-template'],
     };
 
-    if (isBulkRemind) {
-      if (!data.selectedCodes.length) {
-        errors._error.push('At least one code must be selected.');
-        throw new SubmissionError(errors);
-      }
-
+    if (isBulkRemind && !data.selectedCodes.length) {
+      options.code_filter = selectedToggle;
+    } else if (isBulkRemind && data.selectedCodes.length) {
       options.assignments = data.selectedCodes.map(code => ({
         email: code.assigned_to,
         code: code.code,
@@ -108,6 +117,7 @@ class CodeReminderModal extends React.Component {
     } else {
       options.assignments = [{ email: data.email, code: data.code }];
     }
+
     return sendCodeReminder(couponId, options)
       .then((response) => {
         this.props.onSuccess(response);
@@ -127,6 +137,8 @@ class CodeReminderModal extends React.Component {
       submitFailed,
     } = this.props;
 
+    const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
@@ -137,9 +149,9 @@ class CodeReminderModal extends React.Component {
               <p>Email: {data.email}</p>
             </React.Fragment>
           )}
-          {isBulkRemind && data.selectedCodes && (
+          {isBulkRemind && numberOfSelectedCodes > 0 && (
             <React.Fragment>
-              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">Selected Codes: {data.selectedCodes.length}</p>}
+              <p className="bulk-selected-codes">Selected Codes: {numberOfSelectedCodes}</p>
             </React.Fragment>
           )}
         </div>
@@ -189,12 +201,13 @@ class CodeReminderModal extends React.Component {
   }
 
   renderTitle() {
-    const { title } = this.props;
-
+    const { title, data } = this.props;
     return (
       <React.Fragment>
         <span className="d-block">{title}</span>
-        <small>Assignment Reminder</small>
+        <small>
+          {data.selectedCodes && data.selectedCodes.length === 0 ? 'Remind All' : 'Assignment Reminder'}
+        </small>
       </React.Fragment>
     );
   }
@@ -237,6 +250,7 @@ CodeReminderModal.defaultProps = {
   error: null,
   isBulkRemind: false,
   data: {},
+  selectedToggle: null,
 };
 
 CodeReminderModal.propTypes = {
@@ -253,7 +267,13 @@ CodeReminderModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendCodeReminder: PropTypes.func.isRequired,
+  couponDetailsTable: PropTypes.shape({
+    data: PropTypes.shape({
+      count: PropTypes.number,
+    }),
+  }).isRequired,
   isBulkRemind: PropTypes.bool,
+  selectedToggle: PropTypes.string,
   data: PropTypes.shape({}),
 };
 
