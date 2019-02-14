@@ -72,9 +72,7 @@ class CouponDetails extends React.Component {
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
     this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
     this.resetModals = this.resetModals.bind(this);
-    this.handleCodeAssignmentSuccess = this.handleCodeAssignmentSuccess.bind(this);
-    this.handleCodeReminderSuccess = this.handleCodeReminderSuccess.bind(this);
-    this.handleCodeRevokeSuccess = this.handleCodeRevokeSuccess.bind(this);
+    this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
     this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
   }
 
@@ -411,31 +409,46 @@ class CouponDetails extends React.Component {
     });
   }
 
-  handleCodeReminderSuccess() {
-    this.resetCodeActionStatus();
-    this.setState({
-      isCodeReminderSuccessful: true,
-      refreshIndex: this.state.refreshIndex + 1, // force new table instance
-      selectedCodes: [],
-    });
+  updateCouponOverviewData() {
+    const { id } = this.props;
+    this.props.fetchCouponOrder(id);
   }
 
-  handleCodeRevokeSuccess() {
-    this.resetCodeActionStatus();
-    this.setState({
-      isCodeRevokeSuccessful: true,
-      refreshIndex: this.state.refreshIndex + 1, // force new table instance
-      selectedCodes: [],
-    });
-  }
+  handleCodeActionSuccess(action) {
+    let stateKey;
 
-  handleCodeAssignmentSuccess() {
+    switch (action) {
+      case 'assign': {
+        stateKey = 'isCodeAssignmentSuccessful';
+        break;
+      }
+      case 'revoke': {
+        stateKey = 'isCodeRevokeSuccessful';
+        break;
+      }
+      case 'remind': {
+        stateKey = 'isCodeReminderSuccessful';
+        break;
+      }
+      default: {
+        stateKey = null;
+        break;
+      }
+    }
+
+    if (action === 'assign' || action === 'revoke') {
+      this.updateCouponOverviewData();
+    }
+
     this.resetCodeActionStatus();
-    this.setState({
-      isCodeAssignmentSuccessful: true,
-      refreshIndex: this.state.refreshIndex + 1, // force new table instance
-      selectedCodes: [],
-    });
+
+    if (stateKey) {
+      this.setState({
+        [stateKey]: true,
+        refreshIndex: this.state.refreshIndex + 1, // force new table instance
+        selectedCodes: [],
+      });
+    }
   }
 
   handleCodeSelection({ checked, code }) {
@@ -703,21 +716,21 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
-                  onSuccess={this.handleCodeAssignmentSuccess}
+                  onSuccess={() => this.handleCodeActionSuccess('assign')}
                 />
               }
               {modals.revoke &&
                 <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
-                  onSuccess={this.handleCodeRevokeSuccess}
+                  onSuccess={() => this.handleCodeActionSuccess('revoke')}
                 />
               }
               {modals.remind &&
                 <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
-                  onSuccess={this.handleCodeReminderSuccess}
+                  onSuccess={() => this.handleCodeActionSuccess('remind')}
                 />
               }
             </React.Fragment>

@@ -7,6 +7,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
+import EcommerceaApiService from '../../data/services/EcommerceApiService';
+
 import CouponDetails from './index';
 
 const mockStore = configureMockStore([thunk]);
@@ -172,6 +174,8 @@ describe('CouponDetailsWrapper', () => {
   });
 
   describe('modals', () => {
+    let spy;
+
     const openModalByActionButton = ({ key, label }) => {
       const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
       expect(actionButton.prop('children')).toEqual(label);
@@ -180,6 +184,7 @@ describe('CouponDetailsWrapper', () => {
     };
 
     beforeEach(() => {
+      spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
       store = mockStore({
         ...initialState,
         table: {
@@ -193,6 +198,10 @@ describe('CouponDetailsWrapper', () => {
           isExpanded
         />
       ));
+    });
+
+    afterEach(() => {
+      spy.mockRestore();
     });
 
     it('sets remind modal state on Revoke button click', () => {
@@ -279,6 +288,47 @@ describe('CouponDetailsWrapper', () => {
 
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeFalsy();
       expect(wrapper.find('CouponDetails').instance().state.selectedToggle).toEqual('unredeemed');
+
+      // fetches overview data for coupon
+      expect(spy).toBeCalledTimes(1);
+    });
+
+    it('handles successful code revoke from modal', () => {
+      openModalByActionButton({
+        key: 'revoke',
+        label: 'Revoke',
+      });
+
+      // fake successful code assignment
+      wrapper.find('CodeRevokeModal').prop('onSuccess')();
+      expect(wrapper.find('CouponDetails').instance().state.isCodeRevokeSuccessful).toBeTruthy();
+
+      wrapper.update();
+
+      // success status alert
+      expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('success');
+
+      // fetches overview data for coupon
+      expect(spy).toBeCalledTimes(1);
+    });
+
+    it('handles successful code remind from modal', () => {
+      openModalByActionButton({
+        key: 'remind',
+        label: 'Remind',
+      });
+
+      // fake successful code assignment
+      wrapper.find('CodeReminderModal').prop('onSuccess')();
+      expect(wrapper.find('CouponDetails').instance().state.isCodeReminderSuccessful).toBeTruthy();
+
+      wrapper.update();
+
+      // success status alert
+      expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('success');
+
+      // does not fetch overview data for coupon
+      expect(spy).toBeCalledTimes(0);
     });
   });
 
