@@ -26,6 +26,7 @@ const initialCouponData = {
   title: 'test-title',
   num_unassigned: 10,
   has_error: false,
+  usage_limitation: 'Multi-use',
 };
 
 const CouponDetailsWrapper = props => (

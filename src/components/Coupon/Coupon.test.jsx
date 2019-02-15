@@ -31,6 +31,7 @@ const initialCouponData = {
   num_unassigned: 0,
   num_uses: 0,
   max_uses: 1,
+  usage_limitation: 'Multi-use',
 };
 
 const CouponWrapper = props => (
