@@ -90,9 +90,34 @@ class CouponDetails extends React.Component {
     }
   }
 
+  getTableFilterSelectOptions() {
+    const { couponData: { usage_limitation: usageLimitation } } = this.props;
+    const shouldHidePartialRedeem = ['Single use', 'Once per customer'].includes(usageLimitation);
+
+    let options = [{
+      label: 'Unassigned',
+      value: 'unassigned',
+    }, {
+      label: 'Unredeemed',
+      value: 'unredeemed',
+    }, {
+      label: 'Partially Redeemed',
+      value: 'partially-redeemed',
+    }, {
+      label: 'Redeemed',
+      value: 'redeemed',
+    }];
+
+    if (shouldHidePartialRedeem) {
+      options = options.filter(option => option.value !== 'partially-redeemed');
+    }
+
+    return options;
+  }
+
   getBulkActionSelectOptions() {
     const { selectedToggle, selectedCodes } = this.state;
-    const { unassignedCodes } = this.props;
+    const { couponData: { num_unassigned: unassignedCodes } } = this.props;
 
     const isAssignView = selectedToggle === 'unassigned';
     const isRedeemedView = selectedToggle === 'redeemed';
@@ -124,7 +149,7 @@ class CouponDetails extends React.Component {
   }
 
   getActionButton(code) {
-    const { couponTitle, id } = this.props;
+    const { couponData: { id, title: couponTitle } } = this.props;
     const {
       assigned_to: assignedTo,
       redemptions,
@@ -226,7 +251,13 @@ class CouponDetails extends React.Component {
   }
 
   handleBulkActionSelect() {
-    const { couponTitle, id, unassignedCodes } = this.props;
+    const {
+      couponData: {
+        id,
+        title: couponTitle,
+        num_unassigned: unassignedCodes,
+      },
+    } = this.props;
     const { hasAllCodesSelected, selectedCodes } = this.state;
 
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
@@ -306,7 +337,7 @@ class CouponDetails extends React.Component {
     //  - Code assignment/remind/revoke status (error or success)
     //  - Code selection status (e.g., "50 codes selected. Select all 65 codes?")
 
-    const { hasError } = this.props;
+    const { couponData: { has_error: hasError } } = this.props;
     const {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
@@ -410,7 +441,7 @@ class CouponDetails extends React.Component {
   }
 
   updateCouponOverviewData() {
-    const { id } = this.props;
+    const { couponData: { id } } = this.props;
     this.props.fetchCouponOrder(id);
   }
 
@@ -574,10 +605,9 @@ class CouponDetails extends React.Component {
     } = this.state;
 
     const {
-      id,
-      hasError,
-      isExpanded,
+      couponData: { id, has_error: hasError },
       couponDetailsTable: { data: tableData },
+      isExpanded,
     } = this.props;
 
     return (
@@ -616,12 +646,7 @@ class CouponDetails extends React.Component {
                     name="table-view"
                     label="Filter by Code Status:"
                     value={selectedToggle}
-                    options={[
-                      { label: 'Unassigned', value: 'unassigned' },
-                      { label: 'Unredeemed', value: 'unredeemed' },
-                      { label: 'Partially Redeemed', value: 'partially-redeemed' },
-                      { label: 'Redeemed', value: 'redeemed' },
-                    ]}
+                    options={this.getTableFilterSelectOptions()}
                     disabled={this.isTableLoading()}
                     onChange={this.handleToggleSelect}
                   />
@@ -743,16 +768,20 @@ class CouponDetails extends React.Component {
 
 CouponDetails.defaultProps = {
   isExpanded: false,
-  hasError: false,
   couponDetailsTable: {},
 };
 
 CouponDetails.propTypes = {
-  id: PropTypes.number.isRequired,
-  unassignedCodes: PropTypes.number.isRequired,
-  isExpanded: PropTypes.bool,
-  hasError: PropTypes.bool,
+  // props from container
   couponDetailsTable: PropTypes.shape({}),
+
+  // custom props
+  couponData: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    has_error: PropTypes.bool.isRequired,
+    num_unassigned: PropTypes.number.isRequired,
+  }).isRequired,
+  isExpanded: PropTypes.bool,
 };
 
 export default CouponDetails;
