@@ -780,6 +780,7 @@ CouponDetails.propTypes = {
     id: PropTypes.number.isRequired,
     has_error: PropTypes.bool.isRequired,
     num_unassigned: PropTypes.number.isRequired,
+    usage_limitation: PropTypes.string.isRequired,
   }).isRequired,
   isExpanded: PropTypes.bool,
 };
