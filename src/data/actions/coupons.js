@@ -3,6 +3,7 @@ import {
   COUPONS_SUCCESS,
   COUPONS_FAILURE,
   CLEAR_COUPONS,
+  COUPON_SUCCESS,
 } from '../constants/coupons';
 import NewRelicService from '../services/NewRelicService';
 
@@ -17,6 +18,13 @@ const fetchCouponOrdersRequest = () => ({
 
 const fetchCouponOrdersSuccess = data => ({
   type: COUPONS_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const fetchCouponOrderSuccess = data => ({
+  type: COUPON_SUCCESS,
   payload: {
     data,
   },
@@ -51,6 +59,18 @@ const fetchCouponOrders = options => (
   }
 );
 
+const fetchCouponOrder = couponId => (
+  dispatch => (
+    EcommerceApiService.fetchCouponOrders({ coupon_id: couponId })
+      .then((response) => {
+        dispatch(fetchCouponOrderSuccess(response.data));
+      })
+      .catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
+      })
+  )
+);
+
 const clearCouponOrders = () => (
   (dispatch) => {
     dispatch(clearCouponOrdersEvent());
@@ -59,5 +79,6 @@ const clearCouponOrders = () => (
 
 export {
   fetchCouponOrders,
+  fetchCouponOrder,
   clearCouponOrders,
 };

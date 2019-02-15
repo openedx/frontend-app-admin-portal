@@ -3,6 +3,7 @@ import {
   COUPONS_SUCCESS,
   COUPONS_FAILURE,
   CLEAR_COUPONS,
+  COUPON_SUCCESS,
 } from '../constants/coupons';
 
 const initialState = {
@@ -24,6 +25,19 @@ const couponsReducer = (state = initialState, action) => {
         error: null,
         data: action.payload.data,
       };
+    case COUPON_SUCCESS: {
+      const { data: { results } } = state;
+      const couponId = action.payload.data.id;
+      const index = results.findIndex(item => item.id === couponId);
+      results[index] = action.payload.data;
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          results,
+        },
+      };
+    }
     case COUPONS_FAILURE:
       return {
         loading: false,
