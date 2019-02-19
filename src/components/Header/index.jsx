@@ -14,7 +14,7 @@ import './Header.scss';
 class Header extends React.Component {
   componentDidMount() {
     if (this.props.username) {
-      this.props.fetchUserProfile(this.props.username);
+      this.props.fetchUserAccount(this.props.username);
     }
   }
 
@@ -73,7 +73,7 @@ Header.propTypes = {
   email: PropTypes.string,
   username: PropTypes.string,
   userProfileImageUrl: PropTypes.string,
-  fetchUserProfile: PropTypes.func,
+  fetchUserAccount: PropTypes.func,
   hasSidebarToggle: PropTypes.bool,
 };
 
@@ -83,7 +83,7 @@ Header.defaultProps = {
   email: null,
   username: null,
   userProfileImageUrl: null,
-  fetchUserProfile: () => {},
+  fetchUserAccount: () => {},
   hasSidebarToggle: false,
 };
 

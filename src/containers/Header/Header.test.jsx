@@ -41,10 +41,12 @@ describe('<Header />', () => {
       authentication: {
         email: 'test@example.com',
       },
-      userProfile: {
+      userAccount: {
         email: null,
         username: null,
-        userProfileImageUrl: null,
+        profileImage: {
+          imageUrlMedium: null,
+        },
       },
       sidebar: {},
     });
@@ -61,7 +63,11 @@ describe('<Header />', () => {
     store = mockStore({
       portalConfiguration: {},
       authentication: {},
-      userProfile: {},
+      userAccount: {
+        profileImage: {
+          imageUrlMedium: null,
+        },
+      },
       sidebar: {},
     });
     tree = renderer
@@ -79,10 +85,12 @@ describe('<Header />', () => {
         email: 'staff@example.com',
         username: 'staff',
       },
-      userProfile: {
+      userAccount: {
         email: 'staff@example.com',
         username: 'staff',
-        userProfileImageUrl: EdxLogo,
+        profileImage: {
+          imageUrlMedium: EdxLogo,
+        },
       },
       sidebar: {},
     });
@@ -101,10 +109,12 @@ describe('<Header />', () => {
         email: 'staff@example.com',
         username: 'staff',
       },
-      userProfile: {
+      userAccount: {
         email: 'staff@example.com',
         username: 'staff',
-        userProfileImageUrl: null,
+        profileImage: {
+          imageUrlMedium: null,
+        },
       },
       sidebar: {},
     });
@@ -120,7 +130,11 @@ describe('<Header />', () => {
     store = mockStore({
       portalConfiguration: {},
       authentication: {},
-      userProfile: {},
+      userAccount: {
+        profileImage: {
+          imageUrlMedium: null,
+        },
+      },
       sidebar: {},
     });
     tree = renderer
@@ -135,7 +149,11 @@ describe('<Header />', () => {
     store = mockStore({
       portalConfiguration: {},
       authentication: {},
-      userProfile: {},
+      userAccount: {
+        profileImage: {
+          imageUrlMedium: null,
+        },
+      },
       sidebar: {},
     });
     const getUserProfileMock = jest.fn();
@@ -150,7 +168,11 @@ describe('<Header />', () => {
       store = mockStore({
         portalConfiguration: {},
         authentication: {},
-        userProfile: {},
+        userAccount: {
+          profileImage: {
+            imageUrlMedium: null,
+          },
+        },
         sidebar: {
           hasSidebarToggle: false,
           isExpandedByToggle: false,
@@ -168,7 +190,11 @@ describe('<Header />', () => {
       store = mockStore({
         portalConfiguration: {},
         authentication: {},
-        userProfile: {},
+        userAccount: {
+          profileImage: {
+            imageUrlMedium: null,
+          },
+        },
         sidebar: {
           hasSidebarToggle: true,
           isExpandedByToggle: false,

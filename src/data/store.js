@@ -45,7 +45,7 @@ const middleware = [thunkMiddleware, loggerMiddleware, routerHistoryMiddleware, 
 const initialState = apiClient.getAuthenticationState();
 if (initialState.authentication) {
   // eslint-disable-next-line no-undef
-  analytics.identify(initialState.authentication.email);
+  analytics.identify(initialState.authentication.userId);
 }
 
 const store = createStore(

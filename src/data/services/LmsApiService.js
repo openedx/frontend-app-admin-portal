@@ -42,10 +42,6 @@ class LmsApiService {
       });
   }
 
-  static fetchUserProfile(username) {
-    return apiClient.get(`${LmsApiService.baseUrl}/api/user/v1/accounts/${username}`);
-  }
-
   static requestCodes(options) {
     const postParams = {
       email: options.emailAddress,
