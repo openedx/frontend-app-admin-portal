@@ -63,6 +63,7 @@ const sampleCouponData = {
   max_uses: 10,
   num_unassigned: 2,
   num_uses: 2,
+  usage_limitation: 'Multi-use',
 };
 
 describe('CodeManagementPageWrapper', () => {

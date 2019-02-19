@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
+import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
 import CouponDetails from './index';
@@ -21,13 +22,19 @@ const initialState = {
   },
 };
 
+const initialCouponData = {
+  id: 1,
+  title: 'test-title',
+  num_unassigned: 10,
+  has_error: false,
+  usage_limitation: MULTI_USE,
+};
+
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
       <CouponDetails
-        id={1}
-        couponTitle="test-title"
-        unassignedCodes={10}
+        couponData={initialCouponData}
         {...props}
       />
     </Provider>
@@ -110,7 +117,13 @@ describe('CouponDetailsWrapper', () => {
     it('with error', () => {
       const tree = renderer
         .create((
-          <CouponDetailsWrapper hasError isExpanded />
+          <CouponDetailsWrapper
+            couponData={{
+              ...initialCouponData,
+              has_error: true,
+            }}
+            isExpanded
+          />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -150,6 +163,50 @@ describe('CouponDetailsWrapper', () => {
     expect(wrapper.find(CouponDetails).prop('isExpanded')).toBeTruthy();
   });
 
+  it('removes partial redeem toggle for "Single use" coupons', () => {
+    let options;
+
+    wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+    expect(options).toHaveLength(4);
+    expect(options.includes('partially-redeemed')).toBeTruthy();
+
+    wrapper = mount((
+      <CouponDetailsWrapper
+        couponData={{
+          ...initialCouponData,
+          usage_limitation: SINGLE_USE,
+        }}
+        isExpanded
+      />
+    ));
+    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+    expect(options).toHaveLength(3);
+    expect(options.includes('partially-redeemed')).toBeFalsy();
+  });
+
+  it('removes partial redeem toggle for "Once per customer" coupons', () => {
+    let options;
+
+    wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+    expect(options).toHaveLength(4);
+    expect(options.includes('partially-redeemed')).toBeTruthy();
+
+    wrapper = mount((
+      <CouponDetailsWrapper
+        couponData={{
+          ...initialCouponData,
+          usage_limitation: ONCE_PER_CUSTOMER,
+        }}
+        isExpanded
+      />
+    ));
+    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+    expect(options).toHaveLength(3);
+    expect(options.includes('partially-redeemed')).toBeFalsy();
+  });
+
   it('properly handles changes to selected toggle input', () => {
     wrapper = mount(<CouponDetailsWrapper isExpanded />);
     expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
@@ -162,7 +219,15 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('sets disabled to true when unassignedCodes === 0', () => {
-    wrapper = mount(<CouponDetailsWrapper isExpanded unassignedCodes={0} />);
+    wrapper = mount((
+      <CouponDetailsWrapper
+        couponData={{
+          ...initialCouponData,
+          num_unassigned: 0,
+        }}
+        isExpanded
+      />
+    ));
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(true);
   });
