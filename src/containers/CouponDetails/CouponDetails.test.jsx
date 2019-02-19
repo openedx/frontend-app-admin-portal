@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
+import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
 import CouponDetails from './index';
@@ -26,7 +27,7 @@ const initialCouponData = {
   title: 'test-title',
   num_unassigned: 10,
   has_error: false,
-  usage_limitation: 'Multi-use',
+  usage_limitation: MULTI_USE,
 };
 
 const CouponDetailsWrapper = props => (
@@ -174,20 +175,7 @@ describe('CouponDetailsWrapper', () => {
       <CouponDetailsWrapper
         couponData={{
           ...initialCouponData,
-          usage_limitation: 'Single use',
-        }}
-        isExpanded
-      />
-    ));
-    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
-    expect(options).toHaveLength(3);
-    expect(options.includes('partially-redeemed')).toBeFalsy();
-
-    wrapper = mount((
-      <CouponDetailsWrapper
-        couponData={{
-          ...initialCouponData,
-          usage_limitation: 'Once per customer',
+          usage_limitation: SINGLE_USE,
         }}
         isExpanded
       />
@@ -209,7 +197,7 @@ describe('CouponDetailsWrapper', () => {
       <CouponDetailsWrapper
         couponData={{
           ...initialCouponData,
-          usage_limitation: 'Once per customer',
+          usage_limitation: ONCE_PER_CUSTOMER,
         }}
         isExpanded
       />

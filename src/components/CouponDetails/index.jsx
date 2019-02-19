@@ -11,6 +11,7 @@ import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import H3 from '../H3';
 import StatusAlert from '../StatusAlert';
 
+import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 import './CouponDetails.scss';
@@ -92,7 +93,7 @@ class CouponDetails extends React.Component {
 
   getTableFilterSelectOptions() {
     const { couponData: { usage_limitation: usageLimitation } } = this.props;
-    const shouldHidePartialRedeem = ['Single use', 'Once per customer'].includes(usageLimitation);
+    const shouldHidePartialRedeem = [SINGLE_USE, ONCE_PER_CUSTOMER].includes(usageLimitation);
 
     let options = [{
       label: 'Unassigned',

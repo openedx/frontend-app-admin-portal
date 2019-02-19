@@ -6,6 +6,8 @@ import thunk from 'redux-thunk';
 import { shallow, mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
+import { MULTI_USE } from '../../data/constants/coupons';
+
 import Coupon from './index';
 import CouponDetails from '../CouponDetails';
 
@@ -31,7 +33,7 @@ const initialCouponData = {
   num_unassigned: 0,
   num_uses: 0,
   max_uses: 1,
-  usage_limitation: 'Multi-use',
+  usage_limitation: MULTI_USE,
 };
 
 const CouponWrapper = props => (
