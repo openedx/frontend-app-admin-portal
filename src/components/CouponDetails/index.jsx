@@ -118,23 +118,27 @@ class CouponDetails extends React.Component {
 
   getBulkActionSelectOptions() {
     const { selectedToggle, selectedCodes } = this.state;
-    const { couponData: { num_unassigned: unassignedCodes } } = this.props;
+    const {
+      couponData: { num_unassigned: unassignedCodes },
+      couponDetailsTable: { data: tableData },
+    } = this.props;
 
     const isAssignView = selectedToggle === 'unassigned';
     const isRedeemedView = selectedToggle === 'redeemed';
+    const hasTableData = tableData && tableData.count;
 
     return [{
       label: 'Assign',
       value: 'assign',
-      disabled: !isAssignView || isRedeemedView || unassignedCodes === 0,
+      disabled: !isAssignView || isRedeemedView || !hasTableData || unassignedCodes === 0,
     }, {
       label: 'Remind',
       value: 'remind',
-      disabled: isAssignView || isRedeemedView || selectedCodes.length === 0,
+      disabled: isAssignView || isRedeemedView || !hasTableData,
     }, {
       label: 'Revoke',
       value: 'revoke',
-      disabled: isAssignView || isRedeemedView || selectedCodes.length === 0,
+      disabled: isAssignView || isRedeemedView || !hasTableData || selectedCodes.length === 0,
     }];
   }
 
@@ -259,7 +263,7 @@ class CouponDetails extends React.Component {
         num_unassigned: unassignedCodes,
       },
     } = this.props;
-    const { hasAllCodesSelected, selectedCodes } = this.state;
+    const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
 
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
     const selectedBulkAction = ref && ref.state.value;
@@ -286,7 +290,7 @@ class CouponDetails extends React.Component {
           title: couponTitle,
           isBulkRevoke: true,
           data: {
-            selectedCodes: this.state.selectedCodes,
+            selectedCodes,
           },
         },
       });
@@ -297,8 +301,9 @@ class CouponDetails extends React.Component {
           couponId: id,
           title: couponTitle,
           isBulkRemind: true,
+          selectedToggle,
           data: {
-            selectedCodes: this.state.selectedCodes,
+            selectedCodes,
           },
         },
       });

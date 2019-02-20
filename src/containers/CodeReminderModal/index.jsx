@@ -4,6 +4,10 @@ import CodeReminderModal from '../../components/CodeReminderModal';
 
 import sendCodeReminder from '../../data/actions/codeReminder';
 
+const mapStateToProps = state => ({
+  couponDetailsTable: state.table['coupon-details'],
+});
+
 const mapDispatchToProps = dispatch => ({
   sendCodeReminder: (couponId, options) => new Promise((resolve, reject) => {
     dispatch(sendCodeReminder({
@@ -15,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(null, mapDispatchToProps)(CodeReminderModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CodeReminderModal);

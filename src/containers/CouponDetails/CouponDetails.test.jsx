@@ -233,7 +233,7 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('sets disabled to false when unassignedCodes !== 0', () => {
-    wrapper = mount(<CouponDetailsWrapper isExpanded />);
+    wrapper = mount(<CouponDetailsWrapper store={store} isExpanded />);
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
   });
@@ -269,7 +269,7 @@ describe('CouponDetailsWrapper', () => {
       spy.mockRestore();
     });
 
-    it('sets remind modal state on Revoke button click', () => {
+    it('sets remind modal state on Remind button click', () => {
       openModalByActionButton({
         key: 'remind',
         label: 'Remind',

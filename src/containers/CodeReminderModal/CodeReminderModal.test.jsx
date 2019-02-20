@@ -10,20 +10,65 @@ import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import emailTemplate from '../../components/CodeReminderModal/emailTemplate';
 
+const sampleCodeData = {
+  code: 'test-code-1',
+  assigned_to: 'test@bestrun.com',
+  redemptions: {
+    total: 100,
+    used: 10,
+  },
+  error: null,
+};
+const sampleTableData = {
+  loading: false,
+  error: null,
+  data: {
+    count: 3,
+    num_pages: 2,
+    current_page: 1,
+    results: [
+      sampleCodeData,
+      {
+        ...sampleCodeData,
+        code: 'test-code-2',
+        redemptions: {
+          total: 100,
+          used: 100,
+        },
+      },
+      {
+        ...sampleCodeData,
+        code: 'test-code-3',
+        assigned_to: null,
+      },
+    ],
+  },
+};
+
 const mockStore = configureMockStore([thunk]);
-const initialState = {};
+const initialState = {
+  table: {
+    'coupon-details': sampleTableData,
+  },
+};
+
 const couponId = 1;
 const data = {
   code: 'ABC101',
   assigned_to: 'edx@example.com',
 };
 
-const codeReminderRequestData = (numCodes) => {
+const codeReminderRequestData = (numCodes, selectedToggle) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
-  return {
-    assignments: Array(numCodes).fill(assignment),
+  const options = {
     template: emailTemplate,
   };
+  if (numCodes === 0) {
+    options.code_filter = selectedToggle;
+  } else {
+    options.assignments = Array(numCodes).fill(assignment);
+  }
+  return options;
 };
 
 const CodeReminderModalWrapper = props => (
@@ -58,7 +103,10 @@ describe('CodeReminderModalWrapper', () => {
   });
 
   it('renders individual reminder modal', () => {
-    const wrapper = mount(<CodeReminderModalWrapper />);
+    const codeRemindData = [data, data];
+    const wrapper = mount(<CodeReminderModalWrapper
+      data={{ ...codeRemindData, selectedCodes: [data] }}
+    />);
     expect(wrapper.find('.assignment-detail').find('p')).toBeTruthy();
   });
 
@@ -76,16 +124,18 @@ describe('CodeReminderModalWrapper', () => {
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
   });
 
-  it('throws error if no code is selected for bulk remind', () => {
+  it('renders remind all modal if no code is selected for bulk remind', () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
     const codeReminderData = [data, data];
+    const selectedToggle = 'unredeemed';
     const wrapper = mount(<CodeReminderModalWrapper
       data={{ ...codeReminderData, selectedCodes: [] }}
+      selectedToggle={selectedToggle}
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').exists()).toBeFalsy();
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 3');
     wrapper.find('.modal-footer .btn-primary').simulate('click');
-    expect(spy).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(0, selectedToggle));
   });
 });
