@@ -5,6 +5,8 @@ import { fetchCouponOrder } from '../../data/actions/coupons';
 
 const mapStateToProps = state => ({
   couponDetailsTable: state.table['coupon-details'],
+  couponOverviewError: state.coupons.couponOverviewError,
+  couponOverviewLoading: state.coupons.couponOverviewLoading,
 });
 
 const mapDispatchToProps = dispatch => ({
