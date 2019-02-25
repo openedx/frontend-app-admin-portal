@@ -484,6 +484,8 @@ class CouponDetails extends React.Component {
         [stateKey]: true,
         refreshIndex: this.state.refreshIndex + 1, // force new table instance
         selectedCodes: [],
+      }, () => {
+        this.updateSelectAllCheckBox();
       });
     }
   }
