@@ -55,6 +55,7 @@ const sampleCodeData = {
   redemptions: {
     total: 100,
     used: 10,
+    num_assignments: 5,
   },
   error: null,
 };
@@ -288,6 +289,15 @@ describe('CouponDetailsWrapper', () => {
         key: 'assignment',
         label: 'Assign',
       });
+    });
+
+    it('shows correct remaining uses on assignment modal', () => {
+      openModalByActionButton({
+        key: 'assignment',
+        label: 'Assign',
+      });
+
+      expect(wrapper.find('.assignment-details .code-remaining-uses').text()).toEqual('Remaining Uses: 85');
     });
 
     it('sets remind modal state on bulk remind click', () => {

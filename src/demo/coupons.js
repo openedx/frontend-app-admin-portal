@@ -120,7 +120,16 @@ const allCodes = getAllCodes();
 
 const unassignedCodes = allCodes.filter(code => (
   code.assigned_to === undefined && code.redemptions.used < code.redemptions.total
-));
+)).map(code => ({
+  ...code,
+  redemptions: {
+    ...code.redemptions,
+    num_assignments: faker.random.number({
+      min: 0,
+      max: code.redemptions.total - code.redemptions.used,
+    }),
+  },
+}));
 const unredeemedCodes = allCodes.filter(code => (
   code.assigned_to !== undefined && code.redemptions.used < code.redemptions.total
 ));

@@ -285,7 +285,7 @@ class CodeAssignmentModal extends React.Component {
           {!isBulkAssign && this.hasIndividualAssignData() && (
             <React.Fragment>
               <p>Code: {data.code.code}</p>
-              <p>Remaining Uses: {data.remainingUses}</p>
+              <p className="code-remaining-uses">Remaining Uses: {data.remainingUses}</p>
             </React.Fragment>
           )}
         </div>
