@@ -11,7 +11,7 @@ import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 
 import emailTemplate from './emailTemplate';
-import { ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
+import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';
 
 import './CodeAssignmentModal.scss';
 
@@ -79,6 +79,7 @@ class CodeAssignmentModal extends React.Component {
     const csvEmails = formData[csvFileKey];
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+    const shouldValidateSelectedCodes = ![ONCE_PER_CUSTOMER, MULTI_USE].includes(couponType);
 
     const getTooManyAssignmentsMessage = ({
       isCsv = false,
@@ -123,7 +124,7 @@ class CodeAssignmentModal extends React.Component {
       errors[textAreaKey] = message;
       errors._error.push(message);
     } else if (
-      textAreaEmails && numberOfSelectedCodes && couponType !== ONCE_PER_CUSTOMER &&
+      textAreaEmails && numberOfSelectedCodes && shouldValidateSelectedCodes &&
       textAreaEmails.length > numberOfSelectedCodes
     ) {
       const message = getTooManyAssignmentsMessage({
@@ -147,7 +148,7 @@ class CodeAssignmentModal extends React.Component {
       errors[csvFileKey] = message;
       errors._error.push(message);
     } else if (
-      csvEmails && numberOfSelectedCodes && couponType !== ONCE_PER_CUSTOMER &&
+      csvEmails && numberOfSelectedCodes && shouldValidateSelectedCodes &&
       csvEmails.length > numberOfSelectedCodes
     ) {
       const message = getTooManyAssignmentsMessage({
