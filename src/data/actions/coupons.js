@@ -3,7 +3,9 @@ import {
   COUPONS_SUCCESS,
   COUPONS_FAILURE,
   CLEAR_COUPONS,
+  COUPON_REQUEST,
   COUPON_SUCCESS,
+  COUPON_FAILURE,
 } from '../constants/coupons';
 import NewRelicService from '../services/NewRelicService';
 
@@ -14,6 +16,10 @@ import EcommerceApiService from '../services/EcommerceApiService';
 
 const fetchCouponOrdersRequest = () => ({
   type: COUPONS_REQUEST,
+});
+
+const fetchCouponOrderRequest = () => ({
+  type: COUPON_REQUEST,
 });
 
 const fetchCouponOrdersSuccess = data => ({
@@ -32,6 +38,13 @@ const fetchCouponOrderSuccess = data => ({
 
 const fetchCouponOrdersFailure = error => ({
   type: COUPONS_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+const fetchCouponOrderFailure = error => ({
+  type: COUPON_FAILURE,
   payload: {
     error,
   },
@@ -60,15 +73,17 @@ const fetchCouponOrders = options => (
 );
 
 const fetchCouponOrder = couponId => (
-  dispatch => (
-    EcommerceApiService.fetchCouponOrders({ coupon_id: couponId })
+  (dispatch) => {
+    dispatch(fetchCouponOrderRequest());
+    return EcommerceApiService.fetchCouponOrders({ coupon_id: couponId })
       .then((response) => {
         dispatch(fetchCouponOrderSuccess(response.data));
       })
       .catch((error) => {
+        dispatch(fetchCouponOrderFailure(error));
         NewRelicService.logAPIErrorResponse(error);
-      })
-  )
+      });
+  }
 );
 
 const clearCouponOrders = () => (

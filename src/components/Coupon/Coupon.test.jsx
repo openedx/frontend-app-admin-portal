@@ -22,6 +22,10 @@ const store = mockStore({
   csv: {
     'coupon-details': {},
   },
+  coupons: {
+    couponOverviewLoading: false,
+    couponOverviewError: null,
+  },
 });
 
 const initialCouponData = {

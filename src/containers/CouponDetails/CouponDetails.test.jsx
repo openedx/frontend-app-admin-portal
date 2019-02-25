@@ -20,6 +20,10 @@ const initialState = {
   table: {
     'coupon-details': {},
   },
+  coupons: {
+    couponOverviewLoading: false,
+    couponOverviewError: null,
+  },
 };
 
 const initialCouponData = {
@@ -218,6 +222,30 @@ describe('CouponDetailsWrapper', () => {
     expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
   });
 
+  it('renders error status alert if fetching individual coupon overview fails', () => {
+    const spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
+    store = mockStore({
+      ...initialState,
+      coupons: {
+        couponOverviewLoading: false,
+        couponOverviewError: new Error('test-error'),
+      },
+    });
+
+    wrapper = mount((
+      <CouponDetailsWrapper
+        store={store}
+        isExpanded
+      />
+    ));
+
+    expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('danger');
+    wrapper.find('StatusAlert').find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
+
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
+  });
+
   it('sets disabled to true when unassignedCodes === 0', () => {
     wrapper = mount((
       <CouponDetailsWrapper
@@ -233,7 +261,15 @@ describe('CouponDetailsWrapper', () => {
   });
 
   it('sets disabled to false when unassignedCodes !== 0', () => {
+    store = mockStore({
+      ...initialState,
+      table: {
+        'coupon-details': sampleTableData,
+      },
+    });
+
     wrapper = mount(<CouponDetailsWrapper store={store} isExpanded />);
+
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
   });
@@ -356,6 +392,7 @@ describe('CouponDetailsWrapper', () => {
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
     });
 
     it('handles successful code revoke from modal', () => {
@@ -375,6 +412,7 @@ describe('CouponDetailsWrapper', () => {
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
     });
 
     it('handles successful code remind from modal', () => {

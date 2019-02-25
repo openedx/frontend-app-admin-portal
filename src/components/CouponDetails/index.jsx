@@ -343,7 +343,10 @@ class CouponDetails extends React.Component {
     //  - Code assignment/remind/revoke status (error or success)
     //  - Code selection status (e.g., "50 codes selected. Select all 65 codes?")
 
-    const { couponData: { has_error: hasError } } = this.props;
+    const {
+      couponData: { has_error: hasError },
+      couponOverviewError,
+    } = this.props;
     const {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
@@ -352,6 +355,7 @@ class CouponDetails extends React.Component {
 
     const hasStatusAlert = [
       hasError,
+      couponOverviewError,
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
@@ -571,12 +575,12 @@ class CouponDetails extends React.Component {
   }
 
   renderSuccessMessage({ title, message }) {
-    const { hasError } = this.props;
+    const { hasError, couponOverviewError } = this.props;
 
     return (
       <StatusAlert
         alertType="success"
-        className={[classNames({ 'mt-2': hasError })]}
+        className={[classNames({ 'mt-2': hasError || couponOverviewError })]}
         iconClassNames={['fa', 'fa-check']}
         title={title}
         message={message}
@@ -587,12 +591,12 @@ class CouponDetails extends React.Component {
   }
 
   renderInfoMessage({ title, message }) {
-    const { hasError } = this.props;
+    const { hasError, couponOverviewError } = this.props;
 
     return (
       <StatusAlert
         alertType="info"
-        className={[classNames({ 'mt-2': hasError })]}
+        className={[classNames({ 'mt-2': hasError || couponOverviewError })]}
         title={title}
         message={message}
       />
@@ -615,6 +619,8 @@ class CouponDetails extends React.Component {
     const {
       couponData: { id, has_error: hasError },
       couponDetailsTable: { data: tableData },
+      couponOverviewLoading,
+      couponOverviewError,
       isExpanded,
     } = this.props;
 
@@ -684,6 +690,19 @@ class CouponDetails extends React.Component {
                     {hasError && this.renderErrorMessage({
                       message: 'One or more codes below have an error.',
                     })}
+                    {couponOverviewError && !couponOverviewLoading && this.renderErrorMessage({
+                      message: (
+                        <React.Fragment>
+                          Failed to fetch coupon overview data ({couponOverviewError.message}).
+                          <Button
+                            className={['p-0', 'pl-1', 'border-0']}
+                            buttonType="link"
+                            label="Please try again"
+                            onClick={() => this.props.fetchCouponOrder(id)}
+                          />.
+                        </React.Fragment>
+                      ),
+                    })}
                     {isCodeAssignmentSuccessful && this.renderSuccessMessage({
                       title: 'Successfully assigned code(s)',
                       message: (
@@ -705,12 +724,10 @@ class CouponDetails extends React.Component {
                       ),
                     })}
                     {isCodeReminderSuccessful && this.renderSuccessMessage({
-                      title: 'Reminder request processed.',
-                      message: '',
+                      message: 'Reminder request processed.',
                     })}
                     {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                      title: 'Successfully revoked code(s)',
-                      message: '',
+                      message: 'Successfully revoked code(s)',
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
