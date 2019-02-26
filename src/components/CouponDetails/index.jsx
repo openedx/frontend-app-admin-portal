@@ -155,11 +155,13 @@ class CouponDetails extends React.Component {
 
   getActionButton(code) {
     const { couponData: { id, title: couponTitle } } = this.props;
+    const { selectedToggle } = this.state;
     const {
       assigned_to: assignedTo,
       redemptions,
     } = code;
 
+    let remainingUses = redemptions.total - redemptions.used;
     const buttonClassNames = ['btn-link', 'btn-sm', 'px-0'];
 
     // Don't show a button if all total redemptions have been used
@@ -205,6 +207,11 @@ class CouponDetails extends React.Component {
       );
     }
 
+    // exclude existing assignments of code
+    if (selectedToggle === 'unassigned') {
+      remainingUses -= redemptions.num_assignments;
+    }
+
     return (
       <Button
         className={[...buttonClassNames, 'assignment-btn']}
@@ -216,7 +223,7 @@ class CouponDetails extends React.Component {
             title: couponTitle,
             data: {
               code,
-              remainingUses: redemptions.total - redemptions.used,
+              remainingUses,
             },
           },
         })}
