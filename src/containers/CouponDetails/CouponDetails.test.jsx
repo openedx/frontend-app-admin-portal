@@ -443,6 +443,20 @@ describe('CouponDetailsWrapper', () => {
       // does not fetch overview data for coupon
       expect(spy).toBeCalledTimes(0);
     });
+
+    it('handles errors in response data for code reminder ', () => {
+      openModalByActionButton({
+        key: 'remind',
+        label: 'Remind',
+      });
+
+      // fake code assignment 200 status with error in response data.
+      wrapper.find('CodeReminderModal').prop('onSuccess')([{ detail: 'failure' }]);
+      expect(wrapper.find('CouponDetails').instance().state.doesCodeActionHaveErrors).toBeTruthy();
+
+      // does not fetch overview data for coupon
+      expect(spy).toBeCalledTimes(0);
+    });
   });
 
   describe('code selection', () => {

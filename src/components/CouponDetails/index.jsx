@@ -56,6 +56,7 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
       isCodeRevokeSuccessful: undefined,
+      doesCodeActionHaveErrors: undefined,
       selectedCodes: [],
       hasAllCodesSelected: false,
       /**
@@ -358,6 +359,7 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
+      doesCodeActionHaveErrors,
     } = this.state;
 
     const hasStatusAlert = [
@@ -366,6 +368,7 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
+      doesCodeActionHaveErrors,
       this.shouldShowSelectAllStatusAlert(),
     ].some(item => item);
 
@@ -462,8 +465,9 @@ class CouponDetails extends React.Component {
     this.props.fetchCouponOrder(id);
   }
 
-  handleCodeActionSuccess(action) {
+  handleCodeActionSuccess(action, response) {
     let stateKey;
+    let doesCodeActionHaveErrors;
 
     switch (action) {
       case 'assign': {
@@ -472,14 +476,17 @@ class CouponDetails extends React.Component {
       }
       case 'revoke': {
         stateKey = 'isCodeRevokeSuccessful';
+        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
       case 'remind': {
         stateKey = 'isCodeReminderSuccessful';
+        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
       default: {
         stateKey = null;
+        doesCodeActionHaveErrors = null;
         break;
       }
     }
@@ -495,6 +502,7 @@ class CouponDetails extends React.Component {
         [stateKey]: true,
         refreshIndex: this.state.refreshIndex + 1, // force new table instance
         selectedCodes: [],
+        doesCodeActionHaveErrors,
       }, () => {
         this.updateSelectAllCheckBox();
       });
@@ -567,6 +575,7 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
       isCodeRevokeSuccessful: undefined,
+      doesCodeActionHaveErrors: undefined,
     });
   }
 
@@ -619,6 +628,7 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
+      doesCodeActionHaveErrors,
       refreshIndex,
       hasAllCodesSelected,
     } = this.state;
@@ -736,6 +746,10 @@ class CouponDetails extends React.Component {
                     {isCodeRevokeSuccessful && this.renderSuccessMessage({
                       message: 'Successfully revoked code(s)',
                     })}
+                    {doesCodeActionHaveErrors && this.renderErrorMessage({
+                      title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
+                      message: '',
+                    })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
                         <React.Fragment>
@@ -773,21 +787,21 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
-                  onSuccess={() => this.handleCodeActionSuccess('assign')}
+                  onSuccess={response => this.handleCodeActionSuccess('assign', response)}
                 />
               }
               {modals.revoke &&
                 <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
-                  onSuccess={() => this.handleCodeActionSuccess('revoke')}
+                  onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
                 />
               }
               {modals.remind &&
                 <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
-                  onSuccess={() => this.handleCodeActionSuccess('remind')}
+                  onSuccess={response => this.handleCodeActionSuccess('remind', response)}
                 />
               }
             </React.Fragment>
