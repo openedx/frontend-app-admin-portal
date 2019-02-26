@@ -269,6 +269,7 @@ class CouponDetails extends React.Component {
         id,
         title: couponTitle,
         num_unassigned: unassignedCodes,
+        usage_limitation: couponType,
       },
     } = this.props;
     const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
@@ -287,6 +288,7 @@ class CouponDetails extends React.Component {
             unassignedCodes,
             selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
             hasAllCodesSelected,
+            couponType,
           },
         },
       });
