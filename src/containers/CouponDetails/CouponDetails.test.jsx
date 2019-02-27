@@ -30,7 +30,7 @@ const initialCouponData = {
   id: 1,
   title: 'test-title',
   num_unassigned: 10,
-  has_error: false,
+  errors: [],
   usage_limitation: MULTI_USE,
 };
 
@@ -125,7 +125,7 @@ describe('CouponDetailsWrapper', () => {
           <CouponDetailsWrapper
             couponData={{
               ...initialCouponData,
-              has_error: true,
+              errors: [{ code: 'test-code', user_email: 'test@example.com' }],
             }}
             isExpanded
           />

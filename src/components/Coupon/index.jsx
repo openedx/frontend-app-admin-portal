@@ -121,7 +121,7 @@ class Coupon extends React.Component {
           'coupon mb-3 mb-lg-2 rounded border',
           {
             expanded: isExpanded,
-            'border-danger': data.has_error && !isExpanded,
+            'border-danger': data.errors.length > 0 && !isExpanded,
             dimmed,
           },
         )}
@@ -177,7 +177,7 @@ class Coupon extends React.Component {
             </div>
           </div>
           <div className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0">
-            {data.has_error && !isExpanded && this.renderErrorIcon()}
+            {data.errors.length > 0 && !isExpanded && this.renderErrorIcon()}
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
@@ -201,7 +201,7 @@ Coupon.propTypes = {
     title: PropTypes.string.isRequired,
     start_date: PropTypes.string.isRequired,
     end_date: PropTypes.string.isRequired,
-    has_error: PropTypes.bool.isRequired,
+    errors: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     num_unassigned: PropTypes.number.isRequired,
     num_uses: PropTypes.number.isRequired,
     max_uses: PropTypes.number,

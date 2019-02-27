@@ -59,7 +59,7 @@ const sampleCouponData = {
   title: 'test-title-1',
   start_date: '2019-01-03T23:23:51.581Z',
   end_date: '2019-09-18T14:46:36.716Z',
-  has_error: false,
+  errors: [],
   max_uses: 10,
   num_unassigned: 2,
   num_uses: 2,

@@ -2,7 +2,7 @@ import EcommerceApiService from '../../src/data/services/EcommerceApiService';
 
 import { codes, codesCsv, coupons } from './data';
 
-const firstCouponHasError = coupons[0].has_error;
+const firstCouponHasError = coupons[0].errors.length > 0;
 
 const findCouponIndexById = couponId =>
   coupons.findIndex(coupon => coupon.id === couponId);
@@ -31,7 +31,7 @@ const rewire = () => {
         data: codesCsv(),
       });
     }
-    const couponData = coupons[findCouponIndexById(couponId)].has_error ?
+    const couponData = coupons[findCouponIndexById(couponId)].errors.length > 0 ?
       codes({
         codeFilter: options.code_filter,
         couponHasError: firstCouponHasError,
