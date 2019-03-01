@@ -67,7 +67,7 @@ const coupons = [...Array(couponsCount)].map((_, index) => {
     num_unassigned: faker.random.number({ min: 1, max: 20 }),
     num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
     max_uses: faker.random.boolean() ? totalEnrollments : null,
-    has_error: false,
+    errors: [],
   };
 });
 
@@ -186,7 +186,13 @@ const getCodesCsv = () => allCodes.reduce((csvData, code) => (
   `${csvData}${getCsvRow(code)}\n`
 ), `${getCsvHeaders()}\n`);
 
-coupons[0].has_error = firstCouponHasError;
+// Attach errors
+coupons[0].errors = getAllCodes(firstCouponHasError)
+  .filter(codeItem => codeItem.error)
+  .map(codeItem => ({
+    code: codeItem.code,
+    user_email: codeItem.assigned_to,
+  }));
 
 export {
   coupons,

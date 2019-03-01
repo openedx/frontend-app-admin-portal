@@ -33,7 +33,7 @@ const initialCouponData = {
   title: 'Test Coupon',
   start_date: '2018-06-01T12:00:00Z',
   end_date: '2019-02-01T12:00:00Z',
-  has_error: false,
+  errors: [],
   num_unassigned: 0,
   num_uses: 0,
   max_uses: 1,
@@ -92,7 +92,7 @@ describe('<Coupon />', () => {
           <CouponWrapper
             data={{
               ...initialCouponData,
-              has_error: true,
+              errors: [{ code: 'test-code', user_email: 'test@example.com' }],
             }}
           />
         ))

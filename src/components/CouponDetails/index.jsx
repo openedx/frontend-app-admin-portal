@@ -354,7 +354,7 @@ class CouponDetails extends React.Component {
     //  - Code selection status (e.g., "50 codes selected. Select all 65 codes?")
 
     const {
-      couponData: { has_error: hasError },
+      couponData: { errors },
       couponOverviewError,
     } = this.props;
     const {
@@ -365,7 +365,7 @@ class CouponDetails extends React.Component {
     } = this.state;
 
     const hasStatusAlert = [
-      hasError,
+      errors.length > 0,
       couponOverviewError,
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
@@ -593,12 +593,15 @@ class CouponDetails extends React.Component {
   }
 
   renderSuccessMessage({ title, message }) {
-    const { hasError, couponOverviewError } = this.props;
+    const {
+      couponData: { errors },
+      couponOverviewError,
+    } = this.props;
 
     return (
       <StatusAlert
         alertType="success"
-        className={[classNames({ 'mt-2': hasError || couponOverviewError })]}
+        className={[classNames({ 'mt-2': errors.length > 0 || couponOverviewError })]}
         iconClassNames={['fa', 'fa-check']}
         title={title}
         message={message}
@@ -609,12 +612,15 @@ class CouponDetails extends React.Component {
   }
 
   renderInfoMessage({ title, message }) {
-    const { hasError, couponOverviewError } = this.props;
+    const {
+      couponData: { errors },
+      couponOverviewError,
+    } = this.props;
 
     return (
       <StatusAlert
         alertType="info"
-        className={[classNames({ 'mt-2': hasError || couponOverviewError })]}
+        className={[classNames({ 'mt-2': errors.length > 0 || couponOverviewError })]}
         title={title}
         message={message}
       />
@@ -636,7 +642,7 @@ class CouponDetails extends React.Component {
     } = this.state;
 
     const {
-      couponData: { id, has_error: hasError },
+      couponData: { id, errors },
       couponDetailsTable: { data: tableData },
       couponOverviewLoading,
       couponOverviewError,
@@ -706,8 +712,21 @@ class CouponDetails extends React.Component {
               {this.hasStatusAlert() &&
                 <div className="row mb-3">
                   <div className="col">
-                    {hasError && this.renderErrorMessage({
-                      message: 'One or more codes below have an error.',
+                    {errors.length > 0 && this.renderErrorMessage({
+                      message: (
+                        <React.Fragment>
+                          {errors.length > 1 ?
+                            `${errors.length} errors have occurred: ` : 'An error has occurred: '}
+                          <ul className="m-0 pl-4">
+                            {errors.map(error => (
+                              <li key={error.code}>
+                                {`Unable to send code assignment email to
+                                 ${error.user_email} for ${error.code} code.`}
+                              </li>
+                            ))}
+                          </ul>
+                        </React.Fragment>
+                      ),
                     })}
                     {couponOverviewError && !couponOverviewLoading && this.renderErrorMessage({
                       message: (
@@ -826,7 +845,7 @@ CouponDetails.propTypes = {
   // custom props
   couponData: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    has_error: PropTypes.bool.isRequired,
+    errors: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     num_unassigned: PropTypes.number.isRequired,
     usage_limitation: PropTypes.string.isRequired,
   }).isRequired,
