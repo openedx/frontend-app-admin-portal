@@ -25,7 +25,7 @@ class CodeManagement extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId, location } = this.props;
+    const { enterpriseId, location, history } = this.props;
     if (enterpriseId) {
       this.props.fetchCouponOrders();
     }
@@ -34,6 +34,10 @@ class CodeManagement extends React.Component {
         hasRequestedCodes: location.state.hasRequestedCodes,
       });
     }
+    history.replace({
+      ...location.pathname,
+      state: {},
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -42,7 +46,6 @@ class CodeManagement extends React.Component {
       this.props.fetchCouponOrders();
     }
   }
-
 
   componentWillUnmount() {
     this.props.clearCouponOrders();
