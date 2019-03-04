@@ -25,30 +25,25 @@ class CodeManagement extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId } = this.props;
-
+    const { enterpriseId, location, history } = this.props;
     if (enterpriseId) {
       this.props.fetchCouponOrders();
     }
+    if (location.state && location.state.hasRequestedCodes) {
+      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+        hasRequestedCodes: location.state.hasRequestedCodes,
+      });
+    }
+    history.replace({
+      ...location.pathname,
+      state: {},
+    });
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseId, location, history } = this.props;
-
+    const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchCouponOrders();
-    }
-
-    if (location.state && location.state.hasRequestedCodes && location !== prevProps.location) {
-      this.setState({ // eslint-disable-line react/no-did-update-set-state
-        hasRequestedCodes: location.state.hasRequestedCodes,
-      });
-
-      // reset location state so the "requested more codes" status alert disappears
-      history.replace({
-        ...location.pathname,
-        state: {},
-      });
     }
   }
 

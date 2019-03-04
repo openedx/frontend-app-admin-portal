@@ -142,15 +142,14 @@ describe('CodeManagementPageWrapper', () => {
 
   describe('correctly handles prop changes', () => {
     it('handles location.state change', () => {
-      const wrapper = mount(<CodeManagementPageWrapper />);
-
-      wrapper.setProps({
-        location: {
+      const wrapper = mount((
+        <CodeManagementPageWrapper location={{
           state: {
             hasRequestedCodes: true,
           },
-        },
-      });
+        }}
+        />
+      ));
 
       expect(wrapper.find('CodeManagement').instance().state.hasRequestedCodes).toBeTruthy();
     });
