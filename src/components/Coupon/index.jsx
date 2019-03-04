@@ -27,6 +27,26 @@ class Coupon extends React.Component {
     this.handleCouponKeyDown = this.handleCouponKeyDown.bind(this);
   }
 
+  componentDidMount() {
+    const { isExpanded } = this.props;
+
+    if (isExpanded) {
+      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+        isExpanded,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isExpanded } = this.props;
+
+    if (isExpanded !== prevProps.isExpanded) {
+      this.setState({ // eslint-disable-line react/no-did-update-set-state
+        isExpanded,
+      });
+    }
+  }
+
   setCouponOpacity(dimmedStatus) {
     this.setState({
       dimmed: dimmedStatus,
@@ -191,6 +211,7 @@ class Coupon extends React.Component {
 }
 
 Coupon.defaultProps = {
+  isExpanded: false,
   onExpand: () => {},
   onCollapse: () => {},
 };
@@ -206,6 +227,7 @@ Coupon.propTypes = {
     num_uses: PropTypes.number.isRequired,
     max_uses: PropTypes.number,
   }).isRequired,
+  isExpanded: PropTypes.bool,
   onExpand: PropTypes.func,
   onCollapse: PropTypes.func,
 };

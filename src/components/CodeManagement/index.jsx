@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import qs from 'query-string';
 import { Button, Icon, Pagination } from '@edx/paragon';
 
 import H2 from '../H2';
@@ -9,6 +10,7 @@ import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
 import StatusAlert from '../StatusAlert';
+
 import { updateUrl } from '../../utils';
 
 class CodeManagement extends React.Component {
@@ -18,32 +20,64 @@ class CodeManagement extends React.Component {
     this.couponRefs = [];
     this.state = {
       hasRequestedCodes: false,
-      currentPage: 1,
     };
 
-    this.handleCouponExpand = this.handleCouponExpand.bind(this);
+    this.handleRefreshData = this.handleRefreshData.bind(this);
   }
 
   componentDidMount() {
     const { enterpriseId, location, history } = this.props;
+    const queryParams = qs.parse(location.search);
+
     if (enterpriseId) {
-      this.props.fetchCouponOrders();
+      this.paginateCouponOrders(queryParams.overview_page || 1);
     }
+
     if (location.state && location.state.hasRequestedCodes) {
       this.setState({ // eslint-disable-line react/no-did-mount-set-state
         hasRequestedCodes: location.state.hasRequestedCodes,
       });
+
+      history.replace({
+        ...location.pathname,
+        state: {},
+      });
     }
-    history.replace({
-      ...location.pathname,
-      state: {},
-    });
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseId } = this.props;
+    const {
+      coupons,
+      enterpriseId,
+      location,
+    } = this.props;
+
+    const queryParams = qs.parse(location.search);
+    const prevQueryParams = qs.parse(prevProps.location.search);
+    const couponId = queryParams.coupon_id;
+
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
-      this.props.fetchCouponOrders();
+      this.paginateCouponOrders(queryParams.overview_page);
+    }
+
+    if (queryParams.overview_page !== prevQueryParams.overview_page) {
+      this.paginateCouponOrders(queryParams.overview_page);
+    }
+
+    // If the specified coupon id doesn't exist in the coupons returned by the API,
+    // remove the coupon id from the URL.
+    if (couponId && coupons && coupons !== prevProps.coupons) {
+      const couponWithIdExists = coupons.results.find((
+        coupon => coupon.id === parseInt(couponId, 10)
+      ));
+
+      if (!couponWithIdExists) {
+        this.removeCouponIdQueryParam();
+      }
+    }
+
+    if (queryParams !== prevQueryParams) {
+      this.setCouponOpacity(couponId);
     }
   }
 
@@ -51,45 +85,64 @@ class CodeManagement extends React.Component {
     this.props.clearCouponOrders();
   }
 
-  paginateCouponOrders(pageNumber) {
-    const page = parseInt(pageNumber, 10);
-    if (page !== this.state.currentPage) {
-      this.props.fetchCouponOrders({ page });
-      this.setState({
-        currentPage: page,
+  getCouponRefs() {
+    return this.couponRefs.filter(coupon => coupon);
+  }
+
+  setCouponOpacity(couponId) {
+    const couponRefs = this.getCouponRefs();
+    const hasDimmedCoupons = couponRefs.some(coupon => coupon.state.dimmed);
+
+    if (couponId && !hasDimmedCoupons) {
+      couponRefs.forEach((coupon) => {
+        const { data: { id } } = coupon.props;
+        if (id !== parseInt(couponId, 10)) {
+          coupon.setCouponOpacity(true);
+        }
       });
-      updateUrl({ page });
+    } else if (!couponId && hasDimmedCoupons) {
+      couponRefs.forEach((coupon) => {
+        coupon.setCouponOpacity(false);
+      });
     }
+  }
+
+  removeCouponIdQueryParam() {
+    const { location } = this.props;
+    const queryParams = qs.parse(location.search);
+
+    queryParams.coupon_id = undefined;
+
+    updateUrl(queryParams);
+  }
+
+  paginateCouponOrders(pageNumber) {
+    const page = pageNumber ? parseInt(pageNumber, 10) : 1;
+    this.props.fetchCouponOrders({ page });
+  }
+
+  handleRefreshData() {
+    this.paginateCouponOrders(1);
+    this.removeCouponIdQueryParam();
   }
 
   handleCouponExpand(selectedIndex) {
-    const { location, history } = this.props;
-    const coupons = this.couponRefs;
+    const { location } = this.props;
+    const queryParams = qs.parse(location.search);
 
-    // reset location state for paginated coupon orders.
-    history.replace({
-      ...location.pathname,
-      state: {},
-    });
+    const coupons = this.getCouponRefs();
+    const selectedCoupon = coupons[selectedIndex];
+    const couponId = selectedCoupon.props.data.id;
 
-    if (coupons.length) {
-      coupons.forEach((ref, index) => {
-        // close all coupons but the coupon that was selected
-        if (selectedIndex !== index) {
-          ref.closeCouponDetails();
-          ref.setCouponOpacity(true);
-        }
-      });
-    }
+    queryParams.coupon_id = couponId;
+    updateUrl(queryParams);
+
+    this.setCouponOpacity(couponId);
   }
 
   handleCouponCollapse() {
-    const coupons = this.couponRefs;
-    if (coupons.length) {
-      coupons.forEach((ref) => {
-        ref.setCouponOpacity(false);
-      });
-    }
+    this.setCouponOpacity();
+    this.removeCouponIdQueryParam();
   }
 
   hasCouponData(coupons) {
@@ -117,7 +170,9 @@ class CodeManagement extends React.Component {
   }
 
   renderCoupons() {
-    const { coupons } = this.props;
+    const { coupons, location } = this.props;
+    const queryParams = qs.parse(location.search);
+
     return (
       <React.Fragment>
         {coupons.results.map((coupon, index) => (
@@ -125,13 +180,18 @@ class CodeManagement extends React.Component {
             ref={(node) => { this.couponRefs[index] = node; }}
             key={coupon.id}
             data={coupon}
+            isExpanded={coupon.id === parseInt(queryParams.coupon_id, 10)}
             onExpand={() => this.handleCouponExpand(index)}
             onCollapse={() => this.handleCouponCollapse()}
           />
         ))}
         <div className="d-flex mt-4 justify-content-center">
           <Pagination
-            onPageSelect={page => this.paginateCouponOrders(page)}
+            onPageSelect={page => updateUrl({
+              coupon_id: undefined,
+              page: undefined,
+              overview_page: page !== 1 ? page : undefined,
+            })}
             pageCount={coupons.num_pages}
             currentPage={coupons.current_page}
             paginationLabel="coupons pagination"
@@ -195,7 +255,7 @@ class CodeManagement extends React.Component {
                     Refresh data
                   </React.Fragment>
                 }
-                onClick={() => this.props.fetchCouponOrders()}
+                onClick={this.handleRefreshData}
                 disabled={loading}
               />
               <Link

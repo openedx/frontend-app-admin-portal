@@ -140,25 +140,49 @@ describe('CodeManagementPageWrapper', () => {
     });
   });
 
-  describe('correctly handles prop changes', () => {
-    it('handles location.state change', () => {
-      const wrapper = mount((
-        <CodeManagementPageWrapper location={{
+  it('handles location.state on componentDidMount', () => {
+    const wrapper = mount((
+      <CodeManagementPageWrapper
+        location={{
           state: {
             hasRequestedCodes: true,
           },
         }}
-        />
-      ));
+      />
+    ));
 
-      expect(wrapper.find('CodeManagement').instance().state.hasRequestedCodes).toBeTruthy();
+    expect(wrapper.find('CodeManagement').instance().state.hasRequestedCodes).toBeTruthy();
+  });
+
+  it('handles overview_page query parameter change', () => {
+    const store = mockStore({
+      ...initialState,
+      coupons: {
+        ...initialState.coupons,
+        data: {
+          count: 100,
+          num_pages: 2,
+          results: [...Array(50)].map((_, index) => ({ ...sampleCouponData, id: index })),
+        },
+      },
     });
+    const spy = jest.spyOn(store, 'dispatch');
+
+    const wrapper = mount(<CodeManagementPageWrapper store={store} />);
+
+    spy.mockRestore();
+
+    wrapper.setProps({
+      location: {
+        search: '?overview_page=2',
+      },
+    });
+
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('calls clearCouponOrders() on componentWillUnmount', () => {
-    const store = mockStore({
-      ...initialState,
-    });
+    const store = mockStore({ ...initialState });
 
     const wrapper = mount(<CodeManagementPageWrapper store={store} />);
     wrapper.unmount();

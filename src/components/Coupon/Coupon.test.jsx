@@ -197,4 +197,20 @@ describe('<Coupon />', () => {
     instance.closeCouponDetails(true);
     expect(instance.state.isExpanded).toBeFalsy();
   });
+
+  it('sets state correctly for isExpanded prop on componentDidMount', () => {
+    wrapper = mount(<CouponWrapper isExpanded />);
+    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeTruthy();
+  });
+
+  it('correctly handles isExpanded prop change', () => {
+    wrapper = mount(<CouponWrapper />);
+    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeFalsy();
+
+    wrapper.setProps({
+      isExpanded: true,
+    });
+
+    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeTruthy();
+  });
 });

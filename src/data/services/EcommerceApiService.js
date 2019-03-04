@@ -11,7 +11,7 @@ class EcommerceApiService {
     const { enterpriseId } = store.getState().portalConfiguration;
     const queryParams = {
       page: 1,
-      page_size: 50,
+      page_size: 2,
       ...options,
     };
 

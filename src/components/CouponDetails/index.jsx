@@ -836,11 +836,16 @@ class CouponDetails extends React.Component {
 CouponDetails.defaultProps = {
   isExpanded: false,
   couponDetailsTable: {},
+  couponOverviewError: null,
+  couponOverviewLoading: false,
 };
 
 CouponDetails.propTypes = {
   // props from container
+  fetchCouponOrder: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({}),
+  couponOverviewError: PropTypes.instanceOf(Error),
+  couponOverviewLoading: PropTypes.bool,
 
   // custom props
   couponData: PropTypes.shape({

@@ -43,7 +43,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
         <a
           aria-current={null}
           className="btn btn-link btn-block text-left text-secondary rounded-0"
-          href="/test-enterprise-slug/admin/codes"
+          href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span
@@ -144,7 +144,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         <a
           aria-current={null}
           className="btn btn-link btn-block text-left text-secondary rounded-0"
-          href="/test-enterprise-slug/admin/codes"
+          href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span
@@ -199,7 +199,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         <a
           aria-current={null}
           className="btn btn-link btn-block text-left text-secondary rounded-0"
-          href="/test-enterprise-slug/admin/codes"
+          href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span

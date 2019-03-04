@@ -55,7 +55,6 @@ const tableReducer = (state = {}, action) => {
       });
     case CLEAR_TABLE:
       return updateTable(state, action.payload.tableId, {
-        loading: false,
         error: null,
         ordering: null,
         data: null,

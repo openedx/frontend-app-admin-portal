@@ -74,7 +74,6 @@ describe('table reducer', () => {
     };
     const expected = {
       'table-1': {
-        loading: false,
         error: null,
         ordering: null,
         data: null,
