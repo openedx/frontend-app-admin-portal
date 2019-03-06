@@ -91,16 +91,15 @@ class CodeManagement extends React.Component {
 
   setCouponOpacity(couponId) {
     const couponRefs = this.getCouponRefs();
-    const hasDimmedCoupons = couponRefs.some(coupon => coupon.state.dimmed);
 
-    if (couponId && !hasDimmedCoupons) {
+    if (couponId) {
       couponRefs.forEach((coupon) => {
         const { data: { id } } = coupon.props;
         if (id !== parseInt(couponId, 10)) {
           coupon.setCouponOpacity(true);
         }
       });
-    } else if (!couponId && hasDimmedCoupons) {
+    } else {
       couponRefs.forEach((coupon) => {
         coupon.setCouponOpacity(false);
       });
