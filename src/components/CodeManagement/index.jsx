@@ -72,7 +72,7 @@ class CodeManagement extends React.Component {
       ));
 
       if (!couponWithIdExists) {
-        this.removeCouponIdQueryParam();
+        this.removeQueryParams(['coupon_id', 'page']);
       }
     }
 
@@ -107,11 +107,13 @@ class CodeManagement extends React.Component {
     }
   }
 
-  removeCouponIdQueryParam() {
+  removeQueryParams(keys) {
     const { location } = this.props;
     const queryParams = qs.parse(location.search);
 
-    queryParams.coupon_id = undefined;
+    keys.forEach((key) => {
+      queryParams[key] = undefined;
+    });
 
     updateUrl(queryParams);
   }
@@ -123,7 +125,7 @@ class CodeManagement extends React.Component {
 
   handleRefreshData() {
     this.paginateCouponOrders(1);
-    this.removeCouponIdQueryParam();
+    this.removeQueryParams(['coupon_id', 'page', 'overview_page']);
   }
 
   handleCouponExpand(selectedIndex) {
@@ -142,7 +144,7 @@ class CodeManagement extends React.Component {
 
   handleCouponCollapse() {
     this.setCouponOpacity();
-    this.removeCouponIdQueryParam();
+    this.removeQueryParams(['coupon_id', 'page']);
   }
 
   hasCouponData(coupons) {
