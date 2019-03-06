@@ -125,7 +125,7 @@ class EnterpriseApp extends React.Component {
                     <Route
                       key="code-management"
                       exact
-                      path={`${baseUrl}/admin/codes`}
+                      path={`${baseUrl}/admin/coupons`}
                       render={routeProps =>
                         <CodeManagementPage {...routeProps} />
                       }
@@ -133,7 +133,7 @@ class EnterpriseApp extends React.Component {
                     <Route
                       key="request-codes"
                       exact
-                      path={`${baseUrl}/admin/codes/request`}
+                      path={`${baseUrl}/admin/coupons/request`}
                       render={routeProps =>
                         <RequestCodesPage {...routeProps} />
                       }
