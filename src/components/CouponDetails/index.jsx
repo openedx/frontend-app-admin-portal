@@ -155,7 +155,7 @@ class CouponDetails extends React.Component {
   }
 
   getActionButton(code) {
-    const { couponData: { id, title: couponTitle } } = this.props;
+    const { couponData: { id, errors, title: couponTitle } } = this.props;
     const { selectedToggle } = this.state;
     const {
       assigned_to: assignedTo,
@@ -170,25 +170,28 @@ class CouponDetails extends React.Component {
       return null;
     }
 
+    const codeHasError = errors.find(errorItem => errorItem.code === code.code);
     if (assignedTo) {
       return (
         <React.Fragment>
-          <Button
-            className={[...buttonClassNames, 'remind-btn']}
-            label="Remind"
-            onClick={() => this.setModalState({
-              key: 'remind',
-              options: {
-                couponId: id,
-                title: couponTitle,
-                data: {
-                  code: code.code,
-                  email: code.assigned_to,
+          {!codeHasError &&
+          <React.Fragment>
+            <Button
+              className={[...buttonClassNames, 'remind-btn']}
+              label="Remind"
+              onClick={() => this.setModalState({
+                key: 'remind',
+                options: {
+                  couponId: id,
+                  title: couponTitle,
+                  data: {
+                    code: code.code,
+                    email: code.assigned_to,
+                  },
                 },
-              },
-            })}
-          />
-           |
+              })}
+            /><span>|</span>
+          </React.Fragment>}
           <Button
             className={[...buttonClassNames, 'revoke-btn']}
             label="Revoke"

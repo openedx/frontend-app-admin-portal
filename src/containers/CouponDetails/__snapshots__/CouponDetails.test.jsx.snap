@@ -206,7 +206,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
                 >
                   <li>
                     Unable to send code assignment email to
-                                 test@example.com for test-code code.
+                                 test@bestrun.com for test-code-1 code.
                   </li>
                 </ul>
               </div>
@@ -679,7 +679,9 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       Remind
                     </button>
-                    |
+                    <span>
+                      |
+                    </span>
                     <button
                       className="btn btn-link btn-sm px-0 revoke-btn"
                       onBlur={[Function]}
