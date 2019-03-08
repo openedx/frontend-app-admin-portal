@@ -649,6 +649,8 @@ class CouponDetails extends React.Component {
       isExpanded,
     } = this.props;
 
+    const shouldDisplayErrors = selectedToggle === 'unredeemed' && errors.length > 0;
+
     return (
       <div
         id={`coupon-details-${id}`}
@@ -712,7 +714,7 @@ class CouponDetails extends React.Component {
               {this.hasStatusAlert() &&
                 <div className="row mb-3">
                   <div className="col">
-                    {errors.length > 0 && this.renderErrorMessage({
+                    {shouldDisplayErrors && this.renderErrorMessage({
                       message: (
                         <React.Fragment>
                           {errors.length > 1 ?
