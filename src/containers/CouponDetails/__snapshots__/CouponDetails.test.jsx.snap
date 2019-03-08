@@ -76,7 +76,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             type="select"
-            value="unassigned"
+            value="unredeemed"
           >
             <option
               value="unassigned"

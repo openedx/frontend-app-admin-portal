@@ -10,6 +10,7 @@ import { mount } from 'enzyme';
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
+import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
 
 const mockStore = configureMockStore([thunk]);
@@ -120,18 +121,17 @@ describe('CouponDetailsWrapper', () => {
     });
 
     it('with error', () => {
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper
-            couponData={{
-              ...initialCouponData,
-              errors: [{ code: 'test-code', user_email: 'test@example.com' }],
-            }}
-            isExpanded
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const tree = renderer.create((
+        <CouponDetailsWrapper
+          couponData={{
+            ...initialCouponData,
+            errors: [{ code: 'test-code', user_email: 'test@example.com' }],
+          }}
+          isExpanded
+        />
+      ));
+      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'unredeemed' });
+      expect(tree.toJSON()).toMatchSnapshot();
     });
 
     it('with table data', () => {
