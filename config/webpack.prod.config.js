@@ -154,7 +154,7 @@ module.exports = Merge.smart(commonConfig, {
       NEW_RELIC_APP_ID: null,
       NEW_RELIC_LICENSE_KEY: null,
       FEATURE_FLAGS: {
-        CODE_MANAGEMENT: false,
+        CODE_MANAGEMENT: true,
       },
     }),
     new HtmlWebpackNewRelicPlugin({
