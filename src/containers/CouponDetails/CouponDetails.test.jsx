@@ -125,7 +125,7 @@ describe('CouponDetailsWrapper', () => {
         <CouponDetailsWrapper
           couponData={{
             ...initialCouponData,
-            errors: [{ code: 'test-code', user_email: 'test@example.com' }],
+            errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
           }}
           isExpanded
         />
@@ -273,6 +273,22 @@ describe('CouponDetailsWrapper', () => {
 
     expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
     expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
+  });
+
+  it('removes remind button in case overview has errors', () => {
+    wrapper = mount(<CouponDetailsWrapper
+      store={store}
+      couponData={{
+        ...initialCouponData,
+        errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
+      }}
+      isExpanded
+    />);
+
+    const revokeButton = wrapper.find('table').find('button').find('.revoke-btn');
+    expect(revokeButton.prop('children')).toEqual('Revoke');
+
+    expect(wrapper.find('table').find('button').find('.remind-btn').length).toEqual(0);
   });
 
   describe('modals', () => {
