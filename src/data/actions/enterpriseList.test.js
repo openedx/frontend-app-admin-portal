@@ -53,13 +53,12 @@ describe('actions', () => {
       ];
       const store = mockStore();
       const defaultOptions = {
-        permissions: 'enterprise_data_api_access',
         page: 1,
         page_size: 50,
         search: 'test-search-string',
       };
 
-      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(defaultOptions)}`)
+      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(defaultOptions)}`)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(searchEnterpriseList({ search: 'test-search-string' })).then(() => {
@@ -70,7 +69,6 @@ describe('actions', () => {
     it('dispatches failure action after fetching enrollments', () => {
       const store = mockStore();
       const options = {
-        permissions: 'enterprise_data_api_access',
         page: 2,
         page_size: 10,
         search: 'test-search-string',
@@ -92,7 +90,7 @@ describe('actions', () => {
         },
       ];
 
-      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(options)}`)
+      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(options)}`)
         .networkError();
 
       return store.dispatch(searchEnterpriseList(options)).then(() => {
