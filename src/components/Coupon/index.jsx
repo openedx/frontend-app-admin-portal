@@ -185,7 +185,7 @@ class Coupon extends React.Component {
           <div className="col-sm-12 col-lg-4 mb-2 mb-lg-0">
             <div className="row no-gutters">
               <div className="col">
-                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Unassigned Codes</small>
+                <small className={classNames({ 'text-muted': !isExpanded, 'text-light': isExpanded })}>Assignments Remaining</small>
                 <div>{data.num_unassigned}</div>
               </div>
               <div className="col">

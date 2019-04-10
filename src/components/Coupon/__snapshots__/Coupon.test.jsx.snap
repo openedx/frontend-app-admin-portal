@@ -69,7 +69,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
           <small
             className="text-muted"
           >
-            Unassigned Codes
+            Assignments Remaining
           </small>
           <div>
             0
@@ -199,7 +199,7 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
           <small
             className="text-muted"
           >
-            Unassigned Codes
+            Assignments Remaining
           </small>
           <div>
             0
@@ -319,7 +319,7 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
           <small
             className="text-muted"
           >
-            Unassigned Codes
+            Assignments Remaining
           </small>
           <div>
             0

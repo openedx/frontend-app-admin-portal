@@ -488,7 +488,7 @@ Array [
                   <small
                     className="text-muted"
                   >
-                    Unassigned Codes
+                    Assignments Remaining
                   </small>
                   <div>
                     2
@@ -605,7 +605,7 @@ Array [
                   <small
                     className="text-muted"
                   >
-                    Unassigned Codes
+                    Assignments Remaining
                   </small>
                   <div>
                     2
