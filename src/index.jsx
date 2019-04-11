@@ -62,6 +62,9 @@ const AppWrapper = () => (
 
 const PortalAppWrapper = withErrorBoundary(AppWrapper);
 
-if (apiClient.ensurePublicOrAuthencationAndCookies(window.location.pathname)) {
-  ReactDOM.render(<PortalAppWrapper />, document.getElementById('root'));
-}
+apiClient.ensurePublicOrAuthenticationAndCookies(
+  window.location.pathname,
+  () => {
+    ReactDOM.render(<PortalAppWrapper />, document.getElementById('root'));
+  },
+);
