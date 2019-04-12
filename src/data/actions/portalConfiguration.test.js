@@ -37,7 +37,7 @@ describe('actions', () => {
       { type: FETCH_PORTAL_CONFIGURATION_SUCCESS, payload: { data: responseData } },
     ];
     const store = mockStore();
-    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?enterprise_slug=${slug}&page=1&page_size=50`)
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?page=1&page_size=50&permissions=enterprise_data_api_access&slug=${slug}`)
       .replyOnce(200, JSON.stringify({ results: [responseData] }));
 
     return store.dispatch(fetchPortalConfiguration(slug)).then(() => {
@@ -53,7 +53,7 @@ describe('actions', () => {
     ];
     const store = mockStore();
 
-    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?enterprise_slug=${slug}&page=1&page_size=50`)
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/with_access_to/?page=1&page_size=50&permissions=enterprise_data_api_access&slug=${slug}`)
       .replyOnce(500, JSON.stringify({}));
 
     return store.dispatch(fetchPortalConfiguration(slug)).then(() => {

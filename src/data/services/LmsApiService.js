@@ -21,16 +21,17 @@ class LmsApiService {
 
   static fetchEnterpriseList(options) {
     const queryParams = {
+      permissions: 'enterprise_data_api_access',
       page: 1,
       page_size: 50,
       ...options,
     };
-    const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(queryParams)}`;
+    const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/with_access_to/?${qs.stringify(queryParams)}`;
     return apiClient.get(enterpriseListUrl);
   }
 
   static fetchEnterpriseBySlug(slug) {
-    return this.fetchEnterpriseList({ enterprise_slug: slug })
+    return this.fetchEnterpriseList({ slug })
       // Because we expect only one enterprise by slug we return only the first result
       .then((response) => {
         const { data } = response;
