@@ -614,6 +614,12 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                     scope="col"
                   >
+                    Assignments Remaining
+                  </th>
+                  <th
+                    className=""
+                    scope="col"
+                  >
                     Actions
                   </th>
                 </tr>
@@ -666,6 +672,11 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     test-code-1
+                  </td>
+                  <td
+                    className=""
+                  >
+                    85
                   </td>
                   <td
                     className=""
@@ -741,6 +752,11 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   </td>
                   <td
                     className=""
+                  >
+                    0
+                  </td>
+                  <td
+                    className=""
                   />
                 </tr>
                 <tr
@@ -788,6 +804,11 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     className=""
                   >
                     test-code-3
+                  </td>
+                  <td
+                    className=""
+                  >
+                    85
                   </td>
                   <td
                     className=""

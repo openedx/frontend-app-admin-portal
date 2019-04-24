@@ -44,6 +44,10 @@ class CouponDetails extends React.Component {
           key: 'code',
         },
         {
+          label: 'Assignments Remaining',
+          key: 'assignments_remaining',
+        },
+        {
           label: 'Actions',
           key: 'actions',
         },
@@ -403,6 +407,18 @@ class CouponDetails extends React.Component {
       tableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
     }
 
+    // `assignments_remaining` column
+    if (value === 'unassigned' && getColumnIndexForKey('assignments_remaining') === -1) {
+      // Add `assignments_remaining` column if it doesn't already exist.
+      tableColumns.splice(3, 0, {
+        label: 'Assignments Remaining',
+        key: 'assignments_remaining',
+      });
+    } else if (value !== 'unassigned' && getColumnIndexForKey('assignments_remaining') > -1) {
+      // Remove `assignments_remaining` column if it already exists.
+      tableColumns.splice(getColumnIndexForKey('assignments_remaining'), 1);
+    }
+
     // `actions` column
     if (value !== 'redeemed' && getColumnIndexForKey('actions') === -1) {
       // Add `actions` column if it doesn't already exist
@@ -565,6 +581,7 @@ class CouponDetails extends React.Component {
         </span>
       ) : code.assigned_to,
       redemptions: `${code.redemptions.used} of ${code.redemptions.total}`,
+      assignments_remaining: `${code.redemptions.total - code.redemptions.used - code.redemptions.num_assignments}`,
       actions: this.getActionButton(code),
       select: (
         <CheckBox
