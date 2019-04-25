@@ -48,8 +48,34 @@ const AdminWrapper = props => (
 );
 
 describe('<Admin />', () => {
+  const baseProps = {
+    activeLearners: {
+      past_week: 1,
+      past_month: 1,
+    },
+    enrolledLearners: 1,
+    courseCompletions: 1,
+    lastUpdatedDate: '2018-07-31T23:14:35Z',
+    numberOfUsers: 3,
+  };
+
   describe('renders correctly', () => {
     it('calls fetchDashboardAnalytics prop', () => {
+      const mockFetchDashboardAnalytics = jest.fn();
+      const tree = renderer
+        .create((
+          <AdminWrapper
+            fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+            enterpriseId="test-enterprise-id"
+            loading
+          />
+        ))
+        .toJSON();
+      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('with no dashboard analytics data', () => {
       const mockFetchDashboardAnalytics = jest.fn();
       const tree = renderer
         .create((
@@ -64,17 +90,6 @@ describe('<Admin />', () => {
     });
 
     describe('with dashboard analytics data', () => {
-      const baseProps = {
-        activeLearners: {
-          past_week: 1,
-          past_month: 1,
-        },
-        enrolledLearners: 1,
-        courseCompletions: 1,
-        lastUpdatedDate: '2018-07-31T23:14:35Z',
-        numberOfUsers: 3,
-      };
-
       it('renders full report', () => {
         const tree = renderer
           .create((
@@ -295,7 +310,6 @@ describe('<Admin />', () => {
 
   describe('calls download csv fetch method for table', () => {
     let spy;
-
     const actionSlugs = {
       enrollments: {
         csvFetchMethod: 'fetchCourseEnrollments',
@@ -346,6 +360,7 @@ describe('<Admin />', () => {
         spy = jest.spyOn(EnterpriseDataApiService, actionMetadata.csvFetchMethod);
         const wrapper = mount((
           <AdminWrapper
+            {...baseProps}
             enterpriseId="test-enterprise-id"
             table={{
               [key]: {
