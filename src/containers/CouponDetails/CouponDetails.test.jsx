@@ -80,6 +80,7 @@ const sampleTableData = {
         redemptions: {
           total: 100,
           used: 100,
+          num_assignments: 0,
         },
       },
       {
