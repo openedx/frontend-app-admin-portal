@@ -317,201 +317,42 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
     className="row mt-4"
   >
     <div
-      className="col-sm-12 col-md"
+      className="col"
     >
       <h1
         className={null}
       >
-        Enterprise List
+        Error
       </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
-    >
       <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
+        className="alert fade alert-danger show"
+        hidden={false}
+        role="alert"
       >
         <div
-          className="form-group form-inline"
+          className="alert-dialog"
         >
-          <label
+          <div
             className=""
-            htmlFor="asInput8"
-            id="label-asInput8"
-          >
-            Search:
-          </label>
-          <div
-            className="input-group"
           >
             <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput8"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input no-clear-btn"
-              disabled={false}
-              id="asInput8"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              readOnly={false}
-              required={false}
-              themes={Array []}
-              type="search"
-              value=""
-            />
-            <div
-              className="input-group-append"
+              className="message"
             >
-              <button
-                className="btn search-btn"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon1"
-                />
-                <span
-                  className="sr-only"
-                >
-                  Submit search
-                </span>
-              </button>
+              Network Error
             </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput8"
-          >
-            <span />
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col"
-    />
   </div>
 </div>
 `;
 
 exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 <div
-  className="container-fluid"
+  className="loading d-flex align-items-center justify-content-center loading"
 >
-  <div
-    className="row mt-4"
-  >
-    <div
-      className="col-sm-12 col-md"
-    >
-      <h1
-        className={null}
-      >
-        Enterprise List
-      </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
-    >
-      <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
-      >
-        <div
-          className="form-group form-inline"
-        >
-          <label
-            className=""
-            htmlFor="asInput9"
-            id="label-asInput9"
-          >
-            Search:
-          </label>
-          <div
-            className="input-group"
-          >
-            <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput9"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input no-clear-btn"
-              disabled={false}
-              id="asInput9"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              readOnly={false}
-              required={false}
-              themes={Array []}
-              type="search"
-              value=""
-            />
-            <div
-              className="input-group-append"
-            >
-              <button
-                className="btn search-btn"
-                disabled={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon1"
-                />
-                <span
-                  className="sr-only"
-                >
-                  Submit search
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput9"
-          >
-            <span />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col"
-    />
-  </div>
+  Loading...
 </div>
 `;
 
