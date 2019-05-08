@@ -350,7 +350,7 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
 
 exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 <div
-  className="loading d-flex align-items-center justify-content-center loading"
+  className="loading d-flex align-items-center justify-content-center table-loading"
 >
   Loading...
 </div>

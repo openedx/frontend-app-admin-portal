@@ -119,7 +119,7 @@ describe('<EnterpriseList />', () => {
     it('with loading state', () => {
       const tree = renderer
         .create((
-          <EnterpriseListWrapper loading />
+          <EnterpriseListWrapper loading enterpriseList={null} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
