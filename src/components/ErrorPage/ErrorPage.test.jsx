@@ -26,4 +26,15 @@ describe('<ErrorPage />', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  it('renders correctly for 403 errors', () => {
+    const tree = renderer
+      .create((
+        <MemoryRouter>
+          <ErrorPage status={403} />
+        </MemoryRouter>
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });

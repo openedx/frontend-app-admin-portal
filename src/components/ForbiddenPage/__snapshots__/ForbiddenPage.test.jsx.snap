@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ForbiddenPage /> renders correctly 1`] = `
+<div
+  className="container-fluid mt-3"
+>
+  <div
+    className="text-center py-5"
+  >
+    <h1
+      className={null}
+    >
+      403
+    </h1>
+    <p
+      className="lead"
+    >
+      You do not have access to this page.
+    </p>
+    <p>
+      For assistance, please contact edX Enterprise Support at 
+      <a
+        href="mailto:customersuccess@edx.org"
+        onClick={null}
+        target="_self"
+      >
+         customersuccess@edx.org
+      </a>
+      .
+    </p>
+  </div>
+</div>
+`;

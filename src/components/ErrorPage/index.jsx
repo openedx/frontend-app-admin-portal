@@ -5,30 +5,39 @@ import Helmet from 'react-helmet';
 import StatusAlert from '../StatusAlert';
 import H1 from '../H1';
 import NotFoundPage from '../NotFoundPage';
+import ForbiddenPage from '../ForbiddenPage';
+
+
+function renderErrorComponent(status, message) {
+  const errorMessage = message || 'An unknown error has occured.';
+  if (status === 404) {
+    return <NotFoundPage />;
+  } else if (status === 403) {
+    return <ForbiddenPage />;
+  }
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>Error</title>
+      </Helmet>
+      <div className="row mt-4">
+        <div className="col">
+          <H1>Error</H1>
+          <StatusAlert
+            alertType="danger"
+            message={errorMessage}
+          />
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
 
 const ErrorPage = (props) => {
-  const errorMessage = props.message || 'An unknown error has occured.';
-
+  const { status, message } = props;
   return (
     <div className="container-fluid">
-      {props.status === 404 ? (
-        <NotFoundPage />
-      ) : (
-        <React.Fragment>
-          <Helmet>
-            <title>Error</title>
-          </Helmet>
-          <div className="row mt-4">
-            <div className="col">
-              <H1>Error</H1>
-              <StatusAlert
-                alertType="danger"
-                message={errorMessage}
-              />
-            </div>
-          </div>
-        </React.Fragment>
-      )}
+      {renderErrorComponent(status, message)}
     </div>
   );
 };

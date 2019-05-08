@@ -6,7 +6,9 @@ import qs from 'query-string';
 
 import H1 from '../H1';
 import TableContainer from '../../containers/TableContainer';
+import LoadingMessage from '../../components/LoadingMessage';
 import LmsApiService from '../../data/services/LmsApiService';
+import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
 
@@ -85,7 +87,16 @@ class EnterpriseList extends React.Component {
     );
   }
 
+  renderError(error) {
+    return (
+      <ErrorPage
+        status={error.response && error.response.status}
+        message={error.message}
+      />);
+  }
+
   render() {
+    const { error, loading } = this.props;
     const columns = [
       {
         label: 'Enterprise',
@@ -94,8 +105,10 @@ class EnterpriseList extends React.Component {
     ];
 
     const { searchQuery } = this.state;
-
-    return (
+    if (error && !loading) {
+      return this.renderError(error);
+    }
+    return loading ? <LoadingMessage className="loading" /> : (
       <React.Fragment>
         <Helmet>
           <title>Enterprise List</title>
