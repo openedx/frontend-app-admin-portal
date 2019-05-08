@@ -96,7 +96,7 @@ class EnterpriseList extends React.Component {
   }
 
   render() {
-    const { error, loading } = this.props;
+    const { error, loading, enterpriseList } = this.props;
     const columns = [
       {
         label: 'Enterprise',
@@ -108,7 +108,7 @@ class EnterpriseList extends React.Component {
     if (error && !loading) {
       return this.renderError(error);
     }
-    return loading ? <LoadingMessage className="loading" /> : (
+    return loading && !enterpriseList ? <LoadingMessage className="table-loading" /> : (
       <React.Fragment>
         <Helmet>
           <title>Enterprise List</title>
