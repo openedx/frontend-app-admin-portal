@@ -178,7 +178,7 @@ class CouponDetails extends React.Component {
     } = code;
 
     let remainingUses = redemptions.total - redemptions.used;
-    const buttonClassNames = ['btn-link', 'btn-sm', 'px-0'];
+    const buttonClassNames = ['btn-link', 'btn-sm', 'p-0'];
 
     // Don't show a button if all total redemptions have been used
     if (redemptions.used === redemptions.total) {
@@ -264,6 +264,20 @@ class CouponDetails extends React.Component {
     });
   }
 
+  getSelectAllCheckBoxLabel = () => {
+    if (this.hasAllTableRowsSelected) {
+      return 'unselect all codes';
+    }
+    return 'select all codes';
+  };
+
+  getLabelForCodeCheckBox = (code) => {
+    if (this.selectedTableRows[code]) {
+      return `unselect code ${code}`;
+    }
+    return `select code ${code}`;
+  };
+
   reset() {
     this.resetModals();
     this.resetCodeActionStatus();
@@ -272,84 +286,6 @@ class CouponDetails extends React.Component {
       selectedCodes: [],
       hasAllCodesSelected: false,
       refreshIndex: 0,
-    });
-  }
-
-  isTableLoading() {
-    const { couponDetailsTable } = this.props;
-    return couponDetailsTable && couponDetailsTable.loading;
-  }
-
-  isBulkAssignSelectDisabled() {
-    const options = this.getBulkActionSelectOptions();
-
-    return this.isTableLoading() || options.every(option => option.disabled);
-  }
-
-  handleBulkActionSelect() {
-    const {
-      couponData: {
-        id,
-        title: couponTitle,
-        num_unassigned: unassignedCodes,
-        usage_limitation: couponType,
-      },
-    } = this.props;
-    const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
-
-    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const selectedBulkAction = ref && ref.value;
-
-    if (selectedBulkAction === 'assign') {
-      this.setModalState({
-        key: 'assignment',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkAssign: true,
-          data: {
-            unassignedCodes,
-            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
-            hasAllCodesSelected,
-            couponType,
-          },
-        },
-      });
-    } else if (selectedBulkAction === 'revoke') {
-      this.setModalState({
-        key: 'revoke',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRevoke: true,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    } else if (selectedBulkAction === 'remind') {
-      this.setModalState({
-        key: 'remind',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRemind: true,
-          selectedToggle,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    }
-  }
-
-  resetModals() {
-    this.setState({
-      modals: {
-        assignment: null,
-        revoke: null,
-        remind: null,
-      },
     });
   }
 
@@ -619,19 +555,83 @@ class CouponDetails extends React.Component {
     }));
   }
 
-  getSelectAllCheckBoxLabel = () => {
-    if (this.hasAllTableRowsSelected) {
-      return 'unselect all codes';
-    }
-    return 'select all codes';
-  };
+  isTableLoading() {
+    const { couponDetailsTable } = this.props;
+    return couponDetailsTable && couponDetailsTable.loading;
+  }
 
-  getLabelForCodeCheckBox = (code) => {
-    if (this.selectedTableRows[code]) {
-      return `unselect code ${code}`;
+  isBulkAssignSelectDisabled() {
+    const options = this.getBulkActionSelectOptions();
+
+    return this.isTableLoading() || options.every(option => option.disabled);
+  }
+
+  handleBulkActionSelect() {
+    const {
+      couponData: {
+        id,
+        title: couponTitle,
+        num_unassigned: unassignedCodes,
+        usage_limitation: couponType,
+      },
+    } = this.props;
+    const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
+
+    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
+    const selectedBulkAction = ref && ref.value;
+
+    if (selectedBulkAction === 'assign') {
+      this.setModalState({
+        key: 'assignment',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkAssign: true,
+          data: {
+            unassignedCodes,
+            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
+            hasAllCodesSelected,
+            couponType,
+          },
+        },
+      });
+    } else if (selectedBulkAction === 'revoke') {
+      this.setModalState({
+        key: 'revoke',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRevoke: true,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
+    } else if (selectedBulkAction === 'remind') {
+      this.setModalState({
+        key: 'remind',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRemind: true,
+          selectedToggle,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
     }
-    return `select code ${code}`;
-  };
+  }
+
+  resetModals() {
+    this.setState({
+      modals: {
+        assignment: null,
+        revoke: null,
+        remind: null,
+      },
+    });
+  }
 
   resetCodeActionStatus() {
     this.setState({
