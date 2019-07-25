@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import { StatusAlert } from '@edx/paragon';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
@@ -241,8 +242,8 @@ describe('CouponDetailsWrapper', () => {
       />
     ));
 
-    expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('danger');
-    wrapper.find('StatusAlert').find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
+    expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('danger');
+    wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
 
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
@@ -390,14 +391,6 @@ describe('CouponDetailsWrapper', () => {
       expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
     });
 
-    it('does not open modal on unknown bulk action', () => {
-      wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'test' } });
-      wrapper.find('.bulk-actions .btn').simulate('click');
-
-      expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeFalsy();
-      expect(wrapper.find('CouponDetails').instance().state.modals.revoke).toBeFalsy();
-    });
-
     it('handles successful code assignment from modal', () => {
       openModalByActionButton({
         key: 'assignment',
@@ -411,8 +404,8 @@ describe('CouponDetailsWrapper', () => {
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('success');
-      wrapper.find('StatusAlert').find('.alert-dialog .btn').simulate('click');
+      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
+      wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click');
 
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeFalsy();
       expect(wrapper.find('CouponDetails').instance().state.selectedToggle).toEqual('unredeemed');
@@ -435,7 +428,7 @@ describe('CouponDetailsWrapper', () => {
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('success');
+      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);
@@ -455,7 +448,7 @@ describe('CouponDetailsWrapper', () => {
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find('StatusAlert').prop('alertType')).toEqual('success');
+      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
 
       // does not fetch overview data for coupon
       expect(spy).toBeCalledTimes(0);

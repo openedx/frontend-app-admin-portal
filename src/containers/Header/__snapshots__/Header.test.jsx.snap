@@ -259,7 +259,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
     <div>
       <button
         aria-controls="sidebar"
-        className="btn sidebar-toggle-btn mr-2 bg-white"
+        className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}

@@ -68,7 +68,7 @@ describe('CodeRevokeModalWrapper', () => {
     expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);
 
     expect(wrapper.find('.modal-body form h3').text()).toEqual('Email Template');
-    wrapper.find('.modal-footer .btn-primary').simulate('click');
+    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
 
     // TODO! uncomment when https://github.com/erikras/redux-form/issues/621 is resolved
@@ -84,7 +84,7 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
-    wrapper.find('.modal-footer .btn-primary').simulate('click');
+    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });
 
@@ -97,7 +97,7 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').exists()).toBeFalsy();
-    wrapper.find('.modal-footer .btn-primary').simulate('click');
+    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
     expect(spy).not.toHaveBeenCalled();
   });
 });

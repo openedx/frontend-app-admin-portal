@@ -3,7 +3,7 @@
 exports[`<Sidebar /> renders correctly with close icon 1`] = `
 <button
   aria-controls="sidebar"
-  className="btn sidebar-toggle-btn mr-2 bg-white"
+  className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}
@@ -25,7 +25,7 @@ exports[`<Sidebar /> renders correctly with close icon 1`] = `
 exports[`<Sidebar /> renders correctly with menu icon 1`] = `
 <button
   aria-controls="sidebar"
-  className="btn sidebar-toggle-btn mr-2 bg-white"
+  className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}

@@ -298,7 +298,7 @@ class CouponDetails extends React.Component {
     const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
 
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const selectedBulkAction = ref && ref.state.value;
+    const selectedBulkAction = ref && ref.value;
 
     if (selectedBulkAction === 'assign') {
       this.setModalState({
@@ -483,7 +483,7 @@ class CouponDetails extends React.Component {
     // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
     const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
     const selectAllCheckBoxDOM = (
-      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.state.id)
+      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
     );
 
     if (selectAllCheckBoxDOM && hasPartialSelection) {
@@ -755,7 +755,7 @@ class CouponDetails extends React.Component {
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
-                    ref={this.bulkActionSelectRef}
+                    inputRef={this.bulkActionSelectRef}
                     className="mt-1"
                     name="bulk-action"
                     label="Bulk Action:"

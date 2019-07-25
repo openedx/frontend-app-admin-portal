@@ -215,7 +215,7 @@ class CodeRevokeModal extends React.Component {
           buttons={[
             <Button
               disabled={submitting}
-              className="primary"
+              className="btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>

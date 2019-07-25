@@ -45,7 +45,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon1"
+            id="Icon8"
           />
           Download full report (CSV)
         </button>
@@ -62,19 +62,42 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput5"
-            id="label-asInput5"
+            htmlFor="asInput6"
+            id="label-asInput6"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput5"
+            aria-describedby="error-asInput6"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput5"
+            id="asInput6"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "Unassigned",
+                  "value": "unassigned",
+                },
+                Object {
+                  "label": "Unredeemed",
+                  "value": "unredeemed",
+                },
+                Object {
+                  "label": "Partially Redeemed",
+                  "value": "partially-redeemed",
+                },
+                Object {
+                  "label": "Redeemed",
+                  "value": "redeemed",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="unredeemed"
           >
@@ -102,7 +125,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput5"
+            id="error-asInput6"
           >
             <span />
           </div>
@@ -116,19 +139,41 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput6"
-            id="label-asInput6"
+            htmlFor="asInput7"
+            id="label-asInput7"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput6"
+            aria-describedby="error-asInput7"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={true}
-            id="asInput6"
+            id="asInput7"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "disabled": true,
+                  "label": "Assign",
+                  "value": "assign",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Remind",
+                  "value": "remind",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Revoke",
+                  "value": "revoke",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="assign"
           >
@@ -154,13 +199,13 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput6"
+            id="error-asInput7"
           >
             <span />
           </div>
         </div>
         <button
-          className="btn ml-2 btn-primary"
+          className="btn btn-primary ml-2"
           disabled={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -194,7 +239,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon1"
+                  id="Icon9"
                 />
               </div>
               <div
@@ -253,7 +298,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon1"
+            id="Icon2"
           />
           Download full report (CSV)
         </button>
@@ -277,12 +322,35 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           </label>
           <select
             aria-describedby="error-asInput3"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
             id="asInput3"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "Unassigned",
+                  "value": "unassigned",
+                },
+                Object {
+                  "label": "Unredeemed",
+                  "value": "unredeemed",
+                },
+                Object {
+                  "label": "Partially Redeemed",
+                  "value": "partially-redeemed",
+                },
+                Object {
+                  "label": "Redeemed",
+                  "value": "redeemed",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="unassigned"
           >
@@ -331,12 +399,34 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           </label>
           <select
             aria-describedby="error-asInput4"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={true}
             id="asInput4"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "disabled": true,
+                  "label": "Assign",
+                  "value": "assign",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Remind",
+                  "value": "remind",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Revoke",
+                  "value": "revoke",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="assign"
           >
@@ -368,7 +458,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           </div>
         </div>
         <button
-          className="btn ml-2 btn-primary"
+          className="btn btn-primary ml-2"
           disabled={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -417,7 +507,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon1"
+            id="Icon10"
           />
           Download full report (CSV)
         </button>
@@ -434,19 +524,42 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput7"
-            id="label-asInput7"
+            htmlFor="asInput11"
+            id="label-asInput11"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput7"
+            aria-describedby="error-asInput11"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput7"
+            id="asInput11"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "Unassigned",
+                  "value": "unassigned",
+                },
+                Object {
+                  "label": "Unredeemed",
+                  "value": "unredeemed",
+                },
+                Object {
+                  "label": "Partially Redeemed",
+                  "value": "partially-redeemed",
+                },
+                Object {
+                  "label": "Redeemed",
+                  "value": "redeemed",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="unassigned"
           >
@@ -474,7 +587,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput7"
+            id="error-asInput11"
           >
             <span />
           </div>
@@ -488,19 +601,41 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput8"
-            id="label-asInput8"
+            htmlFor="asInput12"
+            id="label-asInput12"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput8"
+            aria-describedby="error-asInput12"
+            aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput8"
+            id="asInput12"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
+            onKeyPress={[Function]}
+            options={
+              Array [
+                Object {
+                  "disabled": false,
+                  "label": "Assign",
+                  "value": "assign",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Remind",
+                  "value": "remind",
+                },
+                Object {
+                  "disabled": true,
+                  "label": "Revoke",
+                  "value": "revoke",
+                },
+              ]
+            }
+            required={false}
             type="select"
             value="assign"
           >
@@ -526,13 +661,13 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput8"
+            id="error-asInput12"
           >
             <span />
           </div>
         </div>
         <button
-          className="btn ml-2 btn-primary"
+          className="btn btn-primary ml-2"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}
@@ -573,26 +708,35 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       <input
                         aria-checked={false}
+                        aria-describedby="error-select-all-codes"
+                        aria-invalid={false}
                         checked={false}
-                        className={
-                          Array [
-                            "form-check-input is-invalid-nodanger",
-                          ]
-                        }
+                        className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput9"
+                        id="select-all-codes"
+                        name="select all codes"
+                        onBlur={[Function]}
                         onChange={[Function]}
+                        onKeyPress={[Function]}
+                        required={false}
                         type="checkbox"
+                        value=""
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput9"
-                        id="label-asInput9"
-                      />
+                        htmlFor="select-all-codes"
+                        id="label-select-all-codes"
+                      >
+                        <div
+                          className="sr-only"
+                        >
+                          select all codes
+                        </div>
+                      </label>
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput9"
+                        id="error-select-all-codes"
                       >
                         <span />
                       </div>
@@ -632,32 +776,42 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                 >
                   <td
                     className=""
+                    scope={null}
                   >
                     <div
                       className="form-check"
                     >
                       <input
                         aria-checked={false}
+                        aria-describedby="error-asInput13"
+                        aria-invalid={false}
                         checked={false}
-                        className={
-                          Array [
-                            "form-check-input is-invalid-nodanger",
-                          ]
-                        }
+                        className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput10"
+                        id="asInput13"
+                        name="select code test-code-1"
+                        onBlur={[Function]}
                         onChange={[Function]}
+                        onKeyPress={[Function]}
+                        required={false}
                         type="checkbox"
+                        value=""
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput10"
-                        id="label-asInput10"
-                      />
+                        htmlFor="asInput13"
+                        id="label-asInput13"
+                      >
+                        <div
+                          className="sr-only"
+                        >
+                          select code test-code-1
+                        </div>
+                      </label>
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput10"
+                        id="error-asInput13"
                       >
                         <span />
                       </div>
@@ -665,24 +819,28 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     10 of 100
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     test-code-1
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     85
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     <button
-                      className="btn btn-link btn-sm px-0 remind-btn"
+                      className="btn remind-btn btn-link btn-sm px-0"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -694,7 +852,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       |
                     </span>
                     <button
-                      className="btn btn-link btn-sm px-0 revoke-btn"
+                      className="btn revoke-btn btn-link btn-sm px-0"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -709,32 +867,42 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                 >
                   <td
                     className=""
+                    scope={null}
                   >
                     <div
                       className="form-check"
                     >
                       <input
                         aria-checked={false}
+                        aria-describedby="error-asInput14"
+                        aria-invalid={false}
                         checked={false}
-                        className={
-                          Array [
-                            "form-check-input is-invalid-nodanger",
-                          ]
-                        }
+                        className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput11"
+                        id="asInput14"
+                        name="select code test-code-2"
+                        onBlur={[Function]}
                         onChange={[Function]}
+                        onKeyPress={[Function]}
+                        required={false}
                         type="checkbox"
+                        value=""
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput11"
-                        id="label-asInput11"
-                      />
+                        htmlFor="asInput14"
+                        id="label-asInput14"
+                      >
+                        <div
+                          className="sr-only"
+                        >
+                          select code test-code-2
+                        </div>
+                      </label>
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput11"
+                        id="error-asInput14"
                       >
                         <span />
                       </div>
@@ -742,21 +910,25 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     100 of 100
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     test-code-2
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     0
                   </td>
                   <td
                     className=""
+                    scope={null}
                   />
                 </tr>
                 <tr
@@ -764,32 +936,42 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                 >
                   <td
                     className=""
+                    scope={null}
                   >
                     <div
                       className="form-check"
                     >
                       <input
                         aria-checked={false}
+                        aria-describedby="error-asInput15"
+                        aria-invalid={false}
                         checked={false}
-                        className={
-                          Array [
-                            "form-check-input is-invalid-nodanger",
-                          ]
-                        }
+                        className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput12"
+                        id="asInput15"
+                        name="select code test-code-3"
+                        onBlur={[Function]}
                         onChange={[Function]}
+                        onKeyPress={[Function]}
+                        required={false}
                         type="checkbox"
+                        value=""
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput12"
-                        id="label-asInput12"
-                      />
+                        htmlFor="asInput15"
+                        id="label-asInput15"
+                      >
+                        <div
+                          className="sr-only"
+                        >
+                          select code test-code-3
+                        </div>
+                      </label>
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput12"
+                        id="error-asInput15"
                       >
                         <span />
                       </div>
@@ -797,24 +979,28 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     10 of 100
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     test-code-3
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     85
                   </td>
                   <td
                     className=""
+                    scope={null}
                   >
                     <button
-                      className="btn btn-link btn-sm px-0 assignment-btn"
+                      className="btn assignment-btn btn-link btn-sm px-0"
                       onBlur={[Function]}
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -837,7 +1023,6 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         >
           <nav
             aria-label="coupon-details-pagination"
-            className=""
           >
             <div
               aria-atomic={true}
@@ -867,7 +1052,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-13"
+                      id="pagination-16"
                     />
                     Previous
                   </div>
@@ -890,7 +1075,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-14"
+                      id="pagination-17"
                     />
                   </div>
                 </button>
