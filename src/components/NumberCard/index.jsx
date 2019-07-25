@@ -143,8 +143,7 @@ class NumberCard extends React.Component {
       <Link
         innerRef={(node) => { this.detailActionItemRefs[index] = node; }}
         className={classNames(
-          'btn',
-          'btn-link',
+          'btn btn-link',
           {
             active: action.slug === actionSlug,
           },
@@ -159,7 +158,7 @@ class NumberCard extends React.Component {
             {action.label}
           </span>
           {action.loading &&
-            <Icon className={['fa', 'fa-spinner', 'fa-spin', 'ml-2']} />
+            <Icon className="fa fa-spinner fa-spin ml-2" />
           }
         </div>
       </Link>
@@ -191,12 +190,11 @@ class NumberCard extends React.Component {
                 {this.formatTitle(title)}
               </span>
               {iconClassName &&
-                <Icon className={[
+                <Icon className={
+                  classNames(
+                    'd-flex align-items-center justify-content-center',
                     iconClassName,
-                    'd-flex',
-                    'align-items-center',
-                    'justify-content-center',
-                  ]}
+                  )}
                 />
               }
             </h5>
@@ -208,34 +206,31 @@ class NumberCard extends React.Component {
             <div className="footer-title">
               <Button
                 inputRef={(node) => { this.toggleDetailsBtnRef = node; }}
-                buttonType="link"
-                className={['toggle-collapse', 'btn-block']}
-                label={
-                  <div className="d-flex justify-content-between align-items-center">
-                    <span className="details-btn-text">{detailsExpanded ? 'Detailed breakdown' : 'Details'}</span>
-                    <Icon
-                      className={[classNames(
-                        'fa',
-                        {
-                          'fa-caret-down': !detailsExpanded,
-                          'fa-close': detailsExpanded,
-                        },
-                      )]}
-                      screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
-                    />
-                  </div>
-                }
+                className="toggle-collapse btn-link btn-block"
                 onClick={this.toggleDetails}
                 onKeyDown={this.handleToggleDetailsKeyDown}
                 aria-expanded={detailsExpanded}
                 aria-controls={`footer-body-${id}`}
-              />
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="details-btn-text">{detailsExpanded ? 'Detailed breakdown' : 'Details'}</span>
+                  <Icon
+                    className={classNames(
+                      'fa',
+                      {
+                        'fa-caret-down': !detailsExpanded,
+                        'fa-close': detailsExpanded,
+                      },
+                    )}
+                    screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
+                  />
+                </div>
+              </Button>
             </div>
             <div
               id={`footer-body-${id}`}
               className={classNames(
-                'footer-body',
-                'mt-1',
+                'footer-body mt-1',
                 {
                   'd-none': !detailsExpanded,
                 },

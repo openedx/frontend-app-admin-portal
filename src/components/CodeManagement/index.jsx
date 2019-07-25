@@ -161,9 +161,9 @@ class CodeManagement extends React.Component {
   renderErrorMessage() {
     return (
       <StatusAlert
-        className={['mt-3']}
+        className="mt-3"
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title="Unable to load coupons"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -205,9 +205,9 @@ class CodeManagement extends React.Component {
   renderRequestCodesSuccessMessage() {
     return (
       <StatusAlert
-        className={['mt-3']}
+        className="mt-3"
         alertType="success"
-        iconClassNames={['fa', 'fa-check-circle']}
+        iconClassName="fa fa-check-circle"
         title="Request for more codes received"
         message="The edX Customer Success team will contact you soon."
         dismissible
@@ -219,7 +219,7 @@ class CodeManagement extends React.Component {
     return (
       <StatusAlert
         alertType="warning"
-        iconClassNames={['fa', 'fa-exclamation-circle']}
+        iconClassName="fa fa-exclamation-circle"
         message="There are no results."
       />
     );
@@ -248,23 +248,21 @@ class CodeManagement extends React.Component {
             </div>
             <div className="col-12 col-md-9 mb-2 mb-md-0 text-md-right">
               <Button
-                className={['mr-2']}
-                buttonType="link"
-                label={
-                  <React.Fragment>
-                    <Icon className={['fa', 'fa-refresh', 'mr-2']} />
-                    Refresh data
-                  </React.Fragment>
-                }
+                className="mr-2 btn-link"
                 onClick={this.handleRefreshData}
                 disabled={loading}
-              />
+              >
+                <React.Fragment>
+                  <Icon className="fa fa-refresh mr-2" />
+                  Refresh data
+                </React.Fragment>
+              </Button>
               <Link
                 className="request-codes-btn btn btn-primary"
                 to={`${match.path}/request`}
               >
                 <React.Fragment>
-                  <Icon className={['fa', 'fa-plus', 'mr-2']} />
+                  <Icon className="fa fa-plus mr-2" />
                   Request more codes
                 </React.Fragment>
               </Link>

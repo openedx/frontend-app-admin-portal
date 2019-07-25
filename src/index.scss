@@ -1,14 +1,16 @@
-@import "~@edx/edx-bootstrap/sass/edx/theme";
-@import "~bootstrap/scss/bootstrap";
+// ... Any custom SCSS variables should be defined here
+
+@import "~@edx/paragon/scss/edx/theme.scss";
+@import "~@edx/paragon/scss/edx/fonts.scss"; // Roboto
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
-@import "~@edx/paragon/src/SearchField/SearchField";
-@import "~@edx/paragon/src/Pagination/Pagination";
-@import "~@edx/paragon/src/Dropdown/Dropdown";
-@import "~@edx/paragon/src/ValidationMessage/ValidationMessage";
-@import "~@edx/paragon/src/Modal/Modal";
+// @import "~@edx/paragon/src/SearchField/SearchField";
+// @import "~@edx/paragon/src/Pagination/Pagination";
+// @import "~@edx/paragon/src/Dropdown/Dropdown";
+// @import "~@edx/paragon/src/ValidationMessage/ValidationMessage";
+// @import "~@edx/paragon/src/Modal/Modal";
 
 body {
     overflow-x: hidden;

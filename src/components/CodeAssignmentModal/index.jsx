@@ -337,7 +337,7 @@ class CodeAssignmentModal extends React.Component {
       >
         <StatusAlert
           alertType="danger"
-          iconClassNames={['fa', 'fa-times-circle']}
+          iconClassName="fa fa-times-circle"
           title="Unable to assign codes"
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
@@ -378,16 +378,15 @@ class CodeAssignmentModal extends React.Component {
           body={this.renderBody()}
           buttons={[
             <Button
-              label={
-                <React.Fragment>
-                  {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
-                  {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
-                </React.Fragment>
-              }
+              className="btn-primary"
               disabled={submitting}
-              buttonType="primary"
               onClick={handleSubmit(this.handleModalSubmit)}
-            />,
+            >
+              <React.Fragment>
+                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
+              </React.Fragment>
+            </Button>,
           ]}
           onClose={onClose}
           open

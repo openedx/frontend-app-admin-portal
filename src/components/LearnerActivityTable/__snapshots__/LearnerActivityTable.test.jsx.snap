@@ -248,41 +248,49 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
             >
               <td
                 className=""
+                scope={null}
               >
                 awesome.me@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Dive into ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 23, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 66%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 22, 2018
               </td>
@@ -292,41 +300,49 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
             >
               <td
                 className=""
+                scope={null}
               >
                 new@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Redux with ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 22, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 80%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 25, 2018
               </td>
@@ -344,7 +360,6 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
     >
       <nav
         aria-label="active-week-pagination"
-        className=""
       >
         <div
           aria-atomic={true}
@@ -428,7 +443,7 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
         <span
           aria-hidden={true}
           className="fa fa-exclamation-circle"
-          id="Icon1"
+          id="Icon2"
         />
       </div>
       <div
@@ -662,36 +677,43 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
             >
               <td
                 className=""
+                scope={null}
               >
                 awesome.me@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Dive into ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 66%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 22, 2018
               </td>
@@ -701,36 +723,43 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
             >
               <td
                 className=""
+                scope={null}
               >
                 new@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Redux with ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 80%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 25, 2018
               </td>
@@ -748,7 +777,6 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
     >
       <nav
         aria-label="inactive-month-pagination"
-        className=""
       >
         <div
           aria-atomic={true}
@@ -1035,36 +1063,43 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
             >
               <td
                 className=""
+                scope={null}
               >
                 awesome.me@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Dive into ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 66%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 22, 2018
               </td>
@@ -1074,36 +1109,43 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
             >
               <td
                 className=""
+                scope={null}
               >
                 new@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Redux with ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 $200
               </td>
               <td
                 className=""
+                scope={null}
               >
                 October 21, 2017
               </td>
               <td
                 className=""
+                scope={null}
               >
                 May 13, 2018
               </td>
               <td
                 className=""
+                scope={null}
               >
                 80%
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 25, 2018
               </td>
@@ -1121,7 +1163,6 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
     >
       <nav
         aria-label="inactive-week-pagination"
-        className=""
       >
         <div
           aria-atomic={true}

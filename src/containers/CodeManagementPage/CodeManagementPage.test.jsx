@@ -235,7 +235,7 @@ describe('CodeManagementPageWrapper', () => {
     const store = mockStore({ ...initialState });
     const wrapper = mount(<CodeManagementPageWrapper store={store} />);
     store.clearActions();
-    wrapper.find('.fa-refresh').simulate('click');
+    wrapper.find('.fa-refresh').hostNodes().simulate('click');
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
   });
 });

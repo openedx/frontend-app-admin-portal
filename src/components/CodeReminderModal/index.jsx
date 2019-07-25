@@ -186,7 +186,7 @@ class CodeReminderModal extends React.Component {
       >
         <StatusAlert
           alertType="danger"
-          iconClassNames={['fa', 'fa-times-circle']}
+          iconClassName="fa fa-times-circle"
           title="Unable to send reminder email"
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
@@ -227,16 +227,15 @@ class CodeReminderModal extends React.Component {
           body={this.renderBody()}
           buttons={[
             <Button
-              label={
-                <React.Fragment>
-                  {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
-                  {'Remind'}
-                </React.Fragment>
-              }
               disabled={submitting}
-              buttonType="primary"
+              className="btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
-            />,
+            >
+              <React.Fragment>
+                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {'Remind'}
+              </React.Fragment>
+            </Button>,
           ]}
           onClose={onClose}
           open

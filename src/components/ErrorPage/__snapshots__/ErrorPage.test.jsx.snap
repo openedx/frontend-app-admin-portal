@@ -60,13 +60,14 @@ exports[`<ErrorPage /> renders correctly for 403 errors 1`] = `
         You do not have access to this page.
       </p>
       <p>
-        For assistance, please contact edX Enterprise Support at 
+        For assistance, please contact edX Enterprise Support at
+         
         <a
           href="mailto:customersuccess@edx.org"
           onClick={null}
           target="_self"
         >
-           customersuccess@edx.org
+          customersuccess@edx.org
         </a>
         .
       </p>

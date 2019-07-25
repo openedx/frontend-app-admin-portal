@@ -70,7 +70,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-line-chart"
-              id="Icon1"
+              id="Icon2"
             />
             <span
               className="sr-only"
@@ -91,7 +91,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-tags"
-              id="Icon1"
+              id="Icon3"
             />
             <span
               className="sr-only"

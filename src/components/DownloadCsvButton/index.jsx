@@ -18,16 +18,15 @@ class DownloadCsvButton extends React.Component {
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
       <Button
-        className={['btn-outline-primary', 'download-btn']}
+        className="btn-outline-primary download-btn"
         disabled={disabled || csvLoading}
-        label={
-          <React.Fragment>
-            <Icon className={['fa', 'mr-2'].concat(downloadButtonIconClasses)} />
-            {buttonLabel}
-          </React.Fragment>
-        }
         onClick={() => fetchCsv(fetchMethod)}
-      />
+      >
+        <React.Fragment>
+          <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
+          {buttonLabel}
+        </React.Fragment>
+      </Button>
     );
   }
 }

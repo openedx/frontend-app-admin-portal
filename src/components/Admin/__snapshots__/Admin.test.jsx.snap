@@ -91,13 +91,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -183,8 +184,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon21"
                     />
                   </h5>
                   <p
@@ -203,7 +204,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -220,7 +221,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon22"
                       />
                       <span
                         className="sr-only"
@@ -274,8 +275,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon23"
                     />
                   </h5>
                   <p
@@ -294,7 +295,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -311,7 +312,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon24"
                       />
                       <span
                         className="sr-only"
@@ -381,8 +382,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon25"
                     />
                   </h5>
                   <p
@@ -401,7 +402,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -418,7 +419,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon26"
                       />
                       <span
                         className="sr-only"
@@ -504,8 +505,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon27"
                     />
                   </h5>
                   <p
@@ -524,7 +525,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -541,7 +542,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon28"
                       />
                       <span
                         className="sr-only"
@@ -613,7 +614,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon29"
           />
           Reset to 
           Full Report
@@ -649,7 +650,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon30"
               />
               Download current report (CSV)
             </button>
@@ -667,13 +668,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -759,8 +761,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon71"
                     />
                   </h5>
                   <p
@@ -779,7 +781,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -796,7 +798,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon72"
                       />
                       <span
                         className="sr-only"
@@ -850,8 +852,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon73"
                     />
                   </h5>
                   <p
@@ -870,7 +872,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -887,7 +889,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon74"
                       />
                       <span
                         className="sr-only"
@@ -957,8 +959,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon75"
                     />
                   </h5>
                   <p
@@ -977,7 +979,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -994,7 +996,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon76"
                       />
                       <span
                         className="sr-only"
@@ -1080,8 +1082,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon77"
                     />
                   </h5>
                   <p
@@ -1100,7 +1102,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1117,7 +1119,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon78"
                       />
                       <span
                         className="sr-only"
@@ -1189,7 +1191,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon79"
           />
           Reset to 
           Full Report
@@ -1225,7 +1227,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon80"
               />
               Download current report (CSV)
             </button>
@@ -1243,13 +1245,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -1335,8 +1338,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon81"
                     />
                   </h5>
                   <p
@@ -1355,7 +1358,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1372,7 +1375,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon82"
                       />
                       <span
                         className="sr-only"
@@ -1426,8 +1429,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon83"
                     />
                   </h5>
                   <p
@@ -1446,7 +1449,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1463,7 +1466,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon84"
                       />
                       <span
                         className="sr-only"
@@ -1533,8 +1536,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon85"
                     />
                   </h5>
                   <p
@@ -1553,7 +1556,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1570,7 +1573,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon86"
                       />
                       <span
                         className="sr-only"
@@ -1656,8 +1659,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon87"
                     />
                   </h5>
                   <p
@@ -1676,7 +1679,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1693,7 +1696,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon88"
                       />
                       <span
                         className="sr-only"
@@ -1765,7 +1768,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon89"
           />
           Reset to 
           Full Report
@@ -1806,7 +1809,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon90"
               />
               Download current report (CSV)
             </button>
@@ -1824,13 +1827,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -1916,8 +1920,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon91"
                     />
                   </h5>
                   <p
@@ -1936,7 +1940,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -1953,7 +1957,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon92"
                       />
                       <span
                         className="sr-only"
@@ -2007,8 +2011,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon93"
                     />
                   </h5>
                   <p
@@ -2027,7 +2031,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2044,7 +2048,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon94"
                       />
                       <span
                         className="sr-only"
@@ -2114,8 +2118,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon95"
                     />
                   </h5>
                   <p
@@ -2134,7 +2138,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2151,7 +2155,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon96"
                       />
                       <span
                         className="sr-only"
@@ -2237,8 +2241,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon97"
                     />
                   </h5>
                   <p
@@ -2257,7 +2261,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2274,7 +2278,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon98"
                       />
                       <span
                         className="sr-only"
@@ -2369,7 +2373,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon99"
               />
               Download full report (CSV)
             </button>
@@ -2387,13 +2391,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -2479,8 +2484,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon2"
                     />
                   </h5>
                   <p
@@ -2499,7 +2504,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2516,7 +2521,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon3"
                       />
                       <span
                         className="sr-only"
@@ -2570,8 +2575,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon4"
                     />
                   </h5>
                   <p
@@ -2590,7 +2595,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2607,7 +2612,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon5"
                       />
                       <span
                         className="sr-only"
@@ -2677,8 +2682,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon6"
                     />
                   </h5>
                   <p
@@ -2697,7 +2702,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2714,7 +2719,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon7"
                       />
                       <span
                         className="sr-only"
@@ -2800,8 +2805,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon8"
                     />
                   </h5>
                   <p
@@ -2820,7 +2825,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -2837,7 +2842,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon9"
                       />
                       <span
                         className="sr-only"
@@ -2932,7 +2937,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon10"
               />
               Download full report (CSV)
             </button>
@@ -2950,13 +2955,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -3042,8 +3048,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon61"
                     />
                   </h5>
                   <p
@@ -3062,7 +3068,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3079,7 +3085,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon62"
                       />
                       <span
                         className="sr-only"
@@ -3133,8 +3139,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon63"
                     />
                   </h5>
                   <p
@@ -3153,7 +3159,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3170,7 +3176,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon64"
                       />
                       <span
                         className="sr-only"
@@ -3240,8 +3246,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon65"
                     />
                   </h5>
                   <p
@@ -3260,7 +3266,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3277,7 +3283,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon66"
                       />
                       <span
                         className="sr-only"
@@ -3363,8 +3369,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon67"
                     />
                   </h5>
                   <p
@@ -3383,7 +3389,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3400,7 +3406,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon68"
                       />
                       <span
                         className="sr-only"
@@ -3472,7 +3478,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon69"
           />
           Reset to 
           Full Report
@@ -3513,7 +3519,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon70"
               />
               Download current report (CSV)
             </button>
@@ -3531,13 +3537,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -3623,8 +3630,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon51"
                     />
                   </h5>
                   <p
@@ -3643,7 +3650,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3660,7 +3667,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon52"
                       />
                       <span
                         className="sr-only"
@@ -3714,8 +3721,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon53"
                     />
                   </h5>
                   <p
@@ -3734,7 +3741,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3751,7 +3758,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon54"
                       />
                       <span
                         className="sr-only"
@@ -3821,8 +3828,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon55"
                     />
                   </h5>
                   <p
@@ -3841,7 +3848,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3858,7 +3865,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon56"
                       />
                       <span
                         className="sr-only"
@@ -3944,8 +3951,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon57"
                     />
                   </h5>
                   <p
@@ -3964,7 +3971,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -3981,7 +3988,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon58"
                       />
                       <span
                         className="sr-only"
@@ -4053,7 +4060,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon59"
           />
           Reset to 
           Full Report
@@ -4094,7 +4101,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon60"
               />
               Download current report (CSV)
             </button>
@@ -4112,13 +4119,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -4204,8 +4212,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon31"
                     />
                   </h5>
                   <p
@@ -4224,7 +4232,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4241,7 +4249,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon32"
                       />
                       <span
                         className="sr-only"
@@ -4295,8 +4303,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon33"
                     />
                   </h5>
                   <p
@@ -4315,7 +4323,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4332,7 +4340,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon34"
                       />
                       <span
                         className="sr-only"
@@ -4402,8 +4410,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon35"
                     />
                   </h5>
                   <p
@@ -4422,7 +4430,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4439,7 +4447,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon36"
                       />
                       <span
                         className="sr-only"
@@ -4525,8 +4533,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon37"
                     />
                   </h5>
                   <p
@@ -4545,7 +4553,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4562,7 +4570,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon38"
                       />
                       <span
                         className="sr-only"
@@ -4634,7 +4642,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon39"
           />
           Reset to 
           Full Report
@@ -4673,7 +4681,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon40"
               />
               Download current report (CSV)
             </button>
@@ -4691,13 +4699,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -4783,8 +4792,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon11"
                     />
                   </h5>
                   <p
@@ -4803,7 +4812,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4820,7 +4829,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon12"
                       />
                       <span
                         className="sr-only"
@@ -4874,8 +4883,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon13"
                     />
                   </h5>
                   <p
@@ -4894,7 +4903,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -4911,7 +4920,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon14"
                       />
                       <span
                         className="sr-only"
@@ -4981,8 +4990,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon15"
                     />
                   </h5>
                   <p
@@ -5001,7 +5010,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5018,7 +5027,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon16"
                       />
                       <span
                         className="sr-only"
@@ -5104,8 +5113,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon17"
                     />
                   </h5>
                   <p
@@ -5124,7 +5133,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5141,7 +5150,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon18"
                       />
                       <span
                         className="sr-only"
@@ -5213,7 +5222,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon19"
           />
           Reset to 
           Full Report
@@ -5249,7 +5258,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon20"
               />
               Download current report (CSV)
             </button>
@@ -5267,13 +5276,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -5359,8 +5369,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-users d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-users"
+                      id="Icon41"
                     />
                   </h5>
                   <p
@@ -5379,7 +5389,7 @@ Array [
                   <button
                     aria-controls="footer-body-numberOfUsers"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5396,7 +5406,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon42"
                       />
                       <span
                         className="sr-only"
@@ -5450,8 +5460,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-check d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-check"
+                      id="Icon43"
                     />
                   </h5>
                   <p
@@ -5470,7 +5480,7 @@ Array [
                   <button
                     aria-controls="footer-body-enrolledLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5487,7 +5497,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon44"
                       />
                       <span
                         className="sr-only"
@@ -5557,8 +5567,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-eye d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-eye"
+                      id="Icon45"
                     />
                   </h5>
                   <p
@@ -5577,7 +5587,7 @@ Array [
                   <button
                     aria-controls="footer-body-activeLearners"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5594,7 +5604,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon46"
                       />
                       <span
                         className="sr-only"
@@ -5680,8 +5690,8 @@ Array [
                     </span>
                     <span
                       aria-hidden={true}
-                      className="fa fa-trophy d-flex align-items-center justify-content-center"
-                      id="Icon1"
+                      className="d-flex align-items-center justify-content-center fa fa-trophy"
+                      id="Icon47"
                     />
                   </h5>
                   <p
@@ -5700,7 +5710,7 @@ Array [
                   <button
                     aria-controls="footer-body-courseCompletions"
                     aria-expanded={false}
-                    className="btn toggle-collapse btn-block btn-link"
+                    className="btn toggle-collapse btn-link btn-block"
                     onBlur={[Function]}
                     onClick={[Function]}
                     onKeyDown={[Function]}
@@ -5717,7 +5727,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon1"
+                        id="Icon48"
                       />
                       <span
                         className="sr-only"
@@ -5789,7 +5799,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon1"
+            id="Icon49"
           />
           Reset to 
           Full Report
@@ -5830,7 +5840,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon1"
+                id="Icon50"
               />
               Download current report (CSV)
             </button>
@@ -5848,13 +5858,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -5934,7 +5945,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon1"
+                  id="Icon100"
                 />
               </div>
               <div
@@ -5983,13 +5994,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>
@@ -6090,13 +6102,14 @@ Array [
         className="col"
       >
         <p>
-          For more information, contact edX Enterprise Support at 
+          For more information, contact edX Enterprise Support at
+           
           <a
             href="mailto:customersuccess@edx.org"
             onClick={null}
             target="_self"
           >
-             customersuccess@edx.org
+            customersuccess@edx.org
           </a>
           .
         </p>

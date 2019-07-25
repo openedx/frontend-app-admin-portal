@@ -28,9 +28,9 @@ class RequestCodesForm extends React.Component {
 
     return (
       <StatusAlert
-        className={['mt-3']}
+        className="mt-3"
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title="Unable to request more codes"
         message={`Try refreshing your screen (${message})`}
       />
@@ -99,18 +99,17 @@ class RequestCodesForm extends React.Component {
                 validate={[isValidNumber]}
               />
               <Button
-                label={
-                  <React.Fragment>
-                    {submitting && <Icon className={['fa', 'fa-spinner', 'fa-spin', 'mr-2']} />}
-                    Request Codes
-                  </React.Fragment>
-                }
                 type="submit"
                 disabled={invalid || submitting}
-                buttonType="primary"
-              />
+                className="btn-primary"
+              >
+                <React.Fragment>
+                  {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                  Request Codes
+                </React.Fragment>
+              </Button>
               <Link
-                className={['btn btn-link ml-3 form-cancel-btn']}
+                className="btn btn-link ml-3 form-cancel-btn"
                 to={this.getPathToCodeManagement()}
               >
                 Cancel

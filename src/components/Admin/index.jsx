@@ -178,9 +178,9 @@ class Admin extends React.Component {
   renderErrorMessage() {
     return (
       <StatusAlert
-        className={['mt-3']}
+        className="mt-3"
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title="Unable to load overview"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -190,9 +190,9 @@ class Admin extends React.Component {
   renderCsvErrorMessage(message) {
     return (
       <StatusAlert
-        className={['mt-3']}
+        className="mt-3"
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title="Unable to Generate CSV Report"
         message={`Please try again. (${message})`}
       />
@@ -211,7 +211,7 @@ class Admin extends React.Component {
 
     return (
       <Link to={path} className="reset btn btn-sm btn-outline-primary ml-3">
-        <Icon className={['fa', 'fa-undo', 'mr-2']} />
+        <Icon className="fa fa-undo mr-2" />
         Reset to {this.getMetadataForAction().title}
       </Link>
     );
@@ -263,7 +263,7 @@ class Admin extends React.Component {
               </div>
               <div className="row">
                 <div className="col">
-                  {!error && !loading && !this.hasEmptyData() &&
+                  {!error && !loading && !this.hasEmptyData() && (
                     <div className="row">
                       <div className="col-12 col-md-6 pt-1 pb-3">
                         {lastUpdatedDate &&
@@ -281,7 +281,7 @@ class Admin extends React.Component {
                         />
                       </div>
                     </div>
-                  }
+                  )}
                   {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
                   <div className="mt-3 mb-5">
                     {enterpriseId && tableMetadata.component}
@@ -291,7 +291,9 @@ class Admin extends React.Component {
               <div className="row">
                 <div className="col">
                   <p>
-                    For more information, contact edX Enterprise Support at <MailtoLink to="customersuccess@edx.org" content=" customersuccess@edx.org" />.
+                    For more information, contact edX Enterprise Support at
+                    {' '}
+                    <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
                   </p>
                 </div>
               </div>

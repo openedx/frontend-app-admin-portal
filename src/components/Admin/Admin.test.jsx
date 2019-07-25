@@ -377,7 +377,7 @@ describe('<Admin />', () => {
             }}
           />
         ));
-        wrapper.find('.download-btn').simulate('click');
+        wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
       });
     });

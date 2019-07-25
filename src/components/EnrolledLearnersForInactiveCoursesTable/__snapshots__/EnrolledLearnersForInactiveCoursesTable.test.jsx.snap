@@ -18,7 +18,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1
         <span
           aria-hidden={true}
           className="fa fa-exclamation-circle"
-          id="Icon1"
+          id="Icon2"
         />
       </div>
       <div
@@ -171,21 +171,25 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
             >
               <td
                 className=""
+                scope={null}
               >
                 test_user_1@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 2
               </td>
               <td
                 className=""
+                scope={null}
               >
                 1
               </td>
               <td
                 className=""
+                scope={null}
               >
                 June 23, 2017
               </td>
@@ -195,21 +199,25 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
             >
               <td
                 className=""
+                scope={null}
               >
                 test_user_2@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 5
               </td>
               <td
                 className=""
+                scope={null}
               >
                 5
               </td>
               <td
                 className=""
+                scope={null}
               >
                 January 15, 2018
               </td>
@@ -219,21 +227,25 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
             >
               <td
                 className=""
+                scope={null}
               >
                 test_user_3@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 6
               </td>
               <td
                 className=""
+                scope={null}
               >
                 4
               </td>
               <td
                 className=""
+                scope={null}
               >
                 November 18, 2017
               </td>
@@ -251,7 +263,6 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
     >
       <nav
         aria-label="enrolled-learners-inactive-courses-pagination"
-        className=""
       >
         <div
           aria-atomic={true}
