@@ -55,15 +55,15 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
     <div
       className="sidebar-content py-2"
     >
-      <ul
-        className="list-unstyled m-0"
+      <nav
+        className="nav nav-pills flex-column m-0"
       >
         <li
-          className="rounded-0"
+          className="nav-item"
         >
           <a
             aria-current={null}
-            className="btn btn-link btn-block text-left text-secondary rounded-0"
+            className="nav-link text-left text-secondary rounded-0"
             href="//admin/learners"
             onClick={[Function]}
           >
@@ -80,11 +80,11 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
           </a>
         </li>
         <li
-          className="rounded-0"
+          className="nav-item"
         >
           <a
             aria-current={null}
-            className="btn btn-link btn-block text-left text-secondary rounded-0"
+            className="nav-link text-left text-secondary rounded-0"
             href="//admin/coupons"
             onClick={[Function]}
           >
@@ -100,7 +100,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
             </span>
           </a>
         </li>
-      </ul>
+      </nav>
     </div>
   </nav>
   <div
