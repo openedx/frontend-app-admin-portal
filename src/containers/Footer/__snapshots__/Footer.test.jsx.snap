@@ -2,7 +2,7 @@
 
 exports[`<Footer /> renders edX logo correctly 1`] = `
 <footer
-  className="px-3 py-4 border-top"
+  className="container-fluid py-4 border-top"
 >
   <div
     className="row justify-content-between align-items-center"
@@ -68,7 +68,7 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
 
 exports[`<Footer /> renders enterprise logo correctly 1`] = `
 <footer
-  className="px-3 py-4 border-top"
+  className="container-fluid py-4 border-top"
 >
   <div
     className="row justify-content-between align-items-center"
