@@ -108,8 +108,7 @@ class EnterpriseApp extends React.Component {
                 tabIndex="-1"
                 ref={this.contentWrapperRef}
                 style={{
-                  paddingLeft:
-                  matches ? sidebarWidth : defaultContentPadding,
+                  paddingLeft: matches ? sidebarWidth : defaultContentPadding,
                 }}
               >
                 <Switch>
