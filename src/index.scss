@@ -6,12 +6,6 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
-// @import "~@edx/paragon/src/SearchField/SearchField";
-// @import "~@edx/paragon/src/Pagination/Pagination";
-// @import "~@edx/paragon/src/Dropdown/Dropdown";
-// @import "~@edx/paragon/src/ValidationMessage/ValidationMessage";
-// @import "~@edx/paragon/src/Modal/Modal";
-
 body {
     overflow-x: hidden;
 }
@@ -27,4 +21,11 @@ form {
     textarea {
         resize: none;
     }
+}
+
+.container-fluid {
+    width: 100%;
+    max-width: initial;
+    padding-left: 15px;
+    padding-right: 15px;
 }
