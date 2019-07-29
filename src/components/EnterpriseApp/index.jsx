@@ -24,8 +24,9 @@ class EnterpriseApp extends React.Component {
     this.contentWrapperRef = React.createRef();
     this.sidebarRef = null;
 
+    // hardcoded sidebarWidth required for initial render
     this.state = {
-      sidebarWidth: null,
+      sidebarWidth: 61.3,
     };
   }
 
@@ -107,7 +108,8 @@ class EnterpriseApp extends React.Component {
                 tabIndex="-1"
                 ref={this.contentWrapperRef}
                 style={{
-                  paddingLeft: matches ? sidebarWidth : defaultContentPadding,
+                  paddingLeft:
+                  matches ? sidebarWidth : defaultContentPadding,
                 }}
               >
                 <Switch>

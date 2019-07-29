@@ -41,7 +41,7 @@ class Footer extends React.Component {
     const { enterpriseLogoNotFound } = this.state;
     const { enterpriseLogo, enterpriseSlug } = this.props;
     return (
-      <footer className="container-fluid py-4 border-top">
+      <footer className="px-3 py-4 border-top">
         <div className="row justify-content-between align-items-center">
           <div className="col-xs-12 col-md-4 logo-links">
             <Link className="logo" to="/">

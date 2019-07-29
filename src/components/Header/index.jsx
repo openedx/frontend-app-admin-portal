@@ -42,7 +42,7 @@ class Header extends React.Component {
   render() {
     const { email, hasSidebarToggle } = this.props;
     return (
-      <header className="container-fluid">
+      <header className="px-3">
         <nav className="navbar px-0 justify-content-between">
           <div>
             {hasSidebarToggle && <SidebarToggle />}
