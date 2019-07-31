@@ -20,7 +20,7 @@
   "dependencies": {
     "@edx/frontend-auth": "^5.2.0",
     "@edx/frontend-logging": "^2.0.1",
-    "@edx/paragon": "^6.2.0",
+    "@edx/paragon": "^6.2.1",
     "@redux-beacon/segment": "^1.0.0",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
