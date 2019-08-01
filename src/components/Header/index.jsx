@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Icon, Dropdown } from '@edx/paragon';
+import { Button, Icon, Dropdown } from '@edx/paragon';
 
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
@@ -23,9 +23,9 @@ class Header extends React.Component {
     const screenReaderText = `Profile image for ${email}`;
 
     if (userProfileImageUrl) {
-      return <Img src={userProfileImageUrl} alt={screenReaderText} />;
+      return <Img className="user-profile-img mr-2" src={userProfileImageUrl} alt={screenReaderText} />;
     }
-    return <Icon className={['fa', 'fa-user', 'px-3']} screenReaderText={screenReaderText} />;
+    return <Icon className="fa fa-user mr-2" screenReaderText={screenReaderText} />;
   }
 
   renderLogo() {
@@ -54,13 +54,17 @@ class Header extends React.Component {
             </Link>
             <span className="badge badge-secondary beta">Beta</span>
           </div>
-          {email && <Dropdown
-            title={email}
-            iconElement={this.getProfileIconElement()}
-            menuItems={[
-              <button onClick={() => apiClient.logout()}>Logout</button>,
-            ]}
-          />}
+          {email && (
+            <Dropdown>
+              <Dropdown.Button>
+                {this.getProfileIconElement()}
+                {email}
+              </Dropdown.Button>
+              <Dropdown.Menu>
+                <Button className="dropdown-item" onClick={() => apiClient.logout()}>Logout</Button>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
         </nav>
       </header>
     );

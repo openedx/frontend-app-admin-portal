@@ -1,6 +1,4 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+@import "~@edx/paragon/scss/edx/utilities-only";
 
 .coupon {
     box-shadow: 0 .125rem .25rem rgba(0,0,0,0.075);
@@ -18,17 +16,18 @@
     &:not(.expanded):not(.border-danger) {
         &:hover,
         &:focus {
-            border-color: $gray-400 !important; // `!important` needed to override .border Bootstrap class
+            border-color: $gray-300 !important; // `!important` needed to override .border Bootstrap class
         }
     }
 
     &.border-danger {
+        $danger-100: map-get($theme-color-levels, "danger-100");
         .metadata {
-            background: lighten($danger, 45%);
+            background: $danger-100;
 
             &:hover,
             &:focus {
-                background: lighten($danger, 43%);
+                background: darken($danger-100, 2%);
             }
         }
     }

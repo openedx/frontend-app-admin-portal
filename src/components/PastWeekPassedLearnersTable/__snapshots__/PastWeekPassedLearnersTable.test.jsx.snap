@@ -113,16 +113,19 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
             >
               <td
                 className=""
+                scope={null}
               >
                 awesome.me@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Dive into ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 23, 2018
               </td>
@@ -132,16 +135,19 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
             >
               <td
                 className=""
+                scope={null}
               >
                 new@example.com
               </td>
               <td
                 className=""
+                scope={null}
               >
                 Redux with ReactJS
               </td>
               <td
                 className=""
+                scope={null}
               >
                 September 22, 2018
               </td>
@@ -159,7 +165,6 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
     >
       <nav
         aria-label="completed-learners-week-pagination"
-        className=""
       >
         <div
           aria-atomic={true}
@@ -189,7 +194,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-3"
+                  id="pagination-2"
                 />
                 Previous
               </div>
@@ -213,7 +218,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-4"
+                  id="pagination-3"
                 />
               </div>
             </button>

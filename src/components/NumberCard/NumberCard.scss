@@ -1,6 +1,4 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+@import "~@edx/paragon/scss/edx/utilities-only";
 
 $viewport-size-details-overlay: 'md';
 $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
@@ -25,6 +23,7 @@ $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
 
     .card-title {
         font-size: 2.5rem;
+        font-weight: 500;
     }
 
     .card-body {
@@ -72,10 +71,6 @@ $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
                 .details-btn-text {
                     text-decoration: underline;
                 }
-            }
-
-            &:focus {
-                box-shadow: $input-btn-focus-box-shadow;
             }
         }
     

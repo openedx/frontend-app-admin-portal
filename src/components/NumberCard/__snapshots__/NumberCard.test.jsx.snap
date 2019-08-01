@@ -18,8 +18,8 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
         </span>
         <span
           aria-hidden={true}
-          className="fa fa-users d-flex align-items-center justify-content-center"
-          id="Icon1"
+          className="d-flex align-items-center justify-content-center fa fa-users"
+          id="Icon3"
         />
       </h5>
       <p
@@ -38,7 +38,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       <button
         aria-controls="footer-body-test-id"
         aria-expanded={false}
-        className="btn toggle-collapse btn-block btn-link"
+        className="btn toggle-collapse btn-link btn-block"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}
@@ -55,7 +55,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-caret-down"
-            id="Icon1"
+            id="Icon4"
           />
           <span
             className="sr-only"
@@ -124,8 +124,8 @@ exports[`<NumberCard /> renders correctly without detail actions 1`] = `
         </span>
         <span
           aria-hidden={true}
-          className="fa fa-users d-flex align-items-center justify-content-center"
-          id="Icon1"
+          className="d-flex align-items-center justify-content-center fa fa-users"
+          id="Icon2"
         />
       </h5>
       <p

@@ -10,13 +10,14 @@ exports[`<SupportPage /> renders correctly 1`] = `
     Support
   </h1>
   <p>
-    For assistance, please contact edX Enterprise Support at 
+    For assistance, please contact edX Enterprise Support at
+     
     <a
       href="mailto:customersuccess@edx.org"
       onClick={null}
       target="_self"
     >
-       customersuccess@edx.org
+      customersuccess@edx.org
     </a>
     .
   </p>

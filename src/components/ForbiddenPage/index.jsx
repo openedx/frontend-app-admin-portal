@@ -13,7 +13,9 @@ const ForbiddenPage = () => (
       <H1>403</H1>
       <p className="lead">You do not have access to this page.</p>
       <p>
-        For assistance, please contact edX Enterprise Support at <MailtoLink to="customersuccess@edx.org" content=" customersuccess@edx.org" />.
+        For assistance, please contact edX Enterprise Support at
+        {' '}
+        <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
       </p>
     </div>
   </div>

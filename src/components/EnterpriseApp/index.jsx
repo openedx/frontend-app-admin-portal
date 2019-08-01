@@ -24,8 +24,9 @@ class EnterpriseApp extends React.Component {
     this.contentWrapperRef = React.createRef();
     this.sidebarRef = null;
 
+    // hardcoded sidebarWidth required for initial render
     this.state = {
-      sidebarWidth: null,
+      sidebarWidth: 61.3,
     };
   }
 

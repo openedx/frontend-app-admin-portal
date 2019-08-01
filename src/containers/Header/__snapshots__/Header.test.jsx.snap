@@ -55,47 +55,40 @@ exports[`<Header /> renders default profile image correctly 1`] = `
       </span>
     </div>
     <div
-      className="dropdown has-icon rounded border d-flex bg-white"
+      className="dropdown"
     >
-      <div
-        className={
-          Array [
-            "icon-container d-flex align-items-center justify-content-center border-right",
-          ]
-        }
+      <button
+        aria-expanded={false}
+        aria-haspopup={true}
+        className="dropdown-toggle btn btn-light"
+        id="pgn__dropdown-trigger-1"
+        onClick={[Function]}
       >
         <span
           aria-hidden={true}
-          className="fa fa-user px-3 rounded-left"
-          id="Icon1"
+          className="fa fa-user mr-2"
+          id="Icon2"
         />
         <span
           className="sr-only"
         >
           Profile image for staff@example.com
         </span>
-      </div>
-      <button
-        aria-expanded={false}
-        aria-haspopup="true"
-        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        type="button"
-      >
         staff@example.com
       </button>
       <div
         aria-hidden={true}
-        aria-label="staff@example.com"
+        aria-labelledby="pgn__dropdown-trigger-1"
         className="dropdown-menu"
+        onKeyDown={[Function]}
         role="menu"
       >
         <button
-          className="dropdown-item"
+          className="btn dropdown-item"
+          onBlur={[Function]}
           onClick={[Function]}
           onKeyDown={[Function]}
+          type="button"
         >
           Logout
         </button>
@@ -189,42 +182,35 @@ exports[`<Header /> renders profile image correctly 1`] = `
       </span>
     </div>
     <div
-      className="dropdown has-icon rounded border d-flex bg-white"
+      className="dropdown"
     >
-      <div
-        className={
-          Array [
-            "icon-container d-flex align-items-center justify-content-center border-right",
-          ]
-        }
+      <button
+        aria-expanded={false}
+        aria-haspopup={true}
+        className="dropdown-toggle btn btn-light"
+        id="pgn__dropdown-trigger-0"
+        onClick={[Function]}
       >
         <img
           alt="Profile image for staff@example.com"
-          className="rounded-left"
+          className="user-profile-img mr-2"
           src="test-file-stub"
         />
-      </div>
-      <button
-        aria-expanded={false}
-        aria-haspopup="true"
-        className="btn dropdown-toggle border-0 rounded-0 bg-white btn-light"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        type="button"
-      >
         staff@example.com
       </button>
       <div
         aria-hidden={true}
-        aria-label="staff@example.com"
+        aria-labelledby="pgn__dropdown-trigger-0"
         className="dropdown-menu"
+        onKeyDown={[Function]}
         role="menu"
       >
         <button
-          className="dropdown-item"
+          className="btn dropdown-item"
+          onBlur={[Function]}
           onClick={[Function]}
           onKeyDown={[Function]}
+          type="button"
         >
           Logout
         </button>
@@ -273,7 +259,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
     <div>
       <button
         aria-controls="sidebar"
-        className="btn sidebar-toggle-btn mr-2 bg-white"
+        className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
         onBlur={[Function]}
         onClick={[Function]}
         onKeyDown={[Function]}
@@ -282,7 +268,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
         <span
           aria-hidden={true}
           className="fa fa-bars"
-          id="Icon1"
+          id="Icon3"
         />
         <span
           className="sr-only"

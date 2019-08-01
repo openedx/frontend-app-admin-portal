@@ -13,22 +13,22 @@ exports[`<Sidebar /> renders correctly 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <ul
-      className="list-unstyled m-0"
+    <nav
+      className="nav nav-pills flex-column m-0"
     >
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon1"
+            id="Icon4"
           />
           <span
             className="sr-only"
@@ -38,18 +38,18 @@ exports[`<Sidebar /> renders correctly 1`] = `
         </a>
       </li>
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-tags"
-            id="Icon1"
+            id="Icon5"
           />
           <span
             className="sr-only"
@@ -58,7 +58,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           </span>
         </a>
       </li>
-    </ul>
+    </nav>
   </div>
 </nav>
 `;
@@ -76,22 +76,22 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <ul
-      className="list-unstyled m-0"
+    <nav
+      className="nav nav-pills flex-column m-0"
     >
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon1"
+            id="Icon8"
           />
           <span
             className="sr-only"
@@ -100,7 +100,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           </span>
         </a>
       </li>
-    </ul>
+    </nav>
   </div>
 </nav>
 `;
@@ -118,44 +118,44 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <ul
-      className="list-unstyled m-0"
+    <nav
+      className="nav nav-pills flex-column m-0"
     >
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-line-chart mr-2"
-            id="Icon1"
+            id="Icon11"
           />
           Learner Report
         </a>
       </li>
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-tags mr-2"
-            id="Icon1"
+            id="Icon12"
           />
           Code Management
         </a>
       </li>
-    </ul>
+    </nav>
   </div>
 </nav>
 `;
@@ -173,44 +173,44 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <ul
-      className="list-unstyled m-0"
+    <nav
+      className="nav nav-pills flex-column m-0"
     >
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-line-chart mr-2"
-            id="Icon1"
+            id="Icon15"
           />
           Learner Report
         </a>
       </li>
       <li
-        className="rounded-0"
+        className="nav-item"
       >
         <a
           aria-current={null}
-          className="btn btn-link btn-block text-left text-secondary rounded-0"
+          className="nav-link text-left text-secondary rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <span
             aria-hidden={true}
             className="fa fa-tags mr-2"
-            id="Icon1"
+            id="Icon16"
           />
           Code Management
         </a>
       </li>
-    </ul>
+    </nav>
   </div>
 </nav>
 `;

@@ -60,7 +60,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon1"
+            id="Icon2"
           />
           Refresh data
         </button>
@@ -72,7 +72,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon1"
+            id="Icon3"
           />
           Request more codes
         </a>
@@ -101,7 +101,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-exclamation-circle"
-                  id="Icon1"
+                  id="Icon4"
                 />
               </div>
               <div
@@ -178,7 +178,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon1"
+            id="Icon13"
           />
           Refresh data
         </button>
@@ -190,7 +190,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon1"
+            id="Icon14"
           />
           Request more codes
         </a>
@@ -219,7 +219,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon1"
+                  id="Icon15"
                 />
               </div>
               <div
@@ -301,7 +301,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon1"
+            id="Icon11"
           />
           Refresh data
         </button>
@@ -313,7 +313,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon1"
+            id="Icon12"
           />
           Request more codes
         </a>
@@ -396,7 +396,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon1"
+            id="Icon5"
           />
           Refresh data
         </button>
@@ -408,7 +408,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon1"
+            id="Icon6"
           />
           Request more codes
         </a>
@@ -519,7 +519,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa fa-chevron-down text-primary"
-                id="Icon1"
+                id="Icon7"
               />
               <span
                 className="sr-only"
@@ -636,7 +636,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa fa-chevron-down text-primary"
-                id="Icon1"
+                id="Icon8"
               />
               <span
                 className="sr-only"
@@ -659,7 +659,6 @@ Array [
         >
           <nav
             aria-label="coupons pagination"
-            className=""
           >
             <div
               aria-atomic={true}
@@ -689,7 +688,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-3"
+                      id="pagination-9"
                     />
                     Previous
                   </div>
@@ -713,7 +712,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-4"
+                      id="pagination-10"
                     />
                   </div>
                 </button>

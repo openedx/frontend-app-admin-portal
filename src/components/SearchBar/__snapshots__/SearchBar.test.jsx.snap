@@ -11,8 +11,8 @@ exports[`<SearchBar /> renders correctly 1`] = `
   >
     <label
       className=""
-      htmlFor="asInput3"
-      id="label-asInput3"
+      htmlFor="asInput2"
+      id="label-asInput2"
     >
       Search:
     </label>
@@ -23,20 +23,19 @@ exports[`<SearchBar /> renders correctly 1`] = `
         className="input-group-prepend"
       />
       <input
-        aria-describedby="error-asInput3"
+        aria-describedby="error-asInput2"
         aria-invalid={false}
         autoComplete="off"
         className="form-control is-invalid-nodanger input no-clear-btn"
         disabled={false}
-        id="asInput3"
+        id="asInput2"
         name="search"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyPress={[Function]}
         placeholder=""
-        readOnly={false}
         required={false}
-        themes={Array []}
+        role="searchbox"
         type="search"
         value=""
       />
@@ -44,17 +43,14 @@ exports[`<SearchBar /> renders correctly 1`] = `
         className="input-group-append"
       >
         <button
-          className="btn search-btn"
+          className="search-btn"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
-          type="button"
         >
           <span
             aria-hidden={true}
             className="fa fa-search"
-            id="Icon1"
+            id="Icon3"
           />
           <span
             className="sr-only"
@@ -67,7 +63,7 @@ exports[`<SearchBar /> renders correctly 1`] = `
     <div
       aria-live="polite"
       className="invalid-feedback invalid-feedback-nodanger"
-      id="error-asInput3"
+      id="error-asInput2"
     >
       <span />
     </div>

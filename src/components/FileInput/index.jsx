@@ -127,20 +127,18 @@ class FileInput extends React.Component {
                 {fileName}
               </span>
               <Button
-                className={['remove-file-btn', 'p-1', 'ml-2']}
-                buttonType="link"
-                label={
-                  <React.Fragment>
-                    <Icon className={['fa', 'fa-times', 'mr-1']} />
-                    Remove
-                  </React.Fragment>
-                }
+                className="remove-file-btn btn-link p-1 ml-2"
                 onClick={() => {
                   dispatch(clearFields(form, false, false, input.name));
                   input.onChange(null);
                   this.setState({ fileName: null });
                 }}
-              />
+              >
+                <React.Fragment>
+                  <Icon className="fa fa-times mr-1" />
+                  Remove
+                </React.Fragment>
+              </Button>
             </React.Fragment>
           )}
         </div>

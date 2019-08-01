@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
+import classNames from 'classnames';
 
 import './SidebarToggle.scss';
 
@@ -15,18 +16,17 @@ const SidebarToggle = (props) => {
 
   return (
     <Button
-      className={['sidebar-toggle-btn', 'mr-2', 'bg-white']}
-      label={
-        <React.Fragment>
-          <Icon className={['fa', iconClass]} />
-          <span className="sr-only">
-            {isExpandedByToggle ? 'close menu' : 'open menu'}
-          </span>
-        </React.Fragment>
-      }
+      className="sidebar-toggle-btn px-1 mr-2 bg-white"
       onClick={isExpandedByToggle ? collapseSidebar : expandSidebar}
       aria-controls="sidebar"
-    />
+    >
+      <React.Fragment>
+        <Icon className={classNames('fa', iconClass)} />
+        <span className="sr-only">
+          {isExpandedByToggle ? 'close menu' : 'open menu'}
+        </span>
+      </React.Fragment>
+    </Button>
   );
 };
 

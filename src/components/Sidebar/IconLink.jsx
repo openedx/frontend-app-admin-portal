@@ -6,18 +6,18 @@ import { Icon } from '@edx/paragon';
 
 const IconLink = props => (
   <NavLink
-    className="btn btn-link btn-block text-left text-secondary rounded-0"
+    className="nav-link text-left text-secondary rounded-0"
     to={props.to}
   >
     <Icon
-      className={[classNames([
+      className={classNames([
         'fa',
         props.iconClassName,
         {
           'mr-2': props.isExpanded,
         },
-      ])]}
-      screenReaderText={!props.isExpanded && props.title}
+      ])}
+      screenReaderText={!props.isExpanded ? props.title : undefined}
     />
     {props.isExpanded && props.title}
   </NavLink>

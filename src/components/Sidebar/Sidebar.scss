@@ -1,5 +1,4 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
+@import "~@edx/paragon/scss/edx/utilities-only";
 
 .sidebar {
     background: $gray-100;
@@ -17,24 +16,25 @@
     }
 
     .sidebar-content {
-        .list-unstyled {
+        .nav {
             position: sticky;
             top: 0;
-        }
 
-        .btn {
-            &.active {
-                background: #dbeef6;
-
+            .nav-link {
+                &.active {
+                    $nav-link-bg: map-get($theme-color-levels, "primary-200");
+                    background: $nav-link-bg;
+    
+                    &:hover,
+                    &:focus {
+                        background: darken($nav-link-bg, 5%);
+                    }
+                }
+    
                 &:hover,
                 &:focus {
-                    background: darken(#dbeef6, 5%);
+                    background: $gray-200;
                 }
-            }
-
-            &:hover,
-            &:focus {
-                background: $gray-200;
             }
         }
     }

@@ -108,16 +108,16 @@ class Sidebar extends React.Component {
         ref={this.element}
       >
         <div className="sidebar-content py-2">
-          <ul className="list-unstyled m-0">
+          <nav className="nav nav-pills flex-column m-0">
             {this.getMenuItems().filter(item => !item.hidden).map(item => (
-              <li key={item.to} className="rounded-0">
+              <li key={item.to} className="nav-item">
                 <IconLink
                   {...item}
                   isExpanded={this.isSidebarExpanded()}
                 />
               </li>
             ))}
-          </ul>
+          </nav>
         </div>
       </nav>
     );

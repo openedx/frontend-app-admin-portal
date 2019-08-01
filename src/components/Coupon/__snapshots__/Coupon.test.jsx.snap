@@ -100,7 +100,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
       <span
         aria-hidden={true}
         className="fa fa-exclamation-circle text-danger mr-2"
-        id="Icon1"
+        id="Icon4"
       />
       <span
         className="sr-only"
@@ -110,7 +110,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
       <span
         aria-hidden={true}
         className="fa fa-chevron-down text-primary"
-        id="Icon1"
+        id="Icon5"
       />
       <span
         className="sr-only"
@@ -230,7 +230,7 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
       <span
         aria-hidden={true}
         className="fa fa-chevron-down text-primary"
-        id="Icon1"
+        id="Icon2"
       />
       <span
         className="sr-only"
@@ -345,7 +345,7 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
       <span
         aria-hidden={true}
         className="fa fa-chevron-down text-primary"
-        id="Icon1"
+        id="Icon3"
       />
       <span
         className="sr-only"

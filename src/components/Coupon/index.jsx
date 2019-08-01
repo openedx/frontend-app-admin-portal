@@ -93,7 +93,7 @@ class Coupon extends React.Component {
     const screenReaderText = isExpanded ? 'Close' : 'Open';
     return (
       <Icon
-        className={['fa', iconClass, iconColor]}
+        className={classNames('fa', iconClass, iconColor)}
         screenReaderText={`${screenReaderText} coupon details`}
       />
     );
@@ -102,7 +102,7 @@ class Coupon extends React.Component {
   renderErrorIcon() {
     return (
       <Icon
-        className={['fa', 'fa-exclamation-circle', 'text-danger', 'mr-2']}
+        className="fa fa-exclamation-circle text-danger mr-2"
         screenReaderText="Coupon has an error."
       />
     );

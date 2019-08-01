@@ -23,13 +23,24 @@ class CouponDetails extends React.Component {
     this.bulkActionSelectRef = React.createRef();
     this.selectAllCheckBoxRef = React.createRef();
 
+    this.hasAllTableRowsSelected = false;
+    this.selectedTableRows = {};
+
     this.state = {
       selectedToggle: 'unassigned',
       tableColumns: [
         {
           label: (
             <CheckBox
-              onChange={checked => this.handleSelectAllCodes(checked)}
+              id="select-all-codes"
+              name="select all codes"
+              label={
+                <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
+              }
+              onChange={(checked) => {
+                  this.hasAllTableRowsSelected = checked;
+                  this.handleSelectAllCodes(checked);
+                }}
               ref={this.selectAllCheckBoxRef}
             />
           ),
@@ -167,7 +178,7 @@ class CouponDetails extends React.Component {
     } = code;
 
     let remainingUses = redemptions.total - redemptions.used;
-    const buttonClassNames = ['btn-link', 'btn-sm', 'px-0'];
+    const buttonClassNames = ['btn-link', 'btn-sm', 'p-0'];
 
     // Don't show a button if all total redemptions have been used
     if (redemptions.used === redemptions.total) {
@@ -178,27 +189,29 @@ class CouponDetails extends React.Component {
     if (assignedTo) {
       return (
         <React.Fragment>
-          {!codeHasError &&
-          <React.Fragment>
-            <Button
-              className={[...buttonClassNames, 'remind-btn']}
-              label="Remind"
-              onClick={() => this.setModalState({
-                key: 'remind',
-                options: {
-                  couponId: id,
-                  title: couponTitle,
-                  data: {
-                    code: code.code,
-                    email: code.assigned_to,
+          {!codeHasError && (
+            <React.Fragment>
+              <Button
+                className={`remind-btn ${buttonClassNames.join(' ')}`}
+                onClick={() => this.setModalState({
+                  key: 'remind',
+                  options: {
+                    couponId: id,
+                    title: couponTitle,
+                    data: {
+                      code: code.code,
+                      email: code.assigned_to,
+                    },
                   },
-                },
-              })}
-            /><span>|</span>
-          </React.Fragment>}
+                })}
+              >
+                Remind
+              </Button>
+              <span>|</span>
+            </React.Fragment>
+          )}
           <Button
-            className={[...buttonClassNames, 'revoke-btn']}
-            label="Revoke"
+            className={`revoke-btn ${buttonClassNames.join(' ')}`}
             onClick={() => this.setModalState({
               key: 'revoke',
               options: {
@@ -210,7 +223,9 @@ class CouponDetails extends React.Component {
                 },
               },
             })}
-          />
+          >
+            Revoke
+          </Button>
         </React.Fragment>
       );
     }
@@ -222,8 +237,7 @@ class CouponDetails extends React.Component {
 
     return (
       <Button
-        className={[...buttonClassNames, 'assignment-btn']}
-        label="Assign"
+        className={`assignment-btn ${buttonClassNames.join(' ')}`}
         onClick={() => this.setModalState({
           key: 'assignment',
           options: {
@@ -235,7 +249,9 @@ class CouponDetails extends React.Component {
             },
           },
         })}
-      />
+      >
+        Assign
+      </Button>
     );
   }
 
@@ -248,6 +264,20 @@ class CouponDetails extends React.Component {
     });
   }
 
+  getSelectAllCheckBoxLabel = () => {
+    if (this.hasAllTableRowsSelected) {
+      return 'unselect all codes';
+    }
+    return 'select all codes';
+  };
+
+  getLabelForCodeCheckBox = (code) => {
+    if (this.selectedTableRows[code]) {
+      return `unselect code ${code}`;
+    }
+    return `select code ${code}`;
+  };
+
   reset() {
     this.resetModals();
     this.resetCodeActionStatus();
@@ -256,84 +286,6 @@ class CouponDetails extends React.Component {
       selectedCodes: [],
       hasAllCodesSelected: false,
       refreshIndex: 0,
-    });
-  }
-
-  isTableLoading() {
-    const { couponDetailsTable } = this.props;
-    return couponDetailsTable && couponDetailsTable.loading;
-  }
-
-  isBulkAssignSelectDisabled() {
-    const options = this.getBulkActionSelectOptions();
-
-    return this.isTableLoading() || options.every(option => option.disabled);
-  }
-
-  handleBulkActionSelect() {
-    const {
-      couponData: {
-        id,
-        title: couponTitle,
-        num_unassigned: unassignedCodes,
-        usage_limitation: couponType,
-      },
-    } = this.props;
-    const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
-
-    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const selectedBulkAction = ref && ref.state.value;
-
-    if (selectedBulkAction === 'assign') {
-      this.setModalState({
-        key: 'assignment',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkAssign: true,
-          data: {
-            unassignedCodes,
-            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
-            hasAllCodesSelected,
-            couponType,
-          },
-        },
-      });
-    } else if (selectedBulkAction === 'revoke') {
-      this.setModalState({
-        key: 'revoke',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRevoke: true,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    } else if (selectedBulkAction === 'remind') {
-      this.setModalState({
-        key: 'remind',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRemind: true,
-          selectedToggle,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    }
-  }
-
-  resetModals() {
-    this.setState({
-      modals: {
-        assignment: null,
-        revoke: null,
-        remind: null,
-      },
     });
   }
 
@@ -467,7 +419,7 @@ class CouponDetails extends React.Component {
     // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
     const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
     const selectAllCheckBoxDOM = (
-      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.state.id)
+      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
     );
 
     if (selectAllCheckBoxDOM && hasPartialSelection) {
@@ -576,7 +528,7 @@ class CouponDetails extends React.Component {
       ...code,
       assigned_to: code.error ? (
         <span className="text-danger">
-          <Icon className={['fa', 'fa-exclamation-circle', 'mr-2']} screenReaderText="Error" />
+          <Icon className="fa fa-exclamation-circle mr-2" screenReaderText="Error" />
           {code.error}
         </span>
       ) : code.assigned_to,
@@ -585,11 +537,100 @@ class CouponDetails extends React.Component {
       actions: this.getActionButton(code),
       select: (
         <CheckBox
-          onChange={checked => this.handleCodeSelection({ checked, code })}
-          checked={selectedCodes.find(selectedCode => selectedCode === code)}
+          name={`select code ${code.code}`}
+          label={
+            <div className="sr-only">{this.getLabelForCodeCheckBox(code.code)}</div>
+          }
+          onChange={(checked) => {
+            this.handleCodeSelection({ checked, code });
+            if (checked) {
+              this.selectedTableRows[code.code] = true;
+            } else if (checked && this.selectedTableRows[code.code]) {
+              delete this.selectedTableRows[code.code];
+            }
+          }}
+          checked={selectedCodes.findIndex(selectedCode => selectedCode === code) !== -1}
         />
       ),
     }));
+  }
+
+  isTableLoading() {
+    const { couponDetailsTable } = this.props;
+    return couponDetailsTable && couponDetailsTable.loading;
+  }
+
+  isBulkAssignSelectDisabled() {
+    const options = this.getBulkActionSelectOptions();
+
+    return this.isTableLoading() || options.every(option => option.disabled);
+  }
+
+  handleBulkActionSelect() {
+    const {
+      couponData: {
+        id,
+        title: couponTitle,
+        num_unassigned: unassignedCodes,
+        usage_limitation: couponType,
+      },
+    } = this.props;
+    const { hasAllCodesSelected, selectedCodes, selectedToggle } = this.state;
+
+    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
+    const selectedBulkAction = ref && ref.value;
+
+    if (selectedBulkAction === 'assign') {
+      this.setModalState({
+        key: 'assignment',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkAssign: true,
+          data: {
+            unassignedCodes,
+            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
+            hasAllCodesSelected,
+            couponType,
+          },
+        },
+      });
+    } else if (selectedBulkAction === 'revoke') {
+      this.setModalState({
+        key: 'revoke',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRevoke: true,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
+    } else if (selectedBulkAction === 'remind') {
+      this.setModalState({
+        key: 'remind',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRemind: true,
+          selectedToggle,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
+    }
+  }
+
+  resetModals() {
+    this.setState({
+      modals: {
+        assignment: null,
+        revoke: null,
+        remind: null,
+      },
+    });
   }
 
   resetCodeActionStatus() {
@@ -605,7 +646,7 @@ class CouponDetails extends React.Component {
     return (
       <StatusAlert
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title={title}
         message={message}
       />
@@ -621,8 +662,8 @@ class CouponDetails extends React.Component {
     return (
       <StatusAlert
         alertType="success"
-        className={[classNames({ 'mt-2': errors.length > 0 || couponOverviewError })]}
-        iconClassNames={['fa', 'fa-check']}
+        className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
+        iconClassName="fa fa-check"
         title={title}
         message={message}
         onClose={this.resetCodeActionStatus}
@@ -640,7 +681,7 @@ class CouponDetails extends React.Component {
     return (
       <StatusAlert
         alertType="info"
-        className={[classNames({ 'mt-2': errors.length > 0 || couponOverviewError })]}
+        className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
         title={title}
         message={message}
       />
@@ -703,7 +744,7 @@ class CouponDetails extends React.Component {
               <div className="row mb-3">
                 <div className="toggles col-12 col-md-8">
                   <InputSelect
-                    className={['mt-1']}
+                    className="mt-1"
                     name="table-view"
                     label="Filter by Code Status:"
                     value={selectedToggle}
@@ -714,8 +755,8 @@ class CouponDetails extends React.Component {
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
-                    ref={this.bulkActionSelectRef}
-                    className={['mt-1']}
+                    inputRef={this.bulkActionSelectRef}
+                    className="mt-1"
                     name="bulk-action"
                     label="Bulk Action:"
                     value={this.getBulkActionSelectValue()}
@@ -723,12 +764,12 @@ class CouponDetails extends React.Component {
                     disabled={this.isBulkAssignSelectDisabled()}
                   />
                   <Button
-                    className={['ml-2']}
-                    buttonType="primary"
-                    label="Go"
+                    className="btn-primary ml-2"
                     onClick={this.handleBulkActionSelect}
                     disabled={this.isBulkAssignSelectDisabled()}
-                  />
+                  >
+                    Go
+                  </Button>
                 </div>
               </div>
               {this.hasStatusAlert() &&
@@ -755,11 +796,11 @@ class CouponDetails extends React.Component {
                         <React.Fragment>
                           Failed to fetch coupon overview data ({couponOverviewError.message}).
                           <Button
-                            className={['p-0', 'pl-1', 'border-0']}
-                            buttonType="link"
-                            label="Please try again"
+                            className="btn-link p-0 pl-1 border-0"
                             onClick={() => this.props.fetchCouponOrder(id)}
-                          />.
+                          >
+                            Please try again.
+                          </Button>
                         </React.Fragment>
                       ),
                     })}
@@ -769,9 +810,7 @@ class CouponDetails extends React.Component {
                         <React.Fragment>
                           To view the newly assigned code(s), filter by
                           <Button
-                            className={['p-0', 'pl-1', 'border-0']}
-                            buttonType="link"
-                            label="unredeemed codes"
+                            className="btn-link p-0 pl-1 border-0"
                             onClick={() => {
                               this.setState({
                                 selectedToggle: 'unredeemed',
@@ -779,7 +818,9 @@ class CouponDetails extends React.Component {
                                 this.handleToggleSelect();
                               });
                             }}
-                          />.
+                          >
+                            unredeemed codes.
+                          </Button>
                         </React.Fragment>
                       ),
                     })}
@@ -799,13 +840,13 @@ class CouponDetails extends React.Component {
                           {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
                           {!hasAllCodesSelected && (
                             <Button
-                              className={['p-0', 'pl-1', 'border-0']}
-                              buttonType="link"
-                              label={`Select all ${tableData.count} codes?`}
+                              className="btn-link p-0 pl-1 border-0"
                               onClick={() => this.setState({
                                 hasAllCodesSelected: true,
                               })}
-                            />
+                            >
+                              {`Select all ${tableData.count} codes?`}
+                            </Button>
                           )}
                         </React.Fragment>
                       ),

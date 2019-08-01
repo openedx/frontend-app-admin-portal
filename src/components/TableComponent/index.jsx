@@ -76,7 +76,7 @@ class TableComponent extends React.Component {
             <div className="table-responsive">
               <Table
                 id={id}
-                className={['table-sm', 'table-striped']}
+                className="table-sm table-striped"
                 columns={columnConfig}
                 data={formatData(data)}
                 tableSortable={tableSortable}
@@ -108,7 +108,7 @@ class TableComponent extends React.Component {
     return (
       <StatusAlert
         alertType="danger"
-        iconClassNames={['fa', 'fa-times-circle']}
+        iconClassName="fa fa-times-circle"
         title="Unable to load data"
         message={`Try refreshing your screen (${this.props.error.message})`}
       />
@@ -119,7 +119,7 @@ class TableComponent extends React.Component {
     return (
       <StatusAlert
         alertType="warning"
-        iconClassNames={['fa', 'fa-exclamation-circle']}
+        iconClassName="fa fa-exclamation-circle"
         message="There are no results."
       />
     );

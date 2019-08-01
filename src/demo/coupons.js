@@ -68,6 +68,7 @@ const coupons = [...Array(couponsCount)].map((_, index) => {
     num_uses: faker.random.number({ min: 1, max: totalEnrollments }),
     max_uses: faker.random.boolean() ? totalEnrollments : null,
     errors: [],
+    usage_limitation: 'test',
   };
 });
 

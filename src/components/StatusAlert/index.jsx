@@ -9,7 +9,7 @@ const StatusAlert = (props) => {
   const {
     alertType,
     className,
-    iconClassNames,
+    iconClassName,
     title,
     message,
     dismissible,
@@ -24,18 +24,18 @@ const StatusAlert = (props) => {
       dialog={
         <div className={
           classNames({
-            'd-flex': iconClassNames.length > 0,
+            'd-flex': iconClassName,
           })}
         >
-          {iconClassNames.length > 0 &&
+          {iconClassName && (
             <div className="icon mr-2">
-              <Icon className={iconClassNames} />
+              <Icon className={iconClassName} />
             </div>
-          }
+          )}
           <div className="message">
-            {title &&
+            {title && (
               <span className="title">{title}</span>
-            }
+            )}
             {message}
           </div>
         </div>
@@ -49,16 +49,16 @@ const StatusAlert = (props) => {
 StatusAlert.propTypes = {
   alertType: PropTypes.string.isRequired,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-  className: PropTypes.arrayOf(PropTypes.string),
-  iconClassNames: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
+  iconClassName: PropTypes.string,
   title: PropTypes.string,
   dismissible: PropTypes.bool,
   onClose: PropTypes.func,
 };
 
 StatusAlert.defaultProps = {
-  className: [],
-  iconClassNames: [],
+  className: '',
+  iconClassName: undefined,
   title: null,
   dismissible: false,
   onClose: () => {},
