@@ -61,12 +61,9 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
               className="input-group-append"
             >
               <button
-                className="btn search-btn"
+                className="search-btn"
                 disabled={true}
-                onBlur={[Function]}
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
               >
                 <span
                   aria-hidden={true}
@@ -163,12 +160,9 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
               className="input-group-append"
             >
               <button
-                className="btn search-btn"
+                className="search-btn"
                 disabled={true}
-                onBlur={[Function]}
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
               >
                 <span
                   aria-hidden={true}
@@ -265,12 +259,9 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
               className="input-group-append"
             >
               <button
-                className="btn search-btn"
+                className="search-btn"
                 disabled={true}
-                onBlur={[Function]}
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
               >
                 <span
                   aria-hidden={true}
@@ -414,11 +405,8 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
               className="input-group-append"
             >
               <button
-                className="btn clear-btn ml-1"
-                onBlur={[Function]}
+                className="clear-btn ml-1"
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
               >
                 <small>
                   <span
@@ -434,12 +422,9 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                 </small>
               </button>
               <button
-                className="btn search-btn border-left"
+                className="search-btn"
                 disabled={false}
-                onBlur={[Function]}
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                type="button"
               >
                 <span
                   aria-hidden={true}

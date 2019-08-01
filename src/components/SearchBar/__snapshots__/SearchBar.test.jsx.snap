@@ -43,12 +43,9 @@ exports[`<SearchBar /> renders correctly 1`] = `
         className="input-group-append"
       >
         <button
-          className="btn search-btn"
+          className="search-btn"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
-          type="button"
         >
           <span
             aria-hidden={true}
