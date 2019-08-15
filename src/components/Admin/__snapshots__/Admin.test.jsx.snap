@@ -6121,24 +6121,8 @@ Array [
 
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 <div
-  className="container-fluid mt-3"
+  className="loading d-flex align-items-center justify-content-center overview mt-3"
 >
-  <div
-    className="text-center py-5"
-  >
-    <h1
-      className={null}
-    >
-      404
-    </h1>
-    <p
-      className="lead"
-    >
-      Oops, sorry we can't find that page!
-    </p>
-    <p>
-      Either something went wrong or the page doesn't exist anymore.
-    </p>
-  </div>
+  Loading...
 </div>
 `;

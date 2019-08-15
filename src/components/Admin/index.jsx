@@ -16,7 +16,6 @@ import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInact
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
-import NotFoundPage from '../NotFoundPage';
 
 import AdminCards from '../../containers/AdminCards';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
@@ -232,7 +231,7 @@ class Admin extends React.Component {
 
     return (
       <React.Fragment>
-        {!loading && !error && !this.hasAnalyticsData() ? <NotFoundPage /> : (
+        {!loading && !error && !this.hasAnalyticsData() ? this.renderLoadingMessage() : (
           <React.Fragment>
             <Helmet>
               <title>Learner and Progress Report</title>
