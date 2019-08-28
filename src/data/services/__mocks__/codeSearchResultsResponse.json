@@ -1,0 +1,69 @@
+{
+  "data": {
+    "count": 3, 
+    "current_page": 1, 
+    "next": null, 
+    "num_pages": 1, 
+    "previous": null, 
+    "results": [
+      {
+        "coupon_id": 5, 
+        "coupon_name": "Test coupon 3", 
+        "id": 7, 
+        "redemptions_and_assignments": [
+          {
+            "code": "Y7XS3OGG7WB7KQ5R", 
+            "course_key": null, 
+            "course_title": null, 
+            "redeemed_date": null
+          },
+          {
+            "code": "Y7XS3OGG7WB7KQ5R",
+            "course_key": "course-v1:test-org+course+run",
+            "course_title": "course-name-EccHrARKjEsn",
+            "redeemed_date": "2019-08-29T19:13:23.851454Z"
+          }
+        ]
+      },
+      {
+        "coupon_id": 3, 
+        "coupon_name": "Test coupon", 
+        "id": 1, 
+        "redemptions_and_assignments": []
+      }, 
+      {
+        "coupon_id": 4, 
+        "coupon_name": "Test coupon 1", 
+        "id": 2, 
+        "redemptions_and_assignments": [
+          {
+            "code": "Y7XS3OGG7WB7KQ5R", 
+            "course_key": null, 
+            "course_title": null, 
+            "redeemed_date": null
+          }, 
+          {
+            "code": "Y7XS3OGG7WB7KQ5R", 
+            "course_key": "course-v1:test-org+course+run", 
+            "course_title": "course-name-EccHrARKjEsn", 
+            "redeemed_date": "2019-08-29T19:13:23.851454Z"
+          }
+        ]
+      }, 
+      {
+        "coupon_id": 5, 
+        "coupon_name": "Test coupon 3", 
+        "id": 7, 
+        "redemptions_and_assignments": [
+          {
+            "code": "ILSYLEH27WO36NMC", 
+            "course_key": "course-v1:test-org+course+run", 
+            "course_title": "course-name-EccHrARKjEsn", 
+            "redeemed_date": "2019-08-29T19:13:23.851454Z"
+          }
+        ]
+      }
+    ], 
+    "start": 0
+  }
+}

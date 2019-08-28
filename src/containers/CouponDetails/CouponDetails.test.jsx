@@ -300,7 +300,12 @@ describe('CouponDetailsWrapper', () => {
       const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
       expect(actionButton.prop('children')).toEqual(label);
       actionButton.simulate('click');
-      expect(wrapper.find('CouponDetails').instance().state.modals[key]).toBeTruthy();
+      // TODO: The remind/revoke buttons now manage their modal state in their
+      // own components, so we only need to worry about the `assign` action now.
+      // We might also want to move the Assign button to its own component as well.
+      if (key === 'assign') {
+        expect(wrapper.find('CouponDetails').instance().state.modals[key]).toBeTruthy();
+      }
     };
 
     beforeEach(() => {

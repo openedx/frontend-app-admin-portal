@@ -35,10 +35,10 @@ Array [
     className="container-fluid"
   >
     <div
-      className="row mt-4 mb-3"
+      className="row mt-4 mb-3 no-gutters"
     >
       <div
-        className="col-12 col-md-3 mb-2 mb-md-0"
+        className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
         <h2
           className={null}
@@ -47,7 +47,79 @@ Array [
         </h2>
       </div>
       <div
-        className="col-12 col-md-9 mb-2 mb-md-0 text-md-right"
+        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+      >
+        <div
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
+        >
+          <div
+            className="form-group form-inline"
+          >
+            <label
+              className=""
+              htmlFor="asInput2"
+              id="label-asInput2"
+            >
+              Search by email:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput2"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput2"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
+              >
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon3"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput2"
+            >
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="btn mr-2 btn-link"
@@ -60,7 +132,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon2"
+            id="Icon4"
           />
           Refresh data
         </button>
@@ -72,10 +144,26 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon3"
+            id="Icon5"
           />
           Request more codes
         </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="pgn-transition-replace-group position-relative"
+          style={
+            Object {
+              "height": null,
+            }
+          }
+        />
       </div>
     </div>
     <div
@@ -101,7 +189,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-exclamation-circle"
-                  id="Icon4"
+                  id="Icon6"
                 />
               </div>
               <div
@@ -153,10 +241,10 @@ Array [
     className="container-fluid"
   >
     <div
-      className="row mt-4 mb-3"
+      className="row mt-4 mb-3 no-gutters"
     >
       <div
-        className="col-12 col-md-3 mb-2 mb-md-0"
+        className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
         <h2
           className={null}
@@ -165,7 +253,79 @@ Array [
         </h2>
       </div>
       <div
-        className="col-12 col-md-9 mb-2 mb-md-0 text-md-right"
+        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+      >
+        <div
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
+        >
+          <div
+            className="form-group form-inline"
+          >
+            <label
+              className=""
+              htmlFor="asInput19"
+              id="label-asInput19"
+            >
+              Search by email:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput19"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput19"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
+              >
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon20"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput19"
+            >
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="btn mr-2 btn-link"
@@ -178,7 +338,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon13"
+            id="Icon21"
           />
           Refresh data
         </button>
@@ -190,10 +350,26 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon14"
+            id="Icon22"
           />
           Request more codes
         </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="pgn-transition-replace-group position-relative"
+          style={
+            Object {
+              "height": null,
+            }
+          }
+        />
       </div>
     </div>
     <div
@@ -219,7 +395,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon15"
+                  id="Icon23"
                 />
               </div>
               <div
@@ -276,10 +452,10 @@ Array [
     className="container-fluid"
   >
     <div
-      className="row mt-4 mb-3"
+      className="row mt-4 mb-3 no-gutters"
     >
       <div
-        className="col-12 col-md-3 mb-2 mb-md-0"
+        className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
         <h2
           className={null}
@@ -288,7 +464,79 @@ Array [
         </h2>
       </div>
       <div
-        className="col-12 col-md-9 mb-2 mb-md-0 text-md-right"
+        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+      >
+        <div
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
+        >
+          <div
+            className="form-group form-inline"
+          >
+            <label
+              className=""
+              htmlFor="asInput15"
+              id="label-asInput15"
+            >
+              Search by email:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput15"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput15"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
+              >
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon16"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput15"
+            >
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="btn mr-2 btn-link"
@@ -301,7 +549,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon11"
+            id="Icon17"
           />
           Refresh data
         </button>
@@ -313,10 +561,26 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon12"
+            id="Icon18"
           />
           Request more codes
         </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="pgn-transition-replace-group position-relative"
+          style={
+            Object {
+              "height": null,
+            }
+          }
+        />
       </div>
     </div>
     <div
@@ -371,10 +635,10 @@ Array [
     className="container-fluid"
   >
     <div
-      className="row mt-4 mb-3"
+      className="row mt-4 mb-3 no-gutters"
     >
       <div
-        className="col-12 col-md-3 mb-2 mb-md-0"
+        className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
         <h2
           className={null}
@@ -383,7 +647,79 @@ Array [
         </h2>
       </div>
       <div
-        className="col-12 col-md-9 mb-2 mb-md-0 text-md-right"
+        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+      >
+        <div
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
+        >
+          <div
+            className="form-group form-inline"
+          >
+            <label
+              className=""
+              htmlFor="asInput7"
+              id="label-asInput7"
+            >
+              Search by email:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput7"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput7"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
+              >
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon8"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput7"
+            >
+              <span />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="btn mr-2 btn-link"
@@ -396,7 +732,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-refresh mr-2"
-            id="Icon5"
+            id="Icon9"
           />
           Refresh data
         </button>
@@ -408,10 +744,26 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-plus mr-2"
-            id="Icon6"
+            id="Icon10"
           />
           Request more codes
         </a>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="pgn-transition-replace-group position-relative"
+          style={
+            Object {
+              "height": null,
+            }
+          }
+        />
       </div>
     </div>
     <div
@@ -519,7 +871,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa fa-chevron-down text-primary"
-                id="Icon7"
+                id="Icon11"
               />
               <span
                 className="sr-only"
@@ -636,7 +988,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa fa-chevron-down text-primary"
-                id="Icon8"
+                id="Icon12"
               />
               <span
                 className="sr-only"
@@ -688,7 +1040,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-9"
+                      id="pagination-13"
                     />
                     Previous
                   </div>
@@ -712,7 +1064,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-10"
+                      id="pagination-14"
                     />
                   </div>
                 </button>

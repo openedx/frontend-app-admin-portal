@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
@@ -10,8 +11,12 @@ import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
 import StatusAlert from '../StatusAlert';
+import SearchBar from '../SearchBar';
+import CodeSearchResults from '../CodeSearchResults';
 
 import { updateUrl } from '../../utils';
+
+import './CodeManagement.scss';
 
 class CodeManagement extends React.Component {
   constructor(props) {
@@ -20,6 +25,7 @@ class CodeManagement extends React.Component {
     this.couponRefs = [];
     this.state = {
       hasRequestedCodes: false,
+      searchQuery: '',
     };
 
     this.handleRefreshData = this.handleRefreshData.bind(this);
@@ -125,20 +131,21 @@ class CodeManagement extends React.Component {
   handleRefreshData() {
     this.paginateCouponOrders(1);
     this.removeQueryParams(['coupon_id', 'page', 'overview_page']);
+    this.setState({ searchQuery: '' });
   }
 
   handleCouponExpand(selectedIndex) {
     const { location } = this.props;
     const queryParams = qs.parse(location.search);
-
     const coupons = this.getCouponRefs();
     const selectedCoupon = coupons[selectedIndex];
     const couponId = selectedCoupon.props.data.id;
 
     queryParams.coupon_id = couponId;
-    updateUrl(queryParams);
 
+    updateUrl(queryParams);
     this.setCouponOpacity(couponId);
+    this.setState({ searchQuery: '' });
   }
 
   handleCouponCollapse() {
@@ -232,8 +239,8 @@ class CodeManagement extends React.Component {
       loading,
       match,
     } = this.props;
-    const { hasRequestedCodes } = this.state;
-
+    const { hasRequestedCodes, searchQuery } = this.state;
+    const hasSearchQuery = !!searchQuery;
     return (
       <React.Fragment>
         <Helmet>
@@ -242,11 +249,25 @@ class CodeManagement extends React.Component {
         <Hero title="Code Management" />
         <div className="container-fluid">
           {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
-          <div className="row mt-4 mb-3">
-            <div className="col-12 col-md-3 mb-2 mb-md-0">
+          <div className="row mt-4 mb-3 no-gutters">
+            <div className="col-12 col-xl-3 mb-3 mb-xl-0">
               <H2>Overview</H2>
             </div>
-            <div className="col-12 col-md-9 mb-2 mb-md-0 text-md-right">
+            <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
+              <SearchBar
+                inputLabel="Search by email:"
+                onSearch={(query) => {
+                  this.setState({ searchQuery: query });
+                  this.removeQueryParams(['coupon_id', 'page']);
+                }}
+                onClear={() => {
+                  this.setState({ searchQuery: '' });
+                  this.removeQueryParams(['page']);
+                }}
+                value={searchQuery}
+              />
+            </div>
+            <div className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right">
               <Button
                 className="mr-2 btn-link"
                 onClick={this.handleRefreshData}
@@ -266,6 +287,24 @@ class CodeManagement extends React.Component {
                   Request more codes
                 </React.Fragment>
               </Link>
+            </div>
+          </div>
+          <div className="row">
+            <div
+              className={classNames(
+                'col',
+                {
+                  'mt-2 mb-4': hasSearchQuery,
+                },
+              )}
+            >
+              <CodeSearchResults
+                isOpen={hasSearchQuery}
+                searchQuery={searchQuery}
+                onClose={() => {
+                  this.setState({ searchQuery: '' });
+                }}
+              />
             </div>
           </div>
           <div className="row">

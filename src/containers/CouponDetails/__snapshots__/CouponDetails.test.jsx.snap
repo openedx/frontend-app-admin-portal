@@ -848,9 +848,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       Remind
                     </button>
-                    <span>
-                      |
-                    </span>
+                     | 
                     <button
                       className="btn revoke-btn btn-link btn-sm p-0"
                       onBlur={[Function]}
