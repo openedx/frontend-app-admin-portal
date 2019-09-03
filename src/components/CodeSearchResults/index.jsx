@@ -184,13 +184,13 @@ class CodeSearchResults extends React.Component {
   renderHeading = () => {
     const { searchQuery, onClose } = this.props;
     return (
-      <div className="row mb-3">
-        <div className="col-12 col-md-8">
-          <h3 className="lead m-0 mb-2 mb-md-0">
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <div className="flex-grow-1 text-truncate mr-3">
+          <h3 className="lead m-0 text-truncate">
             Search results for <em>&quot;{searchQuery}&quot;</em>
           </h3>
         </div>
-        <div className="col text-md-right">
+        <div className="flex-grow-0 flex-shrink-0">
           <Button
             className="close-search-results-btn btn-outline-primary"
             onClick={onClose}

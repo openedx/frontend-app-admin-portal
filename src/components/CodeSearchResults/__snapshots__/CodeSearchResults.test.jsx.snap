@@ -20,13 +20,13 @@ exports[`<CodeSearchResults /> basic rendering should render email validation er
       className="code-search-results border-bottom pb-4"
     >
       <div
-        className="row mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
       >
         <div
-          className="col-12 col-md-8"
+          className="flex-grow-1 text-truncate mr-3"
         >
           <h3
-            className="lead m-0 mb-2 mb-md-0"
+            className="lead m-0 text-truncate"
           >
             Search results for 
             <em>
@@ -37,7 +37,7 @@ exports[`<CodeSearchResults /> basic rendering should render email validation er
           </h3>
         </div>
         <div
-          className="col text-md-right"
+          className="flex-grow-0 flex-shrink-0"
         >
           <button
             className="btn close-search-results-btn btn-outline-primary"
@@ -108,13 +108,13 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
       className="code-search-results border-bottom pb-4"
     >
       <div
-        className="row mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
       >
         <div
-          className="col-12 col-md-8"
+          className="flex-grow-1 text-truncate mr-3"
         >
           <h3
-            className="lead m-0 mb-2 mb-md-0"
+            className="lead m-0 text-truncate"
           >
             Search results for 
             <em>
@@ -125,7 +125,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
           </h3>
         </div>
         <div
-          className="col text-md-right"
+          className="flex-grow-0 flex-shrink-0"
         >
           <button
             className="btn close-search-results-btn btn-outline-primary"
@@ -196,13 +196,13 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
       className="code-search-results border-bottom pb-4"
     >
       <div
-        className="row mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
       >
         <div
-          className="col-12 col-md-8"
+          className="flex-grow-1 text-truncate mr-3"
         >
           <h3
-            className="lead m-0 mb-2 mb-md-0"
+            className="lead m-0 text-truncate"
           >
             Search results for 
             <em>
@@ -213,7 +213,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
           </h3>
         </div>
         <div
-          className="col text-md-right"
+          className="flex-grow-0 flex-shrink-0"
         >
           <button
             className="btn close-search-results-btn btn-outline-primary"
@@ -289,13 +289,13 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
       className="code-search-results border-bottom pb-4"
     >
       <div
-        className="row mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
       >
         <div
-          className="col-12 col-md-8"
+          className="flex-grow-1 text-truncate mr-3"
         >
           <h3
-            className="lead m-0 mb-2 mb-md-0"
+            className="lead m-0 text-truncate"
           >
             Search results for 
             <em>
@@ -306,7 +306,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           </h3>
         </div>
         <div
-          className="col text-md-right"
+          className="flex-grow-0 flex-shrink-0"
         >
           <button
             className="btn close-search-results-btn btn-outline-primary"
@@ -365,13 +365,13 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
       className="code-search-results border-bottom pb-4"
     >
       <div
-        className="row mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
       >
         <div
-          className="col-12 col-md-8"
+          className="flex-grow-1 text-truncate mr-3"
         >
           <h3
-            className="lead m-0 mb-2 mb-md-0"
+            className="lead m-0 text-truncate"
           >
             Search results for 
             <em>
@@ -382,7 +382,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
           </h3>
         </div>
         <div
-          className="col text-md-right"
+          className="flex-grow-0 flex-shrink-0"
         >
           <button
             className="btn close-search-results-btn btn-outline-primary"
