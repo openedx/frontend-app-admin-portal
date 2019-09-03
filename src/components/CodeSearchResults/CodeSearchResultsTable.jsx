@@ -1,0 +1,162 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import { Icon } from '@edx/paragon';
+
+import TableContainer from '../../containers/TableContainer';
+import RemindButton from '../RemindButton';
+import RevokeButton from '../RevokeButton';
+
+import EcommerceApiService from '../../data/services/EcommerceApiService';
+
+const tableColumns = [
+  {
+    label: 'Coupon Batch',
+    key: 'couponName',
+  },
+  {
+    label: 'Code',
+    key: 'code',
+  },
+  {
+    label: 'Redeemed',
+    key: 'isRedeemed',
+  },
+  {
+    label: 'Redemption Date',
+    key: 'redemptionDate',
+  },
+  {
+    label: 'Course Title',
+    key: 'courseTitle',
+  },
+  {
+    label: 'Actions',
+    key: 'actions',
+  },
+];
+
+/**
+ * The search API response contains a record for each coupon batch a
+ * user is associated with (i.e., has unused assignments, or actual
+ * redemptions). Under each coupon batch is an array of assignments and
+ * redemptiions, that contains all the metadata associated with a redemption,
+ * if applicable. Because we want the search results UI to show a row
+ * for each unused assignment and all redeemed courses associated with a
+ * particular user, this function flattens the search results by creating
+ * a new table row for each value in `redemptions_and_assignments`.
+ */
+const transformSearchResults = (items) => {
+  const itemsSortedByCouponId = items.sort((itemA, itemB) => itemA.coupon_id - itemB.coupon_id);
+  const flat = [];
+  itemsSortedByCouponId.forEach((item) => {
+    const {
+      redemptions_and_assignments: redemptionsAssignments,
+      coupon_id: couponId,
+      coupon_name: couponName,
+    } = item;
+    const isRedemptionsAssignmentsArray = Array.isArray(redemptionsAssignments);
+    const hasRedemptionsAssignments = (
+      isRedemptionsAssignmentsArray && redemptionsAssignments.length > 0
+    );
+    const data = {
+      couponId,
+      couponName,
+    };
+    if (hasRedemptionsAssignments) {
+      redemptionsAssignments.forEach(({
+        course_title: courseTitle,
+        redeemed_date: redemptionDate,
+        code,
+      }) => {
+        const getFormattedDate = (date) => {
+          if (!date) {
+            return null;
+          }
+          return moment(date).format('MMMM D, YYYY');
+        };
+        flat.push({
+          ...data,
+          courseTitle,
+          redemptionDate: getFormattedDate(redemptionDate),
+          code,
+          isRedeemed: !!redemptionDate,
+        });
+      });
+    }
+  });
+  return flat;
+};
+
+const CodeSearchResultsTable = ({
+  searchQuery,
+  shouldRefreshTable,
+  onRemindSuccess,
+  onRevokeSuccess,
+}) => {
+  const formatSearchResultsData = (results) => {
+    const transformedSearchResults = transformSearchResults(results);
+    const defaultEmptyValue = '-';
+    return transformedSearchResults.map(({
+      isRedeemed,
+      couponId,
+      courseTitle,
+      redemptionDate,
+      code,
+      couponName,
+    }) => ({
+      couponId,
+      couponName,
+      code,
+      isRedeemed: isRedeemed ? (
+        <Icon className="fa fa-check text-primary" screenReaderText="has been redeemed" />
+      ) : defaultEmptyValue,
+      courseTitle: courseTitle || defaultEmptyValue,
+      redemptionDate: redemptionDate || defaultEmptyValue,
+      actions: !isRedeemed ? (
+        <React.Fragment>
+          <RemindButton
+            couponId={couponId}
+            couponTitle={couponName}
+            data={{
+              email: searchQuery,
+              code,
+            }}
+            onSuccess={onRemindSuccess}
+          />
+          {' | '}
+          <RevokeButton
+            couponId={couponId}
+            couponTitle={couponName}
+            data={{
+              assigned_to: searchQuery,
+              code,
+            }}
+            onSuccess={onRevokeSuccess}
+          />
+        </React.Fragment>
+      ) : defaultEmptyValue,
+    }));
+  };
+  return (
+    <TableContainer
+      key={`code-search-results-${searchQuery}-${shouldRefreshTable}`}
+      id="code-search-results"
+      className="code-search-results-table"
+      fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
+      user_email: searchQuery,
+    })}
+      columns={tableColumns}
+      formatData={formatSearchResultsData}
+    />
+  );
+};
+
+CodeSearchResultsTable.propTypes = {
+  searchQuery: PropTypes.string.isRequired,
+  shouldRefreshTable: PropTypes.bool.isRequired,
+  onRemindSuccess: PropTypes.func.isRequired,
+  onRevokeSuccess: PropTypes.func.isRequired,
+};
+
+export default CodeSearchResultsTable;
