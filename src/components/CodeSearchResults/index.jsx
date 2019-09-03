@@ -49,6 +49,7 @@ class CodeSearchResults extends React.Component {
     this.state = {
       isCodeReminderSuccessful: false,
       isCodeRevokeSuccessful: false,
+      shouldRefreshTable: false,
     };
   }
 
@@ -56,6 +57,7 @@ class CodeSearchResults extends React.Component {
     const { searchQuery, isOpen } = this.props;
     if (isOpen && searchQuery !== prevProps.searchQuery) {
       this.resetCodeActionMessages();
+      this.resetShouldRefreshTable();
     }
   }
 
@@ -63,6 +65,12 @@ class CodeSearchResults extends React.Component {
     this.setState({
       isCodeReminderSuccessful: false,
       isCodeRevokeSuccessful: false,
+    });
+  };
+
+  resetShouldRefreshTable = () => {
+    this.setState({
+      shouldRefreshTable: false,
     });
   };
 
@@ -173,6 +181,7 @@ class CodeSearchResults extends React.Component {
   handleRevokeOnSuccess = () => {
     this.setState({
       isCodeRevokeSuccessful: true,
+      shouldRefreshTable: true,
     });
   };
 
@@ -205,9 +214,10 @@ class CodeSearchResults extends React.Component {
 
   renderTable = () => {
     const { searchQuery } = this.props;
+    const { shouldRefreshTable } = this.state;
     return (
       <TableContainer
-        key={`code-search-results-${searchQuery}`}
+        key={`code-search-results-${searchQuery}-${shouldRefreshTable}`}
         id="code-search-results"
         className="code-search-results-table"
         fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
