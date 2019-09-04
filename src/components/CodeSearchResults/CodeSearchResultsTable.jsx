@@ -37,14 +37,15 @@ const tableColumns = [
 ];
 
 /**
- * The search API response contains a record for each coupon batch a
- * user is associated with (i.e., has unused assignments, or actual
- * redemptions). Under each coupon batch is an array of assignments and
- * redemptiions, that contains all the metadata associated with a redemption,
- * if applicable. Because we want the search results UI to show a row
- * for each unused assignment and all redeemed courses associated with a
- * particular user, this function flattens the search results by creating
- * a new table row for each value in `redemptions_and_assignments`.
+ * The search API response contains records for all vouchers a user is associated
+ * with (i.e., has unused assignments, or actual redemptions). To get a complete
+ * grouping of assignments or redemptions for a particular coupon batch for the
+ * user, we need to combine the results in `assignments_and_redemptions` (which
+ * contains all the metadata associated with a redemption, if applicable) for
+ * all vouchers that share the same `coupon_id` field. Because we want the search
+ * results UI to show a row for each unused assignment and all redeemed courses
+ * associated with a particular user, this function flattens the search results by
+ * created a new table row for each value in the `redemptions_and_assignments` fields.
  */
 const transformSearchResults = (items) => {
   const itemsSortedByCouponId = items.sort((itemA, itemB) => itemA.coupon_id - itemB.coupon_id);

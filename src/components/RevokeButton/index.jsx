@@ -1,55 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
 
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
+import ActionButtonWithModal from '../ActionButtonWithModal';
 
-class RevokeButton extends React.Component {
-  state = {
-    isModalOpen: false,
-  };
-
-  handleRevokeButtonClick = () => {
-    this.setState({ isModalOpen: true });
-  };
-
-  handleOnSuccess = (response) => {
-    const { onSuccess } = this.props;
-    onSuccess(response);
-  }
-
-  handleOnClose = () => {
-    const { onClose } = this.props;
-    this.setState({ isModalOpen: false });
-    if (onClose) {
-      onClose();
-    }
-  }
-
-  render() {
-    const { couponId, couponTitle, data } = this.props;
-    const { isModalOpen } = this.state;
-    return (
-      <React.Fragment>
-        <Button
-          className="revoke-btn btn-link btn-sm p-0"
-          onClick={this.handleRevokeButtonClick}
-        >
-          Revoke
-        </Button>
-        {isModalOpen && (
-          <CodeRevokeModal
-            couponId={couponId}
-            title={couponTitle}
-            data={data}
-            onSuccess={this.handleOnSuccess}
-            onClose={this.handleOnClose}
-          />
-        )}
-      </React.Fragment>
-    );
-  }
-}
+const RevokeButton = ({
+  couponId,
+  couponTitle,
+  data,
+  onSuccess,
+  onClose,
+}) => (
+  <ActionButtonWithModal
+    buttonLabel="Revoke"
+    buttonClassName="revoke-btn"
+    renderModal={({ closeModal }) => (
+      <CodeRevokeModal
+        couponId={couponId}
+        title={couponTitle}
+        data={data}
+        onSuccess={onSuccess}
+        onClose={() => {
+          closeModal();
+          if (onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+  />
+);
 
 RevokeButton.propTypes = {
   couponId: PropTypes.number.isRequired,
