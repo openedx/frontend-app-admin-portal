@@ -15,6 +15,8 @@ import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 import './CouponDetails.scss';
+import RemindButton from '../RemindButton';
+import RevokeButton from '../RevokeButton';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -65,8 +67,6 @@ class CouponDetails extends React.Component {
       ],
       modals: {
         assignment: null,
-        revoke: null,
-        remind: null,
       },
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
@@ -191,41 +191,27 @@ class CouponDetails extends React.Component {
         <React.Fragment>
           {!codeHasError && (
             <React.Fragment>
-              <Button
-                className={`remind-btn ${buttonClassNames.join(' ')}`}
-                onClick={() => this.setModalState({
-                  key: 'remind',
-                  options: {
-                    couponId: id,
-                    title: couponTitle,
-                    data: {
-                      code: code.code,
-                      email: code.assigned_to,
-                    },
-                  },
-                })}
-              >
-                Remind
-              </Button>
-              <span>|</span>
+              <RemindButton
+                couponId={id}
+                couponTitle={couponTitle}
+                data={{
+                  code: code.code,
+                  email: code.assigned_to,
+                }}
+                onSuccess={response => this.handleCodeActionSuccess('remind', response)}
+              />
+              {' | '}
             </React.Fragment>
           )}
-          <Button
-            className={`revoke-btn ${buttonClassNames.join(' ')}`}
-            onClick={() => this.setModalState({
-              key: 'revoke',
-              options: {
-                couponId: id,
-                title: couponTitle,
-                data: {
-                  code: code.code,
-                  assigned_to: code.assigned_to,
-                },
-              },
-            })}
-          >
-            Revoke
-          </Button>
+          <RevokeButton
+            couponId={id}
+            couponTitle={couponTitle}
+            data={{
+              assigned_to: code.assigned_to,
+              code: code.code,
+            }}
+            onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
+          />
         </React.Fragment>
       );
     }

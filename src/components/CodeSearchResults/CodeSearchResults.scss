@@ -1,0 +1,20 @@
+@import "~@edx/paragon/scss/edx/utilities-only";
+
+.code-search-results {
+  .loading {
+    @extend .mb-3;
+    height: 220px;
+  }
+  .table {
+    @extend .bg-white;
+    td {
+        vertical-align: middle;
+    }
+  }
+  .pagination {
+    @extend .mb-0;
+    button {
+      font-size: 0.875rem;
+    }
+  }
+}

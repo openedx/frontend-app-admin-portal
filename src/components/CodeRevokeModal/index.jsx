@@ -215,7 +215,7 @@ class CodeRevokeModal extends React.Component {
           buttons={[
             <Button
               disabled={submitting}
-              className="btn-primary"
+              className="code-revoke-save-btn btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>
@@ -257,9 +257,8 @@ CodeRevokeModal.propTypes = {
 };
 
 export default reduxForm({
-  form: 'assignment-revoke-modal-form',
+  form: 'code-revoke-modal-form',
   initialValues: {
     'email-template': emailTemplate,
   },
-
 })(CodeRevokeModal);

@@ -56,7 +56,6 @@ class CodeReminderModal extends React.Component {
       data: { selectedCodes },
       couponDetailsTable: { data: tableData },
     } = this.props;
-
     let numberOfSelectedCodes = 0;
     if (selectedCodes && selectedCodes.length) {
       numberOfSelectedCodes = selectedCodes.length;
@@ -228,7 +227,7 @@ class CodeReminderModal extends React.Component {
           buttons={[
             <Button
               disabled={submitting}
-              className="btn-primary"
+              className="code-remind-save-btn btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>
@@ -250,6 +249,7 @@ CodeReminderModal.defaultProps = {
   isBulkRemind: false,
   data: {},
   selectedToggle: null,
+  couponDetailsTable: {},
 };
 
 CodeReminderModal.propTypes = {
@@ -270,7 +270,7 @@ CodeReminderModal.propTypes = {
     data: PropTypes.shape({
       count: PropTypes.number,
     }),
-  }).isRequired,
+  }),
   isBulkRemind: PropTypes.bool,
   selectedToggle: PropTypes.string,
   data: PropTypes.shape({}),
@@ -281,5 +281,4 @@ export default reduxForm({
   initialValues: {
     'email-template': emailTemplate,
   },
-
 })(CodeReminderModal);
