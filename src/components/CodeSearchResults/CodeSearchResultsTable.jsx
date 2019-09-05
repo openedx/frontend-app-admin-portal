@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import qs from 'query-string';
+import { withRouter } from 'react-router';
 import { Icon } from '@edx/paragon';
 
 import TableContainer from '../../containers/TableContainer';
@@ -94,7 +96,9 @@ const CodeSearchResultsTable = ({
   shouldRefreshTable,
   onRemindSuccess,
   onRevokeSuccess,
+  location,
 }) => {
+  const queryParams = qs.parse(location.search);
   const formatSearchResultsData = (results) => {
     const transformedSearchResults = transformSearchResults(results);
     const defaultEmptyValue = '-';
@@ -145,8 +149,9 @@ const CodeSearchResultsTable = ({
       id="code-search-results"
       className="code-search-results-table"
       fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
-      user_email: searchQuery,
-    })}
+        user_email: searchQuery,
+        page: queryParams.page && parseInt(queryParams.page, 10),
+      })}
       columns={tableColumns}
       formatData={formatSearchResultsData}
     />
@@ -158,6 +163,9 @@ CodeSearchResultsTable.propTypes = {
   shouldRefreshTable: PropTypes.bool.isRequired,
   onRemindSuccess: PropTypes.func.isRequired,
   onRevokeSuccess: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
 };
 
-export default CodeSearchResultsTable;
+export default withRouter(CodeSearchResultsTable);
