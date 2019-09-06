@@ -1,7 +1,7 @@
 {
   "name": "frontend-app-admin-portal",
   "version": "0.1.0",
-  "description": "The edX Portal is a frontend that provides branded learning experiences.",
+  "description": "The frontend-app-admin-portal is a frontend that provides branded learning experiences.",
   "repository": "https://github.com/edx/frontend-app-admin-portal",
   "scripts": {
     "build": "NODE_ENV=production BABEL_ENV=production webpack --config=config/webpack.prod.config.js",

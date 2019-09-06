@@ -58,7 +58,7 @@ $ npm start
 
 2. Login with credentials that you could log into your local edx-platform with
 
-3. See data displayed in the the portal
+3. See data displayed in the admin portal
 
 ## Using Demo Data
 This frontend application uses the [edx-enterprise-data-api](https://github.com/edx/edx-analytics-data-api/) as a backend API for data.
