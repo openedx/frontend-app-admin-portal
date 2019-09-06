@@ -23,11 +23,11 @@ const getEnrollments = () => {
     const course = courses[faker.random.number({ max: courses.length - 1 })];
     const courseStart = faker.date.past();
     const courseEnd = faker.date.future();
-    const hasPassed = index < numPassed;
-    const grade = hasPassed ? faker.random.number({ min: 70, max: 100 }) :
+    const progressStatus = index < numPassed ? 'Passed' : 'Failed';
+    const grade = progressStatus === 'Passed' ? faker.random.number({ min: 70, max: 100 }) :
       faker.random.number({ max: 70 });
-    const lastActivityDate = hasPassed ? faker.date.recent(7) : dateInPastMonths;
-    const passedTimestamp = hasPassed ? faker.date.recent(7) : null;
+    const lastActivityDate = progressStatus === 'Passed' ? faker.date.recent(7) : dateInPastMonths;
+    const passedTimestamp = progressStatus === 'Passed' ? faker.date.recent(7) : null;
 
     return {
       id: index,
@@ -38,7 +38,7 @@ const getEnrollments = () => {
       course_start: courseStart.toISOString(),
       course_end: courseEnd.toISOString(),
       passed_timestamp: passedTimestamp && passedTimestamp.toISOString(),
-      has_passed: hasPassed,
+      progress_status: progressStatus,
       current_grade: grade / 100,
       last_activity_date: lastActivityDate && lastActivityDate.toISOString(),
     };
@@ -71,7 +71,7 @@ const getEnrollments = () => {
 
 const allEnrollments = getEnrollments();
 const enrollments = allEnrollments.filter(enrollment => enrollment.consent_granted === true);
-const completedEnrollments = enrollments.filter(enrollment => enrollment.has_passed === true);
+const completedEnrollments = enrollments.filter(enrollment => enrollment.progress_status === 'Passed');
 
 const getEnrollmentsForUser = email => (
   enrollments.filter(enrollment => enrollment.user_email === email)

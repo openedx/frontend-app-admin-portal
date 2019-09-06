@@ -69,7 +69,7 @@ class LearnerActivityTable extends React.Component {
     user_account_creation_timestamp: formatTimestamp({
       timestamp: enrollment.user_account_creation_timestamp,
     }),
-    has_passed: enrollment.has_passed ? 'Yes' : 'No',
+    progress_status: enrollment.progress_status,
     course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),
   }));
