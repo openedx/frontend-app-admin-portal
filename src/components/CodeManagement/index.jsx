@@ -142,7 +142,6 @@ class CodeManagement extends React.Component {
     const couponId = selectedCoupon.props.data.id;
 
     queryParams.coupon_id = couponId;
-    queryParams.page = undefined;
 
     updateUrl(queryParams);
     this.setCouponOpacity(couponId);
@@ -304,7 +303,6 @@ class CodeManagement extends React.Component {
                 searchQuery={searchQuery}
                 onClose={() => {
                   this.setState({ searchQuery: '' });
-                  this.removeQueryParams(['page']);
                 }}
               />
             </div>

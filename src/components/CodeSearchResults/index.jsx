@@ -26,6 +26,10 @@ class CodeSearchResults extends React.Component {
       this.resetCodeActionMessages();
       this.resetShouldRefreshTable();
     }
+
+    if (isOpen !== prevProps.isOpen) {
+      updateUrl({ page: undefined });
+    }
   }
 
   resetCodeActionMessages = () => {
