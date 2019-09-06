@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionReplace } from '@edx/paragon';
 
-import { isValidEmail } from '../../utils';
+import { isValidEmail, updateUrl } from '../../utils';
 
 import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
@@ -48,6 +48,7 @@ class CodeSearchResults extends React.Component {
   };
 
   handleRevokeOnSuccess = () => {
+    updateUrl({ page: undefined });
     this.setState({
       isCodeRevokeSuccessful: true,
       shouldRefreshTable: true,
