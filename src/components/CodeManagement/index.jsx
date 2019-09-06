@@ -142,6 +142,7 @@ class CodeManagement extends React.Component {
     const couponId = selectedCoupon.props.data.id;
 
     queryParams.coupon_id = couponId;
+    queryParams.page = undefined;
 
     updateUrl(queryParams);
     this.setCouponOpacity(couponId);
