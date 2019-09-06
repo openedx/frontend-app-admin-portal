@@ -1,7 +1,7 @@
-# edx-portal
+# frontend-app-admin-portal
 
 ## Overview
-edx-portal is a frontend that provides branded learning experiences as well as a dashboard for enterprise learning administrators.
+frontend-app-admin-portal is a frontend that provides branded learning experiences as well as a dashboard for enterprise learning administrators.
 
 ## Setting up a dev environment
 
@@ -14,8 +14,8 @@ edx-portal is a frontend that provides branded learning experiences as well as a
 3. Clone this repo and install npm requirements:
 
 ```
-$ git clone git@github.com:edx/edx-portal.git
-$ cd edx-portal
+$ git clone git@github.com:edx/frontend-app-admin-portal.git
+$ cd frontend-app-admin-portal
 $ npm install
 $ npm start
 ```
@@ -25,14 +25,14 @@ The application is now running and can be accessed in a web browser at http://lo
 
 ### The Longer Story
 
-For the edx-portal to function properly locally, the following parts need to be set up:
+For the frontend-app-admin-portal to function properly locally, the following parts need to be set up:
 
 1. At least 1 enterprise customer should exist in `edx-platform`
 2. `edx-analytics-data-api` needs data that would normally be piped from `edx-platform` via data pipelines
 
 #### Enterprise Customer
 
-The `edx-portal` displays information about enterprise customers in `edx-platform`, so you will need to create a customer in `edx-platform`. You can create a customer by doing the following:
+The `frontend-app-admin-portal` displays information about enterprise customers in `edx-platform`, so you will need to create a customer in `edx-platform`. You can create a customer by doing the following:
 
 1. Navigate to http://localhost:18000/admin/enterprise/enterprisecustomer/
 2. Click "Add Enterprise Customer"
@@ -49,7 +49,7 @@ Follow the instructions for how to get data into the edx-analytics-data-api in t
 
 At this point, if the LMS *and* `data-analytics-api` are running, you should then be able to:
 
-1. Run the `edx-portal` locally
+1. Run the `frontend-app-admin-portal` locally
 
 ```
 $ npm install
