@@ -303,7 +303,6 @@ class CodeManagement extends React.Component {
                 searchQuery={searchQuery}
                 onClose={() => {
                   this.setState({ searchQuery: '' });
-                  this.removeQueryParams(['page']);
                 }}
               />
             </div>
