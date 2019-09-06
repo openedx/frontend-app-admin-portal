@@ -38,58 +38,29 @@ const tableColumns = [
   },
 ];
 
-/**
- * The search API response contains records for all vouchers a user is associated
- * with (i.e., has unused assignments, or actual redemptions). To get a complete
- * grouping of assignments or redemptions for a particular coupon batch for the
- * user, we need to combine the results in `assignments_and_redemptions` (which
- * contains all the metadata associated with a redemption, if applicable) for
- * all vouchers that share the same `coupon_id` field. Because we want the search
- * results UI to show a row for each unused assignment and all redeemed courses
- * associated with a particular user, this function flattens the search results by
- * created a new table row for each value in the `redemptions_and_assignments` fields.
- */
-const transformSearchResults = (items) => {
-  const itemsSortedByCouponId = items.sort((itemA, itemB) => itemA.coupon_id - itemB.coupon_id);
-  const flat = [];
-  itemsSortedByCouponId.forEach((item) => {
-    const {
-      redemptions_and_assignments: redemptionsAssignments,
-      coupon_id: couponId,
-      coupon_name: couponName,
-    } = item;
-    const isRedemptionsAssignmentsArray = Array.isArray(redemptionsAssignments);
-    const hasRedemptionsAssignments = (
-      isRedemptionsAssignmentsArray && redemptionsAssignments.length > 0
-    );
-    const data = {
-      couponId,
-      couponName,
-    };
-    if (hasRedemptionsAssignments) {
-      redemptionsAssignments.forEach(({
-        course_title: courseTitle,
-        redeemed_date: redemptionDate,
-        code,
-      }) => {
-        const getFormattedDate = (date) => {
-          if (!date) {
-            return null;
-          }
-          return moment(date).format('MMMM D, YYYY');
-        };
-        flat.push({
-          ...data,
-          courseTitle,
-          redemptionDate: getFormattedDate(redemptionDate),
-          code,
-          isRedeemed: !!redemptionDate,
-        });
-      });
-    }
-  });
-  return flat;
+const getFormattedDate = (date) => {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format('MMMM D, YYYY');
 };
+
+const transformSearchResults = results => results.map(({
+  coupon_id: couponId,
+  coupon_name: couponName,
+  course_key: courseKey,
+  course_title: courseTitle,
+  redeemed_date: redemptionDate,
+  ...rest
+}) => ({
+  couponId,
+  couponName,
+  courseKey,
+  courseTitle,
+  redemptionDate: getFormattedDate(redemptionDate),
+  isRedeemed: !!redemptionDate,
+  ...rest,
+}));
 
 const CodeSearchResultsTable = ({
   searchQuery,

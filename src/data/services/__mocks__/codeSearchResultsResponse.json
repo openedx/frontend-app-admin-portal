@@ -1,69 +1,92 @@
 {
   "data": {
-    "count": 16, 
-    "current_page": 1, 
-    "next": null, 
-    "num_pages": 2, 
-    "previous": null, 
+    "count": 11,
+    "num_pages": 2,
+    "current_page": 1,
     "results": [
-      {
-        "coupon_id": 5, 
-        "coupon_name": "Test coupon 3", 
-        "id": 7, 
-        "redemptions_and_assignments": [
-          {
-            "code": "Y7XS3OGG7WB7KQ5R", 
-            "course_key": null, 
-            "course_title": null, 
-            "redeemed_date": null
-          },
-          {
-            "code": "Y7XS3OGG7WB7KQ5R",
-            "course_key": "course-v1:test-org+course+run",
-            "course_title": "course-name-EccHrARKjEsn",
-            "redeemed_date": "2019-08-29T19:13:23.851454Z"
-          }
-        ]
-      },
-      {
-        "coupon_id": 3, 
-        "coupon_name": "Test coupon", 
-        "id": 1, 
-        "redemptions_and_assignments": []
-      }, 
-      {
-        "coupon_id": 4, 
-        "coupon_name": "Test coupon 1", 
-        "id": 2, 
-        "redemptions_and_assignments": [
-          {
-            "code": "Y7XS3OGG7WB7KQ5R", 
-            "course_key": null, 
-            "course_title": null, 
-            "redeemed_date": null
-          }, 
-          {
-            "code": "Y7XS3OGG7WB7KQ5R", 
-            "course_key": "course-v1:test-org+course+run", 
-            "course_title": "course-name-EccHrARKjEsn", 
-            "redeemed_date": "2019-08-29T19:13:23.851454Z"
-          }
-        ]
-      }, 
-      {
-        "coupon_id": 5, 
-        "coupon_name": "Test coupon 3", 
-        "id": 7, 
-        "redemptions_and_assignments": [
-          {
-            "code": "ILSYLEH27WO36NMC", 
-            "course_key": "course-v1:test-org+course+run", 
-            "course_title": "course-name-EccHrARKjEsn", 
-            "redeemed_date": "2019-08-29T19:13:23.851454Z"
-          }
-        ]
-      }
-    ], 
-    "start": 0
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": "edX Demonstration Course",
+          "course_key": "test+course+key",
+          "redeemed_date": "2019-09-04",
+          "code": "7BB7H2NI3CMMTSPR"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "7BB7H2NI3CMMTSPR"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "7BB7H2NI3CMMTSPR"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": "edX Demonstration Course",
+          "course_key": "test+course+key",
+          "redeemed_date": "2019-07-06",
+          "code": "7BB7H2NI3CMMTSPR"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": "edX Demonstration Course",
+          "course_key": "test+course+key",
+          "redeemed_date": "2019-09-01",
+          "code": "7BB7H2NI3CMMTSPR"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 2",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "CDAYGK0XP87"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 2",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "A8R5W6BKN8B"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 2",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "A8R5W6BKN8B"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 2",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "A8R5W6BKN8B"
+        },
+        {
+          "coupon_id": 9,
+          "coupon_name": "Hello Enterprise Coupon 1",
+          "course_title": null,
+          "course_key": null,
+          "redeemed_date": null,
+          "code": "7BB7H2NI3CMMTSPR"
+        }
+    ],
+    "next": null,
+    "start": 0,
+    "previous": null
   }
 }

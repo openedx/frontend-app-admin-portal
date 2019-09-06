@@ -518,6 +518,64 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       className=""
                       scope={null}
                     >
+                      Test Coupon Name 2
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      CMX9N1LPGTUSL7DU
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      <button
+                        className="btn remind-btn btn-link btn-sm p-0"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        type="button"
+                      >
+                        Remind
+                      </button>
+                       | 
+                      <button
+                        className="btn revoke-btn btn-link btn-sm p-0"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        type="button"
+                      >
+                        Revoke
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    className=""
+                  >
+                    <td
+                      className=""
+                      scope={null}
+                    >
                       Test Coupon Name
                     </td>
                     <td
@@ -574,64 +632,6 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       scope={null}
                     >
                       FAG2LVLNHAKIXQ0Q
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      <button
-                        className="btn remind-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
-                        onClick={[Function]}
-                        onKeyDown={[Function]}
-                        type="button"
-                      >
-                        Remind
-                      </button>
-                       | 
-                      <button
-                        className="btn revoke-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
-                        onClick={[Function]}
-                        onKeyDown={[Function]}
-                        type="button"
-                      >
-                        Revoke
-                      </button>
-                    </td>
-                  </tr>
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name 2
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      CMX9N1LPGTUSL7DU
                     </td>
                     <td
                       className=""
