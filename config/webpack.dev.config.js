@@ -115,6 +115,7 @@ module.exports = Merge.smart(commonConfig, {
       USER_INFO_COOKIE_NAME: 'edx-user-info',
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
+        REPORTING_CONFIGURATIONS: true,
       },
     }),
   ],

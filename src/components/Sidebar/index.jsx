@@ -54,6 +54,12 @@ class Sidebar extends React.Component {
         iconClassName: 'fa-tags',
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       },
+      {
+        title: 'Reporting Configurations',
+        to: `${baseUrl}/admin/reporting`,
+        iconClassName: 'fa-file',
+        hidden: !features.REPORTING_CONFIGURATIONS,
+      },
     ];
   }
 
