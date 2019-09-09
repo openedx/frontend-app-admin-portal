@@ -28,8 +28,8 @@ const AppWrapper = () => (
     <ConnectedRouter history={history}>
       <React.Fragment>
         <Helmet
-          titleTemplate="%s - edX Portal"
-          defaultTitle="edX Portal"
+          titleTemplate="%s - edX Admin Portal"
+          defaultTitle="edX Admin Portal"
         />
         <Header />
         <Switch>
