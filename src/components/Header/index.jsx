@@ -52,7 +52,6 @@ class Header extends React.Component {
             >
               {this.renderLogo()}
             </Link>
-            <span className="badge badge-secondary beta">Beta</span>
           </div>
           {email && (
             <Dropdown>
