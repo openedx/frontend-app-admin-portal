@@ -21,7 +21,7 @@ const formatPassedTimestamp = (timestamp) => {
 };
 
 const formatPercentage = ({ decimal, numDecimals = 1 }) => (
-  decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : ''
+  decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : '0%'
 );
 
 const updateUrl = (queryOptions) => {
