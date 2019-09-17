@@ -19,11 +19,6 @@ exports[`<Header /> does not render profile image or dropdown if unauthenticated
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
   </nav>
 </header>
@@ -48,11 +43,6 @@ exports[`<Header /> renders default profile image correctly 1`] = `
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
     <div
       className="dropdown"
@@ -117,11 +107,6 @@ exports[`<Header /> renders edX logo correctly 1`] = `
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
   </nav>
 </header>
@@ -146,11 +131,6 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
           src="https://test.url/image/1.png"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
   </nav>
 </header>
@@ -175,11 +155,6 @@ exports[`<Header /> renders profile image correctly 1`] = `
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
     <div
       className="dropdown"
@@ -239,11 +214,6 @@ exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = 
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
   </nav>
 </header>
@@ -287,11 +257,6 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
           src="test-file-stub"
         />
       </a>
-      <span
-        className="badge badge-secondary beta"
-      >
-        Beta
-      </span>
     </div>
   </nav>
 </header>
