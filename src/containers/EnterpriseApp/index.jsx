@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     enterprises: enterpriseListState.data,
     error: state.portalConfiguration.error,
     enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
+    enterpriseId: state.portalConfiguration.enterpriseId,
   };
 };
 

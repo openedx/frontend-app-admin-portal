@@ -5,6 +5,7 @@ import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
+  static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -50,6 +51,25 @@ class LmsApiService {
     const requestCodesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/request_codes`;
     return apiClient.post(requestCodesUrl, postParams, 'json');
   }
+
+  static fetchReportingConfigs(uuid) {
+    return apiClient.get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+  }
+
+  static postNewReportingConfig(formData) {
+    return apiClient.post(LmsApiService.reportingConfigUrl, formData, 'json');
+  }
+
+  static updateReportingConfig(formData, uuid) {
+    const reportingConfigUrl = `${LmsApiService.reportingConfigUrl}${uuid}/`;
+    return apiClient.put(reportingConfigUrl, formData, 'json');
+  }
+
+  static deleteReportingConfig(uuid) {
+    const reportingConfigUrl = `${LmsApiService.reportingConfigUrl}${uuid}/`;
+    return apiClient.delete(reportingConfigUrl);
+  }
 }
+
 
 export default LmsApiService;

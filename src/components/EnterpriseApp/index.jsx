@@ -8,6 +8,7 @@ import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
+import ReportingConfig from '../../components/ReportingConfig';
 import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
@@ -16,6 +17,7 @@ import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 import './EnterpriseApp.scss';
+import LoadingMessage from '../LoadingMessage';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -78,14 +80,11 @@ class EnterpriseApp extends React.Component {
   render() {
     const { error, match, enableCodeManagementScreen } = this.props;
     const { sidebarWidth } = this.state;
-
     const baseUrl = match.url;
     const defaultContentPadding = 10; // 10px for appropriate padding
-
     if (error) {
       return this.renderError(error);
     }
-
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
@@ -140,6 +139,18 @@ class EnterpriseApp extends React.Component {
                       }
                     />,
                   ]}
+                  {features.REPORTING_CONFIGURATIONS &&
+                    <Route
+                      key="reporting-config"
+                      exact
+                      path={`${baseUrl}/admin/reporting`}
+                      render={routeProps => (this.props.enterpriseId ?
+                        <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
+                        :
+                        <LoadingMessage className="overview" />
+                      )}
+                    />
+                  }
                   <Route exact path={`${baseUrl}/support`} component={SupportPage} />
                   <Route path="" component={NotFoundPage} />
                 </Switch>
