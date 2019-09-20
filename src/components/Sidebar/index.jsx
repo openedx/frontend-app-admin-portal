@@ -40,7 +40,7 @@ class Sidebar extends React.Component {
   }
 
   getMenuItems() {
-    const { baseUrl, enableCodeManagementScreen } = this.props;
+    const { baseUrl, enableCodeManagementScreen, enableReportingConfigScreen } = this.props;
 
     return [
       {
@@ -58,7 +58,7 @@ class Sidebar extends React.Component {
         title: 'Reporting Configurations',
         to: `${baseUrl}/admin/reporting`,
         iconClassName: 'fa-file',
-        hidden: !features.REPORTING_CONFIGURATIONS,
+        hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
       },
     ];
   }
@@ -142,6 +142,7 @@ Sidebar.propTypes = {
   isExpanded: PropTypes.bool.isRequired,
   isExpandedByToggle: PropTypes.bool.isRequired,
   enableCodeManagementScreen: PropTypes.bool.isRequired,
+  enableReportingConfigScreen: PropTypes.bool.isRequired,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };

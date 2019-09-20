@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
   isExpanded: state.sidebar.isExpanded,
   isExpandedByToggle: state.sidebar.isExpandedByToggle,
   enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
+  enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen,
 });
 
 const mapDispatchToProps = dispatch => ({
