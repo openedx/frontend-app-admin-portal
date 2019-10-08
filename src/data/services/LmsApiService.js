@@ -47,6 +47,7 @@ class LmsApiService {
       email: options.emailAddress,
       enterprise_name: options.enterpriseName,
       number_of_codes: options.numberOfCodes,
+      notes: options.notes,
     };
     const requestCodesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/request_codes`;
     return apiClient.post(requestCodesUrl, postParams, 'json');
