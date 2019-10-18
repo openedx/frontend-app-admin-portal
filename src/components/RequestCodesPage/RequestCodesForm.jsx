@@ -7,7 +7,7 @@ import { Button, Icon } from '@edx/paragon';
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 
-import { isRequired, isValidEmail, isValidNumber } from '../../utils';
+import { isRequired, isValidEmail, isValidNumber, maxLength512 } from '../../utils';
 
 class RequestCodesForm extends React.Component {
   constructor(props) {
@@ -97,6 +97,13 @@ class RequestCodesForm extends React.Component {
                 component={RenderField}
                 label="Number of Codes"
                 validate={[isValidNumber]}
+              />
+              <Field
+                name="notes"
+                type="text"
+                component={RenderField}
+                label="Notes"
+                validate={[maxLength512]}
               />
               <Button
                 type="submit"

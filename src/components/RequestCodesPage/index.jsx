@@ -45,7 +45,9 @@ class RequestCodesPage extends React.Component {
                         throw new SubmissionError({ _error: error });
                       })
                   )}
-                  initialValues={{ emailAddress, enterpriseName, numberOfCodes: '' }}
+                  initialValues={{
+                    emailAddress, enterpriseName, numberOfCodes: '', notes: '',
+                  }}
                   match={match}
                 />
               ) : <LoadingMessage className="request-codes" />}
