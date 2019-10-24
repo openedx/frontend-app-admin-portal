@@ -21,8 +21,8 @@ const config = {
   uuid: 'test-config-uuid',
 };
 
-const createConfig = () => {};
-const updateConfig = () => {};
+const createConfig = () => { };
+const updateConfig = () => { };
 
 describe('<ReportingConfigForm />', () => {
   it('renders the proper fields when changing the delivery method', () => {
@@ -104,5 +104,22 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
+  });
+  it('Does not disable data type when using new progress/catalog', () => {
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={config}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+      />
+    ));
+    expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
+    wrapper.find('select#dataType').simulate('change', {
+      target: {
+        name: 'dataType',
+        value: 'catalog',
+      },
+    });
+    expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
   });
 });
