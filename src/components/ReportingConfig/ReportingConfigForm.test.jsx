@@ -90,4 +90,19 @@ describe('<ReportingConfigForm />', () => {
     expect(wrapper.find('input#sftpFilePath').hasClass('is-invalid')).toBeTruthy();
     expect(wrapper.find('input#encryptedSftpPassword').hasClass('is-invalid')).toBeTruthy();
   });
+  it('Does not let you select a new value for data type if it uses the old progress_v1', () => {
+    const configWithOldDataType = {
+      ...config,
+      dataType: 'progress',
+    };
+
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={configWithOldDataType}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+      />
+    ));
+    expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
+  });
 });

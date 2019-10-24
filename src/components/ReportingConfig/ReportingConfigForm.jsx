@@ -171,7 +171,7 @@ class ReportingConfigForm extends React.Component {
           <div className="col col-6">
             <ValidationFormGroup
               for="dataType"
-              helpText="The type of data this report should contain"
+              helpText="The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report"
             >
               <label htmlFor="dataType">Data Type</label>
               <Input
@@ -179,9 +179,11 @@ class ReportingConfigForm extends React.Component {
                 id="dataType"
                 name="dataType"
                 defaultValue={config ? config.dataType : 'progress_v2'}
+                disabled={config && config.dataType === 'progress'}
                 options={[
                   { value: 'progress_v2', label: 'progress' },
                   { value: 'catalog', label: 'catalog' },
+                  { value: 'progress', label: 'progress', hidden: true },
                 ]}
               />
             </ValidationFormGroup>
