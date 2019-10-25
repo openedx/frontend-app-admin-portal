@@ -61,7 +61,9 @@ const data = {
 const codeReminderRequestData = (numCodes, selectedToggle) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   const options = {
-    template: emailTemplate,
+    template: emailTemplate.body,
+    template_greeting: emailTemplate.greeting,
+    template_closing: emailTemplate.closing,
   };
   if (numCodes === 0) {
     options.code_filter = selectedToggle;

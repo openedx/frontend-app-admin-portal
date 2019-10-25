@@ -22,7 +22,9 @@ const codeRevokeRequestData = (numCodes) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   return {
     assignments: Array(numCodes).fill(assignment),
-    template: emailTemplate,
+    template: emailTemplate.body,
+    template_greeting: emailTemplate.greeting,
+    template_closing: emailTemplate.closing,
   };
 };
 

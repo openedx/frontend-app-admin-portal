@@ -191,7 +191,7 @@ class CodeAssignmentModal extends React.Component {
 
   validateFormData(formData) {
     const { isBulkAssign } = this.props;
-    const emailTemplateKey = 'email-template';
+    const emailTemplateKey = 'email-template-body';
 
     let errors;
 
@@ -238,10 +238,11 @@ class CodeAssignmentModal extends React.Component {
 
     // Validate form data
     this.validateFormData(formData);
-
     // Configure the options to send to the assignment API endpoint
     const options = {
-      template: formData['email-template'],
+      template: formData['email-template-body'],
+      template_greeting: formData['email-template-greeting'],
+      template_closing: formData['email-template-closing'],
     };
 
     if (isBulkAssign) {
@@ -306,20 +307,38 @@ class CodeAssignmentModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
-
           <div className="mt-4">
             <H3>Email Template</H3>
             <Field
-              id="email-template"
-              name="email-template"
+              id="email-template-greeting"
+              name="email-template-greeting"
               component={TextAreaAutoSize}
               label={
                 <React.Fragment>
-                  Customize Message
-                  <span className="required">*</span>
+                  Customize Greeting
                 </React.Fragment>
               }
-              required
+            />
+            <Field
+              id="email-template-body"
+              name="email-template-body"
+              component={TextAreaAutoSize}
+              label={
+                <React.Fragment>
+                  Body
+                </React.Fragment>
+              }
+              disabled
+            />
+            <Field
+              id="email-template-closing"
+              name="email-template-closing"
+              component={TextAreaAutoSize}
+              label={
+                <React.Fragment>
+                  Customize Closing
+                </React.Fragment>
+              }
             />
           </div>
         </form>
@@ -428,7 +447,9 @@ CodeAssignmentModal.propTypes = {
 export default reduxForm({
   form: 'code-assignment-modal-form',
   initialValues: {
-    'email-template': emailTemplate,
+    'email-template-greeting': emailTemplate.greeting,
+    'email-template-body': emailTemplate.body,
+    'email-template-closing': emailTemplate.closing,
   },
 
 })(CodeAssignmentModal);
