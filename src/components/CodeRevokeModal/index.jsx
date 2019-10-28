@@ -50,7 +50,7 @@ class CodeRevokeModal extends React.Component {
   }
 
   validateFormData(formData) {
-    const emailTemplateKey = 'email-template';
+    const emailTemplateKey = 'email-template-body';
 
     const errors = {
       _error: [],
@@ -91,7 +91,9 @@ class CodeRevokeModal extends React.Component {
     this.validateFormData(formData);
 
     const options = {
-      template: formData['email-template'],
+      template: formData['email-template-body'],
+      template_greeting: formData['email-template-greeting'],
+      template_closing: formData['email-template-closing'],
     };
 
     if (isBulkRevoke) {
@@ -147,16 +149,35 @@ class CodeRevokeModal extends React.Component {
           <div className="mt-4">
             <H3>Email Template</H3>
             <Field
-              id="email-template"
-              name="email-template"
+              id="email-template-greeting"
+              name="email-template-greeting"
               component={TextAreaAutoSize}
               label={
                 <React.Fragment>
-                  Customize Message
-                  <span className="required">*</span>
+                  Customize Greeting
                 </React.Fragment>
               }
-              required
+            />
+            <Field
+              id="email-template-body"
+              name="email-template-body"
+              component={TextAreaAutoSize}
+              label={
+                <React.Fragment>
+                  Body
+                </React.Fragment>
+              }
+              disabled
+            />
+            <Field
+              id="email-template-closing"
+              name="email-template-closing"
+              component={TextAreaAutoSize}
+              label={
+                <React.Fragment>
+                  Customize Closing
+                </React.Fragment>
+              }
             />
           </div>
         </form>
@@ -181,8 +202,8 @@ class CodeRevokeModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-            error[0]
-          )}
+              error[0]
+            )}
         />
       </div>
     );
@@ -259,6 +280,8 @@ CodeRevokeModal.propTypes = {
 export default reduxForm({
   form: 'code-revoke-modal-form',
   initialValues: {
-    'email-template': emailTemplate,
+    'email-template-body': emailTemplate.body,
+    'email-template-greeting': emailTemplate.greeting,
+    'email-template-closing': emailTemplate.closing,
   },
 })(CodeRevokeModal);
