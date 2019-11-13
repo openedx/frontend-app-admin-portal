@@ -124,23 +124,23 @@ const CodeSearchResultsTable = ({
           {isAssigned ? (
             <React.Fragment>
               <RemindButton
-               couponId={couponId}
-               couponTitle={couponName}
-               data={{
-                email: assignedTo,
-                code,
-               }}
-               onSuccess={onRemindSuccess}
+                couponId={couponId}
+                couponTitle={couponName}
+                data={{
+                  email: assignedTo,
+                  code,
+                }}
+                onSuccess={onRemindSuccess}
               />
               {' | '}
               <RevokeButton
-               couponId={couponId}
-               couponTitle={couponName}
-               data={{
-                assigned_to: assignedTo,
-                code,
-               }}
-               onSuccess={onRevokeSuccess}
+                couponId={couponId}
+                couponTitle={couponName}
+                data={{
+                  assigned_to: assignedTo,
+                  code,
+                }}
+                onSuccess={onRevokeSuccess}
               />
             </React.Fragment>
           ) : defaultEmptyValue
