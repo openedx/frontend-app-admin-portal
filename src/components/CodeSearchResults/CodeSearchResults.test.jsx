@@ -166,7 +166,7 @@ describe('<CodeSearchResults />', () => {
                 course_title: null,
                 redeemed_date: null,
                 is_assigned: true,
-                user_email:"test@test.com"
+                user_email: 'test@test.com',
               }],
             },
           },
@@ -268,7 +268,7 @@ describe('<CodeSearchResults />', () => {
                 course_title: null,
                 redeemed_date: null,
                 is_assigned: true,
-                user_email:"test@test.com"
+                user_email: 'test@test.com',
               }],
             },
           },
@@ -311,7 +311,7 @@ describe('<CodeSearchResults />', () => {
                 course_title: null,
                 redeemed_date: null,
                 is_assigned: true,
-                user_email:"test@test.com"
+                user_email: 'test@test.com',
               }],
             },
           },

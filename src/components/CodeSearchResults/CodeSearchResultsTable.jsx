@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
-import { Icon, Button } from '@edx/paragon';
+import { Icon } from '@edx/paragon';
 
 import TableContainer from '../../containers/TableContainer';
 import RemindButton from '../RemindButton';
@@ -66,28 +66,27 @@ const transformSearchResults = results => results.map(({
   ...rest,
 }));
 
-// TODO: Need to add a more robust check for email
 const handleTableColumns = (searchQuery) => {
-    const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
-    // If search is made by email, no need to show "Assigned To" field
-    if (searchQuery.includes('@')){
-        // Remove "Assigned To" column if it already exists
-        if (getColumnIndexForKey('assignedTo') > -1){
-            tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
-        }
+  const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
+  // If search is made by email, no need to show "Assigned To" field
+  if (isValidEmail(searchQuery) === undefined) {
+    // Remove "Assigned To" column if it already exists
+    if (getColumnIndexForKey('assignedTo') > -1) {
+      tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
     }
-    // If search is made by code, show "Assigned To" field
-    else {
-        // Add "Assigned To" column if it doesn't already exist
-        if (getColumnIndexForKey('assignedTo') === -1){
-           tableColumns.splice(4, 0, {
-           label: 'Assigned To',
-           key: 'assignedTo',
-           });
-        }
+  }
+  // If search is made by code, show "Assigned To" field
+  else if (isValidEmail(searchQuery) !== undefined) {
+    // Add "Assigned To" column if it doesn't already exist
+    if (getColumnIndexForKey('assignedTo') === -1) {
+      tableColumns.splice(4, 0, {
+        label: 'Assigned To',
+        key: 'assignedTo',
+      });
     }
-    return tableColumns
-}
+  }
+  return tableColumns;
+};
 
 const CodeSearchResultsTable = ({
   searchQuery,
@@ -108,7 +107,7 @@ const CodeSearchResultsTable = ({
       redemptionDate,
       code,
       couponName,
-      assignedTo
+      assignedTo,
     }) => ({
       couponId,
       couponName,
@@ -122,8 +121,8 @@ const CodeSearchResultsTable = ({
       actions: !isRedeemed ? (
         <React.Fragment>
           {isAssigned ? (
-          <React.Fragment>
-           <RemindButton
+            <React.Fragment>
+            <RemindButton
              couponId={couponId}
              couponTitle={couponName}
              data={{
@@ -133,17 +132,17 @@ const CodeSearchResultsTable = ({
              onSuccess={onRemindSuccess}
            />
             {' | '}
-           <RevokeButton
-            couponId={couponId}
-            couponTitle={couponName}
-            data={{
+            <RevokeButton
+             couponId={couponId}
+             couponTitle={couponName}
+             data={{
               assigned_to: assignedTo,
               code,
             }}
-            onSuccess={onRevokeSuccess}
-            />
+             onSuccess={onRevokeSuccess}
+           />
           </React.Fragment>
-          ): defaultEmptyValue
+          ) : defaultEmptyValue
           }
         </React.Fragment>
       ) : defaultEmptyValue,
