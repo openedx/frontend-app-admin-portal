@@ -5,6 +5,7 @@ import qs from 'query-string';
 import { withRouter } from 'react-router';
 import { Icon } from '@edx/paragon';
 
+import { isValidEmail } from '../../utils';
 import TableContainer from '../../containers/TableContainer';
 import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
@@ -122,26 +123,26 @@ const CodeSearchResultsTable = ({
         <React.Fragment>
           {isAssigned ? (
             <React.Fragment>
-            <RemindButton
-             couponId={couponId}
-             couponTitle={couponName}
-             data={{
-               email: assignedTo,
-               code,
-             }}
-             onSuccess={onRemindSuccess}
-           />
-            {' | '}
-            <RevokeButton
-             couponId={couponId}
-             couponTitle={couponName}
-             data={{
-              assigned_to: assignedTo,
-              code,
-            }}
-             onSuccess={onRevokeSuccess}
-           />
-          </React.Fragment>
+              <RemindButton
+               couponId={couponId}
+               couponTitle={couponName}
+               data={{
+                email: assignedTo,
+                code,
+               }}
+               onSuccess={onRemindSuccess}
+              />
+              {' | '}
+              <RevokeButton
+               couponId={couponId}
+               couponTitle={couponName}
+               data={{
+                assigned_to: assignedTo,
+                code,
+               }}
+               onSuccess={onRevokeSuccess}
+              />
+            </React.Fragment>
           ) : defaultEmptyValue
           }
         </React.Fragment>
