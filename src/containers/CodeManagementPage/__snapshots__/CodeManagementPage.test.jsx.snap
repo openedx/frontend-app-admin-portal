@@ -62,7 +62,7 @@ Array [
               htmlFor="asInput2"
               id="label-asInput2"
             >
-              Search by email:
+              Search by email or code:
             </label>
             <div
               className="input-group"
@@ -268,7 +268,7 @@ Array [
               htmlFor="asInput19"
               id="label-asInput19"
             >
-              Search by email:
+              Search by email or code:
             </label>
             <div
               className="input-group"
@@ -479,7 +479,7 @@ Array [
               htmlFor="asInput15"
               id="label-asInput15"
             >
-              Search by email:
+              Search by email or code:
             </label>
             <div
               className="input-group"
@@ -662,7 +662,7 @@ Array [
               htmlFor="asInput7"
               id="label-asInput7"
             >
-              Search by email:
+              Search by email or code:
             </label>
             <div
               className="input-group"

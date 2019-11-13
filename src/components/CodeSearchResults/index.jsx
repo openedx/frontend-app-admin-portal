@@ -89,7 +89,7 @@ class CodeSearchResults extends React.Component {
       isCodeRevokeSuccessful,
       shouldRefreshTable,
     } = this.state;
-    const isValidSearchQuery = this.isValidSearchQuery();
+    const isValidSearchQuery = true;
     return (
       <TransitionReplace>
         {isOpen ? (
