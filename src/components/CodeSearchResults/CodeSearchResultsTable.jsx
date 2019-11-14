@@ -4,7 +4,6 @@ import moment from 'moment';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 import { Icon } from '@edx/paragon';
-import { isValidEmail } from '../../utils';
 
 import { isValidEmail } from '../../utils';
 import TableContainer from '../../containers/TableContainer';
