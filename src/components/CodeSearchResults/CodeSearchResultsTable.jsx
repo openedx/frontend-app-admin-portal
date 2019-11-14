@@ -75,9 +75,7 @@ const handleTableColumns = (searchQuery) => {
     if (getColumnIndexForKey('assignedTo') > -1) {
       tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
     }
-  }
-  // If search is made by code, show "Assigned To" field
-  else if (isValidEmail(searchQuery) !== undefined) {
+  } else if (isValidEmail(searchQuery) !== undefined) {
     // Add "Assigned To" column if it doesn't already exist
     if (getColumnIndexForKey('assignedTo') === -1) {
       tableColumns.splice(4, 0, {
