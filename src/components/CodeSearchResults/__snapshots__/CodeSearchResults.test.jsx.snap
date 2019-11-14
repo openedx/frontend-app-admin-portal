@@ -55,6 +55,34 @@ exports[`<CodeSearchResults /> basic rendering should render email validation er
           </button>
         </div>
       </div>
+      <div
+        className="alert fade alert-danger show"
+        hidden={false}
+        role="alert"
+      >
+        <div
+          className="alert-dialog"
+        >
+          <div
+            className="d-flex"
+          >
+            <div
+              className="icon mr-2"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-exclamation-circle"
+                id="Icon3"
+              />
+            </div>
+            <div
+              className="message"
+            >
+              Please enter a valid email address in your search.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -109,7 +137,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon12"
+              id="Icon10"
             />
             Close search results
           </button>
@@ -132,7 +160,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
               <span
                 aria-hidden={true}
                 className="fa fa-exclamation-circle"
-                id="Icon13"
+                id="Icon11"
               />
             </div>
             <div
@@ -197,7 +225,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon14"
+              id="Icon12"
             />
             Close search results
           </button>
@@ -220,7 +248,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
               <span
                 aria-hidden={true}
                 className="fa fa-times-circle"
-                id="Icon15"
+                id="Icon13"
               />
             </div>
             <div
@@ -290,7 +318,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon3"
+              id="Icon4"
             />
             Close search results
           </button>
@@ -366,7 +394,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon4"
+              id="Icon5"
             />
             Close search results
           </button>
@@ -456,7 +484,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon5"
+                        id="Icon6"
                       />
                       <span
                         className="sr-only"
@@ -520,7 +548,25 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       className=""
                       scope={null}
                     >
-                      -
+                      <button
+                        className="btn remind-btn btn-link btn-sm p-0"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        type="button"
+                      >
+                        Remind
+                      </button>
+                       | 
+                      <button
+                        className="btn revoke-btn btn-link btn-sm p-0"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        type="button"
+                      >
+                        Revoke
+                      </button>
                     </td>
                   </tr>
                   <tr
@@ -545,7 +591,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon6"
+                        id="Icon7"
                       />
                       <span
                         className="sr-only"
@@ -922,7 +968,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-10"
+                        id="pagination-8"
                       />
                       Previous
                     </div>
@@ -946,7 +992,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-11"
+                        id="pagination-9"
                       />
                     </div>
                   </button>
