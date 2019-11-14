@@ -89,7 +89,6 @@ class CodeSearchResults extends React.Component {
       isCodeRevokeSuccessful,
       shouldRefreshTable,
     } = this.state;
-    const isValidSearchQuery = true;
     return (
       <TransitionReplace>
         {isOpen ? (
@@ -99,28 +98,20 @@ class CodeSearchResults extends React.Component {
                 searchQuery={searchQuery}
                 onClose={onClose}
               />
-              {isValidSearchQuery ? (
-                <React.Fragment>
-                  {isCodeReminderSuccessful && this.renderSuccessMessage({
-                    message: `A reminder was successfully sent to ${searchQuery}.`,
-                  })}
-                  {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                    message: 'Successfully revoked code(s)',
-                  })}
-                  <CodeSearchResultsTable
-                    searchQuery={searchQuery}
-                    shouldRefreshTable={shouldRefreshTable}
-                    onRemindSuccess={this.handleRemindOnSuccess}
-                    onRevokeSuccess={this.handleRevokeOnSuccess}
-                  />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {this.renderErrorMessage({
-                    message: 'Please enter a valid email address in your search.',
-                  })}
-                </React.Fragment>
-              )}
+              <React.Fragment>
+                {isCodeReminderSuccessful && this.renderSuccessMessage({
+                  message: `A reminder was successfully sent to ${searchQuery}.`,
+                })}
+                {isCodeRevokeSuccessful && this.renderSuccessMessage({
+                  message: 'Successfully revoked code(s)',
+                })}
+                <CodeSearchResultsTable
+                  searchQuery={searchQuery}
+                  shouldRefreshTable={shouldRefreshTable}
+                  onRemindSuccess={this.handleRemindOnSuccess}
+                  onRevokeSuccess={this.handleRevokeOnSuccess}
+                />
+              </React.Fragment>
             </React.Fragment>
           </div>
         ) : null}
