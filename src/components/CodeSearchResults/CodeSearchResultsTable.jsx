@@ -70,19 +70,15 @@ const transformSearchResults = results => results.map(({
 const handleTableColumns = (searchQuery) => {
   const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
   // If search is made by email, no need to show "Assigned To" field
-  if (isValidEmail(searchQuery) === undefined) {
+  if (isValidEmail(searchQuery) === undefined && getColumnIndexForKey('assignedTo') > -1) {
     // Remove "Assigned To" column if it already exists
-    if (getColumnIndexForKey('assignedTo') > -1) {
-      tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
-    }
-  } else if (isValidEmail(searchQuery) !== undefined) {
+    tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
+  } else if (isValidEmail(searchQuery) !== undefined && getColumnIndexForKey('assignedTo') === -1) {
     // Add "Assigned To" column if it doesn't already exist
-    if (getColumnIndexForKey('assignedTo') === -1) {
-      tableColumns.splice(4, 0, {
-        label: 'Assigned To',
-        key: 'assignedTo',
-      });
-    }
+    tableColumns.splice(4, 0, {
+      label: 'Assigned To',
+      key: 'assignedTo',
+    });
   }
   return tableColumns;
 };
@@ -117,32 +113,27 @@ const CodeSearchResultsTable = ({
       courseTitle: courseTitle || defaultEmptyValue,
       assignedTo: assignedTo || defaultEmptyValue,
       redemptionDate: redemptionDate || defaultEmptyValue,
-      actions: !isRedeemed ? (
+      actions: !isRedeemed && isAssigned ? (
         <React.Fragment>
-          {isAssigned ? (
-            <React.Fragment>
-              <RemindButton
-                couponId={couponId}
-                couponTitle={couponName}
-                data={{
-                  email: assignedTo,
-                  code,
-                }}
-                onSuccess={onRemindSuccess}
-              />
-              {' | '}
-              <RevokeButton
-                couponId={couponId}
-                couponTitle={couponName}
-                data={{
-                  assigned_to: assignedTo,
-                  code,
-                }}
-                onSuccess={onRevokeSuccess}
-              />
-            </React.Fragment>
-          ) : defaultEmptyValue
-          }
+          <RemindButton
+            couponId={couponId}
+            couponTitle={couponName}
+            data={{
+              email: assignedTo,
+              code,
+            }}
+            onSuccess={onRemindSuccess}
+          />
+          {' | '}
+          <RevokeButton
+            couponId={couponId}
+            couponTitle={couponName}
+            data={{
+              assigned_to: assignedTo,
+              code,
+            }}
+            onSuccess={onRevokeSuccess}
+          />
         </React.Fragment>
       ) : defaultEmptyValue,
     }));

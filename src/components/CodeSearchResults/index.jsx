@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionReplace } from '@edx/paragon';
 
-import { isValidEmail, updateUrl } from '../../utils';
+import { updateUrl } from '../../utils';
 
 import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
@@ -57,11 +57,6 @@ class CodeSearchResults extends React.Component {
       isCodeRevokeSuccessful: true,
       shouldRefreshTable: true,
     });
-  };
-
-  isValidSearchQuery = () => {
-    const { searchQuery } = this.props;
-    return isValidEmail(searchQuery) === undefined;
   };
 
   renderSuccessMessage = options => (
