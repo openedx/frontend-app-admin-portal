@@ -34,6 +34,7 @@ const initialCouponData = {
   num_unassigned: 10,
   errors: [],
   usage_limitation: MULTI_USE,
+  available: true,
 };
 
 const CouponDetailsWrapper = props => (
@@ -147,6 +148,29 @@ describe('CouponDetailsWrapper', () => {
         .create((
           <CouponDetailsWrapper
             store={store}
+            isExpanded
+          />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('does not show Assign button for an unavailable coupon', () => {
+      store = mockStore({
+        ...initialState,
+        table: {
+          'coupon-details': sampleTableData,
+        },
+      });
+
+      const tree = renderer
+        .create((
+          <CouponDetailsWrapper
+            store={store}
+            couponData={{
+              ...initialCouponData,
+              available: false,
+            }}
             isExpanded
           />
         ))
