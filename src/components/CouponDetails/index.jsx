@@ -135,7 +135,7 @@ class CouponDetails extends React.Component {
   getBulkActionSelectOptions() {
     const { selectedToggle, selectedCodes } = this.state;
     const {
-      couponData: { num_unassigned: unassignedCodes },
+      couponData: { num_unassigned: unassignedCodes, available: couponAvailable },
       couponDetailsTable: { data: tableData },
     } = this.props;
 
@@ -146,7 +146,7 @@ class CouponDetails extends React.Component {
     return [{
       label: 'Assign',
       value: 'assign',
-      disabled: !isAssignView || isRedeemedView || !hasTableData || unassignedCodes === 0,
+      disabled: !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || unassignedCodes === 0, // eslint-disable-line max-len
     }, {
       label: 'Remind',
       value: 'remind',
@@ -170,7 +170,14 @@ class CouponDetails extends React.Component {
   }
 
   getActionButton(code) {
-    const { couponData: { id, errors, title: couponTitle } } = this.props;
+    const {
+      couponData: {
+        id,
+        errors,
+        available: couponAvailable,
+        title: couponTitle,
+      },
+    } = this.props;
     const { selectedToggle } = this.state;
     const {
       assigned_to: assignedTo,
@@ -221,7 +228,8 @@ class CouponDetails extends React.Component {
       remainingUses -= redemptions.num_assignments;
     }
 
-    return (
+    // Don't show `Assign` button for an unavailable coupon
+    return couponAvailable ? (
       <Button
         className={`assignment-btn ${buttonClassNames.join(' ')}`}
         onClick={() => this.setModalState({
@@ -238,7 +246,7 @@ class CouponDetails extends React.Component {
       >
         Assign
       </Button>
-    );
+    ) : null;
   }
 
   setModalState({ key, options }) {
@@ -902,6 +910,7 @@ CouponDetails.propTypes = {
     errors: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     num_unassigned: PropTypes.number.isRequired,
     usage_limitation: PropTypes.string.isRequired,
+    available: PropTypes.bool.isRequired.isRequired,
   }).isRequired,
   isExpanded: PropTypes.bool,
 };
