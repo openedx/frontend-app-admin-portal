@@ -365,27 +365,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                   <td
                     className=""
                     scope={null}
-                  >
-                    <button
-                      className="btn remind-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
-                      onClick={[Function]}
-                      onKeyDown={[Function]}
-                      type="button"
-                    >
-                      Remind
-                    </button>
-                     | 
-                    <button
-                      className="btn revoke-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
-                      onClick={[Function]}
-                      onKeyDown={[Function]}
-                      type="button"
-                    >
-                      Revoke
-                    </button>
-                  </td>
+                  />
                 </tr>
                 <tr
                   className=""

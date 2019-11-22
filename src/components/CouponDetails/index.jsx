@@ -150,11 +150,11 @@ class CouponDetails extends React.Component {
     }, {
       label: 'Remind',
       value: 'remind',
-      disabled: isAssignView || isRedeemedView || !hasTableData,
+      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable,
     }, {
       label: 'Revoke',
       value: 'revoke',
-      disabled: isAssignView || isRedeemedView || !hasTableData || selectedCodes.length === 0,
+      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || selectedCodes.length === 0, // eslint-disable-line max-len
     }];
   }
 
@@ -186,6 +186,11 @@ class CouponDetails extends React.Component {
 
     let remainingUses = redemptions.total - redemptions.used;
     const buttonClassNames = ['btn-link', 'btn-sm', 'p-0'];
+
+    // Don't show `Assign/Remind/Revoke` buttons for an unavailable coupon
+    if (!couponAvailable) {
+      return null;
+    }
 
     // Don't show a button if all total redemptions have been used
     if (redemptions.used === redemptions.total) {
@@ -228,8 +233,7 @@ class CouponDetails extends React.Component {
       remainingUses -= redemptions.num_assignments;
     }
 
-    // Don't show `Assign` button for an unavailable coupon
-    return couponAvailable ? (
+    return (
       <Button
         className={`assignment-btn ${buttonClassNames.join(' ')}`}
         onClick={() => this.setModalState({
@@ -246,7 +250,7 @@ class CouponDetails extends React.Component {
       >
         Assign
       </Button>
-    ) : null;
+    );
   }
 
   setModalState({ key, options }) {
