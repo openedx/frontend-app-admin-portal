@@ -44,24 +44,6 @@ describe('<CodeSearchResults />', () => {
       expect(tree).toMatchSnapshot();
     });
 
-    it('should render email validation error when searchQuery is invalid email address', () => {
-      const store = getMockStore({ ...initialStore });
-      const tree = renderer
-        .create((
-          <MemoryRouter>
-            <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="invalid_email"
-                isOpen
-              />
-            </Provider>
-          </MemoryRouter>
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-
     it('should render loading', () => {
       const store = getMockStore({
         ...initialStore,
@@ -139,6 +121,46 @@ describe('<CodeSearchResults />', () => {
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
+                isOpen
+              />
+            </Provider>
+          </MemoryRouter>
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('should render table data when searchQuery is a code', () => {
+      const store = getMockStore({
+        ...initialStore,
+        table: {
+          'code-search-results': {
+            loading: false,
+            error: null,
+            data: {
+              current_page: 1,
+              num_pages: 1,
+              results: [{
+                coupon_id: 1,
+                coupon_name: 'Test Coupon Name',
+                code: 'FAG2LVLNHAKIXQ0Q',
+                course_key: null,
+                course_title: null,
+                redeemed_date: null,
+                is_assigned: true,
+                user_email: 'test@test.com',
+              }],
+            },
+          },
+        },
+      });
+      const tree = renderer
+        .create((
+          <MemoryRouter>
+            <Provider store={store}>
+              <CodeSearchResults
+                onClose={jest.fn()}
+                searchQuery="FAG2LVLNHAKIXQ0Q"
                 isOpen
               />
             </Provider>
@@ -227,6 +249,8 @@ describe('<CodeSearchResults />', () => {
                 course_key: null,
                 course_title: null,
                 redeemed_date: null,
+                is_assigned: true,
+                user_email: 'test@test.com',
               }],
             },
           },
@@ -268,6 +292,8 @@ describe('<CodeSearchResults />', () => {
                 course_key: null,
                 course_title: null,
                 redeemed_date: null,
+                is_assigned: true,
+                user_email: 'test@test.com',
               }],
             },
           },
