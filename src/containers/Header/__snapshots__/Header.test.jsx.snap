@@ -57,7 +57,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
         <span
           aria-hidden={true}
           className="fa fa-user mr-2"
-          id="Icon2"
+          id="Icon1"
         />
         <span
           className="sr-only"
@@ -238,7 +238,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
         <span
           aria-hidden={true}
           className="fa fa-bars"
-          id="Icon3"
+          id="Icon2"
         />
         <span
           className="sr-only"
