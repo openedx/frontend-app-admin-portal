@@ -29,8 +29,8 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
         >
           <label
             className=""
-            htmlFor="asInput2"
-            id="label-asInput2"
+            htmlFor="asInput1"
+            id="label-asInput1"
           >
             Search:
           </label>
@@ -41,12 +41,12 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
               className="input-group-prepend"
             />
             <input
-              aria-describedby="error-asInput2"
+              aria-describedby="error-asInput1"
               aria-invalid={false}
               autoComplete="off"
               className="form-control is-invalid-nodanger input no-clear-btn"
               disabled={false}
-              id="asInput2"
+              id="asInput1"
               name="search"
               onBlur={[Function]}
               onChange={[Function]}
@@ -68,7 +68,7 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
                 <span
                   aria-hidden={true}
                   className="fa fa-search"
-                  id="Icon3"
+                  id="Icon2"
                 />
                 <span
                   className="sr-only"
@@ -81,7 +81,7 @@ exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput2"
+            id="error-asInput1"
           >
             <span />
           </div>
@@ -128,8 +128,8 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
         >
           <label
             className=""
-            htmlFor="asInput6"
-            id="label-asInput6"
+            htmlFor="asInput5"
+            id="label-asInput5"
           >
             Search:
           </label>
@@ -140,12 +140,12 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
               className="input-group-prepend"
             />
             <input
-              aria-describedby="error-asInput6"
+              aria-describedby="error-asInput5"
               aria-invalid={false}
               autoComplete="off"
               className="form-control is-invalid-nodanger input no-clear-btn"
               disabled={false}
-              id="asInput6"
+              id="asInput5"
               name="search"
               onBlur={[Function]}
               onChange={[Function]}
@@ -167,7 +167,7 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
                 <span
                   aria-hidden={true}
                   className="fa fa-search"
-                  id="Icon7"
+                  id="Icon6"
                 />
                 <span
                   className="sr-only"
@@ -180,7 +180,7 @@ exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = 
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput6"
+            id="error-asInput5"
           >
             <span />
           </div>
@@ -227,8 +227,8 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput4"
-            id="label-asInput4"
+            htmlFor="asInput3"
+            id="label-asInput3"
           >
             Search:
           </label>
@@ -239,12 +239,12 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
               className="input-group-prepend"
             />
             <input
-              aria-describedby="error-asInput4"
+              aria-describedby="error-asInput3"
               aria-invalid={false}
               autoComplete="off"
               className="form-control is-invalid-nodanger input no-clear-btn"
               disabled={false}
-              id="asInput4"
+              id="asInput3"
               name="search"
               onBlur={[Function]}
               onChange={[Function]}
@@ -266,7 +266,7 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-search"
-                  id="Icon5"
+                  id="Icon4"
                 />
                 <span
                   className="sr-only"
@@ -279,7 +279,7 @@ exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput4"
+            id="error-asInput3"
           >
             <span />
           </div>
@@ -373,8 +373,8 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
         >
           <label
             className=""
-            htmlFor="asInput9"
-            id="label-asInput9"
+            htmlFor="asInput8"
+            id="label-asInput8"
           >
             Search:
           </label>
@@ -385,12 +385,12 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
               className="input-group-prepend"
             />
             <input
-              aria-describedby="error-asInput9"
+              aria-describedby="error-asInput8"
               aria-invalid={false}
               autoComplete="off"
               className="form-control is-invalid-nodanger input"
               disabled={false}
-              id="asInput9"
+              id="asInput8"
               name="search"
               onBlur={[Function]}
               onChange={[Function]}
@@ -412,7 +412,7 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                   <span
                     aria-hidden={true}
                     className="fa fa-times"
-                    id="icon-SearchField8"
+                    id="icon-SearchField7"
                   />
                   <span
                     className="sr-only"
@@ -429,7 +429,7 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
                 <span
                   aria-hidden={true}
                   className="fa fa-search"
-                  id="Icon10"
+                  id="Icon9"
                 />
                 <span
                   className="sr-only"
@@ -442,7 +442,7 @@ exports[`<EnterpriseList /> renders correctly with search query and empty enterp
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput9"
+            id="error-asInput8"
           >
             <span />
           </div>

@@ -28,7 +28,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon4"
+            id="Icon3"
           />
           <span
             className="sr-only"
@@ -49,7 +49,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-tags"
-            id="Icon5"
+            id="Icon4"
           />
           <span
             className="sr-only"
@@ -91,7 +91,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon8"
+            id="Icon7"
           />
           <span
             className="sr-only"
@@ -133,7 +133,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart mr-2"
-            id="Icon11"
+            id="Icon10"
           />
           Learner Report
         </a>
@@ -150,7 +150,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-tags mr-2"
-            id="Icon12"
+            id="Icon11"
           />
           Code Management
         </a>
@@ -188,7 +188,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart mr-2"
-            id="Icon15"
+            id="Icon14"
           />
           Learner Report
         </a>
@@ -205,7 +205,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-tags mr-2"
-            id="Icon16"
+            id="Icon15"
           />
           Code Management
         </a>

@@ -12,7 +12,7 @@ exports[`<Sidebar /> renders correctly with close icon 1`] = `
   <span
     aria-hidden={true}
     className="fa fa-times"
-    id="Icon3"
+    id="Icon2"
   />
   <span
     className="sr-only"
@@ -34,7 +34,7 @@ exports[`<Sidebar /> renders correctly with menu icon 1`] = `
   <span
     aria-hidden={true}
     className="fa fa-bars"
-    id="Icon2"
+    id="Icon1"
   />
   <span
     className="sr-only"

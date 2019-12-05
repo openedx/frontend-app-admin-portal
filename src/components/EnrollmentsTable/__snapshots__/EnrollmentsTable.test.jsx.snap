@@ -18,7 +18,7 @@ exports[`EnrollmentsTable renders empty state correctly 1`] = `
         <span
           aria-hidden={true}
           className="fa fa-exclamation-circle"
-          id="Icon2"
+          id="Icon1"
         />
       </div>
       <div
