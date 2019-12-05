@@ -1,25 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<NotFoundPage /> renders correctly 1`] = `
-<div
-  className="container-fluid mt-3"
+<main
+  role="main"
 >
   <div
-    className="text-center py-5"
+    className="container-fluid mt-3"
   >
-    <h1
-      className={null}
+    <div
+      className="text-center py-5"
     >
-      404
-    </h1>
-    <p
-      className="lead"
-    >
-      Oops, sorry we can't find that page!
-    </p>
-    <p>
-      Either something went wrong or the page doesn't exist anymore.
-    </p>
+      <h1
+        className={null}
+      >
+        404
+      </h1>
+      <p
+        className="lead"
+      >
+        Oops, sorry we can't find that page!
+      </p>
+      <p>
+        Either something went wrong or the page doesn't exist anymore.
+      </p>
+    </div>
   </div>
-</div>
+</main>
 `;

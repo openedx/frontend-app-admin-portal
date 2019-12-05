@@ -233,70 +233,72 @@ class Admin extends React.Component {
       <React.Fragment>
         {!loading && !error && !this.hasAnalyticsData() ? this.renderLoadingMessage() : (
           <React.Fragment>
-            <Helmet>
-              <title>Learner and Progress Report</title>
-            </Helmet>
-            <Hero title="Learner and Progress Report" />
-            <div className="container-fluid">
-              <div className="row mt-4">
-                <div className="col">
-                  <H2>Overview</H2>
+            <main role="main">
+              <Helmet>
+                <title>Learner and Progress Report</title>
+              </Helmet>
+              <Hero title="Learner and Progress Report" />
+              <div className="container-fluid">
+                <div className="row mt-4">
+                  <div className="col">
+                    <H2>Overview</H2>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  {error && this.renderErrorMessage()}
-                  {loading && this.renderLoadingMessage()}
-                  {!loading && !error && this.hasAnalyticsData() &&
-                    <AdminCards />
-                  }
+                <div className="row">
+                  <div className="col">
+                    {error && this.renderErrorMessage()}
+                    {loading && this.renderLoadingMessage()}
+                    {!loading && !error && this.hasAnalyticsData() &&
+                      <AdminCards />
+                    }
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-4">
-                <div className="col">
-                  <H2 className="table-title">{tableMetadata.title}</H2>
-                  {actionSlug && this.renderResetButton()}
-                  {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
-                  {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                <div className="row mt-4">
+                  <div className="col">
+                    <H2 className="table-title">{tableMetadata.title}</H2>
+                    {actionSlug && this.renderResetButton()}
+                    {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
+                    {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  {!error && !loading && !this.hasEmptyData() && (
-                    <div className="row">
-                      <div className="col-12 col-md-6 pt-1 pb-3">
-                        {lastUpdatedDate &&
-                          <React.Fragment>
-                            Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                          </React.Fragment>
-                        }
+                <div className="row">
+                  <div className="col">
+                    {!error && !loading && !this.hasEmptyData() && (
+                      <div className="row">
+                        <div className="col-12 col-md-6 pt-1 pb-3">
+                          {lastUpdatedDate &&
+                            <React.Fragment>
+                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                            </React.Fragment>
+                          }
+                        </div>
+                        <div className="col-12 col-md-6 text-md-right">
+                          <DownloadCsvButton
+                            id={tableMetadata.csvButtonId}
+                            fetchMethod={tableMetadata.csvFetchMethod}
+                            disabled={this.shouldDisableCsvButton(actionSlug)}
+                            buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
+                          />
+                        </div>
                       </div>
-                      <div className="col-12 col-md-6 text-md-right">
-                        <DownloadCsvButton
-                          id={tableMetadata.csvButtonId}
-                          fetchMethod={tableMetadata.csvFetchMethod}
-                          disabled={this.shouldDisableCsvButton(actionSlug)}
-                          buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
-                        />
-                      </div>
+                    )}
+                    {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                    <div className="mt-3 mb-5">
+                      {enterpriseId && tableMetadata.component}
                     </div>
-                  )}
-                  {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                  <div className="mt-3 mb-5">
-                    {enterpriseId && tableMetadata.component}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <p>
+                      For more information, contact edX Enterprise Support at
+                      {' '}
+                      <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+                    </p>
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col">
-                  <p>
-                    For more information, contact edX Enterprise Support at
-                    {' '}
-                    <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
-                  </p>
-                </div>
-              </div>
-            </div>
+            </main>
           </React.Fragment>
         )}
       </React.Fragment>

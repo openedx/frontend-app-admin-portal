@@ -1,42 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EnterpriseApp renders error page correctly 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col"
+      className="row mt-4"
     >
-      <h1
-        className={null}
-      >
-        Error
-      </h1>
       <div
-        className="alert fade alert-danger show"
-        hidden={false}
-        role="alert"
+        className="col"
       >
+        <h1
+          className={null}
+        >
+          Error
+        </h1>
         <div
-          className="alert-dialog"
+          className="alert fade alert-danger show"
+          hidden={false}
+          role="alert"
         >
           <div
-            className=""
+            className="alert-dialog"
           >
             <div
-              className="message"
+              className=""
             >
-              test error
+              <div
+                className="message"
+              >
+                test error
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 `;
 
 exports[`EnterpriseApp renders not found page correctly 1`] = `
@@ -112,27 +116,31 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
     }
     tabIndex="-1"
   >
-    <div
-      className="container-fluid mt-3"
+    <main
+      role="main"
     >
       <div
-        className="text-center py-5"
+        className="container-fluid mt-3"
       >
-        <h1
-          className={null}
+        <div
+          className="text-center py-5"
         >
-          404
-        </h1>
-        <p
-          className="lead"
-        >
-          Oops, sorry we can't find that page!
-        </p>
-        <p>
-          Either something went wrong or the page doesn't exist anymore.
-        </p>
+          <h1
+            className={null}
+          >
+            404
+          </h1>
+          <p
+            className="lead"
+          >
+            Oops, sorry we can't find that page!
+          </p>
+          <p>
+            Either something went wrong or the page doesn't exist anymore.
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 `;
