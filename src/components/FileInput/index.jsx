@@ -97,7 +97,14 @@ class FileInput extends React.Component {
             }}
           />
         )}
-        <div className="d-flex align-items-center">
+        <div className={classNames(
+          'd-flex',
+          'align-items-center',
+          'form-control',
+          {
+            'is-invalid': touched && error
+          },
+          )}>
           {!fileName && (
             <React.Fragment>
               <span className="file-name d-inline-block text-truncate">
@@ -142,16 +149,14 @@ class FileInput extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <div className={classNames({ 'is-invalid': touched && error }) || undefined}>
-          <ValidationMessage
-            id={`validation-${id}`}
-            isValid={!error}
-            invalidMessage={error}
-            variant={{
-              status: Variant.status.DANGER,
-            }}
-          />
-        </div>
+        <ValidationMessage
+          id={`validation-${id}`}
+          isValid={!error}
+          invalidMessage={error}
+          variant={{
+            status: Variant.status.DANGER,
+          }}
+        />
         {description && (
           <small className="form-text" id={`description-${id}`}>
             {description}
