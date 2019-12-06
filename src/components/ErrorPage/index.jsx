@@ -36,9 +36,11 @@ function renderErrorComponent(status, message) {
 const ErrorPage = (props) => {
   const { status, message } = props;
   return (
-    <div className="container-fluid">
-      {renderErrorComponent(status, message)}
-    </div>
+    <main role="main">
+      <div className="container-fluid">
+        {renderErrorComponent(status, message)}
+      </div>
+    </main>
   );
 };
 

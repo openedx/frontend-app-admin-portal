@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -30,7 +32,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -104,12 +106,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -138,7 +142,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -681,12 +685,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -715,7 +721,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -1258,12 +1264,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1292,7 +1300,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -1840,12 +1848,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1874,7 +1884,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -2404,12 +2414,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -2438,7 +2450,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -2968,12 +2980,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3002,7 +3016,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -3550,12 +3564,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3584,7 +3600,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -4132,12 +4148,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4166,7 +4184,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -4712,12 +4730,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4746,7 +4766,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -5289,12 +5309,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -5323,7 +5345,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -5871,12 +5893,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with error state 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -5905,7 +5929,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -6007,12 +6031,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with loading state 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -6041,7 +6067,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -6115,8 +6141,8 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
