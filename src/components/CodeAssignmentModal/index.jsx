@@ -137,15 +137,7 @@ class CodeAssignmentModal extends React.Component {
     };
 
     /* eslint-disable no-underscore-dangle */
-    if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
-      errors._error.push((
-        'No email addresses provided. Either manually enter email addresses or upload a CSV file.'
-      ));
-    } else if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
-      errors._error.push((
-        'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.'
-      ));
-    } else if (invalidTextAreaEmails.length > 0) {
+    if (invalidTextAreaEmails.length > 0) {
       const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails);
       errors[textAreaKey] = invalidEmailMessage;
       errors._error.push(invalidEmailMessage);
@@ -191,6 +183,14 @@ class CodeAssignmentModal extends React.Component {
       });
       errors[csvFileKey] = message;
       errors._error.push(message);
+    } else if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
+      errors._error.push((
+        'No email addresses provided. Either manually enter email addresses or upload a CSV file.'
+      ));
+    } else if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
+      errors._error.push((
+        'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.'
+      ));
     }
     /* eslint-enable no-underscore-dangle */
 
