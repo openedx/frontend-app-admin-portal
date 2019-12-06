@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { clearFields } from 'redux-form';
-import {
-  Button,
-  Icon,
-  ValidationMessage,
-  Variant,
-} from '@edx/paragon';
+import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
 
 import './FileInput.scss';
 
@@ -73,43 +68,31 @@ class FileInput extends React.Component {
         error,
       },
     } = this.props;
-
+    const hasError = !!(touched && error);
     return (
-      <div className="file-input form-group">
-        <label className="m-0 mb-1">{label}</label>
-        {!fileName && (
-          <input
-            ref={this.fileInputRef}
-            id={id}
-            value=""
-            type="file"
-            accept={accept}
-            disabled={disabled}
-            required={required}
-            onChange={this.handleOnChange}
-            onFocus={() => {
-              input.onFocus();
-              this.setState({ hasFocus: true });
-            }}
-            onBlur={() => {
-              input.onBlur();
-              this.setState({ hasFocus: false });
-            }}
-          />
-        )}
-        <div className={classNames(
-          'd-flex',
-          'align-items-center',
-          'form-control',
-          {
-            'is-invalid': touched && error
-          },
-          )}>
-          {!fileName && (
+      <ValidationFormGroup
+        className="file-input"
+        for={id}
+        helpText={description}
+        invalid={hasError}
+        invalidMessage={error}
+      >
+        <label className="m-0 mb-1" htmlFor={id}>{label}</label>
+        <div
+          className={classNames(
+            'd-flex',
+            'align-items-center',
+            'form-control',
+            {
+              'is-invalid': hasError,
+            },
+          )}
+        >
+          <span className="file-name d-inline-block text-truncate">
+            {fileName || 'No File Chosen'}
+          </span>
+          {!fileName ? (
             <React.Fragment>
-              <span className="file-name d-inline-block text-truncate">
-                No File Chosen
-              </span>
               <label
                 className={classNames(
                   'choose-file-btn',
@@ -126,13 +109,27 @@ class FileInput extends React.Component {
               >
                 Choose a file
               </label>
+              <input
+                ref={this.fileInputRef}
+                id={id}
+                value=""
+                type="file"
+                accept={accept}
+                disabled={disabled}
+                required={required}
+                onChange={this.handleOnChange}
+                onFocus={() => {
+                  input.onFocus();
+                  this.setState({ hasFocus: true });
+                }}
+                onBlur={() => {
+                  input.onBlur();
+                  this.setState({ hasFocus: false });
+                }}
+              />
             </React.Fragment>
-          )}
-          {fileName && (
+          ) : (
             <React.Fragment>
-              <span className="file-name d-inline-block text-truncate">
-                {fileName}
-              </span>
               <Button
                 className="remove-file-btn btn-link p-1 ml-2"
                 onClick={() => {
@@ -149,20 +146,7 @@ class FileInput extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <ValidationMessage
-          id={`validation-${id}`}
-          isValid={!error}
-          invalidMessage={error}
-          variant={{
-            status: Variant.status.DANGER,
-          }}
-        />
-        {description && (
-          <small className="form-text" id={`description-${id}`}>
-            {description}
-          </small>
-        )}
-      </div>
+      </ValidationFormGroup>
     );
   }
 }
