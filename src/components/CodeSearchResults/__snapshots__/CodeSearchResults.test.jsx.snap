@@ -49,7 +49,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon11"
+              id="Icon10"
             />
             Close search results
           </button>
@@ -72,7 +72,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
               <span
                 aria-hidden={true}
                 className="fa fa-exclamation-circle"
-                id="Icon12"
+                id="Icon11"
               />
             </div>
             <div
@@ -137,7 +137,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon13"
+              id="Icon12"
             />
             Close search results
           </button>
@@ -160,7 +160,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
               <span
                 aria-hidden={true}
                 className="fa fa-times-circle"
-                id="Icon14"
+                id="Icon13"
               />
             </div>
             <div
@@ -230,7 +230,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon2"
+              id="Icon1"
             />
             Close search results
           </button>
@@ -306,7 +306,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon3"
+              id="Icon2"
             />
             Close search results
           </button>
@@ -396,7 +396,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon4"
+                        id="Icon3"
                       />
                       <span
                         className="sr-only"
@@ -485,7 +485,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon5"
+                        id="Icon4"
                       />
                       <span
                         className="sr-only"
@@ -594,7 +594,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-6"
+                        id="pagination-5"
                       />
                       Previous
                     </div>
@@ -618,7 +618,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-7"
+                        id="pagination-6"
                       />
                     </div>
                   </button>
@@ -682,7 +682,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon8"
+              id="Icon7"
             />
             Close search results
           </button>
@@ -862,7 +862,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-9"
+                        id="pagination-8"
                       />
                       Previous
                     </div>
@@ -886,7 +886,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-10"
+                        id="pagination-9"
                       />
                     </div>
                   </button>
