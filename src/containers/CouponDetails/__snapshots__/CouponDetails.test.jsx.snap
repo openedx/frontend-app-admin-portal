@@ -34,7 +34,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon18"
+            id="Icon17"
           />
           Download full report (CSV)
         </button>
@@ -51,17 +51,17 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
         >
           <label
             className=""
-            htmlFor="asInput19"
-            id="label-asInput19"
+            htmlFor="asInput18"
+            id="label-asInput18"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput19"
+            aria-describedby="error-asInput18"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput19"
+            id="asInput18"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
@@ -114,7 +114,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput19"
+            id="error-asInput18"
           >
             <span />
           </div>
@@ -128,17 +128,17 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
         >
           <label
             className=""
-            htmlFor="asInput20"
-            id="label-asInput20"
+            htmlFor="asInput19"
+            id="label-asInput19"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput20"
+            aria-describedby="error-asInput19"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={true}
-            id="asInput20"
+            id="asInput19"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
@@ -188,7 +188,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput20"
+            id="error-asInput19"
           >
             <span />
           </div>
@@ -310,12 +310,12 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput21"
+                        aria-describedby="error-asInput20"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput21"
+                        id="asInput20"
                         name="select code test-code-1"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -326,8 +326,8 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput21"
-                        id="label-asInput21"
+                        htmlFor="asInput20"
+                        id="label-asInput20"
                       >
                         <div
                           className="sr-only"
@@ -338,7 +338,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput21"
+                        id="error-asInput20"
                       >
                         <span />
                       </div>
@@ -379,12 +379,12 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput22"
+                        aria-describedby="error-asInput21"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput22"
+                        id="asInput21"
                         name="select code test-code-2"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -395,8 +395,8 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput22"
-                        id="label-asInput22"
+                        htmlFor="asInput21"
+                        id="label-asInput21"
                       >
                         <div
                           className="sr-only"
@@ -407,7 +407,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput22"
+                        id="error-asInput21"
                       >
                         <span />
                       </div>
@@ -448,12 +448,12 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput23"
+                        aria-describedby="error-asInput22"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput23"
+                        id="asInput22"
                         name="select code test-code-3"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -464,8 +464,8 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput23"
-                        id="label-asInput23"
+                        htmlFor="asInput22"
+                        id="label-asInput22"
                       >
                         <div
                           className="sr-only"
@@ -476,7 +476,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput23"
+                        id="error-asInput22"
                       >
                         <span />
                       </div>
@@ -547,7 +547,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-24"
+                      id="pagination-23"
                     />
                     Previous
                   </div>
@@ -570,7 +570,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-25"
+                      id="pagination-24"
                     />
                   </div>
                 </button>
@@ -629,7 +629,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon8"
+            id="Icon7"
           />
           Download full report (CSV)
         </button>
@@ -646,17 +646,17 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput6"
-            id="label-asInput6"
+            htmlFor="asInput5"
+            id="label-asInput5"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput6"
+            aria-describedby="error-asInput5"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput6"
+            id="asInput5"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
@@ -709,7 +709,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput6"
+            id="error-asInput5"
           >
             <span />
           </div>
@@ -723,17 +723,17 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput7"
-            id="label-asInput7"
+            htmlFor="asInput6"
+            id="label-asInput6"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput7"
+            aria-describedby="error-asInput6"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={true}
-            id="asInput7"
+            id="asInput6"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
@@ -783,7 +783,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput7"
+            id="error-asInput6"
           >
             <span />
           </div>
@@ -823,7 +823,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon9"
+                  id="Icon8"
                 />
               </div>
               <div
@@ -882,7 +882,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon2"
+            id="Icon1"
           />
           Download full report (CSV)
         </button>
@@ -899,17 +899,17 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput3"
-            id="label-asInput3"
+            htmlFor="asInput2"
+            id="label-asInput2"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput3"
+            aria-describedby="error-asInput2"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput3"
+            id="asInput2"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
@@ -962,7 +962,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput3"
+            id="error-asInput2"
           >
             <span />
           </div>
@@ -976,17 +976,17 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput4"
-            id="label-asInput4"
+            htmlFor="asInput3"
+            id="label-asInput3"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput4"
+            aria-describedby="error-asInput3"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={true}
-            id="asInput4"
+            id="asInput3"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
@@ -1036,7 +1036,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput4"
+            id="error-asInput3"
           >
             <span />
           </div>
@@ -1091,7 +1091,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <span
             aria-hidden={true}
             className="fa mr-2 fa-download"
-            id="Icon10"
+            id="Icon9"
           />
           Download full report (CSV)
         </button>
@@ -1108,17 +1108,17 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput11"
-            id="label-asInput11"
+            htmlFor="asInput10"
+            id="label-asInput10"
           >
             Filter by Code Status:
           </label>
           <select
-            aria-describedby="error-asInput11"
+            aria-describedby="error-asInput10"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput11"
+            id="asInput10"
             name="table-view"
             onBlur={[Function]}
             onChange={[Function]}
@@ -1171,7 +1171,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput11"
+            id="error-asInput10"
           >
             <span />
           </div>
@@ -1185,17 +1185,17 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         >
           <label
             className=""
-            htmlFor="asInput12"
-            id="label-asInput12"
+            htmlFor="asInput11"
+            id="label-asInput11"
           >
             Bulk Action:
           </label>
           <select
-            aria-describedby="error-asInput12"
+            aria-describedby="error-asInput11"
             aria-invalid={false}
             className="form-control is-invalid-nodanger mt-1"
             disabled={false}
-            id="asInput12"
+            id="asInput11"
             name="bulk-action"
             onBlur={[Function]}
             onChange={[Function]}
@@ -1245,7 +1245,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           <div
             aria-live="polite"
             className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput12"
+            id="error-asInput11"
           >
             <span />
           </div>
@@ -1367,12 +1367,12 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput13"
+                        aria-describedby="error-asInput12"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput13"
+                        id="asInput12"
                         name="select code test-code-1"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -1383,8 +1383,8 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput13"
-                        id="label-asInput13"
+                        htmlFor="asInput12"
+                        id="label-asInput12"
                       >
                         <div
                           className="sr-only"
@@ -1395,7 +1395,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput13"
+                        id="error-asInput12"
                       >
                         <span />
                       </div>
@@ -1456,12 +1456,12 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput14"
+                        aria-describedby="error-asInput13"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput14"
+                        id="asInput13"
                         name="select code test-code-2"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -1472,8 +1472,8 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput14"
-                        id="label-asInput14"
+                        htmlFor="asInput13"
+                        id="label-asInput13"
                       >
                         <div
                           className="sr-only"
@@ -1484,7 +1484,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput14"
+                        id="error-asInput13"
                       >
                         <span />
                       </div>
@@ -1525,12 +1525,12 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     >
                       <input
                         aria-checked={false}
-                        aria-describedby="error-asInput15"
+                        aria-describedby="error-asInput14"
                         aria-invalid={false}
                         checked={false}
                         className="form-check-input is-invalid-nodanger"
                         disabled={false}
-                        id="asInput15"
+                        id="asInput14"
                         name="select code test-code-3"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -1541,8 +1541,8 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="asInput15"
-                        id="label-asInput15"
+                        htmlFor="asInput14"
+                        id="label-asInput14"
                       >
                         <div
                           className="sr-only"
@@ -1553,7 +1553,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                       <div
                         aria-live="polite"
                         className="invalid-feedback invalid-feedback-nodanger"
-                        id="error-asInput15"
+                        id="error-asInput14"
                       >
                         <span />
                       </div>
@@ -1634,7 +1634,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-16"
+                      id="pagination-15"
                     />
                     Previous
                   </div>
@@ -1657,7 +1657,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-17"
+                      id="pagination-16"
                     />
                   </div>
                 </button>

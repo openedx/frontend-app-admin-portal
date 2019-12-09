@@ -113,38 +113,40 @@ class EnterpriseList extends React.Component {
         <Helmet>
           <title>Enterprise List</title>
         </Helmet>
-        <div className="container-fluid">
-          <div className="row mt-4">
-            <div className="col-sm-12 col-md">
-              <H1>Enterprise List</H1>
+        <main role="main">
+          <div className="container-fluid">
+            <div className="row mt-4">
+              <div className="col-sm-12 col-md">
+                <H1>Enterprise List</H1>
+              </div>
+              <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
+                <SearchBar
+                  onSearch={query => updateUrl({
+                    search: query,
+                    page: 1,
+                  })}
+                  onClear={() => updateUrl({ search: undefined })}
+                  value={searchQuery}
+                />
+              </div>
             </div>
-            <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
-              <SearchBar
-                onSearch={query => updateUrl({
-                  search: query,
-                  page: 1,
-                })}
-                onClear={() => updateUrl({ search: undefined })}
-                value={searchQuery}
-              />
+            <div className="row mt-2">
+              <div className="col">
+                {this.shouldRenderRedirectToEnterpriseAdminPage() &&
+                  this.renderRedirectToEnterpriseAdminPage()
+                }
+                <TableContainer
+                  id="enterprise-list"
+                  className="enterprise-list"
+                  fetchMethod={this.fetchEnterprisesWithSearch}
+                  columns={columns}
+                  formatData={this.formatEnterpriseData}
+                  tableSortable
+                />
+              </div>
             </div>
           </div>
-          <div className="row mt-2">
-            <div className="col">
-              {this.shouldRenderRedirectToEnterpriseAdminPage() &&
-                this.renderRedirectToEnterpriseAdminPage()
-              }
-              <TableContainer
-                id="enterprise-list"
-                className="enterprise-list"
-                fetchMethod={this.fetchEnterprisesWithSearch}
-                columns={columns}
-                formatData={this.formatEnterpriseData}
-                tableSortable
-              />
-            </div>
-          </div>
-        </div>
+        </main>
       </React.Fragment>
     );
   }

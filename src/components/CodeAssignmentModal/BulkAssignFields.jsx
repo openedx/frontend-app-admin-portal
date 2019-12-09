@@ -7,7 +7,7 @@ import FileInput from '../FileInput';
 
 class BulkAssignFields extends React.Component {
   normalizeFileUpload(value) {
-    return value && value.split('\r\n');
+    return value && value.split(/\r\n|\n/);
   }
 
   render() {

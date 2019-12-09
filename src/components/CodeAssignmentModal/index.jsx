@@ -69,14 +69,43 @@ class CodeAssignmentModal extends React.Component {
     return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
   }
 
+  validateEmailAddresses(emails) {
+    const result = {
+      validEmails: [],
+      invalidEmailIndices: [],
+    };
+    if (!emails) {
+      return result;
+    }
+    emails.forEach((email, index) => {
+      if (email) {
+        const isValidEmail = isEmail(email);
+        if (!isValidEmail) {
+          result.invalidEmailIndices.push(index);
+        } else {
+          result.validEmails.push(email);
+        }
+      }
+    });
+    return result;
+  }
+
   validateBulkAssign(formData) {
     const { data: { unassignedCodes, couponType } } = this.props;
 
     const textAreaKey = 'email-addresses';
     const csvFileKey = 'csv-email-addresses';
 
-    const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split('\n');
+    const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split(/\r\n|\n/);
     const csvEmails = formData[csvFileKey];
+    const {
+      validEmails: validTextAreaEmails,
+      invalidEmailIndices: invalidTextAreaEmails,
+    } = this.validateEmailAddresses(textAreaEmails);
+    const {
+      validEmails: validCsvEmails,
+      invalidEmailIndices: invalidCsvEmails,
+    } = this.validateEmailAddresses(csvEmails);
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
     const shouldValidateSelectedCodes = ![ONCE_PER_CUSTOMER, MULTI_USE].includes(couponType);
@@ -97,69 +126,71 @@ class CodeAssignmentModal extends React.Component {
       return message;
     };
 
-    const invalidEmailsMessage = 'One or more email addresses is not valid. Please try again.';
+    const getInvalidEmailMessage = (invalidEmailIndices) => {
+      const firstInvalidIndex = invalidEmailIndices.shift();
+      const message = `Email address on line ${firstInvalidIndex + 1} is invalid. Please try again.`;
+      return message;
+    };
 
     const errors = {
       _error: [],
     };
 
     /* eslint-disable no-underscore-dangle */
-    if (!textAreaEmails && !csvEmails) {
+    if (invalidTextAreaEmails.length > 0) {
+      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails);
+      errors[textAreaKey] = invalidEmailMessage;
+      errors._error.push(invalidEmailMessage);
+    } else if (validTextAreaEmails.length > unassignedCodes) {
+      const message = getTooManyAssignmentsMessage({
+        emails: validTextAreaEmails,
+        numCodes: unassignedCodes,
+      });
+      errors[textAreaKey] = message;
+      errors._error.push(message);
+    } else if (
+      numberOfSelectedCodes && shouldValidateSelectedCodes &&
+      validTextAreaEmails.length > numberOfSelectedCodes
+    ) {
+      const message = getTooManyAssignmentsMessage({
+        emails: validTextAreaEmails,
+        numCodes: numberOfSelectedCodes,
+        selected: true,
+      });
+      errors[textAreaKey] = message;
+      errors._error.push(message);
+    } else if (invalidCsvEmails.length > 0) {
+      const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails);
+      errors[csvFileKey] = invalidEmailMessage;
+      errors._error.push(invalidEmailMessage);
+    } else if (validCsvEmails.length > unassignedCodes) {
+      const message = getTooManyAssignmentsMessage({
+        isCsv: true,
+        emails: validCsvEmails,
+        numCodes: unassignedCodes,
+      });
+      errors[csvFileKey] = message;
+      errors._error.push(message);
+    } else if (
+      numberOfSelectedCodes && shouldValidateSelectedCodes &&
+      validCsvEmails.length > numberOfSelectedCodes
+    ) {
+      const message = getTooManyAssignmentsMessage({
+        isCsv: true,
+        emails: validCsvEmails,
+        numCodes: numberOfSelectedCodes,
+        selected: true,
+      });
+      errors[csvFileKey] = message;
+      errors._error.push(message);
+    } else if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
       errors._error.push((
         'No email addresses provided. Either manually enter email addresses or upload a CSV file.'
       ));
-    } else if (textAreaEmails && csvEmails) {
+    } else if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
       errors._error.push((
         'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.'
       ));
-    } else if (textAreaEmails && !textAreaEmails.every(email => isEmail(email))) {
-      errors[textAreaKey] = invalidEmailsMessage;
-      errors._error.push(invalidEmailsMessage);
-    } else if (textAreaEmails && textAreaEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({
-        emails: textAreaEmails,
-        numCodes: unassignedCodes,
-      });
-
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    } else if (
-      textAreaEmails && numberOfSelectedCodes && shouldValidateSelectedCodes &&
-      textAreaEmails.length > numberOfSelectedCodes
-    ) {
-      const message = getTooManyAssignmentsMessage({
-        emails: textAreaEmails,
-        numCodes: numberOfSelectedCodes,
-        selected: true,
-      });
-
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    } else if (csvEmails && !csvEmails.every(email => isEmail(email))) {
-      errors[csvFileKey] = invalidEmailsMessage;
-      errors._error.push(invalidEmailsMessage);
-    } else if (csvEmails && csvEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({
-        isCsv: true,
-        emails: csvEmails,
-        numCodes: unassignedCodes,
-      });
-
-      errors[csvFileKey] = message;
-      errors._error.push(message);
-    } else if (
-      csvEmails && numberOfSelectedCodes && shouldValidateSelectedCodes &&
-      csvEmails.length > numberOfSelectedCodes
-    ) {
-      const message = getTooManyAssignmentsMessage({
-        isCsv: true,
-        emails: csvEmails,
-        numCodes: numberOfSelectedCodes,
-        selected: true,
-      });
-
-      errors[csvFileKey] = message;
-      errors._error.push(message);
     }
     /* eslint-enable no-underscore-dangle */
 
@@ -247,7 +278,9 @@ class CodeAssignmentModal extends React.Component {
 
     if (isBulkAssign) {
       const hasTextAreaEmails = !!formData['email-addresses'];
-      options.emails = hasTextAreaEmails ? formData['email-addresses'].split('\n') : formData['csv-email-addresses'];
+      const emails = hasTextAreaEmails ? formData['email-addresses'].split(/\r\n|\n/) : formData['csv-email-addresses'];
+      const { validEmails } = this.validateEmailAddresses(emails);
+      options.emails = validEmails;
 
       // Only includes `codes` in `options` if not all codes are selected.
       if (!hasAllCodesSelected) {

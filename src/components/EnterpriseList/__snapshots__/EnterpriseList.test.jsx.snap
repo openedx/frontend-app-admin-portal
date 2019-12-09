@@ -1,339 +1,355 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EnterpriseList /> renders correctly call clearPortalConfiguration prop 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col-sm-12 col-md"
-    >
-      <h1
-        className={null}
-      >
-        Enterprise List
-      </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
+      className="row mt-4"
     >
       <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
+        className="col-sm-12 col-md"
+      >
+        <h1
+          className={null}
+        >
+          Enterprise List
+        </h1>
+      </div>
+      <div
+        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
       >
         <div
-          className="form-group form-inline"
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
         >
-          <label
-            className=""
-            htmlFor="asInput2"
-            id="label-asInput2"
-          >
-            Search:
-          </label>
           <div
-            className="input-group"
+            className="form-group form-inline"
           >
-            <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput2"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input no-clear-btn"
-              disabled={false}
-              id="asInput2"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              required={false}
-              role="searchbox"
-              type="search"
-              value=""
-            />
-            <div
-              className="input-group-append"
+            <label
+              className=""
+              htmlFor="asInput1"
+              id="label-asInput1"
             >
-              <button
-                className="search-btn"
-                disabled={true}
-                onClick={[Function]}
+              Search:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput1"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput1"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
               >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon3"
-                />
-                <span
-                  className="sr-only"
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
                 >
-                  Submit search
-                </span>
-              </button>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon2"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput2"
-          >
-            <span />
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput1"
+            >
+              <span />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
     <div
-      className="col"
-    />
+      className="row mt-2"
+    >
+      <div
+        className="col"
+      />
+    </div>
   </div>
-</div>
+</main>
 `;
 
 exports[`<EnterpriseList /> renders correctly with empty enterprises data 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col-sm-12 col-md"
-    >
-      <h1
-        className={null}
-      >
-        Enterprise List
-      </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
+      className="row mt-4"
     >
       <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
+        className="col-sm-12 col-md"
+      >
+        <h1
+          className={null}
+        >
+          Enterprise List
+        </h1>
+      </div>
+      <div
+        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
       >
         <div
-          className="form-group form-inline"
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
         >
-          <label
-            className=""
-            htmlFor="asInput6"
-            id="label-asInput6"
-          >
-            Search:
-          </label>
           <div
-            className="input-group"
+            className="form-group form-inline"
           >
-            <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput6"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input no-clear-btn"
-              disabled={false}
-              id="asInput6"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              required={false}
-              role="searchbox"
-              type="search"
-              value=""
-            />
-            <div
-              className="input-group-append"
+            <label
+              className=""
+              htmlFor="asInput5"
+              id="label-asInput5"
             >
-              <button
-                className="search-btn"
-                disabled={true}
-                onClick={[Function]}
+              Search:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput5"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput5"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
               >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon7"
-                />
-                <span
-                  className="sr-only"
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
                 >
-                  Submit search
-                </span>
-              </button>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon6"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput6"
-          >
-            <span />
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput5"
+            >
+              <span />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
     <div
-      className="col"
-    />
+      className="row mt-2"
+    >
+      <div
+        className="col"
+      />
+    </div>
   </div>
-</div>
+</main>
 `;
 
 exports[`<EnterpriseList /> renders correctly with enterprises data 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col-sm-12 col-md"
-    >
-      <h1
-        className={null}
-      >
-        Enterprise List
-      </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
+      className="row mt-4"
     >
       <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
+        className="col-sm-12 col-md"
+      >
+        <h1
+          className={null}
+        >
+          Enterprise List
+        </h1>
+      </div>
+      <div
+        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
       >
         <div
-          className="form-group form-inline"
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
         >
-          <label
-            className=""
-            htmlFor="asInput4"
-            id="label-asInput4"
-          >
-            Search:
-          </label>
           <div
-            className="input-group"
+            className="form-group form-inline"
           >
-            <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput4"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input no-clear-btn"
-              disabled={false}
-              id="asInput4"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              required={false}
-              role="searchbox"
-              type="search"
-              value=""
-            />
-            <div
-              className="input-group-append"
+            <label
+              className=""
+              htmlFor="asInput3"
+              id="label-asInput3"
             >
-              <button
-                className="search-btn"
-                disabled={true}
-                onClick={[Function]}
+              Search:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput3"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input no-clear-btn"
+                disabled={false}
+                id="asInput3"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value=""
+              />
+              <div
+                className="input-group-append"
               >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon5"
-                />
-                <span
-                  className="sr-only"
+                <button
+                  className="search-btn"
+                  disabled={true}
+                  onClick={[Function]}
                 >
-                  Submit search
-                </span>
-              </button>
+                  <span
+                    aria-hidden={true}
+                    className="fa fa-search"
+                    id="Icon4"
+                  />
+                  <span
+                    className="sr-only"
+                  >
+                    Submit search
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput4"
-          >
-            <span />
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput3"
+            >
+              <span />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
     <div
-      className="col"
-    />
+      className="row mt-2"
+    >
+      <div
+        className="col"
+      />
+    </div>
   </div>
-</div>
+</main>
 `;
 
 exports[`<EnterpriseList /> renders correctly with error state 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col"
+      className="row mt-4"
     >
-      <h1
-        className={null}
-      >
-        Error
-      </h1>
       <div
-        className="alert fade alert-danger show"
-        hidden={false}
-        role="alert"
+        className="col"
       >
+        <h1
+          className={null}
+        >
+          Error
+        </h1>
         <div
-          className="alert-dialog"
+          className="alert fade alert-danger show"
+          hidden={false}
+          role="alert"
         >
           <div
-            className=""
+            className="alert-dialog"
           >
             <div
-              className="message"
+              className=""
             >
-              Network Error
+              <div
+                className="message"
+              >
+                Network Error
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 `;
 
 exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
@@ -345,117 +361,121 @@ exports[`<EnterpriseList /> renders correctly with loading state 1`] = `
 `;
 
 exports[`<EnterpriseList /> renders correctly with search query and empty enterprises data 1`] = `
-<div
-  className="container-fluid"
+<main
+  role="main"
 >
   <div
-    className="row mt-4"
+    className="container-fluid"
   >
     <div
-      className="col-sm-12 col-md"
-    >
-      <h1
-        className={null}
-      >
-        Enterprise List
-      </h1>
-    </div>
-    <div
-      className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
+      className="row mt-4"
     >
       <div
-        className="border search-field"
-        onBlur={[Function]}
-        onFocus={[Function]}
+        className="col-sm-12 col-md"
+      >
+        <h1
+          className={null}
+        >
+          Enterprise List
+        </h1>
+      </div>
+      <div
+        className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0"
       >
         <div
-          className="form-group form-inline"
+          className="border search-field"
+          onBlur={[Function]}
+          onFocus={[Function]}
         >
-          <label
-            className=""
-            htmlFor="asInput9"
-            id="label-asInput9"
-          >
-            Search:
-          </label>
           <div
-            className="input-group"
+            className="form-group form-inline"
           >
-            <div
-              className="input-group-prepend"
-            />
-            <input
-              aria-describedby="error-asInput9"
-              aria-invalid={false}
-              autoComplete="off"
-              className="form-control is-invalid-nodanger input"
-              disabled={false}
-              id="asInput9"
-              name="search"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onKeyPress={[Function]}
-              placeholder=""
-              required={false}
-              role="searchbox"
-              type="search"
-              value="enterprise name"
-            />
-            <div
-              className="input-group-append"
+            <label
+              className=""
+              htmlFor="asInput8"
+              id="label-asInput8"
             >
-              <button
-                className="clear-btn ml-1"
-                onClick={[Function]}
+              Search:
+            </label>
+            <div
+              className="input-group"
+            >
+              <div
+                className="input-group-prepend"
+              />
+              <input
+                aria-describedby="error-asInput8"
+                aria-invalid={false}
+                autoComplete="off"
+                className="form-control is-invalid-nodanger input"
+                disabled={false}
+                id="asInput8"
+                name="search"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onKeyPress={[Function]}
+                placeholder=""
+                required={false}
+                role="searchbox"
+                type="search"
+                value="enterprise name"
+              />
+              <div
+                className="input-group-append"
               >
-                <small>
+                <button
+                  className="clear-btn ml-1"
+                  onClick={[Function]}
+                >
+                  <small>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-times"
+                      id="icon-SearchField7"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Clear search
+                    </span>
+                  </small>
+                </button>
+                <button
+                  className="search-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                >
                   <span
                     aria-hidden={true}
-                    className="fa fa-times"
-                    id="icon-SearchField8"
+                    className="fa fa-search"
+                    id="Icon9"
                   />
                   <span
                     className="sr-only"
                   >
-                    Clear search
+                    Submit search
                   </span>
-                </small>
-              </button>
-              <button
-                className="search-btn"
-                disabled={false}
-                onClick={[Function]}
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-search"
-                  id="Icon10"
-                />
-                <span
-                  className="sr-only"
-                >
-                  Submit search
-                </span>
-              </button>
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            aria-live="polite"
-            className="invalid-feedback invalid-feedback-nodanger"
-            id="error-asInput9"
-          >
-            <span />
+            <div
+              aria-live="polite"
+              className="invalid-feedback invalid-feedback-nodanger"
+              id="error-asInput8"
+            >
+              <span />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
     <div
-      className="col"
-    />
+      className="row mt-2"
+    >
+      <div
+        className="col"
+      />
+    </div>
   </div>
-</div>
+</main>
 `;

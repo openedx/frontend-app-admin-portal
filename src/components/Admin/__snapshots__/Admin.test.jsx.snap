@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -30,7 +32,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -104,12 +106,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -138,7 +142,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -185,7 +189,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon21"
+                      id="Icon20"
                     />
                   </h5>
                   <p
@@ -221,7 +225,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon22"
+                        id="Icon21"
                       />
                       <span
                         className="sr-only"
@@ -276,7 +280,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon23"
+                      id="Icon22"
                     />
                   </h5>
                   <p
@@ -312,7 +316,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon24"
+                        id="Icon23"
                       />
                       <span
                         className="sr-only"
@@ -383,7 +387,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon25"
+                      id="Icon24"
                     />
                   </h5>
                   <p
@@ -419,7 +423,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon26"
+                        id="Icon25"
                       />
                       <span
                         className="sr-only"
@@ -506,7 +510,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon27"
+                      id="Icon26"
                     />
                   </h5>
                   <p
@@ -542,7 +546,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon28"
+                        id="Icon27"
                       />
                       <span
                         className="sr-only"
@@ -614,7 +618,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon29"
+            id="Icon28"
           />
           Reset to 
           Full Report
@@ -650,7 +654,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon30"
+                id="Icon29"
               />
               Download current report (CSV)
             </button>
@@ -681,12 +685,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -715,7 +721,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -762,7 +768,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon71"
+                      id="Icon70"
                     />
                   </h5>
                   <p
@@ -798,7 +804,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon72"
+                        id="Icon71"
                       />
                       <span
                         className="sr-only"
@@ -853,7 +859,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon73"
+                      id="Icon72"
                     />
                   </h5>
                   <p
@@ -889,7 +895,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon74"
+                        id="Icon73"
                       />
                       <span
                         className="sr-only"
@@ -960,7 +966,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon75"
+                      id="Icon74"
                     />
                   </h5>
                   <p
@@ -996,7 +1002,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon76"
+                        id="Icon75"
                       />
                       <span
                         className="sr-only"
@@ -1083,7 +1089,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon77"
+                      id="Icon76"
                     />
                   </h5>
                   <p
@@ -1119,7 +1125,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon78"
+                        id="Icon77"
                       />
                       <span
                         className="sr-only"
@@ -1191,7 +1197,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon79"
+            id="Icon78"
           />
           Reset to 
           Full Report
@@ -1227,7 +1233,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon80"
+                id="Icon79"
               />
               Download current report (CSV)
             </button>
@@ -1258,12 +1264,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1292,7 +1300,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -1339,7 +1347,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon81"
+                      id="Icon80"
                     />
                   </h5>
                   <p
@@ -1375,7 +1383,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon82"
+                        id="Icon81"
                       />
                       <span
                         className="sr-only"
@@ -1430,7 +1438,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon83"
+                      id="Icon82"
                     />
                   </h5>
                   <p
@@ -1466,7 +1474,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon84"
+                        id="Icon83"
                       />
                       <span
                         className="sr-only"
@@ -1537,7 +1545,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon85"
+                      id="Icon84"
                     />
                   </h5>
                   <p
@@ -1573,7 +1581,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon86"
+                        id="Icon85"
                       />
                       <span
                         className="sr-only"
@@ -1660,7 +1668,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon87"
+                      id="Icon86"
                     />
                   </h5>
                   <p
@@ -1696,7 +1704,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon88"
+                        id="Icon87"
                       />
                       <span
                         className="sr-only"
@@ -1768,7 +1776,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon89"
+            id="Icon88"
           />
           Reset to 
           Full Report
@@ -1809,7 +1817,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon90"
+                id="Icon89"
               />
               Download current report (CSV)
             </button>
@@ -1840,12 +1848,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -1874,7 +1884,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -1921,7 +1931,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon91"
+                      id="Icon90"
                     />
                   </h5>
                   <p
@@ -1957,7 +1967,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon92"
+                        id="Icon91"
                       />
                       <span
                         className="sr-only"
@@ -2012,7 +2022,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon93"
+                      id="Icon92"
                     />
                   </h5>
                   <p
@@ -2048,7 +2058,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon94"
+                        id="Icon93"
                       />
                       <span
                         className="sr-only"
@@ -2119,7 +2129,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon95"
+                      id="Icon94"
                     />
                   </h5>
                   <p
@@ -2155,7 +2165,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon96"
+                        id="Icon95"
                       />
                       <span
                         className="sr-only"
@@ -2242,7 +2252,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon97"
+                      id="Icon96"
                     />
                   </h5>
                   <p
@@ -2278,7 +2288,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon98"
+                        id="Icon97"
                       />
                       <span
                         className="sr-only"
@@ -2373,7 +2383,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon99"
+                id="Icon98"
               />
               Download full report (CSV)
             </button>
@@ -2404,12 +2414,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -2438,7 +2450,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -2485,7 +2497,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon2"
+                      id="Icon1"
                     />
                   </h5>
                   <p
@@ -2521,7 +2533,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon3"
+                        id="Icon2"
                       />
                       <span
                         className="sr-only"
@@ -2576,7 +2588,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon4"
+                      id="Icon3"
                     />
                   </h5>
                   <p
@@ -2612,7 +2624,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon5"
+                        id="Icon4"
                       />
                       <span
                         className="sr-only"
@@ -2683,7 +2695,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon6"
+                      id="Icon5"
                     />
                   </h5>
                   <p
@@ -2719,7 +2731,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon7"
+                        id="Icon6"
                       />
                       <span
                         className="sr-only"
@@ -2806,7 +2818,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon8"
+                      id="Icon7"
                     />
                   </h5>
                   <p
@@ -2842,7 +2854,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon9"
+                        id="Icon8"
                       />
                       <span
                         className="sr-only"
@@ -2937,7 +2949,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon10"
+                id="Icon9"
               />
               Download full report (CSV)
             </button>
@@ -2968,12 +2980,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3002,7 +3016,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -3049,7 +3063,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon61"
+                      id="Icon60"
                     />
                   </h5>
                   <p
@@ -3085,7 +3099,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon62"
+                        id="Icon61"
                       />
                       <span
                         className="sr-only"
@@ -3140,7 +3154,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon63"
+                      id="Icon62"
                     />
                   </h5>
                   <p
@@ -3176,7 +3190,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon64"
+                        id="Icon63"
                       />
                       <span
                         className="sr-only"
@@ -3247,7 +3261,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon65"
+                      id="Icon64"
                     />
                   </h5>
                   <p
@@ -3283,7 +3297,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon66"
+                        id="Icon65"
                       />
                       <span
                         className="sr-only"
@@ -3370,7 +3384,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon67"
+                      id="Icon66"
                     />
                   </h5>
                   <p
@@ -3406,7 +3420,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon68"
+                        id="Icon67"
                       />
                       <span
                         className="sr-only"
@@ -3478,7 +3492,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon69"
+            id="Icon68"
           />
           Reset to 
           Full Report
@@ -3519,7 +3533,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon70"
+                id="Icon69"
               />
               Download current report (CSV)
             </button>
@@ -3550,12 +3564,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -3584,7 +3600,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -3631,7 +3647,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon51"
+                      id="Icon50"
                     />
                   </h5>
                   <p
@@ -3667,7 +3683,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon52"
+                        id="Icon51"
                       />
                       <span
                         className="sr-only"
@@ -3722,7 +3738,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon53"
+                      id="Icon52"
                     />
                   </h5>
                   <p
@@ -3758,7 +3774,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon54"
+                        id="Icon53"
                       />
                       <span
                         className="sr-only"
@@ -3829,7 +3845,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon55"
+                      id="Icon54"
                     />
                   </h5>
                   <p
@@ -3865,7 +3881,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon56"
+                        id="Icon55"
                       />
                       <span
                         className="sr-only"
@@ -3952,7 +3968,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon57"
+                      id="Icon56"
                     />
                   </h5>
                   <p
@@ -3988,7 +4004,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon58"
+                        id="Icon57"
                       />
                       <span
                         className="sr-only"
@@ -4060,7 +4076,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon59"
+            id="Icon58"
           />
           Reset to 
           Full Report
@@ -4101,7 +4117,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon60"
+                id="Icon59"
               />
               Download current report (CSV)
             </button>
@@ -4132,12 +4148,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4166,7 +4184,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -4213,7 +4231,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon31"
+                      id="Icon30"
                     />
                   </h5>
                   <p
@@ -4249,7 +4267,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon32"
+                        id="Icon31"
                       />
                       <span
                         className="sr-only"
@@ -4304,7 +4322,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon33"
+                      id="Icon32"
                     />
                   </h5>
                   <p
@@ -4340,7 +4358,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon34"
+                        id="Icon33"
                       />
                       <span
                         className="sr-only"
@@ -4411,7 +4429,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon35"
+                      id="Icon34"
                     />
                   </h5>
                   <p
@@ -4447,7 +4465,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon36"
+                        id="Icon35"
                       />
                       <span
                         className="sr-only"
@@ -4534,7 +4552,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon37"
+                      id="Icon36"
                     />
                   </h5>
                   <p
@@ -4570,7 +4588,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon38"
+                        id="Icon37"
                       />
                       <span
                         className="sr-only"
@@ -4642,7 +4660,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon39"
+            id="Icon38"
           />
           Reset to 
           Full Report
@@ -4681,7 +4699,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon40"
+                id="Icon39"
               />
               Download current report (CSV)
             </button>
@@ -4712,12 +4730,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -4746,7 +4766,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -4793,7 +4813,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon11"
+                      id="Icon10"
                     />
                   </h5>
                   <p
@@ -4829,7 +4849,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon12"
+                        id="Icon11"
                       />
                       <span
                         className="sr-only"
@@ -4884,7 +4904,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon13"
+                      id="Icon12"
                     />
                   </h5>
                   <p
@@ -4920,7 +4940,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon14"
+                        id="Icon13"
                       />
                       <span
                         className="sr-only"
@@ -4991,7 +5011,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon15"
+                      id="Icon14"
                     />
                   </h5>
                   <p
@@ -5027,7 +5047,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon16"
+                        id="Icon15"
                       />
                       <span
                         className="sr-only"
@@ -5114,7 +5134,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon17"
+                      id="Icon16"
                     />
                   </h5>
                   <p
@@ -5150,7 +5170,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon18"
+                        id="Icon17"
                       />
                       <span
                         className="sr-only"
@@ -5222,7 +5242,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon19"
+            id="Icon18"
           />
           Reset to 
           Full Report
@@ -5258,7 +5278,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon20"
+                id="Icon19"
               />
               Download current report (CSV)
             </button>
@@ -5289,12 +5309,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -5323,7 +5345,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -5370,7 +5392,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-users"
-                      id="Icon41"
+                      id="Icon40"
                     />
                   </h5>
                   <p
@@ -5406,7 +5428,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon42"
+                        id="Icon41"
                       />
                       <span
                         className="sr-only"
@@ -5461,7 +5483,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-check"
-                      id="Icon43"
+                      id="Icon42"
                     />
                   </h5>
                   <p
@@ -5497,7 +5519,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon44"
+                        id="Icon43"
                       />
                       <span
                         className="sr-only"
@@ -5568,7 +5590,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-eye"
-                      id="Icon45"
+                      id="Icon44"
                     />
                   </h5>
                   <p
@@ -5604,7 +5626,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon46"
+                        id="Icon45"
                       />
                       <span
                         className="sr-only"
@@ -5691,7 +5713,7 @@ Array [
                     <span
                       aria-hidden={true}
                       className="d-flex align-items-center justify-content-center fa fa-trophy"
-                      id="Icon47"
+                      id="Icon46"
                     />
                   </h5>
                   <p
@@ -5727,7 +5749,7 @@ Array [
                       <span
                         aria-hidden={true}
                         className="fa fa-caret-down"
-                        id="Icon48"
+                        id="Icon47"
                       />
                       <span
                         className="sr-only"
@@ -5799,7 +5821,7 @@ Array [
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon49"
+            id="Icon48"
           />
           Reset to 
           Full Report
@@ -5840,7 +5862,7 @@ Array [
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon50"
+                id="Icon49"
               />
               Download current report (CSV)
             </button>
@@ -5871,12 +5893,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with error state 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -5905,7 +5929,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -5945,7 +5969,7 @@ Array [
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon100"
+                  id="Icon99"
                 />
               </div>
               <div
@@ -6007,12 +6031,14 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with loading state 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -6041,7 +6067,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -6115,8 +6141,8 @@ Array [
         </p>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
