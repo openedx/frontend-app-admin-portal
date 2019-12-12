@@ -68,12 +68,12 @@ const transformSearchResults = results => results.map(({
 }));
 
 const handleTableColumns = (searchQuery) => {
-  const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
+  const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assignedTo');
   // If search is made by email, no need to show "Assigned To" field
-  if (isValidEmail(searchQuery) === undefined && getColumnIndexForKey('assignedTo') > -1) {
+  if (isValidEmail(searchQuery) === undefined && assignedToColumnIndex > -1) {
     // Remove "Assigned To" column if it already exists
-    tableColumns.splice(getColumnIndexForKey('assignedTo'), 1);
-  } else if (isValidEmail(searchQuery) !== undefined && getColumnIndexForKey('assignedTo') === -1) {
+    tableColumns.splice(assignedToColumnIndex, 1);
+  } else if (isValidEmail(searchQuery) !== undefined && assignedToColumnIndex === -1) {
     // Add "Assigned To" column if it doesn't already exist
     tableColumns.splice(4, 0, {
       label: 'Assigned To',
