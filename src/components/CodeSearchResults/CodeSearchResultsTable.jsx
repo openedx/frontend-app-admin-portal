@@ -67,6 +67,13 @@ const transformSearchResults = results => results.map(({
   ...rest,
 }));
 
+const search_parameter = (searchQuery) => {
+  if (isValidEmail(searchQuery) === undefined)
+    return 'user_email'
+  else
+    return 'user_code'
+}
+
 const handleTableColumns = (searchQuery) => {
   const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assignedTo');
   // If search is made by email, no need to show "Assigned To" field
@@ -144,7 +151,7 @@ const CodeSearchResultsTable = ({
       id="code-search-results"
       className="code-search-results-table"
       fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
-        search_parameter: searchQuery,
+        [search_parameter(searchQuery)]: searchQuery,
         page: queryParams.page && parseInt(queryParams.page, 10),
       })}
       columns={handleTableColumns(searchQuery)}
