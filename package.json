@@ -94,6 +94,7 @@
     "webpack-merge": "^4.2.2"
   },
   "jest": {
+    "globalSetup": "./src/jestGlobalSetup.js",
     "setupFiles": [
       "./src/setupTest.js"
     ],
