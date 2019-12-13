@@ -69,7 +69,7 @@ const transformSearchResults = results => results.map(({
 
 const searchParameter = (searchQuery) => {
   if (isValidEmail(searchQuery) === undefined) { return 'user_email'; }
-  return 'user_code';
+  return 'voucher_code';
 };
 
 const handleTableColumns = (searchQuery) => {
