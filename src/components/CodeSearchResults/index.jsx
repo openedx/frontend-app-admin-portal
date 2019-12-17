@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionReplace } from '@edx/paragon';
 
-import { isValidEmail, updateUrl } from '../../utils';
+import { updateUrl } from '../../utils';
 
 import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
@@ -59,11 +59,6 @@ class CodeSearchResults extends React.Component {
     });
   };
 
-  isValidSearchQuery = () => {
-    const { searchQuery } = this.props;
-    return isValidEmail(searchQuery) === undefined;
-  };
-
   renderSuccessMessage = options => (
     <StatusAlert
       alertType="success"
@@ -89,7 +84,6 @@ class CodeSearchResults extends React.Component {
       isCodeRevokeSuccessful,
       shouldRefreshTable,
     } = this.state;
-    const isValidSearchQuery = this.isValidSearchQuery();
     return (
       <TransitionReplace>
         {isOpen ? (
@@ -99,28 +93,20 @@ class CodeSearchResults extends React.Component {
                 searchQuery={searchQuery}
                 onClose={onClose}
               />
-              {isValidSearchQuery ? (
-                <React.Fragment>
-                  {isCodeReminderSuccessful && this.renderSuccessMessage({
-                    message: `A reminder was successfully sent to ${searchQuery}.`,
-                  })}
-                  {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                    message: 'Successfully revoked code(s)',
-                  })}
-                  <CodeSearchResultsTable
-                    searchQuery={searchQuery}
-                    shouldRefreshTable={shouldRefreshTable}
-                    onRemindSuccess={this.handleRemindOnSuccess}
-                    onRevokeSuccess={this.handleRevokeOnSuccess}
-                  />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {this.renderErrorMessage({
-                    message: 'Please enter a valid email address in your search.',
-                  })}
-                </React.Fragment>
-              )}
+              <React.Fragment>
+                {isCodeReminderSuccessful && this.renderSuccessMessage({
+                  message: `A reminder was successfully sent to ${searchQuery}.`,
+                })}
+                {isCodeRevokeSuccessful && this.renderSuccessMessage({
+                  message: 'Successfully revoked code(s)',
+                })}
+                <CodeSearchResultsTable
+                  searchQuery={searchQuery}
+                  shouldRefreshTable={shouldRefreshTable}
+                  onRemindSuccess={this.handleRemindOnSuccess}
+                  onRevokeSuccess={this.handleRevokeOnSuccess}
+                />
+              </React.Fragment>
             </React.Fragment>
           </div>
         ) : null}

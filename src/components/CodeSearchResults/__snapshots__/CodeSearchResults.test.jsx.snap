@@ -1,93 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CodeSearchResults /> basic rendering should render email validation error when searchQuery is invalid email address 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
-  <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
-  >
-    <div
-      className="code-search-results border-bottom pb-4"
-    >
-      <div
-        className="d-flex align-items-center justify-content-between mb-3"
-      >
-        <div
-          className="flex-grow-1 text-truncate mr-3"
-        >
-          <h3
-            className="lead m-0 text-truncate"
-          >
-            Search results for 
-            <em>
-              "
-              invalid_email
-              "
-            </em>
-          </h3>
-        </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            type="button"
-          >
-            <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon1"
-            />
-            Close search results
-          </button>
-        </div>
-      </div>
-      <div
-        className="alert fade alert-danger show"
-        hidden={false}
-        role="alert"
-      >
-        <div
-          className="alert-dialog"
-        >
-          <div
-            className="d-flex"
-          >
-            <div
-              className="icon mr-2"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-exclamation-circle"
-                id="Icon2"
-              />
-            </div>
-            <div
-              className="message"
-            >
-              Please enter a valid email address in your search.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<CodeSearchResults /> basic rendering should render empty table data 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
@@ -137,7 +49,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon9"
+              id="Icon10"
             />
             Close search results
           </button>
@@ -160,7 +72,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
               <span
                 aria-hidden={true}
                 className="fa fa-exclamation-circle"
-                id="Icon10"
+                id="Icon11"
               />
             </div>
             <div
@@ -225,7 +137,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon11"
+              id="Icon12"
             />
             Close search results
           </button>
@@ -248,7 +160,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
               <span
                 aria-hidden={true}
                 className="fa fa-times-circle"
-                id="Icon12"
+                id="Icon13"
               />
             </div>
             <div
@@ -318,7 +230,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon3"
+              id="Icon1"
             />
             Close search results
           </button>
@@ -394,7 +306,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon4"
+              id="Icon2"
             />
             Close search results
           </button>
@@ -484,7 +396,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon5"
+                        id="Icon3"
                       />
                       <span
                         className="sr-only"
@@ -548,25 +460,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       className=""
                       scope={null}
                     >
-                      <button
-                        className="btn remind-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
-                        onClick={[Function]}
-                        onKeyDown={[Function]}
-                        type="button"
-                      >
-                        Remind
-                      </button>
-                       | 
-                      <button
-                        className="btn revoke-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
-                        onClick={[Function]}
-                        onKeyDown={[Function]}
-                        type="button"
-                      >
-                        Revoke
-                      </button>
+                      -
                     </td>
                   </tr>
                   <tr
@@ -591,7 +485,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-check text-primary"
-                        id="Icon6"
+                        id="Icon4"
                       />
                       <span
                         className="sr-only"
@@ -644,6 +538,256 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       scope={null}
                     >
                       -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row mt-2"
+        >
+          <div
+            className="col d-flex justify-content-center"
+          >
+            <nav
+              aria-label="code-search-results-pagination"
+            >
+              <div
+                aria-atomic={true}
+                aria-live="polite"
+                aria-relevant="text"
+                className="sr-only"
+              >
+                Page 1, Current Page, of 1
+              </div>
+              <ul
+                className="pagination"
+              >
+                <li
+                  className="page-item disabled"
+                >
+                  <button
+                    aria-label="Previous"
+                    className="btn previous page-link"
+                    disabled={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    tabIndex="-1"
+                    type="button"
+                  >
+                    <div>
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-chevron-left mr-2"
+                        id="pagination-5"
+                      />
+                      Previous
+                    </div>
+                  </button>
+                </li>
+                <li
+                  className="page-item disabled"
+                >
+                  <button
+                    aria-label="Next"
+                    className="btn next page-link"
+                    disabled={true}
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    tabIndex="-1"
+                    type="button"
+                  >
+                    <div>
+                      Next
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-chevron-right ml-2"
+                        id="pagination-6"
+                      />
+                    </div>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CodeSearchResults /> basic rendering should render table data when searchQuery is a code 1`] = `
+<div
+  className="pgn-transition-replace-group position-relative"
+  style={
+    Object {
+      "height": null,
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "padding": ".1px 0",
+      }
+    }
+  >
+    <div
+      className="code-search-results border-bottom pb-4"
+    >
+      <div
+        className="d-flex align-items-center justify-content-between mb-3"
+      >
+        <div
+          className="flex-grow-1 text-truncate mr-3"
+        >
+          <h3
+            className="lead m-0 text-truncate"
+          >
+            Search results for 
+            <em>
+              "
+              FAG2LVLNHAKIXQ0Q
+              "
+            </em>
+          </h3>
+        </div>
+        <div
+          className="flex-grow-0 flex-shrink-0"
+        >
+          <button
+            className="btn close-search-results-btn btn-outline-primary"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            type="button"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon7"
+            />
+            Close search results
+          </button>
+        </div>
+      </div>
+      <div
+        className="code-search-results-table"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <div
+              className="table-responsive"
+            >
+              <table
+                className="table table-sm table-striped"
+              >
+                <thead
+                  className=""
+                >
+                  <tr
+                    className=""
+                  >
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Coupon Batch
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Code
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Redeemed
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Redemption Date
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Assigned To
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Course Title
+                    </th>
+                    <th
+                      className=""
+                      scope="col"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  className=""
+                >
+                  <tr
+                    className=""
+                  >
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      Test Coupon Name
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      FAG2LVLNHAKIXQ0Q
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      -
+                    </td>
+                    <td
+                      className=""
+                      scope={null}
+                    >
+                      test@test.com
                     </td>
                     <td
                       className=""
@@ -718,7 +862,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-7"
+                        id="pagination-8"
                       />
                       Previous
                     </div>
@@ -742,7 +886,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-8"
+                        id="pagination-9"
                       />
                     </div>
                   </button>
