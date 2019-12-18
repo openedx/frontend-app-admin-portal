@@ -103,61 +103,63 @@ class ReportingConfig extends React.Component {
       );
     }
     return (
-      <div>
-        <React.Fragment>
-          {reportingConfigs &&
-            reportingConfigs.map(config => (
-              <div
-                key={config.uuid}
-                className="mb-3"
-              >
-                <Collapsible
-                  styling="card"
-                  className="shadow"
-                  title={
-                    <div className="row justify-content-around flex-fill">
-                      <Icon
-                        className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
-                      />
-                      <div className="col">
-                        <h3 className="h6">Report Type:</h3>
-                        <p>{config.data_type}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">Delivery Method:</h3>
-                        <p>{config.delivery_method}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">Frequency:</h3>
-                        <p>{config.frequency}</p>
-                      </div>
-                    </div>
-                  }
+      <main role="main">
+        <div>
+          <React.Fragment>
+            {reportingConfigs &&
+              reportingConfigs.map(config => (
+                <div
+                  key={config.uuid}
+                  className="mb-3"
                 >
-                  <ReportingConfigForm
-                    config={camelCaseObject(config)}
-                    updateConfig={this.updateConfig}
-                    createConfig={this.createConfig}
-                    deleteConfig={this.deleteConfig}
-                  />
-                </Collapsible>
+                  <Collapsible
+                    styling="card"
+                    className="shadow"
+                    title={
+                      <div className="row justify-content-around flex-fill">
+                        <Icon
+                          className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
+                        />
+                        <div className="col">
+                          <h3 className="h6">Report Type:</h3>
+                          <p>{config.data_type}</p>
+                        </div>
+                        <div className="col">
+                          <h3 className="h6">Delivery Method:</h3>
+                          <p>{config.delivery_method}</p>
+                        </div>
+                        <div className="col">
+                          <h3 className="h6">Frequency:</h3>
+                          <p>{config.frequency}</p>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <ReportingConfigForm
+                      config={camelCaseObject(config)}
+                      updateConfig={this.updateConfig}
+                      createConfig={this.createConfig}
+                      deleteConfig={this.deleteConfig}
+                    />
+                  </Collapsible>
+                </div>
+              ))
+            }
+            <Collapsible
+              styling="basic"
+              title="Add a reporting Configuration"
+              className="col justify-content-center align-items-center"
+              ref={this.newConfigFormRef}
+            >
+              <div>
+                <ReportingConfigForm
+                  createConfig={this.createConfig}
+                />
               </div>
-            ))
-          }
-          <Collapsible
-            styling="basic"
-            title="Add a reporting Configuration"
-            className="col justify-content-center align-items-center"
-            ref={this.newConfigFormRef}
-          >
-            <div>
-              <ReportingConfigForm
-                createConfig={this.createConfig}
-              />
-            </div>
-          </Collapsible>
-        </React.Fragment>
-      </div>
+            </Collapsible>
+          </React.Fragment>
+        </div>
+      </main>
     );
   }
 }

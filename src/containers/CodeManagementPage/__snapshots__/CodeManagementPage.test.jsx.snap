@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -30,7 +32,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -202,12 +204,14 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -236,7 +240,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -413,12 +417,14 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -447,7 +453,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -596,12 +602,14 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
 
 exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
     className="hero py-4 pt-md-5 pb-md-0"
   >
@@ -630,7 +638,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div
     className="container-fluid"
   >
@@ -1074,6 +1082,6 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</main>
 `;
