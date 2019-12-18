@@ -246,76 +246,79 @@ class CodeManagement extends React.Component {
         <Helmet>
           <title>Code Management</title>
         </Helmet>
-        <Hero title="Code Management" />
-        <div className="container-fluid">
-          {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
-          <div className="row mt-4 mb-3 no-gutters">
-            <div className="col-12 col-xl-3 mb-3 mb-xl-0">
-              <H2>Overview</H2>
+        <main role="main">
+          <Hero title="Code Management" />
+          <div className="container-fluid">
+            {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
+            <div className="row mt-4 mb-3 no-gutters">
+              <div className="col-12 col-xl-3 mb-3 mb-xl-0">
+                <H2>Overview</H2>
+              </div>
+              <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
+                <SearchBar
+                  inputLabel="Search by email or code:"
+                  onSearch={(query) => {
+                    this.setState({ searchQuery: query });
+                    this.removeQueryParams(['coupon_id', 'page']);
+                  }}
+                  onClear={() => {
+                    this.setState({ searchQuery: '' });
+                    this.removeQueryParams(['page']);
+                  }}
+                  value={searchQuery}
+                />
+              </div>
+              <div className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right">
+                <Button
+                  className="mr-2 btn-link"
+                  onClick={this.handleRefreshData}
+                  disabled={loading}
+                >
+                  <React.Fragment>
+                    <Icon className="fa fa-refresh mr-2" />
+                    Refresh data
+                  </React.Fragment>
+                </Button>
+                <Link
+                  className="request-codes-btn btn btn-primary"
+                  to={`${match.path}/request`}
+                >
+                  <React.Fragment>
+                    <Icon className="fa fa-plus mr-2" />
+                    Request more codes
+                  </React.Fragment>
+                </Link>
+              </div>
             </div>
-            <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
-              <SearchBar
-                inputLabel="Search by email or code:"
-                onSearch={(query) => {
-                  this.setState({ searchQuery: query });
-                  this.removeQueryParams(['coupon_id', 'page']);
-                }}
-                onClear={() => {
-                  this.setState({ searchQuery: '' });
-                  this.removeQueryParams(['page']);
-                }}
-                value={searchQuery}
-              />
-            </div>
-            <div className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right">
-              <Button
-                className="mr-2 btn-link"
-                onClick={this.handleRefreshData}
-                disabled={loading}
+            <div className="row">
+              <div
+                className={classNames(
+                  'col',
+                  {
+                    'mt-2 mb-4': hasSearchQuery,
+                  },
+                )}
               >
-                <React.Fragment>
-                  <Icon className="fa fa-refresh mr-2" />
-                  Refresh data
-                </React.Fragment>
-              </Button>
-              <Link
-                className="request-codes-btn btn btn-primary"
-                to={`${match.path}/request`}
-              >
-                <React.Fragment>
-                  <Icon className="fa fa-plus mr-2" />
-                  Request more codes
-                </React.Fragment>
-              </Link>
+                <CodeSearchResults
+                  isOpen={hasSearchQuery}
+                  searchQuery={searchQuery}
+                  onClose={() => {
+                    this.setState({ searchQuery: '' });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                {error && this.renderErrorMessage()}
+                {loading && this.renderLoadingMessage()}
+                {!loading && !error && !this.hasCouponData(coupons)
+                  && this.renderEmptyDataMessage()}
+                {!loading && !error && this.hasCouponData(coupons) && this.renderCoupons()}
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div
-              className={classNames(
-                'col',
-                {
-                  'mt-2 mb-4': hasSearchQuery,
-                },
-              )}
-            >
-              <CodeSearchResults
-                isOpen={hasSearchQuery}
-                searchQuery={searchQuery}
-                onClose={() => {
-                  this.setState({ searchQuery: '' });
-                }}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              {error && this.renderErrorMessage()}
-              {loading && this.renderLoadingMessage()}
-              {!loading && !error && !this.hasCouponData(coupons) && this.renderEmptyDataMessage()}
-              {!loading && !error && this.hasCouponData(coupons) && this.renderCoupons()}
-            </div>
-          </div>
-        </div>
+        </main>
       </React.Fragment>
     );
   }
