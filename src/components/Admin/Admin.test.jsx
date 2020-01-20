@@ -310,42 +310,43 @@ describe('<Admin />', () => {
 
   describe('calls download csv fetch method for table', () => {
     let spy;
+    const enterpriseId = 'test-enterprise-id';
     const actionSlugs = {
       enrollments: {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [{}, { csv: true }],
+        csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
       'registered-unenrolled-learners': {
         csvFetchMethod: 'fetchUnenrolledRegisteredLearners',
-        csvFetchParams: [{}, { csv: true }],
+        csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
       'enrolled-learners': {
         csvFetchMethod: 'fetchEnrolledLearners',
-        csvFetchParams: [{}, { csv: true }],
+        csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
       'enrolled-learners-inactive-courses': {
         csvFetchMethod: 'fetchEnrolledLearnersForInactiveCourses',
-        csvFetchParams: [{}, { csv: true }],
+        csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
       'learners-active-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [{ learner_activity: 'active_past_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learner_activity: 'active_past_week' }, { csv: true }],
       },
       'learners-inactive-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [{ learner_activity: 'inactive_past_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learner_activity: 'inactive_past_week' }, { csv: true }],
       },
       'learners-inactive-month': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [{ learner_activity: 'inactive_past_month' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learner_activity: 'inactive_past_month' }, { csv: true }],
       },
       'completed-learners': {
         csvFetchMethod: 'fetchCompletedLearners',
-        csvFetchParams: [{}, { csv: true }],
+        csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
       'completed-learners-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [{ passed_date: 'last_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { passed_date: 'last_week' }, { csv: true }],
       },
     };
 

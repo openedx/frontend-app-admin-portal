@@ -82,10 +82,13 @@ class LearnerActivityTable extends React.Component {
         id={id}
         className={id}
         key={id}
-        fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
-          learner_activity: activity,
-          ...options,
-        })}
+        fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
+          enterpriseId,
+          {
+            learner_activity: activity,
+            ...options,
+          },
+        )}
         columns={this.getTableColumns()}
         formatData={this.formatTableData}
         tableSortable

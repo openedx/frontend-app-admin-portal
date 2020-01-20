@@ -9,9 +9,10 @@ import DownloadCsvButton from './index';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseId = 'test-enterprise';
 const store = mockStore({
   portalConfiguration: {
-    enterpriseId: 'test-enterprise',
+    enterpriseId,
   },
   csv: {
     enrollments: {},
@@ -38,7 +39,7 @@ describe('<DownloadCsvButton />', () => {
 
   it('fetchCsv dispatch action', () => {
     wrapper.props().fetchCsv(() => (
-      EnterpriseDataApiService.fetchCourseEnrollments({}, { csv: true })
+      EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
     ));
     expect(dispatchSpy).toHaveBeenCalled();
   });

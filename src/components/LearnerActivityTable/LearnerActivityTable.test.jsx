@@ -8,8 +8,12 @@ import { mount } from 'enzyme';
 
 import LearnerActivityTable from '.';
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const learnerActivityEmptyStore = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     'active-week': {
       data: {
@@ -65,6 +69,9 @@ const tableMockData = {
 };
 
 const learnerActivityStore = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     'active-week': tableMockData,
     'inactive-week': tableMockData,
