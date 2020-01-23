@@ -7,8 +7,12 @@ import { Provider } from 'react-redux';
 
 import RegisteredLearnersTable from '.';
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     'registered-unenrolled-learners': {
       data: {

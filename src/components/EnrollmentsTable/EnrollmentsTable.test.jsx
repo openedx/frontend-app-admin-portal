@@ -10,7 +10,11 @@ import EnrollmentsTable from './index';
 // import { mockEnrollmentFetchResponse } from './EnrollmentsTable.mocks';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseId = 'test-enterprise';
 const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     enrollments: {
       data: {

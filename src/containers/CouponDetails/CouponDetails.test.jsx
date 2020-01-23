@@ -14,8 +14,12 @@ import EcommerceaApiService from '../../data/services/EcommerceApiService';
 import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const initialState = {
+  portalConfiguration: {
+    enterpriseId,
+  },
   csv: {
     'coupon-details': {},
   },

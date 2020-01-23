@@ -46,11 +46,12 @@ class Admin extends React.Component {
   }
 
   getMetadataForAction(actionSlug) {
+    const { enterpriseId } = this.props;
     const defaultData = {
       title: 'Full Report',
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
-        EnterpriseDataApiService.fetchCourseEnrollments({}, { csv: true })
+        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
       ),
       csvButtonId: 'enrollments',
     };
@@ -60,7 +61,11 @@ class Admin extends React.Component {
         title: 'Registered Learners Not Yet Enrolled in a Course',
         component: <RegisteredLearnersTable />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchUnenrolledRegisteredLearners({}, { csv: true })
+          EnterpriseDataApiService.fetchUnenrolledRegisteredLearners(
+            enterpriseId,
+            {},
+            { csv: true },
+          )
         ),
         csvButtonId: 'registered-unenrolled-learners',
       },
@@ -68,7 +73,7 @@ class Admin extends React.Component {
         title: 'Number of Courses Enrolled by Learners',
         component: <EnrolledLearnersTable />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchEnrolledLearners({}, { csv: true })
+          EnterpriseDataApiService.fetchEnrolledLearners(enterpriseId, {}, { csv: true })
         ),
         csvButtonId: 'enrolled-learners',
       },
@@ -77,7 +82,11 @@ class Admin extends React.Component {
         description: 'Learners who have completed all of their courses and/or courses have ended.',
         component: <EnrolledLearnersForInactiveCoursesTable />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses({}, { csv: true })
+          EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses(
+            enterpriseId,
+            {},
+            { csv: true },
+          )
         ),
         csvButtonId: 'enrolled-learners-inactive-courses',
       },
@@ -86,7 +95,11 @@ class Admin extends React.Component {
         subtitle: 'Top Active Learners',
         component: <LearnerActivityTable id="learners-active-week" activity="active_past_week" />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'active_past_week' }, { csv: true })
+          EnterpriseDataApiService.fetchCourseEnrollments(
+            enterpriseId,
+            { learner_activity: 'active_past_week' },
+            { csv: true },
+          )
         ),
         csvButtonId: 'learners-active-week',
       },
@@ -95,7 +108,11 @@ class Admin extends React.Component {
         subtitle: 'Not Active in Past Week',
         component: <LearnerActivityTable id="learners-inactive-week" activity="inactive_past_week" />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'inactive_past_week' }, { csv: true })
+          EnterpriseDataApiService.fetchCourseEnrollments(
+            enterpriseId,
+            { learner_activity: 'inactive_past_week' },
+            { csv: true },
+          )
         ),
         csvButtonId: 'learners-inactive-week',
       },
@@ -104,7 +121,11 @@ class Admin extends React.Component {
         subtitle: 'Not Active in Past Month',
         component: <LearnerActivityTable id="learners-inactive-month" activity="inactive_past_month" />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchCourseEnrollments({ learner_activity: 'inactive_past_month' }, { csv: true })
+          EnterpriseDataApiService.fetchCourseEnrollments(
+            enterpriseId,
+            { learner_activity: 'inactive_past_month' },
+            { csv: true },
+          )
         ),
         csvButtonId: 'learners-inactive-month',
       },
@@ -112,7 +133,7 @@ class Admin extends React.Component {
         title: 'Number of Courses Completed by Learner',
         component: <CompletedLearnersTable />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchCompletedLearners({}, { csv: true })
+          EnterpriseDataApiService.fetchCompletedLearners(enterpriseId, {}, { csv: true })
         ),
         csvButtonId: 'completed-learners',
       },
@@ -121,7 +142,11 @@ class Admin extends React.Component {
         subtitle: 'Past Week',
         component: <PastWeekPassedLearnersTable />,
         csvFetchMethod: () => (
-          EnterpriseDataApiService.fetchCourseEnrollments({ passed_date: 'last_week' }, { csv: true })
+          EnterpriseDataApiService.fetchCourseEnrollments(
+            enterpriseId,
+            { passed_date: 'last_week' },
+            { csv: true },
+          )
         ),
         csvButtonId: 'completed-learners-week',
       },

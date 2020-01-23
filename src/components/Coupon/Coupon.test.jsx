@@ -11,8 +11,12 @@ import { MULTI_USE } from '../../data/constants/coupons';
 import Coupon from './index';
 import CouponDetails from '../CouponDetails';
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     'coupon-details': {
       loading: false,

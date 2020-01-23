@@ -60,13 +60,14 @@ const sortFailure = (tableId, error) => ({
 });
 
 const paginateTable = (tableId, fetchMethod, pageNumber) => (
-  (dispatch) => {
+  (dispatch, getState) => {
+    const { enterpriseId } = getState().portalConfiguration;
     const options = getPageOptionsFromUrl();
     if (pageNumber) {
       options.page = pageNumber;
     }
     dispatch(paginationRequest(tableId, options));
-    return fetchMethod(options).then((response) => {
+    return fetchMethod(enterpriseId, options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {
       NewRelicService.logAPIErrorResponse(error);
@@ -109,6 +110,7 @@ const sortBy = (dataToSort, orderField) => {
 const sortTable = (tableId, fetchMethod, ordering) => (
   (dispatch, getState) => {
     const tableState = getState().table[tableId];
+    const { enterpriseId } = getState().portalConfiguration;
     const options = {
       ...getPageOptionsFromUrl(),
       ordering,
@@ -127,7 +129,7 @@ const sortTable = (tableId, fetchMethod, ordering) => (
       }));
     }
 
-    return fetchMethod(options).then((response) => {
+    return fetchMethod(enterpriseId, options).then((response) => {
       dispatch(sortSuccess(tableId, ordering, response.data));
     }).catch((error) => {
       NewRelicService.logAPIErrorResponse(error);

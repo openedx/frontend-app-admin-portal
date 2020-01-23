@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { sortTable } from './table';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseId = 'test-enterprise';
 
 describe('actions', () => {
   describe('sortTable', () => {
@@ -19,6 +20,9 @@ describe('actions', () => {
         const orderingKey = 'test-date';
 
         const store = mockStore({
+          portalConfiguration: {
+            enterpriseId,
+          },
           table: {
             [tableId]: {
               data: {
@@ -52,6 +56,9 @@ describe('actions', () => {
         const orderingKey = 'test-numeric-float';
 
         const store = mockStore({
+          portalConfiguration: {
+            enterpriseId,
+          },
           table: {
             [tableId]: {
               data: {
@@ -85,6 +92,9 @@ describe('actions', () => {
         const orderingKey = 'test-string-float';
 
         const store = mockStore({
+          portalConfiguration: {
+            enterpriseId,
+          },
           table: {
             [tableId]: {
               data: {
@@ -118,6 +128,9 @@ describe('actions', () => {
         const orderingKey = 'test-string';
 
         const store = mockStore({
+          portalConfiguration: {
+            enterpriseId,
+          },
           table: {
             [tableId]: {
               data: {

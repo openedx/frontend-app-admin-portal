@@ -12,9 +12,13 @@ import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 jest.mock('../../data/services/EcommerceApiService');
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const initialStore = {
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {},
 };
 

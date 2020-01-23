@@ -8,8 +8,12 @@ import { mount } from 'enzyme';
 
 import PastWeekPassedLearnersTable from '.';
 
+const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
   table: {
     'completed-learners-week': {
       data: {

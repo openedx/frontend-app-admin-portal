@@ -32,10 +32,13 @@ const PastWeekPassedLearnersTable = () => {
     <TableContainer
       id="completed-learners-week"
       className="completed-learners-week"
-      fetchMethod={options => EnterpriseDataApiService.fetchCourseEnrollments({
-        passed_date: 'last_week',
-        ...options,
-      })}
+      fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
+        enterpriseId,
+        {
+          passed_date: 'last_week',
+          ...options,
+        },
+      )}
       columns={tableColumns}
       formatData={formatLearnerData}
       tableSortable

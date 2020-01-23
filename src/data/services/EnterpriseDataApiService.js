@@ -2,7 +2,6 @@ import qs from 'query-string';
 
 import apiClient from '../apiClient';
 import { configuration } from '../../config';
-import store from '../store';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
@@ -13,8 +12,7 @@ class EnterpriseDataApiService {
     return apiClient.get(url);
   }
 
-  static fetchCourseEnrollments(options, { csv } = {}) {
-    const { enterpriseId } = store.getState().portalConfiguration;
+  static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'enrollments.csv' : 'enrollments';
     const queryParams = {
       page: 1,
@@ -27,8 +25,7 @@ class EnterpriseDataApiService {
     return apiClient.get(url);
   }
 
-  static fetchUnenrolledRegisteredLearners(options, { csv } = {}) {
-    const { enterpriseId } = store.getState().portalConfiguration;
+  static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
     const queryParams = {
       page: 1,
@@ -42,8 +39,7 @@ class EnterpriseDataApiService {
     return apiClient.get(url);
   }
 
-  static fetchEnrolledLearners(options, { csv } = {}) {
-    const { enterpriseId } = store.getState().portalConfiguration;
+  static fetchEnrolledLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
     const queryParams = {
       page: 1,
@@ -58,8 +54,7 @@ class EnterpriseDataApiService {
     return apiClient.get(url);
   }
 
-  static fetchEnrolledLearnersForInactiveCourses(options, { csv } = {}) {
-    const { enterpriseId } = store.getState().portalConfiguration;
+  static fetchEnrolledLearnersForInactiveCourses(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
     const queryParams = {
       page: 1,
@@ -76,8 +71,7 @@ class EnterpriseDataApiService {
     return apiClient.get(url);
   }
 
-  static fetchCompletedLearners(options, { csv } = {}) {
-    const { enterpriseId } = store.getState().portalConfiguration;
+  static fetchCompletedLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'learner_completed_courses.csv' : 'learner_completed_courses';
     const queryParams = {
       page: 1,
