@@ -635,16 +635,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -1214,16 +1214,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -1798,16 +1798,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -2364,19 +2364,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-12 col-lg-12 col-xl-8 text-md-right"
           >
             <div
               className="row"
             >
               <div
-                className="col-sm-12 col-md-7 pr-0"
+                className="col-sm-12 col-md-7 pr-md-0 mb-1"
               >
                 <div
                   className="border search-field"
@@ -2448,10 +2448,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 </div>
               </div>
               <div
-                className="col-sm-12 col-md-5 pl-0"
+                className="col-sm-12 col-md-5 pl-md-0"
               >
                 <button
-                  className="btn btn-outline-primary download-btn"
+                  className="btn btn-outline-primary download-btn d-sm-inline float-right"
                   disabled={true}
                   onBlur={[Function]}
                   onClick={[Function]}
@@ -3010,19 +3010,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-12 col-lg-12 col-xl-8 text-md-right"
           >
             <div
               className="row"
             >
               <div
-                className="col-sm-12 col-md-7 pr-0"
+                className="col-sm-12 col-md-7 pr-md-0 mb-1"
               >
                 <div
                   className="border search-field"
@@ -3094,10 +3094,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 </div>
               </div>
               <div
-                className="col-sm-12 col-md-5 pl-0"
+                className="col-sm-12 col-md-5 pl-md-0"
               >
                 <button
-                  className="btn btn-outline-primary download-btn"
+                  className="btn btn-outline-primary download-btn d-sm-inline float-right"
                   disabled={true}
                   onBlur={[Function]}
                   onClick={[Function]}
@@ -3674,16 +3674,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4258,16 +4258,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4840,16 +4840,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -5419,16 +5419,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -6003,16 +6003,16 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           className="row"
         >
           <div
-            className="col-12 col-md-6 pt-1 pb-3"
+            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 text-md-right"
+            className="col-12 col-md-6 col-lg-12 text-md-right"
           >
             <button
-              className="btn btn-outline-primary download-btn"
+              className="btn btn-outline-primary download-btn d-sm-inline float-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
