@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
@@ -17,15 +18,24 @@ import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 
+import SearchBar from '../SearchBar';
 import AdminCards from '../../containers/AdminCards';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-import { formatTimestamp } from '../../utils';
+import { formatTimestamp, updateUrl } from '../../utils';
 
 import './Admin.scss';
 
 class Admin extends React.Component {
+  constructor(props) {
+    super(props);
+    const { location } = props;
+    const queryParams = qs.parse(location.search);
+    this.state = {
+      searchQuery: queryParams.search,
+    };
+  }
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
@@ -34,9 +44,16 @@ class Admin extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, location } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+    }
+    if (location.search !== prevProps.location.search) {
+      const { search } = qs.parse(location.search);
+      const { search: prevSearch } = qs.parse(prevProps.location.search);
+      if (search !== prevSearch) {
+        this.handleSearch(search);
+      }
     }
   }
 
@@ -167,6 +184,17 @@ class Admin extends React.Component {
     return tableData && tableData.data;
   }
 
+  displaySearchBar() {
+    return !this.props.match.params.actionSlug;
+  }
+
+  handleSearch(query) {
+    this.setState({
+      searchQuery: query,
+    });
+    this.props.searchEnrollmentsList();
+  }
+
   shouldDisableCsvButton(id) {
     const tableData = this.getTableData(id);
     if (!tableData) {
@@ -197,6 +225,42 @@ class Admin extends React.Component {
     } = this.props;
 
     return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
+  }
+
+  renderSearchBarDownloadBtnRow() {
+    if (this.displaySearchBar()) {
+      return (
+        <div className="col-12 col-md-12 col-lg-12 col-xl-8 text-md-right">
+          <div className="row">
+            <div className="col-sm-12 col-md-7 pr-md-0 mb-1">
+              {this.renderSearchBar()}
+            </div>
+            <div className="col-sm-12 col-md-5 pl-md-0">
+              {this.renderDownloadButton()}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="col-12 col-md-6 col-lg-12 text-md-right">
+        {this.renderDownloadButton()}
+      </div>
+    );
+  }
+
+  renderDownloadButton() {
+    const { match } = this.props;
+    const { params: { actionSlug } } = match;
+    const tableMetadata = this.getMetadataForAction(actionSlug);
+    return (
+      <DownloadCsvButton
+        id={tableMetadata.csvButtonId}
+        fetchMethod={tableMetadata.csvFetchMethod}
+        disabled={this.shouldDisableCsvButton(actionSlug)}
+        buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
+      />
+    );
   }
 
   renderErrorMessage() {
@@ -238,6 +302,21 @@ class Admin extends React.Component {
         <Icon className="fa fa-undo mr-2" />
         Reset to {this.getMetadataForAction().title}
       </Link>
+    );
+  }
+
+  renderSearchBar() {
+    const { searchQuery } = this.state;
+    return (
+      <SearchBar
+        inputLabel="Search by email:"
+        onSearch={query => updateUrl({
+          search: query,
+          page: 1,
+        })}
+        onClear={() => updateUrl({ search: undefined })}
+        value={searchQuery}
+      />
     );
   }
 
@@ -290,21 +369,14 @@ class Admin extends React.Component {
                   <div className="col">
                     {!error && !loading && !this.hasEmptyData() && (
                       <div className="row">
-                        <div className="col-12 col-md-6 pt-1 pb-3">
+                        <div className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3">
                           {lastUpdatedDate &&
                             <React.Fragment>
                               Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
                             </React.Fragment>
                           }
                         </div>
-                        <div className="col-12 col-md-6 text-md-right">
-                          <DownloadCsvButton
-                            id={tableMetadata.csvButtonId}
-                            fetchMethod={tableMetadata.csvFetchMethod}
-                            disabled={this.shouldDisableCsvButton(actionSlug)}
-                            buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
-                          />
-                        </div>
+                        {this.renderSearchBarDownloadBtnRow()}
                       </div>
                     )}
                     {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
@@ -340,6 +412,9 @@ Admin.defaultProps = {
   enrolledLearners: null,
   enterpriseId: null,
   lastUpdatedDate: null,
+  location: {
+    search: null,
+  },
   csv: null,
   table: null,
 };
@@ -348,6 +423,10 @@ Admin.propTypes = {
   fetchDashboardAnalytics: PropTypes.func.isRequired,
   clearDashboardAnalytics: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
+  searchEnrollmentsList: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }),
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
     past_month: PropTypes.number,

@@ -7,6 +7,8 @@ import {
 } from '../../data/actions/dashboardAnalytics';
 
 import Admin from '../../components/Admin';
+import { paginateTable } from '../../data/actions/table';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const mapStateToProps = state => ({
   loading: state.dashboardAnalytics.loading,
@@ -27,6 +29,9 @@ const mapDispatchToProps = dispatch => ({
   },
   clearDashboardAnalytics: () => {
     dispatch(clearDashboardAnalytics());
+  },
+  searchEnrollmentsList: () => {
+    dispatch(paginateTable('enrollments', EnterpriseDataApiService.fetchCourseEnrollments));
   },
 });
 

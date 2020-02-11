@@ -1,12 +1,29 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import MockAdapter from 'axios-mock-adapter';
+import qs from 'query-string';
 
-import { sortTable } from './table';
+import { paginateTable, sortTable } from './table';
+import apiClient from '../apiClient';
+import {
+  PAGINATION_FAILURE,
+  PAGINATION_REQUEST,
+  PAGINATION_SUCCESS,
+} from '../../data/constants/table';
+import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';
 
+const axiosMock = new MockAdapter(apiClient);
+apiClient.isAccessTokenExpired = jest.fn();
+apiClient.isAccessTokenExpired.mockReturnValue(false);
+
+
 describe('actions', () => {
+  afterEach(() => {
+    axiosMock.reset();
+  });
   describe('sortTable', () => {
     const tableId = 'table-id';
 
@@ -157,6 +174,108 @@ describe('actions', () => {
         actual = store.getActions()[3].payload.data.results[0][orderingKey];
         expect(actual).toEqual('julie@bestrun.com');
       });
+    });
+  });
+  describe('paginateTable', () => {
+    it('dispatches success action after searching enrollments', () => {
+      const responseData = {
+        count: 1,
+        num_pages: 1,
+        current_page: 1,
+        next: null,
+        results: [
+          {
+            enterprise_id: enterpriseId,
+            user_email: 'test3@edx.org',
+            progress_status: 'In Progress',
+          },
+        ],
+        start: 0,
+      };
+      const expectedActions = [
+        {
+          type: PAGINATION_REQUEST,
+          payload: {
+            tableId: 'enrollments',
+            options: expect.objectContaining({ search: 'test3@edx.org' }),
+          },
+        },
+        {
+          type: PAGINATION_SUCCESS,
+          payload: {
+            tableId: 'enrollments',
+            data: responseData,
+          },
+        },
+      ];
+      const store = mockStore({
+        portalConfiguration: {
+          enterpriseId,
+        },
+      });
+      const defaultOptions = {
+        page: 1,
+        page_size: 50,
+        search: 'test3@edx.org',
+      };
+      const params = `?${qs.stringify(defaultOptions)}`;
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/${params}`)
+        .replyOnce(200, JSON.stringify(responseData));
+
+      Object.defineProperty(window, 'location', {
+        value: {
+          search: params,
+        },
+      });
+      return store.dispatch(paginateTable('enrollments', EnterpriseDataApiService.fetchCourseEnrollments))
+        .then(() => {
+          expect(store.getActions())
+            .toEqual(expectedActions);
+        });
+    });
+
+    it('dispatches failure action after fetching enrollments', () => {
+      const store = mockStore({
+        portalConfiguration: {
+          enterpriseId,
+        },
+      });
+      const expectedActions = [
+        {
+          type: PAGINATION_REQUEST,
+          payload: {
+            tableId: 'enrollments',
+            options: expect.objectContaining({ search: 'test3@edx.org' }),
+          },
+        },
+        {
+          type: PAGINATION_FAILURE,
+          payload: {
+            tableId: 'enrollments',
+            error: Error('Network Error'),
+          },
+        },
+      ];
+      const defaultOptions = {
+        page: 1,
+        page_size: 50,
+        search: 'test3@edx.org',
+      };
+      const params = `?${qs.stringify(defaultOptions)}`;
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/${params}`)
+        .networkError();
+
+      Object.defineProperty(window, 'location', {
+        value: {
+          search: params,
+        },
+      });
+
+      return store.dispatch(paginateTable('enrollments', EnterpriseDataApiService.fetchCourseEnrollments))
+        .then(() => {
+          expect(store.getActions())
+            .toEqual(expectedActions);
+        });
     });
   });
 });

@@ -60,12 +60,14 @@ const getPageOptionsFromUrl = () => {
     pageSize: 50,
     page: 1,
     ordering: undefined,
+    search: undefined,
   };
   const query = qs.parse(window.location.search);
   return {
     page_size: parseInt(query.page_size, 10) || defaults.pageSize,
     page: parseInt(query.page, 10) || defaults.page,
     ordering: query.ordering || defaults.ordering,
+    search: query.search || defaults.search,
   };
 };
 

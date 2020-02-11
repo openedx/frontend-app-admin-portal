@@ -24,7 +24,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn"
+          className="btn btn-outline-primary download-btn d-sm-inline float-right"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}
@@ -619,7 +619,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn"
+          className="btn btn-outline-primary download-btn d-sm-inline float-right"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}
@@ -872,7 +872,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn"
+          className="btn btn-outline-primary download-btn d-sm-inline float-right"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}
@@ -1081,7 +1081,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn"
+          className="btn btn-outline-primary download-btn d-sm-inline float-right"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}
