@@ -44,6 +44,7 @@ const tableMockData = {
         course_start: '2017-10-21T23:47:32.738Z',
         course_end: '2018-05-13T12:47:27.534Z',
         current_grade: '0.66',
+        progress_status: 'Failed',
         last_activity_date: '2018-09-22T10:59:28.628Z',
       },
       {
@@ -56,6 +57,7 @@ const tableMockData = {
         course_start: '2017-10-21T23:47:32.738Z',
         course_end: '2018-05-13T12:47:27.534Z',
         current_grade: '0.80',
+        progress_status: 'Passed',
         last_activity_date: '2018-09-25T10:59:28.628Z',
       },
     ],
@@ -170,6 +172,7 @@ describe('LearnerActivityTable', () => {
       'End Date',
       'Passed Date',
       'Current Grade',
+      'Progress Status',
       'Last Activity Date',
     ];
     const rowsData = [
@@ -181,6 +184,7 @@ describe('LearnerActivityTable', () => {
         'May 13, 2018',
         'September 23, 2018',
         '66%',
+        'Failed',
         'September 22, 2018',
       ],
       [
@@ -191,6 +195,7 @@ describe('LearnerActivityTable', () => {
         'May 13, 2018',
         'September 22, 2018',
         '80%',
+        'Passed',
         'September 25, 2018',
       ],
     ];
@@ -208,6 +213,7 @@ describe('LearnerActivityTable', () => {
       'Start Date',
       'End Date',
       'Current Grade',
+      'Progress Status',
       'Last Activity Date',
     ];
     const rowsData = [
@@ -218,6 +224,7 @@ describe('LearnerActivityTable', () => {
         'October 21, 2017',
         'May 13, 2018',
         '66%',
+        'Failed',
         'September 22, 2018',
       ],
       [
@@ -227,6 +234,7 @@ describe('LearnerActivityTable', () => {
         'October 21, 2017',
         'May 13, 2018',
         '80%',
+        'Passed',
         'September 25, 2018',
       ],
     ];
@@ -244,6 +252,7 @@ describe('LearnerActivityTable', () => {
       'Start Date',
       'End Date',
       'Current Grade',
+      'Progress Status',
       'Last Activity Date',
     ];
     const rowsData = [
@@ -254,6 +263,7 @@ describe('LearnerActivityTable', () => {
         'October 21, 2017',
         'May 13, 2018',
         '66%',
+        'Failed',
         'September 22, 2018',
       ],
       [
@@ -263,6 +273,7 @@ describe('LearnerActivityTable', () => {
         'October 21, 2017',
         'May 13, 2018',
         '80%',
+        'Passed',
         'September 25, 2018',
       ],
     ];

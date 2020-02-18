@@ -223,6 +223,33 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   type="button"
                 >
                   <span>
+                    Progress Status
+                    <span
+                      className="sr-only"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
+                >
+                  <span>
                     Last Activity Date
                     <span
                       className="sr-only"
@@ -292,6 +319,12 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 className=""
                 scope={null}
               >
+                Failed
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
                 September 22, 2018
               </td>
             </tr>
@@ -339,6 +372,12 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 scope={null}
               >
                 80%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                Passed
               </td>
               <td
                 className=""
@@ -652,6 +691,33 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   type="button"
                 >
                   <span>
+                    Progress Status
+                    <span
+                      className="sr-only"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
+                >
+                  <span>
                     Last Activity Date
                     <span
                       className="sr-only"
@@ -715,6 +781,12 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 className=""
                 scope={null}
               >
+                Failed
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
                 September 22, 2018
               </td>
             </tr>
@@ -756,6 +828,12 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 scope={null}
               >
                 80%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                Passed
               </td>
               <td
                 className=""
@@ -1038,6 +1116,33 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   type="button"
                 >
                   <span>
+                    Progress Status
+                    <span
+                      className="sr-only"
+                    >
+                       
+                      click to sort
+                    </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
+                  </span>
+                </button>
+              </th>
+              <th
+                className="sortable"
+                scope="col"
+              >
+                <button
+                  className="btn btn-header"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  type="button"
+                >
+                  <span>
                     Last Activity Date
                     <span
                       className="sr-only"
@@ -1101,6 +1206,12 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 className=""
                 scope={null}
               >
+                Failed
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
                 September 22, 2018
               </td>
             </tr>
@@ -1142,6 +1253,12 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 scope={null}
               >
                 80%
+              </td>
+              <td
+                className=""
+                scope={null}
+              >
+                Passed
               </td>
               <td
                 className=""
