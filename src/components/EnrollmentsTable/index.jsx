@@ -42,6 +42,11 @@ const EnrollmentsTable = () => {
       columnSortable: true,
     },
     {
+      label: 'Progress Status',
+      key: 'progress_status',
+      columnSortable: true,
+    },
+    {
       label: 'Last Activity Date',
       key: 'last_activity_date',
       columnSortable: true,
