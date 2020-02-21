@@ -7,8 +7,6 @@ import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
-import emailTemplate from './emailTemplate';
-
 import './CodeReminderModal.scss';
 
 class CodeReminderModal extends React.Component {
@@ -292,6 +290,7 @@ CodeReminderModal.propTypes = {
       count: PropTypes.number,
     }),
   }),
+  initialValues: PropTypes.shape({}).isRequired,
   isBulkRemind: PropTypes.bool,
   selectedToggle: PropTypes.string,
   data: PropTypes.shape({}),
@@ -299,9 +298,4 @@ CodeReminderModal.propTypes = {
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
-  initialValues: {
-    'email-template-body': emailTemplate.body,
-    'email-template-greeting': emailTemplate.greeting,
-    'email-template-closing': emailTemplate.closing,
-  },
 })(CodeReminderModal);

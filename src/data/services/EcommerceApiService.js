@@ -55,6 +55,15 @@ class EcommerceApiService {
     }
     return apiClient.get(url);
   }
+
+  static fetchEmailTemplate(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/offer-assignment-email-template/${enterpriseId}/`;
+    if (options) {
+      url += `?${qs.stringify(options)}`;
+    }
+    return apiClient.get(url);
+  }
 }
 
 export default EcommerceApiService;

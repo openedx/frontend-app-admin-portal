@@ -130,6 +130,22 @@ const snakeCaseFormData = (formData) => {
   return transformedData;
 };
 
+const transformTemplates = ({ results }, initialState) => {
+  const data = {
+    assign: initialState.assign,
+    remind: initialState.remind,
+    revoke: initialState.revoke,
+  };
+  results.forEach((result) => {
+    data[result.email_type] = {
+      'email-template-greeting': result.email_greeting,
+      'email-template-body': result.email_body,
+      'email-template-closing': result.email_closing,
+    };
+  });
+  return data;
+};
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -146,4 +162,5 @@ export {
   snakeCaseObject,
   snakeCaseFormData,
   maxLength512,
+  transformTemplates,
 };

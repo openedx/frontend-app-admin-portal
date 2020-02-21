@@ -8,10 +8,21 @@ import { mount } from 'enzyme';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CodeRevokeModal from './index';
-import emailTemplate from '../../components/CodeRevokeModal/emailTemplate';
+import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
-const initialState = {};
+const initialState = {
+  emailTemplate: {
+    loading: false,
+    error: null,
+    revoke: {
+      'email-template-greeting': revokeEmailTemplate.greeting,
+      'email-template-body': revokeEmailTemplate.body,
+      'email-template-closing': revokeEmailTemplate.closing,
+    },
+  },
+};
+
 const couponId = 1;
 const couponTitle = 'AABBCC';
 const data = {
@@ -22,9 +33,9 @@ const codeRevokeRequestData = (numCodes) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   return {
     assignments: Array(numCodes).fill(assignment),
-    template: emailTemplate.body,
-    template_greeting: emailTemplate.greeting,
-    template_closing: emailTemplate.closing,
+    template: revokeEmailTemplate.body,
+    template_greeting: revokeEmailTemplate.greeting,
+    template_closing: revokeEmailTemplate.closing,
   };
 };
 
