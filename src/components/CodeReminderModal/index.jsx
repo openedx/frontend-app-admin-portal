@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
+import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
@@ -16,9 +17,20 @@ class CodeReminderModal extends React.Component {
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
+    this.state = {
+      mode: 'remind',
+      fields: {
+        'email-template-greeting': null,
+        'email-template-closing': null,
+      },
+    };
+
+    this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.handleFieldOnChange = this.handleFieldOnChange.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
+    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -36,10 +48,13 @@ class CodeReminderModal extends React.Component {
       onClose,
       error,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === 'remind' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -63,13 +78,39 @@ class CodeReminderModal extends React.Component {
     return numberOfSelectedCodes;
   }
 
+  getTemplatesData() {
+    const data = { ...this.props.initialValues };
+    Object.entries(this.state.fields).forEach(([key, value]) => {
+      if (value) {
+        data[key] = value;
+      }
+    });
+
+    return data;
+  }
+
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
   validateFormData(formData) {
     const emailTemplateKey = 'email-template-body';
+    const templateErrorMessages = {
+      'email-template-greeting': 'Email greeting must be 300 characters or less.',
+      'email-template-closing': 'Email closing must be 300 characters or less.',
+    };
     const errors = {
       _error: [],
     };
 
     /* eslint-disable no-underscore-dangle */
+    Object.entries(templateErrorMessages).forEach(([key, message]) => {
+      if (formData[key].length > 300) {
+        errors[key] = message;
+        errors._error.push(message);
+      }
+    });
+
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';
       errors[emailTemplateKey] = message;
@@ -87,6 +128,34 @@ class CodeReminderModal extends React.Component {
     return ['code', 'email'].every(key => key in data);
   }
 
+  handleFieldOnChange(event, newValue, previousValue, name) {
+    this.setState(prevState => ({
+      fields: {
+        ...prevState.fields,
+        [name]: newValue,
+      },
+    }));
+  }
+
+  isSaveDisabled() {
+    const { initialValues, submitting } = this.props;
+    const fieldValues = Object.values(this.state.fields);
+    const fields = Object.entries(this.state.fields);
+
+    // disable button if form is in submitting state
+    if (submitting) return true;
+
+    // disable button if any field as text greater than 300
+    const valueNotInRange = fieldValues.some(value => value && value.length > 300);
+    if (valueNotInRange) return true;
+
+    // enable button if any field value has changed and new value is different from original value
+    const anyValueChanged = fields.some(([key, value]) => value && value !== initialValues[key]);
+    if (anyValueChanged) return false;
+
+    return true;
+  }
+
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -95,6 +164,7 @@ class CodeReminderModal extends React.Component {
       data,
       sendCodeReminder,
     } = this.props;
+    this.setMode('remind');
 
     // Validate form data
     this.validateFormData(formData);
@@ -134,13 +204,18 @@ class CodeReminderModal extends React.Component {
       data,
       isBulkRemind,
       submitFailed,
+      submitSucceeded,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
+        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {!isBulkRemind && this.hasIndividualRemindData() && (
             <React.Fragment>
@@ -166,6 +241,7 @@ class CodeReminderModal extends React.Component {
                   Customize Greeting
                 </React.Fragment>
               }
+              onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
@@ -187,6 +263,7 @@ class CodeReminderModal extends React.Component {
                   Customize Closing
                 </React.Fragment>
               }
+              onChange={this.handleFieldOnChange}
             />
           </div>
         </form>
@@ -195,7 +272,12 @@ class CodeReminderModal extends React.Component {
   }
 
   renderErrorMessage() {
+    const modeErrors = {
+      remind: 'Unable to send reminder email',
+      save: 'Unable to save template',
+    };
     const { error } = this.props;
+    const { mode } = this.state;
 
     return (
       <div
@@ -205,7 +287,7 @@ class CodeReminderModal extends React.Component {
         <StatusAlert
           alertType="danger"
           iconClassName="fa fa-times-circle"
-          title="Unable to send reminder email"
+          title={modeErrors[mode]}
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
@@ -213,6 +295,22 @@ class CodeReminderModal extends React.Component {
           ) : (
             error[0]
           )}
+        />
+      </div>
+    );
+  }
+
+  renderSaveTemplateMessage() {
+    return (
+      <div
+        ref={this.errorMessageRef}
+        tabIndex="-1"
+      >
+        <StatusAlert
+          alertType="success"
+          iconClassName="fa fa-check"
+          message="Template saved successfully"
+          dismissible
         />
       </div>
     );
@@ -236,6 +334,9 @@ class CodeReminderModal extends React.Component {
       submitting,
       handleSubmit,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -250,10 +351,17 @@ class CodeReminderModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>
-                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === 'remind' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {'Remind'}
               </React.Fragment>
             </Button>,
+            <SaveTemplateButton
+              templateType="remind"
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+              templateData={this.getTemplatesData()}
+              disabled={this.isSaveDisabled()}
+            />,
           ]}
           onClose={onClose}
           open

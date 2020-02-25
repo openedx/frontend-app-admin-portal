@@ -2,14 +2,18 @@ import {
   EMAIL_TEMPLATE_SUCCESS,
   EMAIL_TEMPLATE_REQUEST,
   EMAIL_TEMPLATE_FAILURE,
+  SAVE_TEMPLATE_REQUEST,
+  SAVE_TEMPLATE_SUCCESS,
+  SAVE_TEMPLATE_FAILURE,
 } from '../constants/emailTemplate';
 
-import { transformTemplates } from '../../utils';
+import { transformTemplates, transformTemplate } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
 
-const initialState = {
+export const initialState = {
+  saving: false,
   loading: false,
   error: null,
   assign: {
@@ -45,6 +49,24 @@ const emailTemplate = (state = initialState, action) => {
     case EMAIL_TEMPLATE_FAILURE:
       return {
         loading: false,
+        error: action.payload.error,
+      };
+    case SAVE_TEMPLATE_REQUEST:
+      return {
+        ...state,
+        saving: true,
+        error: null,
+      };
+    case SAVE_TEMPLATE_SUCCESS:
+      return {
+        ...state,
+        saving: false,
+        error: null,
+        ...transformTemplate(action.payload.emailType, action.payload.data),
+      };
+    case SAVE_TEMPLATE_FAILURE:
+      return {
+        saving: false,
         error: action.payload.error,
       };
     default:

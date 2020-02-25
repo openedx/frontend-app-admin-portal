@@ -146,6 +146,14 @@ const transformTemplates = ({ results }, initialState) => {
   return data;
 };
 
+const transformTemplate = (emailType, template) => ({
+  [emailType]: {
+    'email-template-greeting': template.email_greeting,
+    'email-template-body': template.email_body,
+    'email-template-closing': template.email_closing,
+  },
+});
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -163,4 +171,5 @@ export {
   snakeCaseFormData,
   maxLength512,
   transformTemplates,
+  transformTemplate,
 };

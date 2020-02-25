@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
+<button
+  className="btn btn-primary save-template-btn"
+  disabled={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  type="button"
+>
+  <span
+    aria-hidden={true}
+    className="fa mr-2 "
+    id="Icon1"
+  />
+  Save Template
+</button>
+`;
+
+exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
+<button
+  className="btn btn-primary save-template-btn"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  type="button"
+>
+  <span
+    aria-hidden={true}
+    className="fa mr-2 "
+    id="Icon2"
+  />
+  Save Template
+</button>
+`;
+
+exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = `
+<button
+  className="btn btn-primary save-template-btn"
+  disabled={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  type="button"
+>
+  <span
+    aria-hidden={true}
+    className="fa mr-2 fa-spinner fa-spin"
+    id="Icon3"
+  />
+  Save Template
+</button>
+`;

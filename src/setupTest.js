@@ -9,4 +9,5 @@ Enzyme.configure({ adapter: new Adapter() });
 // Jest does not use webpack so we need to set these so for testing
 process.env.LMS_BASE_URL = 'http://localhost:18000';
 process.env.DATA_API_BASE_URL = 'http://localhost:8000';
+process.env.ECOMMERCE_BASE_URL = 'http://localhost:8000';
 process.env.FEATURE_FLAGS = {};
