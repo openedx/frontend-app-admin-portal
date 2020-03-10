@@ -13,6 +13,8 @@ const initialState = {
   enterpriseSlug: null,
   enterpriseLogo: null,
   enableCodeManagementScreen: false,
+  enableReportingConfigScreen: false,
+  enableSubscriptionManagementScreen: false,
 };
 
 const enterpriseData = {
@@ -25,6 +27,8 @@ const enterpriseData = {
     logo: 'https://s3...',
   },
   enable_portal_code_management_screen: true,
+  enable_portal_reporting_config_screen: true,
+  enable_portal_subscription_management_screen: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -40,6 +44,8 @@ describe('portalConfiguration reducer', () => {
       enterpriseSlug: enterpriseData.slug,
       enterpriseLogo: enterpriseData.branding_configuration.logo,
       enableCodeManagementScreen: enterpriseData.enable_portal_code_management_screen,
+      enableReportingConfigScreen: enterpriseData.enable_portal_reporting_config_screen,
+      enableSubscriptionManagementScreen: enterpriseData.enable_portal_subscription_management_screen, // eslint-disable-line max-len
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
