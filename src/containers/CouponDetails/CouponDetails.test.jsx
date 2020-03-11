@@ -30,6 +30,13 @@ const initialState = {
     couponOverviewLoading: false,
     couponOverviewError: null,
   },
+  emailTemplate: {},
+};
+
+const sampleEmailTemplate = {
+  'email-template-greeting': 'Sample email greeting.. ',
+  'email-template-body': 'Sample email body template.. ',
+  'email-template-closing': 'Sample email closing template.. ',
 };
 
 const initialCouponData = {
@@ -342,6 +349,13 @@ describe('CouponDetailsWrapper', () => {
         ...initialState,
         table: {
           'coupon-details': sampleTableData,
+        },
+        emailTemplate: {
+          loading: false,
+          error: null,
+          assign: sampleEmailTemplate,
+          remind: sampleEmailTemplate,
+          revoke: sampleEmailTemplate,
         },
       });
 

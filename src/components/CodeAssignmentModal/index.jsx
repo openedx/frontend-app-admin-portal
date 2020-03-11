@@ -10,7 +10,6 @@ import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 
-import emailTemplate from './emailTemplate';
 import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';
 
 import './CodeAssignmentModal.scss';
@@ -473,16 +472,11 @@ CodeAssignmentModal.propTypes = {
       count: PropTypes.number,
     }),
   }).isRequired,
+  initialValues: PropTypes.shape({}).isRequired,
   isBulkAssign: PropTypes.bool,
   data: PropTypes.shape({}),
 };
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
-  initialValues: {
-    'email-template-greeting': emailTemplate.greeting,
-    'email-template-body': emailTemplate.body,
-    'email-template-closing': emailTemplate.closing,
-  },
-
 })(CodeAssignmentModal);

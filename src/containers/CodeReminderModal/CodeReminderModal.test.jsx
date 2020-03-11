@@ -8,7 +8,7 @@ import { mount } from 'enzyme';
 
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import emailTemplate from '../../components/CodeReminderModal/emailTemplate';
+import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 
 const sampleCodeData = {
   code: 'test-code-1',
@@ -50,6 +50,15 @@ const initialState = {
   table: {
     'coupon-details': sampleTableData,
   },
+  emailTemplate: {
+    loading: false,
+    error: null,
+    remind: {
+      'email-template-greeting': remindEmailTemplate.greeting,
+      'email-template-body': remindEmailTemplate.body,
+      'email-template-closing': remindEmailTemplate.closing,
+    },
+  },
 };
 
 const couponId = 1;
@@ -61,9 +70,9 @@ const data = {
 const codeReminderRequestData = (numCodes, selectedToggle) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   const options = {
-    template: emailTemplate.body,
-    template_greeting: emailTemplate.greeting,
-    template_closing: emailTemplate.closing,
+    template: remindEmailTemplate.body,
+    template_greeting: remindEmailTemplate.greeting,
+    template_closing: remindEmailTemplate.closing,
   };
   if (numCodes === 0) {
     options.code_filter = selectedToggle;

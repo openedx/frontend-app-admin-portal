@@ -4,6 +4,10 @@ import CodeRevokeModal from '../../components/CodeRevokeModal';
 
 import sendCodeRevoke from '../../data/actions/codeRevoke';
 
+const mapStateToProps = state => ({
+  initialValues: state.emailTemplate.revoke,
+});
+
 const mapDispatchToProps = dispatch => ({
   sendCodeRevoke: (couponId, options) => new Promise((resolve, reject) => {
     dispatch(sendCodeRevoke({
@@ -15,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(null, mapDispatchToProps)(CodeRevokeModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CodeRevokeModal);

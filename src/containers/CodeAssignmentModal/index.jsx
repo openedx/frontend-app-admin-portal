@@ -6,6 +6,7 @@ import sendCodeAssignment from '../../data/actions/codeAssignment';
 
 const mapStateToProps = state => ({
   couponDetailsTable: state.table['coupon-details'],
+  initialValues: state.emailTemplate.assign,
 });
 
 const mapDispatchToProps = dispatch => ({

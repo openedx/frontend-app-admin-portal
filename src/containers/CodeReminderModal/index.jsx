@@ -6,6 +6,7 @@ import sendCodeReminder from '../../data/actions/codeReminder';
 
 const mapStateToProps = state => ({
   couponDetailsTable: state.table['coupon-details'],
+  initialValues: state.emailTemplate.remind,
 });
 
 const mapDispatchToProps = dispatch => ({

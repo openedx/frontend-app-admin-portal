@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
 import CodeAssignmentModal from './index';
+import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -16,6 +17,15 @@ const initialState = {
         count: 0,
         results: [],
       },
+    },
+  },
+  emailTemplate: {
+    loading: false,
+    error: null,
+    assign: {
+      'email-template-greeting': assignEmailTemplate.greeting,
+      'email-template-body': assignEmailTemplate.body,
+      'email-template-closing': assignEmailTemplate.closing,
     },
   },
 };

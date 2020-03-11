@@ -7,8 +7,6 @@ import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
-import emailTemplate from './emailTemplate';
-
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -275,13 +273,9 @@ CodeRevokeModal.propTypes = {
   sendCodeRevoke: PropTypes.func.isRequired,
   isBulkRevoke: PropTypes.bool,
   data: PropTypes.shape({}),
+  initialValues: PropTypes.shape({}).isRequired,
 };
 
 export default reduxForm({
   form: 'code-revoke-modal-form',
-  initialValues: {
-    'email-template-body': emailTemplate.body,
-    'email-template-greeting': emailTemplate.greeting,
-    'email-template-closing': emailTemplate.closing,
-  },
 })(CodeRevokeModal);
