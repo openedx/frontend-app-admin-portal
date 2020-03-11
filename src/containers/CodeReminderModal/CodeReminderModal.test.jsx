@@ -131,7 +131,7 @@ describe('CodeReminderModalWrapper', () => {
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
     expect(wrapper.find('#email-template')).toBeTruthy();
-    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.modal-footer .btn-primary .code-remind-save-btn').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
   });
 
@@ -146,7 +146,18 @@ describe('CodeReminderModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 3');
-    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.modal-footer .btn-primary .code-remind-save-btn').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(0, selectedToggle));
+  });
+
+  it('renders <SaveTemplateButton />', () => {
+    const wrapper = mount(<CodeReminderModalWrapper />);
+    const saveTemplateButton = wrapper.find('SaveTemplateButton');
+    expect(saveTemplateButton).toHaveLength(1);
+    expect(saveTemplateButton.props().disabled).toEqual(true);
+    expect(saveTemplateButton.props().saving).toEqual(false);
+    expect(saveTemplateButton.props().templateType).toEqual('remind');
+    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
+    expect(saveTemplateButton.props().templateData).toEqual(initialState.emailTemplate.remind);
   });
 });

@@ -16,7 +16,7 @@ const initialState = {
     loading: false,
     error: null,
     revoke: {
-      'email-template-greeting': revokeEmailTemplate.greeting,
+      'email-template-greeting': revokeEmailTemplate.greeting || '',
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
     },
@@ -34,7 +34,7 @@ const codeRevokeRequestData = (numCodes) => {
   return {
     assignments: Array(numCodes).fill(assignment),
     template: revokeEmailTemplate.body,
-    template_greeting: revokeEmailTemplate.greeting,
+    template_greeting: revokeEmailTemplate.greeting || '',
     template_closing: revokeEmailTemplate.closing,
   };
 };
@@ -81,7 +81,7 @@ describe('CodeRevokeModalWrapper', () => {
     expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);
 
     expect(wrapper.find('.modal-body form h3').text()).toEqual('Email Template');
-    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
 
     // TODO! uncomment when https://github.com/erikras/redux-form/issues/621 is resolved
@@ -97,7 +97,7 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
-    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });
 
@@ -110,7 +110,18 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').exists()).toBeFalsy();
-    wrapper.find('.modal-footer .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('renders <SaveTemplateButton />', () => {
+    const wrapper = mount(<CodeRevokeModalWrapper />);
+    const saveTemplateButton = wrapper.find('SaveTemplateButton');
+    expect(saveTemplateButton).toHaveLength(1);
+    expect(saveTemplateButton.props().disabled).toEqual(true);
+    expect(saveTemplateButton.props().saving).toEqual(false);
+    expect(saveTemplateButton.props().templateType).toEqual('revoke');
+    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
+    expect(saveTemplateButton.props().templateData).toEqual(initialState.emailTemplate.revoke);
   });
 });

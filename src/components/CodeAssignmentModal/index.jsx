@@ -9,6 +9,7 @@ import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
+import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';
 
@@ -21,9 +22,20 @@ class CodeAssignmentModal extends React.Component {
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
+    this.state = {
+      mode: 'assign',
+      fields: {
+        'email-template-greeting': null,
+        'email-template-closing': null,
+      },
+    };
+
+    this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.handleFieldOnChange = this.handleFieldOnChange.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
+    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -41,10 +53,13 @@ class CodeAssignmentModal extends React.Component {
       onClose,
       error,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === 'assign' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -66,6 +81,21 @@ class CodeAssignmentModal extends React.Component {
     const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
 
     return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
+  }
+
+  getTemplatesData() {
+    const data = { ...this.props.initialValues };
+    Object.entries(this.state.fields).forEach(([key, value]) => {
+      if (value) {
+        data[key] = value;
+      }
+    });
+
+    return data;
+  }
+
+  setMode(mode) {
+    this.setState({ mode });
   }
 
   validateEmailAddresses(emails) {
@@ -222,6 +252,10 @@ class CodeAssignmentModal extends React.Component {
   validateFormData(formData) {
     const { isBulkAssign } = this.props;
     const emailTemplateKey = 'email-template-body';
+    const templateErrorMessages = {
+      'email-template-greeting': 'Email greeting must be 300 characters or less.',
+      'email-template-closing': 'Email closing must be 300 characters or less.',
+    };
 
     let errors;
 
@@ -232,6 +266,14 @@ class CodeAssignmentModal extends React.Component {
     }
 
     /* eslint-disable no-underscore-dangle */
+    // validate greeting and closing templates
+    Object.entries(templateErrorMessages).forEach(([key, message]) => {
+      if (formData[key].length > 300) {
+        errors[key] = message;
+        errors._error.push(message);
+      }
+    });
+
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';
       errors[emailTemplateKey] = message;
@@ -254,6 +296,34 @@ class CodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
+  handleFieldOnChange(event, newValue, previousValue, name) {
+    this.setState(prevState => ({
+      fields: {
+        ...prevState.fields,
+        [name]: newValue,
+      },
+    }));
+  }
+
+  isSaveDisabled() {
+    const { initialValues, submitting } = this.props;
+    const fieldValues = Object.values(this.state.fields);
+    const fields = Object.entries(this.state.fields);
+
+    // disable button if form is in submitting state
+    if (submitting) return true;
+
+    // disable button if any field as text greater than 300
+    const valueNotInRange = fieldValues.some(value => value && value.length > 300);
+    if (valueNotInRange) return true;
+
+    // enable button if any field value has changed and new value is different from original value
+    const anyValueChanged = fields.some(([key, value]) => value && value !== initialValues[key]);
+    if (anyValueChanged) return false;
+
+    return true;
+  }
+
   handleModalSubmit(formData) {
     const {
       isBulkAssign,
@@ -265,6 +335,8 @@ class CodeAssignmentModal extends React.Component {
       },
       sendCodeAssignment,
     } = this.props;
+
+    this.setMode('assign');
 
     // Validate form data
     this.validateFormData(formData);
@@ -315,13 +387,18 @@ class CodeAssignmentModal extends React.Component {
       data,
       isBulkAssign,
       submitFailed,
+      submitSucceeded,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
+        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <React.Fragment>
@@ -350,6 +427,7 @@ class CodeAssignmentModal extends React.Component {
                   Customize Greeting
                 </React.Fragment>
               }
+              onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
@@ -371,6 +449,7 @@ class CodeAssignmentModal extends React.Component {
                   Customize Closing
                 </React.Fragment>
               }
+              onChange={this.handleFieldOnChange}
             />
           </div>
         </form>
@@ -379,7 +458,12 @@ class CodeAssignmentModal extends React.Component {
   }
 
   renderErrorMessage() {
+    const modeErrors = {
+      assign: 'Unable to assign codes',
+      save: 'Unable to save template',
+    };
     const { error } = this.props;
+    const { mode } = this.state;
 
     return (
       <div
@@ -389,7 +473,7 @@ class CodeAssignmentModal extends React.Component {
         <StatusAlert
           alertType="danger"
           iconClassName="fa fa-times-circle"
-          title="Unable to assign codes"
+          title={modeErrors[mode]}
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
@@ -397,6 +481,22 @@ class CodeAssignmentModal extends React.Component {
           ) : (
             error[0]
           )}
+        />
+      </div>
+    );
+  }
+
+  renderSaveTemplateMessage() {
+    return (
+      <div
+        ref={this.errorMessageRef}
+        tabIndex="-1"
+      >
+        <StatusAlert
+          alertType="success"
+          iconClassName="fa fa-check"
+          message="Template saved successfully"
+          dismissible
         />
       </div>
     );
@@ -420,6 +520,9 @@ class CodeAssignmentModal extends React.Component {
       submitting,
       handleSubmit,
     } = this.props;
+    const {
+      mode,
+    } = this.state;
 
     return (
       <React.Fragment>
@@ -434,10 +537,17 @@ class CodeAssignmentModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>
-                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === 'assign' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
               </React.Fragment>
             </Button>,
+            <SaveTemplateButton
+              templateType="assign"
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+              templateData={this.getTemplatesData()}
+              disabled={this.isSaveDisabled()}
+            />,
           ]}
           onClose={onClose}
           open

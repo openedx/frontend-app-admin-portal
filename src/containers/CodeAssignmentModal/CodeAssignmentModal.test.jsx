@@ -20,6 +20,7 @@ const initialState = {
     },
   },
   emailTemplate: {
+    saving: false,
     loading: false,
     error: null,
     assign: {
@@ -61,5 +62,16 @@ describe('CodeAssignmentModalWrapper', () => {
   it('renders bulk assignment modal', () => {
     const wrapper = mount(<CodeAssignmentModalWrapper isBulkAssign />);
     expect(wrapper.find('BulkAssignFields')).toHaveLength(1);
+  });
+
+  it('renders <SaveTemplateButton />', () => {
+    const wrapper = mount(<CodeAssignmentModalWrapper />);
+    const saveTemplateButton = wrapper.find('SaveTemplateButton');
+    expect(saveTemplateButton).toHaveLength(1);
+    expect(saveTemplateButton.props().disabled).toEqual(true);
+    expect(saveTemplateButton.props().saving).toEqual(false);
+    expect(saveTemplateButton.props().templateType).toEqual('assign');
+    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
+    expect(saveTemplateButton.props().templateData).toEqual(initialState.emailTemplate.assign);
   });
 });
