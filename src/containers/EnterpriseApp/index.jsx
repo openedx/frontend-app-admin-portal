@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     enterprises: enterpriseListState.data,
     error: state.portalConfiguration.error,
     enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
+    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
     enterpriseId: state.portalConfiguration.enterpriseId,
   };
 };

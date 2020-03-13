@@ -78,7 +78,12 @@ class EnterpriseApp extends React.Component {
   }
 
   render() {
-    const { error, match, enableCodeManagementScreen } = this.props;
+    const {
+      error,
+      match,
+      enableCodeManagementScreen,
+      enableSubscriptionManagementScreen,
+    } = this.props;
     const { sidebarWidth } = this.state;
     const baseUrl = match.url;
     const defaultContentPadding = 10; // 10px for appropriate padding
@@ -151,6 +156,16 @@ class EnterpriseApp extends React.Component {
                       )}
                     />
                   }
+                  {features.SUBSCRIPTION_MANAGEMENT && enableSubscriptionManagementScreen &&
+                    <Route
+                      key="subscription-management"
+                      exact
+                      path={`${baseUrl}/admin/subscriptions`}
+                      render={routeProps =>
+                        <CodeManagementPage {...routeProps} />
+                      }
+                    />
+                  }
                   <Route exact path={`${baseUrl}/support`} component={SupportPage} />
                   <Route path="" component={NotFoundPage} />
                 </Switch>
@@ -178,6 +193,7 @@ EnterpriseApp.propTypes = {
   location: PropTypes.shape({}).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool.isRequired,
+  enableSubscriptionManagementScreen: PropTypes.bool.isRequired,
   error: PropTypes.instanceOf(Error),
 };
 

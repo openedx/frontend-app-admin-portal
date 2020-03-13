@@ -22,6 +22,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
     enableCodeManagementScreen: true,
+    enableSubscriptionManagementScreen: true,
   },
   csv: {},
   table: {

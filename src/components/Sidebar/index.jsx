@@ -40,7 +40,12 @@ class Sidebar extends React.Component {
   }
 
   getMenuItems() {
-    const { baseUrl, enableCodeManagementScreen, enableReportingConfigScreen } = this.props;
+    const {
+      baseUrl,
+      enableCodeManagementScreen,
+      enableReportingConfigScreen,
+      enableSubscriptionManagementScreen,
+    } = this.props;
 
     return [
       {
@@ -59,6 +64,12 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/reporting`,
         iconClassName: 'fa-file',
         hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
+      },
+      {
+        title: 'Subscription Management',
+        to: `${baseUrl}/admin/subscriptions`,
+        iconClassName: 'fa-credit-card',
+        hidden: !features.SUBSCRIPTION_MANAGEMENT || !enableSubscriptionManagementScreen,
       },
     ];
   }
@@ -143,6 +154,7 @@ Sidebar.propTypes = {
   isExpandedByToggle: PropTypes.bool.isRequired,
   enableCodeManagementScreen: PropTypes.bool.isRequired,
   enableReportingConfigScreen: PropTypes.bool.isRequired,
+  enableSubscriptionManagementScreen: PropTypes.bool.isRequired,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };
