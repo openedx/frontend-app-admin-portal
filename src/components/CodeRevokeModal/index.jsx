@@ -78,24 +78,11 @@ class CodeRevokeModal extends React.Component {
 
   validateFormData(formData) {
     const emailTemplateKey = 'email-template-body';
-    const templateErrorMessages = {
-      'email-template-greeting': 'Email greeting must be 300 characters or less.',
-      'email-template-closing': 'Email closing must be 300 characters or less.',
-    };
-
     const errors = {
       _error: [],
     };
 
     /* eslint-disable no-underscore-dangle */
-    // validate greeting and closing templates
-    Object.entries(templateErrorMessages).forEach(([key, message]) => {
-      if (formData[key] && formData[key].length > 300) {
-        errors[key] = message;
-        errors._error.push(message);
-      }
-    });
-
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';
       errors[emailTemplateKey] = message;
