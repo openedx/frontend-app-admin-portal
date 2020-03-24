@@ -86,9 +86,8 @@ class CodeAssignmentModal extends React.Component {
   getTemplatesData() {
     const data = { ...this.props.initialValues };
     Object.entries(this.state.fields).forEach(([key, value]) => {
-      if (value) {
-        data[key] = value;
-      }
+      // Should update for empty greeting and closing as well
+      data[key] = value === null ? data[key] : value;
     });
 
     return data;
@@ -268,7 +267,7 @@ class CodeAssignmentModal extends React.Component {
     /* eslint-disable no-underscore-dangle */
     // validate greeting and closing templates
     Object.entries(templateErrorMessages).forEach(([key, message]) => {
-      if (formData[key].length > 300) {
+      if (formData[key] && formData[key].length > 300) {
         errors[key] = message;
         errors._error.push(message);
       }
@@ -318,8 +317,8 @@ class CodeAssignmentModal extends React.Component {
     if (valueNotInRange) return true;
 
     // enable button if any field value has changed and new value is different from original value
-    const anyValueChanged = fields.some(([key, value]) => value && value !== initialValues[key]);
-    if (anyValueChanged) return false;
+    const changed = fields.some(([key, value]) => value !== null && value !== initialValues[key]);
+    if (changed) return false;
 
     return true;
   }
