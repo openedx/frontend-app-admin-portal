@@ -37,10 +37,10 @@ export default function SubscriptionManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ users, details, handleSearch }) => (
+                  {({ details, handleSearch }) => (
                     <React.Fragment>
                       <p className="lead">
-                        {users.licensed.length + users.pending.length}
+                        {details.numLicensesAllocated}
                         {' of '}
                         {details.totalLicensesAvailable} licenses allocated
                       </p>

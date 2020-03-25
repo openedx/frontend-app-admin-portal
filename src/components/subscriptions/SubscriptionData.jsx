@@ -46,6 +46,11 @@ export default function SubscriptionData({ children }) {
         .then((responses) => {
           const detailsResponse = responses[0];
           const transformedUsersResponse = transformUsers(responses[1]);
+
+          detailsResponse.numLicensesAllocated = (
+            transformedUsersResponse.licensed.length + transformedUsersResponse.pending.length
+          );
+
           setDetails(detailsResponse);
           setUsers(transformedUsersResponse);
         })

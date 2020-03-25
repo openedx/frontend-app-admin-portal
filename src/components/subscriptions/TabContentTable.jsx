@@ -35,24 +35,28 @@ export default function TabContentTable() {
       switch (activeTab) {
         case TAB_ALL_USERS:
           return {
+            title: 'All Users',
             users: users.all,
             paginationLabel: 'pagination for all users',
             noResultsLabel: 'There are no users.',
           };
         case TAB_PENDING_USERS:
           return {
+            title: 'Pending Users',
             users: users.pending,
             paginationLabel: 'pagination for pending users',
             noResultsLabel: 'There are no pending users.',
           };
         case TAB_LICENSED_USERS:
           return {
+            title: 'Licensed Users',
             users: users.licensed,
             paginationLabel: 'pagination for licensed users',
             noResultsLabel: 'There are no licensed users.',
           };
         case TAB_DEACTIVATED_USERS:
           return {
+            title: 'Deactivated Users',
             users: users.deactivated,
             paginationLabel: 'pagination for deactivated users',
             noResultsLabel: 'There are no deactivated users.',
@@ -75,30 +79,36 @@ export default function TabContentTable() {
 
   return (
     <React.Fragment>
-      <div className="table-responsive">
-        <Table
-          data={tableData}
-          columns={columns}
-          className="table-striped"
-        />
-      </div>
+      <h3 className="h4 mb-3">{activeTabData.title}</h3>
       {tableData.length > 0 ? (
-        <div className="mt-3 d-flex justify-content-center">
-          <Pagination
-            // eslint-disable-next-line no-console
-            onPageSelect={page => console.log(page)}
-            pageCount={Math.ceil(activeTabData.users.length / 10)}
-            currentPage={1}
-            paginationLabel={activeTabData.paginationLabel}
-          />
-        </div>
+        <React.Fragment>
+          <div className="table-responsive">
+            <Table
+              data={tableData}
+              columns={columns}
+              className="table-striped"
+            />
+          </div>
+          <div className="mt-3 d-flex justify-content-center">
+            <Pagination
+              // eslint-disable-next-line no-console
+              onPageSelect={page => console.log(page)}
+              pageCount={Math.ceil(activeTabData.users.length / 10)}
+              currentPage={1}
+              paginationLabel={activeTabData.paginationLabel}
+            />
+          </div>
+        </React.Fragment>
       ) : (
-        <StatusAlert
-          alertType="warning"
-          dialog={activeTabData.noResultsLabel}
-          dismissible={false}
-          open
-        />
+        <React.Fragment>
+          <hr />
+          <StatusAlert
+            alertType="warning"
+            dialog={activeTabData.noResultsLabel}
+            dismissible={false}
+            open
+          />
+        </React.Fragment>
       )}
     </React.Fragment>
   );
