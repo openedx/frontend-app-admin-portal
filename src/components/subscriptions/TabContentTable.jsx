@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { Pagination, Table } from '@edx/paragon';
+import { Pagination, StatusAlert, Table } from '@edx/paragon';
 
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
@@ -37,21 +37,25 @@ export default function TabContentTable() {
           return {
             users: users.all,
             paginationLabel: 'pagination for all users',
+            noResultsLabel: 'There are no users.',
           };
         case TAB_PENDING_USERS:
           return {
             users: users.pending,
             paginationLabel: 'pagination for pending users',
+            noResultsLabel: 'There are no pending users.',
           };
         case TAB_LICENSED_USERS:
           return {
             users: users.licensed,
             paginationLabel: 'pagination for licensed users',
+            noResultsLabel: 'There are no licensed users.',
           };
         case TAB_DEACTIVATED_USERS:
           return {
             users: users.deactivated,
             paginationLabel: 'pagination for deactivated users',
+            noResultsLabel: 'There are no deactivated users.',
           };
         default:
           return null;
@@ -78,15 +82,24 @@ export default function TabContentTable() {
           className="table-striped"
         />
       </div>
-      <div className="mt-3 d-flex justify-content-center">
-        <Pagination
-          // eslint-disable-next-line no-console
-          onPageSelect={page => console.log(page)}
-          pageCount={Math.ceil(activeTabData.users.length / 10)}
-          currentPage={1}
-          paginationLabel={activeTabData.paginationLabel}
+      {tableData.length > 0 ? (
+        <div className="mt-3 d-flex justify-content-center">
+          <Pagination
+            // eslint-disable-next-line no-console
+            onPageSelect={page => console.log(page)}
+            pageCount={Math.ceil(activeTabData.users.length / 10)}
+            currentPage={1}
+            paginationLabel={activeTabData.paginationLabel}
+          />
+        </div>
+      ) : (
+        <StatusAlert
+          alertType="warning"
+          dialog={activeTabData.noResultsLabel}
+          dismissible={false}
+          open
         />
-      </div>
+      )}
     </React.Fragment>
   );
 }

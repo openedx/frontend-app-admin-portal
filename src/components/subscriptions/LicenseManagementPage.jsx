@@ -37,28 +37,30 @@ export default function LicenseManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ users, details }) => (
-                    <p className="lead">
-                      {users.licensed.length + users.pending.length}
-                      {' of '}
-                      {details.totalLicensesAvailable} licenses allocated
-                    </p>
+                  {({ users, details, handleSearch }) => (
+                    <React.Fragment>
+                      <p className="lead">
+                        {users.licensed.length + users.pending.length}
+                        {' of '}
+                        {details.totalLicensesAvailable} licenses allocated
+                      </p>
+                      <div className="my-3 row">
+                        <div className="col-12 col-lg-8 mb-3 mb-lg-0">
+                          <SearchBar
+                            inputLabel="Search:"
+                            // eslint-disable-next-line no-console
+                            onSearch={query => handleSearch(query)}
+                            // eslint-disable-next-line no-console
+                            onClear={() => handleSearch()}
+                          />
+                        </div>
+                        <div className="col-12 col-lg-4">
+                          <AddUsersDropdown />
+                        </div>
+                      </div>
+                    </React.Fragment>
                   )}
                 </SubscriptionConsumer>
-                <div className="my-3 row">
-                  <div className="col-12 col-lg-8 mb-3 mb-lg-0">
-                    <SearchBar
-                      inputLabel="Search:"
-                      // eslint-disable-next-line no-console
-                      onSearch={query => console.log(query)}
-                      // eslint-disable-next-line no-console
-                      onClear={() => console.log('search cleared')}
-                    />
-                  </div>
-                  <div className="col-12 col-lg-4">
-                    <AddUsersDropdown />
-                  </div>
-                </div>
               </div>
               <div className="row my-4">
                 <div className="col-12 col-lg-3">

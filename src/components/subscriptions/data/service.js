@@ -8,6 +8,12 @@ function createUser(licenseStatus) {
   };
 }
 
+const users = [
+  [...Array(6)].map(() => createUser('active')),
+  [...Array(3)].map(() => createUser('assigned')),
+  [...Array(1)].map(() => createUser('deactivated')),
+].flat();
+
 export function fetchSubscriptionDetails() {
   return Promise.resolve({
     uuid: faker.random.uuid(),
@@ -17,12 +23,9 @@ export function fetchSubscriptionDetails() {
   });
 }
 
-export function fetchSubscriptionUsers() {
-  const users = [
-    [...Array(6)].map(() => createUser('active')),
-    [...Array(3)].map(() => createUser('assigned')),
-    [...Array(1)].map(() => createUser('deactivated')),
-  ].flat();
-
+export function fetchSubscriptionUsers(searchQuery) {
+  if (searchQuery) {
+    return Promise.resolve(users.filter(user => user.emailAddress === searchQuery));
+  }
   return Promise.resolve(users);
 }

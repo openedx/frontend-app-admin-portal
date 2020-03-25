@@ -37,30 +37,39 @@ export default function SubscriptionData({ children }) {
     deactivated: [],
   });
 
+  useEffect(
+    () => {
+      Promise.all([
+        fetchSubscriptionDetails(),
+        fetchSubscriptionUsers(),
+      ])
+        .then((responses) => {
+          const detailsResponse = responses[0];
+          const transformedUsersResponse = transformUsers(responses[1]);
+          setDetails(detailsResponse);
+          setUsers(transformedUsersResponse);
+        })
+        // eslint-disable-next-line no-console
+        .catch(error => console.log(error));
+    },
+    [],
+  );
+
   const value = useMemo(
     () => ({
       details,
       users,
       activeTab,
       setActiveTab,
+      handleSearch: (searchQuery) => {
+        fetchSubscriptionUsers(searchQuery).then((response) => {
+          const transformedUsersResponse = transformUsers(response);
+          setUsers(transformedUsersResponse);
+        });
+      },
     }),
     [details, users, activeTab, setActiveTab],
   );
-
-  useEffect(() => {
-    Promise.all([
-      fetchSubscriptionDetails(),
-      fetchSubscriptionUsers(),
-    ])
-      .then((responses) => {
-        const detailsResponse = responses[0];
-        const usersResponse = transformUsers(responses[1]);
-        setDetails(detailsResponse);
-        setUsers(usersResponse);
-      })
-      // eslint-disable-next-line no-console
-      .catch(error => console.log(error));
-  }, []);
 
   return (
     <SubscriptionContext.Provider value={value}>
