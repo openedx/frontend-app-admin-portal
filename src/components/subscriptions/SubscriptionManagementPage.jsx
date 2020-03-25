@@ -45,7 +45,7 @@ export default function SubscriptionManagementPage() {
                         {details.totalLicensesAvailable} licenses allocated
                       </p>
                       <div className="my-3 row">
-                        <div className="col-12 col-lg-8 mb-3 mb-lg-0">
+                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
                           <SearchBar
                             inputLabel="Search:"
                             // eslint-disable-next-line no-console
@@ -54,7 +54,7 @@ export default function SubscriptionManagementPage() {
                             onClear={() => handleSearch()}
                           />
                         </div>
-                        <div className="col-12 col-lg-4">
+                        <div className="col-12 col-lg-6">
                           <AddUsersDropdown />
                         </div>
                       </div>
