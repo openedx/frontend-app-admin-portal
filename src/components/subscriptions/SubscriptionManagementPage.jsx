@@ -9,11 +9,11 @@ import AddUsersDropdown from './AddUsersDropdown';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
 
-import './styles/LicenseManagement.scss';
+import './styles/SubscriptionManagementPage.scss';
 
 const PAGE_TITLE = 'Subscription Management';
 
-export default function LicenseManagementPage() {
+export default function SubscriptionManagementPage() {
   return (
     <SubscriptionData>
       <main role="main" className="manage-subscription">

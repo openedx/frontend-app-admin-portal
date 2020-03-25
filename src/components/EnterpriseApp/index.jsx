@@ -18,7 +18,7 @@ import { features } from '../../config';
 
 import './EnterpriseApp.scss';
 import LoadingMessage from '../LoadingMessage';
-import { LicenseManagementPage } from '../subscriptions';
+import { SubscriptionManagementPage } from '../subscriptions';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -163,7 +163,7 @@ class EnterpriseApp extends React.Component {
                       exact
                       path={`${baseUrl}/admin/subscription`}
                       render={routeProps =>
-                        <LicenseManagementPage {...routeProps} />
+                        <SubscriptionManagementPage {...routeProps} />
                       }
                     />
                   }
