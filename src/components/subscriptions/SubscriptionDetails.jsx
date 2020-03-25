@@ -15,7 +15,7 @@ export default function SubscriptionDetails() {
             <small>Start Date</small>
           </div>
           <div className="lead">
-            {moment(details.startDate).format('MMMM DD, YYYY')}
+            {moment(details.startDate).format('MMMM D, YYYY')}
           </div>
         </div>
         <div>
@@ -23,7 +23,7 @@ export default function SubscriptionDetails() {
             <small>End Date</small>
           </div>
           <div className="lead">
-            {moment(details.endDate).format('MMMM DD, YYYY')}
+            {moment(details.endDate).format('MMMM D, YYYY')}
           </div>
         </div>
       </div>
