@@ -12,13 +12,13 @@ import ReportingConfig from '../../components/ReportingConfig';
 import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
+import LoadingMessage from '../LoadingMessage';
+import { SubscriptionManagementPage } from '../subscriptions';
 
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
 import './EnterpriseApp.scss';
-import LoadingMessage from '../LoadingMessage';
-import { SubscriptionManagementPage } from '../subscriptions';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
