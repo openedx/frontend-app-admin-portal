@@ -1,4 +1,5 @@
 import faker from 'faker';
+import moment from 'moment';
 
 function createUser(licenseStatus) {
   return {
@@ -15,11 +16,16 @@ const users = [
 ].flat();
 
 export function fetchSubscriptionDetails() {
+  const purchaseDate = moment(faker.date.past());
+  const startDate = moment(purchaseDate).add(15, 'days');
+  const endDate = moment(startDate).add(6, 'months');
+
   return Promise.resolve({
     uuid: faker.random.uuid(),
-    startDate: faker.date.past(),
-    endDate: faker.date.future(),
     totalLicensesAvailable: faker.random.number({ min: 10, max: 1000 }),
+    purchaseDate: purchaseDate.toISOString(),
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
   });
 }
 

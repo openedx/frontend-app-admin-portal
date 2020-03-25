@@ -12,6 +12,14 @@ export default function SubscriptionDetails() {
       <div className="mt-3 d-flex align-items-center">
         <div className="mr-5">
           <div className="text-uppercase text-muted">
+            <small>Purchase Date</small>
+          </div>
+          <div className="lead">
+            {moment(details.purchaseDate).format('MMMM D, YYYY')}
+          </div>
+        </div>
+        <div className="mr-5">
+          <div className="text-uppercase text-muted">
             <small>Start Date</small>
           </div>
           <div className="lead">
