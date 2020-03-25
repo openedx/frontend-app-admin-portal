@@ -3,7 +3,7 @@
 .manage-subscription {
   .add-users-dropdown {
     .dropdown-menu {
-      z-index: 1040;
+      z-index: $zindex-fixed;
     }
   }
 
