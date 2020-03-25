@@ -58,6 +58,7 @@ export default function SubscriptionData({ children }) {
         setDetails(detailsResponse);
         setUsers(usersResponse);
       })
+      // eslint-disable-next-line no-console
       .catch(error => console.log(error));
   }, []);
 

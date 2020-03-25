@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Pagination, Table } from '@edx/paragon';
 
 import LicenseStatus from './LicenseStatus';
@@ -30,31 +30,43 @@ const columns = [
 export default function TabContentTable() {
   const { users, activeTab } = useContext(SubscriptionContext);
 
-  const getUsersForActiveTab = useCallback(
+  const activeTabData = useMemo(
     () => {
       switch (activeTab) {
         case TAB_ALL_USERS:
-          return users.all;
+          return {
+            users: users.all,
+            paginationLabel: 'pagination for all users',
+          };
         case TAB_PENDING_USERS:
-          return users.pending;
+          return {
+            users: users.pending,
+            paginationLabel: 'pagination for pending users',
+          };
         case TAB_LICENSED_USERS:
-          return users.licensed;
+          return {
+            users: users.licensed,
+            paginationLabel: 'pagination for licensed users',
+          };
         case TAB_DEACTIVATED_USERS:
-          return users.deactivated;
+          return {
+            users: users.deactivated,
+            paginationLabel: 'pagination for deactivated users',
+          };
         default:
-          return [];
+          return null;
       }
     },
     [activeTab, users],
   );
 
   const tableData = useMemo(
-    () => getUsersForActiveTab().map(user => ({
+    () => activeTabData.users.map(user => ({
       emailAddress: user.emailAddress,
       status: <LicenseStatus user={user} />,
       actions: <LicenseActions user={user} />,
     })),
-    [activeTab, users],
+    [activeTabData],
   );
 
   return (
@@ -68,10 +80,11 @@ export default function TabContentTable() {
       </div>
       <div className="mt-3 d-flex justify-content-center">
         <Pagination
+          // eslint-disable-next-line no-console
           onPageSelect={page => console.log(page)}
-          pageCount={Math.ceil(getUsersForActiveTab().length / 10)}
+          pageCount={Math.ceil(activeTabData.users.length / 10)}
           currentPage={1}
-          paginationLabel="all users pagination"
+          paginationLabel={activeTabData.paginationLabel}
         />
       </div>
     </React.Fragment>

@@ -10,14 +10,17 @@ export default function LicenseAction({ user }) {
         case 'active':
           return [{
             text: 'Revoke',
+            // eslint-disable-next-line no-console
             handleClick: () => { console.log('Revoke clicked for', user); },
           }];
         case 'assigned':
           return [{
             text: 'Remind',
+            // eslint-disable-next-line no-console
             handleClick: () => { console.log('Remind clicked for', user); },
           }, {
             text: 'Revoke',
+            // eslint-disable-next-line no-console
             handleClick: () => { console.log('Revoke clicked for', user); },
           }];
         default:

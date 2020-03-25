@@ -23,5 +23,6 @@ export function fetchSubscriptionUsers() {
     [...Array(3)].map(() => createUser('assigned')),
     [...Array(1)].map(() => createUser('deactivated')),
   ].flat();
+
   return Promise.resolve(users);
 }

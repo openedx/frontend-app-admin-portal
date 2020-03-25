@@ -1,7 +1,5 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Pagination } from '@edx/paragon';
-import faker from 'faker';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
@@ -41,7 +39,9 @@ export default function LicenseManagementPage() {
                 <SubscriptionConsumer>
                   {({ users, details }) => (
                     <p className="lead">
-                      {users.licensed.length + users.pending.length} of {details.totalLicensesAvailable} licenses allocated
+                      {users.licensed.length + users.pending.length}
+                      {' of '}
+                      {details.totalLicensesAvailable} licenses allocated
                     </p>
                   )}
                 </SubscriptionConsumer>
@@ -49,8 +49,10 @@ export default function LicenseManagementPage() {
                   <div className="col-12 col-lg-8 mb-3 mb-lg-0">
                     <SearchBar
                       inputLabel="Search:"
+                      // eslint-disable-next-line no-console
                       onSearch={query => console.log(query)}
-                      onClear={() => {}}
+                      // eslint-disable-next-line no-console
+                      onClear={() => console.log('search cleared')}
                     />
                   </div>
                   <div className="col-12 col-lg-4">
