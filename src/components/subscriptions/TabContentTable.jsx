@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useState, useMemo, useEffect } from 'react';
 import { Pagination, StatusAlert, Table } from '@edx/paragon';
 
 import LicenseStatus from './LicenseStatus';
@@ -10,6 +10,7 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
+  PAGE_SIZE,
 } from './constants';
 
 const columns = [
@@ -28,7 +29,29 @@ const columns = [
 ];
 
 export default function TabContentTable() {
-  const { users, activeTab } = useContext(SubscriptionContext);
+  const { activeTab, users, fetchSubscriptionUsers } = useContext(SubscriptionContext);
+
+  useEffect(() => {
+    let statusFilter;
+
+    switch (activeTab) {
+      case TAB_LICENSED_USERS:
+        statusFilter = 'active';
+        break;
+      case TAB_PENDING_USERS:
+        statusFilter = 'assigned';
+        break;
+      case TAB_DEACTIVATED_USERS:
+        statusFilter = 'deactivated';
+        break;
+      default:
+        break;
+    }
+
+    console.log('TabContentTable', users);
+
+    fetchSubscriptionUsers({ statusFilter });
+  }, [activeTab]);
 
   const activeTabData = useMemo(
     () => {
@@ -36,28 +59,24 @@ export default function TabContentTable() {
         case TAB_ALL_USERS:
           return {
             title: 'All Users',
-            users: users.all,
             paginationLabel: 'pagination for all users',
             noResultsLabel: 'There are no users.',
           };
         case TAB_PENDING_USERS:
           return {
             title: 'Pending Users',
-            users: users.pending,
             paginationLabel: 'pagination for pending users',
             noResultsLabel: 'There are no pending users.',
           };
         case TAB_LICENSED_USERS:
           return {
             title: 'Licensed Users',
-            users: users.licensed,
             paginationLabel: 'pagination for licensed users',
             noResultsLabel: 'There are no licensed users.',
           };
         case TAB_DEACTIVATED_USERS:
           return {
             title: 'Deactivated Users',
-            users: users.deactivated,
             paginationLabel: 'pagination for deactivated users',
             noResultsLabel: 'There are no deactivated users.',
           };
@@ -65,16 +84,16 @@ export default function TabContentTable() {
           return null;
       }
     },
-    [activeTab, users],
+    [activeTab],
   );
 
   const tableData = useMemo(
-    () => activeTabData.users.map(user => ({
+    () => users.results.map(user => ({
       emailAddress: user.emailAddress,
       status: <LicenseStatus user={user} />,
       actions: <LicenseActions user={user} />,
     })),
-    [activeTabData],
+    [users],
   );
 
   return (
@@ -93,7 +112,7 @@ export default function TabContentTable() {
             <Pagination
               // eslint-disable-next-line no-console
               onPageSelect={page => console.log(page)}
-              pageCount={Math.ceil(activeTabData.users.length / 10)}
+              pageCount={Math.ceil(users.count / PAGE_SIZE)}
               currentPage={1}
               paginationLabel={activeTabData.paginationLabel}
             />

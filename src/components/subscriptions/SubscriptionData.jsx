@@ -8,34 +8,10 @@ import { TAB_ALL_USERS } from './constants';
 export const SubscriptionContext = createContext();
 export const SubscriptionConsumer = SubscriptionContext.Consumer;
 
-function transformUsers(users) {
-  const getLicensedUsers = () => users.filter(user => user.licenseStatus === 'active');
-  const getPendingUsers = () => users.filter(user => user.licenseStatus === 'assigned');
-  const getDeactivatedUsers = () => users.filter(user => user.licenseStatus === 'deactivated');
-
-  const getAllUsers = () => [
-    ...getLicensedUsers(),
-    ...getPendingUsers(),
-    ...getDeactivatedUsers(),
-  ];
-
-  return {
-    all: getAllUsers(),
-    licensed: getLicensedUsers(),
-    pending: getPendingUsers(),
-    deactivated: getDeactivatedUsers(),
-  };
-}
-
 export default function SubscriptionData({ children }) {
   const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
-  const [details, setDetails] = useState({});
-  const [users, setUsers] = useState({
-    all: [],
-    licensed: [],
-    pending: [],
-    deactivated: [],
-  });
+  const [details, setDetails] = useState();
+  const [users, setUsers] = useState();
 
   useEffect(
     () => {
@@ -45,14 +21,10 @@ export default function SubscriptionData({ children }) {
       ])
         .then((responses) => {
           const detailsResponse = responses[0];
-          const transformedUsersResponse = transformUsers(responses[1]);
-
-          detailsResponse.numLicensesAllocated = (
-            transformedUsersResponse.licensed.length + transformedUsersResponse.pending.length
-          );
+          const usersResponse = responses[1];
 
           setDetails(detailsResponse);
-          setUsers(transformedUsersResponse);
+          setUsers(usersResponse);
         })
         // eslint-disable-next-line no-console
         .catch(error => console.log(error));
@@ -66,21 +38,27 @@ export default function SubscriptionData({ children }) {
       users,
       activeTab,
       setActiveTab,
-      handleSearch: (searchQuery) => {
-        fetchSubscriptionUsers(searchQuery).then((response) => {
-          const transformedUsersResponse = transformUsers(response);
-          setUsers(transformedUsersResponse);
-        });
+      fetchSubscriptionUsers: (options) => {
+        fetchSubscriptionUsers(options).then(response => setUsers(response));
       },
     }),
     [details, users, activeTab, setActiveTab],
   );
 
-  return (
-    <SubscriptionContext.Provider value={value}>
-      {children}
-    </SubscriptionContext.Provider>
+  const hasInitialData = useMemo(
+    () => !!(details && users),
+    [details, users],
   );
+
+  if (hasInitialData) {
+    return (
+      <SubscriptionContext.Provider value={value}>
+        {children}
+      </SubscriptionContext.Provider>
+    );
+  }
+
+  return null;
 }
 
 SubscriptionData.propTypes = {

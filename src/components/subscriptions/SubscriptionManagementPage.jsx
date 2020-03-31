@@ -37,21 +37,21 @@ export default function SubscriptionManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ details, handleSearch }) => (
+                  {({ details, fetchSubscriptionUsers }) => (
                     <React.Fragment>
                       <p className="lead">
-                        {details.numLicensesAllocated}
+                        {details.licenses.allocated}
                         {' of '}
-                        {details.totalLicensesAvailable} licenses allocated
+                        {details.licenses.available} licenses allocated
                       </p>
                       <div className="my-3 row">
                         <div className="col-12 col-lg-6 mb-3 mb-lg-0">
                           <SearchBar
                             inputLabel="Search:"
                             // eslint-disable-next-line no-console
-                            onSearch={query => handleSearch(query)}
+                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
                             // eslint-disable-next-line no-console
-                            onClear={() => handleSearch()}
+                            onClear={() => fetchSubscriptionUsers()}
                           />
                         </div>
                         <div className="col-12 col-lg-6">
