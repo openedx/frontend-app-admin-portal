@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo, useEffect } from 'react';
 import { Pagination, StatusAlert, Table } from '@edx/paragon';
 
 import LicenseStatus from './LicenseStatus';
@@ -47,8 +47,6 @@ export default function TabContentTable() {
       default:
         break;
     }
-
-    console.log('TabContentTable', users);
 
     fetchSubscriptionUsers({ statusFilter });
   }, [activeTab]);
