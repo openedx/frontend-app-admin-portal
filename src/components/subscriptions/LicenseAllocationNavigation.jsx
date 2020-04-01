@@ -11,36 +11,28 @@ import {
 } from './constants';
 
 export default function LicenseAllocationNavigation() {
-  const { details, activeTab, setActiveTab } = useContext(SubscriptionContext);
-
-  const allUsersCount = useMemo(
-    () => {
-      const { licenses } = details;
-      return licenses.active + licenses.assigned + licenses.deactivated;
-    },
-    [details],
-  );
+  const { overview, activeTab, setActiveTab } = useContext(SubscriptionContext);
 
   const tabs = useMemo(
     () => [
       {
         key: TAB_ALL_USERS,
-        text: `All Users (${allUsersCount})`,
+        text: `All Users (${overview.all})`,
       },
       {
         key: TAB_LICENSED_USERS,
-        text: `Licensed Users (${details.licenses.active})`,
+        text: `Licensed Users (${overview.active})`,
       },
       {
         key: TAB_PENDING_USERS,
-        text: `Pending Users (${details.licenses.assigned})`,
+        text: `Pending Users (${overview.assigned})`,
       },
       {
         key: TAB_DEACTIVATED_USERS,
-        text: `Deactivated Users (${details.licenses.deactivated})`,
+        text: `Deactivated Users (${overview.deactivated})`,
       },
     ],
-    [allUsersCount, details],
+    [overview],
   );
 
   return (

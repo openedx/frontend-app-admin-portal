@@ -17,20 +17,23 @@ const users = [
   [...Array(1)].map(() => createUser('deactivated')),
 ].flat();
 
-const getLicensedUsers = () => users.filter(user => user.licenseStatus === 'active');
-const getPendingUsers = () => users.filter(user => user.licenseStatus === 'assigned');
-const getDeactivatedUsers = () => users.filter(user => user.licenseStatus === 'deactivated');
+const getUsersByStatus = ({ status, list }) => list.filter(user => user.licenseStatus === status);
 
+function getAllocatedLicensesCount() {
+  const licensedUsers = getUsersByStatus({ status: 'active', list: users });
+  const pendingUsers = getUsersByStatus({ status: 'assigned', list: users });
+  return licensedUsers.length + pendingUsers.length;
+}
+
+/**
+ * This function mocks out the response from a non-existant API endpoint. Once the endpoint
+ * exists, the contents of this function will use the `apiClient` to make an actual API
+ * call to get this data.
+ */
 export function fetchSubscriptionDetails() {
   const purchaseDate = moment(faker.date.past());
   const startDate = moment(purchaseDate).add(15, 'days');
   const endDate = moment(startDate).add(6, 'months');
-
-  const usersByLicenseStatus = {
-    active: getLicensedUsers().length,
-    assigned: getPendingUsers().length,
-    deactivated: getDeactivatedUsers().length,
-  };
 
   return Promise.resolve({
     uuid: faker.random.uuid(),
@@ -38,15 +41,43 @@ export function fetchSubscriptionDetails() {
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
     licenses: {
-      available: faker.random.number({ min: 10, max: 1000 }),
-      allocated: usersByLicenseStatus.active + usersByLicenseStatus.assigned,
-      ...usersByLicenseStatus,
+      allocated: getAllocatedLicensesCount(),
+      available: faker.random.number({ min: 300, max: 1000 }),
     },
   });
 }
 
+/**
+ * This function mocks out the response from a non-existant API endpoint. Once the endpoint
+ * exists, the contents of this function will use the `apiClient` to make an actual API
+ * call to get this data.
+ */
+export function fetchSubscriptionUsersOverview(options = {}) {
+  const { searchQuery } = options;
+  let userList = users;
+
+  if (searchQuery) {
+    userList = userList.filter(user => user.emailAddress === searchQuery);
+  }
+
+  const response = {
+    all: userList.length,
+    active: getUsersByStatus({ status: 'active', list: userList }).length,
+    assigned: getUsersByStatus({ status: 'assigned', list: userList }).length,
+    deactivated: getUsersByStatus({ status: 'deactivated', list: userList }).length,
+  };
+
+  return response;
+}
+
+/**
+ * This function mocks out the response from a non-existant API endpoint. Once the endpoint
+ * exists, the contents of this function will use the `apiClient` to make an actual API
+ * call to get this data.
+ */
 export function fetchSubscriptionUsers(options = {}) {
   const { searchQuery, statusFilter } = options;
+
   const response = {
     count: users.length,
     results: users,

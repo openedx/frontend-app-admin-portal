@@ -29,26 +29,20 @@ const columns = [
 ];
 
 export default function TabContentTable() {
-  const { activeTab, users, fetchSubscriptionUsers } = useContext(SubscriptionContext);
+  const {
+    activeTab, users, searchQuery, fetchSubscriptionUsers,
+  } = useContext(SubscriptionContext);
 
   useEffect(() => {
-    let statusFilter;
-
-    switch (activeTab) {
-      case TAB_LICENSED_USERS:
-        statusFilter = 'active';
-        break;
-      case TAB_PENDING_USERS:
-        statusFilter = 'assigned';
-        break;
-      case TAB_DEACTIVATED_USERS:
-        statusFilter = 'deactivated';
-        break;
-      default:
-        break;
-    }
-
-    fetchSubscriptionUsers({ statusFilter });
+    const licenseStatusByTab = {
+      [TAB_LICENSED_USERS]: 'active',
+      [TAB_PENDING_USERS]: 'assigned',
+      [TAB_DEACTIVATED_USERS]: 'deactivated',
+    };
+    fetchSubscriptionUsers({
+      statusFilter: licenseStatusByTab[activeTab],
+      searchQuery,
+    });
   }, [activeTab]);
 
   const activeTabData = useMemo(
