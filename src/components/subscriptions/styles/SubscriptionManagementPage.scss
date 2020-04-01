@@ -1,0 +1,20 @@
+@import "~@edx/paragon/scss/edx/utilities-only";
+
+.manage-subscription {
+  .add-users-dropdown {
+    .dropdown-menu {
+      z-index: $zindex-fixed;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .add-users-dropdown {
+      float: right;
+
+      .dropdown-menu {
+        left: inherit;
+        right: 0;
+      }
+    }
+  }
+}

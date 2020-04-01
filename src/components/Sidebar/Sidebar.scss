@@ -5,7 +5,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: $zindex-sticky;
+    z-index: $zindex-fixed;
 
     &.expanded {
         width: auto;
