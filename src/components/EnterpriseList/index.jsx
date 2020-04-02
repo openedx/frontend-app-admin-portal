@@ -138,7 +138,7 @@ class EnterpriseList extends React.Component {
                 <TableContainer
                   id="enterprise-list"
                   className="enterprise-list"
-                  fetchMethod={this.fetchEnterprisesWithSearch}
+                  fetchMethod={(enterpriseId, options) => this.fetchEnterprisesWithSearch(options)}
                   columns={columns}
                   formatData={this.formatEnterpriseData}
                   tableSortable
