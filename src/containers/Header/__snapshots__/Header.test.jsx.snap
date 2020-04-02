@@ -5,7 +5,7 @@ exports[`<Header /> does not render profile image or dropdown if unauthenticated
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -29,7 +29,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -93,7 +93,7 @@ exports[`<Header /> renders edX logo correctly 1`] = `
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -117,7 +117,7 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -141,7 +141,7 @@ exports[`<Header /> renders profile image correctly 1`] = `
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -200,7 +200,7 @@ exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = 
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <a
@@ -224,7 +224,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
   className="container-fluid"
 >
   <nav
-    className="navbar px-0 justify-content-between"
+    className="navbar px-0 py-1 justify-content-between"
   >
     <div>
       <button
