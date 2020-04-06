@@ -6,6 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
+import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../src/data/constants/emailTemplate';
 import history from './data/history';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -154,6 +155,28 @@ const transformTemplate = (emailType, template) => ({
   },
 });
 
+const validateEmailTemplateFields = (formData) => {
+  const errors = {
+    _error: [],
+  };
+
+  const templateErrorMessages = {
+    'email-template-greeting': `Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+    'email-template-closing': `Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+  };
+
+  /* eslint-disable no-underscore-dangle */
+  Object.entries(templateErrorMessages).forEach(([key, message]) => {
+    if (formData[key] && formData[key].length > EMAIL_TEMPLATE_FIELD_MAX_LIMIT) {
+      errors[key] = message;
+      errors._error.push(message);
+    }
+  });
+  /* eslint-enable no-underscore-dangle */
+
+  return errors;
+};
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -172,4 +195,5 @@ export {
   maxLength512,
   transformTemplates,
   transformTemplate,
+  validateEmailTemplateFields,
 };

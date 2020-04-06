@@ -8,6 +8,8 @@ import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
+import { validateEmailTemplateFields } from '../../utils';
+import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -78,11 +80,10 @@ class CodeRevokeModal extends React.Component {
 
   validateFormData(formData) {
     const emailTemplateKey = 'email-template-body';
-    const errors = {
-      _error: [],
-    };
 
     /* eslint-disable no-underscore-dangle */
+    const errors = validateEmailTemplateFields(formData);
+
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';
       errors[emailTemplateKey] = message;
@@ -113,12 +114,13 @@ class CodeRevokeModal extends React.Component {
     const { initialValues, submitting } = this.props;
     const fieldValues = Object.values(this.state.fields);
     const fields = Object.entries(this.state.fields);
+    const maxFieldLength = EMAIL_TEMPLATE_FIELD_MAX_LIMIT;
 
     // disable button if form is in submitting state
     if (submitting) return true;
 
-    // disable button if any field as text greater than 300
-    const valueNotInRange = fieldValues.some(value => value && value.length > 300);
+    // disable button if any field as text greater than allowed limit
+    const valueNotInRange = fieldValues.some(value => value && value.length > maxFieldLength);
     if (valueNotInRange) return true;
 
     // enable button if any field value has changed and new value is different from original value

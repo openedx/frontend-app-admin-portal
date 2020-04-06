@@ -37,12 +37,15 @@ class SaveTemplateButton extends React.Component {
           _error: [],
         };
 
+        /* eslint-disable no-underscore-dangle */
         Object.entries(fieldMap).forEach(([key, value]) => {
           if (response && response.data && response.data[key]) {
-            errors[value] = response.data[key];
+            const msg = response.data[key][0];
+            errors[value] = msg;
+            errors._error.push(msg);
           }
         });
-        /* eslint-disable no-underscore-dangle */
+
         // when no field specific error returned then show the main exception message
         if (Object.keys(errors).length === 1 && Object.keys(errors)[0] === '_error') {
           errors._error.push(message);

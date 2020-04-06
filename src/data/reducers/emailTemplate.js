@@ -66,6 +66,7 @@ const emailTemplate = (state = initialState, action) => {
       };
     case SAVE_TEMPLATE_FAILURE:
       return {
+        ...state,
         saving: false,
         error: action.payload.error,
       };
