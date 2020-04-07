@@ -37,6 +37,7 @@ const AdminWrapper = props => (
         fetchDashboardAnalytics={() => {}}
         fetchPortalConfiguration={() => {}}
         fetchCsv={() => {}}
+        searchEnrollmentsList={() => {}}
         match={{
           params: {},
           url: '/',

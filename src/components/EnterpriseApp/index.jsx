@@ -180,6 +180,7 @@ class EnterpriseApp extends React.Component {
 }
 
 EnterpriseApp.defaultProps = {
+  enterpriseId: null,
   error: null,
 };
 
@@ -190,6 +191,7 @@ EnterpriseApp.propTypes = {
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  enterpriseId: PropTypes.string,
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({}).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,

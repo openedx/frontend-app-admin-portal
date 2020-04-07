@@ -224,33 +224,21 @@ class CodeReminderModal extends React.Component {
               id="email-template-greeting"
               name="email-template-greeting"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Greeting
-                </React.Fragment>
-              }
+              label="Customize Greeting"
               onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
               name="email-template-body"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Body
-                </React.Fragment>
-              }
+              label="Body"
               disabled
             />
             <Field
               id="email-template-closing"
               name="email-template-closing"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Closing
-                </React.Fragment>
-              }
+              label="Customize Closing"
               onChange={this.handleFieldOnChange}
             />
           </div>
@@ -334,6 +322,7 @@ class CodeReminderModal extends React.Component {
           body={this.renderBody()}
           buttons={[
             <Button
+              key="remind-submit-btn"
               disabled={submitting}
               className="code-remind-save-btn btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
@@ -344,6 +333,7 @@ class CodeReminderModal extends React.Component {
               </React.Fragment>
             </Button>,
             <SaveTemplateButton
+              key="save-remind-template-btn"
               templateType="remind"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
@@ -389,7 +379,11 @@ CodeReminderModal.propTypes = {
   initialValues: PropTypes.shape({}).isRequired,
   isBulkRemind: PropTypes.bool,
   selectedToggle: PropTypes.string,
-  data: PropTypes.shape({}),
+  data: PropTypes.shape({
+    selectedCodes: PropTypes.arrayOf(PropTypes.shape({})),
+    code: PropTypes.string,
+    email: PropTypes.string,
+  }),
 };
 
 export default reduxForm({

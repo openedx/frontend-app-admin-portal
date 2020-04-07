@@ -264,6 +264,7 @@ NumberCard.propTypes = {
   })),
   detailsExpanded: PropTypes.bool,
   match: PropTypes.shape({
+    url: PropTypes.string,
     params: PropTypes.shape({
       actionSlug: PropTypes.string,
     }),

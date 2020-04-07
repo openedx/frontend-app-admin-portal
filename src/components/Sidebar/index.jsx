@@ -142,6 +142,9 @@ class Sidebar extends React.Component {
 }
 
 Sidebar.defaultProps = {
+  enableCodeManagementScreen: false,
+  enableReportingConfigScreen: false,
+  enableSubscriptionManagementScreen: false,
   onWidthChange: () => {},
   isMobile: false,
 };
@@ -152,9 +155,9 @@ Sidebar.propTypes = {
   collapseSidebar: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   isExpandedByToggle: PropTypes.bool.isRequired,
-  enableCodeManagementScreen: PropTypes.bool.isRequired,
-  enableReportingConfigScreen: PropTypes.bool.isRequired,
-  enableSubscriptionManagementScreen: PropTypes.bool.isRequired,
+  enableCodeManagementScreen: PropTypes.bool,
+  enableReportingConfigScreen: PropTypes.bool,
+  enableSubscriptionManagementScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };

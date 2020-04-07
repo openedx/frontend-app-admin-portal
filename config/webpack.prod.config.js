@@ -10,6 +10,7 @@ const HtmlWebpackNewRelicPlugin = require('html-webpack-new-relic-plugin');
 const ChunkRenamePlugin = require('chunk-rename-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
+const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
 
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
@@ -51,15 +52,10 @@ module.exports = Merge.smart(commonConfig, {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader', // translates CSS into CommonJS
-            options: {
-              sourceMap: true,
-              minimize: true,
-            },
           },
           {
             loader: 'sass-loader', // compiles Sass to CSS
             options: {
-              sourceMap: true,
               includePaths: [
                 path.join(__dirname, '../node_modules'),
                 path.join(__dirname, '../src'),
@@ -128,6 +124,18 @@ module.exports = Merge.smart(commonConfig, {
     // Writes the extracted CSS from each entry to a file in the output directory.
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash].css',
+    }),
+    // Minimizes the extracted CSS with cssnano and solves CSS duplication
+    // issue with `extract-text-webpack-plugin`.
+    new OptimizeCssnanoPlugin({
+      sourceMap: true,
+      cssnanoOptions: {
+        preset: ['default', {
+          discardComments: {
+            removeAll: true,
+          },
+        }],
+      },
     }),
     // Generates an HTML file in the output directory.
     new HtmlWebpackPlugin({

@@ -408,33 +408,21 @@ class CodeAssignmentModal extends React.Component {
               id="email-template-greeting"
               name="email-template-greeting"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Greeting
-                </React.Fragment>
-              }
+              label="Customize Greeting"
               onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
               name="email-template-body"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Body
-                </React.Fragment>
-              }
+              label="Body"
               disabled
             />
             <Field
               id="email-template-closing"
               name="email-template-closing"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Closing
-                </React.Fragment>
-              }
+              label="Customize Closing"
               onChange={this.handleFieldOnChange}
             />
           </div>
@@ -518,6 +506,7 @@ class CodeAssignmentModal extends React.Component {
           body={this.renderBody()}
           buttons={[
             <Button
+              key="assign-submit-btn"
               className="btn-primary"
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
@@ -528,6 +517,7 @@ class CodeAssignmentModal extends React.Component {
               </React.Fragment>
             </Button>,
             <SaveTemplateButton
+              key="save-assign-template-btn"
               templateType="assign"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
@@ -570,7 +560,16 @@ CodeAssignmentModal.propTypes = {
   }).isRequired,
   initialValues: PropTypes.shape({}).isRequired,
   isBulkAssign: PropTypes.bool,
-  data: PropTypes.shape({}),
+  data: PropTypes.shape({
+    code: PropTypes.shape({
+      code: PropTypes.string,
+    }),
+    selectedCodes: PropTypes.arrayOf(PropTypes.shape({})),
+    hasAllCodesSelected: PropTypes.bool,
+    couponType: PropTypes.string,
+    unassignedCodes: PropTypes.number,
+    remainingUses: PropTypes.number,
+  }),
 };
 
 export default reduxForm({
