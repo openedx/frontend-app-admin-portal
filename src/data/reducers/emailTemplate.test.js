@@ -62,6 +62,7 @@ describe('emailTemplate reducer', () => {
 
   it('updates store with correct data on save template failure', () => {
     const expected = {
+      ...emailTemplateReducerInitialState,
       saving: false,
       error: saveTemplateErrorResponse,
     };
