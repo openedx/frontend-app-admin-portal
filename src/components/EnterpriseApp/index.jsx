@@ -182,6 +182,8 @@ class EnterpriseApp extends React.Component {
 EnterpriseApp.defaultProps = {
   enterpriseId: null,
   error: null,
+  enableCodeManagementScreen: false,
+  enableSubscriptionManagementScreen: false,
 };
 
 EnterpriseApp.propTypes = {
@@ -195,8 +197,8 @@ EnterpriseApp.propTypes = {
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({}).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
-  enableCodeManagementScreen: PropTypes.bool.isRequired,
-  enableSubscriptionManagementScreen: PropTypes.bool.isRequired,
+  enableCodeManagementScreen: PropTypes.bool,
+  enableSubscriptionManagementScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 
