@@ -308,12 +308,12 @@ class ReportingConfigForm extends React.Component {
           for="pgpEncyptionKey"
           helpText="The key for encyption, if PGP encrypted file is required"
         >
-          <label htmlFor="pgpEcryptionKey">PGP Ecryption Key</label>
+          <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
           <Input
             type="textarea"
-            id="pgpEcryptionKey"
-            name="pgpEcryptionKey"
-            defaultValue={config ? config.pgpEcryptionKey : undefined}
+            id="pgpEncryptionKey"
+            name="pgpEncryptionKey"
+            defaultValue={config ? config.pgpEncryptionKey : undefined}
           />
         </ValidationFormGroup>
         {deliveryMethod === 'email' && (
@@ -391,7 +391,7 @@ ReportingConfigForm.propTypes = {
     sftpHostname: PropTypes.string,
     sftpPort: PropTypes.number,
     sftpUsername: PropTypes.string,
-    pgpEcryptionKey: PropTypes.string,
+    pgpEncryptionKey: PropTypes.string,
     uuid: PropTypes.string,
   }),
   createConfig: PropTypes.func.isRequired,
