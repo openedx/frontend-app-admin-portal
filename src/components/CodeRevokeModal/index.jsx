@@ -216,33 +216,21 @@ class CodeRevokeModal extends React.Component {
               id="email-template-greeting"
               name="email-template-greeting"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Greeting
-                </React.Fragment>
-              }
+              label="Customize Greeting"
               onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
               name="email-template-body"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Body
-                </React.Fragment>
-              }
+              label="Body"
               disabled
             />
             <Field
               id="email-template-closing"
               name="email-template-closing"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Customize Closing
-                </React.Fragment>
-              }
+              label="Customize Closing"
               onChange={this.handleFieldOnChange}
             />
           </div>
@@ -325,6 +313,7 @@ class CodeRevokeModal extends React.Component {
           body={this.renderBody()}
           buttons={[
             <Button
+              key="revoke-submit-btn"
               disabled={submitting}
               className="code-revoke-save-btn btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
@@ -335,6 +324,7 @@ class CodeRevokeModal extends React.Component {
               </React.Fragment>
             </Button>,
             <SaveTemplateButton
+              key="save-revoke-template-btn"
               templateType="revoke"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
@@ -371,7 +361,11 @@ CodeRevokeModal.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   sendCodeRevoke: PropTypes.func.isRequired,
   isBulkRevoke: PropTypes.bool,
-  data: PropTypes.shape({}),
+  data: PropTypes.shape({
+    selectedCodes: PropTypes.arrayOf(PropTypes.shape({})),
+    assigned_to: PropTypes.string,
+    code: PropTypes.string,
+  }),
   initialValues: PropTypes.shape({}).isRequired,
 };
 

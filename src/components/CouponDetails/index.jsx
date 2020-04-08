@@ -904,13 +904,17 @@ CouponDetails.defaultProps = {
 CouponDetails.propTypes = {
   // props from container
   fetchCouponOrder: PropTypes.func.isRequired,
-  couponDetailsTable: PropTypes.shape({}),
+  couponDetailsTable: PropTypes.shape({
+    data: PropTypes.shape({}),
+    loading: PropTypes.bool,
+  }),
   couponOverviewError: PropTypes.instanceOf(Error),
   couponOverviewLoading: PropTypes.bool,
 
   // custom props
   couponData: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
     errors: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     num_unassigned: PropTypes.number.isRequired,
     usage_limitation: PropTypes.string.isRequired,

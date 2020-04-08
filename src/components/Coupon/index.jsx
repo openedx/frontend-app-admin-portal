@@ -201,10 +201,10 @@ class Coupon extends React.Component {
             {this.renderExpandCollapseIcon()}
           </div>
         </div>
-        {<CouponDetails
+        <CouponDetails
           isExpanded={isExpanded}
           couponData={data}
-        />}
+        />
       </div>
     );
   }

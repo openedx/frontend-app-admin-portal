@@ -343,9 +343,11 @@ CodeManagement.propTypes = {
   clearCouponOrders: PropTypes.func.isRequired,
   fetchEmailTemplates: PropTypes.func.isRequired,
   location: PropTypes.shape({
+    search: PropTypes.string,
     state: PropTypes.shape({
       hasRequestedCodes: PropTypes.bool,
     }),
+    pathname: PropTypes.string,
   }).isRequired,
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
@@ -354,7 +356,11 @@ CodeManagement.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
-  coupons: PropTypes.shape({}),
+  coupons: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.shape({})),
+    num_pages: PropTypes.number,
+    current_page: PropTypes.number,
+  }),
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };

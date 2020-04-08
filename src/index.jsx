@@ -1,4 +1,6 @@
-import 'babel-polyfill'; // general ES2015 polyfill (e.g. promise)
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {

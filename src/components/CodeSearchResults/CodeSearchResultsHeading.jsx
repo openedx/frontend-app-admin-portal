@@ -15,7 +15,7 @@ const CodeSearchResultsHeading = ({ searchQuery, onClose }) => (
         onClick={onClose}
       >
         <Icon className="fa fa-times mr-2" />
-          Close search results
+        Close search results
       </Button>
     </div>
   </div>

@@ -308,7 +308,7 @@ class ReportingConfigForm extends React.Component {
           for="pgpEncyptionKey"
           helpText="The key for encyption, if PGP encrypted file is required"
         >
-          <label htmlFor="pgpEncryptionKey">PGP Ecryption Key</label>
+          <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
           <Input
             type="textarea"
             id="pgpEncryptionKey"
@@ -391,7 +391,8 @@ ReportingConfigForm.propTypes = {
     sftpHostname: PropTypes.string,
     sftpPort: PropTypes.number,
     sftpUsername: PropTypes.string,
-    pgpEcryptionKey: PropTypes.string,
+    pgpEncryptionKey: PropTypes.string,
+    uuid: PropTypes.string,
   }),
   createConfig: PropTypes.func.isRequired,
   updateConfig: PropTypes.func,

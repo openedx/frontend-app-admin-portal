@@ -25,6 +25,7 @@ const RenderField = ({
 );
 
 RenderField.defaultProps = {
+  description: null,
   disabled: false,
   required: false,
 };
@@ -37,6 +38,7 @@ RenderField.propTypes = {
     touched: PropTypes.bool,
     error: PropTypes.string,
   }).isRequired,
+  description: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
 };

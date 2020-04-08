@@ -163,8 +163,12 @@ FileInput.propTypes = {
   label: PropTypes.string.isRequired,
   meta: PropTypes.shape({
     error: PropTypes.string,
+    form: PropTypes.string,
+    dispatch: PropTypes.func,
+    touched: PropTypes.bool,
   }).isRequired,
   input: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,

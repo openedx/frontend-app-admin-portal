@@ -83,7 +83,7 @@ EmailDeliveryMethodForm.propTypes = {
     sftpHostname: PropTypes.string,
     sftpPort: PropTypes.number,
     sftpUsername: PropTypes.string,
-    pgpEcryptionKey: PropTypes.string,
+    pgpEncryptionKey: PropTypes.string,
   }),
 };
 
