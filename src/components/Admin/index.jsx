@@ -345,21 +345,16 @@ class Admin extends React.Component {
                     <H2>Overview</H2>
                   </div>
                 </div>
-                {(error || loading) && (
-                  <div className="row mt-3">
-                    {(error || loading) && (
-                      <div className="col mt-3">
-                        {error && this.renderErrorMessage()}
-                        {loading && this.renderLoadingMessage()}
-                      </div>
-                    )}
-                  </div>
-                )}
-                {!error && !loading && (
-                  <div className="row">
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
                     <AdminCards />
-                  </div>
-                )}
+                  )}
+                </div>
                 <div className="row mt-4">
                   <div className="col">
                     <H2 className="table-title">{tableMetadata.title}</H2>
