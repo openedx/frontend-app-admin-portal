@@ -179,7 +179,7 @@ class NumberCard extends React.Component {
     return (
       <div
         ref={(node) => { this.containerRef = node; }}
-        className={classNames('number-card', {
+        className={classNames('number-card w-100', {
           'has-details': detailActions,
         })}
       >
@@ -213,17 +213,21 @@ class NumberCard extends React.Component {
                 aria-controls={`footer-body-${id}`}
               >
                 <div className="d-flex justify-content-between align-items-center">
-                  <span className="details-btn-text">{detailsExpanded ? 'Detailed breakdown' : 'Details'}</span>
-                  <Icon
-                    className={classNames(
-                      'fa',
-                      {
-                        'fa-caret-down': !detailsExpanded,
-                        'fa-close': detailsExpanded,
-                      },
-                    )}
-                    screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
-                  />
+                  <div className="details-btn-text">
+                    {detailsExpanded ? 'Detailed breakdown' : 'Details'}
+                  </div>
+                  <div>
+                    <Icon
+                      className={classNames(
+                        'fa',
+                        {
+                          'fa-caret-down': !detailsExpanded,
+                          'fa-close': detailsExpanded,
+                        },
+                      )}
+                      screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
+                    />
+                  </div>
                 </div>
               </Button>
             </div>

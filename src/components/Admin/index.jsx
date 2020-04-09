@@ -266,7 +266,6 @@ class Admin extends React.Component {
   renderErrorMessage() {
     return (
       <StatusAlert
-        className="mt-3"
         alertType="danger"
         iconClassName="fa fa-times-circle"
         title="Unable to load overview"
@@ -338,24 +337,23 @@ class Admin extends React.Component {
         {!loading && !error && !this.hasAnalyticsData() ? this.renderLoadingMessage() : (
           <React.Fragment>
             <main role="main">
-              <Helmet>
-                <title>Learner and Progress Report</title>
-              </Helmet>
-              <Hero title="Learner and Progress Report" />
+              <Helmet title="Learner Progress Report" />
+              <Hero title="Learner Progress Report" />
               <div className="container-fluid">
                 <div className="row mt-4">
                   <div className="col">
                     <H2>Overview</H2>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col">
-                    {error && this.renderErrorMessage()}
-                    {loading && this.renderLoadingMessage()}
-                    {!loading && !error && this.hasAnalyticsData() &&
-                      <AdminCards />
-                    }
-                  </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
+                    <AdminCards />
+                  )}
                 </div>
                 <div className="row mt-4">
                   <div className="col">

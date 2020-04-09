@@ -64,7 +64,7 @@ class AdminCards extends React.Component {
 
     return (
       <div
-        className="col-xs-12 col-md-6 col-xl-3 mb-3"
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
         key={cardKey}
       >
         <NumberCard
@@ -93,12 +93,12 @@ class AdminCards extends React.Component {
       enrolledLearners,
     };
 
-    return (
-      <div className="row mt-3 equal-col-height">
-        {Object.keys(this.cards).map(cardKey =>
-          this.renderCard({ title: data[cardKey], cardKey }))}
-      </div>
-    );
+    return Object.keys(this.cards).map(cardKey => (
+      this.renderCard({
+        title: data[cardKey],
+        cardKey,
+      })
+    ));
   }
 }
 
