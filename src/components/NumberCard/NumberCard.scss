@@ -16,6 +16,8 @@ $number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
     }
 
     @include media-breakpoint-up($viewport-size-details-overlay) {
+        flex: 1 1 auto;
+
         &.has-details {
             margin-bottom: 53px; // height of collapsed .card-footer
         }
