@@ -7,6 +7,7 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
+import TemplateSourceFields from '../TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
@@ -62,16 +63,6 @@ class CodeRevokeModal extends React.Component {
       // When there is an new error, focus on the error message status alert
       errorMessageRef.focus();
     }
-  }
-
-  getTemplatesData() {
-    const data = { ...this.props.initialValues };
-    Object.entries(this.state.fields).forEach(([key, value]) => {
-      // Should update for empty greeting and closing as well
-      data[key] = value === null ? data[key] : value;
-    });
-
-    return data;
   }
 
   setMode(mode) {
@@ -212,6 +203,7 @@ class CodeRevokeModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <H3>Email Template</H3>
+            <TemplateSourceFields />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
@@ -328,7 +320,6 @@ class CodeRevokeModal extends React.Component {
               templateType="revoke"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              templateData={this.getTemplatesData()}
               disabled={this.isSaveDisabled()}
             />,
           ]}

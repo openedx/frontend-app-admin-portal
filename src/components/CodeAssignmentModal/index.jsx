@@ -10,6 +10,7 @@ import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
+import TemplateSourceFields from '../TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
@@ -27,6 +28,7 @@ class CodeAssignmentModal extends React.Component {
     this.state = {
       mode: 'assign',
       fields: {
+        'template-name': null,
         'email-template-greeting': null,
         'email-template-closing': null,
       },
@@ -83,16 +85,6 @@ class CodeAssignmentModal extends React.Component {
     const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
 
     return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
-  }
-
-  getTemplatesData() {
-    const data = { ...this.props.initialValues };
-    Object.entries(this.state.fields).forEach(([key, value]) => {
-      // Should update for empty greeting and closing as well
-      data[key] = value === null ? data[key] : value;
-    });
-
-    return data;
   }
 
   setMode(mode) {
@@ -416,6 +408,7 @@ class CodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
           <div className="mt-4">
             <H3>Email Template</H3>
+            <TemplateSourceFields />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
@@ -533,7 +526,6 @@ class CodeAssignmentModal extends React.Component {
               templateType="assign"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              templateData={this.getTemplatesData()}
               disabled={this.isSaveDisabled()}
             />,
           ]}

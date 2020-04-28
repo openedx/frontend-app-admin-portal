@@ -16,6 +16,23 @@ export const initialState = {
   saving: false,
   loading: false,
   error: null,
+  default: {
+    assign: {
+      'email-template-greeting': assignEmailTemplate.greeting,
+      'email-template-body': assignEmailTemplate.body,
+      'email-template-closing': assignEmailTemplate.closing,
+    },
+    remind: {
+      'email-template-greeting': remindEmailTemplate.greeting,
+      'email-template-body': remindEmailTemplate.body,
+      'email-template-closing': remindEmailTemplate.closing,
+    },
+    revoke: {
+      'email-template-greeting': revokeEmailTemplate.greeting,
+      'email-template-body': revokeEmailTemplate.body,
+      'email-template-closing': revokeEmailTemplate.closing,
+    },
+  },
   assign: {
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
@@ -37,11 +54,13 @@ const emailTemplate = (state = initialState, action) => {
   switch (action.type) {
     case EMAIL_TEMPLATE_REQUEST:
       return {
+        ...state,
         loading: true,
         error: null,
       };
     case EMAIL_TEMPLATE_SUCCESS:
       return {
+        ...state,
         loading: false,
         error: null,
         ...transformTemplates(action.payload.data, initialState),
