@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import { Button, Icon, Modal, Input } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
+import classNames from 'classnames';
 
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
+import RenderField from '../RenderField';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { validateEmailTemplateFields } from '../../utils';
@@ -26,6 +28,7 @@ class CodeAssignmentModal extends React.Component {
 
     this.state = {
       mode: 'assign',
+      emailTemplate: 'new_email',
       fields: {
         'email-template-greeting': null,
         'email-template-closing': null,
@@ -380,6 +383,16 @@ class CodeAssignmentModal extends React.Component {
       });
   }
 
+  toggleButtonsSetState(clicked) {
+    const { emailTemplate } = this.state;
+
+    if (emailTemplate === clicked) return;
+
+    this.setState({
+      emailTemplate: clicked,
+    });
+  }
+
   renderBody() {
     const {
       data,
@@ -416,6 +429,8 @@ class CodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
           <div className="mt-4">
             <H3>Email Template</H3>
+            {this.renderEmailTemplateToggleButtons()}
+            {this.renderEmailTemplateNameField()}
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
@@ -495,6 +510,66 @@ class CodeAssignmentModal extends React.Component {
       <React.Fragment>
         <span className="d-block">{title}</span>
         <small>Code Assignment</small>
+      </React.Fragment>
+    );
+  }
+
+  renderEmailTemplateToggleButtons() {
+    const { emailTemplate } = this.state;
+
+    return (
+      <div className="btn-group d-flex mb-3" role="group" aria-label="Select ">
+        <Button
+          key="btn-new-email-template"
+          className={classNames(
+            'rounded-left',
+            emailTemplate === 'new_email' ? 'btn-primary' : 'btn-outline-primary',
+          )}
+          style={{
+            pointerEvents: emailTemplate === 'new_email' ? 'none' : 'auto',
+          }}
+          aria-pressed={emailTemplate === 'new_email' ? 'true' : 'false'}
+          onClick={() => this.toggleButtonsSetState('new_email')}
+        >New Email
+        </Button>
+        <Button
+          key="btn-old-email-template"
+          className={classNames(
+            'rounded-right',
+            emailTemplate === 'from_template' ? 'btn-primary' : 'btn-outline-primary',
+          )}
+          style={{
+            pointerEvents: emailTemplate === 'from_template' ? 'none' : 'auto',
+          }}
+          aria-pressed={emailTemplate === 'from_template' ? 'true' : 'false'}
+          onClick={() => this.toggleButtonsSetState('from_template')}
+        >From Template
+        </Button>
+      </div>
+    );
+  }
+
+  renderEmailTemplateNameField() {
+    const { emailTemplate } = this.state;
+
+    return (emailTemplate === 'new_email' ?
+      <React.Fragment>
+        <Field
+          name="template-name-input"
+          type="template-name"
+          component={RenderField}
+          label="Template Name"
+          required
+        />
+      </React.Fragment> :
+      <React.Fragment>
+        <div className="template-select-wrapper mb-3">
+          <label htmlFor="templateNameSelect">Template Name</label>
+          <Input
+            type="select"
+            id="templateNameSelect"
+          />
+        </div>
       </React.Fragment>
     );
   }
