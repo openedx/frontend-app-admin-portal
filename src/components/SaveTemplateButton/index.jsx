@@ -3,24 +3,47 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
 import { SubmissionError } from 'redux-form';
 
+import { validateEmailTemplateFields } from '../../utils';
+
 class SaveTemplateButton extends React.Component {
   constructor(props) {
     super(props);
+
+    this.validateFormData = this.validateFormData.bind(this);
     this.handleSaveTemplate = this.handleSaveTemplate.bind(this);
   }
 
-  handleSaveTemplate() {
+  validateFormData(formData) {
+    const emailTemplateNameKey = 'template-name';
+    const errors = validateEmailTemplateFields(formData);
+
+    /* eslint-disable no-underscore-dangle */
+    if (!formData[emailTemplateNameKey]) {
+      const message = 'No template name provided. Please enter a template name.';
+      errors[emailTemplateNameKey] = message;
+      errors._error.unshift(message);
+    }
+
+    if (Object.keys(errors) > 1 || errors._error.length > 0) {
+      throw new SubmissionError(errors);
+    }
+    /* eslint-enable no-underscore-dangle */
+  }
+
+  handleSaveTemplate(formData) {
     const {
       setMode,
-      templateData,
       saveTemplate,
       templateType,
     } = this.props;
 
+    this.validateFormData(formData);
+
     const options = {
       email_type: templateType,
-      email_greeting: templateData['email-template-greeting'],
-      email_closing: templateData['email-template-closing'],
+      email_greeting: formData['email-template-greeting'],
+      email_closing: formData['email-template-closing'],
+      name: formData['template-name'],
     };
 
     setMode('save');
@@ -88,10 +111,6 @@ SaveTemplateButton.defaultProps = {
 
 SaveTemplateButton.propTypes = {
   templateType: PropTypes.string.isRequired,
-  templateData: PropTypes.shape({
-    'email-template-greeting': PropTypes.string.isRequired,
-    'email-template-closing': PropTypes.string.isRequired,
-  }).isRequired,
   saveTemplate: PropTypes.func.isRequired,
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

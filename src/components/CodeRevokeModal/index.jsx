@@ -7,6 +7,7 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
+import TemplateSourceFields from '../TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
@@ -212,6 +213,7 @@ class CodeRevokeModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <H3>Email Template</H3>
+            <TemplateSourceFields />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

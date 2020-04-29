@@ -5,7 +5,7 @@ import CodeRevokeModal from '../../components/CodeRevokeModal';
 import sendCodeRevoke from '../../data/actions/codeRevoke';
 
 const mapStateToProps = state => ({
-  initialValues: state.emailTemplate.revoke,
+  initialValues: state.emailTemplate.default.revoke,
 });
 
 const mapDispatchToProps = dispatch => ({
