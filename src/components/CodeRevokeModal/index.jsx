@@ -65,16 +65,6 @@ class CodeRevokeModal extends React.Component {
     }
   }
 
-  getTemplatesData() {
-    const data = { ...this.props.initialValues };
-    Object.entries(this.state.fields).forEach(([key, value]) => {
-      // Should update for empty greeting and closing as well
-      data[key] = value === null ? data[key] : value;
-    });
-
-    return data;
-  }
-
   setMode(mode) {
     this.setState({ mode });
   }
@@ -330,7 +320,6 @@ class CodeRevokeModal extends React.Component {
               templateType="revoke"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              templateData={this.getTemplatesData()}
               disabled={this.isSaveDisabled()}
             />,
           ]}

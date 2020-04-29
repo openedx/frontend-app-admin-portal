@@ -53,6 +53,13 @@ const initialState = {
   emailTemplate: {
     loading: false,
     error: null,
+    default: {
+      remind: {
+        'email-template-greeting': remindEmailTemplate.greeting,
+        'email-template-body': remindEmailTemplate.body,
+        'email-template-closing': remindEmailTemplate.closing,
+      },
+    },
     remind: {
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
@@ -158,6 +165,26 @@ describe('CodeReminderModalWrapper', () => {
     expect(saveTemplateButton.props().saving).toEqual(false);
     expect(saveTemplateButton.props().templateType).toEqual('remind');
     expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
-    expect(saveTemplateButton.props().templateData).toEqual(initialState.emailTemplate.remind);
+  });
+
+  it('renders <TemplateSourceFields />', () => {
+    const wrapper = mount(<CodeReminderModalWrapper />);
+    let TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    expect(TemplateSourceFields).toHaveLength(1);
+
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
+    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+
+    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    TemplateSourceFields = wrapper.find('TemplateSourceFields');
+
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
+    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
   });
 });

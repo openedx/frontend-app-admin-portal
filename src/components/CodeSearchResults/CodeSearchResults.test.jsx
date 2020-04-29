@@ -20,7 +20,27 @@ const initialStore = {
     enterpriseId,
   },
   table: {},
-  emailTemplate: {},
+  emailTemplate: {
+    loading: false,
+    error: null,
+    default: {
+      assign: {
+        'email-template-greeting': 'Sample email greeting.. ',
+        'email-template-body': 'Sample email body template.. ',
+        'email-template-closing': 'Sample email closing template.. ',
+      },
+      remind: {
+        'email-template-greeting': 'Sample email greeting.. ',
+        'email-template-body': 'Sample email body template.. ',
+        'email-template-closing': 'Sample email closing template.. ',
+      },
+      revoke: {
+        'email-template-greeting': 'Sample email greeting.. ',
+        'email-template-body': 'Sample email body template.. ',
+        'email-template-closing': 'Sample email closing template.. ',
+      },
+    },
+  },
 };
 
 describe('<CodeSearchResults />', () => {
@@ -260,15 +280,6 @@ describe('<CodeSearchResults />', () => {
             },
           },
         },
-        emailTemplate: {
-          loading: false,
-          error: null,
-          remind: {
-            'email-template-greeting': 'Sample email greeting.. ',
-            'email-template-body': 'Sample email body template.. ',
-            'email-template-closing': 'Sample email closing template.. ',
-          },
-        },
       });
       const wrapper = mount((
         <MemoryRouter>
@@ -310,15 +321,6 @@ describe('<CodeSearchResults />', () => {
                 user_email: 'test@test.com',
               }],
             },
-          },
-        },
-        emailTemplate: {
-          loading: false,
-          error: null,
-          revoke: {
-            'email-template-greeting': 'Sample email greeting.. ',
-            'email-template-body': 'Sample email body template.. ',
-            'email-template-closing': 'Sample email closing template.. ',
           },
         },
       });

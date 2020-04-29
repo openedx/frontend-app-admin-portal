@@ -35,8 +35,13 @@ class TemplateSourceFields extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="btn-group d-flex mb-3" role="group" aria-label="Select ">
+        <div
+          className="btn-group d-flex mb-3"
+          role="group"
+          aria-label="Press the button to select the template source"
+        >
           <Button
+            id="btn-new-email-template"
             key="btn-new-email-template"
             className={classNames(
                 'rounded-left',
@@ -52,6 +57,7 @@ class TemplateSourceFields extends React.Component {
           >New Email
           </Button>
           <Button
+            id="btn-old-email-template"
             key="btn-old-email-template"
             className={classNames(
                 'rounded-right',
@@ -69,7 +75,9 @@ class TemplateSourceFields extends React.Component {
         </div>
         {emailTemplateSource === 'new_email' ?
           <Field
+            id="templateNameInput"
             name="template-name"
+            type="text"
             component={RenderField}
             label="Template Name"
             required

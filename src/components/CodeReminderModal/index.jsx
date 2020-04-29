@@ -82,16 +82,6 @@ class CodeReminderModal extends React.Component {
     return numberOfSelectedCodes;
   }
 
-  getTemplatesData() {
-    const data = { ...this.props.initialValues };
-    Object.entries(this.state.fields).forEach(([key, value]) => {
-      // Should update for empty greeting and closing as well
-      data[key] = value === null ? data[key] : value;
-    });
-
-    return data;
-  }
-
   setMode(mode) {
     this.setState({ mode });
   }
@@ -342,7 +332,6 @@ class CodeReminderModal extends React.Component {
               templateType="remind"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              templateData={this.getTemplatesData()}
               disabled={this.isSaveDisabled()}
             />,
           ]}
