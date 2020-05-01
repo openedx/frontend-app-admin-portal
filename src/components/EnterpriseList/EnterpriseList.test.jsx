@@ -158,10 +158,9 @@ describe('<EnterpriseList />', () => {
 
   describe('enterprise list search', () => {
     const submitSearch = (searchQuery) => {
-      wrapper.find('SearchBar').find('input[type=\'search\']').simulate('change', { target: { value: searchQuery } });
-      expect(wrapper.find('SearchBar').find('input[type=\'search\']').prop('value')).toEqual(searchQuery);
-      wrapper.find('SearchBar').find('.input-group-append').find('button').last()
-        .simulate('click');
+      wrapper.find('SearchBar').find('input[type="text"]').simulate('change', { target: { value: searchQuery } });
+      expect(wrapper.find('SearchBar').find('input[type="text"]').prop('value')).toEqual(searchQuery);
+      wrapper.find('SearchBar').find('button[type="submit"]').simulate('submit');
     };
 
     it('search querystring changes onSearch', () => {
@@ -185,8 +184,7 @@ describe('<EnterpriseList />', () => {
 
       submitSearch('Enterprise 1');
 
-      wrapper.find('SearchBar').find('.input-group-append').find('button').first()
-        .simulate('click');
+      wrapper.find('SearchBar').find('button[type="reset"]').simulate('reset');
       const { search } = qs.parse(window.location.search);
       expect(search).toEqual(undefined);
     });

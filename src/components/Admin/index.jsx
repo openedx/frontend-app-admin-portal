@@ -308,7 +308,7 @@ class Admin extends React.Component {
     const { searchQuery } = this.state;
     return (
       <SearchBar
-        inputLabel="Search by email:"
+        placeholder="Search by email..."
         onSearch={query => updateUrl({
           search: query,
           page: 1,

@@ -47,7 +47,7 @@ export default function SubscriptionManagementPage() {
                       <div className="my-3 row">
                         <div className="col-12 col-lg-6 mb-3 mb-lg-0">
                           <SearchBar
-                            inputLabel="Search:"
+                            placeholder="Search by email..."
                             // eslint-disable-next-line no-console
                             onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
                             // eslint-disable-next-line no-console
