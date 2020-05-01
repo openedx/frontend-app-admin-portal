@@ -25,8 +25,8 @@ describe('<SearchBar />', () => {
         onSearch={mockOnSearchCallback}
       />
     ));
-    wrapper.find('input[type=\'search\']').simulate('change', { target: { value: 'foobar' } });
-    wrapper.find('.input-group-append').find('button.search-btn').simulate('click');
+    wrapper.find('input[type="text"]').simulate('change', { target: { value: 'foobar' } });
+    wrapper.find('button[type="submit"]').simulate('submit');
     expect(mockOnSearchCallback).toHaveBeenCalledTimes(1);
   });
 });

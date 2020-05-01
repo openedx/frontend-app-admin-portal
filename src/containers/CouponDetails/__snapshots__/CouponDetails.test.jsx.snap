@@ -547,7 +547,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-23"
+                      id="Icon23"
                     />
                     Previous
                   </div>
@@ -570,7 +570,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-24"
+                      id="Icon24"
                     />
                   </div>
                 </button>
@@ -1634,7 +1634,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-left mr-2"
-                      id="pagination-15"
+                      id="Icon15"
                     />
                     Previous
                   </div>
@@ -1657,7 +1657,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     <span
                       aria-hidden={true}
                       className="fa fa-chevron-right ml-2"
-                      id="pagination-16"
+                      id="Icon16"
                     />
                   </div>
                 </button>

@@ -194,7 +194,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-1"
+                  id="Icon1"
                 />
                 Previous
               </div>
@@ -218,7 +218,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-2"
+                  id="Icon2"
                 />
               </div>
             </button>

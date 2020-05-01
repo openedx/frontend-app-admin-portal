@@ -428,7 +428,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-2"
+                  id="Icon2"
                 />
                 Previous
               </div>
@@ -452,7 +452,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-3"
+                  id="Icon3"
                 />
               </div>
             </button>
@@ -884,7 +884,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-6"
+                  id="Icon6"
                 />
                 Previous
               </div>
@@ -908,7 +908,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-7"
+                  id="Icon7"
                 />
               </div>
             </button>
@@ -1309,7 +1309,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-left mr-2"
-                  id="pagination-4"
+                  id="Icon4"
                 />
                 Previous
               </div>
@@ -1333,7 +1333,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 <span
                   aria-hidden={true}
                   className="fa fa-chevron-right ml-2"
-                  id="pagination-5"
+                  id="Icon5"
                 />
               </div>
             </button>

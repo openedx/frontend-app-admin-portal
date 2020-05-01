@@ -594,7 +594,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-5"
+                        id="Icon5"
                       />
                       Previous
                     </div>
@@ -618,7 +618,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-6"
+                        id="Icon6"
                       />
                     </div>
                   </button>
@@ -862,7 +862,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-left mr-2"
-                        id="pagination-8"
+                        id="Icon8"
                       />
                       Previous
                     </div>
@@ -886,7 +886,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       <span
                         aria-hidden={true}
                         className="fa fa-chevron-right ml-2"
-                        id="pagination-9"
+                        id="Icon9"
                       />
                     </div>
                   </button>
