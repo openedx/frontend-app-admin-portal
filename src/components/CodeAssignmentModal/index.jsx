@@ -10,7 +10,7 @@ import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-import TemplateSourceFields from '../TemplateSourceFields';
+import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';

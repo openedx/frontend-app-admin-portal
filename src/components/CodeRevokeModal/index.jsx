@@ -7,7 +7,7 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
-import TemplateSourceFields from '../TemplateSourceFields';
+import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 

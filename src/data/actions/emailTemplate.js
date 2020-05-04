@@ -5,6 +5,7 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  SET_EMAIL_TEMPLATE_SOURCE,
 } from '../constants/emailTemplate';
 
 import EcommerceApiService from '../services/EcommerceApiService';
@@ -73,5 +74,17 @@ export const saveTemplate = ({
       });
   }
 );
+
+export const setEmailTemplateSource = emailTemplateSource => (
+  (dispatch) => {
+    dispatch({
+      type: SET_EMAIL_TEMPLATE_SOURCE,
+      payload: {
+        emailTemplateSource,
+      },
+    });
+  }
+);
+
 
 export default fetchEmailTemplates;
