@@ -3,7 +3,7 @@
 exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
 <button
   className="btn btn-primary save-template-btn"
-  disabled={true}
+  disabled={false}
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}

@@ -75,7 +75,7 @@ describe('CodeAssignmentModalWrapper', () => {
     const wrapper = mount(<CodeAssignmentModalWrapper />);
     const saveTemplateButton = wrapper.find('SaveTemplateButton');
     expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().disabled).toEqual(true);
+    expect(saveTemplateButton.props().disabled).toEqual(false);
     expect(saveTemplateButton.props().saving).toEqual(false);
     expect(saveTemplateButton.props().templateType).toEqual('assign');
     expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');

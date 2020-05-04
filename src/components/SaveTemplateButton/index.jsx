@@ -105,7 +105,7 @@ class SaveTemplateButton extends React.Component {
 
 SaveTemplateButton.defaultProps = {
   saving: false,
-  disabled: true,
+  disabled: false,
   buttonLabel: 'Save Template',
 };
 
