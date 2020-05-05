@@ -25,7 +25,6 @@ class CodeRevokeModal extends React.Component {
     this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -141,17 +140,12 @@ class CodeRevokeModal extends React.Component {
       data,
       isBulkRevoke,
       submitFailed,
-      submitSucceeded,
     } = this.props;
-    const {
-      mode,
-    } = this.state;
 
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
-        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
             <React.Fragment>
@@ -218,22 +212,6 @@ class CodeRevokeModal extends React.Component {
           ) : (
               error[0]
             )}
-        />
-      </div>
-    );
-  }
-
-  renderSaveTemplateMessage() {
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="success"
-          iconClassName="fa fa-check"
-          message="Template saved successfully"
-          dismissible
         />
       </div>
     );

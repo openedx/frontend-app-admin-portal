@@ -133,10 +133,7 @@ describe('CodeRevokeModalWrapper', () => {
     const wrapper = mount(<CodeRevokeModalWrapper />);
     const saveTemplateButton = wrapper.find('SaveTemplateButton');
     expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().disabled).toEqual(false);
-    expect(saveTemplateButton.props().saving).toEqual(false);
     expect(saveTemplateButton.props().templateType).toEqual('revoke');
-    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
   });
 
   it('renders <TemplateSourceFields /> with source new_email', () => {
