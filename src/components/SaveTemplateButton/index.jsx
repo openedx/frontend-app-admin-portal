@@ -1,16 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@edx/paragon';
+import { StatefulButton, Icon } from '@edx/paragon';
 import { SubmissionError } from 'redux-form';
+import classNames from 'classnames';
 
 import { validateEmailTemplateFields } from '../../utils';
+
+const SUBMIT_STATES = {
+  DEFAULT: 'default',
+  COMPLETE: 'complete',
+  PENDING: 'pending',
+};
 
 class SaveTemplateButton extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      submitState: SUBMIT_STATES.DEFAULT,
+    };
+
+    this.timer = undefined;
     this.validateFormData = this.validateFormData.bind(this);
     this.handleSaveTemplate = this.handleSaveTemplate.bind(this);
+    this.setButtonStateToDefault = this.setButtonStateToDefault.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { submitState } = this.state;
+    if (submitState === SUBMIT_STATES.COMPLETE) {
+      this.timer = setTimeout(() => {
+        this.setButtonStateToDefault();
+      }, 2000);
+    }
+  }
+
+  setButtonStateToDefault() {
+    this.setState({ submitState: SUBMIT_STATES.DEFAULT });
+    clearTimeout(this.timer);
   }
 
   validateFormData(formData) {
@@ -47,8 +74,12 @@ class SaveTemplateButton extends React.Component {
     };
 
     setMode('save');
+    this.setState({ submitState: SUBMIT_STATES.PENDING });
 
     return saveTemplate(options)
+      .then(() => {
+        this.setState({ submitState: SUBMIT_STATES.COMPLETE });
+      })
       .catch((error) => {
         // backend to frontend field name map
         const fieldMap = {
@@ -75,48 +106,46 @@ class SaveTemplateButton extends React.Component {
         }
         /* eslint-enable no-underscore-dangle */
 
+        this.setState({ submitState: SUBMIT_STATES.DEFAULT });
+
         throw new SubmissionError(errors);
       });
   }
 
   render() {
-    const {
-      saving,
-      disabled,
-      buttonLabel,
-      handleSubmit,
-    } = this.props;
-    const saveButtonIconClasses = saving ? ['fa-spinner', 'fa-spin'] : [];
+    const { submitState } = this.state;
+    const { handleSubmit } = this.props;
+    const buttonIconClasses = {
+      default: 'btn-outline-primary',
+      pending: 'btn-outline-primary',
+      complete: 'btn-outline-success',
+    };
 
     return (
-      <Button
-        className="btn-primary save-template-btn"
-        disabled={disabled || saving}
+      <StatefulButton
+        className={classNames(buttonIconClasses[submitState], 'save-template-btn')}
         onClick={handleSubmit(this.handleSaveTemplate)}
-      >
-        <React.Fragment>
-          <Icon className={`fa mr-2 ${saveButtonIconClasses.join(' ')}`} />
-          {buttonLabel}
-        </React.Fragment>
-      </Button>
+        state={submitState}
+        labels={{
+          default: 'Save Template',
+          pending: 'Saving Template...',
+          complete: 'Template Saved',
+        }}
+        icons={{
+          pending: <Icon className="fa fa-spinner fa-spin" />,
+          complete: <Icon className="fa fa-check-circle" />,
+        }}
+        disabledStates={[SUBMIT_STATES.PENDING]}
+      />
     );
   }
 }
-
-SaveTemplateButton.defaultProps = {
-  saving: false,
-  disabled: false,
-  buttonLabel: 'Save Template',
-};
 
 SaveTemplateButton.propTypes = {
   templateType: PropTypes.string.isRequired,
   saveTemplate: PropTypes.func.isRequired,
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  saving: PropTypes.bool,
-  disabled: PropTypes.bool,
-  buttonLabel: PropTypes.string,
 };
 
 export default SaveTemplateButton;

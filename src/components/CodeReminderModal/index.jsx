@@ -28,7 +28,6 @@ class CodeReminderModal extends React.Component {
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -151,18 +150,13 @@ class CodeReminderModal extends React.Component {
       data,
       isBulkRemind,
       submitFailed,
-      submitSucceeded,
     } = this.props;
-    const {
-      mode,
-    } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
-        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {!isBulkRemind && this.hasIndividualRemindData() && (
             <React.Fragment>
@@ -229,22 +223,6 @@ class CodeReminderModal extends React.Component {
           ) : (
             error[0]
           )}
-        />
-      </div>
-    );
-  }
-
-  renderSaveTemplateMessage() {
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="success"
-          iconClassName="fa fa-check"
-          message="Template saved successfully"
-          dismissible
         />
       </div>
     );

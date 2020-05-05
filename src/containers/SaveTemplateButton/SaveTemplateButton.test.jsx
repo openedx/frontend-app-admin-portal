@@ -102,7 +102,7 @@ describe('<SaveTemplateButton />', () => {
       <SaveTemplateButtonWrapper disabled={false} />
     ));
 
-    wrapper.find('button').find('.btn.btn-primary').simulate('click');
+    wrapper.find('button').find('.save-template-btn').simulate('click');
     expect(store.getActions()).toEqual(expectedActions);
     expect(saveTemplateSpy).toHaveBeenCalledWith(saveTemplateData);
   });
@@ -129,7 +129,7 @@ describe('<SaveTemplateButton />', () => {
     ));
 
     try {
-      wrapper.find('button').find('.btn.btn-primary').simulate('click');
+      wrapper.find('button').find('.save-template-btn').simulate('click');
     } catch (e) {
       expect(e instanceof SubmissionError).toBeTruthy();
       expect(e.errors['template-name']).toEqual('No template name provided. Please enter a template name.');
