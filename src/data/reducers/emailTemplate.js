@@ -5,6 +5,8 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  SET_EMAIL_TEMPLATE_SOURCE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../constants/emailTemplate';
 
 import { transformTemplates, transformTemplate } from '../../utils';
@@ -16,6 +18,7 @@ export const initialState = {
   saving: false,
   loading: false,
   error: null,
+  emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   default: {
     assign: {
       'email-template-greeting': assignEmailTemplate.greeting,
@@ -88,6 +91,11 @@ const emailTemplate = (state = initialState, action) => {
         ...state,
         saving: false,
         error: action.payload.error,
+      };
+    case SET_EMAIL_TEMPLATE_SOURCE:
+      return {
+        ...state,
+        emailTemplateSource: action.payload.emailTemplateSource,
       };
     default:
       return state;

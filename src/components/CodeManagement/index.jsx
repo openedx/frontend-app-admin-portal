@@ -263,7 +263,7 @@ class CodeManagement extends React.Component {
               </div>
               <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
                 <SearchBar
-                  inputLabel="Search by email or code:"
+                  placeholder="Search by email or code..."
                   onSearch={(query) => {
                     this.setState({ searchQuery: query });
                     this.removeQueryParams(['coupon_id', 'page']);

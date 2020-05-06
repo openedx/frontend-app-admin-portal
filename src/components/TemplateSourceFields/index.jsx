@@ -6,13 +6,21 @@ import classNames from 'classnames';
 
 import RenderField from '../RenderField';
 
+import {
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+} from '../../data/constants/emailTemplate';
+
 class TemplateSourceFields extends React.Component {
   constructor(props) {
     super(props);
+    this.updateState = this.updateState.bind(this);
+  }
 
-    this.state = {
-      emailTemplateSource: 'new_email',
-    };
+  componentWillUnmount() {
+    const { setEmailTemplateSource } = this.props;
+    // set the email template source to default
+    setEmailTemplateSource(EMAIL_TEMPLATE_SOURCE_NEW_EMAIL);
   }
 
   selectRenderField({ input, options }) {
@@ -29,9 +37,15 @@ class TemplateSourceFields extends React.Component {
     );
   }
 
+  updateState(emailTemplateSource) {
+    const { setEmailTemplateSource } = this.props;
+    setEmailTemplateSource(emailTemplateSource);
+  }
+
   render() {
-    const { emailTemplateSource } = this.state;
-    const { savedTemplates } = this.props;
+    const { savedTemplates, emailTemplateSource } = this.props;
+    const newEmail = EMAIL_TEMPLATE_SOURCE_NEW_EMAIL;
+    const fromTemplate = EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE;
 
     return (
       <React.Fragment>
@@ -45,15 +59,13 @@ class TemplateSourceFields extends React.Component {
             key="btn-new-email-template"
             className={classNames(
                 'rounded-left',
-                emailTemplateSource === 'new_email' ? 'btn-primary' : 'btn-outline-primary',
+                emailTemplateSource === newEmail ? 'btn-primary' : 'btn-outline-primary',
             )}
             style={{
-                pointerEvents: emailTemplateSource === 'new_email' ? 'none' : 'auto',
+                pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
             }}
-            aria-pressed={emailTemplateSource === 'new_email' ? 'true' : 'false'}
-            onClick={() => this.setState({
-                emailTemplateSource: 'new_email',
-            })}
+            aria-pressed={emailTemplateSource === newEmail ? 'true' : 'false'}
+            onClick={() => this.updateState(newEmail)}
           >New Email
           </Button>
           <Button
@@ -61,19 +73,17 @@ class TemplateSourceFields extends React.Component {
             key="btn-old-email-template"
             className={classNames(
                 'rounded-right',
-                emailTemplateSource === 'from_template' ? 'btn-primary' : 'btn-outline-primary',
+                emailTemplateSource === fromTemplate ? 'btn-primary' : 'btn-outline-primary',
             )}
             style={{
-                pointerEvents: emailTemplateSource === 'from_template' ? 'none' : 'auto',
+                pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
             }}
-            aria-pressed={emailTemplateSource === 'from_template' ? 'true' : 'false'}
-            onClick={() => this.setState({
-                emailTemplateSource: 'from_template',
-            })}
+            aria-pressed={emailTemplateSource === fromTemplate ? 'true' : 'false'}
+            onClick={() => this.updateState(fromTemplate)}
           >From Template
           </Button>
         </div>
-        {emailTemplateSource === 'new_email' ?
+        {emailTemplateSource === newEmail ?
           <Field
             id="templateNameInput"
             name="template-name"
@@ -99,6 +109,8 @@ TemplateSourceFields.defaultProps = {
 };
 
 TemplateSourceFields.propTypes = {
+  emailTemplateSource: PropTypes.string.isRequired,
+  setEmailTemplateSource: PropTypes.func.isRequired,
   savedTemplates: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

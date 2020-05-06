@@ -2,71 +2,62 @@
 
 exports[`<SearchBar /> renders correctly 1`] = `
 <div
-  className="border search-field"
-  onBlur={[Function]}
-  onFocus={[Function]}
+  className="pgn__searchfield d-flex"
 >
-  <div
-    className="form-group form-inline"
+  <form
+    className="d-flex align-items-center w-100"
+    onReset={[Function]}
+    onSubmit={[Function]}
+    role="search"
   >
     <label
-      className=""
-      htmlFor="asInput1"
-      id="label-asInput1"
+      className="m-0"
+      htmlFor="pgn-searchfield-input-1"
     >
-      Search:
-    </label>
-    <div
-      className="input-group"
-    >
-      <div
-        className="input-group-prepend"
-      />
-      <input
-        aria-describedby="error-asInput1"
-        aria-invalid={false}
-        autoComplete="off"
-        className="form-control is-invalid-nodanger input no-clear-btn"
-        disabled={false}
-        id="asInput1"
-        name="search"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onKeyPress={[Function]}
-        placeholder=""
-        required={false}
-        role="searchbox"
-        type="search"
-        value=""
-      />
-      <div
-        className="input-group-append"
+      <span
+        className="sr-only"
       >
-        <button
-          className="search-btn"
-          disabled={true}
-          onClick={[Function]}
-        >
-          <span
-            aria-hidden={true}
-            className="fa fa-search"
-            id="Icon2"
-          />
-          <span
-            className="sr-only"
-          >
-            Submit search
-          </span>
-        </button>
-      </div>
-    </div>
-    <div
-      aria-live="polite"
-      className="invalid-feedback invalid-feedback-nodanger"
-      id="error-asInput1"
+        search
+      </span>
+    </label>
+    <input
+      className="form-control"
+      id="pgn-searchfield-input-1"
+      name="searchfield-input"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      role="searchbox"
+      type="text"
+      value=""
+    />
+    <button
+      className="btn"
+      type="submit"
     >
-      <span />
-    </div>
-  </div>
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-search fa-w-16 "
+        data-icon="search"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+      <span
+        className="sr-only"
+      >
+        submit search
+      </span>
+    </button>
+  </form>
 </div>
 `;

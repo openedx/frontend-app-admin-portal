@@ -7,10 +7,9 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
-import TemplateSourceFields from '../TemplateSourceFields';
+import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -21,17 +20,11 @@ class CodeRevokeModal extends React.Component {
 
     this.state = {
       mode: 'revoke',
-      fields: {
-        'email-template-greeting': null,
-        'email-template-closing': null,
-      },
     };
 
     this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.handleFieldOnChange = this.handleFieldOnChange.bind(this);
-    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -92,35 +85,6 @@ class CodeRevokeModal extends React.Component {
     return ['code', 'assigned_to'].every(key => key in data);
   }
 
-  handleFieldOnChange(event, newValue, previousValue, name) {
-    this.setState(prevState => ({
-      fields: {
-        ...prevState.fields,
-        [name]: newValue,
-      },
-    }));
-  }
-
-  isSaveDisabled() {
-    const { initialValues, submitting } = this.props;
-    const fieldValues = Object.values(this.state.fields);
-    const fields = Object.entries(this.state.fields);
-    const maxFieldLength = EMAIL_TEMPLATE_FIELD_MAX_LIMIT;
-
-    // disable button if form is in submitting state
-    if (submitting) return true;
-
-    // disable button if any field as text greater than allowed limit
-    const valueNotInRange = fieldValues.some(value => value && value.length > maxFieldLength);
-    if (valueNotInRange) return true;
-
-    // enable button if any field value has changed and new value is different from original value
-    const changed = fields.some(([key, value]) => value !== null && value !== initialValues[key]);
-    if (changed) return false;
-
-    return true;
-  }
-
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -176,17 +140,12 @@ class CodeRevokeModal extends React.Component {
       data,
       isBulkRevoke,
       submitFailed,
-      submitSucceeded,
     } = this.props;
-    const {
-      mode,
-    } = this.state;
 
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
-        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
             <React.Fragment>
@@ -209,7 +168,6 @@ class CodeRevokeModal extends React.Component {
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
-              onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
@@ -223,7 +181,6 @@ class CodeRevokeModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
-              onChange={this.handleFieldOnChange}
             />
           </div>
         </form>
@@ -255,22 +212,6 @@ class CodeRevokeModal extends React.Component {
           ) : (
               error[0]
             )}
-        />
-      </div>
-    );
-  }
-
-  renderSaveTemplateMessage() {
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="success"
-          iconClassName="fa fa-check"
-          message="Template saved successfully"
-          dismissible
         />
       </div>
     );
@@ -320,7 +261,6 @@ class CodeRevokeModal extends React.Component {
               templateType="revoke"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              disabled={this.isSaveDisabled()}
             />,
           ]}
           onClose={onClose}

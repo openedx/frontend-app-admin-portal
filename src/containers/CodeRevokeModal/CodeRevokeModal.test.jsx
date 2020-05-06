@@ -5,16 +5,23 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import last from 'lodash/last';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CodeRevokeModal from './index';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
+import {
+  SET_EMAIL_TEMPLATE_SOURCE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+} from '../../data/constants/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   emailTemplate: {
     loading: false,
     error: null,
+    emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       revoke: {
         'email-template-greeting': revokeEmailTemplate.greeting || '',
@@ -60,8 +67,9 @@ const CodeRevokeModalWrapper = props => (
   </MemoryRouter>
 );
 
+const store = mockStore({ ...initialState });
 CodeRevokeModalWrapper.defaultProps = {
-  store: mockStore({ ...initialState }),
+  store,
 };
 
 CodeRevokeModalWrapper.propTypes = {
@@ -125,15 +133,12 @@ describe('CodeRevokeModalWrapper', () => {
     const wrapper = mount(<CodeRevokeModalWrapper />);
     const saveTemplateButton = wrapper.find('SaveTemplateButton');
     expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().disabled).toEqual(true);
-    expect(saveTemplateButton.props().saving).toEqual(false);
     expect(saveTemplateButton.props().templateType).toEqual('revoke');
-    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
   });
 
-  it('renders <TemplateSourceFields />', () => {
+  it('renders <TemplateSourceFields /> with source new_email', () => {
     const wrapper = mount(<CodeRevokeModalWrapper />);
-    let TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
     expect(TemplateSourceFields).toHaveLength(1);
 
     expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
@@ -143,12 +148,34 @@ describe('CodeRevokeModalWrapper', () => {
     expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
 
     TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
-    TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    expect(last(store.getActions())).toEqual({
+      type: SET_EMAIL_TEMPLATE_SOURCE,
+      payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
+    });
+  });
+
+  it('renders <TemplateSourceFields /> with source from_template', () => {
+    const newStore = mockStore({
+      ...initialState,
+      emailTemplate: {
+        ...initialState.emailTemplate,
+        emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+      },
+    });
+    const wrapper = mount(<CodeRevokeModalWrapper store={newStore} />);
+    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    expect(TemplateSourceFields).toHaveLength(1);
 
     expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
     expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
     expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
     expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
     expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+
+    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    expect(last(newStore.getActions())).toEqual({
+      type: SET_EMAIL_TEMPLATE_SOURCE,
+      payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },
+    });
   });
 });

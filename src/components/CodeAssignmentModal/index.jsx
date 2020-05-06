@@ -10,10 +10,9 @@ import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-import TemplateSourceFields from '../TemplateSourceFields';
+import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
 import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';
 
 import './CodeAssignmentModal.scss';
@@ -27,19 +26,12 @@ class CodeAssignmentModal extends React.Component {
 
     this.state = {
       mode: 'assign',
-      fields: {
-        'template-name': null,
-        'email-template-greeting': null,
-        'email-template-closing': null,
-      },
     };
 
     this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.handleFieldOnChange = this.handleFieldOnChange.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-    this.renderSaveTemplateMessage = this.renderSaveTemplateMessage.bind(this);
   }
 
   componentDidMount() {
@@ -285,35 +277,6 @@ class CodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
-  handleFieldOnChange(event, newValue, previousValue, name) {
-    this.setState(prevState => ({
-      fields: {
-        ...prevState.fields,
-        [name]: newValue,
-      },
-    }));
-  }
-
-  isSaveDisabled() {
-    const { initialValues, submitting } = this.props;
-    const fieldValues = Object.values(this.state.fields);
-    const fields = Object.entries(this.state.fields);
-    const maxFieldLength = EMAIL_TEMPLATE_FIELD_MAX_LIMIT;
-
-    // disable button if form is in submitting state
-    if (submitting) return true;
-
-    // disable button if any field as text greater than allowed limit
-    const valueNotInRange = fieldValues.some(value => value && value.length > maxFieldLength);
-    if (valueNotInRange) return true;
-
-    // enable button if any field value has changed and new value is different from original value
-    const changed = fields.some(([key, value]) => value !== null && value !== initialValues[key]);
-    if (changed) return false;
-
-    return true;
-  }
-
   handleModalSubmit(formData) {
     const {
       isBulkAssign,
@@ -377,18 +340,13 @@ class CodeAssignmentModal extends React.Component {
       data,
       isBulkAssign,
       submitFailed,
-      submitSucceeded,
     } = this.props;
-    const {
-      mode,
-    } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
-        {mode === 'save' && submitSucceeded && this.renderSaveTemplateMessage()}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <React.Fragment>
@@ -414,7 +372,6 @@ class CodeAssignmentModal extends React.Component {
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
-              onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
@@ -428,7 +385,6 @@ class CodeAssignmentModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
-              onChange={this.handleFieldOnChange}
             />
           </div>
         </form>
@@ -460,22 +416,6 @@ class CodeAssignmentModal extends React.Component {
           ) : (
             error[0]
           )}
-        />
-      </div>
-    );
-  }
-
-  renderSaveTemplateMessage() {
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="success"
-          iconClassName="fa fa-check"
-          message="Template saved successfully"
-          dismissible
         />
       </div>
     );
@@ -526,7 +466,6 @@ class CodeAssignmentModal extends React.Component {
               templateType="assign"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
-              disabled={this.isSaveDisabled()}
             />,
           ]}
           onClose={onClose}

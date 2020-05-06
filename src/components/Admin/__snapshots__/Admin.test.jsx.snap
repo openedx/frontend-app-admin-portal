@@ -183,7 +183,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon22"
+                  id="Icon21"
                 />
               </h5>
               <p
@@ -220,7 +220,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon23"
+                      id="Icon22"
                     />
                     <span
                       className="sr-only"
@@ -276,7 +276,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon24"
+                  id="Icon23"
                 />
               </h5>
               <p
@@ -313,7 +313,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon25"
+                      id="Icon24"
                     />
                     <span
                       className="sr-only"
@@ -385,7 +385,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon26"
+                  id="Icon25"
                 />
               </h5>
               <p
@@ -422,7 +422,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon27"
+                      id="Icon26"
                     />
                     <span
                       className="sr-only"
@@ -510,7 +510,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon28"
+                  id="Icon27"
                 />
               </h5>
               <p
@@ -547,7 +547,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon29"
+                      id="Icon28"
                     />
                     <span
                       className="sr-only"
@@ -618,7 +618,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon30"
+            id="Icon29"
           />
           Reset to 
           Full Report
@@ -654,7 +654,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon31"
+                id="Icon30"
               />
               Download current report (CSV)
             </button>
@@ -762,7 +762,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon72"
+                  id="Icon71"
                 />
               </h5>
               <p
@@ -799,7 +799,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon73"
+                      id="Icon72"
                     />
                     <span
                       className="sr-only"
@@ -855,7 +855,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon74"
+                  id="Icon73"
                 />
               </h5>
               <p
@@ -892,7 +892,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon75"
+                      id="Icon74"
                     />
                     <span
                       className="sr-only"
@@ -964,7 +964,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon76"
+                  id="Icon75"
                 />
               </h5>
               <p
@@ -1001,7 +1001,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon77"
+                      id="Icon76"
                     />
                     <span
                       className="sr-only"
@@ -1089,7 +1089,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon78"
+                  id="Icon77"
                 />
               </h5>
               <p
@@ -1126,7 +1126,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon79"
+                      id="Icon78"
                     />
                     <span
                       className="sr-only"
@@ -1197,7 +1197,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon80"
+            id="Icon79"
           />
           Reset to 
           Full Report
@@ -1233,7 +1233,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon81"
+                id="Icon80"
               />
               Download current report (CSV)
             </button>
@@ -1341,7 +1341,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon82"
+                  id="Icon81"
                 />
               </h5>
               <p
@@ -1378,7 +1378,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon83"
+                      id="Icon82"
                     />
                     <span
                       className="sr-only"
@@ -1434,7 +1434,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon84"
+                  id="Icon83"
                 />
               </h5>
               <p
@@ -1471,7 +1471,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon85"
+                      id="Icon84"
                     />
                     <span
                       className="sr-only"
@@ -1543,7 +1543,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon86"
+                  id="Icon85"
                 />
               </h5>
               <p
@@ -1580,7 +1580,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon87"
+                      id="Icon86"
                     />
                     <span
                       className="sr-only"
@@ -1668,7 +1668,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon88"
+                  id="Icon87"
                 />
               </h5>
               <p
@@ -1705,7 +1705,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon89"
+                      id="Icon88"
                     />
                     <span
                       className="sr-only"
@@ -1776,7 +1776,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon90"
+            id="Icon89"
           />
           Reset to 
           Full Report
@@ -1817,7 +1817,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon91"
+                id="Icon90"
               />
               Download current report (CSV)
             </button>
@@ -1925,7 +1925,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon92"
+                  id="Icon91"
                 />
               </h5>
               <p
@@ -1962,7 +1962,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon93"
+                      id="Icon92"
                     />
                     <span
                       className="sr-only"
@@ -2018,7 +2018,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon94"
+                  id="Icon93"
                 />
               </h5>
               <p
@@ -2055,7 +2055,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon95"
+                      id="Icon94"
                     />
                     <span
                       className="sr-only"
@@ -2127,7 +2127,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon96"
+                  id="Icon95"
                 />
               </h5>
               <p
@@ -2164,7 +2164,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon97"
+                      id="Icon96"
                     />
                     <span
                       className="sr-only"
@@ -2252,7 +2252,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon98"
+                  id="Icon97"
                 />
               </h5>
               <p
@@ -2289,7 +2289,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon99"
+                      id="Icon98"
                     />
                     <span
                       className="sr-only"
@@ -2379,72 +2379,64 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 className="col-sm-12 col-md-7 pr-md-0 mb-1"
               >
                 <div
-                  className="border search-field"
-                  onBlur={[Function]}
-                  onFocus={[Function]}
+                  className="pgn__searchfield d-flex"
                 >
-                  <div
-                    className="form-group form-inline"
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
                   >
                     <label
-                      className=""
-                      htmlFor="asInput100"
-                      id="label-asInput100"
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-99"
                     >
-                      Search by email:
-                    </label>
-                    <div
-                      className="input-group"
-                    >
-                      <div
-                        className="input-group-prepend"
-                      />
-                      <input
-                        aria-describedby="error-asInput100"
-                        aria-invalid={false}
-                        autoComplete="off"
-                        className="form-control is-invalid-nodanger input no-clear-btn"
-                        disabled={false}
-                        id="asInput100"
-                        name="search"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        onKeyPress={[Function]}
-                        placeholder=""
-                        required={false}
-                        role="searchbox"
-                        type="search"
-                        value=""
-                      />
-                      <div
-                        className="input-group-append"
+                      <span
+                        className="sr-only"
                       >
-                        <button
-                          className="search-btn"
-                          disabled={true}
-                          onClick={[Function]}
-                        >
-                          <span
-                            aria-hidden={true}
-                            className="fa fa-search"
-                            id="Icon101"
-                          />
-                          <span
-                            className="sr-only"
-                          >
-                            Submit search
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      aria-live="polite"
-                      className="invalid-feedback invalid-feedback-nodanger"
-                      id="error-asInput100"
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      id="pgn-searchfield-input-99"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      type="submit"
                     >
-                      <span />
-                    </div>
-                  </div>
+                      <svg
+                        aria-hidden="true"
+                        className="svg-inline--fa fa-search fa-w-16 "
+                        data-icon="search"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        style={Object {}}
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                          fill="currentColor"
+                          style={Object {}}
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
                 </div>
               </div>
               <div
@@ -2461,7 +2453,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   <span
                     aria-hidden={true}
                     className="fa mr-2 fa-download"
-                    id="Icon102"
+                    id="Icon100"
                   />
                   Download full report (CSV)
                 </button>
@@ -3025,72 +3017,64 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 className="col-sm-12 col-md-7 pr-md-0 mb-1"
               >
                 <div
-                  className="border search-field"
-                  onBlur={[Function]}
-                  onFocus={[Function]}
+                  className="pgn__searchfield d-flex"
                 >
-                  <div
-                    className="form-group form-inline"
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
                   >
                     <label
-                      className=""
-                      htmlFor="asInput9"
-                      id="label-asInput9"
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-9"
                     >
-                      Search by email:
-                    </label>
-                    <div
-                      className="input-group"
-                    >
-                      <div
-                        className="input-group-prepend"
-                      />
-                      <input
-                        aria-describedby="error-asInput9"
-                        aria-invalid={false}
-                        autoComplete="off"
-                        className="form-control is-invalid-nodanger input no-clear-btn"
-                        disabled={false}
-                        id="asInput9"
-                        name="search"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        onKeyPress={[Function]}
-                        placeholder=""
-                        required={false}
-                        role="searchbox"
-                        type="search"
-                        value=""
-                      />
-                      <div
-                        className="input-group-append"
+                      <span
+                        className="sr-only"
                       >
-                        <button
-                          className="search-btn"
-                          disabled={true}
-                          onClick={[Function]}
-                        >
-                          <span
-                            aria-hidden={true}
-                            className="fa fa-search"
-                            id="Icon10"
-                          />
-                          <span
-                            className="sr-only"
-                          >
-                            Submit search
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      aria-live="polite"
-                      className="invalid-feedback invalid-feedback-nodanger"
-                      id="error-asInput9"
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      id="pgn-searchfield-input-9"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      type="submit"
                     >
-                      <span />
-                    </div>
-                  </div>
+                      <svg
+                        aria-hidden="true"
+                        className="svg-inline--fa fa-search fa-w-16 "
+                        data-icon="search"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        style={Object {}}
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                          fill="currentColor"
+                          style={Object {}}
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
                 </div>
               </div>
               <div
@@ -3107,7 +3091,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   <span
                     aria-hidden={true}
                     className="fa mr-2 fa-download"
-                    id="Icon11"
+                    id="Icon10"
                   />
                   Download full report (CSV)
                 </button>
@@ -3217,7 +3201,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon62"
+                  id="Icon61"
                 />
               </h5>
               <p
@@ -3254,7 +3238,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon63"
+                      id="Icon62"
                     />
                     <span
                       className="sr-only"
@@ -3310,7 +3294,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon64"
+                  id="Icon63"
                 />
               </h5>
               <p
@@ -3347,7 +3331,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon65"
+                      id="Icon64"
                     />
                     <span
                       className="sr-only"
@@ -3419,7 +3403,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon66"
+                  id="Icon65"
                 />
               </h5>
               <p
@@ -3456,7 +3440,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon67"
+                      id="Icon66"
                     />
                     <span
                       className="sr-only"
@@ -3544,7 +3528,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon68"
+                  id="Icon67"
                 />
               </h5>
               <p
@@ -3581,7 +3565,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon69"
+                      id="Icon68"
                     />
                     <span
                       className="sr-only"
@@ -3652,7 +3636,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon70"
+            id="Icon69"
           />
           Reset to 
           Full Report
@@ -3693,7 +3677,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon71"
+                id="Icon70"
               />
               Download current report (CSV)
             </button>
@@ -3801,7 +3785,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon52"
+                  id="Icon51"
                 />
               </h5>
               <p
@@ -3838,7 +3822,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon53"
+                      id="Icon52"
                     />
                     <span
                       className="sr-only"
@@ -3894,7 +3878,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon54"
+                  id="Icon53"
                 />
               </h5>
               <p
@@ -3931,7 +3915,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon55"
+                      id="Icon54"
                     />
                     <span
                       className="sr-only"
@@ -4003,7 +3987,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon56"
+                  id="Icon55"
                 />
               </h5>
               <p
@@ -4040,7 +4024,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon57"
+                      id="Icon56"
                     />
                     <span
                       className="sr-only"
@@ -4128,7 +4112,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon58"
+                  id="Icon57"
                 />
               </h5>
               <p
@@ -4165,7 +4149,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon59"
+                      id="Icon58"
                     />
                     <span
                       className="sr-only"
@@ -4236,7 +4220,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon60"
+            id="Icon59"
           />
           Reset to 
           Full Report
@@ -4277,7 +4261,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon61"
+                id="Icon60"
               />
               Download current report (CSV)
             </button>
@@ -4385,7 +4369,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon32"
+                  id="Icon31"
                 />
               </h5>
               <p
@@ -4422,7 +4406,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon33"
+                      id="Icon32"
                     />
                     <span
                       className="sr-only"
@@ -4478,7 +4462,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon34"
+                  id="Icon33"
                 />
               </h5>
               <p
@@ -4515,7 +4499,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon35"
+                      id="Icon34"
                     />
                     <span
                       className="sr-only"
@@ -4587,7 +4571,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon36"
+                  id="Icon35"
                 />
               </h5>
               <p
@@ -4624,7 +4608,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon37"
+                      id="Icon36"
                     />
                     <span
                       className="sr-only"
@@ -4712,7 +4696,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon38"
+                  id="Icon37"
                 />
               </h5>
               <p
@@ -4749,7 +4733,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon39"
+                      id="Icon38"
                     />
                     <span
                       className="sr-only"
@@ -4820,7 +4804,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon40"
+            id="Icon39"
           />
           Reset to 
           Full Report
@@ -4859,7 +4843,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon41"
+                id="Icon40"
               />
               Download current report (CSV)
             </button>
@@ -4967,7 +4951,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon12"
+                  id="Icon11"
                 />
               </h5>
               <p
@@ -5004,7 +4988,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon13"
+                      id="Icon12"
                     />
                     <span
                       className="sr-only"
@@ -5060,7 +5044,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon14"
+                  id="Icon13"
                 />
               </h5>
               <p
@@ -5097,7 +5081,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon15"
+                      id="Icon14"
                     />
                     <span
                       className="sr-only"
@@ -5169,7 +5153,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon16"
+                  id="Icon15"
                 />
               </h5>
               <p
@@ -5206,7 +5190,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon17"
+                      id="Icon16"
                     />
                     <span
                       className="sr-only"
@@ -5294,7 +5278,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon18"
+                  id="Icon17"
                 />
               </h5>
               <p
@@ -5331,7 +5315,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon19"
+                      id="Icon18"
                     />
                     <span
                       className="sr-only"
@@ -5402,7 +5386,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon20"
+            id="Icon19"
           />
           Reset to 
           Full Report
@@ -5438,7 +5422,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon21"
+                id="Icon20"
               />
               Download current report (CSV)
             </button>
@@ -5546,7 +5530,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon42"
+                  id="Icon41"
                 />
               </h5>
               <p
@@ -5583,7 +5567,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon43"
+                      id="Icon42"
                     />
                     <span
                       className="sr-only"
@@ -5639,7 +5623,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon44"
+                  id="Icon43"
                 />
               </h5>
               <p
@@ -5676,7 +5660,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon45"
+                      id="Icon44"
                     />
                     <span
                       className="sr-only"
@@ -5748,7 +5732,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon46"
+                  id="Icon45"
                 />
               </h5>
               <p
@@ -5785,7 +5769,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon47"
+                      id="Icon46"
                     />
                     <span
                       className="sr-only"
@@ -5873,7 +5857,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon48"
+                  id="Icon47"
                 />
               </h5>
               <p
@@ -5910,7 +5894,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon49"
+                      id="Icon48"
                     />
                     <span
                       className="sr-only"
@@ -5981,7 +5965,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           <span
             aria-hidden={true}
             className="fa fa-undo mr-2"
-            id="Icon50"
+            id="Icon49"
           />
           Reset to 
           Full Report
@@ -6022,7 +6006,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon51"
+                id="Icon50"
               />
               Download current report (CSV)
             </button>
@@ -6129,7 +6113,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon103"
+                  id="Icon101"
                 />
               </div>
               <div
