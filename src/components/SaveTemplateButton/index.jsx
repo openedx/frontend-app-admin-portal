@@ -64,6 +64,7 @@ class SaveTemplateButton extends React.Component {
       templateType,
     } = this.props;
 
+    setMode('save');
     this.validateFormData(formData);
 
     const options = {
@@ -73,7 +74,6 @@ class SaveTemplateButton extends React.Component {
       name: formData['template-name'],
     };
 
-    setMode('save');
     this.setState({ submitState: SUBMIT_STATES.PENDING });
 
     return saveTemplate(options)
