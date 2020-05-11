@@ -16,6 +16,13 @@ import CouponDetails from './index';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
+
+const sampleEmailTemplate = {
+  'email-template-greeting': 'Sample email greeting.. ',
+  'email-template-body': 'Sample email body template.. ',
+  'email-template-closing': 'Sample email closing template.. ',
+};
+
 const initialState = {
   portalConfiguration: {
     enterpriseId,
@@ -30,13 +37,15 @@ const initialState = {
     couponOverviewLoading: false,
     couponOverviewError: null,
   },
-  emailTemplate: {},
-};
-
-const sampleEmailTemplate = {
-  'email-template-greeting': 'Sample email greeting.. ',
-  'email-template-body': 'Sample email body template.. ',
-  'email-template-closing': 'Sample email closing template.. ',
+  emailTemplate: {
+    loading: false,
+    error: null,
+    default: {
+      assign: sampleEmailTemplate,
+      remind: sampleEmailTemplate,
+      revoke: sampleEmailTemplate,
+    },
+  },
 };
 
 const initialCouponData = {
@@ -349,13 +358,6 @@ describe('CouponDetailsWrapper', () => {
         ...initialState,
         table: {
           'coupon-details': sampleTableData,
-        },
-        emailTemplate: {
-          loading: false,
-          error: null,
-          assign: sampleEmailTemplate,
-          remind: sampleEmailTemplate,
-          revoke: sampleEmailTemplate,
         },
       });
 

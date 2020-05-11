@@ -2,54 +2,54 @@
 
 exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
 <button
-  className="btn btn-primary save-template-btn"
-  disabled={true}
+  aria-disabled={false}
+  aria-live="assertive"
+  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}
   type="button"
 >
   <span
-    aria-hidden={true}
-    className="fa mr-2 "
-    id="Icon1"
-  />
-  Save Template
+    className="d-flex align-items-center justify-content-center"
+  >
+    Save Template
+  </span>
 </button>
 `;
 
 exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
 <button
-  className="btn btn-primary save-template-btn"
-  disabled={false}
+  aria-disabled={false}
+  aria-live="assertive"
+  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}
   type="button"
 >
   <span
-    aria-hidden={true}
-    className="fa mr-2 "
-    id="Icon2"
-  />
-  Save Template
+    className="d-flex align-items-center justify-content-center"
+  >
+    Save Template
+  </span>
 </button>
 `;
 
 exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = `
 <button
-  className="btn btn-primary save-template-btn"
-  disabled={true}
+  aria-disabled={false}
+  aria-live="assertive"
+  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
   onBlur={[Function]}
   onClick={[Function]}
   onKeyDown={[Function]}
   type="button"
 >
   <span
-    aria-hidden={true}
-    className="fa mr-2 fa-spinner fa-spin"
-    id="Icon3"
-  />
-  Save Template
+    className="d-flex align-items-center justify-content-center"
+  >
+    Save Template
+  </span>
 </button>
 `;
