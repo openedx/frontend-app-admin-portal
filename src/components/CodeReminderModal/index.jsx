@@ -153,6 +153,7 @@ class CodeReminderModal extends React.Component {
     } = this.props;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
+    const emailTemplateType = 'remind';
 
     return (
       <React.Fragment>
@@ -173,7 +174,7 @@ class CodeReminderModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <H3>Email Template</H3>
-            <TemplateSourceFields />
+            <TemplateSourceFields emailTemplateType={emailTemplateType} />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

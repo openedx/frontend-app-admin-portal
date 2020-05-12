@@ -142,6 +142,7 @@ class CodeRevokeModal extends React.Component {
       submitFailed,
     } = this.props;
 
+    const emailTemplateType = 'revoke';
 
     return (
       <React.Fragment>
@@ -162,7 +163,7 @@ class CodeRevokeModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <H3>Email Template</H3>
-            <TemplateSourceFields />
+            <TemplateSourceFields emailTemplateType={emailTemplateType} />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

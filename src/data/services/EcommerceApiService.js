@@ -3,6 +3,7 @@ import qs from 'query-string';
 import apiClient from '../apiClient';
 import { configuration } from '../../config';
 import store from '../store';
+import { EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE } from '../constants/emailTemplate';
 
 class EcommerceApiService {
   static ecommerceBaseUrl = configuration.ECOMMERCE_BASE_URL;
@@ -67,7 +68,12 @@ class EcommerceApiService {
 
   static saveTemplate(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/offer-assignment-email-template/${enterpriseId}/`;
+    const { emailTemplateSource } = store.getState().emailTemplate;
+    let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/offer-assignment-email-template/${enterpriseId}/`;
+    if (emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
+      url = `${url}${options.id}/`;
+      return apiClient.put(url, options, 'json');
+    }
     return apiClient.post(url, options, 'json');
   }
 }

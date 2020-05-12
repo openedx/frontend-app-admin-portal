@@ -6,12 +6,20 @@ import {
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
   SET_EMAIL_TEMPLATE_SOURCE,
+  ALL_EMAIL_TEMPLATE_SUCCESS,
 } from '../constants/emailTemplate';
 
 import EcommerceApiService from '../services/EcommerceApiService';
 
 const emailTemplateRequest = () => ({
   type: EMAIL_TEMPLATE_REQUEST,
+});
+
+const allEmailTemplateSuccess = data => ({
+  type: ALL_EMAIL_TEMPLATE_SUCCESS,
+  payload: {
+    data,
+  },
 });
 
 const emailTemplateSuccess = data => ({
@@ -33,7 +41,7 @@ const saveTemplateRequest = emailType => ({
   payload: { emailType },
 });
 
-const saveTemplateSuccess = (emailType, data) => ({
+export const saveTemplateSuccess = (emailType, data) => ({
   type: SAVE_TEMPLATE_SUCCESS,
   payload: { emailType, data },
 });
@@ -49,6 +57,9 @@ const fetchEmailTemplates = options => (
     return EcommerceApiService.fetchEmailTemplate(options)
       .then((response) => {
         dispatch(emailTemplateSuccess(response.data));
+        if (!options.active) {
+          dispatch(allEmailTemplateSuccess(response.data.results));
+        }
       })
       .catch((error) => {
         dispatch(emailTemplateFailure(error));

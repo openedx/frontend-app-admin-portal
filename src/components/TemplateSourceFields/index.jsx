@@ -14,7 +14,23 @@ import {
 class TemplateSourceFields extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      templateOptions: [],
+    };
     this.updateState = this.updateState.bind(this);
+    this.makeOptions = this.makeOptions.bind(this);
+    this.changeFromEmailTemplate = this.changeFromEmailTemplate.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { allEmailTemplates, emailTemplateSource } = this.props;
+    if (allEmailTemplates !== prevProps.allEmailTemplates &&
+        emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
+      this.makeOptions(this.props);
+      const emailTemplate = this.props.allEmailTemplates.filter(item =>
+        item.email_type === prevProps.emailTemplateType);
+      this.dispatchUpdatedTemplate(emailTemplate);
+    }
   }
 
   componentWillUnmount() {
@@ -23,7 +39,7 @@ class TemplateSourceFields extends React.Component {
     setEmailTemplateSource(EMAIL_TEMPLATE_SOURCE_NEW_EMAIL);
   }
 
-  selectRenderField({ input, options }) {
+  selectRenderField({ input, templateOptions, changeFromEmailTemplate }) {
     return (
       <div className="template-select-wrapper mb-3">
         <label htmlFor="templateNameSelect">Template Name</label>
@@ -31,19 +47,52 @@ class TemplateSourceFields extends React.Component {
           {...input}
           type="select"
           id="templateNameSelect"
-          options={options}
+          options={templateOptions}
+          onChange={changeFromEmailTemplate}
         />
       </div>
     );
   }
 
   updateState(emailTemplateSource) {
-    const { setEmailTemplateSource } = this.props;
+    const {
+      setEmailTemplateSource, fetchEmailTemplates, emailTemplateType, allEmailTemplates,
+    } = this.props;
     setEmailTemplateSource(emailTemplateSource);
+    if (emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
+      fetchEmailTemplates({
+        email_type: emailTemplateType,
+      });
+      this.dispatchUpdatedTemplate(allEmailTemplates);
+    }
+  }
+
+  makeOptions(props) {
+    if (props.allEmailTemplates.length > 0) {
+      const templateOptions = [];
+      props.allEmailTemplates.forEach((emailTemplate) => {
+        if (emailTemplate.email_type === props.emailTemplateType) {
+          templateOptions.push({ value: emailTemplate.name, label: emailTemplate.name });
+        }
+      });
+      this.setState({ templateOptions });
+    }
+  }
+
+  dispatchUpdatedTemplate(emailTemplate) {
+    const { saveTemplateSuccess, emailTemplateType } = this.props;
+    if (emailTemplate.length > 0) {
+      saveTemplateSuccess(emailTemplateType, emailTemplate[0]);
+    }
+  }
+
+  changeFromEmailTemplate(e) {
+    const emailTemplate = this.props.allEmailTemplates.filter(item => item.name === e.target.value);
+    this.dispatchUpdatedTemplate(emailTemplate);
   }
 
   render() {
-    const { savedTemplates, emailTemplateSource } = this.props;
+    const { emailTemplateSource } = this.props;
     const newEmail = EMAIL_TEMPLATE_SOURCE_NEW_EMAIL;
     const fromTemplate = EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE;
 
@@ -96,7 +145,8 @@ class TemplateSourceFields extends React.Component {
           <Field
             name="template-name-select"
             component={this.selectRenderField}
-            options={savedTemplates}
+            templateOptions={this.state.templateOptions}
+            changeFromEmailTemplate={this.changeFromEmailTemplate}
           />
         }
       </React.Fragment>
@@ -105,13 +155,16 @@ class TemplateSourceFields extends React.Component {
 }
 
 TemplateSourceFields.defaultProps = {
-  savedTemplates: [],
+  allEmailTemplates: [],
 };
 
 TemplateSourceFields.propTypes = {
   emailTemplateSource: PropTypes.string.isRequired,
+  emailTemplateType: PropTypes.string.isRequired,
   setEmailTemplateSource: PropTypes.func.isRequired,
-  savedTemplates: PropTypes.arrayOf(PropTypes.shape({})),
+  saveTemplateSuccess: PropTypes.func.isRequired,
+  fetchEmailTemplates: PropTypes.func.isRequired,
+  allEmailTemplates: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default TemplateSourceFields;
