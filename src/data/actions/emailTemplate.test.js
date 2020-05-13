@@ -8,6 +8,8 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  ADD_NEW_TO_ALL_TEMPLATES_SUCCESS,
+  UPDATE_ALL_TEMPLATES_SUCCESS,
 } from '../constants/emailTemplate';
 
 jest.mock('../../data/services/EcommerceApiService');
@@ -42,6 +44,12 @@ describe('emailTemplate actions', () => {
         },
       },
       {
+        type: ADD_NEW_TO_ALL_TEMPLATES_SUCCESS,
+        payload: {
+          data: successResponse,
+        },
+      },
+      {
         type: SAVE_TEMPLATE_SUCCESS,
         payload: {
           emailType: postData.email_type,
@@ -49,6 +57,38 @@ describe('emailTemplate actions', () => {
         },
       },
     ];
+    const store = mockStore();
+    return store.dispatch(saveTemplate({ options: postData })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('dispatches success action on successful template update', () => {
+    EcommerceApiService.saveTemplate.mockImplementation(() => Promise.resolve({
+      data: successResponse,
+    }));
+
+    const expectedActions = [
+      {
+        type: SAVE_TEMPLATE_REQUEST,
+        payload: {
+          emailType: postData.email_type,
+        },
+      },
+      {
+        type: UPDATE_ALL_TEMPLATES_SUCCESS,
+        payload: {
+          data: successResponse,
+        },
+      },
+      {
+        type: SAVE_TEMPLATE_SUCCESS,
+        payload: {
+          emailType: postData.email_type,
+          data: successResponse,
+        },
+      },
+    ];
+    postData.id = 1;
     const store = mockStore();
     return store.dispatch(saveTemplate({ options: postData })).then(() => {
       expect(store.getActions()).toEqual(expectedActions);

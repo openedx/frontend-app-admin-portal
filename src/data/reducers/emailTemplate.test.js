@@ -2,6 +2,8 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  ALL_EMAIL_TEMPLATE_SUCCESS,
+  UPDATE_ALL_TEMPLATES_SUCCESS,
 } from '../constants/emailTemplate';
 
 import emailTemplate, { initialState as emailTemplateReducerInitialState } from './emailTemplate';
@@ -11,6 +13,8 @@ const saveTemplateSuccessResponse = {
   email_greeting: 'I am email greeting',
   email_body: 'I am email body',
   email_closing: 'I am email closing',
+  name: 'template-1',
+  id: 4,
 };
 const saveTemplateErrorResponse = {
   email_greeting: [
@@ -47,6 +51,8 @@ describe('emailTemplate reducer', () => {
           'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
           'email-template-body': saveTemplateSuccessResponse.email_body,
           'email-template-closing': saveTemplateSuccessResponse.email_closing,
+          'template-name-select': saveTemplateSuccessResponse.name,
+          'template-id': saveTemplateSuccessResponse.id,
         },
       },
     };
@@ -58,6 +64,68 @@ describe('emailTemplate reducer', () => {
       },
     };
     expect(emailTemplate(undefined, successResponseActionData)).toEqual(expected);
+  });
+
+  it('updates store with correct data on save all template success', () => {
+    const expected = {
+      ...emailTemplateReducerInitialState,
+      saving: false,
+      error: null,
+      allTemplates: [{
+        email_body: saveTemplateSuccessResponse.email_body,
+        email_closing: saveTemplateSuccessResponse.email_closing,
+        email_greeting: saveTemplateSuccessResponse.email_greeting,
+        id: saveTemplateSuccessResponse.id,
+        name: saveTemplateSuccessResponse.name,
+      },
+      {
+        email_body: saveTemplateSuccessResponse.email_body,
+        email_closing: saveTemplateSuccessResponse.email_closing,
+        email_greeting: saveTemplateSuccessResponse.email_greeting,
+        id: saveTemplateSuccessResponse.id,
+        name: saveTemplateSuccessResponse.name,
+      },
+      ],
+    };
+    const successResponseActionData = {
+      type: ALL_EMAIL_TEMPLATE_SUCCESS,
+      payload: {
+        data: [saveTemplateSuccessResponse, saveTemplateSuccessResponse],
+      },
+    };
+    expect(emailTemplate(undefined, successResponseActionData)).toEqual(expected);
+  });
+
+  it('updates store with correct data on update template success', () => {
+    const saveTemplateSuccessUpdatedResponse = {
+      email_greeting: 'I am email greeting updated',
+      email_body: 'I am email body updated',
+      email_closing: 'I am email closing updated',
+      name: 'template-1 updated',
+      id: 4,
+    };
+
+    const initialState = {
+      ...emailTemplateReducerInitialState,
+      saving: false,
+      error: null,
+      allTemplates: [saveTemplateSuccessResponse],
+    };
+
+    const expected = {
+      ...emailTemplateReducerInitialState,
+      saving: false,
+      error: null,
+      allTemplates: [saveTemplateSuccessUpdatedResponse],
+    };
+    const successResponseActionData = {
+      type: UPDATE_ALL_TEMPLATES_SUCCESS,
+      payload: {
+        data: saveTemplateSuccessUpdatedResponse,
+      },
+    };
+
+    expect(emailTemplate(initialState, successResponseActionData)).toEqual(expected);
   });
 
   it('updates store with correct data on save template failure', () => {

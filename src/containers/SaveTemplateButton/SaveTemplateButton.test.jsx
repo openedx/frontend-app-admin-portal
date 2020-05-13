@@ -19,6 +19,12 @@ const initialState = {
   },
   emailTemplate: {
     saving: false,
+    allTemplates: [],
+    assign: {
+      'template-id': 1,
+      'email-template-greeting': 'email-template-greeting',
+      'email-template-body': 'email-template-body',
+    },
   },
 };
 const store = mockStore({
@@ -30,6 +36,7 @@ const formData = {
   'email-template-closing': 'Closing',
 };
 const saveTemplateData = {
+  id: 1,
   email_type: 'assign',
   name: formData['template-name'],
   email_greeting: formData['email-template-greeting'],

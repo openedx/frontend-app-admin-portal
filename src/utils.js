@@ -142,6 +142,8 @@ const transformTemplates = ({ results }, initialState) => {
       'email-template-greeting': result.email_greeting,
       'email-template-body': result.email_body,
       'email-template-closing': result.email_closing,
+      'template-name-select': result.name,
+      'template-id': result.id,
     };
   });
   return data;
@@ -152,6 +154,8 @@ const transformTemplate = (emailType, template) => ({
     'email-template-greeting': template.email_greeting,
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
+    'template-name-select': template.name,
+    'template-id': template.id,
   },
 });
 

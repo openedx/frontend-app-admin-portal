@@ -40,18 +40,24 @@ const sampleTemplateResponse = {
         email_type: 'assign',
         email_greeting: 'Assign Greeting',
         email_closing: 'Assign Closing',
+        name: 'assign-1',
+        id: 1,
       },
       {
         email_body: 'Remind Body',
         email_type: 'remind',
         email_greeting: 'Remind Greeting',
         email_closing: 'Remind Closing',
+        name: 'remind-1',
+        id: 2,
       },
       {
         email_body: 'Revoke Body',
         email_type: 'revoke',
         email_greeting: 'Revoke Greeting',
         email_closing: 'Revoke Closing',
+        name: 'revoke-1',
+        id: 3,
       },
     ],
   },
@@ -292,7 +298,8 @@ describe('CodeManagementPageWrapper', () => {
       },
     ];
     store.clearActions();
-    return store.dispatch(fetchEmailTemplates()).then(() => {
+    const options = { active: 1 };
+    return store.dispatch(fetchEmailTemplates(options)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
