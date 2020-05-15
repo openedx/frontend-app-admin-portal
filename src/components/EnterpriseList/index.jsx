@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 
+import * as FullStory from '@fullstory/browser';
+
 import H1 from '../H1';
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../../components/LoadingMessage';
@@ -11,6 +13,8 @@ import LmsApiService from '../../data/services/LmsApiService';
 import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
+
+FullStory.init({ orgId: 'CWDGA' });
 
 class EnterpriseList extends React.Component {
   constructor(props) {
