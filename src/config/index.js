@@ -16,6 +16,7 @@ const configuration = {
   ECOMMERCE_BASE_URL: process.env.ECOMMERCE_BASE_URL,
   SECURE_COOKIES: process.env.NODE_ENV !== 'development',
   SEGMENT_KEY: process.env.SEGMENT_KEY,
+  FULLSTORY_ORG_ID: process.env.FULLSTORY_ORG_ID,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,

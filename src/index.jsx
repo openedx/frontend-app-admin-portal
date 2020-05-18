@@ -25,8 +25,9 @@ import apiClient from './data/apiClient';
 import store from './data/store';
 import history from './data/history';
 import './index.scss';
+import { configuration } from './config';
 
-FullStory.init({ orgId: 'CWDGA' });
+FullStory.init({ orgId: configuration.FULLSTORY_ORG_ID });
 
 const AppWrapper = () => (
   <Provider store={store}>

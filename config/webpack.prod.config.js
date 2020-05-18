@@ -159,6 +159,7 @@ module.exports = Merge.smart(commonConfig, {
       ACCESS_TOKEN_COOKIE_NAME: null,
       USER_INFO_COOKIE_NAME: null,
       SEGMENT_KEY: null,
+      FULLSTORY_ORG_ID: null,
       NEW_RELIC_APP_ID: null,
       NEW_RELIC_LICENSE_KEY: null,
       FEATURE_FLAGS: {
