@@ -16,7 +16,7 @@ class ActionButtonWithModal extends React.Component {
     return (
       <React.Fragment>
         <Button
-          className={classNames(buttonClassName, 'btn-link btn-sm p-0')}
+          className={classNames(buttonClassName)}
           onClick={() => this.setIsModalOpen(true)}
         >
           {buttonLabel}

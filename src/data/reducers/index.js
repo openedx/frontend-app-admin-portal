@@ -12,6 +12,8 @@ import sidebar from './sidebar';
 import codeAssignment from './codeAssignment';
 import codeRevoke from './codeRevoke';
 import emailTemplate from './emailTemplate';
+import subscriptionDetails from './subscriptionDetails';
+import userSubscription from './userSubscription';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -34,6 +36,8 @@ const rootReducer = combineReducers({
   codeAssignment,
   codeRevoke,
   emailTemplate,
+  subscriptionDetails,
+  userSubscription,
 });
 
 export default rootReducer;
