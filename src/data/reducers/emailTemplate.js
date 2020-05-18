@@ -11,6 +11,7 @@ import { transformTemplates, transformTemplate } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
+import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
 
 export const initialState = {
   saving: false,
@@ -30,6 +31,11 @@ export const initialState = {
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,
+  },
+  subscribe: {
+    'email-template-greeting': subscribeEmailTemplate.greeting,
+    'email-template-body': subscribeEmailTemplate.body,
+    'email-template-closing': subscribeEmailTemplate.closing,
   },
 };
 

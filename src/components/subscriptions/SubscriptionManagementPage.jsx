@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
-import AddUsersDropdown from './AddUsersDropdown';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
+import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
+import AddUserButton from './AddUsersButton';
 
 const PAGE_TITLE = 'Subscription Management';
 
 export default function SubscriptionManagementPage() {
+  const [status, setStatus] = useState({
+    visible: false, alertType: '', message: '',
+  });
+
+  const renderStatusMessage = () => (
+    status && status.visible ?
+      <StatusAlert
+        alertType={status.alertType}
+        iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
+        title={status.title}
+        message={status.message}
+        dismissible
+      /> : null
+  );
+
   return (
     <SubscriptionData>
       <main role="main" className="manage-subscription">
@@ -55,7 +71,13 @@ export default function SubscriptionManagementPage() {
                           />
                         </div>
                         <div className="col-12 col-lg-6">
-                          <AddUsersDropdown />
+                          <AddUserButton
+                            onSuccess={() => setStatus({
+                              visible: true,
+                              alertType: 'success',
+                              message: 'Successfully assigned license(s)',
+                            })}
+                          />
                         </div>
                       </div>
                     </React.Fragment>
@@ -67,6 +89,7 @@ export default function SubscriptionManagementPage() {
                   <LicenseAllocationNavigation />
                 </div>
                 <div className="col-12 col-lg-9">
+                  {renderStatusMessage()}
                   <TabContentTable />
                 </div>
               </div>
