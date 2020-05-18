@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 import { PrivateRoute } from '@edx/frontend-auth';
+import * as FullStory from '@fullstory/browser';
 
 import EnterpriseApp from './containers/EnterpriseApp';
 import Header from './containers/Header';
@@ -24,6 +25,8 @@ import apiClient from './data/apiClient';
 import store from './data/store';
 import history from './data/history';
 import './index.scss';
+
+FullStory.init({ orgId: 'CWDGA' });
 
 const AppWrapper = () => (
   <Provider store={store}>
