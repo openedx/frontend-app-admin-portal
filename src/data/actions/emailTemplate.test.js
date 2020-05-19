@@ -8,8 +8,6 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
-  ADD_NEW_TO_ALL_TEMPLATES_SUCCESS,
-  UPDATE_ALL_TEMPLATES_SUCCESS,
 } from '../constants/emailTemplate';
 
 jest.mock('../../data/services/EcommerceApiService');
@@ -44,12 +42,6 @@ describe('emailTemplate actions', () => {
         },
       },
       {
-        type: ADD_NEW_TO_ALL_TEMPLATES_SUCCESS,
-        payload: {
-          data: successResponse,
-        },
-      },
-      {
         type: SAVE_TEMPLATE_SUCCESS,
         payload: {
           emailType: postData.email_type,
@@ -75,12 +67,6 @@ describe('emailTemplate actions', () => {
         },
       },
       {
-        type: UPDATE_ALL_TEMPLATES_SUCCESS,
-        payload: {
-          data: successResponse,
-        },
-      },
-      {
         type: SAVE_TEMPLATE_SUCCESS,
         payload: {
           emailType: postData.email_type,
@@ -88,7 +74,6 @@ describe('emailTemplate actions', () => {
         },
       },
     ];
-    postData.id = 1;
     const store = mockStore();
     return store.dispatch(saveTemplate({ options: postData })).then(() => {
       expect(store.getActions()).toEqual(expectedActions);

@@ -343,7 +343,6 @@ class CodeAssignmentModal extends React.Component {
     } = this.props;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
-    const emailTemplateType = 'assign';
 
     return (
       <React.Fragment>
@@ -367,7 +366,7 @@ class CodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
           <div className="mt-4">
             <H3>Email Template</H3>
-            <TemplateSourceFields emailTemplateType={emailTemplateType} />
+            <TemplateSourceFields emailTemplateType="assign" />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

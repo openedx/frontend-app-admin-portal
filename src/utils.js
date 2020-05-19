@@ -159,6 +159,18 @@ const transformTemplate = (emailType, template) => ({
   },
 });
 
+const updateAllTemplates = (template, state) => {
+  const { allTemplates } = state;
+  const templateId = template.id;
+  const index = allTemplates.findIndex(item => item.id === templateId);
+  if (index >= 0) {
+    allTemplates[index] = template;
+  } else {
+    allTemplates.push(template);
+  }
+  return allTemplates;
+};
+
 const validateEmailTemplateFields = (formData) => {
   const errors = {
     _error: [],
@@ -200,4 +212,5 @@ export {
   transformTemplates,
   transformTemplate,
   validateEmailTemplateFields,
+  updateAllTemplates,
 };

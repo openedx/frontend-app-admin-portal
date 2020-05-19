@@ -2,8 +2,6 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
-  ALL_EMAIL_TEMPLATE_SUCCESS,
-  UPDATE_ALL_TEMPLATES_SUCCESS,
 } from '../constants/emailTemplate';
 
 import emailTemplate, { initialState as emailTemplateReducerInitialState } from './emailTemplate';
@@ -66,36 +64,6 @@ describe('emailTemplate reducer', () => {
     expect(emailTemplate(undefined, successResponseActionData)).toEqual(expected);
   });
 
-  it('updates store with correct data on save all template success', () => {
-    const expected = {
-      ...emailTemplateReducerInitialState,
-      saving: false,
-      error: null,
-      allTemplates: [{
-        email_body: saveTemplateSuccessResponse.email_body,
-        email_closing: saveTemplateSuccessResponse.email_closing,
-        email_greeting: saveTemplateSuccessResponse.email_greeting,
-        id: saveTemplateSuccessResponse.id,
-        name: saveTemplateSuccessResponse.name,
-      },
-      {
-        email_body: saveTemplateSuccessResponse.email_body,
-        email_closing: saveTemplateSuccessResponse.email_closing,
-        email_greeting: saveTemplateSuccessResponse.email_greeting,
-        id: saveTemplateSuccessResponse.id,
-        name: saveTemplateSuccessResponse.name,
-      },
-      ],
-    };
-    const successResponseActionData = {
-      type: ALL_EMAIL_TEMPLATE_SUCCESS,
-      payload: {
-        data: [saveTemplateSuccessResponse, saveTemplateSuccessResponse],
-      },
-    };
-    expect(emailTemplate(undefined, successResponseActionData)).toEqual(expected);
-  });
-
   it('updates store with correct data on update template success', () => {
     const saveTemplateSuccessUpdatedResponse = {
       email_greeting: 'I am email greeting updated',
@@ -109,6 +77,15 @@ describe('emailTemplate reducer', () => {
       ...emailTemplateReducerInitialState,
       saving: false,
       error: null,
+      ...{
+        [emailType]: {
+          'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
+          'email-template-body': saveTemplateSuccessResponse.email_body,
+          'email-template-closing': saveTemplateSuccessResponse.email_closing,
+          'template-name-select': saveTemplateSuccessResponse.name,
+          'template-id': saveTemplateSuccessResponse.id,
+        },
+      },
       allTemplates: [saveTemplateSuccessResponse],
     };
 
@@ -116,11 +93,21 @@ describe('emailTemplate reducer', () => {
       ...emailTemplateReducerInitialState,
       saving: false,
       error: null,
+      ...{
+        [emailType]: {
+          'email-template-greeting': saveTemplateSuccessUpdatedResponse.email_greeting,
+          'email-template-body': saveTemplateSuccessUpdatedResponse.email_body,
+          'email-template-closing': saveTemplateSuccessUpdatedResponse.email_closing,
+          'template-name-select': saveTemplateSuccessUpdatedResponse.name,
+          'template-id': saveTemplateSuccessUpdatedResponse.id,
+        },
+      },
       allTemplates: [saveTemplateSuccessUpdatedResponse],
     };
     const successResponseActionData = {
-      type: UPDATE_ALL_TEMPLATES_SUCCESS,
+      type: SAVE_TEMPLATE_SUCCESS,
       payload: {
+        emailType,
         data: saveTemplateSuccessUpdatedResponse,
       },
     };
