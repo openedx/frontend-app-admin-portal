@@ -112,6 +112,7 @@ module.exports = Merge.smart(commonConfig, {
       ECOMMERCE_BASE_URL: 'http://localhost:18130',
       SEGMENT_KEY: null,
       FULLSTORY_ORG_ID: null,
+      FULLSTORY_ENABLED: false,
       ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
       USER_INFO_COOKIE_NAME: 'edx-user-info',
       FEATURE_FLAGS: {

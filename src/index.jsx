@@ -27,7 +27,12 @@ import history from './data/history';
 import './index.scss';
 import { configuration } from './config';
 
-FullStory.init({ orgId: configuration.FULLSTORY_ORG_ID });
+if (configuration.FULLSTORY_ORG_ID) {
+  FullStory.init({
+    orgId: configuration.FULLSTORY_ORG_ID,
+    devMode: !configuration.FULLSTORY_ENABLED,
+  });
+}
 
 const AppWrapper = () => (
   <Provider store={store}>
