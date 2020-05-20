@@ -7,9 +7,10 @@ import {
   SAVE_TEMPLATE_FAILURE,
   SET_EMAIL_TEMPLATE_SOURCE,
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  CURRENT_FROM_TEMPLATE,
 } from '../constants/emailTemplate';
 
-import { transformTemplates, transformTemplate, updateAllTemplates } from '../../utils';
+import { transformTemplate, updateAllTemplates } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
@@ -74,7 +75,6 @@ const emailTemplate = (state = initialState, action) => {
         loading: false,
         error: null,
         allTemplates: action.payload.data.results,
-        ...transformTemplates(action.payload.data, initialState),
       };
     case EMAIL_TEMPLATE_FAILURE:
       return {
@@ -93,6 +93,12 @@ const emailTemplate = (state = initialState, action) => {
         saving: false,
         error: null,
         allTemplates: updateAllTemplates(action.payload.data, state),
+      };
+    case CURRENT_FROM_TEMPLATE:
+      return {
+        ...state,
+        saving: false,
+        error: null,
         ...transformTemplate(action.payload.emailType, action.payload.data),
       };
     case SAVE_TEMPLATE_FAILURE:

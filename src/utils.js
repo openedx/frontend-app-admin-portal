@@ -131,24 +131,6 @@ const snakeCaseFormData = (formData) => {
   return transformedData;
 };
 
-const transformTemplates = ({ results }, initialState) => {
-  const data = {
-    assign: initialState.assign,
-    remind: initialState.remind,
-    revoke: initialState.revoke,
-  };
-  results.forEach((result) => {
-    data[result.email_type] = {
-      'email-template-greeting': result.email_greeting,
-      'email-template-body': result.email_body,
-      'email-template-closing': result.email_closing,
-      'template-name-select': result.name,
-      'template-id': result.id,
-    };
-  });
-  return data;
-};
-
 const transformTemplate = (emailType, template) => ({
   [emailType]: {
     'email-template-greeting': template.email_greeting,
@@ -209,7 +191,6 @@ export {
   snakeCaseObject,
   snakeCaseFormData,
   maxLength512,
-  transformTemplates,
   transformTemplate,
   validateEmailTemplateFields,
   updateAllTemplates,

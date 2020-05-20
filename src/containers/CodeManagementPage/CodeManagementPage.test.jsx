@@ -8,11 +8,8 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
 import CodeManagementPage from './index';
-import fetchEmailTemplates from '../../data/actions/emailTemplate';
-import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../data/constants/coupons';
-import { EMAIL_TEMPLATE_SUCCESS, EMAIL_TEMPLATE_REQUEST, EMAIL_TEMPLATE_FAILURE } from '../../data/constants/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -29,37 +26,6 @@ const initialState = {
   },
   table: {
     'coupon-details': {},
-  },
-};
-
-const sampleTemplateResponse = {
-  data: {
-    results: [
-      {
-        email_body: 'Assign Body',
-        email_type: 'assign',
-        email_greeting: 'Assign Greeting',
-        email_closing: 'Assign Closing',
-        name: 'assign-1',
-        id: 1,
-      },
-      {
-        email_body: 'Remind Body',
-        email_type: 'remind',
-        email_greeting: 'Remind Greeting',
-        email_closing: 'Remind Closing',
-        name: 'remind-1',
-        id: 2,
-      },
-      {
-        email_body: 'Revoke Body',
-        email_type: 'revoke',
-        email_greeting: 'Revoke Greeting',
-        email_closing: 'Revoke Closing',
-        name: 'revoke-1',
-        id: 3,
-      },
-    ],
   },
 };
 
@@ -271,56 +237,5 @@ describe('CodeManagementPageWrapper', () => {
     store.clearActions();
     wrapper.find('.fa-refresh').hostNodes().simulate('click');
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
-  });
-
-  it('fetches email templates on componentDidMount', () => {
-    const store = mockStore({ ...initialState });
-    const spy = jest.spyOn(EcommerceApiService, 'fetchEmailTemplate');
-    store.clearActions();
-    mount(<CodeManagementPageWrapper store={store} />);
-    expect(store.getActions().filter(action => action.type === EMAIL_TEMPLATE_REQUEST))
-      .toHaveLength(1);
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('dispatches the correct action with correct payload when templates are fetched', () => {
-    const store = mockStore({ ...initialState });
-    const mockPromiseResolve = Promise.resolve(sampleTemplateResponse);
-    EcommerceApiService.fetchEmailTemplate.mockImplementation(() => mockPromiseResolve);
-    const payload = sampleTemplateResponse;
-    const expectedActions = [
-      {
-        type: EMAIL_TEMPLATE_REQUEST,
-      },
-      {
-        type: EMAIL_TEMPLATE_SUCCESS,
-        payload,
-      },
-    ];
-    store.clearActions();
-    const options = { active: 1 };
-    return store.dispatch(fetchEmailTemplates(options)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('dispatches the correct action with correct payload when fetching templates fails', () => {
-    const store = mockStore({ ...initialState });
-    const error = 'Something went wrong';
-    const mockPromiseReject = Promise.reject(error);
-    EcommerceApiService.fetchEmailTemplate.mockImplementation(() => mockPromiseReject);
-    const expectedActions = [
-      {
-        type: EMAIL_TEMPLATE_REQUEST,
-      },
-      {
-        type: EMAIL_TEMPLATE_FAILURE,
-        payload: { error },
-      },
-    ];
-    store.clearActions();
-    return store.dispatch(fetchEmailTemplates()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
   });
 });

@@ -2,6 +2,7 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  CURRENT_FROM_TEMPLATE,
 } from '../constants/emailTemplate';
 
 import emailTemplate, { initialState as emailTemplateReducerInitialState } from './emailTemplate';
@@ -44,15 +45,6 @@ describe('emailTemplate reducer', () => {
       ...emailTemplateReducerInitialState,
       saving: false,
       error: null,
-      ...{
-        [emailType]: {
-          'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
-          'email-template-body': saveTemplateSuccessResponse.email_body,
-          'email-template-closing': saveTemplateSuccessResponse.email_closing,
-          'template-name-select': saveTemplateSuccessResponse.name,
-          'template-id': saveTemplateSuccessResponse.id,
-        },
-      },
     };
     const successResponseActionData = {
       type: SAVE_TEMPLATE_SUCCESS,
@@ -64,7 +56,7 @@ describe('emailTemplate reducer', () => {
     expect(emailTemplate(undefined, successResponseActionData)).toEqual(expected);
   });
 
-  it('updates store with correct data on update template success', () => {
+  it('updates store with correct form initial data on changing from template', () => {
     const saveTemplateSuccessUpdatedResponse = {
       email_greeting: 'I am email greeting updated',
       email_body: 'I am email body updated',
@@ -86,7 +78,6 @@ describe('emailTemplate reducer', () => {
           'template-id': saveTemplateSuccessResponse.id,
         },
       },
-      allTemplates: [saveTemplateSuccessResponse],
     };
 
     const expected = {
@@ -102,6 +93,36 @@ describe('emailTemplate reducer', () => {
           'template-id': saveTemplateSuccessUpdatedResponse.id,
         },
       },
+    };
+    const successResponseActionData = {
+      type: CURRENT_FROM_TEMPLATE,
+      payload: {
+        emailType,
+        data: saveTemplateSuccessUpdatedResponse,
+      },
+    };
+
+    expect(emailTemplate(initialState, successResponseActionData)).toEqual(expected);
+  });
+
+  it('updates store with correct data on update template success', () => {
+    const saveTemplateSuccessUpdatedResponse = {
+      email_greeting: 'I am email greeting updated',
+      email_body: 'I am email body updated',
+      email_closing: 'I am email closing updated',
+      name: 'template-1 updated',
+      id: 4,
+    };
+    const initialState = {
+      ...emailTemplateReducerInitialState,
+      saving: false,
+      error: null,
+      allTemplates: [saveTemplateSuccessResponse],
+    };
+    const expected = {
+      ...emailTemplateReducerInitialState,
+      saving: false,
+      error: null,
       allTemplates: [saveTemplateSuccessUpdatedResponse],
     };
     const successResponseActionData = {

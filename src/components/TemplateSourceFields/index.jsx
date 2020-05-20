@@ -88,9 +88,9 @@ class TemplateSourceFields extends React.Component {
   }
 
   dispatchUpdatedTemplate(emailTemplate) {
-    const { saveTemplateSuccess, emailTemplateType } = this.props;
+    const { currentFromTemplate, emailTemplateType } = this.props;
     if (emailTemplate.length > 0) {
-      saveTemplateSuccess(emailTemplateType, emailTemplate[0]);
+      currentFromTemplate(emailTemplateType, emailTemplate[0]);
     }
   }
 
@@ -170,7 +170,7 @@ TemplateSourceFields.propTypes = {
   emailTemplateSource: PropTypes.string.isRequired,
   emailTemplateType: PropTypes.string.isRequired,
   setEmailTemplateSource: PropTypes.func.isRequired,
-  saveTemplateSuccess: PropTypes.func.isRequired,
+  currentFromTemplate: PropTypes.func.isRequired,
   fetchEmailTemplates: PropTypes.func.isRequired,
   allEmailTemplates: PropTypes.arrayOf(PropTypes.shape({})),
 };
