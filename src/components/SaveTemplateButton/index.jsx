@@ -5,6 +5,7 @@ import { SubmissionError } from 'redux-form';
 import classNames from 'classnames';
 
 import { validateEmailTemplateFields } from '../../utils';
+import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 
 const SUBMIT_STATES = {
   DEFAULT: 'default',
@@ -62,10 +63,18 @@ class SaveTemplateButton extends React.Component {
       setMode,
       saveTemplate,
       templateType,
+      emailTemplateSource,
+      emailTemplates,
     } = this.props;
 
     setMode('save');
-    this.validateFormData(formData);
+    const newTemplateSource = emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL;
+
+    // Check the form validation in case user is saving new template
+    // or there are no already saved templates.
+    if (newTemplateSource || emailTemplates.allTemplates.length === 0) {
+      this.validateFormData(formData);
+    }
 
     const options = {
       email_type: templateType,
@@ -73,6 +82,9 @@ class SaveTemplateButton extends React.Component {
       email_closing: formData['email-template-closing'],
       name: formData['template-name'],
     };
+    if (!newTemplateSource) {
+      options.id = emailTemplates[templateType]['template-id'];
+    }
 
     this.setState({ submitState: SUBMIT_STATES.PENDING });
 
@@ -141,11 +153,22 @@ class SaveTemplateButton extends React.Component {
   }
 }
 
+SaveTemplateButton.defaultProps = {
+  emailTemplates: {
+    allTemplates: [],
+    assign: { 'template-id': 0 },
+    remind: { 'template-id': 0 },
+    revoke: { 'template-id': 0 },
+  },
+};
+
 SaveTemplateButton.propTypes = {
+  emailTemplateSource: PropTypes.string.isRequired,
   templateType: PropTypes.string.isRequired,
   saveTemplate: PropTypes.func.isRequired,
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  emailTemplates: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SaveTemplateButton;

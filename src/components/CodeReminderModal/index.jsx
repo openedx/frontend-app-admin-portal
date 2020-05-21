@@ -173,7 +173,7 @@ class CodeReminderModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <H3>Email Template</H3>
-            <TemplateSourceFields />
+            <TemplateSourceFields emailTemplateType="remind" />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

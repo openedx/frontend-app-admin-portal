@@ -7,9 +7,10 @@ import {
   SAVE_TEMPLATE_FAILURE,
   SET_EMAIL_TEMPLATE_SOURCE,
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  CURRENT_FROM_TEMPLATE,
 } from '../constants/emailTemplate';
 
-import { transformTemplates, transformTemplate } from '../../utils';
+import { transformTemplate, updateAllTemplates } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
@@ -37,20 +38,27 @@ export const initialState = {
     },
   },
   assign: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
     'email-template-closing': assignEmailTemplate.closing,
   },
   remind: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': remindEmailTemplate.greeting,
     'email-template-body': remindEmailTemplate.body,
     'email-template-closing': remindEmailTemplate.closing,
   },
   revoke: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,
   },
+  allTemplates: [],
 };
 
 const emailTemplate = (state = initialState, action) => {
@@ -66,7 +74,7 @@ const emailTemplate = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        ...transformTemplates(action.payload.data, initialState),
+        allTemplates: action.payload.data.results,
       };
     case EMAIL_TEMPLATE_FAILURE:
       return {
@@ -80,6 +88,13 @@ const emailTemplate = (state = initialState, action) => {
         error: null,
       };
     case SAVE_TEMPLATE_SUCCESS:
+      return {
+        ...state,
+        saving: false,
+        error: null,
+        allTemplates: updateAllTemplates(action.payload.data, state),
+      };
+    case CURRENT_FROM_TEMPLATE:
       return {
         ...state,
         saving: false,

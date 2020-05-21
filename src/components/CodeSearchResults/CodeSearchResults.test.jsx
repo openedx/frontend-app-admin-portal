@@ -23,6 +23,8 @@ const initialStore = {
   emailTemplate: {
     loading: false,
     error: null,
+    allTemplates: [],
+    emailTemplateSource: 'new_email',
     default: {
       assign: {
         'email-template-greeting': 'Sample email greeting.. ',
@@ -39,6 +41,27 @@ const initialStore = {
         'email-template-body': 'Sample email body template.. ',
         'email-template-closing': 'Sample email closing template.. ',
       },
+    },
+    assign: {
+      'template-id': 0,
+      'template-name-select': '',
+      'email-template-greeting': 'Sample email greeting.. ',
+      'email-template-body': 'Sample email body template.. ',
+      'email-template-closing': 'Sample email closing template.. ',
+    },
+    remind: {
+      'template-id': 0,
+      'template-name-select': '',
+      'email-template-greeting': 'Sample email greeting.. ',
+      'email-template-body': 'Sample email body template.. ',
+      'email-template-closing': 'Sample email closing template.. ',
+    },
+    revoke: {
+      'template-id': 0,
+      'template-name-select': '',
+      'email-template-greeting': 'Sample email greeting.. ',
+      'email-template-body': 'Sample email body template.. ',
+      'email-template-closing': 'Sample email closing template.. ',
     },
   },
 };
@@ -292,6 +315,62 @@ describe('<CodeSearchResults />', () => {
           </Provider>
         </MemoryRouter>
       ));
+      const mockPromiseResolve = () => Promise.resolve({ data: {} });
+      EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
+      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
+      wrapper.find('RemindButton').simulate('click');
+      wrapper.find('CodeReminderModal').find('.code-remind-save-btn').first().simulate('click');
+      await flushPromises();
+      wrapper.update();
+      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
+    });
+
+    it('should handle remind button for saved template', async () => {
+      const store = getMockStore({
+        ...initialStore,
+        allTemplates: [{
+          email_body: 'email_body',
+          email_closing: 'email_closing',
+          email_greeting: 'email_greeting',
+          email_type: 'assign',
+          id: 49,
+          name: 'template-name',
+        }],
+        emailTemplateSource: 'from_template',
+        table: {
+          'code-search-results': {
+            loading: false,
+            error: null,
+            data: {
+              current_page: 1,
+              num_pages: 1,
+              results: [{
+                coupon_id: 10,
+                coupon_name: 'Test Coupon Name',
+                code: 'Y7XS3OGG7WB7KQ5R',
+                course_key: null,
+                course_title: null,
+                redeemed_date: null,
+                is_assigned: true,
+                user_email: 'test@test.com',
+              }],
+            },
+          },
+        },
+      });
+      const wrapper = mount((
+        <MemoryRouter>
+          <Provider store={store}>
+            <CodeSearchResults
+              onClose={jest.fn()}
+              searchQuery="test@test.com"
+              isOpen
+            />
+          </Provider>
+        </MemoryRouter>
+      ));
+      const mockPromiseResolve = () => Promise.resolve({ data: {} });
+      EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
       wrapper.find('RemindButton').simulate('click');
       wrapper.find('CodeReminderModal').find('.code-remind-save-btn').first().simulate('click');
