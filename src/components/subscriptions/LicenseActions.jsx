@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './styles/LicenseActions.scss';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 import LicenseRemindModal from '../../containers/LicenseRemindModal';
+import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
 import { StatusContext } from './SubscriptionManagementPage';
 
 export default function LicenseAction({ user }) {
@@ -16,6 +17,7 @@ export default function LicenseAction({ user }) {
       message,
     });
   };
+
   const licenseActions = useMemo(
     () => {
       switch (user.licenseStatus) {
@@ -23,7 +25,13 @@ export default function LicenseAction({ user }) {
           return [{
             text: 'Revoke',
             // eslint-disable-next-line no-console
-            handleClick: () => { console.log('Revoke clicked for', user); },
+            handleClick: closeModal => (<LicenseRevokeModal
+              user={user}
+              onSuccess={() => setSuccessStatus('Successfully revoked license')}
+              onClose={() => {
+                closeModal();
+              }}
+            />),
           }];
         case 'assigned':
           return [{
@@ -42,7 +50,13 @@ export default function LicenseAction({ user }) {
           }, {
             text: 'Revoke',
             // eslint-disable-next-line no-console
-            handleClick: () => { console.log('Revoke clicked for', user); },
+            handleClick: closeModal => (<LicenseRevokeModal
+              user={user}
+              onSuccess={() => setSuccessStatus('Successfully revoked license')}
+              onClose={() => {
+                closeModal();
+              }}
+            />),
           }];
         default:
           return [{ text: '-' }];
@@ -50,7 +64,6 @@ export default function LicenseAction({ user }) {
     },
     [user],
   );
-
   return (
     <div className="license-actions">
       {licenseActions.map((licenseAction) => {
