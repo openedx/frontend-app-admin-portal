@@ -80,7 +80,7 @@ class SaveTemplateButton extends React.Component {
       email_type: templateType,
       email_greeting: formData['email-template-greeting'],
       email_closing: formData['email-template-closing'],
-      name: formData['template-name'],
+      name: formData['template-name'] || formData['template-name-select'],
     };
     if (!newTemplateSource) {
       options.id = emailTemplates[templateType]['template-id'];
