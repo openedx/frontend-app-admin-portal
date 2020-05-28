@@ -7,11 +7,31 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
 import AddUsersModel from './index';
+import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 
 const modelTitle = 'AABBCC';
 const data = {};
+const initialState = {
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise',
+  },
+  emailTemplate: {
+    loading: false,
+    error: null,
+    subscribe: {
+      'email-template-greeting': subscribeEmailTemplate.greeting || '',
+      'email-template-body': subscribeEmailTemplate.body,
+      'email-template-closing': subscribeEmailTemplate.closing,
+    },
+  },
+  subscriptionDetails: {
+    licenses: {
+      available: 1,
+    },
+  },
+};
 
 const UserSubscriptionModalWrapper = props => (
   <MemoryRouter>
@@ -27,7 +47,7 @@ const UserSubscriptionModalWrapper = props => (
 );
 
 UserSubscriptionModalWrapper.defaultProps = {
-  store: mockStore({}),
+  store: mockStore(initialState),
 };
 
 UserSubscriptionModalWrapper.propTypes = {
@@ -48,9 +68,6 @@ describe('UserSubscriptionModalWrapper', () => {
     expect(wrapper.find('.modal-title span').text()).toEqual(modelTitle);
     expect(wrapper.find('.modal-title small').text()).toEqual('Add Subscriptions');
 
-    expect(wrapper.find('.modal-body form h3').text()).toEqual('User Emails');
-    wrapper.find('.modal-footer .subscribe-users-save-btn .btn-primary').hostNodes().simulate('click');
-
-    expect(wrapper.find('.alert.alert-danger.show span.title').text()).toEqual('Unable to subscribe users');
+    expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add User');
   });
 });
