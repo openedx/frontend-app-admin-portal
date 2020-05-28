@@ -5,9 +5,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { SubmissionError } from 'redux-form';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import { SAVE_TEMPLATE_REQUEST } from '../../data/constants/emailTemplate';
+import { SAVE_TEMPLATE_REQUEST, EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
 import SaveTemplateButton from './index';
 
 jest.mock('../../data/services/EcommerceApiService');
@@ -18,15 +19,28 @@ const initialState = {
   },
   emailTemplate: {
     saving: false,
+    allTemplates: [],
+    assign: {
+      'template-id': 1,
+      'email-template-greeting': 'email-template-greeting',
+      'email-template-body': 'email-template-body',
+    },
   },
 };
 const store = mockStore({
   ...initialState,
 });
+const formData = {
+  'template-name': 'Template from portal',
+  'email-template-greeting': 'Greeting',
+  'email-template-closing': 'Closing',
+};
 const saveTemplateData = {
+  id: 1,
   email_type: 'assign',
-  email_greeting: 'Greeting',
-  email_closing: 'Closing',
+  name: formData['template-name'],
+  email_greeting: formData['email-template-greeting'],
+  email_closing: formData['email-template-closing'],
 };
 const templateType = saveTemplateData.email_type;
 const saveTemplateSpy = jest.spyOn(EcommerceApiService, 'saveTemplate');
@@ -36,12 +50,8 @@ const SaveTemplateButtonWrapper = props => (
     <Provider store={store}>
       <SaveTemplateButton
         templateType={templateType}
-        templateData={{
-          'email-template-greeting': saveTemplateData.email_greeting,
-          'email-template-closing': saveTemplateData.email_closing,
-        }}
         setMode={() => {}}
-        handleSubmit={submitFunction => submitFunction}
+        handleSubmit={submitFunction => () => submitFunction(formData)}
         {...props}
       />
     </Provider>
@@ -99,8 +109,39 @@ describe('<SaveTemplateButton />', () => {
       <SaveTemplateButtonWrapper disabled={false} />
     ));
 
-    wrapper.find('button').find('.btn.btn-primary').simulate('click');
+    wrapper.find('button').find('.save-template-btn').simulate('click');
     expect(store.getActions()).toEqual(expectedActions);
     expect(saveTemplateSpy).toHaveBeenCalledWith(saveTemplateData);
+  });
+
+  it('saveTemplate raises correct errors on invalid data submission', () => {
+    const invalidFormData = {
+      'email-template-greeting': 'G'.repeat(50001),
+      'email-template-closing': 'C'.repeat(50001),
+    };
+    const SaveTemplateButtonWrapperWithInvalidData = props => (
+      <MemoryRouter>
+        <Provider store={store}>
+          <SaveTemplateButton
+            templateType={templateType}
+            setMode={() => {}}
+            handleSubmit={submitFunction => () => submitFunction(invalidFormData)}
+            {...props}
+          />
+        </Provider>
+      </MemoryRouter>
+    );
+    const wrapper = mount((
+      <SaveTemplateButtonWrapperWithInvalidData disabled={false} />
+    ));
+
+    try {
+      wrapper.find('button').find('.save-template-btn').simulate('click');
+    } catch (e) {
+      expect(e instanceof SubmissionError).toBeTruthy();
+      expect(e.errors['template-name']).toEqual('No template name provided. Please enter a template name.');
+      expect(e.errors['email-template-greeting']).toEqual(`Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`);
+      expect(e.errors['email-template-closing']).toEqual(`Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`);
+    }
   });
 });

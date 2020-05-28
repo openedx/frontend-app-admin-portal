@@ -1,0 +1,13 @@
+.template-source-fields {
+    #btn-new-email-template {
+        &:focus:before {
+            border-radius: 0.3rem;
+        }
+    }
+
+    #btn-old-email-template {
+        &:focus:before {
+            border-radius: 0.3rem;
+        }
+    }
+}

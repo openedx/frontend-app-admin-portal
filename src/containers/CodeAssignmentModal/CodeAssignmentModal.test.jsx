@@ -5,9 +5,15 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import last from 'lodash/last';
 
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
+import {
+  SET_EMAIL_TEMPLATE_SOURCE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+} from '../../data/constants/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -23,6 +29,14 @@ const initialState = {
     saving: false,
     loading: false,
     error: null,
+    emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+    default: {
+      assign: {
+        'email-template-greeting': assignEmailTemplate.greeting,
+        'email-template-body': assignEmailTemplate.body,
+        'email-template-closing': assignEmailTemplate.closing,
+      },
+    },
     assign: {
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
@@ -45,8 +59,10 @@ const CodeAssignmentModalWrapper = props => (
   </MemoryRouter>
 );
 
+const store = mockStore({ ...initialState });
+
 CodeAssignmentModalWrapper.defaultProps = {
-  store: mockStore({ ...initialState }),
+  store,
 };
 
 CodeAssignmentModalWrapper.propTypes = {
@@ -68,10 +84,49 @@ describe('CodeAssignmentModalWrapper', () => {
     const wrapper = mount(<CodeAssignmentModalWrapper />);
     const saveTemplateButton = wrapper.find('SaveTemplateButton');
     expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().disabled).toEqual(true);
-    expect(saveTemplateButton.props().saving).toEqual(false);
     expect(saveTemplateButton.props().templateType).toEqual('assign');
-    expect(saveTemplateButton.props().buttonLabel).toEqual('Save Template');
-    expect(saveTemplateButton.props().templateData).toEqual(initialState.emailTemplate.assign);
+  });
+
+  it('renders <TemplateSourceFields /> with source new_email', () => {
+    const wrapper = mount(<CodeAssignmentModalWrapper />);
+    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    expect(TemplateSourceFields).toHaveLength(1);
+
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
+    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+
+    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    expect(last(store.getActions())).toEqual({
+      type: SET_EMAIL_TEMPLATE_SOURCE,
+      payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
+    });
+  });
+
+  it('renders <TemplateSourceFields /> with source from_template', () => {
+    const newStore = mockStore({
+      ...initialState,
+      emailTemplate: {
+        ...initialState.emailTemplate,
+        emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+      },
+    });
+    const wrapper = mount(<CodeAssignmentModalWrapper store={newStore} />);
+    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
+    expect(TemplateSourceFields).toHaveLength(1);
+
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
+    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
+    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
+    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+
+    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    expect(last(newStore.getActions())).toEqual({
+      type: SET_EMAIL_TEMPLATE_SOURCE,
+      payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },
+    });
   });
 });

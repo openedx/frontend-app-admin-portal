@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import CodeRevokeModal from '../../components/CodeRevokeModal';
 
 import sendCodeRevoke from '../../data/actions/codeRevoke';
+import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 
 const mapStateToProps = state => ({
-  initialValues: state.emailTemplate.revoke,
+  initialValues: state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL ?
+    state.emailTemplate.default.revoke : state.emailTemplate.revoke,
+  enableReinitialize: true,
 });
 
 const mapDispatchToProps = dispatch => ({
