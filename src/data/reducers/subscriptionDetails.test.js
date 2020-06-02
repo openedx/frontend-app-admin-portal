@@ -16,6 +16,7 @@ const initialState = {
   licenses: {
     allocated: 0,
     available: 0,
+    assigned: 0,
   },
 };
 
@@ -23,6 +24,7 @@ const subscriptionsData = {
   licenses: {
     allocated: 1,
     available: 1,
+    assigned: 1,
   },
   uuid: 'test-012-3456-789',
   purchaseDate: '2018-09-31T23:14:35Z',

@@ -15,6 +15,7 @@ const emptySubscriptionDetails = {
   licenses: {
     allocated: 0,
     available: 0,
+    assigned: 0,
   },
 };
 

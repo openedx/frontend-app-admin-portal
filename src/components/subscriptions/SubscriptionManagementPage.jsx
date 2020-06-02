@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Hero from '../Hero';
@@ -7,17 +7,29 @@ import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
+import { TAB_PENDING_USERS } from './constants';
 import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
 import AddUserButton from './AddUsersButton';
+import RemindUserButton from './RemindUserButton';
 
 const PAGE_TITLE = 'Subscription Management';
+
+export const StatusContext = createContext();
 
 export default function SubscriptionManagementPage() {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
+
+  const setSuccessStatus = (message) => {
+    setStatus({
+      visible: true,
+      alertType: 'success',
+      message,
+    });
+  };
 
   const renderStatusMessage = () => (
     status && status.visible ?
@@ -53,34 +65,39 @@ export default function SubscriptionManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ details, fetchSubscriptionUsers }) => (
-                    <React.Fragment>
-                      <p className="lead">
-                        {details.licenses.allocated}
-                        {' of '}
-                        {details.licenses.available} licenses allocated
-                      </p>
-                      <div className="my-3 row">
-                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
-                          <SearchBar
-                            placeholder="Search by email..."
+                  {({
+ details, fetchSubscriptionUsers, overview, activeTab,
+}) => (
+  <React.Fragment>
+    <p className="lead">
+      {details.licenses.allocated}
+      {' of '}
+      {details.licenses.available} licenses allocated
+    </p>
+    <div className="my-3 row">
+      <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+        <SearchBar
+          placeholder="Search by email..."
                             // eslint-disable-next-line no-console
-                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
+          onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
                             // eslint-disable-next-line no-console
-                            onClear={() => fetchSubscriptionUsers()}
-                          />
-                        </div>
-                        <div className="col-12 col-lg-6">
-                          <AddUserButton
-                            onSuccess={() => setStatus({
-                              visible: true,
-                              alertType: 'success',
-                              message: 'Successfully assigned license(s)',
-                            })}
-                          />
-                        </div>
-                      </div>
-                    </React.Fragment>
+          onClear={() => fetchSubscriptionUsers()}
+        />
+      </div>
+      <div className="col-12 col-lg-6">
+        {activeTab === TAB_PENDING_USERS ?
+          <RemindUserButton
+            pendingUsersCount={overview.assigned}
+            isBulkRemind
+            onSuccess={() => setSuccessStatus('Successfully sent reminder(s)')}
+          /> :
+          <AddUserButton
+            onSuccess={() => setSuccessStatus('Successfully assigned license(s)')}
+          />
+                          }
+      </div>
+    </div>
+  </React.Fragment>
                   )}
                 </SubscriptionConsumer>
               </div>
@@ -90,7 +107,9 @@ export default function SubscriptionManagementPage() {
                 </div>
                 <div className="col-12 col-lg-9">
                   {renderStatusMessage()}
-                  <TabContentTable />
+                  <StatusContext.Provider value={setStatus}>
+                    <TabContentTable />
+                  </StatusContext.Provider>
                 </div>
               </div>
             </div>

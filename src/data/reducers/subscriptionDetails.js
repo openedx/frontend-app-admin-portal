@@ -15,6 +15,7 @@ const initialState = {
   licenses: {
     allocated: 0,
     available: 0,
+    assigned: 0,
   },
 };
 
