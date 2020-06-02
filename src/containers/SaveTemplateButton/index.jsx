@@ -5,6 +5,8 @@ import SaveTemplateButton from '../../components/SaveTemplateButton';
 
 const mapStateToProps = state => ({
   saving: state.emailTemplate.saving,
+  emailTemplateSource: state.emailTemplate.emailTemplateSource,
+  emailTemplates: state.emailTemplate,
 });
 
 const mapDispatchToProps = dispatch => ({

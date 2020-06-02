@@ -53,9 +53,6 @@ class CodeManagement extends React.Component {
     // To fetch active email templates for assign, remind, and revoke
     // There can only exist one active email template against each action
     // Which is why we are passing active query param
-    this.props.fetchEmailTemplates({
-      active: 1,
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -341,7 +338,6 @@ CodeManagement.defaultProps = {
 CodeManagement.propTypes = {
   fetchCouponOrders: PropTypes.func.isRequired,
   clearCouponOrders: PropTypes.func.isRequired,
-  fetchEmailTemplates: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
     state: PropTypes.shape({

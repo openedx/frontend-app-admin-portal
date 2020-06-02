@@ -54,6 +54,31 @@ describe('emailTemplate actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+  it('dispatches success action on successful template update', () => {
+    EcommerceApiService.saveTemplate.mockImplementation(() => Promise.resolve({
+      data: successResponse,
+    }));
+
+    const expectedActions = [
+      {
+        type: SAVE_TEMPLATE_REQUEST,
+        payload: {
+          emailType: postData.email_type,
+        },
+      },
+      {
+        type: SAVE_TEMPLATE_SUCCESS,
+        payload: {
+          emailType: postData.email_type,
+          data: successResponse,
+        },
+      },
+    ];
+    const store = mockStore();
+    return store.dispatch(saveTemplate({ options: postData })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 
   it('dispatches failure action on failed template save', () => {
     EcommerceApiService.saveTemplate.mockImplementation(() => Promise.reject(errorResponse));

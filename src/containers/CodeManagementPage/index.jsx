@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import CodeManagement from '../../components/CodeManagement';
 
 import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
-import fetchEmailTemplates from '../../data/actions/emailTemplate';
 
 const mapStateToProps = state => ({
   loading: state.coupons.loading,
@@ -18,9 +17,6 @@ const mapDispatchToProps = dispatch => ({
   },
   clearCouponOrders: () => {
     dispatch(clearCouponOrders());
-  },
-  fetchEmailTemplates: (options) => {
-    dispatch(fetchEmailTemplates(options));
   },
 });
 

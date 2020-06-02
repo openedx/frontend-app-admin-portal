@@ -5,9 +5,12 @@ import {
   SAVE_TEMPLATE_REQUEST,
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
+  SET_EMAIL_TEMPLATE_SOURCE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  CURRENT_FROM_TEMPLATE,
 } from '../constants/emailTemplate';
 
-import { transformTemplates, transformTemplate } from '../../utils';
+import { transformTemplate, updateAllTemplates } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
@@ -17,21 +20,46 @@ export const initialState = {
   saving: false,
   loading: false,
   error: null,
+  emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  default: {
+    assign: {
+      'email-template-greeting': assignEmailTemplate.greeting,
+      'email-template-body': assignEmailTemplate.body,
+      'email-template-closing': assignEmailTemplate.closing,
+    },
+    remind: {
+      'email-template-greeting': remindEmailTemplate.greeting,
+      'email-template-body': remindEmailTemplate.body,
+      'email-template-closing': remindEmailTemplate.closing,
+    },
+    revoke: {
+      'email-template-greeting': revokeEmailTemplate.greeting,
+      'email-template-body': revokeEmailTemplate.body,
+      'email-template-closing': revokeEmailTemplate.closing,
+    },
+  },
   assign: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
     'email-template-closing': assignEmailTemplate.closing,
   },
   remind: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': remindEmailTemplate.greeting,
     'email-template-body': remindEmailTemplate.body,
     'email-template-closing': remindEmailTemplate.closing,
   },
   revoke: {
+    'template-id': 0,
+    'template-name-select': '',
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,
   },
+  allTemplates: [],
   subscribe: {
     'email-template-greeting': subscribeEmailTemplate.greeting,
     'email-template-body': subscribeEmailTemplate.body,
@@ -43,14 +71,16 @@ const emailTemplate = (state = initialState, action) => {
   switch (action.type) {
     case EMAIL_TEMPLATE_REQUEST:
       return {
+        ...state,
         loading: true,
         error: null,
       };
     case EMAIL_TEMPLATE_SUCCESS:
       return {
+        ...state,
         loading: false,
         error: null,
-        ...transformTemplates(action.payload.data, initialState),
+        allTemplates: action.payload.data.results,
       };
     case EMAIL_TEMPLATE_FAILURE:
       return {
@@ -68,6 +98,13 @@ const emailTemplate = (state = initialState, action) => {
         ...state,
         saving: false,
         error: null,
+        allTemplates: updateAllTemplates(action.payload.data, state),
+      };
+    case CURRENT_FROM_TEMPLATE:
+      return {
+        ...state,
+        saving: false,
+        error: null,
         ...transformTemplate(action.payload.emailType, action.payload.data),
       };
     case SAVE_TEMPLATE_FAILURE:
@@ -75,6 +112,11 @@ const emailTemplate = (state = initialState, action) => {
         ...state,
         saving: false,
         error: action.payload.error,
+      };
+    case SET_EMAIL_TEMPLATE_SOURCE:
+      return {
+        ...state,
+        emailTemplateSource: action.payload.emailTemplateSource,
       };
     default:
       return state;

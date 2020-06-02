@@ -133,30 +133,27 @@ const snakeCaseFormData = (formData) => {
   return transformedData;
 };
 
-const transformTemplates = ({ results }, initialState) => {
-  const data = {
-    assign: initialState.assign,
-    remind: initialState.remind,
-    revoke: initialState.revoke,
-    subscribe: initialState.subscribe,
-  };
-  results.forEach((result) => {
-    data[result.email_type] = {
-      'email-template-greeting': result.email_greeting,
-      'email-template-body': result.email_body,
-      'email-template-closing': result.email_closing,
-    };
-  });
-  return data;
-};
-
 const transformTemplate = (emailType, template) => ({
   [emailType]: {
     'email-template-greeting': template.email_greeting,
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
+    'template-name-select': template.name,
+    'template-id': template.id,
   },
 });
+
+const updateAllTemplates = (template, state) => {
+  const { allTemplates } = state;
+  const templateId = template.id;
+  const index = allTemplates.findIndex(item => item.id === templateId);
+  if (index >= 0) {
+    allTemplates[index] = template;
+  } else {
+    allTemplates.push(template);
+  }
+  return allTemplates;
+};
 
 const validateEmailTemplateFields = (formData) => {
   const errors = {
@@ -263,9 +260,9 @@ export {
   snakeCaseObject,
   snakeCaseFormData,
   maxLength512,
-  transformTemplates,
   transformTemplate,
   validateEmailTemplateFields,
+  updateAllTemplates,
   validateEmailAddresses,
   validateEmailAddressesFields,
   mergeErrors,

@@ -21,15 +21,8 @@ class AddUsersModal extends React.Component {
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
-    this.state = {
-      fields: {
-        'email-addresses': null,
-      },
-    };
-
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.handleFieldOnChange = this.handleFieldOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -104,15 +97,6 @@ class AddUsersModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
-  handleFieldOnChange(event, newValue, previousValue, name) {
-    this.setState(prevState => ({
-      fields: {
-        ...prevState.fields,
-        [name]: newValue,
-      },
-    }));
-  }
-
   normalizeFileUpload(value) {
     return value && value.split(/\r\n|\n/);
   }
@@ -173,7 +157,6 @@ class AddUsersModal extends React.Component {
                 </React.Fragment>
               }
               description="To add more than one user, enter one email address per line."
-              onChange={this.handleFieldOnChange}
             />
             <p className="pb-2">
               OR
@@ -193,7 +176,6 @@ class AddUsersModal extends React.Component {
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
-              onChange={this.handleFieldOnChange}
             />
             <Field
               id="email-template-body"
@@ -207,7 +189,6 @@ class AddUsersModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
-              onChange={this.handleFieldOnChange}
             />
           </div>
         </form>
