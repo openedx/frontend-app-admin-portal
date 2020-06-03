@@ -1,9 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import './styles/LicenseActions.scss';
+import ActionButtonWithModal from '../ActionButtonWithModal';
+import LicenseRemindModal from '../../containers/LicenseRemindModal';
+import { StatusContext } from './SubscriptionManagementPage';
 
 export default function LicenseAction({ user }) {
+  const setStatus = useContext(StatusContext);
+
+  const setSuccessStatus = (message) => {
+    setStatus({
+      visible: true,
+      alertType: 'success',
+      message,
+    });
+  };
   const licenseActions = useMemo(
     () => {
       switch (user.licenseStatus) {
@@ -17,7 +29,16 @@ export default function LicenseAction({ user }) {
           return [{
             text: 'Remind',
             // eslint-disable-next-line no-console
-            handleClick: () => { console.log('Remind clicked for', user); },
+            handleClick: closeModal => (<LicenseRemindModal
+              user={user}
+              isBulkRemind={false}
+              title="Remind User"
+              subtitle=""
+              onSuccess={() => setSuccessStatus('Successfully sent reminder(s)')}
+              onClose={() => {
+                closeModal();
+              }}
+            />),
           }, {
             text: 'Revoke',
             // eslint-disable-next-line no-console
@@ -35,13 +56,13 @@ export default function LicenseAction({ user }) {
       {licenseActions.map((licenseAction) => {
         if (licenseAction.handleClick) {
           return (
-            <button
-              key={licenseAction.text}
-              className="btn btn-link btn-sm p-0"
-              onClick={() => licenseAction.handleClick()}
-            >
-              {licenseAction.text}
-            </button>
+            <ActionButtonWithModal
+              buttonLabel={licenseAction.text}
+              buttonClassName="btn btn-link btn-sm p-0"
+              renderModal={({ closeModal }) => (
+                licenseAction.handleClick(closeModal)
+              )}
+            />
           );
         }
         return licenseAction.text;
