@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Hero from '../Hero';
@@ -8,12 +8,41 @@ import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersDropdown from './AddUsersDropdown';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
+import RemindUserButton from './RemindUserButton';
+import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
+import { TAB_PENDING_USERS } from './constants';
 
 const PAGE_TITLE = 'Subscription Management';
 
+export const StatusContext = createContext();
+
 export default function SubscriptionManagementPage() {
+  const [status, setStatus] = useState({
+    visible: false, alertType: '', message: '',
+  });
+
+  const setSuccessStatus = (visible, message) => {
+    setStatus({
+      visible,
+      alertType: 'success',
+      message,
+    });
+  };
+
+  const renderStatusMessage = () => (
+    status && status.visible &&
+      <StatusAlert
+        alertType={status.alertType}
+        iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
+        title={status.title}
+        message={status.message}
+        onClose={() => setSuccessStatus(false, '')}
+        dismissible
+      />
+  );
+
   return (
     <SubscriptionData>
       <main role="main" className="manage-subscription">
@@ -37,29 +66,38 @@ export default function SubscriptionManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ details, fetchSubscriptionUsers }) => (
-                    <React.Fragment>
-                      <p className="lead">
-                        {details.licenses.allocated}
-                        {' of '}
-                        {details.licenses.available} licenses allocated
-                      </p>
-                      <div className="my-3 row">
-                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
-                          <SearchBar
-                            placeholder="Search by email..."
-                            // eslint-disable-next-line no-console
-                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
-                            // eslint-disable-next-line no-console
-                            onClear={() => fetchSubscriptionUsers()}
-                          />
-                        </div>
-                        <div className="col-12 col-lg-6">
-                          <AddUsersDropdown />
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  )}
+                  {({
+                        details, fetchSubscriptionUsers, overview, activeTab,
+                      }) => (
+                        <React.Fragment>
+                          <p className="lead">
+                            {details.licenses.allocated}
+                            {' of '}
+                            {details.licenses.available} licenses allocated
+                          </p>
+                          <div className="my-3 row">
+                            <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+                              <SearchBar
+                                placeholder="Search by email..."
+                                  // eslint-disable-next-line no-console
+                                onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
+                                  // eslint-disable-next-line no-console
+                                onClear={() => fetchSubscriptionUsers()}
+                              />
+                            </div>
+                            <div className="col-12 col-lg-6">
+                              {activeTab === TAB_PENDING_USERS ?
+                                <RemindUserButton
+                                  pendingUsersCount={overview.assigned}
+                                  isBulkRemind
+                                  onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
+                                /> :
+                                <AddUsersDropdown />
+                              }
+                            </div>
+                          </div>
+                        </React.Fragment>
+                    )}
                 </SubscriptionConsumer>
               </div>
               <div className="row my-4">
@@ -67,7 +105,10 @@ export default function SubscriptionManagementPage() {
                   <LicenseAllocationNavigation />
                 </div>
                 <div className="col-12 col-lg-9">
-                  <TabContentTable />
+                  {renderStatusMessage()}
+                  <StatusContext.Provider value={setStatus}>
+                    <TabContentTable />
+                  </StatusContext.Provider>
                 </div>
               </div>
             </div>

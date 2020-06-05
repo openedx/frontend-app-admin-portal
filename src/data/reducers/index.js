@@ -12,6 +12,7 @@ import sidebar from './sidebar';
 import codeAssignment from './codeAssignment';
 import codeRevoke from './codeRevoke';
 import emailTemplate from './emailTemplate';
+import licenseRemind from './licenseRemind';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   codeAssignment,
   codeRevoke,
   emailTemplate,
+  licenseRemind,
 });
 
 export default rootReducer;

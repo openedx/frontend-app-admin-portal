@@ -96,3 +96,12 @@ export function fetchSubscriptionUsers(options = {}) {
 
   return Promise.resolve(response);
 }
+
+/* This function mocks out the response from a non-existant API endpoint. Once the endpoint
+* exists, the contents of this function will use the `apiClient` to make an actual API
+* call to get this data.
+*/
+export function sendLicenseReminder(options = {}) {
+  return Promise.resolve(options);
+  // return Promise.reject(new Error('Could not connect to the server'));
+}
