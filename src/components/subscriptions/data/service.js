@@ -105,3 +105,8 @@ export function sendLicenseReminder(options = {}) {
   return Promise.resolve(options);
   // return Promise.reject(new Error('Could not connect to the server'));
 }
+
+export function sendLicenseRevoke(options = {}) {
+  return Promise.resolve(options);
+  // return Promise.reject(new Error('Could not connect to the server'));
+}
