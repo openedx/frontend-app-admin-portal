@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import EcommerceApiService from '../../data/services/EcommerceApiService';
+import * as licenseService from '../../components/subscriptions/data/service';
 import LicenseRevokeModal from './index';
 
 const mockStore = configureMockStore([thunk]);
@@ -48,12 +48,12 @@ describe('LicenseRevokeModalWrapper', () => {
   });
 
   it('renders license revoke modal', () => {
-    spy = jest.spyOn(EcommerceApiService, 'sendLicenseRevoke');
+    spy = jest.spyOn(licenseService, 'sendLicenseRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
     expect(wrapper.find('.modal-title small').text()).toEqual(' Are you sure you want to revoke access?');
 
-    expect(wrapper.find('.license-details p.message').text()).toEqual(`Doing so will remove access to the learning catalog and the learner portal for ${user.emailAddress}. You will need to add a license to re-enable their learning.`);
+    expect(wrapper.find('.license-details p.message').text()).toEqual(`Revoking a license will remove access to the subscription catalog for ${user.emailAddress}. To re-enable access, you can assign this user to another license.`);
 
     wrapper.find('.modal-footer .license-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalled();
