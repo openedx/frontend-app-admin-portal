@@ -51,7 +51,7 @@ describe('LicenseRevokeModalWrapper', () => {
     spy = jest.spyOn(licenseService, 'sendLicenseRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
-    expect(wrapper.find('.modal-title small').text()).toEqual(' Are you sure you want to revoke access?');
+    expect(wrapper.find('.modal-title small').text()).toEqual('Are you sure you want to revoke access?');
 
     expect(wrapper.find('.license-details p.message').text()).toEqual(`Revoking a license will remove access to the subscription catalog for ${user.emailAddress}. To re-enable access, you can assign this user to another license.`);
 

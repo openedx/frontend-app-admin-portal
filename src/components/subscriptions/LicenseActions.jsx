@@ -8,15 +8,7 @@ import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
 import { StatusContext } from './SubscriptionManagementPage';
 
 export default function LicenseAction({ user }) {
-  const setStatus = useContext(StatusContext);
-
-  const setSuccessStatus = (message) => {
-    setStatus({
-      visible: true,
-      alertType: 'success',
-      message,
-    });
-  };
+  const { setSuccessStatus } = useContext(StatusContext);
 
   const licenseActions = useMemo(
     () => {
@@ -27,7 +19,10 @@ export default function LicenseAction({ user }) {
             // eslint-disable-next-line no-console
             handleClick: closeModal => (<LicenseRevokeModal
               user={user}
-              onSuccess={() => setSuccessStatus('Successfully revoked license')}
+              onSuccess={() => setSuccessStatus({
+                visible: true,
+                message: 'Successfully revoked license',
+              })}
               onClose={() => {
                 closeModal();
               }}
@@ -37,26 +32,35 @@ export default function LicenseAction({ user }) {
           return [{
             text: 'Remind',
             // eslint-disable-next-line no-console
-            handleClick: closeModal => (<LicenseRemindModal
-              user={user}
-              isBulkRemind={false}
-              title="Remind User"
-              subtitle=""
-              onSuccess={() => setSuccessStatus('Successfully sent reminder(s)')}
-              onClose={() => {
-                closeModal();
-              }}
-            />),
+            handleClick: closeModal => (
+              <LicenseRemindModal
+                user={user}
+                isBulkRemind={false}
+                title="Remind User"
+                onSuccess={() => setSuccessStatus({
+                  visible: true,
+                  message: 'Successfully sent reminder(s)',
+                })}
+                onClose={() => {
+                  closeModal();
+                }}
+              />
+            ),
           }, {
             text: 'Revoke',
             // eslint-disable-next-line no-console
-            handleClick: closeModal => (<LicenseRevokeModal
-              user={user}
-              onSuccess={() => setSuccessStatus('Successfully revoked license')}
-              onClose={() => {
-                closeModal();
-              }}
-            />),
+            handleClick: closeModal => (
+              <LicenseRevokeModal
+                user={user}
+                onSuccess={() => setSuccessStatus({
+                  visible: true,
+                  message: 'Successfully revoked license',
+                })}
+                onClose={() => {
+                  closeModal();
+                }}
+              />
+            ),
           }];
         default:
           return [{ text: '-' }];
