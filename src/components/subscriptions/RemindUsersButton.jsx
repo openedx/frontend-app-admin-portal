@@ -4,21 +4,25 @@ import PropTypes from 'prop-types';
 import LicenseRemindModal from '../../containers/LicenseRemindModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 
-const RemindUserButton = ({
+const RemindUsersButton = ({
   onSuccess,
   onClose,
   pendingUsersCount,
   isBulkRemind,
 }) => (
   <ActionButtonWithModal
-    buttonLabel="Remind all"
-    buttonClassName="btn btn-primary float-right"
+    buttonLabel={
+      <React.Fragment>
+        <i className="fa fa-refresh mr-2" aria-hidden />
+        Remind all ({pendingUsersCount})
+      </React.Fragment>
+    }
+    buttonClassName="btn btn-link"
     renderModal={({ closeModal }) => (
       <LicenseRemindModal
         pendingUsersCount={pendingUsersCount}
         isBulkRemind={isBulkRemind}
         title="Remind Users"
-        subtitle=""
         onSuccess={onSuccess}
         onClose={() => {
           closeModal();
@@ -31,16 +35,16 @@ const RemindUserButton = ({
   />
 );
 
-RemindUserButton.propTypes = {
+RemindUsersButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   pendingUsersCount: PropTypes.number,
   isBulkRemind: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
 };
 
-RemindUserButton.defaultProps = {
+RemindUsersButton.defaultProps = {
   onClose: null,
   pendingUsersCount: null,
 };
 
-export default RemindUserButton;
+export default RemindUsersButton;

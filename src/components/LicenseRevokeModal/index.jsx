@@ -90,7 +90,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderErrorMessage() {
-    const modeErrors = {
+    const modalErrors = {
       revoke: 'Unable to revoke license',
     };
     const { error } = this.props;
@@ -103,7 +103,7 @@ class LicenseRevokeModal extends React.Component {
         <StatusAlert
           alertType="danger"
           iconClassName="fa fa-times-circle"
-          title={modeErrors.revoke}
+          title={modalErrors.revoke}
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
@@ -117,14 +117,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderTitle() {
-    return (
-      <React.Fragment>
-        <span>
-          <i className="fa fa-exclamation-circle" aria-hidden="true" />
-          <small> Are you sure you want to revoke access?</small>
-        </span>
-      </React.Fragment>
-    );
+    return <small>Are you sure you want to revoke access?</small>;
   }
 
   render() {

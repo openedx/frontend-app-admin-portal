@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 
@@ -16,7 +15,7 @@ class ActionButtonWithModal extends React.Component {
     return (
       <React.Fragment>
         <Button
-          className={classNames(buttonClassName, 'btn-link btn-sm p-0')}
+          className={buttonClassName}
           onClick={() => this.setIsModalOpen(true)}
         >
           {buttonLabel}

@@ -8,11 +8,9 @@ import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersDropdown from './AddUsersDropdown';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
-import RemindUserButton from './RemindUserButton';
 import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
-import { TAB_PENDING_USERS } from './constants';
 
 const PAGE_TITLE = 'Subscription Management';
 
@@ -23,7 +21,7 @@ export default function SubscriptionManagementPage() {
     visible: false, alertType: '', message: '',
   });
 
-  const setSuccessStatus = (visible, message) => {
+  const setSuccessStatus = ({ visible, message = '' }) => {
     setStatus({
       visible,
       alertType: 'success',
@@ -32,15 +30,16 @@ export default function SubscriptionManagementPage() {
   };
 
   const renderStatusMessage = () => (
-    status && status.visible &&
+    status && status.visible && (
       <StatusAlert
         alertType={status.alertType}
         iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
         title={status.title}
         message={status.message}
-        onClose={() => setSuccessStatus(false, '')}
+        onClose={() => setSuccessStatus({ visible: false })}
         dismissible
       />
+    )
   );
 
   return (
@@ -66,12 +65,7 @@ export default function SubscriptionManagementPage() {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({
-                    details,
-                    fetchSubscriptionUsers,
-                    overview,
-                    activeTab,
-                  }) => (
+                  {({ details, fetchSubscriptionUsers }) => (
                     <React.Fragment>
                       <p className="lead">
                         {details.licenses.allocated}
@@ -89,14 +83,7 @@ export default function SubscriptionManagementPage() {
                           />
                         </div>
                         <div className="col-12 col-lg-6">
-                          {activeTab === TAB_PENDING_USERS ?
-                            <RemindUserButton
-                              pendingUsersCount={overview.assigned}
-                              isBulkRemind
-                              onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
-                            /> :
-                            <AddUsersDropdown />
-                          }
+                          <AddUsersDropdown />
                         </div>
                       </div>
                     </React.Fragment>
@@ -109,7 +96,7 @@ export default function SubscriptionManagementPage() {
                 </div>
                 <div className="col-12 col-lg-9">
                   {renderStatusMessage()}
-                  <StatusContext.Provider value={setStatus}>
+                  <StatusContext.Provider value={{ setStatus, setSuccessStatus }}>
                     <TabContentTable />
                   </StatusContext.Provider>
                 </div>

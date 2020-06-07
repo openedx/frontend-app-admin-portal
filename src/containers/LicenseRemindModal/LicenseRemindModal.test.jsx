@@ -55,11 +55,9 @@ describe('LicenseRemindModalWrapper', () => {
     const wrapper = mount(<LicenseRemindModalWrapper
       user={user}
       title="Remind"
-      subtitle="subtitle"
       isBulkRemind={false}
     />);
     expect(wrapper.find('.modal-title span').text()).toEqual('Remind');
-    expect(wrapper.find('.modal-title small').text()).toEqual('subtitle');
 
     expect(wrapper.find('.assignment-details p.bulk-selected-codes').text()).toEqual(`Email: ${user.emailAddress}`);
   });
