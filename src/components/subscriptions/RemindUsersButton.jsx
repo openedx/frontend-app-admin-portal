@@ -17,7 +17,7 @@ const RemindUsersButton = ({
         Remind all ({pendingUsersCount})
       </React.Fragment>
     }
-    buttonClassName="btn btn-link"
+    buttonClassName="btn btn-link p-0"
     renderModal={({ closeModal }) => (
       <LicenseRemindModal
         pendingUsersCount={pendingUsersCount}

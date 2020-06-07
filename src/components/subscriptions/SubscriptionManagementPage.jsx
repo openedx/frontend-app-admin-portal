@@ -75,7 +75,7 @@ export default function SubscriptionManagementPage() {
                         {details.licenses.available} licenses allocated
                       </p>
                       <div className="my-3 row">
-                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+                        <div className="col-12 col-lg-5 mb-3 mb-lg-0">
                           <SearchBar
                             placeholder="Search by email..."
                               // eslint-disable-next-line no-console
@@ -84,7 +84,7 @@ export default function SubscriptionManagementPage() {
                             onClear={() => fetchSubscriptionUsers()}
                           />
                         </div>
-                        <div className="col-12 col-lg-6">
+                        <div className="col-12 col-lg-7">
                           <AddUsersDropdown />
                         </div>
                       </div>
