@@ -118,10 +118,11 @@ class LicenseRemindModal extends React.Component {
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
           <React.Fragment>
-            {isBulkRemind ?
-              <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p> :
-              <p className="bulk-selected-codes">Email: {user.emailAddress}
-              </p>}
+            {isBulkRemind ? (
+              <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
+            ) : (
+              <p className="bulk-selected-codes">Email: {user.emailAddress}</p>
+            )}
           </React.Fragment>
         </div>
         <form onSubmit={e => e.preventDefault()}>
