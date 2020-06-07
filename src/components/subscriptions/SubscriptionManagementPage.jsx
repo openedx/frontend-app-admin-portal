@@ -67,37 +67,40 @@ export default function SubscriptionManagementPage() {
                 </h3>
                 <SubscriptionConsumer>
                   {({
-                        details, fetchSubscriptionUsers, overview, activeTab,
-                      }) => (
-                        <React.Fragment>
-                          <p className="lead">
-                            {details.licenses.allocated}
-                            {' of '}
-                            {details.licenses.available} licenses allocated
-                          </p>
-                          <div className="my-3 row">
-                            <div className="col-12 col-lg-6 mb-3 mb-lg-0">
-                              <SearchBar
-                                placeholder="Search by email..."
-                                  // eslint-disable-next-line no-console
-                                onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
-                                  // eslint-disable-next-line no-console
-                                onClear={() => fetchSubscriptionUsers()}
-                              />
-                            </div>
-                            <div className="col-12 col-lg-6">
-                              {activeTab === TAB_PENDING_USERS ?
-                                <RemindUserButton
-                                  pendingUsersCount={overview.assigned}
-                                  isBulkRemind
-                                  onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
-                                /> :
-                                <AddUsersDropdown />
-                              }
-                            </div>
-                          </div>
-                        </React.Fragment>
-                    )}
+                    details,
+                    fetchSubscriptionUsers,
+                    overview,
+                    activeTab,
+                  }) => (
+                    <React.Fragment>
+                      <p className="lead">
+                        {details.licenses.allocated}
+                        {' of '}
+                        {details.licenses.available} licenses allocated
+                      </p>
+                      <div className="my-3 row">
+                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+                          <SearchBar
+                            placeholder="Search by email..."
+                              // eslint-disable-next-line no-console
+                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
+                              // eslint-disable-next-line no-console
+                            onClear={() => fetchSubscriptionUsers()}
+                          />
+                        </div>
+                        <div className="col-12 col-lg-6">
+                          {activeTab === TAB_PENDING_USERS ?
+                            <RemindUserButton
+                              pendingUsersCount={overview.assigned}
+                              isBulkRemind
+                              onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
+                            /> :
+                            <AddUsersDropdown />
+                          }
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  )}
                 </SubscriptionConsumer>
               </div>
               <div className="row my-4">
