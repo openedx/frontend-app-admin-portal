@@ -41,15 +41,7 @@ export default function TabContentTable() {
   const { setSuccessStatus } = useContext(StatusContext);
 
   useEffect(() => {
-    const licenseStatusByTab = {
-      [TAB_LICENSED_USERS]: 'active',
-      [TAB_PENDING_USERS]: 'assigned',
-      [TAB_DEACTIVATED_USERS]: 'deactivated',
-    };
-    fetchSubscriptionUsers({
-      statusFilter: licenseStatusByTab[activeTab],
-      searchQuery,
-    });
+    fetchSubscriptionUsers({ searchQuery });
   }, [activeTab]);
 
   const activeTabData = useMemo(
@@ -131,7 +123,7 @@ export default function TabContentTable() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <hr />
+          <hr className="mt-0" />
           <StatusAlert
             alertType="warning"
             dialog={activeTabData.noResultsLabel}

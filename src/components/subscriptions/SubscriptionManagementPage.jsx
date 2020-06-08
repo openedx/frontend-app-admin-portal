@@ -77,7 +77,7 @@ export default function SubscriptionManagementPage() {
                           <SearchBar
                             placeholder="Search by email..."
                               // eslint-disable-next-line no-console
-                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
+                            onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
                               // eslint-disable-next-line no-console
                             onClear={() => fetchSubscriptionUsers()}
                           />
