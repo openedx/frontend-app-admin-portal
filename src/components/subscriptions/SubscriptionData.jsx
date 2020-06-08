@@ -12,6 +12,9 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
+  ACTIVE,
+  ASSIGNED,
+  DEACTIVATED,
 } from './constants';
 
 export const SubscriptionContext = createContext();
@@ -50,31 +53,41 @@ export default function SubscriptionData({ children }) {
       searchQuery,
       activeTab,
       setActiveTab,
+      fetchSubscriptionDetails: () => (
+        fetchSubscriptionDetails()
+          .then((response) => {
+            setDetails(response);
+          })
+          // eslint-disable-next-line no-console
+          .catch(error => console.log(error))
+      ),
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
-          [TAB_LICENSED_USERS]: 'active',
-          [TAB_PENDING_USERS]: 'assigned',
-          [TAB_DEACTIVATED_USERS]: 'deactivated',
+          [TAB_LICENSED_USERS]: ACTIVE,
+          [TAB_PENDING_USERS]: ASSIGNED,
+          [TAB_DEACTIVATED_USERS]: DEACTIVATED,
         };
 
         setSearchQuery(options.searchQuery);
 
-        Promise.all([
-          fetchSubscriptionUsersOverview(options),
-          fetchSubscriptionUsers({
-            statusFilter: licenseStatusByTab[activeTab],
-            ...options,
-          }),
-        ])
-          .then((responses) => {
-            setOverview(responses[0]);
-            setUsers(responses[1]);
-          })
-          // eslint-disable-next-line no-console
-          .catch(error => console.log(error));
+        return (
+          Promise.all([
+            fetchSubscriptionUsersOverview(options),
+            fetchSubscriptionUsers({
+              ...options,
+              statusFilter: licenseStatusByTab[activeTab],
+            }),
+          ])
+            .then((responses) => {
+              setOverview(responses[0]);
+              setUsers(responses[1]);
+            })
+            // eslint-disable-next-line no-console
+            .catch(error => console.log(error))
+        );
       },
     }),
-    [details, users, activeTab, setActiveTab],
+    [details, overview, users, activeTab],
   );
 
   const hasInitialData = useMemo(

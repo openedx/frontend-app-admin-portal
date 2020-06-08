@@ -1,37 +1,51 @@
 import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import './styles/LicenseActions.scss';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 import LicenseRemindModal from '../../containers/LicenseRemindModal';
 import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
 import { StatusContext } from './SubscriptionManagementPage';
 
+import { SubscriptionContext } from './SubscriptionData';
+
+import { ACTIVE, ASSIGNED } from './constants';
+
+import './styles/LicenseActions.scss';
+
 export default function LicenseAction({ user }) {
   const { setSuccessStatus } = useContext(StatusContext);
+  const {
+    fetchSubscriptionDetails,
+    fetchSubscriptionUsers,
+    searchQuery,
+    activeTab,
+  } = useContext(SubscriptionContext);
 
   const licenseActions = useMemo(
     () => {
       switch (user.licenseStatus) {
-        case 'active':
+        case ACTIVE:
           return [{
+            key: 'revoke-btn',
             text: 'Revoke',
-            // eslint-disable-next-line no-console
-            handleClick: closeModal => (<LicenseRevokeModal
-              user={user}
-              onSuccess={() => setSuccessStatus({
-                visible: true,
-                message: 'Successfully revoked license',
-              })}
-              onClose={() => {
-                closeModal();
-              }}
-            />),
+            handleClick: closeModal => (
+              <LicenseRevokeModal
+                user={user}
+                onSuccess={() => setSuccessStatus({
+                  visible: true,
+                  message: 'Successfully revoked license',
+                })}
+                onClose={() => closeModal()}
+                fetchSubscriptionDetails={fetchSubscriptionDetails}
+                fetchSubscriptionUsers={fetchSubscriptionUsers}
+                searchQuery={searchQuery}
+              />
+            ),
           }];
-        case 'assigned':
+        case ASSIGNED:
           return [{
+            key: 'remind-btn',
             text: 'Remind',
-            // eslint-disable-next-line no-console
             handleClick: closeModal => (
               <LicenseRemindModal
                 user={user}
@@ -47,8 +61,8 @@ export default function LicenseAction({ user }) {
               />
             ),
           }, {
+            key: 'revoke-btn',
             text: 'Revoke',
-            // eslint-disable-next-line no-console
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
@@ -56,34 +70,37 @@ export default function LicenseAction({ user }) {
                   visible: true,
                   message: 'Successfully revoked license',
                 })}
-                onClose={() => {
-                  closeModal();
-                }}
+                onClose={() => closeModal()}
+                fetchSubscriptionDetails={fetchSubscriptionDetails}
+                fetchSubscriptionUsers={fetchSubscriptionUsers}
+                searchQuery={searchQuery}
               />
             ),
           }];
         default:
-          return [{ text: '-' }];
+          return [{ key: 'no-actions-here', text: '-' }];
       }
     },
-    [user],
+    [user, activeTab, searchQuery],
   );
+
   return (
     <div className="license-actions">
-      {licenseActions.map((licenseAction) => {
-        if (licenseAction.handleClick) {
-          return (
+      {licenseActions.map(({ handleClick, text, key }) => (
+        <React.Fragment key={key}>
+          {handleClick ? (
             <ActionButtonWithModal
-              buttonLabel={licenseAction.text}
+              buttonLabel={text}
               buttonClassName="btn btn-link btn-sm p-0"
               renderModal={({ closeModal }) => (
-                licenseAction.handleClick(closeModal)
+                handleClick(closeModal)
               )}
             />
-          );
-        }
-        return licenseAction.text;
-      })}
+          ) : (
+            text
+          )}
+        </React.Fragment>
+      ))}
     </div>
   );
 }

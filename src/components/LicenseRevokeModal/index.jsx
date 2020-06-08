@@ -12,6 +12,7 @@ class LicenseRevokeModal extends React.Component {
 
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
+
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
@@ -47,18 +48,22 @@ class LicenseRevokeModal extends React.Component {
     const {
       user,
       sendLicenseRevoke,
+      fetchSubscriptionDetails,
+      fetchSubscriptionUsers,
+      searchQuery,
     } = this.props;
-
-    const options = {};
-    options.assignments = [{
-      uuid: user.uuid,
-      email: user.emailAddress,
-      licenseStatus: user.licenseStatus,
-    }];
+    const options = { userId: user.userId };
 
     return sendLicenseRevoke(options)
-      .then((response) => {
-        this.props.onSuccess(response);
+      .then(async (response) => {
+        try {
+          await fetchSubscriptionDetails();
+          await fetchSubscriptionUsers({ searchQuery });
+          this.props.onSuccess(response);
+        } catch (error) {
+          // TODO: log error in NewRelic
+          console.log(error); // eslint-disable-line no-console
+        }
       })
       .catch((error) => {
         throw new SubmissionError({
@@ -157,6 +162,7 @@ class LicenseRevokeModal extends React.Component {
 
 LicenseRevokeModal.defaultProps = {
   error: null,
+  searchQuery: null,
 };
 
 LicenseRevokeModal.propTypes = {
@@ -172,10 +178,13 @@ LicenseRevokeModal.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   sendLicenseRevoke: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     emailAddress: PropTypes.string.isRequired,
     licenseStatus: PropTypes.string.isRequired,
   }).isRequired,
+  fetchSubscriptionDetails: PropTypes.func.isRequired,
+  fetchSubscriptionUsers: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string,
 };
 
 export default reduxForm({

@@ -29,7 +29,7 @@ class ActionButtonWithModal extends React.Component {
 }
 
 ActionButtonWithModal.propTypes = {
-  buttonLabel: PropTypes.string.isRequired,
+  buttonLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   buttonClassName: PropTypes.string.isRequired,
   renderModal: PropTypes.func.isRequired,
 };
