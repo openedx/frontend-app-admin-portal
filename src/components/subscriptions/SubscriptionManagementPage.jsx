@@ -5,7 +5,6 @@ import Hero from '../Hero';
 import SearchBar from '../SearchBar';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
-import AddUsersDropdown from './AddUsersDropdown';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
 import RemindUserButton from './RemindUserButton';
@@ -13,6 +12,7 @@ import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
 import { TAB_PENDING_USERS } from './constants';
+import AddUsersButton from './AddUsersButton';
 
 const PAGE_TITLE = 'Subscription Management';
 
@@ -95,7 +95,13 @@ export default function SubscriptionManagementPage() {
                               isBulkRemind
                               onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
                             /> :
-                            <AddUsersDropdown />
+                            <AddUsersButton
+                              onSuccess={() => setStatus({
+                                visible: true,
+                                alertType: 'success',
+                                message: 'Successfully assigned license(s)',
+                              })}
+                            />
                           }
                         </div>
                       </div>

@@ -2,6 +2,8 @@ import moment from 'moment';
 import qs from 'query-string';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
+import isArray from 'lodash/isArray';
+import mergeWith from 'lodash/mergeWith';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -153,6 +155,7 @@ const updateAllTemplates = (template, state) => {
   return allTemplates;
 };
 
+// Validated email template form fields and returns errors if any.
 const validateEmailTemplateFields = (formData) => {
   const errors = {
     _error: [],
@@ -175,6 +178,81 @@ const validateEmailTemplateFields = (formData) => {
   return errors;
 };
 
+// Validates email addresses lists passed in as the argument.
+//
+// Returns an object with the following attributes.
+// validEmails: valid email addresses from the emails argument.
+// validEmailIndices: indices of the valid email addresses in the emails arguments.
+// invalidEmails: invalid email addresses from the emails argument.
+// invalidEmailIndices: indices of the invalid email addresses in the emails arguments.
+const validateEmailAddresses = (emails) => {
+  const result = {
+    validEmails: [],
+    validEmailIndices: [],
+    invalidEmails: [],
+    invalidEmailIndices: [],
+  };
+  if (!emails) {
+    return result;
+  }
+  emails.forEach((email, index) => {
+    if (email) {
+      if (!isEmail(email)) {
+        result.invalidEmails.push(email);
+        result.invalidEmailIndices.push(index);
+      } else {
+        result.validEmails.push(email);
+        result.validEmailIndices.push(index);
+      }
+    }
+  });
+  return result;
+};
+
+// Validate email address form fields and return errors with appropriate error messages.
+const validateEmailAddressesFields = (formData) => {
+  const errors = {
+    _error: [],
+  };
+  const userEmailsKey = 'email-addresses';
+  const emailsCSVKey = 'csv-email-addresses';
+
+  const textAreaEmails = formData[userEmailsKey] && formData[userEmailsKey].split(/\r\n|\n/);
+  const csvEmails = formData[emailsCSVKey];
+
+  let {
+    invalidEmailIndices,
+  } = validateEmailAddresses(textAreaEmails || csvEmails);
+
+  // 1 is added to every index to fix off-by-one error in messages shown to the user.
+  invalidEmailIndices = invalidEmailIndices.map(i => i + 1);
+
+  if (invalidEmailIndices.length > 0) {
+    const lastEmail = invalidEmailIndices.pop();
+    const message = `Email address on line ${invalidEmailIndices.join(', ')} \
+      ${invalidEmailIndices.length !== 0 ? `and ${lastEmail}` : `${lastEmail}`} \
+      is invalid. Please try again.`;
+
+    errors[textAreaEmails ? userEmailsKey : emailsCSVKey] = message;
+    // eslint-disable-next-line no-underscore-dangle
+    errors._error.push(message);
+  }
+
+  return errors;
+};
+
+const mergeErrors = (object, other) => {
+  const customizer = (objValue, srcValue) => {
+    if (isArray(objValue)) {
+      return objValue.concat(srcValue);
+    }
+
+    return undefined;
+  };
+
+  return mergeWith(object, other, customizer);
+};
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -194,4 +272,7 @@ export {
   transformTemplate,
   validateEmailTemplateFields,
   updateAllTemplates,
+  validateEmailAddresses,
+  validateEmailAddressesFields,
+  mergeErrors,
 };
