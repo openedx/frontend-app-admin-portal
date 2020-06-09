@@ -26,15 +26,6 @@ class AddUsersModal extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      enterpriseId,
-      fetchSubscriptionDetails,
-    } = this.props;
-
-    if (enterpriseId) {
-      fetchSubscriptionDetails(enterpriseId);
-    }
-
     const { current: { firstFocusableElement } } = this.modalRef;
 
     if (firstFocusableElement) {
@@ -60,11 +51,6 @@ class AddUsersModal extends React.Component {
       // When there is an new error, focus on the error message status alert
       errorMessageRef.focus();
     }
-  }
-
-  componentWillUnmount() {
-    // Clear the subscription data
-    this.props.clearSubscriptionDetails();
   }
 
   validateFormData(formData) {
@@ -103,7 +89,7 @@ class AddUsersModal extends React.Component {
 
   handleModalSubmit(formData) {
     const {
-      subscribeUsers,
+      addLicensesForUsers,
     } = this.props;
 
     // Validate form data
@@ -120,7 +106,7 @@ class AddUsersModal extends React.Component {
     payload.emails = validEmails;
 
     /* eslint-disable no-underscore-dangle */
-    return subscribeUsers(payload)
+    return addLicensesForUsers(payload)
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -141,9 +127,7 @@ class AddUsersModal extends React.Component {
       <React.Fragment>
         {submitFailed && this.renderErrorMessage()}
         <form onSubmit={e => e.preventDefault()}>
-          <div className="mt-4">
-            <p>Unassigned licenses: {availableSubscriptionCount}</p>
-          </div>
+          <p>Unassigned licenses: {availableSubscriptionCount}</p>
           <div className="mt-4">
             <H3>Add Users</H3>
             <Field
@@ -226,7 +210,6 @@ class AddUsersModal extends React.Component {
     return (
       <React.Fragment>
         <span className="d-block">{title}</span>
-        <small>Add Subscriptions</small>
       </React.Fragment>
     );
   }
@@ -268,7 +251,6 @@ class AddUsersModal extends React.Component {
 
 AddUsersModal.defaultProps = {
   error: null,
-  enterpriseId: null,
 };
 
 AddUsersModal.propTypes = {
@@ -283,13 +265,10 @@ AddUsersModal.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  subscribeUsers: PropTypes.func.isRequired,
-  fetchSubscriptionDetails: PropTypes.func.isRequired,
-  clearSubscriptionDetails: PropTypes.func.isRequired,
+  addLicensesForUsers: PropTypes.func.isRequired,
 
   initialValues: PropTypes.shape({}).isRequired,
   availableSubscriptionCount: PropTypes.number.isRequired,
-  enterpriseId: PropTypes.string,
 };
 
 export default reduxForm({

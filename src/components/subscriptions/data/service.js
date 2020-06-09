@@ -111,7 +111,7 @@ export function sendLicenseReminder(options = {}) {
  * exists, the contents of this function will use the `apiClient` to make an actual API
  * call to get this data.
  */
-export function subscribeUsers(payload) {
+export function addLicensesForUsers(payload) {
   return Promise.resolve(payload);
   // return Promise.reject(new Error('Could not connect to the server'));
 }

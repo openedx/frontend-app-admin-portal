@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import AddUsersModal from '../../containers/AddUsersModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
+import { SubscriptionConsumer } from './SubscriptionData';
 
 const AddUsersButton = ({
   onSuccess,
@@ -12,17 +13,23 @@ const AddUsersButton = ({
     buttonLabel="Add Users"
     buttonClassName="add-btn btn btn-primary float-right"
     renderModal={({ closeModal }) => (
-      <AddUsersModal
-        couponId="1"
-        title="Subscribe Users"
-        onSuccess={onSuccess}
-        onClose={() => {
-          closeModal();
-          if (onClose) {
-            onClose();
-          }
-        }}
-      />
+      <SubscriptionConsumer>
+        {({
+          details,
+        }) => (
+          <AddUsersModal
+            title="Add Users"
+            availableSubscriptionCount={details.licenses.available - details.licenses.allocated}
+            onSuccess={onSuccess}
+            onClose={() => {
+              closeModal();
+              if (onClose) {
+                onClose();
+              }
+            }}
+          />
+        )}
+      </SubscriptionConsumer>
     )}
   />
 );

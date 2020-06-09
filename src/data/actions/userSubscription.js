@@ -5,7 +5,7 @@ import {
 } from '../constants/userSubscription';
 import NewRelicService from '../services/NewRelicService';
 
-import { subscribeUsers as subscribeUsersEndpoint } from '../../components/subscriptions/data/service';
+import { addLicensesForUsers as addLicensesForUsersEndpoint } from '../../components/subscriptions/data/service';
 
 const sendSubscribeUsersRequest = () => ({
   type: USER_SUBSCRIPTION_REQUEST,
@@ -25,23 +25,22 @@ const sendUserSubscriptionFailure = error => ({
   },
 });
 
-const subscribeUsers = ({
+const addLicensesForUsers = ({
   payload,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendSubscribeUsersRequest());
-    return subscribeUsersEndpoint(payload).then((response) => {
+    return addLicensesForUsersEndpoint(payload).then((response) => {
       dispatch(sendUserSubscriptionSuccess(response));
       onSuccess(response);
     }).catch((error) => {
       NewRelicService.logAPIErrorResponse(error);
-
       dispatch(sendUserSubscriptionFailure(error));
       onError(error);
     });
   }
 );
 
-export default subscribeUsers;
+export default addLicensesForUsers;

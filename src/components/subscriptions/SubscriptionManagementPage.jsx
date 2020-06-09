@@ -118,7 +118,6 @@ export default function SubscriptionManagementPage() {
                   <StatusContext.Provider value={setStatus}>
                     <TabContentTable />
                   </StatusContext.Provider>
-                  <TabContentTable />
                 </div>
               </div>
             </div>

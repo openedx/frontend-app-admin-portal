@@ -38,6 +38,7 @@ const UserSubscriptionModalWrapper = props => (
     <Provider store={props.store}>
       <AddUsersModel
         title={modelTitle}
+        availableSubscriptionCount={10}
         onClose={() => {}}
         onSuccess={() => {}}
         {...props}
@@ -63,11 +64,9 @@ describe('UserSubscriptionModalWrapper', () => {
     }
   });
 
-  it('renders user subscription modal', () => {
+  it('renders user licenses modal', () => {
     const wrapper = mount(<UserSubscriptionModalWrapper data={data} />);
     expect(wrapper.find('.modal-title span').text()).toEqual(modelTitle);
-    expect(wrapper.find('.modal-title small').text()).toEqual('Add Subscriptions');
-
     expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
   });
 });
