@@ -21,6 +21,7 @@ const configuration = {
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,
+  CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
 };
 
 const features = {

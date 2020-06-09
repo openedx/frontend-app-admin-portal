@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Helmet } from 'react-helmet';
+import { MailtoLink } from '@edx/paragon';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
@@ -13,8 +14,10 @@ import StatusAlert from '../StatusAlert';
 import './styles/SubscriptionManagementPage.scss';
 import { TAB_PENDING_USERS } from './constants';
 import AddUsersButton from './AddUsersButton';
+import { configuration } from '../../config';
 
 const PAGE_TITLE = 'Subscription Management';
+const { CUSTOMER_SUPPORT_EMAIL } = configuration;
 
 export const StatusContext = createContext();
 
@@ -54,9 +57,9 @@ export default function SubscriptionManagementPage() {
               <SubscriptionDetails />
             </div>
             <div className="col-12 col-lg-4 text-md-right">
-              <button className="btn btn-outline-primary">
-                Request assistance
-              </button>
+              <MailtoLink to={CUSTOMER_SUPPORT_EMAIL} className="btn btn-outline-primary">
+                Contact Customer Support
+              </MailtoLink>
             </div>
           </div>
           <div className="row mb-3">
