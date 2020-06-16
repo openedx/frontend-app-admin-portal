@@ -119,6 +119,7 @@ module.exports = Merge.smart(commonConfig, {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,
         SUBSCRIPTION_MANAGEMENT: true,
+        SUPPORT: true,
       },
     }),
   ],

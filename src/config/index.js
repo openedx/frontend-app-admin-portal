@@ -28,6 +28,7 @@ const features = {
   CODE_MANAGEMENT: process.env.FEATURE_FLAGS.CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
   REPORTING_CONFIGURATIONS: process.env.FEATURE_FLAGS.REPORTING_CONFIGURATIONS,
   SUBSCRIPTION_MANAGEMENT: process.env.FEATURE_FLAGS.SUBSCRIPTION_MANAGEMENT || hasFeatureFlagEnabled('SUBSCRIPTION_MANAGEMENT'),
+  SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
 };
 
 export { configuration, features };

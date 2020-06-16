@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Helmet } from 'react-helmet';
-import { MailtoLink } from '@edx/paragon';
+import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
@@ -14,10 +14,12 @@ import StatusAlert from '../StatusAlert';
 import './styles/SubscriptionManagementPage.scss';
 import { TAB_PENDING_USERS } from './constants';
 import AddUsersButton from './AddUsersButton';
-import { configuration } from '../../config';
 
 const PAGE_TITLE = 'Subscription Management';
-const { CUSTOMER_SUPPORT_EMAIL } = configuration;
+
+// get current url and remove the 'subscription'
+const CURRENT_URL = window.location.pathname;
+const URL_BASE = CURRENT_URL.split('/').slice(0, -1).join('/');
 
 export const StatusContext = createContext();
 
@@ -57,9 +59,9 @@ export default function SubscriptionManagementPage() {
               <SubscriptionDetails />
             </div>
             <div className="col-12 col-lg-4 text-md-right">
-              <MailtoLink to={CUSTOMER_SUPPORT_EMAIL} className="btn btn-outline-primary">
+              <Link to={`${URL_BASE}/support`} className="btn btn-outline-primary">
                 Contact Customer Support
-              </MailtoLink>
+              </Link>
             </div>
           </div>
           <div className="row mb-3">
