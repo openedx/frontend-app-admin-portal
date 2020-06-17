@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { Redirect } from 'react-router-dom';
 import { Button, Icon } from '@edx/paragon';
 
 import RenderField from '../RenderField';
@@ -24,12 +23,15 @@ class SupportForm extends React.Component {
     );
   }
 
-  renderRedirect() {
+  renderSuccessMessage() {
     return (
-      <Redirect
-        to={{
-          pathname: '',
-        }}
+      <StatusAlert
+        className="mt-3"
+        alertType="success"
+        iconClassName="fa fa-check-circle"
+        title="Request received"
+        message="The edX Customer Success team will contact you soon."
+        dismissible
       />
     );
   }
@@ -49,7 +51,7 @@ class SupportForm extends React.Component {
         {submitFailed && error && this.renderErrorMessage()}
         <div className="support-form row">
           <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(this.renderSuccessMessage.bind(this))}>
               <Field
                 name="emailAddress"
                 type="email"
@@ -97,7 +99,7 @@ class SupportForm extends React.Component {
             </form>
           </div>
         </div>
-        {submitSucceeded && this.renderRedirect()}
+        {submitSucceeded && this.renderSuccessMessage()}
       </React.Fragment>
     );
   }
