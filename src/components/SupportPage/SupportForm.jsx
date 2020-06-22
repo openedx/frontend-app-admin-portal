@@ -9,6 +9,12 @@ import StatusAlert from '../StatusAlert';
 import { isRequired, isValidEmail, maxLength512 } from '../../utils';
 
 class SupportForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.renderSuccessMessage = this.renderSuccessMessage.bind(this);
+  }
+
   renderErrorMessage() {
     const { error: { message } } = this.props;
 
@@ -17,7 +23,7 @@ class SupportForm extends React.Component {
         className="mt-3"
         alertType="danger"
         iconClassName="fa fa-times-circle"
-        title="Unable to request more codes"
+        title="Unable to send your request to the edX Customer Success team."
         message={`Try refreshing your screen (${message})`}
       />
     );
@@ -49,9 +55,10 @@ class SupportForm extends React.Component {
     return (
       <React.Fragment>
         {submitFailed && error && this.renderErrorMessage()}
+        {submitSucceeded && this.renderSuccessMessage()}
         <div className="support-form row">
           <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit(this.renderSuccessMessage.bind(this))}>
+            <form onSubmit={handleSubmit(this.renderSuccessMessage)}>
               <Field
                 name="emailAddress"
                 type="email"
@@ -99,7 +106,6 @@ class SupportForm extends React.Component {
             </form>
           </div>
         </div>
-        {submitSucceeded && this.renderSuccessMessage()}
       </React.Fragment>
     );
   }
