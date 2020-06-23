@@ -78,7 +78,7 @@ export default function LicenseAction({ user }) {
             ),
           }];
         default:
-          return [{ key: 'no-action', text: '-' }];
+          return [{ key: 'no-actions-here', text: '-' }];
       }
     },
     [user, activeTab, searchQuery],
