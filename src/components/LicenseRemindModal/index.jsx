@@ -78,6 +78,9 @@ class LicenseRemindModal extends React.Component {
       isBulkRemind,
       user,
       sendLicenseReminder,
+      fetchSubscriptionDetails,
+      fetchSubscriptionUsers,
+      searchQuery,
     } = this.props;
     // Validate form data
     this.validateFormData(formData);
@@ -91,12 +94,19 @@ class LicenseRemindModal extends React.Component {
     if (isBulkRemind) {
       options.bulkRemind = true;
     } else if (!isBulkRemind && user) {
-      options.email = user.emailAddress;
+      options.userId = user.userId;
     }
 
     return sendLicenseReminder(options)
-      .then((response) => {
-        this.props.onSuccess(response);
+      .then(async (response) => {
+        try {
+          await fetchSubscriptionDetails();
+          await fetchSubscriptionUsers({ searchQuery });
+          this.props.onSuccess(response);
+        } catch (error) {
+          // TODO: log error in NewRelic
+          console.log(error); // eslint-disable-line no-console
+        }
       })
       .catch((error) => {
         throw new SubmissionError({
@@ -229,6 +239,7 @@ LicenseRemindModal.defaultProps = {
   user: {},
   pendingUsersCount: 0,
   subtitle: null,
+  searchQuery: null,
 };
 LicenseRemindModal.propTypes = {
   // props From redux-form
@@ -247,8 +258,12 @@ LicenseRemindModal.propTypes = {
   isBulkRemind: PropTypes.bool,
   pendingUsersCount: PropTypes.number,
   user: PropTypes.shape({
+    userId: PropTypes.number,
     emailAddress: PropTypes.string,
   }),
+  fetchSubscriptionDetails: PropTypes.func.isRequired,
+  fetchSubscriptionUsers: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string,
 };
 export default reduxForm({
   form: 'license-reminder-modal-form',

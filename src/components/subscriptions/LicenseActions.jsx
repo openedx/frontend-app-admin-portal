@@ -58,6 +58,9 @@ export default function LicenseAction({ user }) {
                 onClose={() => {
                   closeModal();
                 }}
+                fetchSubscriptionDetails={fetchSubscriptionDetails}
+                fetchSubscriptionUsers={fetchSubscriptionUsers}
+                searchQuery={searchQuery}
               />
             ),
           }, {

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import './styles/LicenseStatus.scss';
 
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
@@ -14,7 +15,7 @@ export default function LicenseStatus({ user }) {
         case 'assigned':
           return {
             iconClassName: 'fa-hourglass-half text-muted',
-            text: 'Pending',
+            text: <>Pending<br /><p>Since {user.pendingSince}</p></>,  /* eslint-disable-line */
           };
         case 'deactivated':
           return {
@@ -43,5 +44,6 @@ export default function LicenseStatus({ user }) {
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
     licenseStatus: PropTypes.string.isRequired,
+    pendingSince: PropTypes.string.isRequired,
   }).isRequired,
 };
