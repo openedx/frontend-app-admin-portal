@@ -84,6 +84,9 @@ const sampleCodeData = {
     used: 10,
     num_assignments: 5,
   },
+  assignment_date: 'June 02, 2020 13:09',
+  last_reminder_date: 'June 22, 2020 12:01',
+  revocation_date: '',
   error: null,
 };
 
@@ -173,6 +176,28 @@ describe('CouponDetailsWrapper', () => {
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
+    });
+
+    it('with assignment and reminder dates table data', () => {
+      store = mockStore({
+        ...initialState,
+        table: {
+          'coupon-details': sampleTableData,
+        },
+      });
+      const tree = renderer
+        .create((
+          <CouponDetailsWrapper
+            store={store}
+            isExpanded
+          />
+        ));
+      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'unredeemed' });
+      expect(tree.toJSON()).toMatchSnapshot();
+      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'partially-redeemed' });
+      expect(tree.toJSON()).toMatchSnapshot();
+      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'redeemed' });
+      expect(tree.toJSON()).toMatchSnapshot();
     });
 
     it('does not show Assign button for an unavailable coupon', () => {
