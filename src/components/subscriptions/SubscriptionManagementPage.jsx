@@ -1,8 +1,6 @@
 import React, { useState, createContext } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { MailtoLink } from '@edx/paragon';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
@@ -10,16 +8,18 @@ import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
-import AddUsersButton from './AddUsersButton';
 import TabContentTable from './TabContentTable';
 import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
+import { configuration } from '../../config';
 
 const PAGE_TITLE = 'Subscription Management';
+const { CUSTOMER_SUPPORT_EMAIL } = configuration;
+
 export const StatusContext = createContext();
 
-function SubscriptionManagementPage({ enterpriseSlug }) {
+export default function SubscriptionManagementPage() {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -56,9 +56,9 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
               <SubscriptionDetails />
             </div>
             <div className="col-12 col-lg-4 text-md-right">
-              <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
+              <MailtoLink to={CUSTOMER_SUPPORT_EMAIL} className="btn btn-outline-primary">
                 Contact Customer Support
-              </Link>
+              </MailtoLink>
             </div>
           </div>
           <div className="row mb-3">
@@ -111,13 +111,3 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
     </SubscriptionData>
   );
 }
-
-SubscriptionManagementPage.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(SubscriptionManagementPage);

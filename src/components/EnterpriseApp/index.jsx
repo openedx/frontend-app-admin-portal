@@ -9,7 +9,7 @@ import CodeManagementPage from '../../containers/CodeManagementPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import ReportingConfig from '../../components/ReportingConfig';
-import SupportPage from '../../containers/SupportPage';
+import SupportPage from '../SupportPage';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
@@ -167,16 +167,7 @@ class EnterpriseApp extends React.Component {
                       }
                     />
                   }
-                  {features.SUPPORT &&
-                    <Route
-                      key="support"
-                      exact
-                      path={`${baseUrl}/admin/support`}
-                      render={routeProps =>
-                        <SupportPage {...routeProps} />
-                      }
-                    />
-                  }
+                  <Route exact path={`${baseUrl}/support`} component={SupportPage} />
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>
