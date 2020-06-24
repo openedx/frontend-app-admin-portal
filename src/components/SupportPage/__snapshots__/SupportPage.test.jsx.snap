@@ -40,11 +40,18 @@ Array [
       <div
         className="col"
       >
-        <div
-          className="loading d-flex align-items-center justify-content-center support"
-        >
-          Loading...
-        </div>
+        <p>
+          For assistance, please contact the edX Customer Success team at
+           
+          <a
+            href="mailto:customersuccess@edx.org"
+            onClick={null}
+            target="_self"
+          >
+            customersuccess@edx.org
+          </a>
+          .
+        </p>
       </div>
     </div>
   </div>,

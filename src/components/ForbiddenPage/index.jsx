@@ -1,13 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { MailtoLink } from '@edx/paragon';
 
 import H1 from '../../components/H1';
-import { features } from '../../config';
 
-const ForbiddenPage = ({ enterpriseSlug }) => (
+const ForbiddenPage = () => (
   <main role="main">
     <div className="container-fluid mt-3">
       <Helmet>
@@ -16,23 +13,14 @@ const ForbiddenPage = ({ enterpriseSlug }) => (
       <div className="text-center py-5">
         <H1>403</H1>
         <p className="lead">You do not have access to this page.</p>
-        {features.SUPPORT &&
         <p>
-          For assistance, click to contact the
+          For assistance, please contact the edX Customer Success team at
           {' '}
-          <Link to={`/${enterpriseSlug}/admin/support`}>edX Customer Success team.</Link>.
-        </p>}
+          <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+        </p>
       </div>
     </div>
   </main>
 );
 
-ForbiddenPage.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(ForbiddenPage);
+export default ForbiddenPage;

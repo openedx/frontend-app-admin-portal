@@ -21,7 +21,7 @@ exports[`<ForbiddenPage /> renders correctly 1`] = `
         You do not have access to this page.
       </p>
       <p>
-        For assistance, please contact edX Enterprise Support at
+        For assistance, please contact the edX Customer Success team at
          
         <a
           href="mailto:customersuccess@edx.org"

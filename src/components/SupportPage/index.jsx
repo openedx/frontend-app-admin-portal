@@ -40,7 +40,7 @@ class SupportPage extends React.Component {
                 />
               ) :
                 <p>
-                  For assistance, please contact edX Enterprise Support at
+                  For assistance, please contact the edX Customer Success team at
                   {' '}
                   <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
                 </p>}
