@@ -26,20 +26,22 @@ const sendLicenseRevokeFailure = error => ({
 });
 
 const sendLicenseRevoke = ({
-  payload,
+  options,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendLicenseRevokeRequest());
-    return sendLicenseRevokeEndpoint(payload).then((response) => {
-      dispatch(sendLicenseRevokeSuccess(response));
-      onSuccess(response);
-    }).catch((error) => {
-      NewRelicService.logAPIErrorResponse(error);
-      dispatch(sendLicenseRevokeFailure(error));
-      onError(error);
-    });
+    return sendLicenseRevokeEndpoint(options)
+      .then((response) => {
+        dispatch(sendLicenseRevokeSuccess(response));
+        onSuccess(response);
+      })
+      .catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
+        dispatch(sendLicenseRevokeFailure(error));
+        onError(error);
+      });
   }
 );
 

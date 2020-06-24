@@ -342,19 +342,29 @@ class CouponDetails extends React.Component {
 
     const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
 
-    // `assigned_to` column
+    // `assigned_to, assignment_date, last_reminder_date` columns
     if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
-      // Add `assigned_to` column if it doesn't already exist
+      // Add columns if they donot already exist
       tableColumns.splice(1, 0, {
         label: assignedToColumnLabel,
         key: 'assigned_to',
+      });
+      tableColumns.splice(tableColumns.length - 1, 0, {
+        label: 'Last Reminder Date',
+        key: 'last_reminder_date',
+      });
+      tableColumns.splice(tableColumns.length - 2, 0, {
+        label: 'Assignment Date',
+        key: 'assignment_date',
       });
     } else if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
       // Update `assigned_to` column with the appropriate label
       tableColumns[1].label = assignedToColumnLabel;
     } else if (value === 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
-      // Remove `assigned_to` column if it already exists
+      // Remove columns if they already exist
       tableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
+      tableColumns.splice(getColumnIndexForKey('last_reminder_date'), 1);
+      tableColumns.splice(getColumnIndexForKey('assignment_date'), 1);
     }
 
     // `assignments_remaining` column
@@ -532,6 +542,8 @@ class CouponDetails extends React.Component {
       ) : code.assigned_to,
       redemptions: `${code.redemptions.used} of ${code.redemptions.total}`,
       assignments_remaining: `${code.redemptions.total - code.redemptions.used - code.redemptions.num_assignments}`,
+      assignment_date: `${code.assignment_date}`,
+      last_reminder_date: `${code.last_reminder_date}`,
       actions: this.getActionButton(code),
       select: (
         <CheckBox

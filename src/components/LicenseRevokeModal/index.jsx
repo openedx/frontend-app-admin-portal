@@ -5,6 +5,7 @@ import { Button, Icon, Modal } from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
 
+import NewRelicService from '../../data/services/NewRelicService';
 
 class LicenseRevokeModal extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class LicenseRevokeModal extends React.Component {
 
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
+
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
@@ -47,18 +49,21 @@ class LicenseRevokeModal extends React.Component {
     const {
       user,
       sendLicenseRevoke,
+      fetchSubscriptionDetails,
+      fetchSubscriptionUsers,
+      searchQuery,
     } = this.props;
-
-    const options = {};
-    options.assignments = [{
-      uuid: user.uuid,
-      email: user.emailAddress,
-      licenseStatus: user.licenseStatus,
-    }];
+    const options = { userId: user.userId };
 
     return sendLicenseRevoke(options)
-      .then((response) => {
-        this.props.onSuccess(response);
+      .then(async (response) => {
+        try {
+          await fetchSubscriptionDetails();
+          await fetchSubscriptionUsers({ searchQuery });
+          this.props.onSuccess(response);
+        } catch (error) {
+          NewRelicService.logAPIErrorResponse(error);
+        }
       })
       .catch((error) => {
         throw new SubmissionError({
@@ -90,7 +95,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderErrorMessage() {
-    const modeErrors = {
+    const modalErrors = {
       revoke: 'Unable to revoke license',
     };
     const { error } = this.props;
@@ -103,7 +108,7 @@ class LicenseRevokeModal extends React.Component {
         <StatusAlert
           alertType="danger"
           iconClassName="fa fa-times-circle"
-          title={modeErrors.revoke}
+          title={modalErrors.revoke}
           message={error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
@@ -117,14 +122,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderTitle() {
-    return (
-      <React.Fragment>
-        <span>
-          <i className="fa fa-exclamation-circle" aria-hidden="true" />
-          <small> Are you sure you want to revoke access?</small>
-        </span>
-      </React.Fragment>
-    );
+    return <small>Are you sure you want to revoke access?</small>;
   }
 
   render() {
@@ -164,6 +162,7 @@ class LicenseRevokeModal extends React.Component {
 
 LicenseRevokeModal.defaultProps = {
   error: null,
+  searchQuery: null,
 };
 
 LicenseRevokeModal.propTypes = {
@@ -179,10 +178,13 @@ LicenseRevokeModal.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   sendLicenseRevoke: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     emailAddress: PropTypes.string.isRequired,
     licenseStatus: PropTypes.string.isRequired,
   }).isRequired,
+  fetchSubscriptionDetails: PropTypes.func.isRequired,
+  fetchSubscriptionUsers: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string,
 };
 
 export default reduxForm({

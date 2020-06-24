@@ -161,7 +161,7 @@ class EnterpriseApp extends React.Component {
                     <Route
                       key="subscription-management"
                       exact
-                      path={`${baseUrl}/admin/subscription`}
+                      path={`${baseUrl}/admin/subscriptions`}
                       render={routeProps =>
                         <SubscriptionManagementPage {...routeProps} />
                       }

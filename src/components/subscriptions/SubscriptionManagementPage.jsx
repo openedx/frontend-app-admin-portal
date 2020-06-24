@@ -8,14 +8,13 @@ import Hero from '../Hero';
 import SearchBar from '../SearchBar';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
+import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
+import AddUsersButton from './AddUsersButton';
 import TabContentTable from './TabContentTable';
-import RemindUserButton from './RemindUserButton';
 import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
-import { TAB_PENDING_USERS } from './constants';
-import AddUsersButton from './AddUsersButton';
 
 const PAGE_TITLE = 'Subscription Management';
 export const StatusContext = createContext();
@@ -25,7 +24,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
     visible: false, alertType: '', message: '',
   });
 
-  const setSuccessStatus = (visible, message) => {
+  const setSuccessStatus = ({ visible, message = '' }) => {
     setStatus({
       visible,
       alertType: 'success',
@@ -34,15 +33,16 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
   };
 
   const renderStatusMessage = () => (
-    status && status.visible &&
+    status && status.visible && (
       <StatusAlert
         alertType={status.alertType}
         iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
         title={status.title}
         message={status.message}
-        onClose={() => setSuccessStatus(false, '')}
+        onClose={() => setSuccessStatus({ visible: false })}
         dismissible
       />
+    )
   );
 
   return (
@@ -68,12 +68,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({
-                    details,
-                    fetchSubscriptionUsers,
-                    overview,
-                    activeTab,
-                  }) => (
+                  {({ details, fetchSubscriptionUsers }) => (
                     <React.Fragment>
                       <p className="lead">
                         {details.licenses.allocated}
@@ -81,30 +76,17 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                         {details.licenses.available} licenses allocated
                       </p>
                       <div className="my-3 row">
-                        <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+                        <div className="col-12 col-lg-5 mb-3 mb-lg-0">
                           <SearchBar
                             placeholder="Search by email..."
                               // eslint-disable-next-line no-console
-                            onSearch={query => fetchSubscriptionUsers({ searchQuery: query })}
+                            onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
                               // eslint-disable-next-line no-console
                             onClear={() => fetchSubscriptionUsers()}
                           />
                         </div>
-                        <div className="col-12 col-lg-6">
-                          {activeTab === TAB_PENDING_USERS ?
-                            <RemindUserButton
-                              pendingUsersCount={overview.assigned}
-                              isBulkRemind
-                              onSuccess={() => setSuccessStatus(true, 'Successfully sent reminder(s)')}
-                            /> :
-                            <AddUsersButton
-                              onSuccess={() => setStatus({
-                                visible: true,
-                                alertType: 'success',
-                                message: 'Successfully assigned license(s)',
-                              })}
-                            />
-                          }
+                        <div className="col-12 col-lg-7">
+                          <AddUsersButton />
                         </div>
                       </div>
                     </React.Fragment>
@@ -117,7 +99,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                 </div>
                 <div className="col-12 col-lg-9">
                   {renderStatusMessage()}
-                  <StatusContext.Provider value={setStatus}>
+                  <StatusContext.Provider value={{ setStatus, setSuccessStatus }}>
                     <TabContentTable />
                   </StatusContext.Provider>
                 </div>
