@@ -1,52 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SupportPage /> renders correctly 1`] = `
-Array [
+<main
+  role="main"
+>
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="container-fluid mt-3"
   >
-    <div
-      className="container-fluid"
+    <h1
+      className={null}
     >
-      <div
-        className="row"
+      Support
+    </h1>
+    <p>
+      For assistance, please contact edX Enterprise Support at
+       
+      <a
+        href="mailto:customersuccess@edx.org"
+        onClick={null}
+        target="_self"
       >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1
-            className={null}
-          >
-            Contact Support
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right mb-2 mb-md-1"
-        >
-          <img
-            alt="edX for Business"
-            src="test-file-stub"
-          />
-        </div>
-      </div>
-    </div>
-  </div>,
-  <div
-    className="container-fluid"
-  >
-    <div
-      className="row my-3"
-    >
-      <div
-        className="col"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center support"
-        >
-          Loading...
-        </div>
-      </div>
-    </div>
-  </div>,
-]
+        customersuccess@edx.org
+      </a>
+      .
+    </p>
+  </div>
+</main>
 `;

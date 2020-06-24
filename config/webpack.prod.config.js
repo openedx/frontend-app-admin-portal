@@ -167,7 +167,6 @@ module.exports = Merge.smart(commonConfig, {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,
         SUBSCRIPTION_MANAGEMENT: false,
-        SUPPORT: false,
       },
     }),
     new HtmlWebpackNewRelicPlugin({
