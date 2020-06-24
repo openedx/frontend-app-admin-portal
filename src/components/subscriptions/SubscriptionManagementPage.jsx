@@ -1,4 +1,6 @@
 import React, { useState, createContext } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
@@ -16,14 +18,9 @@ import { TAB_PENDING_USERS } from './constants';
 import AddUsersButton from './AddUsersButton';
 
 const PAGE_TITLE = 'Subscription Management';
-
-// get current url and remove the 'subscription'
-const CURRENT_URL = window.location.pathname;
-const URL_BASE = CURRENT_URL.split('/').slice(0, -1).join('/');
-
 export const StatusContext = createContext();
 
-export default function SubscriptionManagementPage() {
+function SubscriptionManagementPage({ enterpriseSlug }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -59,7 +56,7 @@ export default function SubscriptionManagementPage() {
               <SubscriptionDetails />
             </div>
             <div className="col-12 col-lg-4 text-md-right">
-              <Link to={`${URL_BASE}/support`} className="btn btn-outline-primary">
+              <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
                 Contact Customer Support
               </Link>
             </div>
@@ -132,3 +129,13 @@ export default function SubscriptionManagementPage() {
     </SubscriptionData>
   );
 }
+
+SubscriptionManagementPage.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(SubscriptionManagementPage);
