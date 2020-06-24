@@ -130,7 +130,7 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
           >
             <a
               className="nav-link"
-              href="/test-enterprise/support"
+              href="/test-enterprise/admin/support"
               onClick={[Function]}
             >
               Support

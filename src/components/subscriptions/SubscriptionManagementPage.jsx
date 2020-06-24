@@ -1,6 +1,8 @@
 import React, { useState, createContext } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { MailtoLink } from '@edx/paragon';
+import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
@@ -12,14 +14,11 @@ import TabContentTable from './TabContentTable';
 import StatusAlert from '../StatusAlert';
 
 import './styles/SubscriptionManagementPage.scss';
-import { configuration } from '../../config';
 
 const PAGE_TITLE = 'Subscription Management';
-const { CUSTOMER_SUPPORT_EMAIL } = configuration;
-
 export const StatusContext = createContext();
 
-export default function SubscriptionManagementPage() {
+function SubscriptionManagementPage({ enterpriseSlug }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -56,9 +55,9 @@ export default function SubscriptionManagementPage() {
               <SubscriptionDetails />
             </div>
             <div className="col-12 col-lg-4 text-md-right">
-              <MailtoLink to={CUSTOMER_SUPPORT_EMAIL} className="btn btn-outline-primary">
+              <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
                 Contact Customer Support
-              </MailtoLink>
+              </Link>
             </div>
           </div>
           <div className="row mb-3">
@@ -111,3 +110,13 @@ export default function SubscriptionManagementPage() {
     </SubscriptionData>
   );
 }
+
+SubscriptionManagementPage.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(SubscriptionManagementPage);

@@ -86,26 +86,6 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -665,26 +645,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -1242,26 +1202,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         <div
           className="mt-3 mb-5"
         />
-      </div>
-    </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
       </div>
     </div>
   </div>
@@ -1826,26 +1766,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         <div
           className="mt-3 mb-5"
         />
-      </div>
-    </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
       </div>
     </div>
   </div>
@@ -2466,26 +2386,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -3104,26 +3004,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -3686,26 +3566,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         <div
           className="mt-3 mb-5"
         />
-      </div>
-    </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
       </div>
     </div>
   </div>
@@ -4272,26 +4132,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -4854,26 +4694,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -5431,26 +5251,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         <div
           className="mt-3 mb-5"
         />
-      </div>
-    </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
       </div>
     </div>
   </div>
@@ -6017,26 +5817,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -6155,26 +5935,6 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         />
       </div>
     </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
-      </div>
-    </div>
   </div>
 </main>
 `;
@@ -6263,26 +6023,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <div
           className="mt-3 mb-5"
         />
-      </div>
-    </div>
-    <div
-      className="row"
-    >
-      <div
-        className="col"
-      >
-        <p>
-          For more information, contact edX Enterprise Support at
-           
-          <a
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-          .
-        </p>
       </div>
     </div>
   </div>
