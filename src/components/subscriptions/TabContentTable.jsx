@@ -4,6 +4,8 @@ import { Pagination, StatusAlert, Table } from '@edx/paragon';
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
 import { SubscriptionContext } from './SubscriptionData';
+import RemindUsersButton from './RemindUsersButton';
+import { StatusContext } from './SubscriptionManagementPage';
 
 import {
   TAB_ALL_USERS,
@@ -30,19 +32,16 @@ const columns = [
 
 export default function TabContentTable() {
   const {
-    activeTab, users, searchQuery, fetchSubscriptionUsers,
+    activeTab,
+    users,
+    searchQuery,
+    fetchSubscriptionUsers,
+    overview,
   } = useContext(SubscriptionContext);
+  const { setSuccessStatus } = useContext(StatusContext);
 
   useEffect(() => {
-    const licenseStatusByTab = {
-      [TAB_LICENSED_USERS]: 'active',
-      [TAB_PENDING_USERS]: 'assigned',
-      [TAB_DEACTIVATED_USERS]: 'deactivated',
-    };
-    fetchSubscriptionUsers({
-      statusFilter: licenseStatusByTab[activeTab],
-      searchQuery,
-    });
+    fetchSubscriptionUsers({ searchQuery });
   }, [activeTab]);
 
   const activeTabData = useMemo(
@@ -90,7 +89,19 @@ export default function TabContentTable() {
 
   return (
     <React.Fragment>
-      <h3 className="h4 mb-3">{activeTabData.title}</h3>
+      <div className="d-flex align-items-center justify-content-between">
+        <h3 className="h4 mb-3">{activeTabData.title}</h3>
+        {activeTab === TAB_PENDING_USERS && tableData.length > 0 && (
+          <RemindUsersButton
+            pendingUsersCount={overview.assigned}
+            isBulkRemind
+            onSuccess={() => setSuccessStatus({
+              visible: true,
+              message: 'Successfully sent reminder(s)',
+            })}
+          />
+        )}
+      </div>
       {tableData.length > 0 ? (
         <React.Fragment>
           <div className="table-responsive">
@@ -112,7 +123,7 @@ export default function TabContentTable() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <hr />
+          <hr className="mt-0" />
           <StatusAlert
             alertType="warning"
             dialog={activeTabData.noResultsLabel}

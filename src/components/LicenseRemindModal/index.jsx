@@ -94,9 +94,10 @@ class LicenseRemindModal extends React.Component {
       options.email = user.emailAddress;
     }
 
-    return sendLicenseReminder(options).then((response) => {
-      this.props.onSuccess(response);
-    })
+    return sendLicenseReminder(options)
+      .then((response) => {
+        this.props.onSuccess(response);
+      })
       .catch((error) => {
         throw new SubmissionError({
           _error: [error.message],
@@ -181,9 +182,11 @@ class LicenseRemindModal extends React.Component {
     return (
       <React.Fragment>
         <span className="d-block">{title}</span>
-        <small>
-          {subtitle}
-        </small>
+        {subtitle && (
+          <small>
+            {subtitle}
+          </small>
+        )}
       </React.Fragment>
     );
   }
@@ -225,6 +228,7 @@ LicenseRemindModal.defaultProps = {
   isBulkRemind: false,
   user: {},
   pendingUsersCount: 0,
+  subtitle: null,
 };
 LicenseRemindModal.propTypes = {
   // props From redux-form
@@ -236,10 +240,10 @@ LicenseRemindModal.propTypes = {
   initialize: PropTypes.func.isRequired,
   // custom props
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendLicenseReminder: PropTypes.func.isRequired,
+  subtitle: PropTypes.string,
   isBulkRemind: PropTypes.bool,
   pendingUsersCount: PropTypes.number,
   user: PropTypes.shape({
