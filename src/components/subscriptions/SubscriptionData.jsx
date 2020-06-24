@@ -17,6 +17,8 @@ import {
   DEACTIVATED,
 } from './constants';
 
+import NewRelicService from '../../data/services/NewRelicService';
+
 export const SubscriptionContext = createContext();
 export const SubscriptionConsumer = SubscriptionContext.Consumer;
 
@@ -40,7 +42,7 @@ export default function SubscriptionData({ children }) {
           setUsers(responses[2]);
         })
         // eslint-disable-next-line no-console
-        .catch(error => console.log(error));
+        .catch(error => NewRelicService.logAPIErrorResponse(error));
     },
     [],
   );
@@ -59,7 +61,7 @@ export default function SubscriptionData({ children }) {
             setDetails(response);
           })
           // eslint-disable-next-line no-console
-          .catch(error => console.log(error))
+          .catch(error => NewRelicService.logAPIErrorResponse(error))
       ),
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
@@ -83,7 +85,7 @@ export default function SubscriptionData({ children }) {
               setUsers(responses[1]);
             })
             // eslint-disable-next-line no-console
-            .catch(error => console.log(error))
+            .catch(error => NewRelicService.logAPIErrorResponse(error))
         );
       },
     }),

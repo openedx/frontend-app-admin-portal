@@ -6,6 +6,7 @@ import Hero from '../Hero';
 import SearchBar from '../SearchBar';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
+import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
 import StatusAlert from '../StatusAlert';
@@ -85,7 +86,7 @@ export default function SubscriptionManagementPage() {
                           />
                         </div>
                         <div className="col-12 col-lg-7">
-                          <AddUsersDropdown />
+                          <AddUsersButton />
                         </div>
                       </div>
                     </React.Fragment>

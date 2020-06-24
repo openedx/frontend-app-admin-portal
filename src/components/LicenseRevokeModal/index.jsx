@@ -5,6 +5,7 @@ import { Button, Icon, Modal } from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
 
+import NewRelicService from '../../data/services/NewRelicService';
 
 class LicenseRevokeModal extends React.Component {
   constructor(props) {
@@ -61,8 +62,7 @@ class LicenseRevokeModal extends React.Component {
           await fetchSubscriptionUsers({ searchQuery });
           this.props.onSuccess(response);
         } catch (error) {
-          // TODO: log error in NewRelic
-          console.log(error); // eslint-disable-line no-console
+          NewRelicService.logAPIErrorResponse(error);
         }
       })
       .catch((error) => {

@@ -120,8 +120,6 @@ export function fetchSubscriptionUsers(options = {}) {
   response.count = response.results.length;
   response.results = response.results.slice(0, PAGE_SIZE);
 
-  console.log('fetchSubscriptionUsers...', options, response);
-
   return Promise.resolve(response);
   // return Promise.reject(new Error('Could not connect to the server'));
 }
