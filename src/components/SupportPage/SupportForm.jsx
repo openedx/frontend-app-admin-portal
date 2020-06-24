@@ -5,6 +5,7 @@ import { Button, Icon } from '@edx/paragon';
 
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
+import TextAreaAutoSize from '../TextAreaAutoSize';
 
 import { isRequired, isValidEmail, maxLength512 } from '../../utils';
 
@@ -89,7 +90,7 @@ class SupportForm extends React.Component {
               <Field
                 name="notes"
                 type="text"
-                component={RenderField}
+                component={TextAreaAutoSize}
                 label="Notes"
                 validate={[maxLength512]}
               />
@@ -128,7 +129,7 @@ SupportForm.propTypes = {
   match: PropTypes.shape({
     url: PropTypes.string.isRequired,
   }).isRequired,
-  initialValues: PropTypes.shape({ // eslint-disable-line react/no-unused-prop-types
+  initialValues: PropTypes.shape({
     emailAddress: PropTypes.string.isRequired,
     enterpriseName: PropTypes.string.isRequired,
   }).isRequired,
