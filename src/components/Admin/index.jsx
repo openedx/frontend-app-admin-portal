@@ -2,7 +2,7 @@ import qs from 'query-string';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { MailtoLink, Icon } from '@edx/paragon';
+import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
 import H2 from '../../components/H2';
@@ -22,7 +22,6 @@ import SearchBar from '../SearchBar';
 import AdminCards from '../../containers/AdminCards';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-
 import { formatTimestamp, updateUrl } from '../../utils';
 
 import './Admin.scss';
@@ -381,15 +380,6 @@ class Admin extends React.Component {
                     <div className="mt-3 mb-5">
                       {enterpriseId && tableMetadata.component}
                     </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <p>
-                      For more information, contact edX Enterprise Support at
-                      {' '}
-                      <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
-                    </p>
                   </div>
                 </div>
               </div>

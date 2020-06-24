@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { MailtoLink } from '@edx/paragon';
 
 import SupportForm from './SupportForm';
 import Hero from '../Hero';
-import LoadingMessage from '../LoadingMessage';
+import { features } from '../../config/index';
 
 import './SupportPage.scss';
 
@@ -30,14 +31,19 @@ class SupportPage extends React.Component {
         <div className="container-fluid">
           <div className="row my-3">
             <div className="col">
-              {this.hasEmailAndEnterpriseName() ? (
+              {features.SUPPORT && this.hasEmailAndEnterpriseName() ? (
                 <SupportForm
                   initialValues={{
                     emailAddress, enterpriseName, notes: '',
                   }}
                   match={match}
                 />
-              ) : <LoadingMessage className="support" />}
+              ) :
+                <p>
+                  For assistance, please contact edX Enterprise Support at
+                  {' '}
+                  <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+                </p>}
             </div>
           </div>
         </div>
