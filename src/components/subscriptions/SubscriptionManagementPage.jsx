@@ -10,7 +10,6 @@ import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
-import AddUsersButton from './AddUsersButton';
 import TabContentTable from './TabContentTable';
 import StatusAlert from '../StatusAlert';
 
