@@ -14,7 +14,12 @@ export default function LicenseStatus({ user }) {
         case 'assigned':
           return {
             iconClassName: 'fa-hourglass-half text-muted',
-            text: 'Pending',
+            text: (
+              <React.Fragment>
+                <span>Pending</span>
+                <span className="d-block text-muted">Since {user.pendingSince.format('MMMM DD, YYYY')}</span>
+              </React.Fragment>
+            ),
           };
         case 'deactivated':
           return {
@@ -43,5 +48,6 @@ export default function LicenseStatus({ user }) {
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
     licenseStatus: PropTypes.string.isRequired,
+    pendingSince: PropTypes.object,
   }).isRequired,
 };
