@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import moment from 'moment';
 
 import { SubscriptionContext } from './SubscriptionData';
+import { formatTimestamp } from '../../utils';
 
 export default function SubscriptionDetails() {
   const { details } = useContext(SubscriptionContext);
@@ -15,7 +15,7 @@ export default function SubscriptionDetails() {
             <small>Purchase Date</small>
           </div>
           <div className="lead">
-            {moment(details.purchaseDate).format('MMMM D, YYYY')}
+            {formatTimestamp({ timestamp: details.purchaseDate })}
           </div>
         </div>
         <div className="mr-5">
@@ -23,7 +23,7 @@ export default function SubscriptionDetails() {
             <small>Start Date</small>
           </div>
           <div className="lead">
-            {moment(details.startDate).format('MMMM D, YYYY')}
+            {formatTimestamp({ timestamp: details.startDate })}
           </div>
         </div>
         <div>
@@ -31,7 +31,7 @@ export default function SubscriptionDetails() {
             <small>End Date</small>
           </div>
           <div className="lead">
-            {moment(details.endDate).format('MMMM D, YYYY')}
+            {formatTimestamp({ timestamp: details.expirationDate })}
           </div>
         </div>
       </div>

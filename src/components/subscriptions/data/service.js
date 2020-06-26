@@ -1,36 +1,26 @@
 import faker from 'faker';
 import moment from 'moment';
+import qs from 'query-string';
 
-import { PAGE_SIZE, ACTIVE, ASSIGNED, DEACTIVATED } from '../constants';
+import { ACTIVATED, ASSIGNED, DEACTIVATED } from '../constants';
+
+import apiClient from '../../../data/apiClient';
+import { configuration } from '../../../config';
 
 export function createSampleUser(licenseStatus) {
   return {
     userId: faker.random.uuid(),
     emailAddress: faker.internet.email(),
-    pendingSince: moment(faker.date.past(10)),
+    lastRemindDate: moment(faker.date.past(10)),
     licenseStatus,
   };
 }
 
-let users = [
-  [...Array(6)].map(() => createSampleUser(ACTIVE)),
+const users = [
+  [...Array(6)].map(() => createSampleUser(ACTIVATED)),
   [...Array(3)].map(() => createSampleUser(ASSIGNED)),
   [...Array(1)].map(() => createSampleUser(DEACTIVATED)),
 ].flat();
-
-const getUsersByStatus = ({ status, list }) => list.filter(user => user.licenseStatus === status);
-
-function getAllocatedLicensesCount() {
-  const licensedUsers = getUsersByStatus({ status: ACTIVE, list: users });
-  const pendingUsers = getUsersByStatus({ status: ASSIGNED, list: users });
-  return licensedUsers.length + pendingUsers.length;
-}
-
-function createNewUser({ userId, emailAddress, licenseStatus = ASSIGNED }) {
-  const user = { userId, emailAddress, licenseStatus };
-  users.append(user);
-  return user;
-}
 
 function updateUserLicenseStatus({ userId, status }) {
   const index = users.findIndex(item => item.userId === userId);
@@ -47,101 +37,22 @@ function updateUserLicenseStatus({ userId, status }) {
   return null;
 }
 
-function updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince }) {
+function updateUserRemindTimeStamp({ userId, bulkRemind, lastRemindDate }) {
   if (!bulkRemind) {
     const index = users.findIndex(item => item.userId === userId);
     if (index !== -1) {
       users[index] = {
         ...users[index],
-        pendingSince,
+        lastRemindDate,
       };
       return users;
     }
   } else {
-    users = users.map(user =>
-      (user.licenseStatus === ASSIGNED ? { ...user, pendingSince } : user));
-    return users;
+    return users.map(user =>
+      (user.licenseStatus === ASSIGNED ? { ...user, lastRemindDate } : user));
   }
 
   return null;
-}
-
-const purchaseDate = moment(faker.date.past());
-const startDate = moment(purchaseDate).add(15, 'days');
-const endDate = moment(startDate).add(6, 'months');
-const numLicensedPurchased = faker.random.number({ min: 300, max: 1000 });
-
-const getSubscriptionDetails = () => ({
-  uuid: faker.random.uuid(),
-  purchaseDate: purchaseDate.toISOString(),
-  startDate: startDate.toISOString(),
-  endDate: endDate.toISOString(),
-  licenses: {
-    allocated: getAllocatedLicensesCount(),
-    available: numLicensedPurchased,
-  },
-});
-
-/**
- * This function mocks out the response from a non-existant API endpoint. Once the endpoint
- * exists, the contents of this function will use the `apiClient` to make an actual API
- * call to get this data.
- */
-export function fetchSubscriptionDetails() {
-  const details = getSubscriptionDetails();
-  return Promise.resolve(details);
-  // return Promise.reject(new Error('Could not connect to the server'));
-}
-
-/**
- * This function mocks out the response from a non-existant API endpoint. Once the endpoint
- * exists, the contents of this function will use the `apiClient` to make an actual API
- * call to get this data.
- */
-export function fetchSubscriptionUsersOverview(options = {}) {
-  const { searchQuery } = options;
-  let userList = users;
-
-  if (searchQuery) {
-    userList = userList.filter(user => user.emailAddress === searchQuery);
-  }
-
-  const response = {
-    all: userList.length,
-    active: getUsersByStatus({ status: 'active', list: userList }).length,
-    assigned: getUsersByStatus({ status: 'assigned', list: userList }).length,
-    deactivated: getUsersByStatus({ status: 'deactivated', list: userList }).length,
-  };
-
-  return Promise.resolve(response);
-  // return Promise.reject(new Error('Could not connect to the server'));
-}
-
-/**
- * This function mocks out the response from a non-existant API endpoint. Once the endpoint
- * exists, the contents of this function will use the `apiClient` to make an actual API
- * call to get this data.
- */
-export function fetchSubscriptionUsers(options = {}) {
-  const { searchQuery, statusFilter } = options;
-
-  const response = {
-    count: users.length,
-    results: users,
-  };
-
-  if (searchQuery) {
-    response.results = response.results.filter(user => user.emailAddress === searchQuery);
-  }
-  if (statusFilter) {
-    response.results = response.results.filter(user => user.licenseStatus === statusFilter);
-  }
-
-  response.count = response.results.length;
-  response.results = response.results.slice(0, PAGE_SIZE);
-
-  return Promise.resolve(response);
-  // return Promise.reject(new Error('Could not connect to the server'));
 }
 
 /**
@@ -151,20 +62,10 @@ export function fetchSubscriptionUsers(options = {}) {
  */
 export function sendLicenseReminder(options = {}) {
   const { userId, bulkRemind } = options;
-  const pendingSince = moment();
-  const response = updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince });
+  const lastRemindDate = moment();
+  const response = updateUserRemindTimeStamp({ userId, bulkRemind, lastRemindDate });
 
   return Promise.resolve(response);
-  // return Promise.reject(new Error('Could not connect to the server'));
-}
-
-/**
- * This function mocks out the response from a non-existant API endpoint. Once the endpoint
- * exists, the contents of this function will use the `apiClient` to make an actual API
- * call to get this data.
- */
-export function addLicensesForUsers(payload) {
-  return Promise.resolve(payload);
   // return Promise.reject(new Error('Could not connect to the server'));
 }
 
@@ -183,15 +84,40 @@ export function sendLicenseRevoke(options = {}) {
   // return Promise.reject(new Error('Could not connect to the server'));
 }
 
-/**
- * This function mocks out the response from a non-existant API endpoint. Once the endpoint
- * exists, the contents of this function will use the `apiClient` to make an actual API
- * call to get this data.
- */
-export function addUsers(options = {}) {
-  const { users: newUsers } = options;
-  const created = newUsers.map(user => createNewUser(user));
+class LicenseManagerApiService {
+  static licenseManagerBaseUrl = `${configuration.LICENSE_MANAGER_BASE_URL}/api/v1/`;
 
-  return Promise.resolve(created);
-  // return Promise.reject(new Error('Could not connect to the server'));
+  static licenseAssign(options, subscriptionUUID) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/assign/`;
+    return apiClient.post(url, options, 'json');
+  }
+
+  static fetchSubscriptions(options) {
+    const queryParams = {
+      ...options,
+    };
+
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/?${qs.stringify(queryParams)}`;
+    return apiClient.get(url);
+  }
+
+  static fetchSubscriptionUsers(subscriptionUUID, options) {
+    const queryParams = {
+      ...options,
+    };
+
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;
+    return apiClient.get(url);
+  }
+
+  static fetchSubscriptionUsersOverview(subscriptionUUID, options) {
+    const queryParams = {
+      ...options,
+    };
+
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/overview/?${qs.stringify(queryParams)}`;
+    return apiClient.get(url);
+  }
 }
+
+export default LicenseManagerApiService;
