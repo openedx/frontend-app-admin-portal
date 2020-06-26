@@ -167,16 +167,14 @@ class EnterpriseApp extends React.Component {
                       }
                     />
                   }
-                  {features.SUPPORT &&
-                    <Route
-                      key="support"
-                      exact
-                      path={`${baseUrl}/admin/support`}
-                      render={routeProps =>
-                        <SupportPage {...routeProps} />
-                      }
-                    />
-                  }
+                  <Route
+                    key="support"
+                    exact
+                    path={`${baseUrl}/admin/support`}
+                    render={routeProps =>
+                      <SupportPage {...routeProps} />
+                    }
+                  />
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>
