@@ -72,7 +72,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                       <p className="lead">
                         {details.licenses.allocated}
                         {' of '}
-                        {details.licenses.available} licenses allocated
+                        {details.licenses.total} licenses allocated
                       </p>
                       <div className="my-3 row">
                         <div className="col-12 col-lg-5 mb-3 mb-lg-0">

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
     () => {
-      switch (user.licenseStatus) {
+      switch (user.status) {
         case 'active':
           return {
             iconClassName: 'fa-check-circle text-success',
@@ -17,7 +17,9 @@ export default function LicenseStatus({ user }) {
             text: (
               <React.Fragment>
                 <span>Pending</span>
-                <span className="d-block text-muted">Since {user.pendingSince.format('MMMM DD, YYYY')}</span>
+                <span className="d-block text-muted">
+                  Since {user.pendingSince?.format('MMMM DD, YYYY')}
+                </span>
               </React.Fragment>
             ),
           };
@@ -47,7 +49,7 @@ export default function LicenseStatus({ user }) {
 
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
-    licenseStatus: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     pendingSince: PropTypes.object,
   }).isRequired,
 };

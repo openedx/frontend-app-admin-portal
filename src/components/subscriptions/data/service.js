@@ -1,7 +1,7 @@
 import faker from 'faker';
 import moment from 'moment';
 
-import { PAGE_SIZE, ACTIVE, ASSIGNED, DEACTIVATED } from '../constants';
+import { PAGE_SIZE, ACTIVATED, ASSIGNED, DEACTIVATED } from '../constants';
 
 export function createSampleUser(licenseStatus) {
   return {
@@ -12,8 +12,8 @@ export function createSampleUser(licenseStatus) {
   };
 }
 
-let users = [
-  [...Array(6)].map(() => createSampleUser(ACTIVE)),
+const users = [
+  [...Array(6)].map(() => createSampleUser(ACTIVATED)),
   [...Array(3)].map(() => createSampleUser(ASSIGNED)),
   [...Array(1)].map(() => createSampleUser(DEACTIVATED)),
 ].flat();
@@ -21,7 +21,7 @@ let users = [
 const getUsersByStatus = ({ status, list }) => list.filter(user => user.licenseStatus === status);
 
 function getAllocatedLicensesCount() {
-  const licensedUsers = getUsersByStatus({ status: ACTIVE, list: users });
+  const licensedUsers = getUsersByStatus({ status: ACTIVATED, list: users });
   const pendingUsers = getUsersByStatus({ status: ASSIGNED, list: users });
   return licensedUsers.length + pendingUsers.length;
 }
@@ -58,9 +58,8 @@ function updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince }) {
       return users;
     }
   } else {
-    users = users.map(user =>
+    return users.map(user =>
       (user.licenseStatus === ASSIGNED ? { ...user, pendingSince } : user));
-    return users;
   }
 
   return null;
