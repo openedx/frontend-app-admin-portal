@@ -1,11 +1,12 @@
 import React, { useContext, useMemo, useEffect } from 'react';
-import { Pagination, StatusAlert, Table } from '@edx/paragon';
+import { Pagination, Table } from '@edx/paragon';
 
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
 import { SubscriptionContext } from './SubscriptionData';
 import RemindUsersButton from './RemindUsersButton';
 import { StatusContext } from './SubscriptionManagementPage';
+import StatusAlert from '../StatusAlert';
 
 import {
   TAB_ALL_USERS,
@@ -13,7 +14,9 @@ import {
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
   PAGE_SIZE,
+  SUBSCRIPTION_USERS,
 } from './constants';
+import LoadingMessage from '../LoadingMessage';
 
 const columns = [
   {
@@ -38,8 +41,13 @@ export default function TabContentTable() {
     fetchSubscriptionUsers,
     fetchSubscriptionDetails,
     overview,
+    requestStatus,
+    errors,
   } = useContext(SubscriptionContext);
   const { setSuccessStatus } = useContext(StatusContext);
+  const { isLoading } = requestStatus[SUBSCRIPTION_USERS] || { isLoading: false };
+  const error = errors[SUBSCRIPTION_USERS];
+
 
   useEffect(() => {
     fetchSubscriptionUsers({ searchQuery });
@@ -80,8 +88,8 @@ export default function TabContentTable() {
   );
 
   const tableData = useMemo(
-    () => users.results.map(user => ({
-      emailAddress: user.emailAddress,
+    () => users?.results?.map(user => ({
+      emailAddress: user.user_email,
       status: <LicenseStatus user={user} />,
       actions: <LicenseActions user={user} />,
     })),
@@ -92,7 +100,7 @@ export default function TabContentTable() {
     <React.Fragment>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="h4 mb-3">{activeTabData.title}</h3>
-        {activeTab === TAB_PENDING_USERS && tableData.length > 0 && (
+        {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
@@ -106,36 +114,50 @@ export default function TabContentTable() {
           />
         )}
       </div>
-      {tableData.length > 0 ? (
+      {isLoading && <LoadingMessage className="loading mt-3" />}
+      {
+        error && <StatusAlert
+          className="mt-3"
+          alertType="danger"
+          iconClassName="fa fa-times-circle"
+          title={`Unable to load data for ${error.key}`}
+          message={`Try refreshing your screen (${error.message})`}
+        />
+      }
+      { !isLoading && !error &&
         <React.Fragment>
-          <div className="table-responsive">
-            <Table
-              data={tableData}
-              columns={columns}
-              className="table-striped"
-            />
-          </div>
-          <div className="mt-3 d-flex justify-content-center">
-            <Pagination
-              // eslint-disable-next-line no-console
-              onPageSelect={page => console.log(page)}
-              pageCount={Math.ceil(users.count / PAGE_SIZE)}
-              currentPage={1}
-              paginationLabel={activeTabData.paginationLabel}
-            />
-          </div>
+          {tableData?.length > 0 ? (
+            <React.Fragment>
+              <div className="table-responsive">
+                <Table
+                  data={tableData}
+                  columns={columns}
+                  className="table-striped"
+                />
+              </div>
+              <div className="mt-3 d-flex justify-content-center">
+                <Pagination
+                  // eslint-disable-next-line no-console
+                  onPageSelect={page => console.log(page)}
+                  pageCount={Math.ceil(users.count / PAGE_SIZE)}
+                  currentPage={1}
+                  paginationLabel={activeTabData.paginationLabel}
+                />
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <hr className="mt-0" />
+              <StatusAlert
+                alertType="warning"
+                dialog={activeTabData.noResultsLabel}
+                dismissible={false}
+                open
+              />
+            </React.Fragment>
+          )}
         </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <hr className="mt-0" />
-          <StatusAlert
-            alertType="warning"
-            dialog={activeTabData.noResultsLabel}
-            dismissible={false}
-            open
-          />
-        </React.Fragment>
-      )}
+      }
     </React.Fragment>
   );
 }

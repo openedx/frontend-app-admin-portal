@@ -2,22 +2,30 @@ import React, { createContext, useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  fetchSubscriptionDetails,
-  fetchSubscriptionUsersOverview,
-  fetchSubscriptionUsers,
-} from './data/service';
-
-import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
-  ACTIVE,
+  ACTIVATED,
   ASSIGNED,
   DEACTIVATED,
+  SUBSCRIPTIONS,
+  SUBSCRIPTION_USERS,
+  SUBSCRIPTION_USERS_OVERVIEW,
 } from './constants';
 
-import NewRelicService from '../../data/services/NewRelicService';
+import {
+  useSubscriptions,
+  useSubscriptionUsersOverview,
+  useSubscriptionUsers,
+} from './hooks/licenseManagerHooks';
+
+import {
+  useErrors,
+  useRequestStatus,
+} from './hooks/commonHooks';
+
+import { networkResponseHandler } from './utils';
 
 export const SubscriptionContext = createContext();
 export const SubscriptionConsumer = SubscriptionContext.Consumer;
@@ -28,24 +36,91 @@ export default function SubscriptionData({ children }) {
   const [overview, setOverview] = useState();
   const [users, setUsers] = useState();
   const [searchQuery, setSearchQuery] = useState();
+  const [filter, setFilter] = useState();
 
+  const { errors, addError, removeError } = useErrors();
+  const { requestStatus, updateRequestStatus } = useRequestStatus();
+
+  const {
+    fetch: fetchSubscriptions, subscriptions, isLoading, error, refreshSubscriptions,
+  } = useSubscriptions();
+  const {
+    fetch: fetchSubscriptionUsersOverview,
+    subscriptionUsersOverview,
+    isLoading: subscriptionUsersOverviewIsLoading,
+    error: subscriptionUsersOverviewError,
+  } = useSubscriptionUsersOverview();
+  const {
+    fetch: fetchSubscriptionUsers,
+    subscriptionUsers,
+    isLoading: subscriptionUsersIsLoading,
+    error: subscriptionUsersError,
+  } = useSubscriptionUsers();
+
+  // Perform fetch operation on the data.
+  useEffect(() => fetchSubscriptions(), []);
   useEffect(
-    () => {
-      Promise.all([
-        fetchSubscriptionDetails(),
-        fetchSubscriptionUsersOverview(),
-        fetchSubscriptionUsers(),
-      ])
-        .then((responses) => {
-          setDetails(responses[0]);
-          setOverview(responses[1]);
-          setUsers(responses[2]);
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => NewRelicService.logAPIErrorResponse(error));
-    },
-    [],
+    () => details?.uuid && fetchSubscriptionUsersOverview(details.uuid),
+    [details],
   );
+  useEffect(
+    () => details?.uuid && fetchSubscriptionUsers(
+      details.uuid,
+      { status: filter, search: searchQuery },
+    ),
+    [details, searchQuery, filter],
+  );
+
+  useEffect(() => {
+    networkResponseHandler(
+      subscriptions,
+      isLoading,
+      error,
+      (subscriptionData) => {
+        // There should be only one active subscription for enterprise customer.
+        setDetails(subscriptionData.results[0]);
+        removeError(SUBSCRIPTIONS);
+      },
+      () => addError(SUBSCRIPTIONS, 'Error Occurred while loading the data.'),
+      (isInProgress, hasErrors) => updateRequestStatus(SUBSCRIPTIONS, isInProgress, hasErrors),
+    );
+  }, [subscriptions, isLoading, error]);
+
+  useEffect(() => {
+    networkResponseHandler(
+      subscriptionUsersOverview,
+      subscriptionUsersOverviewIsLoading,
+      subscriptionUsersOverviewError,
+      (subscriptionUsersOverviewData) => {
+        setOverview(subscriptionUsersOverviewData);
+        removeError(SUBSCRIPTION_USERS_OVERVIEW);
+      },
+      () => addError(SUBSCRIPTION_USERS_OVERVIEW, 'Error Occurred while loading the data.'),
+      (
+        isInProgress,
+        hasErrors,
+      ) => updateRequestStatus(SUBSCRIPTION_USERS_OVERVIEW, isInProgress, hasErrors),
+    );
+  }, [
+    subscriptionUsersOverview, subscriptionUsersOverviewIsLoading, subscriptionUsersOverviewError,
+  ]);
+
+  useEffect(() => {
+    networkResponseHandler(
+      subscriptionUsers,
+      subscriptionUsersIsLoading,
+      subscriptionUsersError,
+      (subscriptionUsersData) => {
+        setUsers(subscriptionUsersData);
+        removeError(SUBSCRIPTION_USERS);
+      },
+      () => addError(SUBSCRIPTION_USERS, 'Error Occurred while loading the data.'),
+      (
+        isInProgress,
+        hasErrors,
+      ) => updateRequestStatus(SUBSCRIPTION_USERS, isInProgress, hasErrors),
+    );
+  }, [subscriptionUsers, subscriptionUsersIsLoading, subscriptionUsersError]);
 
   const value = useMemo(
     () => ({
@@ -55,38 +130,18 @@ export default function SubscriptionData({ children }) {
       searchQuery,
       activeTab,
       setActiveTab,
-      fetchSubscriptionDetails: () => (
-        fetchSubscriptionDetails()
-          .then((response) => {
-            setDetails(response);
-          })
-          // eslint-disable-next-line no-console
-          .catch(error => NewRelicService.logAPIErrorResponse(error))
-      ),
+      requestStatus,
+      errors,
+      fetchSubscriptionDetails: refreshSubscriptions,
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
-          [TAB_LICENSED_USERS]: ACTIVE,
+          [TAB_LICENSED_USERS]: ACTIVATED,
           [TAB_PENDING_USERS]: ASSIGNED,
           [TAB_DEACTIVATED_USERS]: DEACTIVATED,
         };
 
         setSearchQuery(options.searchQuery);
-
-        return (
-          Promise.all([
-            fetchSubscriptionUsersOverview(options),
-            fetchSubscriptionUsers({
-              ...options,
-              statusFilter: licenseStatusByTab[activeTab],
-            }),
-          ])
-            .then((responses) => {
-              setOverview(responses[0]);
-              setUsers(responses[1]);
-            })
-            // eslint-disable-next-line no-console
-            .catch(error => NewRelicService.logAPIErrorResponse(error))
-        );
+        setFilter(licenseStatusByTab[activeTab]);
       },
     }),
     [details, overview, users, activeTab],

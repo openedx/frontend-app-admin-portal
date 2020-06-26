@@ -5,7 +5,7 @@ import classNames from 'classnames';
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
     () => {
-      switch (user.licenseStatus) {
+      switch (user.status) {
         case 'active':
           return {
             iconClassName: 'fa-check-circle text-success',
@@ -47,7 +47,6 @@ export default function LicenseStatus({ user }) {
 
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
-    licenseStatus: PropTypes.string.isRequired,
-    pendingSince: PropTypes.object,
+    status: PropTypes.string.isRequired,
   }).isRequired,
 };
