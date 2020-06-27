@@ -11,6 +11,7 @@ const SINGLE_USE = 'Single use';
 const MULTI_USE = 'Multi-use';
 const ONCE_PER_CUSTOMER = 'Once per customer';
 const MULTI_USE_PER_CUSTOMER = 'Multi-use-per-Customer';
+const CSV_HEADER_NAME = 'emails';
 
 export {
   // Redux action names
@@ -27,4 +28,7 @@ export {
   ONCE_PER_CUSTOMER,
   MULTI_USE,
   MULTI_USE_PER_CUSTOMER,
+
+  // column name in emails csv file
+  CSV_HEADER_NAME,
 };
