@@ -7,11 +7,12 @@ export function createSampleUser(licenseStatus) {
   return {
     userId: faker.random.uuid(),
     emailAddress: faker.internet.email(),
+    pendingSince: moment(faker.date.past(10)),
     licenseStatus,
   };
 }
 
-const users = [
+let users = [
   [...Array(6)].map(() => createSampleUser(ACTIVE)),
   [...Array(3)].map(() => createSampleUser(ASSIGNED)),
   [...Array(1)].map(() => createSampleUser(DEACTIVATED)),
@@ -41,6 +42,25 @@ function updateUserLicenseStatus({ userId, status }) {
     };
 
     return users[index];
+  }
+
+  return null;
+}
+
+function updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince }) {
+  if (!bulkRemind) {
+    const index = users.findIndex(item => item.userId === userId);
+    if (index !== -1) {
+      users[index] = {
+        ...users[index],
+        pendingSince,
+      };
+      return users;
+    }
+  } else {
+    users = users.map(user =>
+      (user.licenseStatus === ASSIGNED ? { ...user, pendingSince } : user));
+    return users;
   }
 
   return null;
@@ -130,7 +150,12 @@ export function fetchSubscriptionUsers(options = {}) {
  * call to get this data.
  */
 export function sendLicenseReminder(options = {}) {
-  return Promise.resolve(options);
+  const { userId, bulkRemind } = options;
+  const pendingSince = moment();
+  const response = updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince });
+
+  return Promise.resolve(response);
+  // return Promise.reject(new Error('Could not connect to the server'));
 }
 
 /**

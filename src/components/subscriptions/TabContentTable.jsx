@@ -36,6 +36,7 @@ export default function TabContentTable() {
     users,
     searchQuery,
     fetchSubscriptionUsers,
+    fetchSubscriptionDetails,
     overview,
   } = useContext(SubscriptionContext);
   const { setSuccessStatus } = useContext(StatusContext);
@@ -99,6 +100,9 @@ export default function TabContentTable() {
               visible: true,
               message: 'Successfully sent reminder(s)',
             })}
+            fetchSubscriptionDetails={fetchSubscriptionDetails}
+            fetchSubscriptionUsers={fetchSubscriptionUsers}
+            searchQuery={searchQuery}
           />
         )}
       </div>

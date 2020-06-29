@@ -26,13 +26,13 @@ const sendLicenseReminderFailure = error => ({
 });
 
 const sendLicenseReminder = ({
-  payload,
+  options,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendLicenseReminderRequest());
-    return sendLicenseReminderEndpoint(payload).then((response) => {
+    return sendLicenseReminderEndpoint(options).then((response) => {
       dispatch(sendLicenseReminderSuccess(response));
       onSuccess(response);
     }).catch((error) => {
