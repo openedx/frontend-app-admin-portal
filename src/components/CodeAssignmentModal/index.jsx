@@ -13,7 +13,7 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
-import { ONCE_PER_CUSTOMER, MULTI_USE } from '../../data/constants/coupons';
+import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
 
 import './CodeAssignmentModal.scss';
 
@@ -83,19 +83,29 @@ class CodeAssignmentModal extends React.Component {
     this.setState({ mode });
   }
 
-  validateEmailAddresses(emails) {
+  validateEmailAddresses(emails, isCSV = false) {
+    let learnerEmails = emails;
     const result = {
       validEmails: [],
       invalidEmailIndices: [],
     };
-    if (!emails) {
+    let offset = 0;
+    if (!learnerEmails) {
       return result;
     }
-    emails.forEach((email, index) => {
+    // if csv and header is present then remove header and
+    // set offset to calculate correct line numbers
+    if (isCSV) {
+      // first row/line in csv will be considered as header if and only if text is `emails`
+      const hasHeader = !isEmail(learnerEmails[0]) && learnerEmails[0] === CSV_HEADER_NAME;
+      learnerEmails = hasHeader ? learnerEmails.slice(1) : learnerEmails;
+      offset = hasHeader ? 1 : 0;
+    }
+    learnerEmails.forEach((email, index) => {
       if (email) {
         const isValidEmail = isEmail(email);
         if (!isValidEmail) {
-          result.invalidEmailIndices.push(index);
+          result.invalidEmailIndices.push(index + offset);
         } else {
           result.validEmails.push(email);
         }
@@ -119,7 +129,7 @@ class CodeAssignmentModal extends React.Component {
     const {
       validEmails: validCsvEmails,
       invalidEmailIndices: invalidCsvEmails,
-    } = this.validateEmailAddresses(csvEmails);
+    } = this.validateEmailAddresses(csvEmails, true);
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
     const shouldValidateSelectedCodes = ![ONCE_PER_CUSTOMER, MULTI_USE].includes(couponType);
@@ -140,9 +150,10 @@ class CodeAssignmentModal extends React.Component {
       return message;
     };
 
-    const getInvalidEmailMessage = (invalidEmailIndices) => {
+    const getInvalidEmailMessage = (invalidEmailIndices, emails) => {
       const firstInvalidIndex = invalidEmailIndices.shift();
-      const message = `Email address on line ${firstInvalidIndex + 1} is invalid. Please try again.`;
+      const invalidEmail = emails[firstInvalidIndex];
+      const message = `Email address ${invalidEmail} on line ${firstInvalidIndex + 1} is invalid. Please try again.`;
       return message;
     };
 
@@ -152,7 +163,7 @@ class CodeAssignmentModal extends React.Component {
 
     /* eslint-disable no-underscore-dangle */
     if (invalidTextAreaEmails.length > 0) {
-      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails);
+      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
       errors[textAreaKey] = invalidEmailMessage;
       errors._error.push(invalidEmailMessage);
     } else if (validTextAreaEmails.length > unassignedCodes) {
@@ -174,7 +185,7 @@ class CodeAssignmentModal extends React.Component {
       errors[textAreaKey] = message;
       errors._error.push(message);
     } else if (invalidCsvEmails.length > 0) {
-      const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails);
+      const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails, csvEmails);
       errors[csvFileKey] = invalidEmailMessage;
       errors._error.push(invalidEmailMessage);
     } else if (validCsvEmails.length > unassignedCodes) {
@@ -303,7 +314,7 @@ class CodeAssignmentModal extends React.Component {
     if (isBulkAssign) {
       const hasTextAreaEmails = !!formData['email-addresses'];
       const emails = hasTextAreaEmails ? formData['email-addresses'].split(/\r\n|\n/) : formData['csv-email-addresses'];
-      const { validEmails } = this.validateEmailAddresses(emails);
+      const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
       options.emails = validEmails;
 
       // Only includes `codes` in `options` if not all codes are selected.
