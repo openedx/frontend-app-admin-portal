@@ -5,7 +5,7 @@ import {
 } from '../constants/userSubscription';
 import NewRelicService from '../services/NewRelicService';
 
-import { addLicensesForUsers as addLicensesForUsersEndpoint } from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../services/LicenseManagerApiService';
 
 const sendSubscribeUsersRequest = () => ({
   type: USER_SUBSCRIPTION_REQUEST,
@@ -26,13 +26,14 @@ const sendUserSubscriptionFailure = error => ({
 });
 
 const addLicensesForUsers = ({
-  payload,
+  options,
+  subscriptionUUID,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendSubscribeUsersRequest());
-    return addLicensesForUsersEndpoint(payload).then((response) => {
+    return LicenseManagerApiService.licenseAssign(options, subscriptionUUID).then((response) => {
       dispatch(sendUserSubscriptionSuccess(response));
       onSuccess(response);
     }).catch((error) => {

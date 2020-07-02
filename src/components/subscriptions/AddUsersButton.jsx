@@ -20,6 +20,7 @@ const AddUsersButton = ({
           <AddUsersModal
             title="Add Users"
             availableSubscriptionCount={details.licenses.available - details.licenses.allocated}
+            subscriptionUUID={details.uuid}
             onSuccess={onSuccess}
             onClose={() => {
               closeModal();

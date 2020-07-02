@@ -90,12 +90,13 @@ class AddUsersModal extends React.Component {
   handleModalSubmit(formData) {
     const {
       addLicensesForUsers,
+      subscriptionUUID,
     } = this.props;
 
     // Validate form data
     this.validateFormData(formData);
 
-    const payload = {
+    const options = {
       template: formData['email-template-body'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
@@ -103,10 +104,10 @@ class AddUsersModal extends React.Component {
     const hasTextAreaEmails = !!formData['email-addresses'];
     const emails = hasTextAreaEmails ? formData['email-addresses'].split(/\r\n|\n/) : formData['csv-email-addresses'];
     const { validEmails } = validateEmailAddresses(emails);
-    payload.emails = validEmails;
+    options.user_emails = validEmails;
 
     /* eslint-disable no-underscore-dangle */
-    return addLicensesForUsers(payload)
+    return addLicensesForUsers(options, subscriptionUUID)
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -266,6 +267,7 @@ AddUsersModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   addLicensesForUsers: PropTypes.func.isRequired,
+  subscriptionUUID: PropTypes.string.isRequired,
 
   initialValues: PropTypes.shape({}).isRequired,
   availableSubscriptionCount: PropTypes.number.isRequired,
