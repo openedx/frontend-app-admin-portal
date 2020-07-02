@@ -85,10 +85,10 @@ export function sendLicenseRevoke(options = {}) {
 }
 
 class LicenseManagerApiService {
-  static licenseManagerBaseUrl = `${configuration.LICENSE_MANAGER_BASE_URL}/api/v1/`;
+  static licenseManagerBaseUrl = `${configuration.LICENSE_MANAGER_BASE_URL}/api/v1`;
 
   static licenseAssign(options, subscriptionUUID) {
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/assign/`;
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/assign/`;
     return apiClient.post(url, options, 'json');
   }
 
@@ -97,7 +97,7 @@ class LicenseManagerApiService {
       ...options,
     };
 
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/?${qs.stringify(queryParams)}`;
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
   }
 
@@ -106,7 +106,7 @@ class LicenseManagerApiService {
       ...options,
     };
 
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
   }
 
@@ -115,8 +115,13 @@ class LicenseManagerApiService {
       ...options,
     };
 
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/overview/?${qs.stringify(queryParams)}`;
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/overview/?${qs.stringify(queryParams)}`;
     return apiClient.get(url);
+  }
+
+  static licenseRevoke(subscriptionUUID, options) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke/`;
+    return apiClient.post(url, options, 'json');
   }
 }
 

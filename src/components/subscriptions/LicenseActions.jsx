@@ -19,6 +19,7 @@ export default function LicenseAction({ user }) {
     fetchSubscriptionUsers,
     searchQuery,
     activeTab,
+    details,
   } = useContext(SubscriptionContext);
 
   const licenseActions = useMemo(
@@ -39,6 +40,7 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
+                subscriptionUUID={details.uuid}
               />
             ),
           }];
@@ -77,6 +79,7 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
+                subscriptionUUID={details.uuid}
               />
             ),
           }];

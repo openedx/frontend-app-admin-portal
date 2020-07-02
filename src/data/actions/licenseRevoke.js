@@ -4,7 +4,7 @@ import {
   LICENSE_REVOKE_FAILURE,
 } from '../constants/licenseRevoke';
 
-import { sendLicenseRevoke as sendLicenseRevokeEndpoint } from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../../components/subscriptions/data/service';
 import NewRelicService from '../services/NewRelicService';
 
 const sendLicenseRevokeRequest = () => ({
@@ -26,13 +26,14 @@ const sendLicenseRevokeFailure = error => ({
 });
 
 const sendLicenseRevoke = ({
+  subscriptionUUID,
   options,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendLicenseRevokeRequest());
-    return sendLicenseRevokeEndpoint(options)
+    return LicenseManagerApiService.licenseRevoke(subscriptionUUID, options)
       .then((response) => {
         dispatch(sendLicenseRevokeSuccess(response));
         onSuccess(response);
