@@ -9,9 +9,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addLicensesForUsers: payload => new Promise((resolve, reject) => {
+  addLicensesForUsers: (options, subscriptionUUID) => new Promise((resolve, reject) => {
     dispatch(addLicensesForUsers({
-      payload,
+      options,
+      subscriptionUUID,
       onSuccess: (response) => { resolve(response); },
       onError: (error) => { reject(error); },
     }));

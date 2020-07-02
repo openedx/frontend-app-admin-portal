@@ -10,4 +10,5 @@ Enzyme.configure({ adapter: new Adapter() });
 process.env.LMS_BASE_URL = 'http://localhost:18000';
 process.env.DATA_API_BASE_URL = 'http://localhost:8000';
 process.env.ECOMMERCE_BASE_URL = 'http://localhost:8000';
+process.env.LICENSE_MANAGER_BASE_URL = 'http://localhost:18170';
 process.env.FEATURE_FLAGS = {};

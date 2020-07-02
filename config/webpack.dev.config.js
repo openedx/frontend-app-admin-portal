@@ -110,6 +110,7 @@ module.exports = Merge.smart(commonConfig, {
       REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login',
       DATA_API_BASE_URL: 'http://localhost:8000',
       ECOMMERCE_BASE_URL: 'http://localhost:18130',
+      LICENSE_MANAGER_BASE_URL: 'http://localhost:18170',
       SEGMENT_KEY: null,
       FULLSTORY_ORG_ID: null,
       FULLSTORY_ENABLED: false,

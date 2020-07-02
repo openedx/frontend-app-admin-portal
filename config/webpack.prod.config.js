@@ -156,6 +156,7 @@ module.exports = Merge.smart(commonConfig, {
       REFRESH_ACCESS_TOKEN_ENDPOINT: null,
       DATA_API_BASE_URL: null,
       ECOMMERCE_BASE_URL: null,
+      LICENSE_MANAGER_BASE_URL: null,
       ACCESS_TOKEN_COOKIE_NAME: null,
       USER_INFO_COOKIE_NAME: null,
       SEGMENT_KEY: null,
