@@ -58,9 +58,8 @@ function updateUserRemindTimeStamp({ userId, bulkRemind, pendingSince }) {
       return users;
     }
   } else {
-    users = users.map(user =>
+    return users.map(user =>
       (user.licenseStatus === ASSIGNED ? { ...user, pendingSince } : user));
-    return users;
   }
 
   return null;

@@ -15,4 +15,5 @@ const networkResponseHandler = (
   }
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export { networkResponseHandler };
