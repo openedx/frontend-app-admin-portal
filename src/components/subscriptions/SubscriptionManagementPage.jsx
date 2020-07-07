@@ -85,7 +85,13 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                           />
                         </div>
                         <div className="col-12 col-lg-7">
-                          <AddUsersButton />
+                          <AddUsersButton
+                            onSuccess={() => setStatus({
+                              visible: true,
+                              alertType: 'success',
+                              message: 'Successfully assigned license(s)',
+                            })}
+                          />
                         </div>
                       </div>
                     </React.Fragment>
