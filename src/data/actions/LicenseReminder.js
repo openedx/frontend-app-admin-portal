@@ -4,7 +4,7 @@ import {
   LICENSE_REMIND_FAILURE,
 } from '../constants/licenseReminder';
 
-import { sendLicenseReminder as sendLicenseReminderEndpoint } from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../services/LicenseManagerApiService';
 import NewRelicService from '../services/NewRelicService';
 
 const sendLicenseReminderRequest = () => ({
@@ -27,19 +27,22 @@ const sendLicenseReminderFailure = error => ({
 
 const sendLicenseReminder = ({
   options,
+  subscriptionUUID,
+  bulkRemind,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendLicenseReminderRequest());
-    return sendLicenseReminderEndpoint(options).then((response) => {
-      dispatch(sendLicenseReminderSuccess(response));
-      onSuccess(response);
-    }).catch((error) => {
-      NewRelicService.logAPIErrorResponse(error);
-      dispatch(sendLicenseReminderFailure(error));
-      onError(error);
-    });
+    return LicenseManagerApiService.licenseRemind(options, subscriptionUUID, bulkRemind)
+      .then((response) => {
+        dispatch(sendLicenseReminderSuccess(response));
+        onSuccess(response);
+      }).catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
+        dispatch(sendLicenseReminderFailure(error));
+        onError(error);
+      });
   }
 );
 

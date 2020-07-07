@@ -35,9 +35,10 @@ export default function TabContentTable() {
     activeTab,
     users,
     searchQuery,
+    overview,
+    details,
     fetchSubscriptionUsers,
     fetchSubscriptionDetails,
-    overview,
   } = useContext(SubscriptionContext);
   const { setSuccessStatus } = useContext(StatusContext);
 
@@ -80,8 +81,8 @@ export default function TabContentTable() {
   );
 
   const tableData = useMemo(
-    () => users.results.map(user => ({
-      emailAddress: user.emailAddress,
+    () => users?.results?.map(user => ({
+      emailAddress: user.user_email,
       status: <LicenseStatus user={user} />,
       actions: <LicenseActions user={user} />,
     })),
@@ -92,7 +93,7 @@ export default function TabContentTable() {
     <React.Fragment>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="h4 mb-3">{activeTabData.title}</h3>
-        {activeTab === TAB_PENDING_USERS && tableData.length > 0 && (
+        {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
@@ -103,10 +104,11 @@ export default function TabContentTable() {
             fetchSubscriptionDetails={fetchSubscriptionDetails}
             fetchSubscriptionUsers={fetchSubscriptionUsers}
             searchQuery={searchQuery}
+            subscriptionUUID={details.uuid}
           />
         )}
       </div>
-      {tableData.length > 0 ? (
+      {tableData?.length > 0 ? (
         <React.Fragment>
           <div className="table-responsive">
             <Table

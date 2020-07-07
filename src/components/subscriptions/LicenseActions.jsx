@@ -19,6 +19,7 @@ export default function LicenseAction({ user }) {
     fetchSubscriptionUsers,
     searchQuery,
     activeTab,
+    details,
   } = useContext(SubscriptionContext);
 
   const licenseActions = useMemo(
@@ -51,6 +52,8 @@ export default function LicenseAction({ user }) {
                 user={user}
                 isBulkRemind={false}
                 title="Remind User"
+                searchQuery={searchQuery}
+                subscriptionUUID={details.uuid}
                 onSuccess={() => setSuccessStatus({
                   visible: true,
                   message: 'Successfully sent reminder(s)',
@@ -60,7 +63,6 @@ export default function LicenseAction({ user }) {
                 }}
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
-                searchQuery={searchQuery}
               />
             ),
           }, {

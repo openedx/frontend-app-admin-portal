@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import moment from 'moment';
+
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
     () => {
@@ -13,11 +15,10 @@ export default function LicenseStatus({ user }) {
           };
         case 'assigned':
           return {
-            iconClassName: 'fa-hourglass-half text-muted',
             text: (
               <React.Fragment>
                 <span>Pending</span>
-                <span className="d-block text-muted">Since {user.pendingSince.format('MMMM DD, YYYY')}</span>
+                <span className="d-block text-muted">Since {moment(user.last_remind_date).format('MMMM DD, YYYY')}</span>
               </React.Fragment>
             ),
           };
@@ -48,6 +49,6 @@ export default function LicenseStatus({ user }) {
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
     licenseStatus: PropTypes.string.isRequired,
-    pendingSince: PropTypes.object,
+    last_remind_date: PropTypes.object,
   }).isRequired,
 };

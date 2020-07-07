@@ -9,6 +9,7 @@ import StatusAlert from '../StatusAlert';
 
 import { validateEmailTemplateFields } from '../../utils';
 import emailTemplate from './emailTemplate';
+
 import NewRelicService from '../../data/services/NewRelicService';
 
 
@@ -78,38 +79,29 @@ class LicenseRemindModal extends React.Component {
     const {
       isBulkRemind,
       user,
+      subscriptionUUID,
+      searchQuery,
       sendLicenseReminder,
       fetchSubscriptionDetails,
       fetchSubscriptionUsers,
-      searchQuery,
     } = this.props;
     // Validate form data
     this.validateFormData(formData);
     // Configure the options to send to the assignment reminder API endpoint
     const options = {
-      template: formData['email-template-body'],
-      template_greeting: formData['email-template-greeting'],
-      template_closing: formData['email-template-closing'],
+      greeting: formData['email-template-greeting'],
+      closing: formData['email-template-closing'],
+      user_email: user.user_email,
     };
 
-    if (isBulkRemind) {
-      options.bulkRemind = true;
-    } else if (!isBulkRemind && user) {
-      options.email = user.emailAddress;
-      options.userId = user.userId;
-    }
-
-    return sendLicenseReminder(options)
+    return sendLicenseReminder(options, subscriptionUUID, isBulkRemind)
       .then(async (response) => {
-        try {
-          await fetchSubscriptionDetails();
-          await fetchSubscriptionUsers({ searchQuery });
-          this.props.onSuccess(response);
-        } catch (error) {
-          NewRelicService.logAPIErrorResponse(error);
-        }
+        await fetchSubscriptionUsers({ searchQuery });
+        await fetchSubscriptionDetails();
+        this.props.onSuccess(response);
       })
       .catch((error) => {
+        NewRelicService.logAPIErrorResponse(error);
         throw new SubmissionError({
           _error: [error.message],
         });
@@ -133,7 +125,7 @@ class LicenseRemindModal extends React.Component {
             {isBulkRemind ? (
               <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
             ) : (
-              <p className="bulk-selected-codes">Email: {user.emailAddress}</p>
+              <p className="bulk-selected-codes">Email: {user.user_email}</p>
             )}
           </React.Fragment>
         </div>
@@ -259,12 +251,12 @@ LicenseRemindModal.propTypes = {
   isBulkRemind: PropTypes.bool,
   pendingUsersCount: PropTypes.number,
   user: PropTypes.shape({
-    userId: PropTypes.string,
-    emailAddress: PropTypes.string,
+    user_email: PropTypes.string,
   }),
   fetchSubscriptionDetails: PropTypes.func.isRequired,
   fetchSubscriptionUsers: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
+  subscriptionUUID: PropTypes.string.isRequired,
 };
 export default reduxForm({
   form: 'license-reminder-modal-form',
