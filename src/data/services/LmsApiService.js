@@ -70,6 +70,31 @@ class LmsApiService {
     const reportingConfigUrl = `${LmsApiService.reportingConfigUrl}${uuid}/`;
     return apiClient.delete(reportingConfigUrl);
   }
+
+  static postNewProviderConfig(formData) {
+    const providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/providerconfig/`;
+    return apiClient.post(providerConfigUrl, formData, 'json');
+  }
+
+  static updateProviderConfig(formData, pid) {
+    const providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/providerconfig/${pid}/`;
+    return apiClient.put(providerConfigUrl, formData, 'json');
+  }
+
+  static deleteProviderConfig(pid) {
+    const providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/providerconfig/${pid}/`;
+    return apiClient.delete(providerConfigUrl);
+  }
+
+  static createProviderData(formData) {
+    const providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/providerdata/`;
+    return apiClient.post(providerDataUrl, formData, 'json');
+  }
+
+  static deleteProviderData(pdid) {
+    const providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/providerdata/${pdid}`;
+    return apiClient.delete(providerDataUrl);
+  }
 }
 
 
