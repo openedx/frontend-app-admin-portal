@@ -9,6 +9,7 @@ class LicenseManagerApiService {
   static licenseAssign(options, subscriptionUUID) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}subscriptions/${subscriptionUUID}/licenses/assign/`;
     return apiClient.post(url, options, 'json');
+  }
 
   static fetchSubscriptions(options) {
     const queryParams = {
