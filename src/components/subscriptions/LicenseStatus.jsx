@@ -18,7 +18,7 @@ export default function LicenseStatus({ user }) {
               <React.Fragment>
                 <span>Pending</span>
                 <span className="d-block text-muted">
-                  Since {user.pendingSince.format('MMMM DD, YYYY')}
+                  Since {user.pendingSince?.format('MMMM DD, YYYY')}
                 </span>
               </React.Fragment>
             ),

@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useEffect } from 'react';
 import { Pagination, Table } from '@edx/paragon';
+import moment from 'moment';
 
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
@@ -90,7 +91,9 @@ export default function TabContentTable() {
   const tableData = useMemo(
     () => users?.results?.map(user => ({
       emailAddress: user.user_email,
-      status: <LicenseStatus user={user} />,
+      status: <LicenseStatus
+        user={{ ...user, pendingSince: user.last_remind_date && moment(user.last_remind_date) }}
+      />,
       actions: <LicenseActions user={user} />,
     })),
     [users],
