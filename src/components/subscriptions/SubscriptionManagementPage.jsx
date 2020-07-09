@@ -67,7 +67,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ details, fetchSubscriptionUsers }) => (
+                  {({ details, fetchSubscriptionUsers, fetchSubscriptionDetails }) => (
                     <React.Fragment>
                       <p className="lead">
                         {details.licenses.allocated}
@@ -86,11 +86,14 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                         </div>
                         <div className="col-12 col-lg-7">
                           <AddUsersButton
-                            onSuccess={() => setStatus({
-                              visible: true,
-                              alertType: 'success',
-                              message: 'Successfully assigned license(s)',
-                            })}
+                            onSuccess={() => {
+                              setStatus({
+                                visible: true,
+                                alertType: 'success',
+                                message: 'Successfully assigned license(s)',
+                              });
+                              fetchSubscriptionDetails();
+                            }}
                           />
                         </div>
                       </div>
