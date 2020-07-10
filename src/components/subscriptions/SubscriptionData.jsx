@@ -9,7 +9,6 @@ import {
   ACTIVATED,
   ASSIGNED,
   DEACTIVATED,
-  ALL,
   SUBSCRIPTIONS,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
@@ -136,10 +135,9 @@ export default function SubscriptionData({ children }) {
       fetchSubscriptionDetails: refreshSubscriptions,
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
-          TAB_ALL_USERS: [ASSIGNED, ACTIVATED, DEACTIVATED],
-          TAB_LICENSED_USERS: ACTIVATED,
-          TAB_PENDING_USERS: ASSIGNED,
-          TAB_DEACTIVATED_USERS: DEACTIVATED,
+          [TAB_LICENSED_USERS]: ACTIVATED,
+          [TAB_PENDING_USERS]: ASSIGNED,
+          [TAB_DEACTIVATED_USERS]: DEACTIVATED,
         };
 
         setSearchQuery(options.searchQuery);
