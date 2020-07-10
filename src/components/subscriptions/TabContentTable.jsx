@@ -61,25 +61,25 @@ export default function TabContentTable() {
           return {
             title: 'All Users',
             paginationLabel: 'pagination for all users',
-            noResultsLabel: 'There are no users.',
+            noResultsLabel: 'There are no users with actived or assigned license',
           };
         case TAB_PENDING_USERS:
           return {
             title: 'Pending Users',
             paginationLabel: 'pagination for pending users',
-            noResultsLabel: 'There are no pending users.',
+            noResultsLabel: 'There are no pending users',
           };
         case TAB_LICENSED_USERS:
           return {
             title: 'Licensed Users',
             paginationLabel: 'pagination for licensed users',
-            noResultsLabel: 'There are no licensed users.',
+            noResultsLabel: 'There are no licensed users',
           };
         case TAB_DEACTIVATED_USERS:
           return {
             title: 'Deactivated Users',
             paginationLabel: 'pagination for deactivated users',
-            noResultsLabel: 'There are no deactivated users.',
+            noResultsLabel: 'There are no deactivated users',
           };
         default:
           return null;
@@ -153,7 +153,8 @@ export default function TabContentTable() {
               <hr className="mt-0" />
               <StatusAlert
                 alertType="warning"
-                dialog={activeTabData.noResultsLabel}
+                title="No results found"
+                message={activeTabData.noResultsLabel}
                 dismissible={false}
                 open
               />

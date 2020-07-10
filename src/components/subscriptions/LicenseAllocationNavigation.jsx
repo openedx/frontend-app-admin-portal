@@ -29,7 +29,7 @@ export default function LicenseAllocationNavigation() {
     () => [
       {
         key: TAB_ALL_USERS,
-        text: `All Users (${overview.all})`,
+        text: `All Users (${overview.allg})`,
       },
       {
         key: TAB_LICENSED_USERS,
