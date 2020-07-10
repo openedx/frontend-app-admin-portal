@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 
-const REQUIRED_CONFIG_FIELDS = [
+export const REQUIRED_CONFIG_FIELDS = [
   'entityId',
   'metadataSource',
 ];
@@ -66,7 +66,6 @@ class SamlProviderConfigForm extends React.Component {
       const err = await this.props.updateProviderConfig(formData, config.id);
       if (err) {
         this.setState({ submitState: SUBMIT_STATES.ERROR });
-        return;
       }
     } else {
       // ...or create a new configuration
@@ -76,10 +75,9 @@ class SamlProviderConfigForm extends React.Component {
           submitState: SUBMIT_STATES.ERROR,
           error: JSON.stringify(err.response.data),
         });
-        return;
       }
     }
-    this.setState({ submitState: SUBMIT_STATES.COMPLETE });
+    // this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
   render() {

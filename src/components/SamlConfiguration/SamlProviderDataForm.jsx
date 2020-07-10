@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 
-const REQUIRED_DATA_FIELDS = [
+export const REQUIRED_DATA_FIELDS = [
   'entityId',
   'ssoUrl',
   'publicKey',
@@ -110,7 +110,7 @@ class SamlProviderDataForm extends React.Component {
                 type="text"
                 id="entityId"
                 name="entityId"
-                defaultValue={entityId || pData.entityId}
+                defaultValue={pData ? pData.entityId : entityId}
                 disabled={!(pData === undefined)}
               />
             </ValidationFormGroup>

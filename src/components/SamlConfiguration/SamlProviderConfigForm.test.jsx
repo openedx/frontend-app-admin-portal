@@ -1,20 +1,49 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import SamlProviderConfigForm from './SamlProviderConfigForm';
+import { shallow, mount } from 'enzyme';
+import SamlProviderConfigForm, { REQUIRED_CONFIG_FIELDS } from './SamlProviderConfigForm';
 
-const createProviderConfig = () => {};
+const createProviderConfig = jest.fn();
+const updateProviderConfig = jest.fn();
 
-// Enzyme changes the submit target, so it ends up as the button, not the form data contained
-// so this is failing. Will fix later.
+const formData = new FormData();
+REQUIRED_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'));
+
 describe('<SamlProviderConfigForm />', () => {
-  it('does not submit if entityId is missing', () => {
+  it('validation fails if required fields are missing', () => {
+    const invalidFormData = new FormData();
+
+    const wrapper = shallow(<SamlProviderConfigForm />);
+    const invalidFields = wrapper.instance().validateProviderConfigForm(
+      invalidFormData,
+      REQUIRED_CONFIG_FIELDS,
+    );
+    expect(Object.keys(invalidFields)).toEqual(REQUIRED_CONFIG_FIELDS);
+  });
+
+  it('submit calls createProviderConfig when config is not present', () => {
     const wrapper = mount((
       <SamlProviderConfigForm
         createProviderConfig={createProviderConfig}
       />
     ));
-    wrapper.find('input#metadataSource').instance().value = 'http://test.testingface.com/metadata.xml';
-    wrapper.find('button#submitButton').simulate('click');
-    expect(wrapper.find('input#entityId').hasClass('is-invalid')).toBeTruthy();
+    wrapper.instance().handleSubmit(formData);
+    expect(createProviderConfig).toHaveBeenCalledWith(formData);
+  });
+  it('submit calls updateProviderConfig when config is present', () => {
+    const config = {
+      entityId: 'blargh',
+      id: 1,
+      metadataSource: 'wobsite',
+    };
+
+    const wrapper = mount((
+      <SamlProviderConfigForm
+        createProviderConfig={createProviderConfig}
+        updateProviderConfig={updateProviderConfig}
+      />
+    ));
+
+    wrapper.instance().handleSubmit(formData, config);
+    expect(updateProviderConfig).toHaveBeenCalled();
   });
 });

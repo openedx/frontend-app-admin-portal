@@ -6,6 +6,7 @@ import SamlProviderConfigForm from './SamlProviderConfigForm';
 import SamlProviderDataForm from './SamlProviderDataForm';
 import { camelCaseObject, snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
+import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 
 class SamlConfiguration extends React.Component {
@@ -13,8 +14,20 @@ class SamlConfiguration extends React.Component {
     providerConfig: undefined,
     providerData: undefined,
     error: undefined,
+    loading: true,
   };
 
+  componentDidMount() {
+    LmsApiService.getProviderConfig(this.props.enterpriseId)
+      .then(response => this.setState({
+        providerConfig: response.data.results,
+        loading: false,
+      }))
+      .catch(error => this.setState({
+        error,
+        loading: false,
+      }));
+  }
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
    * Returns if there is an error.
@@ -25,7 +38,10 @@ class SamlConfiguration extends React.Component {
     transformedData.append('name', this.props.enterpriseName);
     transformedData.append('slug', this.props.enterpriseSlug);
     try {
-      const response = await LmsApiService.postNewProviderConfig(transformedData);
+      const response = await LmsApiService.postNewProviderConfig(
+        transformedData,
+        this.props.enterpriseId,
+      );
       this.setState({ providerConfig: response.data });
       return undefined;
     } catch (error) {
@@ -98,7 +114,12 @@ class SamlConfiguration extends React.Component {
   }
 
   render() {
-    const { providerConfig, error, providerData } = this.state;
+    const {
+      providerConfig, error, providerData, loading,
+    } = this.state;
+    if (loading) {
+      return <LoadingMessage className="overview" />;
+    }
     if (error) {
       return (
         <ErrorPage
@@ -219,6 +240,7 @@ SamlConfiguration.defaultProps = {
 SamlConfiguration.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 export default SamlConfiguration;
