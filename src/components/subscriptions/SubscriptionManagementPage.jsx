@@ -45,19 +45,21 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
   );
 
   return (
-    <SubscriptionData enterpriseId={enterpriseId}>
-      <main role="main" className="manage-subscription">
-        <Helmet title={PAGE_TITLE} />
-        <Hero title={PAGE_TITLE} />
-        <div className="container-fluid mt-3">
-          <div className="row mb-5">
-            <div className="col-12 col-lg-8 mb-3 mb-lg-0">
-              <SubscriptionDetails />
-            </div>
-            <div className="col-12 col-lg-4 text-md-right">
-              <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                Contact Customer Support
-              </Link>
+    <React.Fragment>
+      <Helmet title={PAGE_TITLE} />
+      <Hero title={PAGE_TITLE} />
+      <SubscriptionData>
+        <main role="main" className="manage-subscription">
+          <div className="container-fluid mt-3">
+            <div className="row mb-5">
+              <div className="col-12 col-lg-8 mb-3 mb-lg-0">
+                <SubscriptionDetails />
+              </div>
+              <div className="col-12 col-lg-4 text-md-right">
+                <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
+                  Contact Customer Support
+                </Link>
+              </div>
             </div>
           </div>
           <div className="row mb-3">
@@ -114,9 +116,9 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </SubscriptionData>
+        </main>
+      </SubscriptionData>
+    </React.Fragment>
   );
 }
 
