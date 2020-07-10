@@ -19,28 +19,36 @@ describe('<SamlProviderDataForm />', () => {
     expect(Object.keys(invalidFields)).toEqual(REQUIRED_DATA_FIELDS);
   });
 
-  it('submit calls createProviderData', () => {
+  it('submit is rendered and calls createProviderData', () => {
     const wrapper = mount((
       <SamlProviderDataForm
         createProviderData={createProviderData}
       />
     ));
+    expect(wrapper.exists('#submitButton')).toEqual(true);
     wrapper.instance().handleSubmit(formData);
     expect(createProviderData).toHaveBeenCalledWith(formData);
   });
-  it('submit is disabled when config is present', () => {
-    const config = {
+  it('fields disabled/submit not rendered when provider data is present', () => {
+    const data = {
       id: 1,
     };
-    REQUIRED_DATA_FIELDS.forEach((field) => { config[field] = 'testdata'; });
-
+    REQUIRED_DATA_FIELDS.forEach((field) => { data[field] = 'testdata'; });
     const wrapper = mount((
       <SamlProviderDataForm
-        config={config}
+        pData={data}
         createProviderData={createProviderData}
       />
     ));
-
-    expect(wrapper.find('input#ssoUrl').props().value).toEqual('testdata');
+    REQUIRED_DATA_FIELDS.forEach((field) => {
+      if (field === 'publicKey') {
+        expect(wrapper.find('textarea#publicKey').props().defaultValue).toEqual('testdata');
+        expect(wrapper.find('textarea#publicKey').props().disabled).toEqual(true);
+      } else {
+        expect(wrapper.find(`input#${field}`).props().defaultValue).toEqual('testdata');
+        expect(wrapper.find(`input#${field}`).props().disabled).toEqual(true);
+      }
+      expect(wrapper.exists('#submitButton')).toEqual(false);
+    });
   });
 });
