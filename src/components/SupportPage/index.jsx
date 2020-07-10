@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { SubmissionError } from 'redux-form';
 import { MailtoLink } from '@edx/paragon';
 
 import SupportForm from './SupportForm';
 import Hero from '../Hero';
 import { features } from '../../config/index';
+
+import ZendeskApiService from '../../data/services/ZendeskApiService';
+import NewRelicService from '../../data/services/NewRelicService';
 
 import './SupportPage.scss';
 
@@ -33,6 +37,14 @@ class SupportPage extends React.Component {
             <div className="col">
               {features.SUPPORT && this.hasEmailAndEnterpriseName() ? (
                 <SupportForm
+                  onSubmit={options => (
+                    ZendeskApiService.createZendeskTicket(options)
+                      .then(response => response)
+                      .catch((error) => {
+                        NewRelicService.logAPIErrorResponse(error);
+                        throw new SubmissionError({ _error: error });
+                      })
+                  )}
                   initialValues={{
                     emailAddress, enterpriseName, notes: '',
                   }}

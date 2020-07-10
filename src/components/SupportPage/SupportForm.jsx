@@ -56,10 +56,10 @@ class SupportForm extends React.Component {
     return (
       <React.Fragment>
         {submitFailed && error && this.renderErrorMessage()}
-        {submitSucceeded && this.renderSuccessMessage()}
+        {submitSucceeded && this.renderSuccessMessage}
         <div className="support-form row">
           <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit(this.renderSuccessMessage)}>
+            <form onSubmit={handleSubmit}>
               <Field
                 name="emailAddress"
                 type="email"
