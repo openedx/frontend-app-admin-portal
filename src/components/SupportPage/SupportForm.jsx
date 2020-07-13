@@ -88,6 +88,19 @@ class SupportForm extends React.Component {
                 disabled
               />
               <Field
+                name="subject"
+                type="text"
+                component={RenderField}
+                label={
+                  <React.Fragment>
+                    Subject
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired]}
+                required
+              />
+              <Field
                 name="notes"
                 type="text"
                 component={TextAreaAutoSize}

@@ -46,7 +46,7 @@ class SupportPage extends React.Component {
                       })
                   )}
                   initialValues={{
-                    emailAddress, enterpriseName, notes: '',
+                    emailAddress, enterpriseName, subject: '', notes: '',
                   }}
                   match={match}
                 />
