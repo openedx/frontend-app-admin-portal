@@ -56,10 +56,10 @@ class SupportForm extends React.Component {
     return (
       <React.Fragment>
         {submitFailed && error && this.renderErrorMessage()}
-        {submitSucceeded && this.renderSuccessMessage()}
+        {submitSucceeded && this.renderSuccessMessage}
         <div className="support-form row">
           <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit(this.renderSuccessMessage)}>
+            <form onSubmit={handleSubmit}>
               <Field
                 name="emailAddress"
                 type="email"
@@ -91,8 +91,14 @@ class SupportForm extends React.Component {
                 name="notes"
                 type="text"
                 component={TextAreaAutoSize}
-                label="Notes"
-                validate={[maxLength512]}
+                label={
+                  <React.Fragment>
+                    Notes
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired, maxLength512]}
+                required
               />
               <Button
                 type="submit"
