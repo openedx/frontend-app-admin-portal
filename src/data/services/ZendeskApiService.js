@@ -1,11 +1,12 @@
 import apiClient from '../apiClient';
 import { configuration } from '../../config';
 
-
- // API Service that creates a Zendesk ticket by making a call to the Zendesk API proxy located within edx-platform.
+/**
+* API Service that makes a call to the Zendesk API proxy in edx-platform.
+*/
 class ZendeskApiService {
   /**
-   * A method to create a Zendesk ticket and make a post request to the Zendesk API proxy.
+   * Creates a Zendesk ticket and makes a post request to the Zendesk API proxy.
    * The proxy will create the ticket with these parameters.
    * @param options form data that is passed in
    */
