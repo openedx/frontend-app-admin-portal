@@ -2,22 +2,17 @@ import React, { createContext, useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  fetchSubscriptionDetails,
-  fetchSubscriptionUsersOverview,
-  fetchSubscriptionUsers,
-} from './data/service';
-
-import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
-  ACTIVE,
+  ACTIVATED,
   ASSIGNED,
   DEACTIVATED,
 } from './constants';
 
-import NewRelicService from '../../data/services/NewRelicService';
+import { useSubscriptionData } from './hooks/licenseManagerHooks';
+import { camelCaseObject } from '../../utils';
 
 export const SubscriptionContext = createContext();
 export const SubscriptionConsumer = SubscriptionContext.Consumer;
@@ -28,24 +23,26 @@ export default function SubscriptionData({ children }) {
   const [overview, setOverview] = useState();
   const [users, setUsers] = useState();
   const [searchQuery, setSearchQuery] = useState();
+  const [filter, setFilter] = useState();
 
-  useEffect(
-    () => {
-      Promise.all([
-        fetchSubscriptionDetails(),
-        fetchSubscriptionUsersOverview(),
-        fetchSubscriptionUsers(),
-      ])
-        .then((responses) => {
-          setDetails(responses[0]);
-          setOverview(responses[1]);
-          setUsers(responses[2]);
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => NewRelicService.logAPIErrorResponse(error));
-    },
-    [],
-  );
+  const {
+    fetch, isLoading, errors, data,
+  } = useSubscriptionData({ search: searchQuery, status: filter, page: 1 });
+
+  // Perform network requests
+  useEffect(() => fetch(), [searchQuery, filter]);
+
+  useEffect(() => {
+    if (!isLoading && !errors) {
+      const { subscriptions, overview: subscriptionUsersOverviewData, subscriptionUsers } = data;
+
+      if (subscriptions?.results && subscriptions?.results[0]) {
+        setDetails(camelCaseObject(subscriptions.results[0]));
+      }
+      setOverview(camelCaseObject(subscriptionUsersOverviewData));
+      setUsers(camelCaseObject(subscriptionUsers));
+    }
+  }, [isLoading, errors, data]);
 
   const value = useMemo(
     () => ({
@@ -55,38 +52,18 @@ export default function SubscriptionData({ children }) {
       searchQuery,
       activeTab,
       setActiveTab,
-      fetchSubscriptionDetails: () => (
-        fetchSubscriptionDetails()
-          .then((response) => {
-            setDetails(response);
-          })
-          // eslint-disable-next-line no-console
-          .catch(error => NewRelicService.logAPIErrorResponse(error))
-      ),
+      isLoading,
+      errors,
+      fetchSubscriptionDetails: fetch,
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
-          [TAB_LICENSED_USERS]: ACTIVE,
+          [TAB_LICENSED_USERS]: ACTIVATED,
           [TAB_PENDING_USERS]: ASSIGNED,
           [TAB_DEACTIVATED_USERS]: DEACTIVATED,
         };
 
         setSearchQuery(options.searchQuery);
-
-        return (
-          Promise.all([
-            fetchSubscriptionUsersOverview(options),
-            fetchSubscriptionUsers({
-              ...options,
-              statusFilter: licenseStatusByTab[activeTab],
-            }),
-          ])
-            .then((responses) => {
-              setOverview(responses[0]);
-              setUsers(responses[1]);
-            })
-            // eslint-disable-next-line no-console
-            .catch(error => NewRelicService.logAPIErrorResponse(error))
-        );
+        setFilter(licenseStatusByTab[activeTab]);
       },
     }),
     [details, overview, users, activeTab],

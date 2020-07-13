@@ -2,10 +2,12 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { formatTimestamp } from '../../utils';
+
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
     () => {
-      switch (user.licenseStatus) {
+      switch (user.status) {
         case 'active':
           return {
             iconClassName: 'fa-check-circle text-success',
@@ -17,7 +19,13 @@ export default function LicenseStatus({ user }) {
             text: (
               <React.Fragment>
                 <span>Pending</span>
-                <span className="d-block text-muted">Since {user.pendingSince.format('MMMM DD, YYYY')}</span>
+                {
+                  user.lastRemindDate && (
+                    <span className="d-block text-muted">
+                      Since { formatTimestamp({ timestamp: user.lastRemindDate })}
+                    </span>
+                  )
+                }
               </React.Fragment>
             ),
           };
@@ -47,7 +55,7 @@ export default function LicenseStatus({ user }) {
 
 LicenseStatus.propTypes = {
   user: PropTypes.shape({
-    licenseStatus: PropTypes.string.isRequired,
-    pendingSince: PropTypes.object,
+    status: PropTypes.string.isRequired,
+    lastRemindDate: PropTypes.string,
   }).isRequired,
 };

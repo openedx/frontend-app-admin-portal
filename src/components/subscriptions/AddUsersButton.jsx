@@ -15,11 +15,12 @@ const AddUsersButton = ({
     renderModal={({ closeModal }) => (
       <SubscriptionConsumer>
         {({
+          overview,
           details,
         }) => (
           <AddUsersModal
             title="Add Users"
-            availableSubscriptionCount={details.licenses.available - details.licenses.allocated}
+            availableSubscriptionCount={overview.unassigned}
             subscriptionUUID={details.uuid}
             onSuccess={onSuccess}
             onClose={() => {

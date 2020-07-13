@@ -8,7 +8,7 @@ import { StatusContext } from './SubscriptionManagementPage';
 
 import { SubscriptionContext } from './SubscriptionData';
 
-import { ACTIVE, ASSIGNED } from './constants';
+import { ACTIVATED, ASSIGNED } from './constants';
 
 import './styles/LicenseActions.scss';
 
@@ -23,8 +23,8 @@ export default function LicenseAction({ user }) {
 
   const licenseActions = useMemo(
     () => {
-      switch (user.licenseStatus) {
-        case ACTIVE:
+      switch (user.status) {
+        case ACTIVATED:
           return [{
             key: 'revoke-btn',
             text: 'Revoke',
@@ -110,6 +110,6 @@ export default function LicenseAction({ user }) {
 
 LicenseAction.propTypes = {
   user: PropTypes.shape({
-    licenseStatus: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
   }).isRequired,
 };

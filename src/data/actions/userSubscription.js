@@ -5,7 +5,7 @@ import {
 } from '../constants/userSubscription';
 import NewRelicService from '../services/NewRelicService';
 
-import LicenseManagerApiService from '../services/LicenseManagerApiService';
+import LicenseManagerApiService from '../../components/subscriptions/data/service';
 
 const sendSubscribeUsersRequest = () => ({
   type: USER_SUBSCRIPTION_REQUEST,
