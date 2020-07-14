@@ -68,7 +68,9 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID }) => {
           (accumulator, currentValue) => accumulator + +currentValue.count,
           0,
         );
-        setSubscriptionUsersOverview(subscriptionUsersOverviewData);
+        setSubscriptionUsersOverview({
+          ...subscriptionUsersOverview, ...subscriptionUsersOverviewData,
+        });
       })
       .catch((err) => {
         NewRelicService.logAPIErrorResponse(err);
