@@ -6,16 +6,17 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import * as licenseService from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../../components/subscriptions/data/service';
 import LicenseRevokeModal from './index';
 
 const mockStore = configureMockStore([thunk]);
 
 const user = {
   userId: 'ABC101',
-  emailAddress: 'edx@example.com',
+  userEmail: 'edx@example.com',
   licenseStatus: 'active',
 };
+const subscriptionUUID = '2e0caa85-3461-46b9-8c90-84681f43ba7c';
 
 const LicenseRevokeModalWrapper = props => (
   <MemoryRouter>
@@ -27,6 +28,7 @@ const LicenseRevokeModalWrapper = props => (
         setActiveTab={() => {}}
         fetchSubscriptionDetails={() => {}}
         fetchSubscriptionUsers={() => {}}
+        subscriptionUUID={subscriptionUUID}
         {...props}
       />
     </Provider>
@@ -51,12 +53,12 @@ describe('LicenseRevokeModalWrapper', () => {
   });
 
   it('renders license revoke modal', () => {
-    spy = jest.spyOn(licenseService, 'sendLicenseRevoke');
+    spy = jest.spyOn(LicenseManagerApiService, 'licenseRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
     expect(wrapper.find('.modal-title small').text()).toEqual('Are you sure you want to revoke access?');
 
-    expect(wrapper.find('.license-details p.message').text()).toEqual(`Revoking a license will remove access to the subscription catalog for ${user.emailAddress}. To re-enable access, you can assign this user to another license.`);
+    expect(wrapper.find('.license-details p.message').text()).toEqual(`Revoking a license will remove access to the subscription catalog for ${user.userEmail}. To re-enable access, you can assign this user to another license.`);
 
     wrapper.find('.modal-footer .license-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalled();

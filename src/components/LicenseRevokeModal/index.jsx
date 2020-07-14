@@ -52,10 +52,11 @@ class LicenseRevokeModal extends React.Component {
       fetchSubscriptionDetails,
       fetchSubscriptionUsers,
       searchQuery,
+      subscriptionUUID,
     } = this.props;
-    const options = { userId: user.userId };
+    const options = { user_email: user.userEmail };
 
-    return sendLicenseRevoke(options)
+    return sendLicenseRevoke(subscriptionUUID, options)
       .then(async (response) => {
         try {
           await fetchSubscriptionDetails();
@@ -85,7 +86,7 @@ class LicenseRevokeModal extends React.Component {
         <div className="license-details mb-4">
           <React.Fragment>
             <p className="message" >Revoking a license will remove access to the subscription catalog
-              for {user.emailAddress}. To re-enable access, you can assign this user to another
+              for {user.userEmail}. To re-enable access, you can assign this user to another
               license.
             </p>
           </React.Fragment>
@@ -178,13 +179,12 @@ LicenseRevokeModal.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   sendLicenseRevoke: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    userId: PropTypes.string.isRequired,
-    emailAddress: PropTypes.string.isRequired,
-    licenseStatus: PropTypes.string.isRequired,
+    userEmail: PropTypes.string.isRequired,
   }).isRequired,
   fetchSubscriptionDetails: PropTypes.func.isRequired,
   fetchSubscriptionUsers: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
+  subscriptionUUID: PropTypes.string.isRequired,
 };
 
 export default reduxForm({
