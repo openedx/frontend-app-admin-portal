@@ -92,6 +92,13 @@ class LicenseManagerApiService {
     return apiClient.post(url, options, 'json');
   }
 
+  static licenseRemind(options, subscriptionUUID, bulkRemind) {
+    const remindUrl = bulkRemind ? 'remind-all' : 'remind';
+
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/${remindUrl}/`;
+    return apiClient.post(url, options, 'json');
+  }
+
   static fetchSubscriptions(options) {
     const queryParams = {
       ...options,

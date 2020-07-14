@@ -37,6 +37,7 @@ export default function TabContentTable() {
     activeTab,
     users,
     searchQuery,
+    details,
     fetchSubscriptionUsers,
     fetchSubscriptionDetails,
     overview,
@@ -109,6 +110,7 @@ export default function TabContentTable() {
             fetchSubscriptionDetails={fetchSubscriptionDetails}
             fetchSubscriptionUsers={fetchSubscriptionUsers}
             searchQuery={searchQuery}
+            subscriptionUUID={details.uuid}
           />
         )}
       </div>

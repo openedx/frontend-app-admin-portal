@@ -11,7 +11,7 @@ import LicenseRemindModal from './index';
 const mockStore = configureMockStore([thunk]);
 
 const user = {
-  emailAddress: 'edx@example.com',
+  userEmail: 'edx@example.com',
 };
 const pendingUsersCount = 5;
 
@@ -59,6 +59,6 @@ describe('LicenseRemindModalWrapper', () => {
     />);
     expect(wrapper.find('.modal-title span').text()).toEqual('Remind');
 
-    expect(wrapper.find('.assignment-details p.bulk-selected-codes').text()).toEqual(`Email: ${user.emailAddress}`);
+    expect(wrapper.find('.assignment-details p.bulk-selected-codes').text()).toEqual(`Email: ${user.userEmail}`);
   });
 });
