@@ -17,7 +17,7 @@ import { camelCaseObject } from '../../utils';
 export const SubscriptionContext = createContext();
 export const SubscriptionConsumer = SubscriptionContext.Consumer;
 
-export default function SubscriptionData({ children }) {
+export default function SubscriptionData({ children, enterpriseId }) {
   const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
   const [details, setDetails] = useState();
   const [overview, setOverview] = useState();
@@ -27,7 +27,9 @@ export default function SubscriptionData({ children }) {
 
   const {
     fetch, isLoading, errors, data,
-  } = useSubscriptionData({ search: searchQuery, status: filter, page: 1 });
+  } = useSubscriptionData({
+    enterpriseId, search: searchQuery, status: filter, page: 1,
+  });
 
   // Perform network requests
   useEffect(() => fetch(), [searchQuery, filter]);
@@ -87,4 +89,5 @@ export default function SubscriptionData({ children }) {
 
 SubscriptionData.propTypes = {
   children: PropTypes.node.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };

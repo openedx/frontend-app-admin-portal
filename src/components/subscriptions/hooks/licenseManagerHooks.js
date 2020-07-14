@@ -5,7 +5,7 @@ import NewRelicService from '../../../data/services/NewRelicService';
 import { SUBSCRIPTION_USERS, SUBSCRIPTION_USERS_OVERVIEW, SUBSCRIPTIONS, NETWORK_ERROR_MESSAGE } from '../constants';
 
 
-export const useSubscriptions = () => {
+export const useSubscriptions = (enterpriseId) => {
   const [subscriptions, setSubscriptions] = useState({
     results: [],
     count: 0,
@@ -18,7 +18,7 @@ export const useSubscriptions = () => {
   const fetch = (page = 1) => {
     setIsLoading(true);
 
-    LicenseManagerApiService.fetchSubscriptions({ page })
+    LicenseManagerApiService.fetchSubscriptions({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
         setIsLoading(false);
 
@@ -127,7 +127,9 @@ export const useSubscriptionUsers = ({ subscriptionUUID, options: { status, sear
 /*
 This is a helper hook that provides all the subscription data in a single place.
 */
-export const useSubscriptionData = ({ status, search, page = 1 }) => {
+export const useSubscriptionData = ({
+  enterpriseId, status, search, page = 1,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const [data, setData] = useState({
@@ -141,7 +143,7 @@ export const useSubscriptionData = ({ status, search, page = 1 }) => {
     subscriptions,
     isLoading: isLoadingSubscriptions,
     error: subscriptionsError,
-  } = useSubscriptions();
+  } = useSubscriptions(enterpriseId);
   const {
     fetch: fetchSubscriptionUsersOverview,
     subscriptionUsersOverview,
