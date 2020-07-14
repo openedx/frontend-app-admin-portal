@@ -10,12 +10,6 @@ import TextAreaAutoSize from '../TextAreaAutoSize';
 import { isRequired, isValidEmail, maxLength512 } from '../../utils';
 
 class SupportForm extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.renderSuccessMessage = this.renderSuccessMessage.bind(this);
-  }
-
   renderErrorMessage() {
     const { error: { message } } = this.props;
 
@@ -59,7 +53,7 @@ class SupportForm extends React.Component {
         {submitSucceeded && this.renderSuccessMessage()}
         <div className="support-form row">
           <div className="col-12 col-md-6 col-lg-4">
-            <form onSubmit={handleSubmit(this.renderSuccessMessage)}>
+            <form onSubmit={handleSubmit}>
               <Field
                 name="emailAddress"
                 type="email"
@@ -88,11 +82,30 @@ class SupportForm extends React.Component {
                 disabled
               />
               <Field
+                name="subject"
+                type="text"
+                component={RenderField}
+                label={
+                  <React.Fragment>
+                    Subject
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired]}
+                required
+              />
+              <Field
                 name="notes"
                 type="text"
                 component={TextAreaAutoSize}
-                label="Notes"
-                validate={[maxLength512]}
+                label={
+                  <React.Fragment>
+                    Notes
+                    <span className="required">*</span>
+                  </React.Fragment>
+                }
+                validate={[isRequired, maxLength512]}
+                required
               />
               <Button
                 type="submit"
