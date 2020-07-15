@@ -18,7 +18,7 @@ import './styles/SubscriptionManagementPage.scss';
 const PAGE_TITLE = 'Subscription Management';
 export const StatusContext = createContext();
 
-function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
+function SubscriptionManagementPage({ enterpriseSlug }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -124,12 +124,10 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
 
 SubscriptionManagementPage.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 export default connect(mapStateToProps)(SubscriptionManagementPage);
