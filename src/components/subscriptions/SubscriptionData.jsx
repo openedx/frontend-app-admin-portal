@@ -11,6 +11,7 @@ import {
   ACTIVATED,
   ASSIGNED,
   DEACTIVATED,
+  ALL_USERS,
 } from './constants';
 
 import { useSubscriptionData } from './hooks/licenseManagerHooks';
@@ -61,6 +62,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
       fetchSubscriptionDetails: fetch,
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
+          [TAB_ALL_USERS]: ALL_USERS,
           [TAB_LICENSED_USERS]: ACTIVATED,
           [TAB_PENDING_USERS]: ASSIGNED,
           [TAB_DEACTIVATED_USERS]: DEACTIVATED,
