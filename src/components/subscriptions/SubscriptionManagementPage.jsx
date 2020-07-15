@@ -18,7 +18,7 @@ import './styles/SubscriptionManagementPage.scss';
 const PAGE_TITLE = 'Subscription Management';
 export const StatusContext = createContext();
 
-function SubscriptionManagementPage({ enterpriseSlug }) {
+function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -48,7 +48,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
     <React.Fragment>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <SubscriptionData>
+      <SubscriptionData enterpriseId={enterpriseId}>
         <main role="main" className="manage-subscription">
           <div className="container-fluid mt-3">
             <div className="row mb-5">
@@ -124,10 +124,12 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
 
 SubscriptionManagementPage.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 export default connect(mapStateToProps)(SubscriptionManagementPage);
