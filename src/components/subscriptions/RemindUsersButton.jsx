@@ -12,6 +12,7 @@ const RemindUsersButton = ({
   subscriptionUUID,
   fetchSubscriptionDetails,
   fetchSubscriptionUsers,
+  currentPage,
   searchQuery,
 }) => (
   <ActionButtonWithModal
@@ -29,6 +30,7 @@ const RemindUsersButton = ({
         title="Remind Users"
         subscriptionUUID={subscriptionUUID}
         searchQuery={searchQuery}
+        currentPage={currentPage}
         fetchSubscriptionDetails={fetchSubscriptionDetails}
         fetchSubscriptionUsers={fetchSubscriptionUsers}
         onSuccess={onSuccess}
@@ -47,6 +49,7 @@ RemindUsersButton.propTypes = {
   pendingUsersCount: PropTypes.number,
   isBulkRemind: PropTypes.bool.isRequired,
   searchQuery: PropTypes.string,
+  currentPage: PropTypes.number,
   subscriptionUUID: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func,
@@ -58,6 +61,7 @@ RemindUsersButton.defaultProps = {
   onClose: null,
   pendingUsersCount: null,
   searchQuery: null,
+  currentPage: null,
 };
 
 export default RemindUsersButton;

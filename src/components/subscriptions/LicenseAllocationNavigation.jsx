@@ -8,6 +8,7 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_DEACTIVATED_USERS,
+  DEFAULT_PAGE,
 } from './constants';
 
 export default function LicenseAllocationNavigation() {
@@ -15,6 +16,7 @@ export default function LicenseAllocationNavigation() {
     overview,
     activeTab,
     setActiveTab,
+    setCurrentPage,
   } = useContext(SubscriptionContext);
 
 
@@ -50,7 +52,7 @@ export default function LicenseAllocationNavigation() {
                 'btn btn-link btn-block pl-0 text-left',
                 { 'font-weight-bold': activeTab === tab.key },
               )}
-              onClick={() => setActiveTab(tab.key)}
+              onClick={() => { setActiveTab(tab.key); setCurrentPage(DEFAULT_PAGE); }}
             >
               {tab.text}
             </button>

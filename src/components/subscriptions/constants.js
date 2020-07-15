@@ -16,3 +16,4 @@ export const SUBSCRIPTION_USERS = 'Subscription Users';
 export const SUBSCRIPTION_USERS_OVERVIEW = 'Subscription Users Overview';
 
 export const NETWORK_ERROR_MESSAGE = 'Error occurred while loading the data.';
+export const DEFAULT_PAGE = 1;

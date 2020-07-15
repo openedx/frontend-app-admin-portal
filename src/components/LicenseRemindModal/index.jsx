@@ -83,6 +83,7 @@ class LicenseRemindModal extends React.Component {
       sendLicenseReminder,
       fetchSubscriptionDetails,
       fetchSubscriptionUsers,
+      currentPage,
     } = this.props;
     // Validate form data
     this.validateFormData(formData);
@@ -97,7 +98,7 @@ class LicenseRemindModal extends React.Component {
     }
     return sendLicenseReminder(options, subscriptionUUID, isBulkRemind)
       .then(async (response) => {
-        await fetchSubscriptionUsers({ searchQuery });
+        await fetchSubscriptionUsers({ searchQuery, currentPage });
         await fetchSubscriptionDetails();
         this.props.onSuccess(response);
       })
@@ -234,6 +235,7 @@ LicenseRemindModal.defaultProps = {
   pendingUsersCount: 0,
   subtitle: null,
   searchQuery: null,
+  currentPage: null,
 };
 LicenseRemindModal.propTypes = {
   // props From redux-form
@@ -257,6 +259,7 @@ LicenseRemindModal.propTypes = {
   fetchSubscriptionDetails: PropTypes.func.isRequired,
   fetchSubscriptionUsers: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
+  currentPage: PropTypes.number,
   subscriptionUUID: PropTypes.string.isRequired,
 };
 export default reduxForm({
