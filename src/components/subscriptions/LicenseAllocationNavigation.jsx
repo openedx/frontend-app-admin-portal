@@ -42,6 +42,11 @@ export default function LicenseAllocationNavigation() {
     [overview],
   );
 
+  function updateTabWithDefaultPage(key) {
+    setActiveTab(key);
+    setCurrentPage(DEFAULT_PAGE);
+  }
+
   return (
     <nav className="nav sticky-top">
       <ul className="list-unstyled w-100">
@@ -52,7 +57,7 @@ export default function LicenseAllocationNavigation() {
                 'btn btn-link btn-block pl-0 text-left',
                 { 'font-weight-bold': activeTab === tab.key },
               )}
-              onClick={() => { setActiveTab(tab.key); setCurrentPage(DEFAULT_PAGE); }}
+              onClick={() => updateTabWithDefaultPage(tab.key)}
             >
               {tab.text}
             </button>
