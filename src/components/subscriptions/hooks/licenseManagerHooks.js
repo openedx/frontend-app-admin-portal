@@ -128,7 +128,7 @@ export const useSubscriptionUsers = ({ subscriptionUUID, options: { status, sear
 This is a helper hook that provides all the subscription data in a single place.
 */
 export const useSubscriptionData = ({
-  enterpriseId, status, search, page = 1,
+  enterpriseId, status, search, page,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);

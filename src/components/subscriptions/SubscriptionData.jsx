@@ -12,6 +12,7 @@ import {
   ASSIGNED,
   DEACTIVATED,
   ALL_USERS,
+  DEFAULT_PAGE,
 } from './constants';
 
 import { useSubscriptionData } from './hooks/licenseManagerHooks';
@@ -27,15 +28,16 @@ export default function SubscriptionData({ children, enterpriseId }) {
   const [users, setUsers] = useState();
   const [searchQuery, setSearchQuery] = useState();
   const [filter, setFilter] = useState();
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
 
   const {
     fetch, isLoading, errors, data,
   } = useSubscriptionData({
-    enterpriseId, search: searchQuery, status: filter, page: 1,
+    enterpriseId, search: searchQuery, status: filter, page: currentPage,
   });
 
   // Perform network requests
-  useEffect(() => fetch(), [searchQuery, filter]);
+  useEffect(() => fetch(), [searchQuery, filter, currentPage]);
 
   useEffect(() => {
     if (!isLoading && !errors) {
@@ -59,6 +61,8 @@ export default function SubscriptionData({ children, enterpriseId }) {
       setActiveTab,
       isLoading,
       errors,
+      currentPage,
+      setCurrentPage,
       fetchSubscriptionDetails: fetch,
       fetchSubscriptionUsers: (options = {}) => {
         const licenseStatusByTab = {
@@ -69,10 +73,13 @@ export default function SubscriptionData({ children, enterpriseId }) {
         };
 
         setSearchQuery(options.searchQuery);
+        if (options.page) {
+          setCurrentPage(options.page);
+        }
         setFilter(licenseStatusByTab[activeTab]);
       },
     }),
-    [details, overview, users, activeTab],
+    [details, overview, users, activeTab, currentPage],
   );
 
   const hasInitialData = useMemo(

@@ -80,9 +80,7 @@ function SubscriptionManagementPage({ enterpriseSlug }) {
                         <div className="col-12 col-lg-5 mb-3 mb-lg-0">
                           <SearchBar
                             placeholder="Search by email..."
-                              // eslint-disable-next-line no-console
                             onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
-                              // eslint-disable-next-line no-console
                             onClear={() => fetchSubscriptionUsers()}
                           />
                         </div>

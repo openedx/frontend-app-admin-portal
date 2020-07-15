@@ -20,6 +20,7 @@ export default function LicenseAction({ user }) {
     searchQuery,
     activeTab,
     details,
+    currentPage,
   } = useContext(SubscriptionContext);
 
   const licenseActions = useMemo(
@@ -40,6 +41,7 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
+                currentPage={currentPage}
                 subscriptionUUID={details.uuid}
               />
             ),
@@ -54,6 +56,7 @@ export default function LicenseAction({ user }) {
                 isBulkRemind={false}
                 title="Remind User"
                 searchQuery={searchQuery}
+                currentPage={currentPage}
                 subscriptionUUID={details.uuid}
                 onSuccess={() => setSuccessStatus({
                   visible: true,
@@ -80,6 +83,7 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
+                currentPage={currentPage}
                 subscriptionUUID={details.uuid}
               />
             ),
@@ -88,7 +92,7 @@ export default function LicenseAction({ user }) {
           return [{ key: 'no-actions-here', text: '-' }];
       }
     },
-    [user, activeTab, searchQuery],
+    [user, activeTab, searchQuery, currentPage],
   );
 
   return (

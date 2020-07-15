@@ -43,12 +43,13 @@ export default function TabContentTable() {
     overview,
     isLoading,
     errors,
+    currentPage,
   } = useContext(SubscriptionContext);
   const { setSuccessStatus } = useContext(StatusContext);
 
   useEffect(() => {
-    fetchSubscriptionUsers({ searchQuery });
-  }, [activeTab]);
+    fetchSubscriptionUsers({ searchQuery, currentPage });
+  }, [activeTab, currentPage]);
 
   const activeTabData = useMemo(
     () => {
@@ -111,6 +112,7 @@ export default function TabContentTable() {
             fetchSubscriptionUsers={fetchSubscriptionUsers}
             searchQuery={searchQuery}
             subscriptionUUID={details.uuid}
+            currentPage={currentPage}
           />
         )}
       </div>
@@ -140,10 +142,9 @@ export default function TabContentTable() {
               </div>
               <div className="mt-3 d-flex justify-content-center">
                 <Pagination
-                  // eslint-disable-next-line no-console
-                  onPageSelect={page => console.log(page)}
+                  onPageSelect={page => fetchSubscriptionUsers({ searchQuery, page })}
                   pageCount={Math.ceil(users.count / PAGE_SIZE)}
-                  currentPage={1}
+                  currentPage={currentPage}
                   paginationLabel={activeTabData.paginationLabel}
                 />
               </div>

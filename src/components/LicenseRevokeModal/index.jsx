@@ -52,6 +52,7 @@ class LicenseRevokeModal extends React.Component {
       fetchSubscriptionDetails,
       fetchSubscriptionUsers,
       searchQuery,
+      currentPage,
       subscriptionUUID,
     } = this.props;
     const options = { user_email: user.userEmail };
@@ -60,7 +61,7 @@ class LicenseRevokeModal extends React.Component {
       .then(async (response) => {
         try {
           await fetchSubscriptionDetails();
-          await fetchSubscriptionUsers({ searchQuery });
+          await fetchSubscriptionUsers({ searchQuery, currentPage });
           this.props.onSuccess(response);
         } catch (error) {
           NewRelicService.logAPIErrorResponse(error);
@@ -164,6 +165,7 @@ class LicenseRevokeModal extends React.Component {
 LicenseRevokeModal.defaultProps = {
   error: null,
   searchQuery: null,
+  currentPage: null,
 };
 
 LicenseRevokeModal.propTypes = {
@@ -184,6 +186,7 @@ LicenseRevokeModal.propTypes = {
   fetchSubscriptionDetails: PropTypes.func.isRequired,
   fetchSubscriptionUsers: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
+  currentPage: PropTypes.number,
   subscriptionUUID: PropTypes.string.isRequired,
 };
 
