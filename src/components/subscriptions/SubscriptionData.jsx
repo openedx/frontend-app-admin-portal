@@ -1,6 +1,8 @@
 import React, { createContext, useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import StatusAlert from '../StatusAlert';
+
 import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
@@ -84,7 +86,15 @@ export default function SubscriptionData({ children, enterpriseId }) {
     );
   }
 
-  return null;
+  return (
+    <StatusAlert
+      className="mt-3"
+      alertType="danger"
+      message={`Your organization does not have any active subscriptions to manage.
+      If you believe you are seeing this message in error,
+      please reach out to the edX Customer Success team at customersuccess@edx.org.`}
+    />
+  );
 }
 
 SubscriptionData.propTypes = {

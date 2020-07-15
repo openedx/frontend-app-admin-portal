@@ -18,7 +18,7 @@ import './styles/SubscriptionManagementPage.scss';
 const PAGE_TITLE = 'Subscription Management';
 export const StatusContext = createContext();
 
-function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
+function SubscriptionManagementPage({ enterpriseSlug }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -45,19 +45,21 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
   );
 
   return (
-    <SubscriptionData enterpriseId={enterpriseId}>
-      <main role="main" className="manage-subscription">
-        <Helmet title={PAGE_TITLE} />
-        <Hero title={PAGE_TITLE} />
-        <div className="container-fluid mt-3">
-          <div className="row mb-5">
-            <div className="col-12 col-lg-8 mb-3 mb-lg-0">
-              <SubscriptionDetails />
-            </div>
-            <div className="col-12 col-lg-4 text-md-right">
-              <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                Contact Customer Support
-              </Link>
+    <React.Fragment>
+      <Helmet title={PAGE_TITLE} />
+      <Hero title={PAGE_TITLE} />
+      <SubscriptionData>
+        <main role="main" className="manage-subscription">
+          <div className="container-fluid mt-3">
+            <div className="row mb-5">
+              <div className="col-12 col-lg-8 mb-3 mb-lg-0">
+                <SubscriptionDetails />
+              </div>
+              <div className="col-12 col-lg-4 text-md-right">
+                <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
+                  Contact Customer Support
+                </Link>
+              </div>
             </div>
           </div>
           <div className="row mb-3">
@@ -114,20 +116,18 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </SubscriptionData>
+        </main>
+      </SubscriptionData>
+    </React.Fragment>
   );
 }
 
 SubscriptionManagementPage.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 export default connect(mapStateToProps)(SubscriptionManagementPage);
