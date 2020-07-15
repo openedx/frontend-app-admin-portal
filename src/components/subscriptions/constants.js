@@ -8,6 +8,7 @@ export const PAGE_SIZE = 10;
 export const ACTIVATED = 'activated';
 export const ASSIGNED = 'assigned';
 export const DEACTIVATED = 'deactivated';
+export const ALL_USERS = 'assigned,activated,deactivated';
 
 export const SUBSCRIPTIONS = 'Subscriptions';
 export const SUBSCRIPTION_OVERVIEW = 'Subscription Overview';
