@@ -73,7 +73,7 @@ class SamlProviderConfigForm extends React.Component {
       if (err) {
         this.setState({
           submitState: SUBMIT_STATES.ERROR,
-          error: JSON.stringify(err.response.data),
+          error: err.message ? err.message : JSON.stringify(err.response.data),
         });
       }
     }

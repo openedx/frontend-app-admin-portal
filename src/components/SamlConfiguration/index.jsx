@@ -19,10 +19,22 @@ class SamlConfiguration extends React.Component {
 
   componentDidMount() {
     LmsApiService.getProviderConfig(this.props.enterpriseId)
-      .then(response => this.setState({
-        providerConfig: response.data.results,
-        loading: false,
-      }))
+      .then((response) => {
+        this.setState({
+          providerConfig: response.data.results[0],
+          loading: false,
+        });
+      })
+      .catch(error => this.setState({
+        error,
+      }));
+    LmsApiService.getProviderData(this.props.enterpriseId)
+      .then((response) => {
+        this.setState({
+          providerData: response.data.results[0],
+          loading: false,
+        });
+      })
       .catch(error => this.setState({
         error,
         loading: false,
@@ -57,8 +69,9 @@ class SamlConfiguration extends React.Component {
    */
   updateProviderConfig = async (formData, pid) => {
     const transformedData = snakeCaseFormData(formData);
+    transformedData.append('enterprise_customer_uuid', this.props.enterpriseId);
     try {
-      const response = await LmsApiService.updateProviderConfig(transformedData, pid);
+      const response = await LmsApiService.postNewProviderConfig(transformedData, pid);
       this.setState({ providerConfig: response.data });
       return undefined;
     } catch (error) {
@@ -73,7 +86,7 @@ class SamlConfiguration extends React.Component {
    */
   deleteProviderConfig = async (pid) => {
     try {
-      await LmsApiService.deleteProviderConfig(pid);
+      await LmsApiService.deleteProviderConfig(pid, this.props.enterpriseId);
       this.setState({ providerConfig: undefined });
       return undefined;
     } catch (error) {
@@ -88,6 +101,7 @@ class SamlConfiguration extends React.Component {
    */
   createProviderData = async (formData) => {
     formData.append('fetchedAt', moment().format('YYYY-MM-DDThh:mm:ss'));
+    formData.append('enterpriseCustomerUuid', this.props.enterpriseId);
     const transformedData = snakeCaseFormData(formData);
     try {
       const response = await LmsApiService.createProviderData(transformedData);
@@ -105,7 +119,7 @@ class SamlConfiguration extends React.Component {
    */
   deleteProviderData = async (pdid) => {
     try {
-      await LmsApiService.deleteProviderData(pdid);
+      await LmsApiService.deleteProviderData(pdid, this.props.enterpriseId);
       this.setState({ providerData: undefined });
       return undefined;
     } catch (error) {
@@ -120,7 +134,7 @@ class SamlConfiguration extends React.Component {
     if (loading) {
       return <LoadingMessage className="overview" />;
     }
-    if (error) {
+    if (error && error.response.status !== 404) {
       return (
         <ErrorPage
           status={error.response && error.response.status}
@@ -192,7 +206,7 @@ class SamlConfiguration extends React.Component {
                 >
                   <SamlProviderDataForm
                     pData={camelCaseObject(providerData)}
-                    deleteProviderConfig={this.deleteProviderData}
+                    deleteProviderData={this.deleteProviderData}
                   />
 
                 </Collapsible>

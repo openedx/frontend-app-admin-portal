@@ -67,6 +67,15 @@ class SamlProviderDataForm extends React.Component {
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
+  handleDelete = async (providerDataId) => {
+    const err = await this.props.deleteProviderData(providerDataId);
+    if (err) {
+      this.setState({ error: err.response ? err.response.data.detail : err.message });
+      return;
+    }
+    this.setState({ submitState: SUBMIT_STATES.COMPLETE });
+  }
+
   render() {
     const { pData, entityId } = this.props;
     const {
@@ -182,7 +191,7 @@ class SamlProviderDataForm extends React.Component {
             <div className="col col-2">
               <Button
                 className="btn-outline-danger  mr-3"
-                onClick={() => this.props.deleteProviderData(pData.id)}
+                onClick={() => this.handleDelete(pData.id)}
               >
                 <Icon className="fa fa-times danger" /> Delete
               </Button>
