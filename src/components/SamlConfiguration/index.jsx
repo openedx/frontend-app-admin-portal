@@ -15,6 +15,7 @@ class SamlConfiguration extends React.Component {
     providerData: undefined,
     error: undefined,
     loading: true,
+    deleteEnabled: false,
   };
 
   componentDidMount() {
@@ -49,11 +50,9 @@ class SamlConfiguration extends React.Component {
     const transformedData = snakeCaseFormData(formData);
     transformedData.append('name', this.props.enterpriseName);
     transformedData.append('slug', this.props.enterpriseSlug);
+    transformedData.append('enterprise_customer_uuid', this.props.enterpriseId);
     try {
-      const response = await LmsApiService.postNewProviderConfig(
-        transformedData,
-        this.props.enterpriseId,
-      );
+      const response = await LmsApiService.postNewProviderConfig(transformedData);
       this.setState({ providerConfig: response.data });
       return undefined;
     } catch (error) {
@@ -69,9 +68,11 @@ class SamlConfiguration extends React.Component {
    */
   updateProviderConfig = async (formData, pid) => {
     const transformedData = snakeCaseFormData(formData);
+    transformedData.append('name', this.props.enterpriseName);
+    transformedData.append('slug', this.props.enterpriseSlug);
     transformedData.append('enterprise_customer_uuid', this.props.enterpriseId);
     try {
-      const response = await LmsApiService.postNewProviderConfig(transformedData, pid);
+      const response = await LmsApiService.updateProviderConfig(transformedData, pid);
       this.setState({ providerConfig: response.data });
       return undefined;
     } catch (error) {
@@ -129,7 +130,7 @@ class SamlConfiguration extends React.Component {
 
   render() {
     const {
-      providerConfig, error, providerData, loading,
+      providerConfig, error, providerData, loading, deleteEnabled,
     } = this.state;
     if (loading) {
       return <LoadingMessage className="overview" />;
@@ -175,6 +176,7 @@ class SamlConfiguration extends React.Component {
                     updateProviderConfig={this.updateProviderConfig}
                     createProviderConfig={this.createProviderConfig}
                     deleteProviderConfig={this.deleteProviderConfig}
+                    deleteEnabled={deleteEnabled}
                   />
                 </Collapsible>
               </div>
@@ -207,6 +209,7 @@ class SamlConfiguration extends React.Component {
                   <SamlProviderDataForm
                     pData={camelCaseObject(providerData)}
                     deleteProviderData={this.deleteProviderData}
+                    deleteEnabled={deleteEnabled}
                   />
 
                 </Collapsible>
@@ -221,6 +224,7 @@ class SamlConfiguration extends React.Component {
                 <div>
                   <SamlProviderConfigForm
                     createProviderConfig={this.createProviderConfig}
+                    deleteEnabled={deleteEnabled}
                   />
                 </div>
               </Collapsible>
@@ -235,6 +239,7 @@ class SamlConfiguration extends React.Component {
                   <SamlProviderDataForm
                     entityId={providerConfig.entity_id}
                     createProviderData={this.createProviderData}
+                    deleteEnabled={deleteEnabled}
                   />
                 </div>
               </Collapsible>

@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import SamlProviderDataForm, { REQUIRED_DATA_FIELDS } from './SamlProviderDataForm';
 
 const createProviderData = jest.fn();
+const deleteEnabled = false;
 
 const formData = new FormData();
 REQUIRED_DATA_FIELDS.forEach(field => formData.append(field, 'testdata'));
@@ -23,6 +24,7 @@ describe('<SamlProviderDataForm />', () => {
     const wrapper = mount((
       <SamlProviderDataForm
         createProviderData={createProviderData}
+        deleteEnabled={deleteEnabled}
       />
     ));
     expect(wrapper.exists('#submitButton')).toEqual(true);
@@ -37,6 +39,7 @@ describe('<SamlProviderDataForm />', () => {
     const wrapper = mount((
       <SamlProviderDataForm
         pData={data}
+        deleteEnabled={deleteEnabled}
         createProviderData={createProviderData}
       />
     ));

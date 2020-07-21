@@ -81,8 +81,8 @@ class LmsApiService {
     return apiClient.post(LmsApiService.providerConfigUrl, formData, 'json');
   }
 
-  static updateProviderConfig(formData, uuid) {
-    const providerConfigUrl = `${LmsApiService.providerConfigUrl}?enterprise_customer_uuid=${uuid}`;
+  static updateProviderConfig(formData, pid) {
+    const providerConfigUrl = `${LmsApiService.providerConfigUrl}${pid}/`;
     return apiClient.put(providerConfigUrl, formData, 'json');
   }
 

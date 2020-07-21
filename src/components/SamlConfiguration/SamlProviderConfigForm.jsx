@@ -22,8 +22,8 @@ class SamlProviderConfigForm extends React.Component {
     invalidFields: {},
     submitState: SUBMIT_STATES.DEFAULT,
     enabled: this.props.config ? this.props.config.enabled : false,
-    syncProfile: this.props.config &&
-      this.props.config.syncProfile ? this.props.config.syncProfile : true,
+    syncLearnerProfileData: this.props.config &&
+      this.props.config.syncLearnerProfileData ? this.props.config.syncLearnerProfileData : true,
     error: undefined,
   }
 
@@ -73,7 +73,8 @@ class SamlProviderConfigForm extends React.Component {
       if (err) {
         this.setState({
           submitState: SUBMIT_STATES.ERROR,
-          error: err.message ? err.message : JSON.stringify(err.response.data),
+          error: err.message || err.response.status === 500 ?
+            err.message : JSON.stringify(err.response.data),
         });
       }
     }
@@ -81,12 +82,12 @@ class SamlProviderConfigForm extends React.Component {
   }
 
   render() {
-    const { config } = this.props;
+    const { config, deleteEnabled } = this.props;
     const {
       invalidFields,
       submitState,
       enabled,
-      syncProfile,
+      syncLearnerProfileData,
       error,
     } = this.state;
     let errorAlert;
@@ -139,9 +140,9 @@ class SamlProviderConfigForm extends React.Component {
               <label htmlFor="maxSession">Max session length (seconds)</label>
               <Input
                 type="number"
-                id="maxSession"
-                name="maxSession"
-                defaultValue={config ? config.maxSession : undefined}
+                id="maxSessionLength"
+                name="maxSessionLength"
+                defaultValue={config ? config.maxSessionLength : undefined}
               />
             </ValidationFormGroup>
           </div>
@@ -149,19 +150,19 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="syncProfile"
+              for="syncLearnerProfileData"
               helpText="Synchronize user profile data received from the identity provider with the edX user account on each SSO login. The user will be notified if the email address associated with their account is changed as a part of this synchronization."
             >
-              <label htmlFor="syncProfile">Sync learner profile data</label>
+              <label htmlFor="syncLearnerProfileData">Sync learner profile data</label>
               <Input
                 type="checkbox"
-                id="syncProfile"
-                name="syncProfile"
+                id="syncLearnerProfileData"
+                name="syncLearnerProfileData"
                 className="ml-3"
-                checked={syncProfile}
-                value={syncProfile}
+                checked={syncLearnerProfileData}
+                value={syncLearnerProfileData}
                 onChange={() => this.setState(prevState => (
-                  { syncProfile: !prevState.syncProfile }
+                  { syncLearnerProfileData: !prevState.syncLearnerProfileData }
                 ))}
               />
             </ValidationFormGroup>
@@ -206,15 +207,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="userIdAttr"
+              for="attrUserId"
               helpText="URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default."
             >
-              <label htmlFor="userIdAttr">User ID Attribute</label>
+              <label htmlFor="attrUserId">User ID Attribute</label>
               <Input
                 type="text"
-                id="userIdAttr"
-                name="userIdAttr"
-                defaultValue={config ? config.userIdAttr : ''}
+                id="attrUserId"
+                name="attrUserId"
+                defaultValue={config ? config.attrUserId : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -222,15 +223,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="fullNameAttr"
+              for="attrFullName"
               helpText="URN of SAML attribute containing the user's full name. Leave blank for default."
             >
-              <label htmlFor="fullNameAttr">Full Name Attribute</label>
+              <label htmlFor="attrFullName">Full Name Attribute</label>
               <Input
                 type="text"
-                id="fullNameAttr"
-                name="fullNameAttr"
-                defaultValue={config ? config.fullNameAttr : ''}
+                id="attrFullName"
+                name="attrFullName"
+                defaultValue={config ? config.attrFullName : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -238,15 +239,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="firstNameAttr"
+              for="attrFirstName"
               helpText="URN of SAML attribute containing the user's first name. Leave blank for default."
             >
-              <label htmlFor="firstNameAttr">First Name Attribute</label>
+              <label htmlFor="attrFirstName">First Name Attribute</label>
               <Input
                 type="text"
-                id="firstNameAttr"
-                name="firstNameAttr"
-                defaultValue={config ? config.firstNameAttr : ''}
+                id="attrFirstName"
+                name="attrFirstName"
+                defaultValue={config ? config.attrFirstName : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -254,15 +255,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="lastNameAttr"
+              for="attrLastName"
               helpText="URN of SAML attribute containing the user's last name. Leave blank for default."
             >
-              <label htmlFor="lastNameAttr">Last Name Attribute</label>
+              <label htmlFor="attrLastName">Last Name Attribute</label>
               <Input
                 type="text"
-                id="lastNameAttr"
-                name="lastNameAttr"
-                defaultValue={config ? config.lastNameAttr : ''}
+                id="attrLastName"
+                name="attrLastName"
+                defaultValue={config ? config.attrLastName : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -270,15 +271,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="emailAttr"
+              for="attrEmail"
               helpText="URN of SAML attribute containing the user's email address[es]. Leave blank for default."
             >
-              <label htmlFor="emailAttr">Email Address Attribute</label>
+              <label htmlFor="attrEmail">Email Address Attribute</label>
               <Input
                 type="text"
-                id="emailAttr"
-                name="emailAttr"
-                defaultValue={config ? config.emailAttr : ''}
+                id="attrEmail"
+                name="attrEmail"
+                defaultValue={config ? config.attrEmail : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -307,7 +308,7 @@ class SamlProviderConfigForm extends React.Component {
             />
           </div>
           <div className="col col-2">
-            {config &&
+            {config && deleteEnabled &&
               <Button
                 className="btn-outline-danger  mr-3"
                 onClick={() => this.props.deleteProviderConfig(config.id)}
@@ -339,18 +340,19 @@ SamlProviderConfigForm.propTypes = {
   updateProviderConfig: PropTypes.func,
   createProviderConfig: PropTypes.func,
   deleteProviderConfig: PropTypes.func,
+  deleteEnabled: PropTypes.bool.isRequired,
   config: PropTypes.shape({
     enabled: PropTypes.bool,
     entityId: PropTypes.string,
     metadataSource: PropTypes.string,
     uuid: PropTypes.string,
-    syncProfile: PropTypes.bool,
-    userIdAttr: PropTypes.string,
-    fullNameAttr: PropTypes.string,
-    firstNameAttr: PropTypes.string,
-    lastNameAttr: PropTypes.string,
-    emailAttr: PropTypes.string,
-    maxSession: PropTypes.number,
+    syncLearnerProfileData: PropTypes.bool,
+    attrUserId: PropTypes.string,
+    attrFullName: PropTypes.string,
+    attrFirstName: PropTypes.string,
+    attrLastName: PropTypes.string,
+    attrEmail: PropTypes.string,
+    maxSessionLength: PropTypes.number,
     id: PropTypes.number,
   }),
 };

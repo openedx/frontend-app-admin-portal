@@ -77,7 +77,7 @@ class SamlProviderDataForm extends React.Component {
   }
 
   render() {
-    const { pData, entityId } = this.props;
+    const { pData, entityId, deleteEnabled } = this.props;
     const {
       invalidFields,
       submitState,
@@ -187,7 +187,7 @@ class SamlProviderDataForm extends React.Component {
               />
             </div>
           }
-          {pData &&
+          {pData && deleteEnabled &&
             <div className="col col-2">
               <Button
                 className="btn-outline-danger  mr-3"
@@ -219,6 +219,7 @@ SamlProviderDataForm.defaultProps = {
 SamlProviderDataForm.propTypes = {
   createProviderData: PropTypes.func,
   deleteProviderData: PropTypes.func,
+  deleteEnabled: PropTypes.bool.isRequired,
   entityId: PropTypes.string,
   pData: PropTypes.shape({
     entityId: PropTypes.string,

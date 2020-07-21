@@ -4,6 +4,7 @@ import SamlProviderConfigForm, { REQUIRED_CONFIG_FIELDS } from './SamlProviderCo
 
 const createProviderConfig = jest.fn();
 const updateProviderConfig = jest.fn();
+const deleteEnabled = false;
 
 const formData = new FormData();
 REQUIRED_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'));
@@ -24,6 +25,7 @@ describe('<SamlProviderConfigForm />', () => {
     const wrapper = mount((
       <SamlProviderConfigForm
         createProviderConfig={createProviderConfig}
+        deleteEnabled={deleteEnabled}
       />
     ));
     wrapper.instance().handleSubmit(formData);
@@ -40,6 +42,7 @@ describe('<SamlProviderConfigForm />', () => {
       <SamlProviderConfigForm
         createProviderConfig={createProviderConfig}
         updateProviderConfig={updateProviderConfig}
+        deleteEnabled={deleteEnabled}
       />
     ));
 
