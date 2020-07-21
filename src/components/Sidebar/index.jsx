@@ -45,7 +45,7 @@ class Sidebar extends React.Component {
       enableCodeManagementScreen,
       enableReportingConfigScreen,
       enableSubscriptionManagementScreen,
-      // enableSamlConfigurationScreen,
+      enableSamlConfigurationScreen,
     } = this.props;
 
     return [
@@ -76,7 +76,7 @@ class Sidebar extends React.Component {
         title: 'Saml Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
         iconClassName: 'fa-id-card',
-        hidden: !features.SAML_CONFIGURATION, // || !enableSamlConfigurationScreen,
+        hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
       },
       {
         title: 'Support',

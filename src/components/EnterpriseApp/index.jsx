@@ -85,7 +85,7 @@ class EnterpriseApp extends React.Component {
       match,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
-      // enableSamlConfigurationScreen,
+      enableSamlConfigurationScreen,
     } = this.props;
     const { sidebarWidth } = this.state;
     const baseUrl = match.url;
@@ -169,7 +169,7 @@ class EnterpriseApp extends React.Component {
                       }
                     />
                   }
-                  {features.SAML_CONFIGURATION &&
+                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen &&
                     <Route
                       key="saml-configuration"
                       exact
