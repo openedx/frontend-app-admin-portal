@@ -62,18 +62,14 @@ class SamlProviderDataForm extends React.Component {
     const err = await this.props.createProviderData(formData);
     if (err) {
       this.setState({ submitState: SUBMIT_STATES.ERROR, error: JSON.stringify(err.response.data) });
-      return;
     }
-    this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
   handleDelete = async (providerDataId) => {
     const err = await this.props.deleteProviderData(providerDataId);
     if (err) {
       this.setState({ error: err.response ? err.response.data.detail : err.message });
-      return;
     }
-    this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
   render() {

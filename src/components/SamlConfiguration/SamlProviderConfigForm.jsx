@@ -78,7 +78,6 @@ class SamlProviderConfigForm extends React.Component {
         });
       }
     }
-    // this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
   render() {
