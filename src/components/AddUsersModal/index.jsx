@@ -98,8 +98,8 @@ class AddUsersModal extends React.Component {
 
     const options = {
       template: formData['email-template-body'],
-      template_greeting: formData['email-template-greeting'],
-      template_closing: formData['email-template-closing'],
+      greeting: formData['email-template-greeting'],
+      closing: formData['email-template-closing'],
     };
     const hasTextAreaEmails = !!formData['email-addresses'];
     const emails = hasTextAreaEmails ? formData['email-addresses'].split(/\r\n|\n/) : formData['csv-email-addresses'];
