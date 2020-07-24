@@ -13,7 +13,7 @@ describe('<SamlProviderConfigForm />', () => {
   it('validation fails if required fields are missing', () => {
     const invalidFormData = new FormData();
 
-    const wrapper = shallow(<SamlProviderConfigForm />);
+    const wrapper = shallow(<SamlProviderConfigForm deleteEnabled={deleteEnabled} />);
     const invalidFields = wrapper.instance().validateProviderConfigForm(
       invalidFormData,
       REQUIRED_CONFIG_FIELDS,

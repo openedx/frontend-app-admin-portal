@@ -21,9 +21,8 @@ class SamlProviderConfigForm extends React.Component {
   state = {
     invalidFields: {},
     submitState: SUBMIT_STATES.DEFAULT,
-    enabled: this.props.config ? this.props.config.enabled : false,
-    syncLearnerProfileData: this.props.config &&
-      this.props.config.syncLearnerProfileData ? this.props.config.syncLearnerProfileData : true,
+    enabled: this.props.config?.enabled,
+    syncLearnerProfileData: this.props.config?.syncLearnerProfileData,
     error: undefined,
   }
 
@@ -62,10 +61,13 @@ class SamlProviderConfigForm extends React.Component {
     }
 
     if (config) {
-      // formData.append('enterprise_customer_id', config.enterpriseCustomer.uuid);
       const err = await this.props.updateProviderConfig(formData, config.id);
       if (err) {
-        this.setState({ submitState: SUBMIT_STATES.ERROR });
+        this.setState({
+          submitState: SUBMIT_STATES.ERROR,
+          error: err.message || err.response.status === 500 ?
+            err.message : JSON.stringify(err.response.data),
+        });
       }
     } else {
       // ...or create a new configuration
@@ -318,8 +320,7 @@ class SamlProviderConfigForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col col-3">
-            <br />
+          <div className="col col-3 mt-3">
             {errorAlert}
           </div>
         </div>

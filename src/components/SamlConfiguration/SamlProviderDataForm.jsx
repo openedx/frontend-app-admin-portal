@@ -125,11 +125,11 @@ class SamlProviderDataForm extends React.Component {
           <div className="col col-4">
             <ValidationFormGroup
               for="ssoUrl"
-              helpText="The SSO (Single Sign On URL) of the provider. Example: https://samltest.id/idp/profile/SAML2/Redirect/SSO"
+              helpText="The SSO (Single Sign On) URL of the provider. Example: https://samltest.id/idp/profile/SAML2/Redirect/SSO"
               invalid={invalidFields.ssoUrl}
               invalidMessage="SSO URL required."
             >
-              <label htmlFor="ssoUrl">SSO Url<span className="required">*</span></label>
+              <label htmlFor="ssoUrl">SSO URL<span className="required">*</span></label>
               <Input
                 type="text"
                 id="ssoUrl"
@@ -195,8 +195,7 @@ class SamlProviderDataForm extends React.Component {
           }
         </div>
         <div className="row">
-          <div className="col col-3">
-            <br />
+          <div className="col col-3 mt-3">
             {errorAlert}
           </div>
         </div>

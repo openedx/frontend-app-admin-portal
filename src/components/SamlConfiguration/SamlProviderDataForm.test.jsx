@@ -12,7 +12,7 @@ describe('<SamlProviderDataForm />', () => {
   it('validation fails if required fields are missing', () => {
     const invalidFormData = new FormData();
 
-    const wrapper = shallow(<SamlProviderDataForm />);
+    const wrapper = shallow(<SamlProviderDataForm deleteEnabled={deleteEnabled} />);
     const invalidFields = wrapper.instance().validateProviderDataForm(
       invalidFormData,
       REQUIRED_DATA_FIELDS,

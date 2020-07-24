@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Collapsible, Icon } from '@edx/paragon';
+import classNames from 'classnames';
 import SamlProviderConfigForm from './SamlProviderConfigForm';
 import SamlProviderDataForm from './SamlProviderDataForm';
 import { camelCaseObject, snakeCaseFormData } from '../../utils';
@@ -19,27 +20,22 @@ class SamlConfiguration extends React.Component {
   };
 
   componentDidMount() {
-    LmsApiService.getProviderConfig(this.props.enterpriseId)
-      .then((response) => {
-        this.setState({
-          providerConfig: response.data.results[0],
-          loading: false,
-        });
-      })
-      .catch(error => this.setState({
-        error,
-      }));
-    LmsApiService.getProviderData(this.props.enterpriseId)
-      .then((response) => {
-        this.setState({
-          providerData: response.data.results[0],
-          loading: false,
-        });
-      })
-      .catch(error => this.setState({
-        error,
+    Promise.all([
+      LmsApiService.getProviderConfig(this.props.enterpriseId),
+      LmsApiService.getProviderData(this.props.enterpriseId),
+    ]).then((responses) => {
+      this.setState({
+        providerConfig: responses[0].data.results[0],
+        providerData: responses[1].data.results[0],
         loading: false,
-      }));
+      });
+    })
+      .catch((error) => {
+        this.setState({
+          error,
+          loading: false,
+        });
+      });
   }
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
@@ -158,7 +154,13 @@ class SamlConfiguration extends React.Component {
                   title={
                     <div className="row justify-content-around flex-fill">
                       <Icon
-                        className={`col-1 ${providerConfig.enabled ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
+                        className={classNames(
+                          'col-1',
+                          {
+                            'fa fa-check text-success-300': providerConfig.enabled,
+                            'fa fa-times text-danger-300': !providerConfig.enabled,
+                          },
+                        )}
                       />
                       <div className="col">
                         <h3 className="h6">Entity ID:</h3>
@@ -200,7 +202,7 @@ class SamlConfiguration extends React.Component {
                         <p>{providerData.entity_id}</p>
                       </div>
                       <div className="col">
-                        <h3 className="h6">SSO Url:</h3>
+                        <h3 className="h6">SSO URL:</h3>
                         <p>{providerData.sso_url}</p>
                       </div>
                     </div>
