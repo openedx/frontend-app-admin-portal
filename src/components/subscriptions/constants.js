@@ -5,6 +5,7 @@ export const TAB_DEACTIVATED_USERS = 'TAB_DEACTIVATED_USERS';
 
 export const PAGE_SIZE = 10;
 
+// Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';
 export const ASSIGNED = 'assigned';
 export const DEACTIVATED = 'deactivated';
