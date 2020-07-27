@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { formatTimestamp } from '../../utils';
+import { ACTIVATED, ASSIGNED, DEACTIVATED } from './constants';
 
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
     () => {
       switch (user.status) {
-        case 'active':
+        case ACTIVATED:
           return {
             iconClassName: 'fa-check-circle text-success',
-            text: 'Active',
+            text: 'Activated',
           };
-        case 'assigned':
+        case ASSIGNED:
           return {
             iconClassName: 'fa-hourglass-half text-muted',
             text: (
@@ -29,7 +30,7 @@ export default function LicenseStatus({ user }) {
               </React.Fragment>
             ),
           };
-        case 'deactivated':
+        case DEACTIVATED:
           return {
             iconClassName: 'fa-times-circle text-danger',
             text: 'Deactivated',
