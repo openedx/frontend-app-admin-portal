@@ -23,16 +23,19 @@ export const initialState = {
   emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   default: {
     assign: {
+      'email-template-subject': assignEmailTemplate.subject,
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
       'email-template-closing': assignEmailTemplate.closing,
     },
     remind: {
+      'email-template-subject': remindEmailTemplate.subject,
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
     },
     revoke: {
+      'email-template-subject': revokeEmailTemplate.subject,
       'email-template-greeting': revokeEmailTemplate.greeting,
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
@@ -41,6 +44,7 @@ export const initialState = {
   assign: {
     'template-id': 0,
     'template-name-select': '',
+    'email-template-subject': assignEmailTemplate.subject,
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
     'email-template-closing': assignEmailTemplate.closing,
@@ -48,6 +52,7 @@ export const initialState = {
   remind: {
     'template-id': 0,
     'template-name-select': '',
+    'email-template-subject': remindEmailTemplate.subject,
     'email-template-greeting': remindEmailTemplate.greeting,
     'email-template-body': remindEmailTemplate.body,
     'email-template-closing': remindEmailTemplate.closing,
@@ -55,6 +60,7 @@ export const initialState = {
   revoke: {
     'template-id': 0,
     'template-name-select': '',
+    'email-template-subject': revokeEmailTemplate.subject,
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,

@@ -14,10 +14,12 @@ jest.mock('../../data/services/EcommerceApiService');
 const mockStore = configureMockStore([thunk]);
 const postData = {
   email_type: 'assign',
+  email_subject: 'Subject',
   email_greeting: 'Greeting',
   email_closing: 'Closing',
 };
 const successResponse = {
+  email_subject: postData.email_subject,
   email_greeting: postData.email_greeting,
   email_body: 'email body',
   email_closing: postData.email_closing,

@@ -9,6 +9,7 @@ import emailTemplate, { initialState as emailTemplateReducerInitialState } from 
 
 const emailType = 'assign';
 const saveTemplateSuccessResponse = {
+  email_subject: 'I am email subject',
   email_greeting: 'I am email greeting',
   email_body: 'I am email body',
   email_closing: 'I am email closing',
@@ -58,6 +59,7 @@ describe('emailTemplate reducer', () => {
 
   it('updates store with correct form initial data on changing from template', () => {
     const saveTemplateSuccessUpdatedResponse = {
+      email_subject: 'I am email subject updated',
       email_greeting: 'I am email greeting updated',
       email_body: 'I am email body updated',
       email_closing: 'I am email closing updated',
@@ -71,6 +73,7 @@ describe('emailTemplate reducer', () => {
       error: null,
       ...{
         [emailType]: {
+          'email-template-subject': saveTemplateSuccessResponse.email_subject,
           'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
           'email-template-body': saveTemplateSuccessResponse.email_body,
           'email-template-closing': saveTemplateSuccessResponse.email_closing,
@@ -86,6 +89,7 @@ describe('emailTemplate reducer', () => {
       error: null,
       ...{
         [emailType]: {
+          'email-template-subject': saveTemplateSuccessUpdatedResponse.email_subject,
           'email-template-greeting': saveTemplateSuccessUpdatedResponse.email_greeting,
           'email-template-body': saveTemplateSuccessUpdatedResponse.email_body,
           'email-template-closing': saveTemplateSuccessUpdatedResponse.email_closing,
@@ -107,6 +111,7 @@ describe('emailTemplate reducer', () => {
 
   it('updates store with correct data on update template success', () => {
     const saveTemplateSuccessUpdatedResponse = {
+      email_subject: 'I am email subject updated',
       email_greeting: 'I am email greeting updated',
       email_body: 'I am email body updated',
       email_closing: 'I am email closing updated',

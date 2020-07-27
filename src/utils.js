@@ -8,7 +8,7 @@ import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../src/data/constants/emailTemplate';
+import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../src/data/constants/emailTemplate';
 import history from './data/history';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -135,6 +135,7 @@ const snakeCaseFormData = (formData) => {
 
 const transformTemplate = (emailType, template) => ({
   [emailType]: {
+    'email-template-subject': template.email_subject,
     'email-template-greeting': template.email_greeting,
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
@@ -162,13 +163,23 @@ const validateEmailTemplateFields = (formData) => {
   };
 
   const templateErrorMessages = {
-    'email-template-greeting': `Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
-    'email-template-closing': `Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+    'email-template-subject': {
+      limit: OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
+      message: `Email subject must be ${OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT} characters or less.`,
+    },
+    'email-template-greeting': {
+      limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+      message: `Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+    },
+    'email-template-closing': {
+      limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+      message: `Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+    },
   };
 
   /* eslint-disable no-underscore-dangle */
-  Object.entries(templateErrorMessages).forEach(([key, message]) => {
-    if (formData[key] && formData[key].length > EMAIL_TEMPLATE_FIELD_MAX_LIMIT) {
+  Object.entries(templateErrorMessages).forEach(([key, { limit, message }]) => {
+    if (formData[key] && formData[key].length > limit) {
       errors[key] = message;
       errors._error.push(message);
     }
