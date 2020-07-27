@@ -31,7 +31,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
 
   const {
-    fetch, isLoading, errors, data,
+    fetch, isLoading, errors, data, hasSubscription,
   } = useSubscriptionData({
     enterpriseId, search: searchQuery, status: filter, page: currentPage,
   });
@@ -98,10 +98,10 @@ export default function SubscriptionData({ children, enterpriseId }) {
   return (
     <StatusAlert
       className="mt-3"
-      alertType="danger"
-      message={`Your organization does not have any active subscriptions to manage.
+      alertType={hasSubscription === false ? 'danger' : ''}
+      message={hasSubscription === false ? `Your organization does not have any active subscriptions to manage.
       If you believe you are seeing this message in error,
-      please reach out to the edX Customer Success team at customersuccess@edx.org.`}
+      please reach out to the edX Customer Success team at customersuccess@edx.org.` : ''}
     />
   );
 }

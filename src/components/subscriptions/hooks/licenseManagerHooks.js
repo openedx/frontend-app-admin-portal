@@ -12,6 +12,7 @@ export const useSubscriptions = (enterpriseId) => {
     next: null,
     previous: null,
   });
+  const [hasSubscription, setHasSubscription] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -28,6 +29,7 @@ export const useSubscriptions = (enterpriseId) => {
         ) || [];
 
         setSubscriptions(subscriptionsData);
+        setHasSubscription(subscriptionsData?.results?.length > 0);
       })
       .catch((err) => {
         NewRelicService.logAPIErrorResponse(err);
@@ -37,7 +39,7 @@ export const useSubscriptions = (enterpriseId) => {
   };
 
   return {
-    fetch, subscriptions, isLoading, error,
+    fetch, subscriptions, isLoading, error, hasSubscription,
   };
 };
 
@@ -143,6 +145,7 @@ export const useSubscriptionData = ({
     subscriptions,
     isLoading: isLoadingSubscriptions,
     error: subscriptionsError,
+    hasSubscription,
   } = useSubscriptions(enterpriseId);
   const {
     fetch: fetchSubscriptionUsersOverview,
@@ -222,6 +225,6 @@ export const useSubscriptionData = ({
   ]);
 
   return {
-    fetch, isLoading, errors, data,
+    fetch, isLoading, errors, data, hasSubscription,
   };
 };
