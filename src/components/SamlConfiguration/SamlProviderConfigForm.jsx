@@ -283,6 +283,22 @@ class SamlProviderConfigForm extends React.Component {
             </ValidationFormGroup>
           </div>
         </div>
+        <div className="row">
+          <div className="col col-4">
+            <ValidationFormGroup
+              for="country"
+              helpText="URN of SAML attribute containing the user's country"
+            >
+              <label htmlFor="country">Country</label>
+              <Input
+                type="text"
+                id="country"
+                name="country"
+                defaultValue={config ? config.country : ''}
+              />
+            </ValidationFormGroup>
+          </div>
+        </div>
 
         <div className="row">
           <div className="col col-2">
@@ -352,6 +368,7 @@ SamlProviderConfigForm.propTypes = {
     attrEmail: PropTypes.string,
     maxSessionLength: PropTypes.number,
     id: PropTypes.number,
+    country: PropTypes.string,
   }),
 };
 
