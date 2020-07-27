@@ -10,6 +10,7 @@ import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import ReportingConfig from '../../components/ReportingConfig';
 import SupportPage from '../../containers/SupportPage';
+import SamlConfiguration from '../../containers/SamlConfiguration';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
@@ -84,6 +85,7 @@ class EnterpriseApp extends React.Component {
       match,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
+      enableSamlConfigurationScreen,
     } = this.props;
     const { sidebarWidth } = this.state;
     const baseUrl = match.url;
@@ -167,6 +169,18 @@ class EnterpriseApp extends React.Component {
                       }
                     />
                   }
+                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen &&
+                    <Route
+                      key="saml-configuration"
+                      exact
+                      path={`${baseUrl}/admin/samlconfiguration`}
+                      render={routeProps => (
+                        <SamlConfiguration
+                          {...routeProps}
+                        />
+                      )}
+                    />
+                  }
                   <Route
                     key="support"
                     exact
@@ -191,6 +205,7 @@ EnterpriseApp.defaultProps = {
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
+  enableSamlConfigurationScreen: false,
 };
 
 EnterpriseApp.propTypes = {
@@ -206,6 +221,7 @@ EnterpriseApp.propTypes = {
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
+  enableSamlConfigurationScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 

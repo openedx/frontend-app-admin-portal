@@ -6,6 +6,8 @@ import { configuration } from '../../config';
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
+  static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
+  static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -69,6 +71,39 @@ class LmsApiService {
   static deleteReportingConfig(uuid) {
     const reportingConfigUrl = `${LmsApiService.reportingConfigUrl}${uuid}/`;
     return apiClient.delete(reportingConfigUrl);
+  }
+
+  static getProviderConfig(uuid) {
+    return apiClient.get(`${LmsApiService.providerConfigUrl}?enterprise_customer_uuid=${uuid}`);
+  }
+
+  static postNewProviderConfig(formData) {
+    return apiClient.post(LmsApiService.providerConfigUrl, formData, 'json');
+  }
+
+  static updateProviderConfig(formData, pid) {
+    const providerConfigUrl = `${LmsApiService.providerConfigUrl}${pid}/`;
+    return apiClient.put(providerConfigUrl, formData, 'json');
+  }
+
+  static deleteProviderConfig(pid, uuid) {
+    const providerConfigUrl = `${LmsApiService.providerConfigUrl}${pid}/?enterprise_customer_uuid=${uuid}`;
+    return apiClient.delete(providerConfigUrl);
+  }
+
+  static getProviderData(uuid) {
+    const providerDataUrl = `${LmsApiService.providerDataUrl}?enterprise_customer_uuid=${uuid}`;
+    return apiClient.get(providerDataUrl);
+  }
+
+  static createProviderData(formData) {
+    const providerDataUrl = `${LmsApiService.providerDataUrl}`;
+    return apiClient.post(providerDataUrl, formData, 'json');
+  }
+
+  static deleteProviderData(pdid, uuid) {
+    const providerDataUrl = `${LmsApiService.providerDataUrl}${pdid}/?enterprise_customer_uuid=${uuid}`;
+    return apiClient.delete(providerDataUrl);
   }
 }
 
