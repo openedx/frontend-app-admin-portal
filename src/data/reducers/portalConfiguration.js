@@ -15,6 +15,7 @@ const initialState = {
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
+  enableSamlConfigurationScreen: false,
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -39,6 +40,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen,
         enableReportingConfigScreen: action.payload.data.enable_portal_reporting_config_screen,
         enableSubscriptionManagementScreen: action.payload.data.enable_portal_subscription_management_screen, // eslint-disable-line max-len
+        enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -52,6 +54,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableCodeManagementScreen: false,
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
+        enableSamlConfigurationScreen: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -63,6 +66,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableCodeManagementScreen: false,
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
+        enableSamlConfigurationScreen: false,
       };
     default:
       return state;

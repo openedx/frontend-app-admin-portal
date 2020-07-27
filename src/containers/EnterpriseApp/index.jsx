@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
     error: state.portalConfiguration.error,
     enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
     enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
+    enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
   };
 };
