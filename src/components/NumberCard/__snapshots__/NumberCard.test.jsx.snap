@@ -10,7 +10,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
     <div
       className="card-body"
     >
-      <h5
+      <h3
         className="card-title d-flex align-items-center justify-content-between"
       >
         <span>
@@ -21,7 +21,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
           className="d-flex align-items-center justify-content-center fa fa-users"
           id="Icon2"
         />
-      </h5>
+      </h3>
       <p
         className="card-text"
       >
@@ -118,7 +118,7 @@ exports[`<NumberCard /> renders correctly without detail actions 1`] = `
     <div
       className="card-body"
     >
-      <h5
+      <h3
         className="card-title d-flex align-items-center justify-content-between"
       >
         <span>
@@ -129,7 +129,7 @@ exports[`<NumberCard /> renders correctly without detail actions 1`] = `
           className="d-flex align-items-center justify-content-center fa fa-users"
           id="Icon1"
         />
-      </h5>
+      </h3>
       <p
         className="card-text"
       >
