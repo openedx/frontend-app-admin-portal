@@ -22,12 +22,20 @@ $ npm start
 
 The application is now running and can be accessed in a web browser at http://localhost:1991/
 
+#### Sign-in and access
+
+Sign in using the `enterprise_openedx_operator` created by running `./manage.py lms seed_enterprise_devstack_data` in the lms shell.
+After sign-in, you may have to navigate back to `localhost:1991`.
+
+In the lms django admin, click on "Enterprise Customers" then "Test Enterprise" (or the enterprise you're working with). Check the
+appropriate boxes to gain access to the appropriate admin screens.
+
 
 ### The Longer Story
 
 For the frontend-app-admin-portal to function properly locally, the following parts need to be set up:
 
-1. At least 1 enterprise customer should exist in `edx-platform`
+1. At least 1 enterprise customer should exist in `edx-platform`. This customer can be created using created by running `./manage.py lms seed_enterprise_devstack_data` in the lms shell.
 2. `edx-analytics-data-api` needs data that would normally be piped from `edx-platform` via data pipelines
 
 #### Enterprise Customer
