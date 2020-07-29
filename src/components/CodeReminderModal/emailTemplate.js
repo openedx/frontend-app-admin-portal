@@ -1,4 +1,5 @@
 const emailTemplate = {
+  subject: 'Reminder on edX course assignment',
   greeting: `This is a reminder that your Learning Manager has provided you with an access code to take a course at edX.
 `,
   body: `You have redeemed this code {REDEEMED_OFFER_COUNT} time(s) out of {TOTAL_OFFER_COUNT} available course redemptions.

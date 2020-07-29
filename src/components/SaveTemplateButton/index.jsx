@@ -78,6 +78,7 @@ class SaveTemplateButton extends React.Component {
 
     const options = {
       email_type: templateType,
+      email_subject: formData['email-template-subject'],
       email_greeting: formData['email-template-greeting'],
       email_closing: formData['email-template-closing'],
       name: formData['template-name'] || formData['template-name-select'],
@@ -95,6 +96,7 @@ class SaveTemplateButton extends React.Component {
       .catch((error) => {
         // backend to frontend field name map
         const fieldMap = {
+          email_subject: 'email-template-subject',
           email_greeting: 'email-template-greeting',
           email_closing: 'email-template-closing',
         };

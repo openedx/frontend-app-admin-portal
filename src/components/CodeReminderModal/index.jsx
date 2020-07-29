@@ -6,6 +6,7 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
+import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
@@ -118,6 +119,7 @@ class CodeReminderModal extends React.Component {
     // Configure the options to send to the assignment reminder API endpoint
     const options = {
       template: formData['email-template-body'],
+      template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };
@@ -174,6 +176,12 @@ class CodeReminderModal extends React.Component {
           <div className="mt-4">
             <H3>Email Template</H3>
             <TemplateSourceFields emailTemplateType="remind" />
+            <Field
+              id="email-template-subject"
+              name="email-template-subject"
+              component={RenderField}
+              label="Customize Email Subject"
+            />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"

@@ -6,6 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
+import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
@@ -307,6 +308,7 @@ class CodeAssignmentModal extends React.Component {
     // Configure the options to send to the assignment API endpoint
     const options = {
       template: formData['email-template-body'],
+      template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };
@@ -378,6 +380,13 @@ class CodeAssignmentModal extends React.Component {
           <div className="mt-4">
             <H3>Email Template</H3>
             <TemplateSourceFields emailTemplateType="assign" />
+            <Field
+              id="email-template-subject"
+              name="email-template-subject"
+              component={RenderField}
+              type="text"
+              label="Customize Email Subject"
+            />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
