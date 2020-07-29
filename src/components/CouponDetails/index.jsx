@@ -13,6 +13,7 @@ import StatusAlert from '../StatusAlert';
 
 import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
+import { updateUrl } from '../../utils';
 
 import './CouponDetails.scss';
 import RemindButton from '../RemindButton';
@@ -392,7 +393,7 @@ class CouponDetails extends React.Component {
     }
 
     this.resetCodeActionStatus();
-
+    updateUrl({ page: undefined });
     this.setState({
       tableColumns,
       selectedToggle: value,
