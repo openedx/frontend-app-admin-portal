@@ -6,6 +6,8 @@ Activate your license and begin your learning journey: {LICENSE_ACTIVATION_LINK}
 
 edX Login: {USER_EMAIL}
 Expiration Date: {EXPIRATION_DATE}
+
+You can bookmark the following link to easily access your learning portal in the future: {LEARNER_PORTAL_LINK}
 `,
   closing: 'For any questions, please reach out to your Learning Manager.',
 };
