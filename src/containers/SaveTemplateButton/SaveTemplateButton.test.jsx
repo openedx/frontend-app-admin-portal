@@ -8,7 +8,7 @@ import { mount } from 'enzyme';
 import { SubmissionError } from 'redux-form';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import { SAVE_TEMPLATE_REQUEST, EMAIL_TEMPLATE_FIELD_MAX_LIMIT } from '../../data/constants/emailTemplate';
+import { SAVE_TEMPLATE_REQUEST, EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../../data/constants/emailTemplate';
 import SaveTemplateButton from './index';
 
 jest.mock('../../data/services/EcommerceApiService');
@@ -22,6 +22,7 @@ const initialState = {
     allTemplates: [],
     assign: {
       'template-id': 1,
+      'email-template-subject': 'email-template-subject',
       'email-template-greeting': 'email-template-greeting',
       'email-template-body': 'email-template-body',
     },
@@ -32,6 +33,7 @@ const store = mockStore({
 });
 const formData = {
   'template-name': 'Template from portal',
+  'email-template-subject': 'Subject',
   'email-template-greeting': 'Greeting',
   'email-template-closing': 'Closing',
 };
@@ -39,6 +41,7 @@ const saveTemplateData = {
   id: 1,
   email_type: 'assign',
   name: formData['template-name'],
+  email_subject: formData['email-template-subject'],
   email_greeting: formData['email-template-greeting'],
   email_closing: formData['email-template-closing'],
 };
@@ -98,6 +101,7 @@ describe('<SaveTemplateButton />', () => {
       payload: { emailType: templateType },
     }];
     const successResponse = {
+      email_subject: saveTemplateData.email_subject,
       email_greeting: saveTemplateData.email_greeting,
       email_body: 'email body',
       email_closing: saveTemplateData.email_closing,
@@ -116,6 +120,7 @@ describe('<SaveTemplateButton />', () => {
 
   it('saveTemplate raises correct errors on invalid data submission', () => {
     const invalidFormData = {
+      'email-template-subject': 'G'.repeat(1001),
       'email-template-greeting': 'G'.repeat(50001),
       'email-template-closing': 'C'.repeat(50001),
     };
@@ -140,6 +145,7 @@ describe('<SaveTemplateButton />', () => {
     } catch (e) {
       expect(e instanceof SubmissionError).toBeTruthy();
       expect(e.errors['template-name']).toEqual('No template name provided. Please enter a template name.');
+      expect(e.errors['email-template-subject']).toEqual(`Email subject must be ${OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT} characters or less.`);
       expect(e.errors['email-template-greeting']).toEqual(`Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`);
       expect(e.errors['email-template-closing']).toEqual(`Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`);
     }
