@@ -1,47 +1,78 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import SamlConfiguration from './index';
 import LmsApiService from './../../data/services/LmsApiService';
 import { REQUIRED_DATA_FIELDS } from './SamlProviderDataForm';
+import { REQUIRED_CONFIG_FIELDS } from './SamlProviderConfigForm';
+
+jest.mock('./../../data/services/LmsApiService');
 
 const formData = new FormData();
-const responseData = { data: {} };
+const configResponse = {
+  data: { results: [{}] },
+};
+const validDataResponse = {
+  data: { results: [{}] },
+};
+const invalidDataResponse = {
+  data: { results: [{}] },
+};
+
 const oldConfig = { };
-REQUIRED_DATA_FIELDS.forEach((field) => {
+REQUIRED_CONFIG_FIELDS.forEach((field) => {
   formData.append(field, 'testdata');
-  responseData.data[field] = 'testdata';
+  configResponse.data.results[0][field] = 'testdata';
   oldConfig[field] = 'oldtestdata';
+});
+REQUIRED_DATA_FIELDS.forEach((field) => {
+  validDataResponse.data.results[0][field] = 'testdata';
 });
 
 describe('<SamlConfiguration /> ', () => {
+  it('get provider config (with no data)', () => {
+    LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
+    LmsApiService.getProviderData.mockResolvedValue(invalidDataResponse);
+    const wrapper = mount(<SamlConfiguration enterpriseId="testEnterpriseId" />);
+    setImmediate(() => {
+      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
+    });
+  });
+
+  it('get provider config and data', () => {
+    LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
+    LmsApiService.getProviderData.mockResolvedValue(validDataResponse);
+    const wrapper = mount(<SamlConfiguration enterpriseId="testEnterpriseId" />);
+    setImmediate(() => {
+      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
+      expect(wrapper.state().providerData).toEqual(validDataResponse.data.results[0]);
+    });
+  });
+
   it('creating provider config states', () => {
     const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-    const spyPostNewProviderConfig = jest.spyOn(LmsApiService, 'postNewProviderConfig');
 
-    spyPostNewProviderConfig.mockImplementation(() => responseData);
+    LmsApiService.postNewProviderConfig.mockResolvedValue(configResponse);
     wrapper.instance().createProviderConfig(formData, () => {
-      expect(wrapper.state().providerConfig).toEqual(responseData.data);
+      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
     });
   });
 
   it('updating provider config states', () => {
     const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-    const spyPostUpdatedProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     wrapper.setState({ providerConfig: oldConfig });
 
-    spyPostUpdatedProviderConfig.mockImplementation(() => responseData);
+    LmsApiService.updateProviderConfig.mockResolvedValue(configResponse);
     wrapper.instance().updateProviderConfig(formData, () => {
-      expect(wrapper.state().providerConfig).toEqual(responseData.data);
+      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
     });
   });
 
   it('deleting provider config resets states', () => {
     const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-    const spyPostDeletedProviderConfig = jest.spyOn(LmsApiService, 'deleteProviderConfig');
-
     wrapper.setState({ providerConfig: oldConfig });
-    spyPostDeletedProviderConfig.mockImplementation(() => {});
+
+    LmsApiService.deleteProviderConfig.mockResolvedValue({});
     wrapper.instance().deleteProviderConfig(formData, () => {
       expect(wrapper.state().providerConfig).toEqual(undefined);
     });
@@ -51,8 +82,7 @@ describe('<SamlConfiguration /> ', () => {
     const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
 
     const errorMessage = 'test error message.';
-    const spyPostUpdatedProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
-    spyPostUpdatedProviderConfig.mockImplementation(() => {
+    LmsApiService.updateProviderConfig.mockImplementation(() => {
       throw new Error(errorMessage);
     });
     expect(wrapper.instance().updateProviderConfig(formData)).resolves.toEqual(errorMessage);

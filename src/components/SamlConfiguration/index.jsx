@@ -21,13 +21,13 @@ class SamlConfiguration extends React.Component {
   };
 
   componentDidMount() {
-    Promise.all([
+    Promise.allSettled([
       LmsApiService.getProviderConfig(this.props.enterpriseId),
       LmsApiService.getProviderData(this.props.enterpriseId),
     ]).then((responses) => {
       this.setState({
-        providerConfig: responses[0].data.results[0],
-        providerData: responses[1].data.results[0],
+        providerConfig: responses[0].status === 'fulfilled' ? responses[0].value.data.results[0] : undefined,
+        providerData: responses[1].status === 'fulfilled' ? responses[1].value.data.results[0] : undefined,
         loading: false,
       });
     })
