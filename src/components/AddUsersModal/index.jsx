@@ -59,7 +59,8 @@ class AddUsersModal extends React.Component {
     const emailTemplateKey = 'email-template-body';
 
     /* eslint-disable no-underscore-dangle */
-    let errors = validateEmailTemplateFields(formData);
+    // The 'subject' field is not required here.
+    let errors = validateEmailTemplateFields(formData, false);
 
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';

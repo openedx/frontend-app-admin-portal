@@ -157,13 +157,13 @@ const updateAllTemplates = (template, state) => {
 };
 
 // Validated email template form fields and returns errors if any.
-const validateEmailTemplateFields = (formData) => {
+const validateEmailTemplateFields = (formData, isSubjectRequired = true) => {
   const errors = {
     _error: [],
   };
   const emailSubjectKey = 'email-template-subject';
   const emailSubject = formData[emailSubjectKey];
-  if (!emailSubject) {
+  if (isSubjectRequired && !emailSubject) {
     const message = 'No email subject provided. Please enter email subject.';
     errors[emailSubjectKey] = message;
     errors._error.push(message); // eslint-disable-line no-underscore-dangle
