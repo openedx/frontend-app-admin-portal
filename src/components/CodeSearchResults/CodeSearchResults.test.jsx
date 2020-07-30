@@ -27,16 +27,19 @@ const initialStore = {
     emailTemplateSource: 'new_email',
     default: {
       assign: {
+        'email-template-subject': 'Sample email subject.. ',
         'email-template-greeting': 'Sample email greeting.. ',
         'email-template-body': 'Sample email body template.. ',
         'email-template-closing': 'Sample email closing template.. ',
       },
       remind: {
+        'email-template-subject': 'Sample email subject.. ',
         'email-template-greeting': 'Sample email greeting.. ',
         'email-template-body': 'Sample email body template.. ',
         'email-template-closing': 'Sample email closing template.. ',
       },
       revoke: {
+        'email-template-subject': 'Sample email subject.. ',
         'email-template-greeting': 'Sample email greeting.. ',
         'email-template-body': 'Sample email body template.. ',
         'email-template-closing': 'Sample email closing template.. ',
@@ -45,6 +48,7 @@ const initialStore = {
     assign: {
       'template-id': 0,
       'template-name-select': '',
+      'email-template-subject': 'Sample email subject.. ',
       'email-template-greeting': 'Sample email greeting.. ',
       'email-template-body': 'Sample email body template.. ',
       'email-template-closing': 'Sample email closing template.. ',
@@ -52,6 +56,7 @@ const initialStore = {
     remind: {
       'template-id': 0,
       'template-name-select': '',
+      'email-template-subject': 'Sample email subject.. ',
       'email-template-greeting': 'Sample email greeting.. ',
       'email-template-body': 'Sample email body template.. ',
       'email-template-closing': 'Sample email closing template.. ',
@@ -59,6 +64,7 @@ const initialStore = {
     revoke: {
       'template-id': 0,
       'template-name-select': '',
+      'email-template-subject': 'Sample email subject.. ',
       'email-template-greeting': 'Sample email greeting.. ',
       'email-template-body': 'Sample email body template.. ',
       'email-template-closing': 'Sample email closing template.. ',
@@ -331,6 +337,7 @@ describe('<CodeSearchResults />', () => {
         allTemplates: [{
           email_body: 'email_body',
           email_closing: 'email_closing',
+          email_subject: 'email_subject',
           email_greeting: 'email_greeting',
           email_type: 'assign',
           id: 49,

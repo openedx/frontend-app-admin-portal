@@ -49,6 +49,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
 >
   <nav
     aria-expanded={false}
+    aria-label="sidebar"
     className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
     id="sidebar"
     onBlur={[Function]}
@@ -59,7 +60,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
     <div
       className="sidebar-content py-2"
     >
-      <nav
+      <ul
         className="nav nav-pills flex-column m-0"
       >
         <li
@@ -104,7 +105,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
             </span>
           </a>
         </li>
-      </nav>
+      </ul>
     </div>
   </nav>
   <div

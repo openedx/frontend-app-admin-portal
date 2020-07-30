@@ -185,7 +185,7 @@ class NumberCard extends React.Component {
       >
         <div className={classNames('card', className)}>
           <div className="card-body">
-            <h5 className="card-title d-flex align-items-center justify-content-between">
+            <h3 className="card-title d-flex align-items-center justify-content-between">
               <span>
                 {this.formatTitle(title)}
               </span>
@@ -197,7 +197,7 @@ class NumberCard extends React.Component {
                   )}
                 />
               }
-            </h5>
+            </h3>
             <p className="card-text">{description}</p>
           </div>
         </div>

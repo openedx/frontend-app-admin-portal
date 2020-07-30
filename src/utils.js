@@ -161,6 +161,13 @@ const validateEmailTemplateFields = (formData) => {
   const errors = {
     _error: [],
   };
+  const emailSubjectKey = 'email-template-subject';
+  const emailSubject = formData[emailSubjectKey];
+  if (!emailSubject) {
+    const message = 'No email subject provided. Please enter email subject.';
+    errors[emailSubjectKey] = message;
+    errors._error.push(message); // eslint-disable-line no-underscore-dangle
+  }
 
   const templateErrorMessages = {
     'email-template-subject': {
