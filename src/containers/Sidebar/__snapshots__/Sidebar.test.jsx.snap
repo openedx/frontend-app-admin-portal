@@ -3,6 +3,7 @@
 exports[`<Sidebar /> renders correctly 1`] = `
 <nav
   aria-expanded={false}
+  aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
   id="sidebar"
   onBlur={[Function]}
@@ -13,7 +14,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <nav
+    <ul
       className="nav nav-pills flex-column m-0"
     >
       <li
@@ -58,7 +59,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           </span>
         </a>
       </li>
-    </nav>
+    </ul>
   </div>
 </nav>
 `;
@@ -66,6 +67,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
 exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
 <nav
   aria-expanded={false}
+  aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
   id="sidebar"
   onBlur={[Function]}
@@ -76,7 +78,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <nav
+    <ul
       className="nav nav-pills flex-column m-0"
     >
       <li
@@ -100,7 +102,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           </span>
         </a>
       </li>
-    </nav>
+    </ul>
   </div>
 </nav>
 `;
@@ -108,6 +110,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
 exports[`<Sidebar /> renders correctly when expanded 1`] = `
 <nav
   aria-expanded={true}
+  aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded has-shadow"
   id="sidebar"
   onBlur={[Function]}
@@ -118,7 +121,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <nav
+    <ul
       className="nav nav-pills flex-column m-0"
     >
       <li
@@ -155,7 +158,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           Code Management
         </a>
       </li>
-    </nav>
+    </ul>
   </div>
 </nav>
 `;
@@ -163,6 +166,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
 exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
 <nav
   aria-expanded={true}
+  aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
   id="sidebar"
   onBlur={[Function]}
@@ -173,7 +177,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
   <div
     className="sidebar-content py-2"
   >
-    <nav
+    <ul
       className="nav nav-pills flex-column m-0"
     >
       <li
@@ -210,7 +214,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           Code Management
         </a>
       </li>
-    </nav>
+    </ul>
   </div>
 </nav>
 `;
