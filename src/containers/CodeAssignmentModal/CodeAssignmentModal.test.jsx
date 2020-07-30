@@ -32,12 +32,14 @@ const initialState = {
     emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       assign: {
+        'email-template-subject': assignEmailTemplate.subject,
         'email-template-greeting': assignEmailTemplate.greeting,
         'email-template-body': assignEmailTemplate.body,
         'email-template-closing': assignEmailTemplate.closing,
       },
     },
     assign: {
+      'email-template-subject': assignEmailTemplate.subject,
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
       'email-template-closing': assignEmailTemplate.closing,

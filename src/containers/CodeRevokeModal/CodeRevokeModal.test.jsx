@@ -24,12 +24,14 @@ const initialState = {
     emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       revoke: {
+        'email-template-subject': revokeEmailTemplate.subject,
         'email-template-greeting': revokeEmailTemplate.greeting || '',
         'email-template-body': revokeEmailTemplate.body,
         'email-template-closing': revokeEmailTemplate.closing,
       },
     },
     revoke: {
+      'email-template-subject': revokeEmailTemplate.subject,
       'email-template-greeting': revokeEmailTemplate.greeting || '',
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
@@ -48,6 +50,7 @@ const codeRevokeRequestData = (numCodes) => {
   return {
     assignments: Array(numCodes).fill(assignment),
     template: revokeEmailTemplate.body,
+    template_subject: revokeEmailTemplate.subject,
     template_greeting: revokeEmailTemplate.greeting || '',
     template_closing: revokeEmailTemplate.closing,
   };

@@ -62,12 +62,14 @@ const initialState = {
     emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       remind: {
+        'email-template-subject': remindEmailTemplate.subject,
         'email-template-greeting': remindEmailTemplate.greeting,
         'email-template-body': remindEmailTemplate.body,
         'email-template-closing': remindEmailTemplate.closing,
       },
     },
     remind: {
+      'email-template-subject': remindEmailTemplate.subject,
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
@@ -85,6 +87,7 @@ const codeReminderRequestData = (numCodes, selectedToggle) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   const options = {
     template: remindEmailTemplate.body,
+    template_subject: remindEmailTemplate.subject,
     template_greeting: remindEmailTemplate.greeting,
     template_closing: remindEmailTemplate.closing,
   };
