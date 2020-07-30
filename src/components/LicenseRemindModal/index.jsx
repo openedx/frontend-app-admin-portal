@@ -60,7 +60,8 @@ class LicenseRemindModal extends React.Component {
     const emailTemplateKey = 'email-template-body';
 
     /* eslint-disable no-underscore-dangle */
-    const errors = validateEmailTemplateFields(formData);
+    // The 'subject' field is not required here
+    const errors = validateEmailTemplateFields(formData, false);
 
     if (!formData[emailTemplateKey]) {
       const message = 'An email template is required.';
