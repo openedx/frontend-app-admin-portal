@@ -218,16 +218,28 @@ class Admin extends React.Component {
     );
   }
 
-  renderResetButton() {
+  renderUrlResetButton() {
     const { match: { url } } = this.props;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
 
     return (
-      <Link to={path} className="reset btn btn-sm btn-outline-primary ml-3">
+      <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
         <Icon className="fa fa-undo mr-2" />
         Reset to {this.getMetadataForAction().title}
+      </Link>
+    );
+  }
+
+  renderFiltersResetButton() {
+    const { match: { url } } = this.props;
+    // remove the querys from the path
+    const path = url.split('?')[0];
+    return (
+      <Link to={path} className="btn btn-sm btn-outline-primary">
+        <Icon className="fa fa-undo mr-2" />
+        Reset Filters
       </Link>
     );
   }
@@ -269,6 +281,8 @@ class Admin extends React.Component {
     } = this.props;
 
     const { params: { actionSlug } } = match;
+    const { location } = this.props;
+    const filtersActive = location.search;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
 
@@ -297,10 +311,21 @@ class Admin extends React.Component {
                 </div>
                 <div className="row mt-4">
                   <div className="col">
-                    <H2 className="table-title">{tableMetadata.title}</H2>
-                    {actionSlug && this.renderResetButton()}
-                    {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
-                    {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                    <div className="row">
+                      <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
+                        <H2 className="table-title">{tableMetadata.title}</H2>
+                      </div>
+                      <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
+                        {actionSlug && this.renderUrlResetButton()}
+                        {filtersActive && this.renderFiltersResetButton()}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
+                        {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row">
