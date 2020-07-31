@@ -105,34 +105,24 @@ class AddUsersModal extends React.Component {
 
     // Validate email addresses from both the text area and the CSV file and
     //   submit to the backend for emails to be sent and/or error to be displayed
-    const emailData = {
-      validEmails: [],
-      invalidEmails: [],
-    };
-    if (formData['email-addresses'].length > 0) {
+    const emails = [];
+    if (formData['email-addresses'] && formData['email-addresses'].length) {
       const validatedTextAreaEmailAddressData = validateEmailAddresses((
         formData['email-addresses'].split(/\r\n|\n/)
       ));
-      emailData.validEmails = emailData.validEmails.concat((
-        validatedTextAreaEmailAddressData.validEmails
-      ));
-      emailData.invalidEmails = emailData.invalidEmails.concat((
-        validatedTextAreaEmailAddressData.invalidEmails
-      ));
+      validatedTextAreaEmailAddressData.validEmails.forEach((email) => {
+        emails.push(email);
+      });
     }
-    if (formData['csv-email-addresses'].length > 0) {
+    if (formData['csv-email-addresses'] && formData['csv-email-addresses'].length) {
       const validatedCsvEmailAddressData = validateEmailAddresses((
         formData['csv-email-addresses']
       ));
-      emailData.validEmails = emailData.validEmails.concat((
-        validatedCsvEmailAddressData.validEmails
-      ));
-      emailData.invalidEmails = emailData.invalidEmails.concat((
-        validatedCsvEmailAddressData.invalidEmails
-      ));
+      validatedCsvEmailAddressData.validEmails.forEach((email) => {
+        emails.push(email);
+      });
     }
-    options.user_emails = emailData.validEmails;
-    options.invalid_emails = emailData.invalidEmails;
+    options.user_emails = emails;
 
     /* eslint-disable no-underscore-dangle */
     return addLicensesForUsers(options, subscriptionUUID)
