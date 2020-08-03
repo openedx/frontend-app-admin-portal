@@ -11,8 +11,10 @@ import {
   validateEmailTemplateFields,
   validateEmailAddresses,
   validateEmailAddressesFields,
-  mergeErrors, camelCaseObject,
+  mergeErrors,
+  camelCaseObject,
 } from '../../utils';
+import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 
 class AddUsersModal extends React.Component {
   constructor(props) {
@@ -54,8 +56,8 @@ class AddUsersModal extends React.Component {
   }
 
   validateFormData(formData) {
-    const userEmailsKey = 'email-addresses';
-    const emailsCSVKey = 'csv-email-addresses';
+    const userEmailsKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
+    const emailsCSVKey = EMAIL_ADDRESS_CSV_FORM_DATA;
     const emailTemplateKey = 'email-template-body';
 
     /* eslint-disable no-underscore-dangle */
@@ -106,15 +108,11 @@ class AddUsersModal extends React.Component {
     // Validate email addresses from both the text area and the CSV file and
     //   submit to the backend for emails to be sent and/or error to be displayed
     const emails = [];
-    if (formData['email-addresses'] && formData['email-addresses'].length) {
-      formData['email-addresses'].split(/\r\n|\n/).forEach((email) => {
-        emails.push(email);
-      });
+    if (formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].length) {
+      emails.push(...formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/));
     }
-    if (formData['csv-email-addresses'] && formData['csv-email-addresses'].length) {
-      formData['csv-email-addresses'].forEach((email) => {
-        emails.push(email);
-      });
+    if (formData[EMAIL_ADDRESS_CSV_FORM_DATA] && formData[EMAIL_ADDRESS_CSV_FORM_DATA].length) {
+      emails.push(...formData[EMAIL_ADDRESS_CSV_FORM_DATA]);
     }
     options.user_emails = validateEmailAddresses(emails).validEmails;
 
