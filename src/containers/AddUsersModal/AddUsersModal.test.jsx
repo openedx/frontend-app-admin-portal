@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import AddUsersModel from './index';
+import AddUsersModal from './index';
 import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
@@ -36,7 +36,7 @@ const initialState = {
 const UserSubscriptionModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <AddUsersModel
+      <AddUsersModal
         title={modelTitle}
         availableSubscriptionCount={10}
         onClose={() => {}}

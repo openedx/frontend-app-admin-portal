@@ -15,6 +15,7 @@ import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
+import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 
 import './CodeAssignmentModal.scss';
 
@@ -118,8 +119,8 @@ class CodeAssignmentModal extends React.Component {
   validateBulkAssign(formData) {
     const { data: { unassignedCodes, couponType } } = this.props;
 
-    const textAreaKey = 'email-addresses';
-    const csvFileKey = 'csv-email-addresses';
+    const textAreaKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
+    const csvFileKey = EMAIL_ADDRESS_CSV_FORM_DATA;
 
     const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split(/\r\n|\n/);
     const csvEmails = formData[csvFileKey];
@@ -314,8 +315,8 @@ class CodeAssignmentModal extends React.Component {
     };
 
     if (isBulkAssign) {
-      const hasTextAreaEmails = !!formData['email-addresses'];
-      const emails = hasTextAreaEmails ? formData['email-addresses'].split(/\r\n|\n/) : formData['csv-email-addresses'];
+      const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
+      const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
       const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
       options.emails = validEmails;
 
