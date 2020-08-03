@@ -90,7 +90,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                               setStatus({
                                 visible: true,
                                 alertType: 'success',
-                                message: `${response.data.num_already_associated} email addresses were previously assigned. ${response.data.num_successful_assignments} email addresses were successfully added.`,
+                                message: `${response.numAlreadyAssociated} email addresses were previously assigned. ${response.numSuccessfulAssignments} email addresses were successfully added.`,
                               });
                               fetchSubscriptionDetails();
                             }}

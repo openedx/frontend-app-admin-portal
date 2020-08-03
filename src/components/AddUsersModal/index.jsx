@@ -11,7 +11,7 @@ import {
   validateEmailTemplateFields,
   validateEmailAddresses,
   validateEmailAddressesFields,
-  mergeErrors,
+  mergeErrors, camelCaseObject,
 } from '../../utils';
 
 class AddUsersModal extends React.Component {
@@ -107,27 +107,22 @@ class AddUsersModal extends React.Component {
     //   submit to the backend for emails to be sent and/or error to be displayed
     const emails = [];
     if (formData['email-addresses'] && formData['email-addresses'].length) {
-      const validatedTextAreaEmailAddressData = validateEmailAddresses((
-        formData['email-addresses'].split(/\r\n|\n/)
-      ));
-      validatedTextAreaEmailAddressData.validEmails.forEach((email) => {
+      formData['email-addresses'].split(/\r\n|\n/).forEach((email) => {
         emails.push(email);
       });
     }
     if (formData['csv-email-addresses'] && formData['csv-email-addresses'].length) {
-      const validatedCsvEmailAddressData = validateEmailAddresses((
-        formData['csv-email-addresses']
-      ));
-      validatedCsvEmailAddressData.validEmails.forEach((email) => {
+      formData['csv-email-addresses'].forEach((email) => {
         emails.push(email);
       });
     }
-    options.user_emails = emails;
+    options.user_emails = validateEmailAddresses(emails).validEmails;
 
     /* eslint-disable no-underscore-dangle */
     return addLicensesForUsers(options, subscriptionUUID)
       .then((response) => {
-        this.props.onSuccess(response);
+        const result = camelCaseObject(response.data);
+        this.props.onSuccess(result);
       })
       .catch((error) => {
         throw new SubmissionError({
