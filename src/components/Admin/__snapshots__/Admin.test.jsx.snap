@@ -612,19 +612,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -1171,19 +1171,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -1735,19 +1735,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -2281,25 +2281,114 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-8 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
+          >
+            <button
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon99"
+              />
+              Download full report (CSV)
+            </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
           >
             <div
-              className="row"
+              className="row w-100 m-0"
             >
               <div
-                className="col-sm-12 col-md-7 pr-md-0 mb-1"
+                className="col-12 col-md-6 px-0"
               >
+                <form
+                  className="form-inline"
+                  role="search"
+                >
+                  <div
+                    className="col-6 pl-0 pr-md-2 pr-lg-3"
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="search-label mb-2 form-label"
+                        id="course-title-search"
+                      >
+                        Filter by course
+                      </label>
+                      <select
+                        aria-labelledby="course-title-search"
+                        className="w-100 form-control"
+                        onChange={[Function]}
+                      >
+                        <option
+                          value=""
+                        >
+                          All Courses
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    className="col-6 pr-0 px-md-2 px-lg-3"
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="search-label mb-2 form-label"
+                        id="date-search"
+                      >
+                        Filter by start date
+                      </label>
+                      <select
+                        aria-labelledby="date-search"
+                        className="w-100 form-control"
+                        disabled={true}
+                        onChange={[Function]}
+                      >
+                        <option
+                          value=""
+                        >
+                          Choose a course
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="mb-2 form-label"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
                 <div
-                  className="pgn__searchfield d-flex"
+                  className="pgn__searchfield d-flex py-0"
                 >
                   <form
                     className="d-flex align-items-center w-100"
@@ -2309,7 +2398,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-99"
+                      htmlFor="pgn-searchfield-input-100"
                     >
                       <span
                         className="sr-only"
@@ -2319,7 +2408,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     </label>
                     <input
                       className="form-control"
-                      id="pgn-searchfield-input-99"
+                      id="pgn-searchfield-input-100"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -2358,25 +2447,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     </button>
                   </form>
                 </div>
-              </div>
-              <div
-                className="col-sm-12 col-md-5 pl-md-0"
-              >
-                <button
-                  className="btn btn-outline-primary download-btn d-sm-inline float-right"
-                  disabled={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  type="button"
-                >
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon100"
-                  />
-                  Download full report (CSV)
-                </button>
               </div>
             </div>
           </div>
@@ -2899,25 +2969,114 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-8 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
+          >
+            <button
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              disabled={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              type="button"
+            >
+              <span
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon9"
+              />
+              Download full report (CSV)
+            </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
           >
             <div
-              className="row"
+              className="row w-100 m-0"
             >
               <div
-                className="col-sm-12 col-md-7 pr-md-0 mb-1"
+                className="col-12 col-md-6 px-0"
               >
+                <form
+                  className="form-inline"
+                  role="search"
+                >
+                  <div
+                    className="col-6 pl-0 pr-md-2 pr-lg-3"
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="search-label mb-2 form-label"
+                        id="course-title-search"
+                      >
+                        Filter by course
+                      </label>
+                      <select
+                        aria-labelledby="course-title-search"
+                        className="w-100 form-control"
+                        onChange={[Function]}
+                      >
+                        <option
+                          value=""
+                        >
+                          All Courses
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    className="col-6 pr-0 px-md-2 px-lg-3"
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className="search-label mb-2 form-label"
+                        id="date-search"
+                      >
+                        Filter by start date
+                      </label>
+                      <select
+                        aria-labelledby="date-search"
+                        className="w-100 form-control"
+                        disabled={true}
+                        onChange={[Function]}
+                      >
+                        <option
+                          value=""
+                        >
+                          Choose a course
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="mb-2 form-label"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
                 <div
-                  className="pgn__searchfield d-flex"
+                  className="pgn__searchfield d-flex py-0"
                 >
                   <form
                     className="d-flex align-items-center w-100"
@@ -2927,7 +3086,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-9"
+                      htmlFor="pgn-searchfield-input-10"
                     >
                       <span
                         className="sr-only"
@@ -2937,7 +3096,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     </label>
                     <input
                       className="form-control"
-                      id="pgn-searchfield-input-9"
+                      id="pgn-searchfield-input-10"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -2976,25 +3135,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     </button>
                   </form>
                 </div>
-              </div>
-              <div
-                className="col-sm-12 col-md-5 pl-md-0"
-              >
-                <button
-                  className="btn btn-outline-primary download-btn d-sm-inline float-right"
-                  disabled={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  type="button"
-                >
-                  <span
-                    aria-hidden={true}
-                    className="fa mr-2 fa-download"
-                    id="Icon10"
-                  />
-                  Download full report (CSV)
-                </button>
               </div>
             </div>
           </div>
@@ -3535,19 +3675,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4099,19 +4239,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -4661,19 +4801,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -5220,19 +5360,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
@@ -5784,19 +5924,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         className="col"
       >
         <div
-          className="row"
+          className="row pb-3"
         >
           <div
-            className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3"
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
           >
             Showing data as of 
             July 31, 2018
           </div>
           <div
-            className="col-12 col-md-6 col-lg-12 text-md-right"
+            className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-right"
+              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
               disabled={true}
               onBlur={[Function]}
               onClick={[Function]}
