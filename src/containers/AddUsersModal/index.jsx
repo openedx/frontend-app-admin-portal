@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import AddUsersModel from '../../components/AddUsersModal';
+import AddUsersModal from '../../components/AddUsersModal';
 
 import addLicensesForUsers from '../../data/actions/userSubscription';
 
@@ -19,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsersModel);
+export default connect(mapStateToProps, mapDispatchToProps)(AddUsersModal);
