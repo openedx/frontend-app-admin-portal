@@ -86,11 +86,11 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                         </div>
                         <div className="col-12 col-lg-7">
                           <AddUsersButton
-                            onSuccess={() => {
+                            onSuccess={(response) => {
                               setStatus({
                                 visible: true,
                                 alertType: 'success',
-                                message: 'Successfully assigned license(s)',
+                                message: `${response.data.num_already_associated} email addresses were previously assigned. ${response.data.num_successful_assignments} email addresses were successfully added.`,
                               });
                               fetchSubscriptionDetails();
                             }}
