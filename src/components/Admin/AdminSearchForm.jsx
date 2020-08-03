@@ -3,10 +3,14 @@ import qs from 'query-string';
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
 import { Form } from '@edx/paragon';
+
 
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
+import IconWithTooltip from '../IconWithTooltip';
 
 class AdminSearchForm extends React.Component {
   constructor(props) {
@@ -92,7 +96,14 @@ class AdminSearchForm extends React.Component {
                 </div>
                 <div className="col-6 pr-0 px-md-2 px-lg-3">
                   <Form.Group>
-                    <Form.Label id="date-search" className="search-label mb-2">Filter by start date</Form.Label>
+                    <Form.Label id="date-search" className="search-label mb-2">
+                      Filter by start date
+                      <IconWithTooltip
+                        icon={faInfoCircle}
+                        altText="More information"
+                        tooltipText="A start date can be selected after the course name is selected."
+                      />
+                    </Form.Label>
                     <Form.Control
                       as="select"
                       className="w-100"
