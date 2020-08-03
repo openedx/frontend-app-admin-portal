@@ -65,6 +65,8 @@ const getPageOptionsFromUrl = () => {
     page: 1,
     ordering: undefined,
     search: undefined,
+    search_course: undefined,
+    search_start_date: undefined,
   };
   const query = qs.parse(window.location.search);
   return {
@@ -72,6 +74,8 @@ const getPageOptionsFromUrl = () => {
     page: parseInt(query.page, 10) || defaults.page,
     ordering: query.ordering || defaults.ordering,
     search: query.search || defaults.search,
+    search_course: query.search_course || defaults.search_course,
+    search_start_date: query.search_start_date || defaults.search_start_date,
   };
 };
 
