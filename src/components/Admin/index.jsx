@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
+import Plot from 'react-plotly.js';
 
 import H2 from '../../components/H2';
 import H3 from '../../components/H3';
@@ -27,6 +28,14 @@ import AdminSearchForm from './AdminSearchForm';
 import './Admin.scss';
 
 class Admin extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      grades: 'bar',
+      enrollments: 'bar',
+    };
+  }
+
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
@@ -204,6 +213,16 @@ class Admin extends React.Component {
     return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
   }
 
+  handleClickEnrollment = (e) => {
+    this.setState({ enrollments: e.target.id }, () => {
+    });
+  }
+
+  handleClickGrades = (e) => {
+    this.setState({ grades: e.target.id }, () => {
+    });
+  }
+
   renderDownloadButton() {
     const { match } = this.props;
     const { params: { actionSlug } } = match;
@@ -280,6 +299,68 @@ class Admin extends React.Component {
               <Helmet title="Learner Progress Report" />
               <Hero title="Learner Progress Report" />
               <div className="container-fluid">
+                <div className="row mt-4">
+                  <div className="col">
+                    <div className="row">
+                      <div className="col-12 col-md-12 col-lg-12 col-xl-6 pt-1 pb-3">
+                        <Plot
+                          data={[
+                            {
+                              x: ['01/01/20', '07/01/20', '14/01/20', '21/01/20', '31/01/20',
+                                '01/02/20', '07/02/20', '14/02/20', '21/02/20', '28/02/20',
+                                '01/03/20', '07/03/20', '14/03/20', '21/03/20', '31/03/20'],
+                              y: [10, 4, 33, 1, 14, 23, 11, 17, 43, 21, 12, 25, 27, 16, 38],
+                              type: this.state.enrollments,
+                              marker: {
+                                color: 'rgba(255,153,51,0.6)',
+                                width: 1,
+                              },
+                            },
+                          ]}
+                          layout={{ title: 'Week Wise Enrollments' }}
+                        />
+                        <button className="request-codes-btn btn btn-primary" onClick={this.handleClickEnrollment} id="scatter">Select Scatter</button>
+                        <button className="request-codes-btn btn btn-primary" onClick={this.handleClickEnrollment} id="bar">Select Bar</button>
+                      </div>
+                      <div className="col-12 col-md-12 col-lg-12 col-xl-4 pt-1 pb-3">
+                        <Plot
+                          data={[
+                            {
+                              values: [19, 26],
+                              labels: ['In-Progress', 'Completed'],
+                              type: 'pie',
+                            },
+                          ]}
+                          layout={{ width: 420, height: 380, title: 'In-Progress and Completed' }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12 col-md-12 col-lg-12 col-xl-6 pt-1 pb-3">
+                        <Plot
+                          data={[
+                            {
+                              x: [13, 11, 8, 5],
+                              y: [0, 0.2, 0.85, 1],
+                              orientation: 'h',
+                              type: this.state.grades,
+
+                            },
+                          ]}
+                          layout={{ title: 'Grades Distribution' }}
+                        />
+                        <button className="request-codes-btn btn btn-primary" onClick={this.handleClickGrades} id="scatter">Select Scatter</button>
+                        <button className="request-codes-btn btn btn-primary" onClick={this.handleClickGrades} id="funnel">Select Funnel</button>
+                        <button className="request-codes-btn btn btn-primary" onClick={this.handleClickGrades} id="bar">Select Bar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    <div className="row" />
+                  </div>
+                </div>
                 <div className="row mt-4">
                   <div className="col">
                     <H2>Overview</H2>
