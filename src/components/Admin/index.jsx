@@ -21,6 +21,8 @@ import DownloadCsvButton from '../../containers/DownloadCsvButton';
 
 
 import AdminCards from '../../containers/AdminCards';
+import AnalyticsCharts from '../../containers/AnalyticsCharts';
+import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
 import AdminSearchForm from './AdminSearchForm';
@@ -319,6 +321,16 @@ class Admin extends React.Component {
                     </div>
                   ) : (
                     <AdminCards />
+                  )}
+                </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
+                    <AnalyticsCharts />
                   )}
                 </div>
                 <div className="row mt-4">
