@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import qs from 'query-string';
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -13,31 +12,19 @@ import { updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
 
 class AdminSearchForm extends React.Component {
-  constructor(props) {
-    super(props);
-    const { location } = props;
-    const queryParams = qs.parse(location.search);
-    this.state = {
-      searchQuery: queryParams.search,
-      searchCourseQuery: queryParams.search_course,
-      searchDateQuery: queryParams.search_start_date,
-    };
-  }
-
   componentDidUpdate(prevProps) {
-    const { location } = this.props;
-    if (location.search !== prevProps.location.search) {
-      // eslint-disable-next-line camelcase
-      const { search, search_course, search_start_date } = qs.parse(location.search);
-      const {
-        search: prevSearch,
-        search_course: prevSearchCourse,
-        search_start_date: prevSearchDate,
-      } = qs.parse(prevProps.location.search);
-      if (search !== prevSearch || search_course !== prevSearchCourse ||
-        search_start_date !== prevSearchDate) {
-        this.handleSearch(search, search_course, search_start_date);
-      }
+    const { searchParams: { searchQuery, searchCourseQuery, searchDateQuery } } = this.props;
+    const {
+      searchParams: {
+        searchQuery: prevSearchQuery,
+        searchCourseQuery: prevSearchCourseQuery,
+        searchDateQuery: prevSearchDateQuery,
+      },
+    } = prevProps;
+
+    if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery ||
+        searchDateQuery !== prevSearchDateQuery) {
+      this.handleSearch();
     }
   }
 
@@ -52,19 +39,16 @@ class AdminSearchForm extends React.Component {
     updateUrl(updateParams);
   }
 
-  handleSearch(emailSearch, courseSearch, dateSearch) {
-    this.setState({
-      searchQuery: emailSearch,
-      searchCourseQuery: courseSearch,
-      searchDateQuery: dateSearch,
-    });
+  handleSearch() {
     this.props.searchEnrollmentsList();
   }
 
   render() {
-    const { searchCourseQuery, searchDateQuery, searchQuery } = this.state;
-    const { tableData } = this.props;
-    const courseTitles = new Set(tableData.map(en => en.course_title));
+    const {
+      tableData,
+      searchParams: { searchCourseQuery, searchDateQuery, searchQuery },
+    } = this.props;
+    const courseTitles = new Set(tableData.map(en => en.course_title).sort());
     const courseDates = new Set(tableData.map(en => en.course_start).sort().reverse());
 
     return (
@@ -151,22 +135,15 @@ class AdminSearchForm extends React.Component {
 }
 
 AdminSearchForm.defaultProps = {
-  location: {
-    search: null,
-  },
   tableData: [],
 };
 
 AdminSearchForm.propTypes = {
   searchEnrollmentsList: PropTypes.func.isRequired,
-  location: PropTypes.shape({
-    search: PropTypes.string,
-  }),
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      actionSlug: PropTypes.string,
-    }).isRequired,
+  searchParams: PropTypes.shape({
+    searchQuery: PropTypes.string,
+    searchCourseQuery: PropTypes.string,
+    searchDateQuery: PropTypes.string,
   }).isRequired,
   tableData: PropTypes.arrayOf(PropTypes.shape({})),
 };

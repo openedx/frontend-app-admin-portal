@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Link } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -382,6 +382,48 @@ describe('<Admin />', () => {
         wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
       });
+    });
+  });
+  describe('reset form button', () => {
+    it('should not be present if there is no query', () => {
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: '' }
+          }
+        />
+      ));
+      expect(wrapper.text()).not.toContain('Reset Filters');
+    });
+    it('should be present if there is a querystring', () => {
+      const path = '/lael/';
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: 'search=foo', pathname: path }
+          }
+        />
+      ));
+      expect(wrapper.text()).toContain('Reset Filters');
+      const link = wrapper.find(Link).find('#reset-filters');
+      expect(link.first().props().to).toEqual(path);
+    });
+    it('should not disturb non-search-releated queries', () => {
+      const path = '/lael/';
+      const nonSearchQuery = 'features=bestfeature';
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: `search=foo&${nonSearchQuery}`, pathname: path }
+          }
+        />
+      ));
+      expect(wrapper.text()).toContain('Reset Filters');
+      const link = wrapper.find(Link).find('#reset-filters');
+      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
     });
   });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import qs from 'query-string';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
@@ -233,11 +234,16 @@ class Admin extends React.Component {
   }
 
   renderFiltersResetButton() {
-    const { match: { url } } = this.props;
+    const { location: { search, pathname } } = this.props;
     // remove the querys from the path
-    const path = url.split('?')[0];
+    const queryParams = qs.parse(search);
+    ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
+      delete queryParams[searchTerm];
+    });
+    const resetQuery = qs.stringify(queryParams);
+    const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
-      <Link to={path} className="btn btn-sm btn-outline-primary">
+      <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
         <Icon className="fa fa-undo mr-2" />
         Reset Filters
       </Link>
@@ -278,13 +284,19 @@ class Admin extends React.Component {
       loading,
       enterpriseId,
       match,
+      location: { search },
     } = this.props;
 
     const { params: { actionSlug } } = match;
-    const { location } = this.props;
-    const filtersActive = location.search;
+    const filtersActive = search;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
+    const queryParams = qs.parse(search);
+    const searchParams = {
+      searchQuery: queryParams.search,
+      searchCourseQuery: queryParams.search_course,
+      searchDateQuery: queryParams.search_start_date,
+    };
 
     return (
       <React.Fragment>
@@ -346,9 +358,7 @@ class Admin extends React.Component {
                           </div>
                         </div>
                         {this.displaySearchBar() && <AdminSearchForm
-                          match={this.props.match}
-                          location={this.props.location}
-                          csv={this.props.csv}
+                          searchParams={searchParams}
                           searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                           tableData={this.getTableData() ? this.getTableData().results : []}
                         />}
@@ -392,6 +402,7 @@ Admin.propTypes = {
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
+    pathname: PropTypes.string,
   }),
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
