@@ -101,6 +101,7 @@ describe('EnterpriseApp', () => {
     // There is some logic where we collapse the sidebar on menu click on mobile
     // so we test that here as well. Note that we need to set the window width
     // to mobile first.
+    const initialWidth = global.innerWidth;
     global.innerWidth = breakpoints.small.minWidth;
 
     const store = mockStore({
@@ -111,9 +112,10 @@ describe('EnterpriseApp', () => {
       },
     });
 
-    const wrapper = mount((
-      <EnterpriseAppWrapper store={store} />
-    ));
+    const wrapper = mount(
+      <EnterpriseAppWrapper store={store} />,
+      { attachTo: document.body },
+    );
 
     wrapper.setProps({
       location: {
@@ -123,6 +125,7 @@ describe('EnterpriseApp', () => {
 
     // ensure focus is set on content wrapper
     expect(document.activeElement.className).toEqual('content-wrapper');
+    global.innerWidth = initialWidth;
   });
 
   it('toggles sidebar toggle on componentWillUnmount', () => {
