@@ -9,12 +9,14 @@ const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',
 }) => {
   const windowSize = useWindowSize();
+  const placement = windowSize.width >= breakpoint ? placementSm : placementLg;
   return (
     <OverlayTrigger
       trigger={trigger}
       placement={windowSize.width >= breakpoint ? placementSm : placementLg}
+      data-testid={`tooltip-${placement}`}
       overlay={
-        <Tooltip id="tooltip-right">
+        <Tooltip id={`tooltip-${placement}`}>
           {tooltipText}
         </Tooltip>
     }
@@ -32,7 +34,7 @@ IconWithTooltip.propTypes = {
   /* eslint-disable react/require-default-props */
   placementSm: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
   placementLg: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
-  trigger: PropTypes.oneOfType(PropTypes.string, PropTypes.array),
+  trigger: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   breakpoint: PropTypes.number,
   iconClassNames: PropTypes.string,
   /* eslint-enable react/require-default-props */
