@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import qs from 'query-string';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
@@ -218,16 +219,33 @@ class Admin extends React.Component {
     );
   }
 
-  renderResetButton() {
+  renderUrlResetButton() {
     const { match: { url } } = this.props;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
 
     return (
-      <Link to={path} className="reset btn btn-sm btn-outline-primary ml-3">
+      <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
         <Icon className="fa fa-undo mr-2" />
         Reset to {this.getMetadataForAction().title}
+      </Link>
+    );
+  }
+
+  renderFiltersResetButton() {
+    const { location: { search, pathname } } = this.props;
+    // remove the querys from the path
+    const queryParams = qs.parse(search);
+    ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
+      delete queryParams[searchTerm];
+    });
+    const resetQuery = qs.stringify(queryParams);
+    const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
+    return (
+      <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
+        <Icon className="fa fa-undo mr-2" />
+        Reset Filters
       </Link>
     );
   }
@@ -266,11 +284,19 @@ class Admin extends React.Component {
       loading,
       enterpriseId,
       match,
+      location: { search },
     } = this.props;
 
     const { params: { actionSlug } } = match;
+    const filtersActive = search;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
+    const queryParams = qs.parse(search);
+    const searchParams = {
+      searchQuery: queryParams.search,
+      searchCourseQuery: queryParams.search_course,
+      searchDateQuery: queryParams.search_start_date,
+    };
 
     return (
       <React.Fragment>
@@ -297,10 +323,21 @@ class Admin extends React.Component {
                 </div>
                 <div className="row mt-4">
                   <div className="col">
-                    <H2 className="table-title">{tableMetadata.title}</H2>
-                    {actionSlug && this.renderResetButton()}
-                    {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
-                    {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                    <div className="row">
+                      <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
+                        <H2 className="table-title">{tableMetadata.title}</H2>
+                      </div>
+                      <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
+                        {actionSlug && this.renderUrlResetButton()}
+                        {filtersActive && this.renderFiltersResetButton()}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
+                        {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row">
@@ -321,9 +358,7 @@ class Admin extends React.Component {
                           </div>
                         </div>
                         {this.displaySearchBar() && <AdminSearchForm
-                          match={this.props.match}
-                          location={this.props.location}
-                          csv={this.props.csv}
+                          searchParams={searchParams}
                           searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                           tableData={this.getTableData() ? this.getTableData().results : []}
                         />}
@@ -367,6 +402,7 @@ Admin.propTypes = {
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,
+    pathname: PropTypes.string,
   }),
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,

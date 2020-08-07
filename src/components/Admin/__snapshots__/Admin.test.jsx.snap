@@ -68,11 +68,29 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Full Report
-        </h2>
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -585,24 +603,43 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Number of Courses Enrolled by Learners
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Number of Courses Enrolled by Learners
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon29"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon29"
+          <div
+            className="col"
           />
-          Reset to 
-          Full Report
-        </a>
+        </div>
       </div>
     </div>
     <div
@@ -1144,24 +1181,43 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Number of Courses Completed by Learner
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Number of Courses Completed by Learner
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon79"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon79"
+          <div
+            className="col"
           />
-          Reset to 
-          Full Report
-        </a>
+        </div>
       </div>
     </div>
     <div
@@ -1703,29 +1759,49 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Number of Courses Completed by Learner
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Number of Courses Completed by Learner
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon89"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon89"
-          />
-          Reset to 
-          Full Report
-        </a>
-        <h3
-          className={null}
-        >
-          Past Week
-        </h3>
+          <div
+            className="col"
+          >
+            <h3
+              className={null}
+            >
+              Past Week
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -2267,11 +2343,29 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Full Report
-        </h2>
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -2361,6 +2455,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         id="date-search"
                       >
                         Filter by start date
+                        <svg
+                          alt="More information"
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                          data-icon="info-circle"
+                          data-prefix="fas"
+                          focusable="false"
+                          onBlur={[Function]}
+                          onFocus={[Function]}
+                          onMouseOut={[Function]}
+                          onMouseOver={[Function]}
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
                       </label>
                       <select
                         aria-labelledby="date-search"
@@ -2955,11 +3071,29 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Full Report
-        </h2>
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -3049,6 +3183,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         id="date-search"
                       >
                         Filter by start date
+                        <svg
+                          alt="More information"
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                          data-icon="info-circle"
+                          data-prefix="fas"
+                          focusable="false"
+                          onBlur={[Function]}
+                          onFocus={[Function]}
+                          onMouseOut={[Function]}
+                          onMouseOver={[Function]}
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
                       </label>
                       <select
                         aria-labelledby="date-search"
@@ -3643,29 +3799,49 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Learners Enrolled in a Course
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Learners Enrolled in a Course
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon69"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon69"
-          />
-          Reset to 
-          Full Report
-        </a>
-        <h3
-          className={null}
-        >
-          Not Active in Past Month
-        </h3>
+          <div
+            className="col"
+          >
+            <h3
+              className={null}
+            >
+              Not Active in Past Month
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -4207,29 +4383,49 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Learners Enrolled in a Course
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Learners Enrolled in a Course
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon59"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon59"
-          />
-          Reset to 
-          Full Report
-        </a>
-        <h3
-          className={null}
-        >
-          Not Active in Past Week
-        </h3>
+          <div
+            className="col"
+          >
+            <h3
+              className={null}
+            >
+              Not Active in Past Week
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -4771,27 +4967,47 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Learners Not Enrolled in an Active Course
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Learners Not Enrolled in an Active Course
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon39"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon39"
-          />
-          Reset to 
-          Full Report
-        </a>
-        <p>
-          Learners who have completed all of their courses and/or courses have ended.
-        </p>
+          <div
+            className="col"
+          >
+            <p>
+              Learners who have completed all of their courses and/or courses have ended.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -5333,24 +5549,43 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Registered Learners Not Yet Enrolled in a Course
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Registered Learners Not Yet Enrolled in a Course
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon19"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon19"
+          <div
+            className="col"
           />
-          Reset to 
-          Full Report
-        </a>
+        </div>
       </div>
     </div>
     <div
@@ -5892,29 +6127,49 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Learners Enrolled in a Course
-        </h2>
-        <a
-          className="reset btn btn-sm btn-outline-primary ml-3"
-          href="/"
-          onClick={[Function]}
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Learners Enrolled in a Course
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-undo mr-2"
+                id="Icon49"
+              />
+              Reset to 
+              Full Report
+            </a>
+          </div>
+        </div>
+        <div
+          className="row"
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-undo mr-2"
-            id="Icon49"
-          />
-          Reset to 
-          Full Report
-        </a>
-        <h3
-          className={null}
-        >
-          Top Active Learners
-        </h3>
+          <div
+            className="col"
+          >
+            <h3
+              className={null}
+            >
+              Top Active Learners
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -6057,11 +6312,29 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Full Report
-        </h2>
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -6147,11 +6420,29 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
-        <h2
-          className="table-title"
+        <div
+          className="row"
         >
-          Full Report
-        </h2>
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
       </div>
     </div>
     <div
