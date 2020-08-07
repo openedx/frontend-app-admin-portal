@@ -4,6 +4,19 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  PieChart,
+  Pie, Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 import H2 from '../../components/H2';
 import H3 from '../../components/H3';
@@ -33,6 +46,65 @@ class Admin extends React.Component {
     const queryParams = qs.parse(location.search);
     this.state = {
       searchQuery: queryParams.search,
+      enrollmentData: [
+          {
+            period: '01/07/2020', enrollments: 22,
+          },
+          {
+            period: '07/07/2020', enrollments: 30,
+          },
+          {
+            period: '14/07/2020', enrollments: 35,
+          },
+          {
+            period: '21/07/2020', enrollments: 49,
+          },
+          {
+            period: '28/07/2020', enrollments: 150,
+          },
+      ],
+      gradeData: [
+          {
+            month: 'Jan', pass: 22, fail:12,
+          },
+          {
+            month: 'Feb', pass: 14, fail:5,
+          },
+          {
+            month: 'Mar', pass: 18, fail:25,
+          },
+          {
+            month: 'Apr', pass: 13, fail:20,
+          },
+          {
+            month: 'May', pass: 34, fail:15,
+          },
+          {
+            month: 'Jun', pass: 20, fail:10,
+          },
+          {
+            month: 'Jul', pass: 5, fail:13,
+          },
+          {
+            month: 'Aug', pass: 7, fail:3,
+          },
+          {
+            month: 'Sep', pass: 13, fail:6,
+          },
+          {
+            month: 'Oct', pass: 25, fail:5,
+          },
+      ],
+      progressData: [
+          {
+            "name": "In progress",
+            "value": 2400
+          },
+          {
+            "name": "Completed",
+            "value": 4567
+          },
+      ],
     };
   }
   componentDidMount() {
@@ -318,6 +390,24 @@ class Admin extends React.Component {
     );
   }
 
+
+  renderCustomizedLabel = ({
+    cx, cy, midAngle, innerRadius, outerRadius, percent, index,
+  }) => {
+
+   const RADIAN = Math.PI / 180;
+   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+   const x = cx + radius * Math.cos(-midAngle * RADIAN);
+   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="middle">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+  }
+
+
   render() {
     const {
       error,
@@ -330,6 +420,7 @@ class Admin extends React.Component {
     const { params: { actionSlug } } = match;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
+    const colors = ['#99ccff', '#004080'];
 
     return (
       <React.Fragment>
@@ -352,6 +443,81 @@ class Admin extends React.Component {
                     </div>
                   ) : (
                     <AdminCards />
+                  )}
+                </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
+                  <BarChart
+                    width={450}
+                    height={300}
+                    data={this.state.gradeData}
+                    margin={{
+                      top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                  >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pass" fill="#99ccff" />
+                  <Bar dataKey="fail" fill="#004080" />
+                  </BarChart>
+                  )}
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
+                  <LineChart
+                    width={450}
+                    height={300}
+                    data={this.state.enrollmentData}
+                    margin={{
+                      top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                  >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="period" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="enrollments" stroke="#004080" activeDot={{ r: 8 }} />
+                  </LineChart>
+                  )}
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && this.renderLoadingMessage()}
+                    </div>
+                  ) : (
+                  <PieChart width={450} height={250}>
+                    <text x={225} y={125} textAnchor="middle" dominantBaseline="middle">
+                      Progress
+                    </text>
+                    <Pie
+                      data={this.state.progressData}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={110}
+                      labelLine={false}
+                      label={this.renderCustomizedLabel}>
+                      {
+                        this.state.progressData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index]}/>
+                        ))
+                      }
+                    </Pie>
+                  </PieChart>
                   )}
                 </div>
                 <div className="row mt-4">
