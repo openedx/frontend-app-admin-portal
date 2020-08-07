@@ -43,13 +43,17 @@ export const useSubscriptions = (enterpriseId) => {
   };
 };
 
-export const useSubscriptionUsersOverview = ({ subscriptionUUID }) => {
-  const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState({
+export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
+  const initialSubscriptionUsersOverview = {
     all: 0,
     activated: 0,
     assigned: 0,
     deactivated: 0,
-  });
+  };
+  const [
+    subscriptionUsersOverview,
+    setSubscriptionUsersOverview,
+  ] = useState(initialSubscriptionUsersOverview);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -60,12 +64,12 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID }) => {
       return;
     }
 
-    LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID)
+    LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
       .then((response) => {
         setIsLoading(false);
         const subscriptionUsersOverviewData = response.data.reduce((accumulator, currentValue) => ({
           ...accumulator, [currentValue.status]: currentValue.count,
-        }), subscriptionUsersOverview);
+        }), initialSubscriptionUsersOverview);
         subscriptionUsersOverviewData.all = response.data.reduce(
           (accumulator, currentValue) => accumulator + +currentValue.count,
           0,
@@ -152,7 +156,7 @@ export const useSubscriptionData = ({
     subscriptionUsersOverview,
     isLoading: isLoadingSubscriptionUsersOverview,
     error: subscriptionUsersOverviewError,
-  } = useSubscriptionUsersOverview({ subscriptionUUID: subscriptions?.results[0]?.uuid });
+  } = useSubscriptionUsersOverview({ subscriptionUUID: subscriptions?.results[0]?.uuid, search });
 
   const {
     fetch: fetchSubscriptionUsers,
