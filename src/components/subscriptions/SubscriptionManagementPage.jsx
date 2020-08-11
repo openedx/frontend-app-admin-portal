@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
+import StatusAlert from '../StatusAlert';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
-import StatusAlert from '../StatusAlert';
+import { TAB_PENDING_USERS } from './constants';
 
 import './styles/SubscriptionManagementPage.scss';
 
@@ -69,7 +70,12 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                   License Allocation
                 </h3>
                 <SubscriptionConsumer>
-                  {({ details, fetchSubscriptionUsers, fetchSubscriptionDetails }) => (
+                  {({
+                     details,
+                     fetchSubscriptionUsers,
+                     fetchSubscriptionDetails,
+                     setActiveTab,
+                  }) => (
                     <React.Fragment>
                       <p className="lead">
                         {details.licenses.allocated}
@@ -93,6 +99,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                                 message: `${response.numAlreadyAssociated} email addresses were previously assigned. ${response.numSuccessfulAssignments} email addresses were successfully added.`,
                               });
                               fetchSubscriptionDetails();
+                              setActiveTab(TAB_PENDING_USERS);
                             }}
                           />
                         </div>
