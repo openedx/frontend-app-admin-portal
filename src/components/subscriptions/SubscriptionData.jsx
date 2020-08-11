@@ -53,6 +53,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
 
   const value = useMemo(
     () => ({
+      enterpriseCustomer: enterpriseId,
       details,
       overview,
       users,

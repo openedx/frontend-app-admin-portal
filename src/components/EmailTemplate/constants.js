@@ -1,0 +1,2 @@
+export const EMAIL_SUBJECT_LIMIT = 1000;
+export const EMAIL_TEMPLATE_FIELD_MAX_LIMIT = 50000;

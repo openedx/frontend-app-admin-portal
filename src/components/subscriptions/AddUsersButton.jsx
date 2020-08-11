@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import AddUsersModal from '../../containers/AddUsersModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 import { SubscriptionConsumer } from './SubscriptionData';
+import EmailTemplateData from '../EmailTemplate/EmailTemplateData';
 
 const AddUsersButton = ({
   onSuccess,
@@ -15,21 +16,25 @@ const AddUsersButton = ({
     renderModal={({ closeModal }) => (
       <SubscriptionConsumer>
         {({
+          enterpriseCustomer,
           overview,
           details,
         }) => (
-          <AddUsersModal
-            title="Add Users"
-            availableSubscriptionCount={overview.unassigned}
-            subscriptionUUID={details.uuid}
-            onSuccess={onSuccess}
-            onClose={() => {
-              closeModal();
-              if (onClose) {
-                onClose();
-              }
-            }}
-          />
+          <EmailTemplateData enterpriseCustomer={enterpriseCustomer} templateType="assign">
+            <AddUsersModal
+              title="Add Users"
+              availableSubscriptionCount={overview.unassigned}
+              subscriptionUUID={details.uuid}
+              enableReinitialize
+              onSuccess={onSuccess}
+              onClose={() => {
+                closeModal();
+                if (onClose) {
+                  onClose();
+                }
+              }}
+            />
+          </EmailTemplateData>
         )}
       </SubscriptionConsumer>
     )}

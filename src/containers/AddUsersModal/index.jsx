@@ -4,10 +4,6 @@ import AddUsersModal from '../../components/AddUsersModal';
 
 import addLicensesForUsers from '../../data/actions/userSubscription';
 
-const mapStateToProps = state => ({
-  initialValues: state.emailTemplate.subscribe,
-});
-
 const mapDispatchToProps = dispatch => ({
   addLicensesForUsers: (options, subscriptionUUID) => new Promise((resolve, reject) => {
     dispatch(addLicensesForUsers({
@@ -19,4 +15,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsersModal);
+export default connect(null, mapDispatchToProps)(AddUsersModal);

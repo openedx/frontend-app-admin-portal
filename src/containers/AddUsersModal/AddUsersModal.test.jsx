@@ -8,6 +8,7 @@ import { mount } from 'enzyme';
 
 import AddUsersModal from './index';
 import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
+import { EmailTemplateContext } from '../../components/EmailTemplate/EmailTemplateData';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -16,6 +17,7 @@ const data = {};
 const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise',
+    subscriptionUUID: 'test-subscription',
   },
   emailTemplate: {
     loading: false,
@@ -33,16 +35,31 @@ const initialState = {
   },
 };
 
+const emailTemplateContext = {
+  emailTemplates: [],
+  currentTemplate: {},
+  isLoading: false,
+  isSaving: false,
+  errors: [],
+  setCurrentEmailTemplateById: () => {},
+  setDefaultAsCurrentEmailTemplate: () => {},
+  updateCurrentTemplate: () => {},
+  saveEmailTemplate: () => {},
+};
+
 const UserSubscriptionModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <AddUsersModal
-        title={modelTitle}
-        availableSubscriptionCount={10}
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
+      <EmailTemplateContext.Provider value={emailTemplateContext}>
+        <AddUsersModal
+          title={modelTitle}
+          availableSubscriptionCount={10}
+          subscriptionUUID={initialState.portalConfiguration.subscriptionUUID}
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </EmailTemplateContext.Provider>
     </Provider>
   </MemoryRouter>
 );
