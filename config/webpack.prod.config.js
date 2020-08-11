@@ -167,7 +167,6 @@ module.exports = Merge.smart(commonConfig, {
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,
-        SUBSCRIPTION_MANAGEMENT: false,
         SUPPORT: true,
         SAML_CONFIGURATION: true,
       },

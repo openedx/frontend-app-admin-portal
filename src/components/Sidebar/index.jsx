@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
         title: 'Subscription Management',
         to: `${baseUrl}/admin/subscriptions`,
         iconClassName: 'fa-credit-card',
-        hidden: !features.SUBSCRIPTION_MANAGEMENT || !enableSubscriptionManagementScreen,
+        hidden: !enableSubscriptionManagementScreen,
       },
       {
         title: 'Saml Configuration',

@@ -159,7 +159,7 @@ class EnterpriseApp extends React.Component {
                       )}
                     />
                   }
-                  {features.SUBSCRIPTION_MANAGEMENT && enableSubscriptionManagementScreen &&
+                  {enableSubscriptionManagementScreen &&
                     <Route
                       key="subscription-management"
                       exact
