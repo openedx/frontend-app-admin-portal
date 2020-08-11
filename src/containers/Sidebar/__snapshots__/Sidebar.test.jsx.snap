@@ -29,7 +29,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon3"
+            id="Icon4"
           />
           <span
             className="sr-only"
@@ -50,12 +50,33 @@ exports[`<Sidebar /> renders correctly 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-tags"
-            id="Icon4"
+            id="Icon5"
           />
           <span
             className="sr-only"
           >
             Code Management
+          </span>
+        </a>
+      </li>
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/subscriptions"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-credit-card"
+            id="Icon6"
+          />
+          <span
+            className="sr-only"
+          >
+            Subscription Management
           </span>
         </a>
       </li>
@@ -93,7 +114,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           <span
             aria-hidden={true}
             className="fa fa-line-chart"
-            id="Icon7"
+            id="Icon10"
           />
           <span
             className="sr-only"
@@ -112,62 +133,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
   aria-expanded={true}
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded has-shadow"
-  id="sidebar"
-  onBlur={[Function]}
-  onFocus={[Function]}
-  onMouseLeave={[Function]}
-  onMouseOver={[Function]}
->
-  <div
-    className="sidebar-content py-2"
-  >
-    <ul
-      className="nav nav-pills flex-column m-0"
-    >
-      <li
-        className="nav-item"
-      >
-        <a
-          aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
-          href="/test-enterprise-slug/admin/learners"
-          onClick={[Function]}
-        >
-          <span
-            aria-hidden={true}
-            className="fa fa-line-chart mr-2"
-            id="Icon10"
-          />
-          Learner Report
-        </a>
-      </li>
-      <li
-        className="nav-item"
-      >
-        <a
-          aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
-          href="/test-enterprise-slug/admin/coupons"
-          onClick={[Function]}
-        >
-          <span
-            aria-hidden={true}
-            className="fa fa-tags mr-2"
-            id="Icon11"
-          />
-          Code Management
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
-`;
-
-exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
-<nav
-  aria-expanded={true}
-  aria-label="sidebar"
-  className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -212,6 +177,96 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
             id="Icon15"
           />
           Code Management
+        </a>
+      </li>
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/subscriptions"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-credit-card mr-2"
+            id="Icon16"
+          />
+          Subscription Management
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;
+
+exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
+<nav
+  aria-expanded={true}
+  aria-label="sidebar"
+  className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
+  id="sidebar"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onMouseLeave={[Function]}
+  onMouseOver={[Function]}
+>
+  <div
+    className="sidebar-content py-2"
+  >
+    <ul
+      className="nav nav-pills flex-column m-0"
+    >
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/learners"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-line-chart mr-2"
+            id="Icon20"
+          />
+          Learner Report
+        </a>
+      </li>
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/coupons"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-tags mr-2"
+            id="Icon21"
+          />
+          Code Management
+        </a>
+      </li>
+      <li
+        className="nav-item"
+      >
+        <a
+          aria-current={null}
+          className="nav-link text-left text-secondary rounded-0"
+          href="/test-enterprise-slug/admin/subscriptions"
+          onClick={[Function]}
+        >
+          <span
+            aria-hidden={true}
+            className="fa fa-credit-card mr-2"
+            id="Icon22"
+          />
+          Subscription Management
         </a>
       </li>
     </ul>
