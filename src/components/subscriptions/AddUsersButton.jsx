@@ -11,7 +11,7 @@ const AddUsersButton = ({
 }) => (
   <ActionButtonWithModal
     buttonLabel="Add Users"
-    buttonClassName="add-btn btn btn-primary float-right"
+    buttonClassName="add-btn btn btn-primary float-md-right"
     renderModal={({ closeModal }) => (
       <SubscriptionConsumer>
         {({
