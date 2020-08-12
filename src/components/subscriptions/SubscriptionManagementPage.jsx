@@ -56,67 +56,69 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
               <div className="col-12 col-lg-8 mb-3 mb-lg-0">
                 <SubscriptionDetails />
               </div>
-              <div className="col-12 col-lg-4 text-md-right">
+              <div className="col-12 col-lg-4 text-lg-right">
                 <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
                   Contact Customer Support
                 </Link>
               </div>
             </div>
           </div>
-          <div className="row mb-3">
-            <div className="col">
-              <div className="mb-3">
-                <h3 className="mb-2">
-                  License Allocation
-                </h3>
-                <SubscriptionConsumer>
-                  {({
-                     details,
-                     fetchSubscriptionUsers,
-                     fetchSubscriptionDetails,
-                     setActiveTab,
-                  }) => (
-                    <React.Fragment>
-                      <p className="lead">
-                        {details.licenses.allocated}
-                        {' of '}
-                        {details.licenses.total} licenses allocated
-                      </p>
-                      <div className="my-3 row">
-                        <div className="col-12 col-lg-5 mb-3 mb-lg-0">
-                          <SearchBar
-                            placeholder="Search by email..."
-                            onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
-                            onClear={() => fetchSubscriptionUsers()}
-                          />
+          <div className="container-fluid">
+            <div className="row mb-3">
+              <div className="col">
+                <div className="mb-3">
+                  <h3 className="mb-2">
+                    License Allocation
+                  </h3>
+                  <SubscriptionConsumer>
+                    {({
+                      details,
+                      fetchSubscriptionUsers,
+                      fetchSubscriptionDetails,
+                      setActiveTab,
+                    }) => (
+                      <React.Fragment>
+                        <p className="lead">
+                          {details.licenses.allocated}
+                          {' of '}
+                          {details.licenses.total} licenses allocated
+                        </p>
+                        <div className="my-3 row">
+                          <div className="col-12 col-md-5 mb-3 mb-md-0">
+                            <SearchBar
+                              placeholder="Search by email..."
+                              onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
+                              onClear={() => fetchSubscriptionUsers()}
+                            />
+                          </div>
+                          <div className="col-12 col-md-7">
+                            <AddUsersButton
+                              onSuccess={(response) => {
+                                setStatus({
+                                  visible: true,
+                                  alertType: 'success',
+                                  message: `${response.numAlreadyAssociated} email addresses were previously assigned. ${response.numSuccessfulAssignments} email addresses were successfully added.`,
+                                });
+                                fetchSubscriptionDetails();
+                                setActiveTab(TAB_PENDING_USERS);
+                              }}
+                            />
+                          </div>
                         </div>
-                        <div className="col-12 col-lg-7">
-                          <AddUsersButton
-                            onSuccess={(response) => {
-                              setStatus({
-                                visible: true,
-                                alertType: 'success',
-                                message: `${response.numAlreadyAssociated} email addresses were previously assigned. ${response.numSuccessfulAssignments} email addresses were successfully added.`,
-                              });
-                              fetchSubscriptionDetails();
-                              setActiveTab(TAB_PENDING_USERS);
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  )}
-                </SubscriptionConsumer>
-              </div>
-              <div className="row my-4">
-                <div className="col-12 col-lg-3">
-                  <LicenseAllocationNavigation />
+                      </React.Fragment>
+                    )}
+                  </SubscriptionConsumer>
                 </div>
-                <div className="col-12 col-lg-9">
-                  {renderStatusMessage()}
-                  <StatusContext.Provider value={{ setStatus, setSuccessStatus }}>
-                    <TabContentTable />
-                  </StatusContext.Provider>
+                <div className="row my-4">
+                  <div className="col-12 col-lg-3 mb-2 mb-lg-0">
+                    <LicenseAllocationNavigation />
+                  </div>
+                  <div className="col-12 col-lg-9">
+                    {renderStatusMessage()}
+                    <StatusContext.Provider value={{ setStatus, setSuccessStatus }}>
+                      <TabContentTable />
+                    </StatusContext.Provider>
+                  </div>
                 </div>
               </div>
             </div>
