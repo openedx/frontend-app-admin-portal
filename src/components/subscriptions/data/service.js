@@ -2,7 +2,7 @@ import faker from 'faker';
 import moment from 'moment';
 import qs from 'query-string';
 
-import { ACTIVATED, ASSIGNED, DEACTIVATED } from '../constants';
+import { ACTIVATED, ASSIGNED, REVOKED } from '../constants';
 
 import apiClient from '../../../data/apiClient';
 import { configuration } from '../../../config';
@@ -19,7 +19,7 @@ export function createSampleUser(licenseStatus) {
 const users = [
   [...Array(6)].map(() => createSampleUser(ACTIVATED)),
   [...Array(3)].map(() => createSampleUser(ASSIGNED)),
-  [...Array(1)].map(() => createSampleUser(DEACTIVATED)),
+  [...Array(1)].map(() => createSampleUser(REVOKED)),
 ].flat();
 
 function updateUserLicenseStatus({ userId, status }) {
@@ -77,7 +77,7 @@ export function sendLicenseReminder(options = {}) {
 export function sendLicenseRevoke(options = {}) {
   const { userId } = options;
 
-  updateUserLicenseStatus({ userId, status: DEACTIVATED });
+  updateUserLicenseStatus({ userId, status: REVOKED });
 
   const updatedUser = users.find(item => item.userId === userId);
   return Promise.resolve(updatedUser);

@@ -12,7 +12,7 @@ import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
-  TAB_DEACTIVATED_USERS,
+  TAB_REVOKED_USERS,
   PAGE_SIZE,
 } from './constants';
 import LoadingMessage from '../LoadingMessage';
@@ -58,7 +58,7 @@ export default function TabContentTable() {
           return {
             title: 'All Users',
             paginationLabel: 'pagination for all users',
-            noResultsLabel: 'There are no Pending, Activated or Deactivated users',
+            noResultsLabel: 'There are no Pending, Activated or Revoked users',
           };
         case TAB_PENDING_USERS:
           return {
@@ -72,11 +72,11 @@ export default function TabContentTable() {
             paginationLabel: 'pagination for licensed users',
             noResultsLabel: 'There are no licensed users',
           };
-        case TAB_DEACTIVATED_USERS:
+        case TAB_REVOKED_USERS:
           return {
-            title: 'Deactivated Users',
-            paginationLabel: 'pagination for deactivated users',
-            noResultsLabel: 'There are no deactivated users',
+            title: 'Revoked Users',
+            paginationLabel: 'pagination for revoked users',
+            noResultsLabel: 'There are no revoked users',
           };
         default:
           return null;

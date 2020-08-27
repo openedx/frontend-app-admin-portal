@@ -7,7 +7,7 @@ import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
-  TAB_DEACTIVATED_USERS,
+  TAB_REVOKED_USERS,
   DEFAULT_PAGE,
 } from './constants';
 
@@ -24,7 +24,7 @@ export default function LicenseAllocationNavigation() {
     () => [
       {
         key: TAB_ALL_USERS,
-        text: `All Users (${overview.assigned + overview.activated + overview.deactivated})`,
+        text: `All Users (${overview.assigned + overview.activated + overview.revoked})`,
       },
       {
         key: TAB_LICENSED_USERS,
@@ -35,8 +35,8 @@ export default function LicenseAllocationNavigation() {
         text: `Pending Users (${overview.assigned})`,
       },
       {
-        key: TAB_DEACTIVATED_USERS,
-        text: `Deactivated Users (${overview.deactivated})`,
+        key: TAB_REVOKED_USERS,
+        text: `Revoked Users (${overview.revoked})`,
       },
     ],
     [overview],
