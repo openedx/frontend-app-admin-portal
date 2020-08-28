@@ -170,7 +170,7 @@ EnterpriseList.propTypes = {
     count: PropTypes.number,
     num_pages: PropTypes.number,
     current_page: PropTypes.number,
-    results: PropTypes.array,
+    results: PropTypes.arrayOf(PropTypes.shape()),
     next: PropTypes.string,
     previous: PropTypes.string,
     start: PropTypes.number,

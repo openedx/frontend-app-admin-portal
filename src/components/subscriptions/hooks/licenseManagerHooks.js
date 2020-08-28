@@ -23,10 +23,11 @@ export const useSubscriptions = (enterpriseId) => {
       .then((response) => {
         setIsLoading(false);
 
-        const subscriptionsData = { ...response.data };
-        subscriptionsData.results = response.data?.results?.filter(
+        const { data: subscriptionsData } = response;
+        const subscriptionsList = subscriptionsData?.results || [];
+        subscriptionsData.results = subscriptionsList.filter((
           subscription => subscription.is_active
-        ) || [];
+        ));
 
         setSubscriptions(subscriptionsData);
         setHasSubscription(subscriptionsData?.results?.length > 0);
