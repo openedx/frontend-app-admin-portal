@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { formatTimestamp } from '../../utils';
-import { ACTIVATED, ASSIGNED, DEACTIVATED } from './constants';
+import { ACTIVATED, ASSIGNED, REVOKED } from './constants';
 
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(
@@ -30,10 +30,10 @@ export default function LicenseStatus({ user }) {
               </React.Fragment>
             ),
           };
-        case DEACTIVATED:
+        case REVOKED:
           return {
             iconClassName: 'fa-times-circle text-danger',
-            text: 'Deactivated',
+            text: 'Revoked',
           };
         default:
           return {

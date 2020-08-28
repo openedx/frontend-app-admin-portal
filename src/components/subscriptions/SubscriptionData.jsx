@@ -7,10 +7,10 @@ import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
-  TAB_DEACTIVATED_USERS,
+  TAB_REVOKED_USERS,
   ACTIVATED,
   ASSIGNED,
-  DEACTIVATED,
+  REVOKED,
   ALL_USERS,
   DEFAULT_PAGE,
 } from './constants';
@@ -69,7 +69,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
           [TAB_ALL_USERS]: ALL_USERS,
           [TAB_LICENSED_USERS]: ACTIVATED,
           [TAB_PENDING_USERS]: ASSIGNED,
-          [TAB_DEACTIVATED_USERS]: DEACTIVATED,
+          [TAB_REVOKED_USERS]: REVOKED,
         };
 
         setSearchQuery(options.searchQuery);

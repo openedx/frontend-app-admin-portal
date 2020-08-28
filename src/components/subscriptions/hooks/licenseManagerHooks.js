@@ -48,7 +48,7 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
     all: 0,
     activated: 0,
     assigned: 0,
-    deactivated: 0,
+    revoked: 0,
   };
   const [
     subscriptionUsersOverview,
