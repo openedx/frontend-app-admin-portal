@@ -105,6 +105,11 @@ class LmsApiService {
     const providerDataUrl = `${LmsApiService.providerDataUrl}${pdid}/?enterprise_customer_uuid=${uuid}`;
     return apiClient.delete(providerDataUrl);
   }
+
+  static fetchSamlConfigurations() {
+    const samlConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/saml_configuration/`;
+    return apiClient.get(samlConfigUrl);
+  }
 }
 
 

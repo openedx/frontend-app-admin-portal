@@ -1,90 +1,53 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import SamlConfiguration from './index';
-import LmsApiService from './../../data/services/LmsApiService';
-import { REQUIRED_DATA_FIELDS } from './SamlProviderDataForm';
-import { REQUIRED_CONFIG_FIELDS } from './SamlProviderConfigForm';
+import LmsApiService from '../../data/services/LmsApiService';
 
 jest.mock('./../../data/services/LmsApiService');
 
-const formData = new FormData();
-const configResponse = {
-  data: { results: [{}] },
+const testConfigs = {
+  data: {
+    results: [{ id: 1, slug: 'test1' }, { id: 2, slug: 'test2' }],
+  },
 };
-const validDataResponse = {
-  data: { results: [{}] },
-};
-const invalidDataResponse = {
-  data: { results: [{}] },
-};
-
-const oldConfig = { };
-REQUIRED_CONFIG_FIELDS.forEach((field) => {
-  formData.append(field, 'testdata');
-  configResponse.data.results[0][field] = 'testdata';
-  oldConfig[field] = 'oldtestdata';
-});
-REQUIRED_DATA_FIELDS.forEach((field) => {
-  validDataResponse.data.results[0][field] = 'testdata';
-});
 
 describe('<SamlConfiguration /> ', () => {
-  it('get provider config (with no data)', () => {
-    LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
-    LmsApiService.getProviderData.mockResolvedValue(invalidDataResponse);
-    const wrapper = mount(<SamlConfiguration enterpriseId="testEnterpriseId" />);
+  it('get config options', () => {
+    LmsApiService.fetchSamlConfigurations.mockResolvedValue(testConfigs);
+    const wrapper = mount(<SamlConfiguration />);
     setImmediate(() => {
-      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
+      const options = wrapper.instance().getConfigOptions();
+      expect(options).toEqual([
+        { label: '-- choose a configuration --', value: '', hidden: true },
+        {
+          label: testConfigs.data.results[0].slug,
+          value: testConfigs.data.results[0].id,
+        },
+        { label: testConfigs.data.results[1].slug, value: testConfigs.data.results[1].id },
+      ]);
     });
   });
 
-  it('get provider config and data', () => {
-    LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
-    LmsApiService.getProviderData.mockResolvedValue(validDataResponse);
-    const wrapper = mount(<SamlConfiguration enterpriseId="testEnterpriseId" />);
+  it('with no prop, options default uses empty value', () => {
+    const wrapper = mount(<SamlConfiguration />);
+    expect(wrapper.find('select#samlConfigId').instance().value).toEqual('');
+  });
+  it('with prop, options default uses prop', () => {
+    LmsApiService.fetchSamlConfigurations.mockResolvedValue(testConfigs);
+    const wrapper = mount(<SamlConfiguration currentConfig={2} />);
     setImmediate(() => {
-      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
-      expect(wrapper.state().providerData).toEqual(validDataResponse.data.results[0]);
+      wrapper.update();
+      expect(wrapper.find('select#samlConfigId').instance().value).toEqual('2');
     });
   });
 
-  it('creating provider config states', () => {
-    const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-
-    LmsApiService.postNewProviderConfig.mockResolvedValue(configResponse);
-    wrapper.instance().createProviderConfig(formData, () => {
-      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
+  it('verify default value when prop does not match any options', () => {
+    LmsApiService.fetchSamlConfigurations.mockResolvedValue(testConfigs);
+    const wrapper = mount(<SamlConfiguration currentConfig={4} />);
+    setImmediate(() => {
+      wrapper.update();
+      expect(wrapper.find('select#samlConfigId').instance().value).toEqual('');
     });
-  });
-
-  it('updating provider config states', () => {
-    const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-    wrapper.setState({ providerConfig: oldConfig });
-
-    LmsApiService.updateProviderConfig.mockResolvedValue(configResponse);
-    wrapper.instance().updateProviderConfig(formData, () => {
-      expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
-    });
-  });
-
-  it('deleting provider config resets states', () => {
-    const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-    wrapper.setState({ providerConfig: oldConfig });
-
-    LmsApiService.deleteProviderConfig.mockResolvedValue({});
-    wrapper.instance().deleteProviderConfig(formData, () => {
-      expect(wrapper.state().providerConfig).toEqual(undefined);
-    });
-  });
-
-  it('handling response errors', () => {
-    const wrapper = shallow(<SamlConfiguration enterpriseId="testEnterpriseId" />);
-
-    const errorMessage = 'test error message.';
-    LmsApiService.updateProviderConfig.mockImplementation(() => {
-      throw new Error(errorMessage);
-    });
-    expect(wrapper.instance().updateProviderConfig(formData)).resolves.toEqual(errorMessage);
   });
 });
