@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import SamlConfiguration from '../../components/SamlConfiguration';
+import SamlProviderConfiguration from '../../components/SamlProviderConfiguration';
 
 const mapStateToProps = state => ({
   enterpriseName: state.portalConfiguration.enterpriseName,
@@ -8,4 +8,4 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(SamlConfiguration);
+export default connect(mapStateToProps)(SamlProviderConfiguration);

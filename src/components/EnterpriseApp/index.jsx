@@ -10,7 +10,7 @@ import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import ReportingConfig from '../../components/ReportingConfig';
 import SupportPage from '../../containers/SupportPage';
-import SamlConfiguration from '../../containers/SamlConfiguration';
+import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
@@ -175,7 +175,7 @@ class EnterpriseApp extends React.Component {
                       exact
                       path={`${baseUrl}/admin/samlconfiguration`}
                       render={routeProps => (
-                        <SamlConfiguration
+                        <SamlProviderConfiguration
                           {...routeProps}
                         />
                       )}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
+import SamlConfiguration from '../SamlConfiguration';
 
 export const REQUIRED_CONFIG_FIELDS = [
   'entityId',
@@ -206,15 +207,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="attrUserId"
+              for="attrUserPermanentId"
               helpText="URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default."
             >
-              <label htmlFor="attrUserId">User ID Attribute</label>
+              <label htmlFor="attrUserPermanentId">User ID Attribute</label>
               <Input
                 type="text"
-                id="attrUserId"
-                name="attrUserId"
-                defaultValue={config ? config.attrUserId : ''}
+                id="attrUserPermanentId"
+                name="attrUserPermanentId"
+                defaultValue={config ? config.attrUserPermanentId : ''}
               />
             </ValidationFormGroup>
           </div>
@@ -299,6 +300,11 @@ class SamlProviderConfigForm extends React.Component {
             </ValidationFormGroup>
           </div>
         </div>
+        <div className="row">
+          <SamlConfiguration
+            currentConfig={config ? config.samlConfiguration : undefined}
+          />
+        </div>
 
         <div className="row">
           <div className="col col-2">
@@ -361,7 +367,7 @@ SamlProviderConfigForm.propTypes = {
     metadataSource: PropTypes.string,
     uuid: PropTypes.string,
     syncLearnerProfileData: PropTypes.bool,
-    attrUserId: PropTypes.string,
+    attrUserPermanentId: PropTypes.string,
     attrFullName: PropTypes.string,
     attrFirstName: PropTypes.string,
     attrLastName: PropTypes.string,
@@ -369,6 +375,7 @@ SamlProviderConfigForm.propTypes = {
     maxSessionLength: PropTypes.number,
     id: PropTypes.number,
     country: PropTypes.string,
+    samlConfiguration: PropTypes.number,
   }),
 };
 
