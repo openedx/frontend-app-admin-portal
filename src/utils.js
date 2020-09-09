@@ -276,6 +276,15 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
+const redirectToProxyLogin = (enterpriseSlug) => {
+  const options = {
+    enterprise_slug: enterpriseSlug,
+    next: global.location,
+  };
+  const proxyLoginUrl = `${process.env.LMS_BASE_URL}/enterprise/proxy-login/?${qs.stringify(options)}`;
+  global.location.href = proxyLoginUrl;
+};
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -298,4 +307,5 @@ export {
   validateEmailAddresses,
   validateEmailAddressesFields,
   mergeErrors,
+  redirectToProxyLogin,
 };

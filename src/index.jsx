@@ -18,6 +18,7 @@ import Header from './containers/Header';
 import Footer from './containers/Footer';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import AdminRegisterPage from './containers/AdminRegisterPage';
+import UserActivationPage from './containers/UserActivationPage';
 import NotFoundPage from './components/NotFoundPage';
 import SupportPage from './components/SupportPage';
 import { withErrorBoundary } from './components/ErrorBoundary';
@@ -56,6 +57,11 @@ const AppWrapper = () => (
             exact
             path="/:enterpriseSlug/admin/register"
             component={AdminRegisterPage}
+          />
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/register/activate"
+            component={UserActivationPage}
           />
           <PrivateRoute
             path="/:enterpriseSlug"

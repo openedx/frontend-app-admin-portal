@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom';
 import AdminRegisterPage from '../../components/AdminRegisterPage';
 
 const mapStateToProps = state => ({
-  isAuthenticated: !!state.authentication?.username,
+  authentication: state.authentication,
+  userAccount: state.userAccount,
 });
 
 export default withRouter(connect(mapStateToProps)(AdminRegisterPage));

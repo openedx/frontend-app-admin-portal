@@ -16,7 +16,8 @@ const SidebarToggle = (props) => {
 
   return (
     <Button
-      className="sidebar-toggle-btn px-1 mr-2 bg-white"
+      variant="link"
+      className="sidebar-toggle-btn px-1 mr-2 text-dark"
       onClick={isExpandedByToggle ? collapseSidebar : expandSidebar}
       aria-controls="sidebar"
     >

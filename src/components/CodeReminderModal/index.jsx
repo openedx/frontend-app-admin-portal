@@ -268,7 +268,7 @@ class CodeReminderModal extends React.Component {
             <Button
               key="remind-submit-btn"
               disabled={submitting}
-              className="code-remind-save-btn btn-primary"
+              className="code-remind-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>

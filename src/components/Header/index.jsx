@@ -54,15 +54,24 @@ class Header extends React.Component {
             </Link>
           </div>
           {email && (
-            <Dropdown>
-              <Dropdown.Button>
+            // TODO: @edx/paragon's Dropdown is now a passthru component from react-bootstrap
+            // that doesn't address focus management, so using the now-deprecated
+            // previous version of the Dropdown component until the a11y issue is fixed.
+            <Dropdown.Deprecated>
+              <Dropdown.Deprecated.Button>
                 {this.getProfileIconElement()}
                 {email}
-              </Dropdown.Button>
-              <Dropdown.Menu>
-                <Button className="dropdown-item" onClick={() => apiClient.logout()}>Logout</Button>
-              </Dropdown.Menu>
-            </Dropdown>
+              </Dropdown.Deprecated.Button>
+              <Dropdown.Deprecated.Menu>
+                <Button
+                  variant="link"
+                  className="dropdown-item"
+                  onClick={() => apiClient.logout()}
+                >
+                  Logout
+                </Button>
+              </Dropdown.Deprecated.Menu>
+            </Dropdown.Deprecated>
           )}
         </nav>
       </header>

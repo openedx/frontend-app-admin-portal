@@ -186,7 +186,6 @@ class CouponDetails extends React.Component {
     } = code;
 
     let remainingUses = redemptions.total - redemptions.used;
-    const buttonClassNames = ['btn-link', 'btn-sm', 'p-0'];
 
     // Don't show `Assign/Remind/Revoke` buttons for an unavailable coupon
     if (!couponAvailable) {
@@ -236,7 +235,8 @@ class CouponDetails extends React.Component {
 
     return (
       <Button
-        className={`assignment-btn ${buttonClassNames.join(' ')}`}
+        variant="link"
+        className="assignment-btn btn-sm p-0"
         onClick={() => this.setModalState({
           key: 'assignment',
           options: {
@@ -775,7 +775,7 @@ class CouponDetails extends React.Component {
                     disabled={this.isBulkAssignSelectDisabled()}
                   />
                   <Button
-                    className="btn-primary ml-2"
+                    className="ml-2"
                     onClick={this.handleBulkActionSelect}
                     disabled={this.isBulkAssignSelectDisabled()}
                   >
@@ -807,7 +807,8 @@ class CouponDetails extends React.Component {
                         <React.Fragment>
                           Failed to fetch coupon overview data ({couponOverviewError.message}).
                           <Button
-                            className="btn-link p-0 pl-1 border-0"
+                            variant="link"
+                            className="p-0 pl-1 border-0"
                             onClick={() => this.props.fetchCouponOrder(id)}
                           >
                             Please try again.
@@ -821,7 +822,8 @@ class CouponDetails extends React.Component {
                         <React.Fragment>
                           To view the newly assigned code(s), filter by
                           <Button
-                            className="btn-link p-0 pl-1 border-0"
+                            variant="link"
+                            className="p-0 pl-1 border-0"
                             onClick={() => {
                               this.setState({
                                 selectedToggle: 'unredeemed',
@@ -851,7 +853,8 @@ class CouponDetails extends React.Component {
                           {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
                           {!hasAllCodesSelected && (
                             <Button
-                              className="btn-link p-0 pl-1 border-0"
+                              variant="link"
+                              className="p-0 pl-1 border-0"
                               onClick={() => this.setState({
                                 hasAllCodesSelected: true,
                               })}

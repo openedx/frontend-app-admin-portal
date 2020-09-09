@@ -205,8 +205,9 @@ class NumberCard extends React.Component {
           <div className="card-footer">
             <div className="footer-title">
               <Button
-                inputRef={(node) => { this.toggleDetailsBtnRef = node; }}
-                className="toggle-collapse btn-link btn-block"
+                variant="link"
+                ref={(node) => { this.toggleDetailsBtnRef = node; }}
+                className="toggle-collapse btn-block"
                 onClick={this.toggleDetails}
                 onKeyDown={this.handleToggleDetailsKeyDown}
                 aria-expanded={detailsExpanded}
