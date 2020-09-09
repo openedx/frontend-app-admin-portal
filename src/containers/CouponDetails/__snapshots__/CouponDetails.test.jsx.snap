@@ -24,11 +24,9 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -194,11 +192,9 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -608,11 +604,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -778,11 +772,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -951,20 +943,18 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn remind-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Remind
                     </button>
                      | 
                     <button
-                      className="btn revoke-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Revoke
@@ -1109,10 +1099,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn assignment-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="assignment-btn btn-sm p-0 btn btn-link"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Assign
@@ -1222,11 +1211,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -1392,11 +1379,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -1565,20 +1550,18 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn remind-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Remind
                     </button>
                      | 
                     <button
-                      className="btn revoke-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Revoke
@@ -1723,10 +1706,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn assignment-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="assignment-btn btn-sm p-0 btn btn-link"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Assign
@@ -1836,11 +1818,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -2006,11 +1986,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -2179,20 +2157,18 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn remind-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Remind
                     </button>
                      | 
                     <button
-                      className="btn revoke-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Revoke
@@ -2337,10 +2313,9 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="btn assignment-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="assignment-btn btn-sm p-0 btn btn-link"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Assign
@@ -2461,11 +2436,9 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -2631,11 +2604,9 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -2714,11 +2685,9 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -2884,11 +2853,9 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -2923,11 +2890,9 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
         className="col-12 col-md-6 mb-2 mb-md-0 text-md-right"
       >
         <button
-          className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+          className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -3093,11 +3058,9 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
           </div>
         </div>
         <button
-          className="btn btn-primary ml-2"
+          className="ml-2 btn btn-primary"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Go
@@ -3266,20 +3229,18 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     scope={null}
                   >
                     <button
-                      className="btn remind-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Remind
                     </button>
                      | 
                     <button
-                      className="btn revoke-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Revoke
@@ -3424,10 +3385,9 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     scope={null}
                   >
                     <button
-                      className="btn assignment-btn btn-link btn-sm p-0"
-                      onBlur={[Function]}
+                      className="assignment-btn btn-sm p-0 btn btn-link"
+                      disabled={false}
                       onClick={[Function]}
-                      onKeyDown={[Function]}
                       type="button"
                     >
                       Assign

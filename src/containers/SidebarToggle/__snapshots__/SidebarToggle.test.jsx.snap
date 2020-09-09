@@ -3,10 +3,9 @@
 exports[`<Sidebar /> renders correctly with close icon 1`] = `
 <button
   aria-controls="sidebar"
-  className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
-  onBlur={[Function]}
+  className="sidebar-toggle-btn px-1 mr-2 text-dark btn btn-link"
+  disabled={false}
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <span
@@ -25,10 +24,9 @@ exports[`<Sidebar /> renders correctly with close icon 1`] = `
 exports[`<Sidebar /> renders correctly with menu icon 1`] = `
 <button
   aria-controls="sidebar"
-  className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
-  onBlur={[Function]}
+  className="sidebar-toggle-btn px-1 mr-2 text-dark btn btn-link"
+  disabled={false}
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <span

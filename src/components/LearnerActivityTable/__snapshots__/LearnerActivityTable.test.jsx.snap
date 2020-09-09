@@ -28,9 +28,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -55,9 +54,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -82,9 +80,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -109,9 +106,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -136,9 +132,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -163,9 +158,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -190,9 +184,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -217,9 +210,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -244,9 +236,8 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -523,9 +514,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -550,9 +540,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -577,9 +566,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -604,9 +592,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -631,9 +618,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -658,9 +644,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -685,9 +670,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -712,9 +696,8 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -948,9 +931,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -975,9 +957,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1002,9 +983,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1029,9 +1009,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1056,9 +1035,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1083,9 +1061,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1110,9 +1087,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -1137,9 +1113,8 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>

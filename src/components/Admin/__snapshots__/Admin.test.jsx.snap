@@ -200,8 +200,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -293,8 +293,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -402,8 +402,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -527,8 +527,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -661,11 +661,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -778,8 +776,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -871,8 +869,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -980,8 +978,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1105,8 +1103,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1239,11 +1237,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -1356,8 +1352,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1449,8 +1445,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1558,8 +1554,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1683,8 +1679,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -1823,11 +1819,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -1940,8 +1934,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2033,8 +2027,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2142,8 +2136,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2267,8 +2261,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2387,11 +2381,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -2668,8 +2660,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2761,8 +2753,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2870,8 +2862,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -2995,8 +2987,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -3115,11 +3107,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -3396,8 +3386,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -3489,8 +3479,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -3598,8 +3588,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -3723,8 +3713,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -3863,11 +3853,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -3980,8 +3968,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4073,8 +4061,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4182,8 +4170,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4307,8 +4295,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4447,11 +4435,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -4564,8 +4550,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4657,8 +4643,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4766,8 +4752,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -4891,8 +4877,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5029,11 +5015,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -5146,8 +5130,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5239,8 +5223,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5348,8 +5332,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5473,8 +5457,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5607,11 +5591,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span
@@ -5724,8 +5706,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <button
                 aria-controls="footer-body-numberOfUsers"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5817,8 +5799,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <button
                 aria-controls="footer-body-enrolledLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -5926,8 +5908,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <button
                 aria-controls="footer-body-activeLearners"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -6051,8 +6033,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <button
                 aria-controls="footer-body-courseCompletions"
                 aria-expanded={false}
-                className="btn toggle-collapse btn-link btn-block"
-                onBlur={[Function]}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 type="button"
@@ -6191,11 +6173,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             className="col-12 col-md-6 col-xl-8"
           >
             <button
-              className="btn btn-outline-primary download-btn d-sm-inline float-md-right"
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <span

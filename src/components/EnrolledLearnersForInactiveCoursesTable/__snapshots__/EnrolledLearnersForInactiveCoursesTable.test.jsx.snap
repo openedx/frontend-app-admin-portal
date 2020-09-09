@@ -59,9 +59,8 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -86,9 +85,8 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -113,9 +111,8 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -140,9 +137,8 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>

@@ -55,6 +55,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
         className="dropdown-toggle btn btn-light"
         id="pgn__dropdown-trigger-1"
         onClick={[Function]}
+        type="button"
       >
         <span
           aria-hidden={true}
@@ -76,10 +77,9 @@ exports[`<Header /> renders default profile image correctly 1`] = `
         role="menu"
       >
         <button
-          className="btn dropdown-item"
-          onBlur={[Function]}
+          className="dropdown-item btn btn-link"
+          disabled={false}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Logout
@@ -170,6 +170,7 @@ exports[`<Header /> renders profile image correctly 1`] = `
         className="dropdown-toggle btn btn-light"
         id="pgn__dropdown-trigger-0"
         onClick={[Function]}
+        type="button"
       >
         <img
           alt="Profile image for staff@example.com"
@@ -186,10 +187,9 @@ exports[`<Header /> renders profile image correctly 1`] = `
         role="menu"
       >
         <button
-          className="btn dropdown-item"
-          onBlur={[Function]}
+          className="dropdown-item btn btn-link"
+          disabled={false}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           Logout
@@ -236,10 +236,9 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
     <div>
       <button
         aria-controls="sidebar"
-        className="btn sidebar-toggle-btn px-1 mr-2 bg-white"
-        onBlur={[Function]}
+        className="sidebar-toggle-btn px-1 mr-2 text-dark btn btn-link"
+        disabled={false}
         onClick={[Function]}
-        onKeyDown={[Function]}
         type="button"
       >
         <span
