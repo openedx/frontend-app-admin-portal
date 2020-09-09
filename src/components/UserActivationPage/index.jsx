@@ -65,8 +65,8 @@ const UserActivationPage = ({
     }
 
     // user data is hydrated with a unverified email address, so display a warning message
-    const isUserLoadedAndNotActive = !!(userAccount?.loaded && !userAccount?.isActive);
-    if (isUserLoadedAndNotActive || isPollingUserAccount) {
+    const isUserLoadedAndInactive = !!(userAccount?.loaded && !userAccount?.isActive);
+    if (isUserLoadedAndInactive || isPollingUserAccount) {
       // user is authenticated but has not yet verified their email via the "Activate
       // your account" flow, so we should prevent access to the Admin Portal.
       return (

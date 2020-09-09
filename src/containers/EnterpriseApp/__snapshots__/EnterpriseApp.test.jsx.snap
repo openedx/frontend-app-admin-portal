@@ -43,4 +43,126 @@ exports[`EnterpriseApp renders error page correctly 1`] = `
 </main>
 `;
 
-exports[`EnterpriseApp renders not found page correctly 1`] = `null`;
+exports[`EnterpriseApp renders not found page correctly 1`] = `
+<div
+  className="enterprise-app"
+>
+  <nav
+    aria-expanded={false}
+    aria-label="sidebar"
+    className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
+    id="sidebar"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseLeave={[Function]}
+    onMouseOver={[Function]}
+  >
+    <div
+      className="sidebar-content py-2"
+    >
+      <ul
+        className="nav nav-pills flex-column m-0"
+      >
+        <li
+          className="nav-item"
+        >
+          <a
+            aria-current={null}
+            className="nav-link text-left text-secondary rounded-0"
+            href="//admin/learners"
+            onClick={[Function]}
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-line-chart"
+              id="Icon1"
+            />
+            <span
+              className="sr-only"
+            >
+              Learner Report
+            </span>
+          </a>
+        </li>
+        <li
+          className="nav-item"
+        >
+          <a
+            aria-current={null}
+            className="nav-link text-left text-secondary rounded-0"
+            href="//admin/coupons"
+            onClick={[Function]}
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-tags"
+              id="Icon2"
+            />
+            <span
+              className="sr-only"
+            >
+              Code Management
+            </span>
+          </a>
+        </li>
+        <li
+          className="nav-item"
+        >
+          <a
+            aria-current={null}
+            className="nav-link text-left text-secondary rounded-0"
+            href="//admin/subscriptions"
+            onClick={[Function]}
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-credit-card"
+              id="Icon3"
+            />
+            <span
+              className="sr-only"
+            >
+              Subscription Management
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    className="content-wrapper"
+    style={
+      Object {
+        "paddingLeft": 10,
+      }
+    }
+    tabIndex="-1"
+  >
+    <main
+      role="main"
+    >
+      <div
+        className="container-fluid mt-3"
+      >
+        <div
+          className="text-center py-5"
+        >
+          <h1
+            className={null}
+          >
+            404
+          </h1>
+          <p
+            className="lead"
+          >
+            Oops, sorry we can't find that page!
+          </p>
+          <p>
+            Either something went wrong or the page doesn't exist anymore.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+`;

@@ -29,7 +29,7 @@ const AdminRegisterPageWrapper = ({
       <Route
         exact
         path="/:enterpriseSlug/admin/register"
-        render={renderProps => <AdminRegisterPage {...renderProps} {...rest} />}
+        render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
       />
     </Provider>
   </Router>
@@ -55,14 +55,26 @@ describe('<AdminRegisterPage />', () => {
     expect(wrapper.contains(LoadingComponent)).toBeTruthy();
   });
 
-  it('redirects to default /admin/learners routte when user is authenticated', () => {
+  it('displays error alert when user is authenticated but no has JWT roles', () => {
     const store = mockStore({
       authentication: {
         username: 'edx',
+        roles: [],
+      },
+    });
+    const wrapper = mount(<AdminRegisterPageWrapper store={store} />);
+    expect(wrapper.find('Alert').exists()).toBeTruthy();
+  });
+
+  it('redirects to /admin/register/activate route when user is authenticated and has JWT roles', () => {
+    const store = mockStore({
+      authentication: {
+        username: 'edx',
+        roles: ['enterprise_admin:*'],
       },
     });
     mount(<AdminRegisterPageWrapper store={store} />);
-    const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/learners`;
+    const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
     expect(history.location.pathname).toEqual(expectedRedirectRoute);
   });
 });
