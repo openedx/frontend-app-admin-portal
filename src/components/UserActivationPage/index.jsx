@@ -43,7 +43,7 @@ const UserActivationPage = ({
   );
 
   if (authentication?.username) {
-    // user is authenticated, but doesn't any JWT roles so redirect the user to
+    // user is authenticated, but doesn't have any JWT roles so redirect the user to
     // `:enterpriseSlug/admin/register` to display the proper error message.
     if (!authentication.roles?.length) {
       return (
