@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StatefulButton, Icon } from '@edx/paragon';
 import { SubmissionError } from 'redux-form';
-import classNames from 'classnames';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';

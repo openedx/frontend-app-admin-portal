@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from '@edx/paragon';
 import { Field } from 'redux-form';
-import classNames from 'classnames';
 
 import RenderField from '../RenderField';
 import './TemplateSourceFields.scss';
