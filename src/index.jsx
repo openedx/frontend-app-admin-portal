@@ -17,6 +17,8 @@ import EnterpriseApp from './containers/EnterpriseApp';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
+import AdminRegisterPage from './containers/AdminRegisterPage';
+import UserActivationPage from './containers/UserActivationPage';
 import NotFoundPage from './components/NotFoundPage';
 import SupportPage from './components/SupportPage';
 import { withErrorBoundary } from './components/ErrorBoundary';
@@ -51,6 +53,16 @@ const AppWrapper = () => (
             authenticatedAPIClient={apiClient}
             redirect={`${process.env.BASE_URL}/enterprises`}
           />
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/register"
+            component={AdminRegisterPage}
+          />
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/register/activate"
+            component={UserActivationPage}
+          />
           <PrivateRoute
             path="/:enterpriseSlug"
             component={EnterpriseApp}
@@ -72,10 +84,4 @@ const AppWrapper = () => (
 );
 
 const PortalAppWrapper = withErrorBoundary(AppWrapper);
-
-apiClient.ensurePublicOrAuthenticationAndCookies(
-  window.location.pathname,
-  () => {
-    ReactDOM.render(<PortalAppWrapper />, document.getElementById('root'));
-  },
-);
+ReactDOM.render(<PortalAppWrapper />, document.getElementById('root'));

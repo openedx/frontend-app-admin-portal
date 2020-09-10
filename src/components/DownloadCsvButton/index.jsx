@@ -18,7 +18,8 @@ class DownloadCsvButton extends React.Component {
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
       <Button
-        className="btn-outline-primary download-btn d-sm-inline float-md-right"
+        variant="outline-primary"
+        className="download-btn d-sm-inline float-md-right"
         disabled={disabled || csvLoading}
         onClick={() => fetchCsv(fetchMethod)}
       >

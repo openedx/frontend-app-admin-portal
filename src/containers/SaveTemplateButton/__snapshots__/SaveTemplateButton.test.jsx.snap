@@ -4,10 +4,9 @@ exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
-  onBlur={[Function]}
+  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  disabled={false}
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <span
@@ -22,10 +21,9 @@ exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
-  onBlur={[Function]}
+  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  disabled={false}
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <span
@@ -40,10 +38,9 @@ exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = 
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="btn pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn"
-  onBlur={[Function]}
+  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  disabled={false}
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <span

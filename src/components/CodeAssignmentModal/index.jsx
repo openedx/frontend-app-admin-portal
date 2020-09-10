@@ -473,7 +473,6 @@ class CodeAssignmentModal extends React.Component {
           buttons={[
             <Button
               key="assign-submit-btn"
-              className="btn-primary"
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
             >

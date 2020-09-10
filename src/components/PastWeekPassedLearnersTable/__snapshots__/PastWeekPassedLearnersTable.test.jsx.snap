@@ -28,9 +28,8 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -55,9 +54,8 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>
@@ -82,9 +80,8 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
               >
                 <button
                   className="btn btn-header"
-                  onBlur={[Function]}
+                  disabled={false}
                   onClick={[Function]}
-                  onKeyDown={[Function]}
                   type="button"
                 >
                   <span>

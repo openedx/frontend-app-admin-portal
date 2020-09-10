@@ -38,8 +38,8 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       <button
         aria-controls="footer-body-test-id"
         aria-expanded={false}
-        className="btn toggle-collapse btn-link btn-block"
-        onBlur={[Function]}
+        className="toggle-collapse btn-block btn btn-link"
+        disabled={false}
         onClick={[Function]}
         onKeyDown={[Function]}
         type="button"

@@ -3,10 +3,10 @@
     font-size: 1.125rem;
     
     &.table-loading,
-    &.request-codes {
-        height: 360px;
-    }
-    &.support {
+    &.request-codes,
+    &.support,
+    &.admin-register,
+    &.user-activation {
         height: 360px;
     }
 

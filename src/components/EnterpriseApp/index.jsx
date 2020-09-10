@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import { breakpoints } from '@edx/paragon';
+import { breakpoints, Toast } from '@edx/paragon';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
-import ReportingConfig from '../../components/ReportingConfig';
 import SupportPage from '../../containers/SupportPage';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
+import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
@@ -24,13 +24,14 @@ import './EnterpriseApp.scss';
 class EnterpriseApp extends React.Component {
   constructor(props) {
     super(props);
+    const { location } = props;
 
     this.contentWrapperRef = React.createRef();
     this.sidebarRef = null;
 
-    // hardcoded sidebarWidth required for initial render
     this.state = {
-      sidebarWidth: 61.3,
+      hasAdminRegistrationSuccessAlert: !!location.state?.adminRegistrationSuccess,
+      sidebarWidth: 61.3, // hardcoded sidebarWidth required for initial render
     };
   }
 
@@ -44,15 +45,41 @@ class EnterpriseApp extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { location } = this.props;
+    const {
+      location: {
+        pathname,
+        state,
+      },
+    } = this.props;
 
-    if (location !== prevProps.location) {
+    if (pathname !== prevProps.location.pathname) {
       this.handleSidebarMenuItemClick();
+      this.hideAdminRegistrationSuccessAlert();
+      this.replaceHistoryState();
+    }
+
+    if (state?.adminRegistrationSuccess) {
+      // replace location state so the admin registration success alert does not
+      // appear on page refresh.
+      this.replaceHistoryState();
     }
   }
 
   componentWillUnmount() {
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is removed from header
+  }
+
+  hideAdminRegistrationSuccessAlert() {
+    this.setState({
+      hasAdminRegistrationSuccessAlert: false,
+    });
+  }
+
+  replaceHistoryState() {
+    const { history } = this.props;
+    history.replace({
+      state: {},
+    });
   }
 
   handleSidebarMenuItemClick() {
@@ -86,13 +113,32 @@ class EnterpriseApp extends React.Component {
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableSamlConfigurationScreen,
+      authentication,
+      userAccount,
     } = this.props;
-    const { sidebarWidth } = this.state;
-    const baseUrl = match.url;
+    const {
+      sidebarWidth,
+      hasAdminRegistrationSuccessAlert,
+    } = this.state;
+    const {
+      url: baseUrl,
+      params: { enterpriseSlug },
+    } = match;
     const defaultContentPadding = 10; // 10px for appropriate padding
+
+    const isUserLoadedAndInactive = !!(userAccount?.loaded && !userAccount?.isActive);
+    const isUserMissingJWTRoles = !authentication?.roles?.length;
+
     if (error) {
       return this.renderError(error);
     }
+
+    if (isUserMissingJWTRoles || isUserLoadedAndInactive) {
+      return (
+        <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
+      );
+    }
+
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
@@ -118,6 +164,12 @@ class EnterpriseApp extends React.Component {
                   paddingLeft: matches ? sidebarWidth : defaultContentPadding,
                 }}
               >
+                <Toast
+                  show={hasAdminRegistrationSuccessAlert}
+                  onClose={() => this.hideAdminRegistrationSuccessAlert()}
+                >
+                  Your edX administrator account was successfully activated.
+                </Toast>
                 <Switch>
                   <Redirect
                     exact
@@ -217,8 +269,18 @@ EnterpriseApp.propTypes = {
   }).isRequired,
   enterpriseId: PropTypes.string,
   fetchPortalConfiguration: PropTypes.func.isRequired,
-  location: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    state: PropTypes.shape({
+      adminRegistrationSuccess: PropTypes.bool,
+    }),
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func,
+  }).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
+  authentication: PropTypes.shape().isRequired,
+  userAccount: PropTypes.shape().isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,

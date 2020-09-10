@@ -116,11 +116,9 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
-          className="btn mr-2 btn-link"
+          className="mr-2 btn btn-link"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -316,11 +314,9 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
-          className="btn mr-2 btn-link"
+          className="mr-2 btn btn-link"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -521,11 +517,9 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
-          className="btn mr-2 btn-link"
+          className="mr-2 btn btn-link"
           disabled={true}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span
@@ -698,11 +692,9 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
       >
         <button
-          className="btn mr-2 btn-link"
+          className="mr-2 btn btn-link"
           disabled={false}
-          onBlur={[Function]}
           onClick={[Function]}
-          onKeyDown={[Function]}
           type="button"
         >
           <span

@@ -40,10 +40,9 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
           className="flex-grow-0 flex-shrink-0"
         >
           <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
+            className="close-search-results-btn btn btn-outline-primary"
+            disabled={false}
+            onClick={[MockFunction]}
             type="button"
           >
             <span
@@ -128,10 +127,9 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
           className="flex-grow-0 flex-shrink-0"
         >
           <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
+            className="close-search-results-btn btn btn-outline-primary"
+            disabled={false}
+            onClick={[MockFunction]}
             type="button"
           >
             <span
@@ -221,10 +219,9 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           className="flex-grow-0 flex-shrink-0"
         >
           <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
+            className="close-search-results-btn btn btn-outline-primary"
+            disabled={false}
+            onClick={[MockFunction]}
             type="button"
           >
             <span
@@ -297,10 +294,9 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
           className="flex-grow-0 flex-shrink-0"
         >
           <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
+            className="close-search-results-btn btn btn-outline-primary"
+            disabled={false}
+            onClick={[MockFunction]}
             type="button"
           >
             <span
@@ -673,10 +669,9 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
           className="flex-grow-0 flex-shrink-0"
         >
           <button
-            className="btn close-search-results-btn btn-outline-primary"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onKeyDown={[Function]}
+            className="close-search-results-btn btn btn-outline-primary"
+            disabled={false}
+            onClick={[MockFunction]}
             type="button"
           >
             <span
@@ -800,20 +795,18 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       scope={null}
                     >
                       <button
-                        className="btn remind-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
+                        className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                        disabled={false}
                         onClick={[Function]}
-                        onKeyDown={[Function]}
                         type="button"
                       >
                         Remind
                       </button>
                        | 
                       <button
-                        className="btn revoke-btn btn-link btn-sm p-0"
-                        onBlur={[Function]}
+                        className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                        disabled={false}
                         onClick={[Function]}
-                        onKeyDown={[Function]}
                         type="button"
                       >
                         Revoke

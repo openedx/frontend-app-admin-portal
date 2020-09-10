@@ -131,7 +131,8 @@ class FileInput extends React.Component {
           ) : (
             <React.Fragment>
               <Button
-                className="remove-file-btn btn-link p-1 ml-2"
+                variant="link"
+                className="remove-file-btn p-1 ml-2"
                 onClick={() => {
                   dispatch(clearFields(form, false, false, input.name));
                   input.onChange(null);

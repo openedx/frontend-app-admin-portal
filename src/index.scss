@@ -29,3 +29,7 @@ form {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.toast-container {
+    z-index: $zindex-popover;
+}

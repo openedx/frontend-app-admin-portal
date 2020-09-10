@@ -11,7 +11,8 @@ const CodeSearchResultsHeading = ({ searchQuery, onClose }) => (
     </div>
     <div className="flex-grow-0 flex-shrink-0">
       <Button
-        className="close-search-results-btn btn-outline-primary"
+        variant="outline-primary"
+        className="close-search-results-btn"
         onClick={onClose}
       >
         <Icon className="fa fa-times mr-2" />

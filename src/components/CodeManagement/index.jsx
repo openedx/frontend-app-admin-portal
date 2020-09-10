@@ -274,7 +274,8 @@ class CodeManagement extends React.Component {
               </div>
               <div className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right">
                 <Button
-                  className="mr-2 btn-link"
+                  variant="link"
+                  className="mr-2"
                   onClick={this.handleRefreshData}
                   disabled={loading}
                 >

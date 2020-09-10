@@ -18,6 +18,13 @@ features.CODE_MANAGEMENT = true;
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
+  authentication: {
+    roles: ['enterprise_admin:*'],
+  },
+  userAccount: {
+    loaded: true,
+    isActive: true,
+  },
   dashboardAnalytics: {},
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
@@ -34,11 +41,9 @@ const initialState = {
   },
 };
 
-const EnterpriseAppWrapper = props => (
+const EnterpriseAppWrapper = ({ store, ...props }) => (
   <MemoryRouter initialEntries={['/test-enterprise-slug/admin/learners']}>
-    <Provider
-      store={props.store}
-    >
+    <Provider store={store}>
       <EnterpriseApp
         match={{
           url: '/test-enterprise-slug',
@@ -48,6 +53,9 @@ const EnterpriseAppWrapper = props => (
         }}
         location={{
           pathname: '/test-enterprise-slug/admin/learners',
+        }}
+        history={{
+          replace: () => {},
         }}
         {...props}
       />
