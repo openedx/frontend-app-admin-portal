@@ -332,7 +332,8 @@ class SamlProviderConfigForm extends React.Component {
           <div className="col col-2">
             {config && deleteEnabled &&
               <Button
-                className="btn-outline-danger  mr-3"
+                variant="outline-danger"
+                className=" mr-3"
                 onClick={() => this.props.deleteProviderConfig(config.id)}
               >
                 <Icon className="fa fa-times danger" /> Delete
