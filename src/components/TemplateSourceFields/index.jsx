@@ -124,7 +124,7 @@ class TemplateSourceFields extends React.Component {
           >New Email
           </Button>
           <Button
-            variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
+            variant={emailTemplateSource !== newEmail ? 'primary' : 'outline-primary'}
             id="btn-old-email-template"
             key="btn-old-email-template"
             className="rounded-right"
