@@ -13,7 +13,8 @@ const RevokeButton = ({
 }) => (
   <ActionButtonWithModal
     buttonLabel="Revoke"
-    buttonClassName="revoke-btn btn-link btn-sm p-0"
+    buttonClassName="revoke-btn btn-sm p-0"
+    variant="link"
     renderModal={({ closeModal }) => (
       <CodeRevokeModal
         couponId={couponId}

@@ -325,13 +325,15 @@ class SamlProviderConfigForm extends React.Component {
                 error: <Icon className="fa fa-times" />,
               }}
               disabledStates={[SUBMIT_STATES.PENDING]}
-              className="btn-primary ml-3 col"
+              variant="primary"
+              className="ml-3 col"
             />
           </div>
           <div className="col col-2">
             {config && deleteEnabled &&
               <Button
-                className="btn-outline-danger  mr-3"
+                variant="outline-danger"
+                className=" mr-3"
                 onClick={() => this.props.deleteProviderConfig(config.id)}
               >
                 <Icon className="fa fa-times danger" /> Delete

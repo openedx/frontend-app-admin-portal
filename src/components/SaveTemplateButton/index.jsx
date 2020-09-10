@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StatefulButton, Icon } from '@edx/paragon';
 import { SubmissionError } from 'redux-form';
-import classNames from 'classnames';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
@@ -130,14 +129,15 @@ class SaveTemplateButton extends React.Component {
     const { submitState } = this.state;
     const { handleSubmit } = this.props;
     const buttonIconClasses = {
-      default: 'btn-outline-primary',
-      pending: 'btn-outline-primary',
-      complete: 'btn-outline-success',
+      default: 'outline-primary',
+      pending: 'outline-primary',
+      complete: 'outline-success',
     };
 
     return (
       <StatefulButton
-        className={classNames(buttonIconClasses[submitState], 'save-template-btn')}
+        variant={buttonIconClasses[submitState]}
+        className="save-template-btn"
         onClick={handleSubmit(this.handleSaveTemplate)}
         state={submitState}
         labels={{

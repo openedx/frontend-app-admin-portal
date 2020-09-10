@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from '@edx/paragon';
 import { Field } from 'redux-form';
-import classNames from 'classnames';
 
 import RenderField from '../RenderField';
 import './TemplateSourceFields.scss';
@@ -113,12 +112,10 @@ class TemplateSourceFields extends React.Component {
           aria-label="Press the button to select the template source"
         >
           <Button
+            variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
             id="btn-new-email-template"
             key="btn-new-email-template"
-            className={classNames(
-                'rounded-left',
-                emailTemplateSource === newEmail ? 'btn-primary' : 'btn-outline-primary',
-            )}
+            className="rounded-left"
             style={{
                 pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
             }}
@@ -127,12 +124,10 @@ class TemplateSourceFields extends React.Component {
           >New Email
           </Button>
           <Button
+            variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
             id="btn-old-email-template"
             key="btn-old-email-template"
-            className={classNames(
-                'rounded-right',
-                emailTemplateSource === fromTemplate ? 'btn-primary' : 'btn-outline-primary',
-            )}
+            className="rounded-right"
             style={{
                 pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
             }}

@@ -102,7 +102,8 @@ export default function LicenseAction({ user }) {
           {handleClick ? (
             <ActionButtonWithModal
               buttonLabel={text}
-              buttonClassName="btn btn-link btn-sm p-0"
+              buttonClassName="btn-sm p-0"
+              variant="link"
               renderModal={({ closeModal }) => (
                 handleClick(closeModal)
               )}
