@@ -943,7 +943,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="remind-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -952,7 +952,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     </button>
                      | 
                     <button
-                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="revoke-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -1550,7 +1550,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="remind-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -1559,7 +1559,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     </button>
                      | 
                     <button
-                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="revoke-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -2157,7 +2157,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     scope={null}
                   >
                     <button
-                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="remind-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -2166,7 +2166,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
                     </button>
                      | 
                     <button
-                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="revoke-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -3229,7 +3229,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     scope={null}
                   >
                     <button
-                      className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="remind-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"
@@ -3238,7 +3238,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
                     </button>
                      | 
                     <button
-                      className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                      className="revoke-btn btn-sm p-0 btn btn-link"
                       disabled={false}
                       onClick={[Function]}
                       type="button"

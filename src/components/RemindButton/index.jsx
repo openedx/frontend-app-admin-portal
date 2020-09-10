@@ -13,7 +13,8 @@ const RemindButton = ({
 }) => (
   <ActionButtonWithModal
     buttonLabel="Remind"
-    buttonClassName="remind-btn btn-link btn-sm p-0"
+    buttonClassName="remind-btn btn-sm p-0"
+    variant="link"
     renderModal={({ closeModal }) => (
       <CodeReminderModal
         couponId={couponId}

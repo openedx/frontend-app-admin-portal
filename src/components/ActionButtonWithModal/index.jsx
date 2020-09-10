@@ -10,11 +10,14 @@ class ActionButtonWithModal extends React.Component {
   setIsModalOpen = isModalOpen => this.setState({ isModalOpen });
 
   render() {
-    const { buttonClassName, buttonLabel, renderModal } = this.props;
+    const {
+      buttonClassName, buttonLabel, renderModal, variant,
+    } = this.props;
     const { isModalOpen } = this.state;
     return (
       <React.Fragment>
         <Button
+          variant={variant}
           className={buttonClassName}
           onClick={() => this.setIsModalOpen(true)}
         >
@@ -30,8 +33,13 @@ class ActionButtonWithModal extends React.Component {
 
 ActionButtonWithModal.propTypes = {
   buttonLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-  buttonClassName: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
+  buttonClassName: PropTypes.string,
   renderModal: PropTypes.func.isRequired,
+};
+
+ActionButtonWithModal.defaultProps = {
+  buttonClassName: null,
 };
 
 export default ActionButtonWithModal;

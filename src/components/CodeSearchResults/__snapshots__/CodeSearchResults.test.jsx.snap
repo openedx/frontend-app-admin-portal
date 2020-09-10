@@ -795,7 +795,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       scope={null}
                     >
                       <button
-                        className="remind-btn btn-link btn-sm p-0 btn btn-primary"
+                        className="remind-btn btn-sm p-0 btn btn-link"
                         disabled={false}
                         onClick={[Function]}
                         type="button"
@@ -804,7 +804,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       </button>
                        | 
                       <button
-                        className="revoke-btn btn-link btn-sm p-0 btn btn-primary"
+                        className="revoke-btn btn-sm p-0 btn btn-link"
                         disabled={false}
                         onClick={[Function]}
                         type="button"

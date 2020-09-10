@@ -354,7 +354,8 @@ class ReportingConfigForm extends React.Component {
                 error: <Icon className="fa fa-times" />,
               }}
               disabledStates={[SUBMIT_STATES.PENDING]}
-              className="btn-primary ml-3 col"
+              className="ml-3 col"
+              variant="primary"
             />
           </ValidationFormGroup>
           {config &&

@@ -4,7 +4,7 @@ exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  className="pgn__stateful-btn pgn__stateful-btn-state-default save-template-btn btn btn-outline-primary"
   disabled={false}
   onClick={[Function]}
   type="button"
@@ -21,7 +21,7 @@ exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  className="pgn__stateful-btn pgn__stateful-btn-state-default save-template-btn btn btn-outline-primary"
   disabled={false}
   onClick={[Function]}
   type="button"
@@ -38,7 +38,7 @@ exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = 
 <button
   aria-disabled={false}
   aria-live="assertive"
-  className="pgn__stateful-btn pgn__stateful-btn-state-default btn-outline-primary save-template-btn btn btn-primary"
+  className="pgn__stateful-btn pgn__stateful-btn-state-default save-template-btn btn btn-outline-primary"
   disabled={false}
   onClick={[Function]}
   type="button"

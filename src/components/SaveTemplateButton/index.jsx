@@ -130,14 +130,15 @@ class SaveTemplateButton extends React.Component {
     const { submitState } = this.state;
     const { handleSubmit } = this.props;
     const buttonIconClasses = {
-      default: 'btn-outline-primary',
-      pending: 'btn-outline-primary',
-      complete: 'btn-outline-success',
+      default: 'outline-primary',
+      pending: 'outline-primary',
+      complete: 'outline-success',
     };
 
     return (
       <StatefulButton
-        className={classNames(buttonIconClasses[submitState], 'save-template-btn')}
+        variant={buttonIconClasses[submitState]}
+        className="save-template-btn"
         onClick={handleSubmit(this.handleSaveTemplate)}
         state={submitState}
         labels={{
