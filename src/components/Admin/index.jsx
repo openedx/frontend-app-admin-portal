@@ -320,16 +320,6 @@ class Admin extends React.Component {
                       {loading && this.renderLoadingMessage()}
                     </div>
                   ) : (
-                    <AdminCards />
-                  )}
-                </div>
-                <div className="row mt-3">
-                  {(error || loading) ? (
-                    <div className="col">
-                      {error && this.renderErrorMessage()}
-                      {loading && this.renderLoadingMessage()}
-                    </div>
-                  ) : (
                     <AnalyticsCharts />
                   )}
                 </div>

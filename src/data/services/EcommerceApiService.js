@@ -66,6 +66,14 @@ class EcommerceApiService {
     return apiClient.get(url);
   }
 
+  static fetchTableauToken(options) {
+    let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/tableau_token`;
+    if (options) {
+      url += `?${qs.stringify(options)}`;
+    }
+    return apiClient.get(url);
+  }
+
   static saveTemplate(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
     const { emailTemplateSource } = store.getState().emailTemplate;
