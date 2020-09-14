@@ -112,6 +112,7 @@ class EnterpriseApp extends React.Component {
       match,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
+      enableAnalyticsScreen,
       enableSamlConfigurationScreen,
       authentication,
       userAccount,
@@ -138,7 +139,6 @@ class EnterpriseApp extends React.Component {
         <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
       );
     }
-
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
@@ -221,6 +221,18 @@ class EnterpriseApp extends React.Component {
                       }
                     />
                   }
+                  {features.ANALYTICS && enableAnalyticsScreen &&
+                    <Route
+                      key="analytics"
+                      exact
+                      path={`${baseUrl}/admin/analytics`}
+                      render={routeProps => (
+                        <AnalyticsPage
+                          {...routeProps}
+                        />
+                      )}
+                    />
+                  }
                   {features.SAML_CONFIGURATION && enableSamlConfigurationScreen &&
                     <Route
                       key="saml-configuration"
@@ -258,6 +270,7 @@ EnterpriseApp.defaultProps = {
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
+  enableAnalyticsScreen: false,
 };
 
 EnterpriseApp.propTypes = {
@@ -284,6 +297,7 @@ EnterpriseApp.propTypes = {
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
+  enableAnalyticsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 

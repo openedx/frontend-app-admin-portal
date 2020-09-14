@@ -28,6 +28,7 @@ const configuration = {
 const features = {
   CODE_MANAGEMENT: process.env.FEATURE_FLAGS.CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
   REPORTING_CONFIGURATIONS: process.env.FEATURE_FLAGS.REPORTING_CONFIGURATIONS,
+  ANALYTICS: process.env.FEATURE_FLAGS.ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
   SAML_CONFIGURATION: process.env.FEATURE_FLAGS.SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
   SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
 };

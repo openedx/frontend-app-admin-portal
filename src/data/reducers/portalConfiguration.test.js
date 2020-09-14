@@ -16,6 +16,7 @@ const initialState = {
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
+  enableAnalyticsScreen: false,
 };
 
 const enterpriseData = {
@@ -31,6 +32,7 @@ const enterpriseData = {
   enable_portal_reporting_config_screen: true,
   enable_portal_subscription_management_screen: true,
   enable_portal_saml_configuration_screen: true,
+  enable_analytics_screen: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -49,6 +51,7 @@ describe('portalConfiguration reducer', () => {
       enableReportingConfigScreen: enterpriseData.enable_portal_reporting_config_screen,
       enableSubscriptionManagementScreen: enterpriseData.enable_portal_subscription_management_screen, // eslint-disable-line max-len
       enableSamlConfigurationScreen: enterpriseData.enable_portal_saml_configuration_screen,
+      enableAnalyticsScreen: enterpriseData.enable_analytics_screen,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
