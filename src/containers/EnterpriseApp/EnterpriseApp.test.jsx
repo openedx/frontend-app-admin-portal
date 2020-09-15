@@ -31,7 +31,6 @@ const initialState = {
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
-
   },
   csv: {},
   table: {

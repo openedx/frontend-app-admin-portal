@@ -23,6 +23,7 @@ const configuration = {
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
+  TABLEAU_URL: process.env.TABLEAU_URL,
 };
 
 const features = {
