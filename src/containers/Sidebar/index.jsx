@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
   enableReportingConfigScreen: state.portalConfiguration.enableReportingConfigScreen,
   enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
   enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+  enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
 });
 
 const mapDispatchToProps = dispatch => ({

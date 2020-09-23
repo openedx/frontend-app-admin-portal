@@ -30,6 +30,7 @@ const initialState = {
     enterpriseId: 'test-enterprise-id',
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
+    enableAnalyticsScreen: true,
   },
   csv: {},
   table: {

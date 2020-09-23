@@ -23,11 +23,13 @@ const configuration = {
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
+  TABLEAU_URL: process.env.TABLEAU_URL,
 };
 
 const features = {
   CODE_MANAGEMENT: process.env.FEATURE_FLAGS.CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
   REPORTING_CONFIGURATIONS: process.env.FEATURE_FLAGS.REPORTING_CONFIGURATIONS,
+  ANALYTICS: process.env.FEATURE_FLAGS.ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
   SAML_CONFIGURATION: process.env.FEATURE_FLAGS.SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
   SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
 };

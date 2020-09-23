@@ -27,6 +27,7 @@ const initialState = {
   portalConfiguration: {
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
+    enableAnalyticsScreen: true,
   },
 };
 

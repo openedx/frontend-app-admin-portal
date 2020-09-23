@@ -46,6 +46,7 @@ class Sidebar extends React.Component {
       enableReportingConfigScreen,
       enableSubscriptionManagementScreen,
       enableSamlConfigurationScreen,
+      enableAnalyticsScreen,
     } = this.props;
 
     return [
@@ -71,6 +72,12 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/subscriptions`,
         iconClassName: 'fa-credit-card',
         hidden: !enableSubscriptionManagementScreen,
+      },
+      {
+        title: 'Analytics',
+        to: `${baseUrl}/admin/analytics`,
+        iconClassName: 'fa-bar-chart',
+        hidden: !features.ANALYTICS || !enableAnalyticsScreen,
       },
       {
         title: 'Saml Configuration',
@@ -160,6 +167,7 @@ Sidebar.defaultProps = {
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
+  enableAnalyticsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
 };
@@ -173,6 +181,7 @@ Sidebar.propTypes = {
   enableCodeManagementScreen: PropTypes.bool,
   enableReportingConfigScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
+  enableAnalyticsScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
