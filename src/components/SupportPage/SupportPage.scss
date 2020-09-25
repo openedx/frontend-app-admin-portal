@@ -1,24 +1,24 @@
-@import "~@edx/paragon/scss/edx/utilities-only";
+@import '~@edx/paragon/scss/core/utilities-only';
 
 .support-form {
-    label {
-        font-weight: 600;
-    }
+  label {
+    font-weight: 600;
+  }
 
-    .required {
-        color: $danger;
-        margin-left: 4px;
-    }
+  .required {
+    color: $danger;
+    margin-left: 4px;
+  }
 
-    input[type=number] {
-        width: auto;
-    }
+  input[type='number'] {
+    width: auto;
+  }
 
-    .form-cancel-btn {
-        text-decoration: underline;
+  .form-cancel-btn {
+    text-decoration: underline;
 
-        &:focus {
-            box-shadow: $input-btn-focus-box-shadow;
-        }
+    &:focus {
+      box-shadow: $input-btn-focus-box-shadow;
     }
+  }
 }

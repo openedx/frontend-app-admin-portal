@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Container, Row, Col, Alert, MailtoLink } from '@edx/paragon';
 
 import LoadingMessage from '../LoadingMessage';
+import { ToastsContext } from '../Toasts';
 
 import { redirectToProxyLogin } from '../../utils';
 
@@ -20,6 +21,7 @@ const UserActivationPage = ({
     () => match.params.enterpriseSlug,
     [match.params],
   );
+  const { addToast } = useContext(ToastsContext);
 
   useEffect(
     () => {
@@ -54,6 +56,7 @@ const UserActivationPage = ({
     // user data is hydrated with a verified email address, so redirect the user
     // to the default page in the Admin Portal.
     if (userAccount?.loaded && userAccount?.isActive) {
+      addToast('Your edX administrator account was successfully activated.');
       return (
         <Redirect
           to={{

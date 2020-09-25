@@ -1,12 +1,13 @@
 import React, { useContext, useMemo, useEffect } from 'react';
 import { Pagination, Table } from '@edx/paragon';
 
+import StatusAlert from '../StatusAlert';
+import { ToastsContext } from '../Toasts';
+import LoadingMessage from '../LoadingMessage';
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
 import { SubscriptionContext } from './SubscriptionData';
 import RemindUsersButton from './RemindUsersButton';
-import { StatusContext } from './SubscriptionManagementPage';
-import StatusAlert from '../StatusAlert';
 
 import {
   TAB_ALL_USERS,
@@ -15,7 +16,6 @@ import {
   TAB_REVOKED_USERS,
   PAGE_SIZE,
 } from './constants';
-import LoadingMessage from '../LoadingMessage';
 
 const columns = [
   {
@@ -45,7 +45,7 @@ export default function TabContentTable() {
     errors,
     currentPage,
   } = useContext(SubscriptionContext);
-  const { setSuccessStatus } = useContext(StatusContext);
+  const { addToast } = useContext(ToastsContext);
 
   useEffect(() => {
     fetchSubscriptionUsers({ searchQuery, currentPage });
@@ -104,10 +104,7 @@ export default function TabContentTable() {
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
-            onSuccess={() => setSuccessStatus({
-              visible: true,
-              message: 'Successfully sent reminder(s)',
-            })}
+            onSuccess={() => addToast('Reminders successfully sent')}
             fetchSubscriptionDetails={fetchSubscriptionDetails}
             fetchSubscriptionUsers={fetchSubscriptionUsers}
             searchQuery={searchQuery}
@@ -127,9 +124,9 @@ export default function TabContentTable() {
             message={`Try refreshing your screen (${message})`}
             key={title}
           />
-         ))
+        ))
       }
-      { !isLoading && !errors &&
+      {!isLoading && !errors &&
         <React.Fragment>
           {tableData?.length > 0 ? (
             <React.Fragment>
@@ -149,7 +146,7 @@ export default function TabContentTable() {
                 />
               </div>
             </React.Fragment>
-          ) : (
+          ) : ((
             <React.Fragment>
               <hr className="mt-0" />
               <StatusAlert
@@ -160,7 +157,7 @@ export default function TabContentTable() {
                 open
               />
             </React.Fragment>
-          )}
+          ))}
         </React.Fragment>
       }
     </React.Fragment>

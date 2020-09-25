@@ -1,4 +1,4 @@
-@import "~@edx/paragon/scss/edx/utilities-only";
+@import '~@edx/paragon/scss/core/utilities-only';
 
 .code-search-results {
   .loading {
@@ -7,7 +7,7 @@
   .table {
     @extend .bg-white;
     td {
-        vertical-align: middle;
+      vertical-align: middle;
     }
   }
   .pagination {

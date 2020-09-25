@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import LoadingMessage from '../../components/LoadingMessage';
+import { ToastsContext } from '../../components/Toasts';
 import UserActivationPage from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
@@ -26,17 +27,19 @@ const UserActivationPageWrapper = ({
   store,
   history,
   ...rest
-}) => (
+}) => ((
   <Router history={history}>
     <Provider store={store}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/register/activate"
-        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-      />
+      <ToastsContext.Provider value={{ addToast: () => { } }}>
+        <Route
+          exact
+          path="/:enterpriseSlug/admin/register/activate"
+          render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
+        />
+      </ToastsContext.Provider>
     </Provider>
   </Router>
-);
+));
 
 UserActivationPageWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

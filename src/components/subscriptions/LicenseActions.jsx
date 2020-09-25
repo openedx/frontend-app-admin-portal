@@ -2,9 +2,9 @@ import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import ActionButtonWithModal from '../ActionButtonWithModal';
+import { ToastsContext } from '../Toasts';
 import LicenseRemindModal from '../../containers/LicenseRemindModal';
 import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
-import { StatusContext } from './SubscriptionManagementPage';
 
 import { SubscriptionContext } from './SubscriptionData';
 
@@ -13,7 +13,8 @@ import { ACTIVATED, ASSIGNED } from './constants';
 import './styles/LicenseActions.scss';
 
 export default function LicenseAction({ user }) {
-  const { setSuccessStatus } = useContext(StatusContext);
+  const { addToast } = useContext(ToastsContext);
+
   const {
     fetchSubscriptionDetails,
     fetchSubscriptionUsers,
@@ -33,10 +34,7 @@ export default function LicenseAction({ user }) {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => setSuccessStatus({
-                  visible: true,
-                  message: 'Successfully revoked license',
-                })}
+                onSuccess={() => addToast('License successfully revoked')}
                 onClose={() => closeModal()}
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
@@ -58,13 +56,8 @@ export default function LicenseAction({ user }) {
                 searchQuery={searchQuery}
                 currentPage={currentPage}
                 subscriptionUUID={details.uuid}
-                onSuccess={() => setSuccessStatus({
-                  visible: true,
-                  message: 'Successfully sent reminder(s)',
-                })}
-                onClose={() => {
-                  closeModal();
-                }}
+                onSuccess={() => addToast('Reminder successfully sent')}
+                onClose={() => closeModal()}
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
               />
@@ -75,10 +68,7 @@ export default function LicenseAction({ user }) {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => setSuccessStatus({
-                  visible: true,
-                  message: 'Successfully revoked license',
-                })}
+                onSuccess={() => addToast('License successfully revoked')}
                 onClose={() => closeModal()}
                 fetchSubscriptionDetails={fetchSubscriptionDetails}
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
@@ -104,13 +94,9 @@ export default function LicenseAction({ user }) {
               buttonLabel={text}
               buttonClassName="btn-sm p-0"
               variant="link"
-              renderModal={({ closeModal }) => (
-                handleClick(closeModal)
-              )}
+              renderModal={({ closeModal }) => handleClick(closeModal)}
             />
-          ) : (
-            text
-          )}
+          ) : text}
         </React.Fragment>
       ))}
     </div>

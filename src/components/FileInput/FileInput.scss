@@ -1,32 +1,32 @@
-@import "~@edx/paragon/scss/edx/utilities-only";
+@import '~@edx/paragon/scss/core/utilities-only';
 
 .file-input {
-    input[type="file"] {
-        border: 0;
-        clip: rect(0, 0, 0, 0);
-        height: 1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;  
-    }
+  input[type='file'] {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
 
-    .file-name,
-    .btn {
-        font-size: 0.875rem;
-    }
+  .file-name,
+  .btn {
+    font-size: 0.875rem;
+  }
 
-    .has-focus {
-        box-shadow: $input-btn-focus-box-shadow;
-    }
-    
-    .choose-file-btn,
-    .remove-file-btn {
-        text-decoration: underline;
+  .has-focus {
+    box-shadow: $input-btn-focus-box-shadow;
+  }
 
-        &:focus {
-            box-shadow: $input-btn-focus-box-shadow;
-        }
+  .choose-file-btn,
+  .remove-file-btn {
+    text-decoration: underline;
+
+    &:focus {
+      box-shadow: $input-btn-focus-box-shadow;
     }
+  }
 }

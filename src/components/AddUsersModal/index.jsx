@@ -208,9 +208,7 @@ class AddUsersModal extends React.Component {
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
-          ) : (
-            error[0]
-          )}
+          ) : error[0]}
         />
       </div>
     );
@@ -248,7 +246,7 @@ class AddUsersModal extends React.Component {
             >
               <React.Fragment>
                 {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                {'Assign License(s)'}
+                Assign Licenses
               </React.Fragment>
             </Button>,
           ]}

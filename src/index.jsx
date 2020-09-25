@@ -23,12 +23,14 @@ import JwtAuthenticationRefresh from './components/JwtAuthenticationRefresh';
 import NotFoundPage from './components/NotFoundPage';
 import SupportPage from './components/SupportPage';
 import { withErrorBoundary } from './components/ErrorBoundary';
+import { ToastsProvider, Toasts } from './components/Toasts';
 
 import apiClient from './data/apiClient';
 import store from './data/store';
 import history from './data/history';
-import './index.scss';
 import { configuration } from './config';
+
+import './index.scss';
 
 if (configuration.FULLSTORY_ORG_ID) {
   FullStory.init({
@@ -41,11 +43,12 @@ const AppWrapper = () => (
   <Provider store={store}>
     <JwtAuthenticationRefresh>
       <ConnectedRouter history={history}>
-        <React.Fragment>
+        <ToastsProvider>
           <Helmet
             titleTemplate="%s - edX Admin Portal"
             defaultTitle="edX Admin Portal"
           />
+          <Toasts />
           <Header />
           <Switch>
             <Route exact path="/public/support" component={SupportPage} />
@@ -80,10 +83,10 @@ const AppWrapper = () => (
             <Route component={NotFoundPage} />
           </Switch>
           <Footer />
-        </React.Fragment>
+        </ToastsProvider>
       </ConnectedRouter>
     </JwtAuthenticationRefresh>
-  </Provider>
+  </Provider >
 );
 
 const PortalAppWrapper = withErrorBoundary(AppWrapper);

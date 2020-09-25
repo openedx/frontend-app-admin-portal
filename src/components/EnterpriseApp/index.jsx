@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import { breakpoints, Toast } from '@edx/paragon';
+import { breakpoints } from '@edx/paragon';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
@@ -25,13 +25,11 @@ import './EnterpriseApp.scss';
 class EnterpriseApp extends React.Component {
   constructor(props) {
     super(props);
-    const { location } = props;
 
     this.contentWrapperRef = React.createRef();
     this.sidebarRef = null;
 
     this.state = {
-      hasAdminRegistrationSuccessAlert: !!location.state?.adminRegistrationSuccess,
       sidebarWidth: 61.3, // hardcoded sidebarWidth required for initial render
     };
   }
@@ -47,40 +45,16 @@ class EnterpriseApp extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      location: {
-        pathname,
-        state,
-      },
+      location: { pathname },
     } = this.props;
 
     if (pathname !== prevProps.location.pathname) {
       this.handleSidebarMenuItemClick();
-      this.hideAdminRegistrationSuccessAlert();
-      this.replaceHistoryState();
-    }
-
-    if (state?.adminRegistrationSuccess) {
-      // replace location state so the admin registration success alert does not
-      // appear on page refresh.
-      this.replaceHistoryState();
     }
   }
 
   componentWillUnmount() {
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is removed from header
-  }
-
-  hideAdminRegistrationSuccessAlert() {
-    this.setState({
-      hasAdminRegistrationSuccessAlert: false,
-    });
-  }
-
-  replaceHistoryState() {
-    const { history } = this.props;
-    history.replace({
-      state: {},
-    });
   }
 
   handleSidebarMenuItemClick() {
@@ -118,10 +92,7 @@ class EnterpriseApp extends React.Component {
       authentication,
       userAccount,
     } = this.props;
-    const {
-      sidebarWidth,
-      hasAdminRegistrationSuccessAlert,
-    } = this.state;
+    const { sidebarWidth } = this.state;
     const {
       url: baseUrl,
       params: { enterpriseSlug },
@@ -140,6 +111,7 @@ class EnterpriseApp extends React.Component {
         <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
       );
     }
+
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
@@ -165,12 +137,6 @@ class EnterpriseApp extends React.Component {
                   paddingLeft: matches ? sidebarWidth : defaultContentPadding,
                 }}
               >
-                <Toast
-                  show={hasAdminRegistrationSuccessAlert}
-                  onClose={() => this.hideAdminRegistrationSuccessAlert()}
-                >
-                  Your edX administrator account was successfully activated.
-                </Toast>
                 <Switch>
                   <Redirect
                     exact
@@ -285,9 +251,6 @@ EnterpriseApp.propTypes = {
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
-    state: PropTypes.shape({
-      adminRegistrationSuccess: PropTypes.bool,
-    }),
   }).isRequired,
   history: PropTypes.shape({
     replace: PropTypes.func,

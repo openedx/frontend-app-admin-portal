@@ -1,103 +1,103 @@
-@import "~@edx/paragon/scss/edx/utilities-only";
+@import '~@edx/paragon/scss/core/utilities-only';
 
 .coupon-details {
-    font-size: 1rem;
+  font-size: 1rem;
 
-    .loading {
-        font-size: inherit;
+  .loading {
+    font-size: inherit;
+  }
+
+  .alert {
+    margin-bottom: 0;
+
+    &,
+    .btn-link {
+      font-size: 0.85rem;
     }
 
-    .alert {
-        margin-bottom: 0;
+    .btn-link {
+      text-decoration: underline;
+      margin-top: -4px;
+    }
 
-        &,
-        .btn-link {
-            font-size: 0.85rem;
-        }
+    .fa {
+      font-size: 1rem;
+    }
+  }
 
-        .btn-link {
-            text-decoration: underline;
-            margin-top: -4px;
-        }
+  .table,
+  .pagination .btn {
+    font-size: 0.85rem;
+  }
 
-        .fa {
+  .table {
+    td {
+      vertical-align: middle;
+    }
+
+    .btn {
+      font-size: inherit;
+      text-decoration: underline;
+
+      &:focus {
+        box-shadow: $btn-focus-box-shadow;
+      }
+    }
+
+    .form-check {
+      padding-left: 0;
+
+      input[type='checkbox'] {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+
+        & + label {
+          width: 15px;
+
+          &:before {
+            font-family: FontAwesome;
+            content: '\f096'; /* fa-square-o */
+            font-weight: normal;
             font-size: 1rem;
+            line-height: 1rem;
+          }
         }
+
+        &:checked + label:before {
+          content: '\f046'; /* fa-check-square-o */
+        }
+
+        &.mixed + label:before {
+          content: '\f146'; /* fa-minus-square */
+        }
+
+        &:focus + label:before {
+          border-radius: 2px;
+          box-shadow: $input-btn-focus-box-shadow;
+        }
+      }
     }
+  }
 
-    .table,
-    .pagination .btn {
-        font-size: 0.85rem;
+  .toggles,
+  .bulk-actions {
+    .form-group {
+      display: inline-block;
+
+      &,
+      label {
+        margin: 0;
+      }
+
+      label {
+        font-weight: 600;
+      }
     }
-
-    .table {
-        td {
-            vertical-align: middle;
-        }
-
-        .btn {
-            font-size: inherit;
-            text-decoration: underline;
-
-            &:focus {
-                box-shadow: $btn-focus-box-shadow;
-            }
-        }
-
-        .form-check {
-            padding-left: 0;
-
-            input[type=checkbox] {
-                border: 0;
-                clip: rect(0 0 0 0);
-                height: 1px;
-                margin: -1px;
-                overflow: hidden;
-                padding: 0;
-                position: absolute;
-                width: 1px;
-
-                & + label {
-                    width: 15px;
-
-                    &:before {
-                        font-family: FontAwesome;
-                        content: "\f096"; /* fa-square-o */
-                        font-weight: normal;
-                        font-size: 1rem;
-                        line-height: 1rem;
-                    }
-                }
-    
-                &:checked + label:before {
-                    content: "\f046"; /* fa-check-square-o */
-                }
-
-                &.mixed + label:before {
-                    content: "\f146"; /* fa-minus-square */
-                }
-    
-                &:focus + label:before {
-                    border-radius: 2px;
-                    box-shadow: $input-btn-focus-box-shadow;
-                }
-            }
-        }
-    }
-    
-    .toggles,
-    .bulk-actions {
-        .form-group {
-            display: inline-block;
-
-            &,
-            label {
-                margin: 0;
-            }
-
-            label {
-                font-weight: 600;
-            }
-        }
-    }
+  }
 }

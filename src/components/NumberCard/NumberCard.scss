@@ -1,112 +1,112 @@
-@import "~@edx/paragon/scss/edx/utilities-only";
+@import '~@edx/paragon/scss/core/utilities-only';
 
 $viewport-size-details-overlay: 'md';
-$number-card-box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+$number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
 .number-card {
-    box-shadow: $number-card-box-shadow;
-    position: relative;
+  box-shadow: $number-card-box-shadow;
+  position: relative;
+
+  &.has-details {
+    .card {
+      border-bottom: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  @include media-breakpoint-up($viewport-size-details-overlay) {
+    flex: 1 1 auto;
 
     &.has-details {
-        .card {
-            border-bottom: 0;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
+      margin-bottom: 53px; // height of collapsed .card-footer
     }
+  }
+
+  .card-title {
+    font-size: 2.5rem;
+    font-weight: 500;
+  }
+
+  .card-body {
+    .fa {
+      background: #dceef7;
+      color: #005686;
+      font-size: 1.5rem;
+      border-radius: 100%;
+      width: 3.75rem;
+      height: 3.75rem;
+    }
+  }
+
+  .card-footer {
+    position: relative;
+    font-size: 0.875rem;
+    background: #ffffff;
+    padding: 0;
+    border: $card-border-width solid $card-border-color;
+    @include border-radius($card-border-radius);
 
     @include media-breakpoint-up($viewport-size-details-overlay) {
-        flex: 1 1 auto;
+      & {
+        position: absolute;
+        z-index: $zindex-dropdown;
+        top: 100%;
+        width: 100%;
+        box-shadow: $number-card-box-shadow;
+      }
+    }
 
-        &.has-details {
-            margin-bottom: 53px; // height of collapsed .card-footer
+    .toggle-collapse {
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      color: #313131;
+      font-size: 0.875rem;
+      text-decoration: none;
+
+      .fa {
+        font-size: 1rem;
+      }
+
+      &:hover,
+      &:focus {
+        .details-btn-text {
+          text-decoration: underline;
         }
+      }
     }
 
-    .card-title {
-        font-size: 2.5rem;
-        font-weight: 500;
-    }
-
-    .card-body {
-        .fa {
-            background: #dceef7;
-            color: #005686;
-            font-size: 1.5rem;
-            border-radius: 100%;
-            width: 3.75rem;
-            height: 3.75rem;
-        }
-    }
-
-    .card-footer {
-        position: relative;
+    .footer-body {
+      .btn {
+        display: block;
+        width: 100%;
         font-size: 0.875rem;
-        background: #ffffff;
-        padding: 0;
-        border: $card-border-width solid $card-border-color;
-        @include border-radius($card-border-radius);
+        padding: 0.5rem 1.25rem;
+        text-align: left;
+        text-decoration: none;
+        border-radius: 0;
+        justify-content: space-between;
+        align-content: center;
+        color: #005686;
 
-        @include media-breakpoint-up($viewport-size-details-overlay) {
-            & {
-                position: absolute;
-                z-index: $zindex-dropdown;
-                top: 100%;
-                width: 100%;
-                box-shadow: $number-card-box-shadow;
-            }
+        &:hover {
+          background: lighten(#dceef7, 3%);
+          color: #005686;
         }
-    
-        .toggle-collapse {
-            padding: 1rem 1.25rem;
-            font-weight: 600;
-            color: #313131;
-            font-size: 0.875rem;
-            text-decoration: none;
 
-            .fa {
-                font-size: 1rem;
-            }
+        &:focus {
+          box-shadow: $input-btn-focus-box-shadow;
+          color: #005686;
+        }
 
-            &:hover,
-            &:focus {
-                .details-btn-text {
-                    text-decoration: underline;
-                }
-            }
+        &.active {
+          background: #dceef7;
         }
-    
-        .footer-body {
-            .btn {
-                display: block;
-                width: 100%;
-                font-size: 0.875rem;
-                padding: 0.5rem 1.25rem;
-                text-align: left;
-                text-decoration: none;
-                border-radius: 0;
-                justify-content: space-between;
-                align-content: center;
-                color: #005686;
-    
-                &:hover {
-                    background: lighten(#dceef7, 3%);
-                    color: #005686;
-                }
-    
-                &:focus {
-                    box-shadow: $input-btn-focus-box-shadow;
-                    color: #005686;
-                }
-    
-                &.active {
-                    background: #dceef7;
-                }
-    
-                span.label {
-                    white-space: normal;
-                }
-            }
+
+        span.label {
+          white-space: normal;
         }
+      }
     }
+  }
 }
