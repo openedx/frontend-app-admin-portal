@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 import { PrivateRoute } from '@edx/frontend-auth';
+import { initialize } from '@edx/frontend-platform';
 import * as FullStory from '@fullstory/browser';
 
 import EnterpriseApp from './containers/EnterpriseApp';
@@ -35,6 +36,13 @@ if (configuration.FULLSTORY_ORG_ID) {
     devMode: !configuration.FULLSTORY_ENABLED,
   });
 }
+
+// initialize({
+//   messages: [],
+//   requireAuthenticatedUser: true,
+//   hydrateAuthenticatedUser: true,
+// });
+
 
 const AppWrapper = () => (
   <Provider store={store}>

@@ -5,6 +5,7 @@ import { createLogger } from 'redux-logger';
 import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
 import { routerMiddleware, LOCATION_CHANGE } from 'react-router-redux';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { FETCH_CSV_REQUEST } from './constants/csv';
 import { PAGINATION_REQUEST, SORT_REQUEST } from './constants/table';
 
@@ -42,15 +43,15 @@ const segmentMiddleware = createMiddleware(eventsMap, Segment());
 
 const middleware = [thunkMiddleware, loggerMiddleware, routerHistoryMiddleware, segmentMiddleware];
 
-const initialState = apiClient.getAuthenticationState();
-if (initialState.authentication) {
+const authenticatedUser = getAuthenticatedUser();
+if (authenticatedUser) {
   // eslint-disable-next-line no-undef
-  analytics.identify(initialState.authentication.userId);
+  analytics.identify(authenticatedUser.userId);
 }
 
 const store = createStore(
   reducers,
-  initialState,
+  authenticatedUser || {},
   composeWithDevTools(applyMiddleware(...middleware)),
 );
 
