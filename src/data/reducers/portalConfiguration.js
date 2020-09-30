@@ -43,6 +43,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableSubscriptionManagementScreen: action.payload.data.enable_portal_subscription_management_screen, // eslint-disable-line max-len
         enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,
         enableAnalyticsScreen: action.payload.data.enable_analytics_screen,
+        enableLearnerPortal: action.payload.data.enable_learner_portal,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {

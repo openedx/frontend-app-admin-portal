@@ -26,6 +26,8 @@ const sampleEmailTemplate = {
 const initialState = {
   portalConfiguration: {
     enterpriseId,
+    enterpriseSlug: 'bearsRus',
+    enableLearnerPortal: true,
   },
   csv: {
     'coupon-details': {},
@@ -472,7 +474,7 @@ describe('CouponDetailsWrapper', () => {
       });
 
       // fake successful code assignment
-      wrapper.find('CodeAssignmentModal').prop('onSuccess')();
+      wrapper.find('BaseCodeAssignmentModal').prop('onSuccess')();
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeTruthy();
 
       wrapper.update();

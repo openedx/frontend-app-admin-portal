@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
@@ -18,8 +19,9 @@ import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/consta
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 
 import './CodeAssignmentModal.scss';
+import { configuration } from '../../config';
 
-class CodeAssignmentModal extends React.Component {
+class BaseCodeAssignmentModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -300,6 +302,8 @@ class CodeAssignmentModal extends React.Component {
         hasAllCodesSelected,
       },
       sendCodeAssignment,
+      enableLearnerPortal,
+      enterpriseSlug,
     } = this.props;
 
     this.setMode('assign');
@@ -313,6 +317,11 @@ class CodeAssignmentModal extends React.Component {
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };
+
+    // If the enterprise has a learner portal, we should direct users to it in our assignment email
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_HOSTNAME) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_HOSTNAME}/${enterpriseSlug}`;
+    }
 
     if (isBulkAssign) {
       const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
@@ -496,13 +505,16 @@ class CodeAssignmentModal extends React.Component {
   }
 }
 
-CodeAssignmentModal.defaultProps = {
+BaseCodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
 };
 
-CodeAssignmentModal.propTypes = {
+BaseCodeAssignmentModal.propTypes = {
+  // props from redux
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -534,6 +546,13 @@ CodeAssignmentModal.propTypes = {
     remainingUses: PropTypes.number,
   }),
 };
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+});
+
+const CodeAssignmentModal = connect(mapStateToProps)(BaseCodeAssignmentModal);
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
