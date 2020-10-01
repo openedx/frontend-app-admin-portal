@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon } from '@edx/paragon';
-// import { Button, Icon, Modal } from '@edx/paragon';
+import { Button, Icon, Modal } from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
-import Modal from '../Modal';
 
 import NewRelicService from '../../data/services/NewRelicService';
 
@@ -16,17 +14,8 @@ class LicenseRevokeModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    // this.modalRef = React.createRef();
 
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    // const { current: { firstFocusableElement } } = this.modalRef;
-
-    // if (firstFocusableElement) {
-    //   firstFocusableElement.focus();
-    // }
   }
 
   componentDidUpdate(prevProps) {

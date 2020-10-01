@@ -17,9 +17,7 @@ Array [
         <div
           className="col-sm-12 col-md"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Enterprise List
           </h1>
         </div>
@@ -117,9 +115,7 @@ Array [
         <div
           className="col-sm-12 col-md"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Enterprise List
           </h1>
         </div>
@@ -217,9 +213,7 @@ Array [
         <div
           className="col-sm-12 col-md"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Enterprise List
           </h1>
         </div>
@@ -313,9 +307,7 @@ exports[`<EnterpriseList /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h1
-          className={null}
-        >
+        <h1>
           Error
         </h1>
         <div
@@ -368,9 +360,7 @@ Array [
         <div
           className="col-sm-12 col-md"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Enterprise List
           </h1>
         </div>

@@ -16,19 +16,28 @@ const user = {
   userEmail: 'edx@example.com',
   licenseStatus: 'active',
 };
-const subscriptionUUID = '2e0caa85-3461-46b9-8c90-84681f43ba7c';
-
+const subscriptionPlan = {
+  uuid: '2e0caa85-3461-46b9-8c90-84681f43ba7c',
+  revocations: {
+    applied: 1,
+    remaining: 10,
+  },
+};
+const licenseOverview = {
+  assigned: 5,
+};
 const LicenseRevokeModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
       <LicenseRevokeModal
         user={user}
-        onClose={() => {}}
-        onSuccess={() => {}}
-        setActiveTab={() => {}}
-        fetchSubscriptionDetails={() => {}}
-        fetchSubscriptionUsers={() => {}}
-        subscriptionUUID={subscriptionUUID}
+        onClose={() => { }}
+        onSuccess={() => { }}
+        setActiveTab={() => { }}
+        fetchSubscriptionDetails={() => { }}
+        fetchSubscriptionUsers={() => { }}
+        subscriptionPlan={subscriptionPlan}
+        licenseOverview={licenseOverview}
         {...props}
       />
     </Provider>
@@ -56,9 +65,12 @@ describe('LicenseRevokeModalWrapper', () => {
     spy = jest.spyOn(LicenseManagerApiService, 'licenseRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
-    expect(wrapper.find('.modal-title small').text()).toEqual('Are you sure you want to revoke access?');
+    expect(wrapper.find('.modal-title').text()).toEqual('Are you sure you want to revoke license?');
 
-    expect(wrapper.find('.license-details p.message').text()).toEqual(`Revoking a license will remove access to the subscription catalog for ${user.userEmail}. To re-enable access, you can assign this user to another license.`);
+    expect(wrapper.find('.license-details p').at(0).text())
+      .toContain((
+        `Revoking a license will remove access to the subscription catalog for ${user.userEmail}.`
+      ));
 
     wrapper.find('.modal-footer .license-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalled();

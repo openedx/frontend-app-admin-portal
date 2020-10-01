@@ -16,9 +16,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Code Management
           </h1>
         </div>
@@ -42,9 +40,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
       <div
         className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -214,9 +210,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Code Management
           </h1>
         </div>
@@ -240,9 +234,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
       <div
         className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -417,9 +409,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Code Management
           </h1>
         </div>
@@ -443,9 +433,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
       <div
         className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -592,9 +580,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Code Management
           </h1>
         </div>
@@ -618,9 +604,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
       <div
         className="col-12 col-xl-3 mb-3 mb-xl-0"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
