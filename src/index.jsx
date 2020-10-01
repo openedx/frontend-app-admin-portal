@@ -19,7 +19,6 @@ import Footer from './containers/Footer';
 import EnterpriseIndexPage from './containers/EnterpriseIndexPage';
 import AdminRegisterPage from './containers/AdminRegisterPage';
 import UserActivationPage from './containers/UserActivationPage';
-import JwtAuthenticationRefresh from './components/JwtAuthenticationRefresh';
 import NotFoundPage from './components/NotFoundPage';
 import SupportPage from './components/SupportPage';
 import { withErrorBoundary } from './components/ErrorBoundary';
@@ -38,52 +37,50 @@ if (configuration.FULLSTORY_ORG_ID) {
 }
 
 const AppWrapper = () => (
-  <JwtAuthenticationRefresh>
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <React.Fragment>
-          <Helmet
-            titleTemplate="%s - edX Admin Portal"
-            defaultTitle="edX Admin Portal"
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <React.Fragment>
+        <Helmet
+          titleTemplate="%s - edX Admin Portal"
+          defaultTitle="edX Admin Portal"
+        />
+        <Header />
+        <Switch>
+          <Route exact path="/public/support" component={SupportPage} />
+          <PrivateRoute
+            path="/enterprises"
+            component={EnterpriseIndexPage}
+            authenticatedAPIClient={apiClient}
+            redirect={`${process.env.BASE_URL}/enterprises`}
           />
-          <Header />
-          <Switch>
-            <Route exact path="/public/support" component={SupportPage} />
-            <PrivateRoute
-              path="/enterprises"
-              component={EnterpriseIndexPage}
-              authenticatedAPIClient={apiClient}
-              redirect={`${process.env.BASE_URL}/enterprises`}
-            />
-            <Route
-              exact
-              path="/:enterpriseSlug/admin/register"
-              component={AdminRegisterPage}
-            />
-            <Route
-              exact
-              path="/:enterpriseSlug/admin/register/activate"
-              component={UserActivationPage}
-            />
-            <PrivateRoute
-              path="/:enterpriseSlug"
-              component={EnterpriseApp}
-              authenticatedAPIClient={apiClient}
-              redirect={process.env.BASE_URL}
-            />
-            <PrivateRoute
-              path="/"
-              component={EnterpriseIndexPage}
-              authenticatedAPIClient={apiClient}
-              redirect={process.env.BASE_URL}
-            />
-            <Route component={NotFoundPage} />
-          </Switch>
-          <Footer />
-        </React.Fragment>
-      </ConnectedRouter>
-    </Provider>
-  </JwtAuthenticationRefresh>
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/register"
+            component={AdminRegisterPage}
+          />
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/register/activate"
+            component={UserActivationPage}
+          />
+          <PrivateRoute
+            path="/:enterpriseSlug"
+            component={EnterpriseApp}
+            authenticatedAPIClient={apiClient}
+            redirect={process.env.BASE_URL}
+          />
+          <PrivateRoute
+            path="/"
+            component={EnterpriseIndexPage}
+            authenticatedAPIClient={apiClient}
+            redirect={process.env.BASE_URL}
+          />
+          <Route component={NotFoundPage} />
+        </Switch>
+        <Footer />
+      </React.Fragment>
+    </ConnectedRouter>
+  </Provider>
 );
 
 const PortalAppWrapper = withErrorBoundary(AppWrapper);
