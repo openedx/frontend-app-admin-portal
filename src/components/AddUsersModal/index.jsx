@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 
-import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 import FileInput from '../FileInput';
@@ -141,17 +140,12 @@ class AddUsersModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <p>Unassigned licenses: {availableSubscriptionCount}</p>
           <div className="mt-4">
-            <H3>Add Users</H3>
+            <h3>Add Users</h3>
             <Field
               id="email-addresses"
               name="email-addresses"
               component={TextAreaAutoSize}
-              label={
-                <React.Fragment>
-                  Email Address
-                  <span className="required">*</span>
-                </React.Fragment>
-              }
+              label="Email Address"
               description="To add more than one user, enter one email address per line."
             />
             <p className="pb-2">
@@ -166,7 +160,7 @@ class AddUsersModal extends React.Component {
               accept=".csv"
               normalize={this.normalizeFileUpload}
             />
-            <H3>Email Template</H3>
+            <h3>Email Template</h3>
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
@@ -235,13 +229,14 @@ class AddUsersModal extends React.Component {
       <React.Fragment>
         <Modal
           ref={this.modalRef}
+          dialogClassName="add-users"
           title={this.renderTitle()}
           body={this.renderBody()}
           buttons={[
             <Button
               key="subscribe-users-submit-btn"
               disabled={submitting}
-              className="subscribe-users-save-btn btn-primary"
+              className="subscribe-users-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <React.Fragment>

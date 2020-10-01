@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import { clearFields } from 'redux-form';
 import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
 
-import './FileInput.scss';
-
 class FileInput extends React.Component {
   constructor(props) {
     super(props);
@@ -128,7 +126,7 @@ class FileInput extends React.Component {
                 }}
               />
             </React.Fragment>
-          ) : (
+          ) : ((
             <React.Fragment>
               <Button
                 variant="link"
@@ -145,7 +143,7 @@ class FileInput extends React.Component {
                 </React.Fragment>
               </Button>
             </React.Fragment>
-          )}
+          ))}
         </div>
       </ValidationFormGroup>
     );

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 import StatusAlert from '../StatusAlert';
-import H1 from '../H1';
 import NotFoundPage from '../NotFoundPage';
 import ForbiddenPage from '../ForbiddenPage';
 
@@ -22,7 +21,7 @@ function renderErrorComponent(status, message) {
       </Helmet>
       <div className="row mt-4">
         <div className="col">
-          <H1>Error</H1>
+          <h1>Error</h1>
           <StatusAlert
             alertType="danger"
             message={errorMessage}

@@ -1,17 +1,18 @@
 .loading {
-    background: #f2f8fb;
-    font-size: 1.125rem;
-    
-    &.table-loading,
-    &.request-codes,
-    &.support,
-    &.admin-register,
-    &.user-activation {
-        height: 360px;
-    }
+  background: #f2f8fb;
+  font-size: 1.125rem;
+  
+  &.table-loading,
+  &.request-codes,
+  &.support,
+  &.admin-register,
+  &.user-activation,
+  &.subscriptions {
+    height: 360px;
+  }
 
-    &.overview,
-    &.coupons {
-        height: 180px;
-    }
+  &.overview,
+  &.coupons {
+    height: 180px;
+  }
 }

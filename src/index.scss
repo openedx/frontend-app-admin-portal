@@ -1,4 +1,5 @@
 // ... Any custom SCSS variables should be defined here
+$modal-max-width: 650px;
 
 @import "~@edx/paragon/scss/edx/theme.scss";
 @import "~@edx/paragon/scss/edx/fonts.scss"; // Roboto
@@ -6,30 +7,54 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
+@import "./components/EnterpriseApp/EnterpriseApp";
+@import "./components/CodeManagement/CodeManagement";
+@import "./components/CodeSearchResults/CodeSearchResults";
+@import "./components/Coupon/Coupon";
+@import "./components/FileInput/FileInput";
+@import "./components/NumberCard/NumberCard";
+@import "./components/RequestCodesPage/RequestCodesPage";
+@import "./components/Sidebar/Sidebar";
+@import "./components/SupportPage/SupportPage";
+@import "./components/subscriptions/styles/LicenseActions";
+@import "./components/subscriptions/styles/SubscriptionManagementPage";
+
+@import "./components/Modal/Modal";
+
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 form {
-    label {
-        .required {
-            color: $danger;
-            margin-left: 4px;
-        }
+  label {
+    .required {
+      color: $danger;
+      margin-left: 4px;
     }
+  }
 
-    textarea {
-        resize: none;
-    }
+  textarea {
+    resize: none;
+  }
 }
 
 .container-fluid {
-    width: 100%;
-    max-width: none;
-    padding-left: 15px;
-    padding-right: 15px;
+  width: 100%;
+  max-width: none;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .toast-container {
-    z-index: $zindex-popover;
+  z-index: $zindex-popover;
+}
+
+.modal {
+  .modal-dialog {
+    max-width: $modal-max-width;
+  }
+
+  .modal-footer {
+    padding: 0.75rem;
+  }
 }

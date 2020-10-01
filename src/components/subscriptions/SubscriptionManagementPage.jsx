@@ -15,8 +15,6 @@ import TabContentTable from './TabContentTable';
 
 import { TAB_PENDING_USERS } from './constants';
 
-import './styles/SubscriptionManagementPage.scss';
-
 const PAGE_TITLE = 'Subscription Management';
 
 function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {

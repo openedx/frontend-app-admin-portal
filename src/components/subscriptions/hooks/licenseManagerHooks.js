@@ -188,6 +188,7 @@ export const useSubscriptionData = ({
   };
 
   useEffect(() => fetchSubscriptionUsersOverview(), [subscriptions]);
+
   useEffect(
     () => fetchSubscriptionUsers(),
     [subscriptions, status, search, page],
@@ -232,4 +233,18 @@ export const useSubscriptionData = ({
   return {
     fetch, isLoading, errors, data, hasSubscription,
   };
+};
+
+export const useHasNoRevocationsRemaining = (subscriptionPlan) => {
+  const hasNoRevocationsRemaining = useMemo(
+    () => {
+      const { revocations } = subscriptionPlan;
+      if (revocations.remaining <= 0) {
+        return true;
+      }
+      return false;
+    },
+    [subscriptionPlan],
+  );
+  return hasNoRevocationsRemaining;
 };

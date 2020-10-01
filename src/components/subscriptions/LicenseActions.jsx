@@ -8,9 +8,8 @@ import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
 
 import { SubscriptionContext } from './SubscriptionData';
 
+import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
 import { ACTIVATED, ASSIGNED } from './constants';
-
-import './styles/LicenseActions.scss';
 
 export default function LicenseAction({ user }) {
   const { addToast } = useContext(ToastsContext);
@@ -22,12 +21,20 @@ export default function LicenseAction({ user }) {
     activeTab,
     details,
     currentPage,
+    overview,
   } = useContext(SubscriptionContext);
+
+  const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
+  const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
 
   const licenseActions = useMemo(
     () => {
       switch (user.status) {
         case ACTIVATED:
+          if (hasNoRevocationsRemaining) {
+            return noActionsAvailable;
+          }
+
           return [{
             key: 'revoke-btn',
             text: 'Revoke',
@@ -40,7 +47,8 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
                 currentPage={currentPage}
-                subscriptionUUID={details.uuid}
+                subscriptionPlan={details}
+                licenseOverview={overview}
               />
             ),
           }];
@@ -74,12 +82,13 @@ export default function LicenseAction({ user }) {
                 fetchSubscriptionUsers={fetchSubscriptionUsers}
                 searchQuery={searchQuery}
                 currentPage={currentPage}
-                subscriptionUUID={details.uuid}
+                subscriptionPlan={details}
+                licenseOverview={overview}
               />
             ),
           }];
         default:
-          return [{ key: 'no-actions-here', text: '-' }];
+          return noActionsAvailable;
       }
     },
     [user, activeTab, searchQuery, currentPage],

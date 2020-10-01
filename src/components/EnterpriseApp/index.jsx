@@ -20,8 +20,6 @@ import { AnalyticsPage } from '../analytics';
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
-import './EnterpriseApp.scss';
-
 class EnterpriseApp extends React.Component {
   constructor(props) {
     super(props);

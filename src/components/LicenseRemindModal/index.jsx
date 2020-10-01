@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 
-import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
@@ -127,14 +126,14 @@ class LicenseRemindModal extends React.Component {
           <React.Fragment>
             {isBulkRemind ? (
               <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
-            ) : (
+            ) : ((
               <p className="bulk-selected-codes">Email: {user.userEmail}</p>
-            )}
+            ))}
           </React.Fragment>
         </div>
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
-            <H3>Email Template</H3>
+            <h3>Email Template</h3>
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
@@ -177,8 +176,8 @@ class LicenseRemindModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-            error[0]
-          )}
+              error[0]
+            )}
         />
       </div>
     );
@@ -206,6 +205,7 @@ class LicenseRemindModal extends React.Component {
       <React.Fragment>
         <Modal
           ref={this.modalRef}
+          dialogClassName="license-remind"
           title={this.renderTitle()}
           body={this.renderBody()}
           buttons={[

@@ -11,8 +11,6 @@ import LmsApiService from '../../data/services/LmsApiService';
 
 import NewRelicService from '../../data/services/NewRelicService';
 
-import './RequestCodesPage.scss';
-
 class RequestCodesPage extends React.Component {
   hasEmailAndEnterpriseName() {
     const { emailAddress, enterpriseName } = this.props;

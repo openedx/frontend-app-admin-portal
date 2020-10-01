@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
 import { Link, withRouter } from 'react-router-dom';
 
-import './NumberCard.scss';
-
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
 
 export const triggerKeys = {

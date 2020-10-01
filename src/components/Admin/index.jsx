@@ -5,8 +5,6 @@ import qs from 'query-string';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
-import H2 from '../../components/H2';
-import H3 from '../../components/H3';
 import Hero from '../../components/Hero';
 import StatusAlert from '../../components/StatusAlert';
 import LoadingMessage from '../../components/LoadingMessage';
@@ -308,7 +306,7 @@ class Admin extends React.Component {
               <div className="container-fluid">
                 <div className="row mt-4">
                   <div className="col">
-                    <H2>Overview</H2>
+                    <h2>Overview</h2>
                   </div>
                 </div>
                 <div className="row mt-3">
@@ -317,15 +315,15 @@ class Admin extends React.Component {
                       {error && this.renderErrorMessage()}
                       {loading && this.renderLoadingMessage()}
                     </div>
-                  ) : (
+                  ) : ((
                     <AdminCards />
-                  )}
+                  ))}
                 </div>
                 <div className="row mt-4">
                   <div className="col">
                     <div className="row">
                       <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                        <H2 className="table-title">{tableMetadata.title}</H2>
+                        <h2 className="table-title">{tableMetadata.title}</h2>
                       </div>
                       <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
                         {actionSlug && this.renderUrlResetButton()}
@@ -334,7 +332,7 @@ class Admin extends React.Component {
                     </div>
                     <div className="row">
                       <div className="col">
-                        {tableMetadata.subtitle && <H3>{tableMetadata.subtitle}</H3>}
+                        {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
                         {tableMetadata.description && <p>{tableMetadata.description}</p>}
                       </div>
                     </div>

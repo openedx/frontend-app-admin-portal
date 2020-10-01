@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
 
-import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
 
@@ -13,7 +12,7 @@ class BulkAssignFields extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <H3 className="mb-2">Add Users</H3>
+        <h3 className="mb-2">Add Users</h3>
         <div className="pl-4 field-group">
           <Field
             id="email-addresses"
