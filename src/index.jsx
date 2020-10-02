@@ -39,8 +39,8 @@ if (configuration.FULLSTORY_ORG_ID) {
 
 const AppWrapper = () => (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <JwtAuthenticationRefresh>
+    <JwtAuthenticationRefresh>
+      <ConnectedRouter history={history}>
         <React.Fragment>
           <Helmet
             titleTemplate="%s - edX Admin Portal"
@@ -81,8 +81,8 @@ const AppWrapper = () => (
           </Switch>
           <Footer />
         </React.Fragment>
-      </JwtAuthenticationRefresh>
-    </ConnectedRouter>
+      </ConnectedRouter>
+    </JwtAuthenticationRefresh>
   </Provider>
 );
 
