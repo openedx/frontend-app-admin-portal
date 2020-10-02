@@ -6,3 +6,7 @@ coverage
 
 dist/
 .idea
+
+# emacs
+*~
+*#
