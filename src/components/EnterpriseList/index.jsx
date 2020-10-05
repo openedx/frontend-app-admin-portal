@@ -10,6 +10,7 @@ import LoadingMessage from '../../components/LoadingMessage';
 import LmsApiService from '../../data/services/LmsApiService';
 import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
+import SurveyPage from '../../components/SurveyPage';
 import { updateUrl } from '../../utils';
 
 class EnterpriseList extends React.Component {
@@ -110,6 +111,7 @@ class EnterpriseList extends React.Component {
     }
     return loading && !enterpriseList ? <LoadingMessage className="table-loading" /> : (
       <React.Fragment>
+        <SurveyPage />
         <Helmet>
           <title>Enterprise List</title>
         </Helmet>
