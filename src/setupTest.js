@@ -12,4 +12,4 @@ process.env.DATA_API_BASE_URL = 'http://localhost:8000';
 process.env.ECOMMERCE_BASE_URL = 'http://localhost:8000';
 process.env.LICENSE_MANAGER_BASE_URL = 'http://localhost:18170';
 process.env.FEATURE_FLAGS = {};
-process.env.ENTERPRISE_LEARNER_PORTAL_HOSTNAME = 'http://localhost:8734';
+process.env.ENTERPRISE_LEARNER_PORTAL_URL = 'http://localhost:8734';

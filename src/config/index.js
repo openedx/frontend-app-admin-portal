@@ -25,7 +25,7 @@ const configuration = {
   NODE_ENV: process.env.NODE_ENV,
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
   TABLEAU_URL: process.env.TABLEAU_URL,
-  ENTERPRISE_LEARNER_PORTAL_HOSTNAME: process.env.ENTERPRISE_LEARNER_PORTAL_HOSTNAME,
+  ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
 };
 
 const features = {

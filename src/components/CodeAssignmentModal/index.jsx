@@ -319,8 +319,8 @@ class BaseCodeAssignmentModal extends React.Component {
     };
 
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
-    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_HOSTNAME) {
-      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_HOSTNAME}/${enterpriseSlug}`;
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
     }
 
     if (isBulkAssign) {
