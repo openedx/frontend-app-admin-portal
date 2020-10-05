@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 
+import { configuration } from '../../config';
+
 const SurveyPage = () => {
   useEffect(() => {
     const widget = document.createElement('script');
-    widget.src = 'https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd_2BubSJEoVMSXyhpZ3VDb5_2BknEVoWfJFNQnAE6Sqt_2BFck.js';
+    widget.src = configuration.SURVEY_MONKEY_URL;
     document.body.appendChild(widget);
   }, []);
 

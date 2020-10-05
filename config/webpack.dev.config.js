@@ -106,6 +106,7 @@ module.exports = Merge.smart(commonConfig, {
       LMS_BASE_URL: 'http://localhost:18000',
       LOGIN_URL: 'http://localhost:18000/login',
       LOGOUT_URL: 'http://localhost:18000/logout',
+      SURVEY_MONKEY_URL: 'https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd_2BubSJEoVMSXyhpZ3VDb5_2BknEVoWfJFNQnAE6Sqt_2BFck.js',
       CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
       REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login_refresh',
       DATA_API_BASE_URL: 'http://localhost:8000',
