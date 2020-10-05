@@ -124,6 +124,7 @@ module.exports = Merge.smart(commonConfig, {
         ANALYTICS: true,
         SUPPORT: true,
         SAML_CONFIGURATION: true,
+        CODE_VISIBILITY: true,
       },
     }),
   ],

@@ -173,6 +173,7 @@ module.exports = Merge.smart(commonConfig, {
         ANALYTICS: false,
         SUPPORT: true,
         SAML_CONFIGURATION: true,
+        CODE_VISIBILITY: false,
       },
     }),
     new HtmlWebpackNewRelicPlugin({

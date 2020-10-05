@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import CouponDetails from '../../components/CouponDetails';
 
 import { fetchCouponOrder } from '../../data/actions/coupons';
+import updateCodeVisibility from '../../data/actions/codeVisibility';
 
 const couponDetailsTableId = 'coupon-details';
 
@@ -16,6 +17,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchCouponOrder: (couponId) => {
     dispatch(fetchCouponOrder(couponId));
+  },
+  updateCodeVisibility: (couponId, codeIds, isPublic) => {
+    dispatch(updateCodeVisibility(couponId, codeIds, isPublic));
   },
 });
 
