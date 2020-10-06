@@ -34,6 +34,7 @@ const features = {
   ANALYTICS: process.env.FEATURE_FLAGS.ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
   SAML_CONFIGURATION: process.env.FEATURE_FLAGS.SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
   SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
+  CODE_VISIBILITY: process.env.FEATURE_FLAGS.CODE_VISIBILITY || hasFeatureFlagEnabled('CODE_VISIBILITY'),
 };
 
 export { configuration, features };
