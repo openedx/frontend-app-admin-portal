@@ -80,7 +80,7 @@ class Sidebar extends React.Component {
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
       },
       {
-        title: 'Saml Configuration',
+        title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
         iconClassName: 'fa-id-card',
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
