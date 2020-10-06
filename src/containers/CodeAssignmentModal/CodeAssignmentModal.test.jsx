@@ -22,8 +22,13 @@ const initialState = {
       data: {
         count: 0,
         results: [],
+
       },
     },
+  },
+  portalConfiguration: {
+    enterpriseSlug: 'bearsRus',
+    enableLearnerPortal: true,
   },
   emailTemplate: {
     saving: false,

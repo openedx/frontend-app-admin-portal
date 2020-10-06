@@ -165,6 +165,8 @@ module.exports = Merge.smart(commonConfig, {
       FULLSTORY_ENABLED: true,
       NEW_RELIC_APP_ID: null,
       NEW_RELIC_LICENSE_KEY: null,
+      ENTERPRISE_LEARNER_PORTAL_URL: null,
+
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,
