@@ -12,6 +12,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
 
+/* eslint-disable no-console */
+console.log('ENTERPRISE_LEARNER_PORTAL_URL');
+console.log(process.env.ENTERPRISE_LEARNER_PORTAL_URL);
+/* eslint-enable no-console */
+
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
   devtool: 'source-map',
