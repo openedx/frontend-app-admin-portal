@@ -110,6 +110,10 @@ class CodeRevokeModal extends React.Component {
       template_closing: formData['email-template-closing'],
     };
 
+    if (formData['template-id']) {
+      options.template_id = formData['template-id'];
+    }
+
     if (isBulkRevoke) {
       if (!data.selectedCodes.length) {
         errors._error.push('At least one code must be selected.');
