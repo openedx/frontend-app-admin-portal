@@ -202,7 +202,9 @@ class AddUsersModal extends React.Component {
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
-          ) : error[0]}
+          ) : (
+            error[0]
+          )}
         />
       </div>
     );

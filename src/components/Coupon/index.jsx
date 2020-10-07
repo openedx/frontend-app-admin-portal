@@ -210,8 +210,8 @@ class Coupon extends React.Component {
 
 Coupon.defaultProps = {
   isExpanded: false,
-  onExpand: () => { },
-  onCollapse: () => { },
+  onExpand: () => {},
+  onCollapse: () => {},
 };
 
 Coupon.propTypes = {

@@ -17,8 +17,6 @@ import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 
-import './CouponDetails.scss';
-
 class CouponDetails extends React.Component {
   constructor(props) {
     super(props);

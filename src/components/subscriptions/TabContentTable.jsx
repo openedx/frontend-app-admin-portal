@@ -130,7 +130,7 @@ function TabContentTable({ enterpriseSlug }) {
           key={title}
         />
       ))}
-      {!isLoading && !errors &&
+      {!isLoading && !errors && (
         <React.Fragment>
           {tableData?.length > 0 ? (
             <React.Fragment>
@@ -165,7 +165,7 @@ function TabContentTable({ enterpriseSlug }) {
                 />
               </div>
             </React.Fragment>
-          ) : ((
+          ) : (
             <React.Fragment>
               <hr className="mt-0" />
               <StatusAlert
@@ -176,9 +176,9 @@ function TabContentTable({ enterpriseSlug }) {
                 open
               />
             </React.Fragment>
-          ))}
+          )}
         </React.Fragment>
-      }
+      )}
     </React.Fragment>
   );
 }

@@ -11,6 +11,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/CodeManagement/CodeManagement";
 @import "./components/CodeSearchResults/CodeSearchResults";
 @import "./components/Coupon/Coupon";
+@import "./components/CouponDetails/CouponDetails";
 @import "./components/FileInput/FileInput";
 @import "./components/NumberCard/NumberCard";
 @import "./components/RequestCodesPage/RequestCodesPage";
@@ -50,9 +51,5 @@ form {
 .modal {
   .modal-dialog {
     max-width: $modal-max-width;
-  }
-
-  .modal-footer {
-    padding: 0.75rem;
   }
 }

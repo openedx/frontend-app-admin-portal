@@ -126,9 +126,9 @@ class LicenseRemindModal extends React.Component {
           <React.Fragment>
             {isBulkRemind ? (
               <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
-            ) : ((
+            ) : (
               <p className="bulk-selected-codes">Email: {user.userEmail}</p>
-            ))}
+            )}
           </React.Fragment>
         </div>
         <form onSubmit={e => e.preventDefault()}>
@@ -176,8 +176,8 @@ class LicenseRemindModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-              error[0]
-            )}
+            error[0]
+          )}
         />
       </div>
     );

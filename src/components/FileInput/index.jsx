@@ -126,7 +126,7 @@ class FileInput extends React.Component {
                 }}
               />
             </React.Fragment>
-          ) : ((
+          ) : (
             <React.Fragment>
               <Button
                 variant="link"
@@ -143,7 +143,7 @@ class FileInput extends React.Component {
                 </React.Fragment>
               </Button>
             </React.Fragment>
-          ))}
+          )}
         </div>
       </ValidationFormGroup>
     );

@@ -86,7 +86,7 @@ const AppWrapper = () => (
         </ToastsProvider>
       </ConnectedRouter>
     </JwtAuthenticationRefresh>
-  </Provider >
+  </Provider>
 );
 
 const PortalAppWrapper = withErrorBoundary(AppWrapper);

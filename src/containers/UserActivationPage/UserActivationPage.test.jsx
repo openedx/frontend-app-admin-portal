@@ -27,10 +27,10 @@ const UserActivationPageWrapper = ({
   store,
   history,
   ...rest
-}) => ((
+}) => (
   <Router history={history}>
     <Provider store={store}>
-      <ToastsContext.Provider value={{ addToast: () => { } }}>
+      <ToastsContext.Provider value={{ addToast: () => {} }}>
         <Route
           exact
           path="/:enterpriseSlug/admin/register/activate"
@@ -39,7 +39,7 @@ const UserActivationPageWrapper = ({
       </ToastsContext.Provider>
     </Provider>
   </Router>
-));
+);
 
 UserActivationPageWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

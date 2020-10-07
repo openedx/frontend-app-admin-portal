@@ -443,8 +443,8 @@ class BaseCodeAssignmentModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-              error[0]
-            )}
+            error[0]
+          )}
         />
       </div>
     );

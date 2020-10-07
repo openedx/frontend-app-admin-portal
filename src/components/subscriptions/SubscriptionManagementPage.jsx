@@ -51,7 +51,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                       fetchSubscriptionUsers,
                       fetchSubscriptionDetails,
                       setActiveTab,
-                    }) => ((
+                    }) => (
                       <React.Fragment>
                         <p className="lead">
                           {details.licenses.allocated}
@@ -77,7 +77,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                           </div>
                         </div>
                       </React.Fragment>
-                    ))}
+                    )}
                   </SubscriptionConsumer>
                 </div>
                 <div className="row my-4">

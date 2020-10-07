@@ -105,7 +105,9 @@ export default function LicenseAction({ user }) {
               variant="link"
               renderModal={({ closeModal }) => handleClick(closeModal)}
             />
-          ) : text}
+          ) : (
+            text
+          )}
         </React.Fragment>
       ))}
     </div>

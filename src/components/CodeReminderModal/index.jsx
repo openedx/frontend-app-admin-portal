@@ -228,8 +228,8 @@ class CodeReminderModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-              error[0]
-            )}
+            error[0]
+          )}
         />
       </div>
     );
@@ -282,12 +282,11 @@ class CodeReminderModal extends React.Component {
               setMode={this.setMode}
               handleSubmit={handleSubmit}
             />,
-          ]
-          }
+          ]}
           onClose={onClose}
           open
         />
-      </React.Fragment >
+      </React.Fragment>
     );
   }
 }

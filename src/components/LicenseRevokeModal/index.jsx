@@ -150,7 +150,6 @@ class LicenseRevokeModal extends React.Component {
 
     return (
       <Modal
-        // ref={this.modalRef}
         dialogClassName="license-revoke"
         renderHeaderCloseButton={false}
         title={this.renderTitle()}
