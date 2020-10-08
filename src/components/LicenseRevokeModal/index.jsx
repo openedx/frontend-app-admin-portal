@@ -82,6 +82,8 @@ class LicenseRevokeModal extends React.Component {
     const { revocations } = subscriptionPlan;
     const revocationCapLimit = revocations.remaining * (SHOW_REVOCATION_CAP_PERCENT / 100);
 
+    // only show the revocation cap messaging if the number of applied revocations exceeds X% of
+    // the number of revocations remaining for the subscription plan.
     return revocations.applied > revocationCapLimit;
   }
 

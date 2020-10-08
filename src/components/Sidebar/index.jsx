@@ -166,7 +166,7 @@ Sidebar.defaultProps = {
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
-  onWidthChange: () => { },
+  onWidthChange: () => {},
   isMobile: false,
 };
 
