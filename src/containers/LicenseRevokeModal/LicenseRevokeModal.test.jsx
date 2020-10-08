@@ -65,7 +65,7 @@ describe('LicenseRevokeModalWrapper', () => {
     spy = jest.spyOn(LicenseManagerApiService, 'licenseRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
-    expect(wrapper.find('.modal-title').text()).toEqual('Are you sure you want to revoke license?');
+    expect(wrapper.find('.modal-title').text()).toEqual('Are you sure you want to revoke this license?');
 
     expect(wrapper.find('.license-details p').at(0).text())
       .toContain((

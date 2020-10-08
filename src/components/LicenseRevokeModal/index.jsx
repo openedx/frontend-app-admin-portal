@@ -103,7 +103,7 @@ class LicenseRevokeModal extends React.Component {
             message={
               <p className="m-0">
                 You have already revoked {revocations.applied} licenses. You
-                have {revocations.remaining} left on your plan.
+                have {revocations.remaining} revocations left on your plan.
               </p>
             }
           />
@@ -159,7 +159,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderTitle() {
-    return <small>Are you sure you want to revoke license?</small>;
+    return <small>Are you sure you want to revoke this license?</small>;
   }
 
   render() {
