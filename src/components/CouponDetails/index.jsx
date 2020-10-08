@@ -8,17 +8,14 @@ import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
-import H3 from '../H3';
 import StatusAlert from '../StatusAlert';
+import RemindButton from '../RemindButton';
+import RevokeButton from '../RevokeButton';
 
 import { features } from '../../config';
 import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
-
-import './CouponDetails.scss';
-import RemindButton from '../RemindButton';
-import RevokeButton from '../RevokeButton';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -40,9 +37,9 @@ class CouponDetails extends React.Component {
               <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
             }
             onChange={(checked) => {
-                this.hasAllTableRowsSelected = checked;
-                this.handleSelectAllCodes(checked);
-              }}
+              this.hasAllTableRowsSelected = checked;
+              this.handleSelectAllCodes(checked);
+            }}
             ref={this.selectAllCheckBoxRef}
           />
         ),
@@ -842,7 +839,7 @@ class CouponDetails extends React.Component {
             <React.Fragment>
               <div className="details-header row no-gutters mb-3">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
-                  <H3>Coupon Details</H3>
+                  <h3>Coupon Details</h3>
                 </div>
                 <div className="col-12 col-md-6 mb-2 mb-md-0 text-md-right">
                   <DownloadCsvButton

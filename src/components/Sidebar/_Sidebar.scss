@@ -1,0 +1,39 @@
+.sidebar {
+  background: $gray-100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $zindex-fixed;
+
+  &.expanded {
+    width: auto;
+
+    &.has-shadow {
+      box-shadow: 6px 0 10px -6px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .sidebar-content {
+    .nav {
+      position: sticky;
+      top: 0;
+
+      .nav-link {
+        &.active {
+          $nav-link-bg: map-get($theme-color-levels, 'primary-200');
+          background: $nav-link-bg;
+
+          &:hover,
+          &:focus {
+            background: darken($nav-link-bg, 5%);
+          }
+        }
+
+        &:hover,
+        &:focus {
+          background: $gray-200;
+        }
+      }
+    }
+  }
+}

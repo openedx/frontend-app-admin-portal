@@ -1,0 +1,22 @@
+.support-form {
+  label {
+    font-weight: 600;
+  }
+
+  .required {
+    color: $danger;
+    margin-left: 4px;
+  }
+
+  input[type='number'] {
+    width: auto;
+  }
+
+  .form-cancel-btn {
+    text-decoration: underline;
+
+    &:focus {
+      box-shadow: $input-btn-focus-box-shadow;
+    }
+  }
+}

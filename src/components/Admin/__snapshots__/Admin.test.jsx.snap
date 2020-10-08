@@ -16,9 +16,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -42,9 +40,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -124,9 +120,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -150,9 +144,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -700,9 +692,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -726,9 +716,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -1276,9 +1264,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -1302,9 +1288,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -1791,9 +1775,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           <div
             className="col"
           >
-            <h3
-              className={null}
-            >
+            <h3>
               Past Week
             </h3>
           </div>
@@ -1858,9 +1840,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -1884,9 +1864,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -2584,9 +2562,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -2610,9 +2586,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -3310,9 +3284,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -3336,9 +3308,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -3825,9 +3795,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           <div
             className="col"
           >
-            <h3
-              className={null}
-            >
+            <h3>
               Not Active in Past Month
             </h3>
           </div>
@@ -3892,9 +3860,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -3918,9 +3884,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -4407,9 +4371,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           <div
             className="col"
           >
-            <h3
-              className={null}
-            >
+            <h3>
               Not Active in Past Week
             </h3>
           </div>
@@ -4474,9 +4436,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -4500,9 +4460,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -5054,9 +5012,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -5080,9 +5036,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -5630,9 +5584,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -5656,9 +5608,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -6145,9 +6095,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           <div
             className="col"
           >
-            <h3
-              className={null}
-            >
+            <h3>
               Top Active Learners
             </h3>
           </div>
@@ -6212,9 +6160,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -6238,9 +6184,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>
@@ -6348,9 +6292,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <div
           className="col-12 col-md-9 mb-2 mb-md-1"
         >
-          <h1
-            className={null}
-          >
+          <h1>
             Learner Progress Report
           </h1>
         </div>
@@ -6374,9 +6316,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       <div
         className="col"
       >
-        <h2
-          className={null}
-        >
+        <h2>
           Overview
         </h2>
       </div>

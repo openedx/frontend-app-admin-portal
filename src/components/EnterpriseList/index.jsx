@@ -4,7 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 
-import H1 from '../H1';
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../../components/LoadingMessage';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -119,7 +118,7 @@ class EnterpriseList extends React.Component {
           <div className="container-fluid">
             <div className="row mt-4">
               <div className="col-sm-12 col-md">
-                <H1>Enterprise List</H1>
+                <h1>Enterprise List</h1>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
                 <SearchBar

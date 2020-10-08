@@ -7,8 +7,6 @@ import CouponDetails from '../../containers/CouponDetails';
 
 import { isTriggerKey, formatTimestamp } from '../../utils';
 
-import './Coupon.scss';
-
 const triggerKeys = {
   OPEN_DETAILS: [' ', 'Enter'],
   CLOSE_DETAILS: [' ', 'Enter', 'Escape'],

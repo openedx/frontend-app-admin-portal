@@ -8,8 +8,6 @@ import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
 import CodeSearchResultsTable from './CodeSearchResultsTable';
 
-import './CodeSearchResults.scss';
-
 class CodeSearchResults extends React.Component {
   constructor(props) {
     super(props);

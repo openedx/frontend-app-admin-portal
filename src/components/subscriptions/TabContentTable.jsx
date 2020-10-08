@@ -1,13 +1,18 @@
 import React, { useContext, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Pagination, Table } from '@edx/paragon';
 
+import StatusAlert from '../StatusAlert';
+import { ToastsContext } from '../Toasts';
+import LoadingMessage from '../LoadingMessage';
 import LicenseStatus from './LicenseStatus';
 import LicenseActions from './LicenseActions';
 import { SubscriptionContext } from './SubscriptionData';
 import RemindUsersButton from './RemindUsersButton';
-import { StatusContext } from './SubscriptionManagementPage';
-import StatusAlert from '../StatusAlert';
 
+import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
 import {
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
@@ -15,7 +20,6 @@ import {
   TAB_REVOKED_USERS,
   PAGE_SIZE,
 } from './constants';
-import LoadingMessage from '../LoadingMessage';
 
 const columns = [
   {
@@ -32,7 +36,7 @@ const columns = [
   },
 ];
 
-export default function TabContentTable() {
+function TabContentTable({ enterpriseSlug }) {
   const {
     activeTab,
     users,
@@ -45,7 +49,9 @@ export default function TabContentTable() {
     errors,
     currentPage,
   } = useContext(SubscriptionContext);
-  const { setSuccessStatus } = useContext(StatusContext);
+  const { addToast } = useContext(ToastsContext);
+
+  const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
 
   useEffect(() => {
     fetchSubscriptionUsers({ searchQuery, currentPage });
@@ -104,10 +110,7 @@ export default function TabContentTable() {
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
-            onSuccess={() => setSuccessStatus({
-              visible: true,
-              message: 'Successfully sent reminder(s)',
-            })}
+            onSuccess={() => addToast('Reminders successfully sent')}
             fetchSubscriptionDetails={fetchSubscriptionDetails}
             fetchSubscriptionUsers={fetchSubscriptionUsers}
             searchQuery={searchQuery}
@@ -116,23 +119,36 @@ export default function TabContentTable() {
           />
         )}
       </div>
-      {isLoading && <LoadingMessage className="loading mt-3 loading-subscriptions" />}
-      {
-        errors && Object.entries(errors).map(([title, message]) => (
-          <StatusAlert
-            className="mt-3"
-            alertType="danger"
-            iconClassName="fa fa-times-circle"
-            title={`Unable to load data for ${title}`}
-            message={`Try refreshing your screen (${message})`}
-            key={title}
-          />
-         ))
-      }
-      { !isLoading && !errors &&
+      {isLoading && <LoadingMessage className="loading mt-3 subscriptions" />}
+      {errors && Object.entries(errors).map(([title, message]) => (
+        <StatusAlert
+          className="mt-3"
+          alertType="danger"
+          iconClassName="fa fa-times-circle"
+          title={`Unable to load data for ${title}`}
+          message={`Try refreshing your screen (${message})`}
+          key={title}
+        />
+      ))}
+      {!isLoading && !errors && (
         <React.Fragment>
           {tableData?.length > 0 ? (
             <React.Fragment>
+              {hasNoRevocationsRemaining && (
+                <StatusAlert
+                  alertType="warning"
+                  message={
+                    <React.Fragment>
+                      You have reached your revoke access limit. For help
+                      managing your subscription licenses,
+                      {' '}
+                      <Link to={`/${enterpriseSlug}/admin/support`} className="alert-link">
+                        contact Customer Support
+                      </Link>.
+                    </React.Fragment>
+                  }
+                />
+              )}
               <div className="table-responsive">
                 <Table
                   data={tableData}
@@ -162,7 +178,17 @@ export default function TabContentTable() {
             </React.Fragment>
           )}
         </React.Fragment>
-      }
+      )}
     </React.Fragment>
   );
 }
+
+TabContentTable.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(TabContentTable);

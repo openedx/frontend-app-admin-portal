@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -6,44 +6,19 @@ import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import SearchBar from '../SearchBar';
-import StatusAlert from '../StatusAlert';
+import { ToastsContext } from '../Toasts';
 import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
 import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
+
 import { TAB_PENDING_USERS } from './constants';
 
-import './styles/SubscriptionManagementPage.scss';
-
 const PAGE_TITLE = 'Subscription Management';
-export const StatusContext = createContext();
 
 function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
-  const [status, setStatus] = useState({
-    visible: false, alertType: '', message: '',
-  });
-
-  const setSuccessStatus = ({ visible, message = '' }) => {
-    setStatus({
-      visible,
-      alertType: 'success',
-      message,
-    });
-  };
-
-  const renderStatusMessage = () => (
-    status && status.visible && (
-      <StatusAlert
-        alertType={status.alertType}
-        iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
-        title={status.title}
-        message={status.message}
-        onClose={() => setSuccessStatus({ visible: false })}
-        dismissible
-      />
-    )
-  );
+  const { addToast } = useContext(ToastsContext);
 
   return (
     <React.Fragment>
@@ -93,13 +68,9 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                           </div>
                           <div className="col-12 col-md-7">
                             <AddUsersButton
-                              onSuccess={(response) => {
-                                setStatus({
-                                  visible: true,
-                                  alertType: 'success',
-                                  message: `${response.numAlreadyAssociated} email addresses were previously assigned. ${response.numSuccessfulAssignments} email addresses were successfully added.`,
-                                });
+                              onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                                 fetchSubscriptionDetails();
+                                addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
                                 setActiveTab(TAB_PENDING_USERS);
                               }}
                             />
@@ -114,10 +85,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                     <LicenseAllocationNavigation />
                   </div>
                   <div className="col-12 col-lg-9">
-                    {renderStatusMessage()}
-                    <StatusContext.Provider value={{ setStatus, setSuccessStatus }}>
-                      <TabContentTable />
-                    </StatusContext.Provider>
+                    <TabContentTable />
                   </div>
                 </div>
               </div>

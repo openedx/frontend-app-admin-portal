@@ -14,9 +14,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -594,9 +592,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -1201,9 +1197,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -1808,9 +1802,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -2426,9 +2418,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -2675,9 +2665,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>
@@ -2880,9 +2868,7 @@ exports[`CouponDetailsWrapper renders with table data 1`] = `
       <div
         className="col-12 col-md-6 mb-2 mb-md-0"
       >
-        <h3
-          className={null}
-        >
+        <h3>
           Coupon Details
         </h3>
       </div>

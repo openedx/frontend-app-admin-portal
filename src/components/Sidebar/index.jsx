@@ -6,8 +6,6 @@ import IconLink from './IconLink';
 
 import { features } from '../../config';
 
-import './Sidebar.scss';
-
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);

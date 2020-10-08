@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import { clearFields } from 'redux-form';
 import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
 
-import './FileInput.scss';
-
 class FileInput extends React.Component {
   constructor(props) {
     super(props);

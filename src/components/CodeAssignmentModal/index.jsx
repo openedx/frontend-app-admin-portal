@@ -5,7 +5,6 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
 
-import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
@@ -388,7 +387,7 @@ class BaseCodeAssignmentModal extends React.Component {
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
           <div className="mt-4">
-            <H3>Email Template</H3>
+            <h3>Email Template</h3>
             <TemplateSourceFields emailTemplateType="assign" />
             <Field
               id="email-template-subject"
@@ -477,6 +476,7 @@ class BaseCodeAssignmentModal extends React.Component {
       <React.Fragment>
         <Modal
           ref={this.modalRef}
+          dialogClassName="code-assignment"
           title={this.renderTitle()}
           body={this.renderBody()}
           buttons={[

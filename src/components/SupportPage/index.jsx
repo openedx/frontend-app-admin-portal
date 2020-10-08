@@ -11,8 +11,6 @@ import { features } from '../../config/index';
 import ZendeskApiService from '../../data/services/ZendeskApiService';
 import NewRelicService from '../../data/services/NewRelicService';
 
-import './SupportPage.scss';
-
 class SupportPage extends React.Component {
   hasEmailAndEnterpriseName() {
     const { emailAddress, enterpriseName } = this.props;

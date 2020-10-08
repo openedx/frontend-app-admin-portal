@@ -4,7 +4,6 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
-import H3 from '../H3';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
@@ -174,7 +173,7 @@ class CodeReminderModal extends React.Component {
         </div>
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
-            <H3>Email Template</H3>
+            <h3>Email Template</h3>
             <TemplateSourceFields emailTemplateType="remind" />
             <Field
               id="email-template-subject"
@@ -262,6 +261,7 @@ class CodeReminderModal extends React.Component {
       <React.Fragment>
         <Modal
           ref={this.modalRef}
+          dialogClassName="code-reminder"
           title={this.renderTitle()}
           body={this.renderBody()}
           buttons={[

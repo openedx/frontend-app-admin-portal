@@ -18,3 +18,6 @@ export const SUBSCRIPTION_USERS_OVERVIEW = 'Subscription Users Overview';
 
 export const NETWORK_ERROR_MESSAGE = 'Error occurred while loading the data.';
 export const DEFAULT_PAGE = 1;
+
+// used to determine whether to show the revocation cap messaging
+export const SHOW_REVOCATION_CAP_PERCENT = 10;

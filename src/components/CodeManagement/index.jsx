@@ -6,7 +6,6 @@ import Helmet from 'react-helmet';
 import qs from 'query-string';
 import { Button, Icon, Pagination } from '@edx/paragon';
 
-import H2 from '../H2';
 import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
@@ -15,8 +14,6 @@ import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
 
 import { updateUrl } from '../../utils';
-
-import './CodeManagement.scss';
 
 class CodeManagement extends React.Component {
   constructor(props) {
@@ -256,7 +253,7 @@ class CodeManagement extends React.Component {
             {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
             <div className="row mt-4 mb-3 no-gutters">
               <div className="col-12 col-xl-3 mb-3 mb-xl-0">
-                <H2>Overview</H2>
+                <h2>Overview</h2>
               </div>
               <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
                 <SearchBar
