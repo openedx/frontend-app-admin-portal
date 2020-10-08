@@ -21,7 +21,6 @@ export default function LicenseAction({ user }) {
     activeTab,
     details,
     currentPage,
-    overview,
   } = useContext(SubscriptionContext);
 
   const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
@@ -48,7 +47,6 @@ export default function LicenseAction({ user }) {
                 searchQuery={searchQuery}
                 currentPage={currentPage}
                 subscriptionPlan={details}
-                licenseOverview={overview}
                 licenseStatus={user.status}
               />
             ),
@@ -84,7 +82,6 @@ export default function LicenseAction({ user }) {
                 searchQuery={searchQuery}
                 currentPage={currentPage}
                 subscriptionPlan={details}
-                licenseOverview={overview}
                 licenseStatus={user.status}
               />
             ),

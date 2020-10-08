@@ -69,7 +69,7 @@ class LicenseRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
-  shouldRenderRevocationCapMessaging() {
+  shouldRenderRevocationCapAlert() {
     const {
       subscriptionPlan,
       licenseStatus,
@@ -92,14 +92,13 @@ class LicenseRevokeModal extends React.Component {
       user,
       submitFailed,
       subscriptionPlan,
-      licenseOverview,
     } = this.props;
 
     const { revocations } = subscriptionPlan;
 
     return (
       <React.Fragment>
-        {this.shouldRenderRevocationCapMessaging() && (
+        {this.shouldRenderRevocationCapAlert() && (
           <StatusAlert
             alertType="warning"
             message={
@@ -123,12 +122,6 @@ class LicenseRevokeModal extends React.Component {
               assign <strong>{user.userEmail}</strong> to another license, but they
               will need to re-enroll in any course after being assigned a new license.
             </p>
-            {this.shouldRenderRevocationCapMessaging() && licenseOverview.assigned > 0 && (
-              <p>
-                You have <strong>{licenseOverview.assigned}</strong> licenses that are
-                in pending status that could be removed or re-assigned.
-              </p>
-            )}
           </React.Fragment>
         </div>
       </React.Fragment>
@@ -229,9 +222,6 @@ LicenseRevokeModal.propTypes = {
       applied: PropTypes.number,
       remaining: PropTypes.number,
     }).isRequired,
-  }).isRequired,
-  licenseOverview: PropTypes.shape({
-    assigned: PropTypes.number.isRequired,
   }).isRequired,
   licenseStatus: PropTypes.string.isRequired,
 };

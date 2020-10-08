@@ -59,12 +59,11 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
   const [error, setError] = useState(null);
 
   const fetch = () => {
-    setIsLoading(true);
-
     if (!subscriptionUUID) {
       return;
     }
 
+    setIsLoading(true);
     LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
       .then((response) => {
         setIsLoading(false);
@@ -239,10 +238,7 @@ export const useHasNoRevocationsRemaining = (subscriptionPlan) => {
   const hasNoRevocationsRemaining = useMemo(
     () => {
       const { revocations } = subscriptionPlan;
-      if (revocations.remaining <= 0) {
-        return true;
-      }
-      return false;
+      return revocations.remaining <= 0;
     },
     [subscriptionPlan],
   );
