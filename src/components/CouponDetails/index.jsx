@@ -68,7 +68,7 @@ class CouponDetails extends React.Component {
 
     if (features.CODE_VISIBILITY) {
       tableColumns.splice(3, 0, {
-        label: 'Is Public?',
+        label: 'Visibility',
         key: 'is_public',
       });
     }
@@ -148,7 +148,7 @@ class CouponDetails extends React.Component {
   getTableFilterVisibilitySelectionOptions() {
     return [{
       label: 'Both',
-      value: 'both',
+      value: undefined,
     }, {
       label: 'Public',
       value: 'public',
@@ -350,6 +350,12 @@ class CouponDetails extends React.Component {
     );
   }
 
+  shouldShowVisibilityStatusAlert() {
+    const { selectedCodes } = this.state;
+    return features.CODE_VISIBILITY && (selectedCodes.some(code => code.is_public) &&
+      selectedCodes.some(code => !code.is_public));
+  }
+
   hasStatusAlert() {
     // The following are the scenarios where a status alert will be shown. Note, the coupon
     // details table must be finished loading for status alert to show:
@@ -378,6 +384,7 @@ class CouponDetails extends React.Component {
       isCodeVisibilitySuccessful,
       doesCodeActionHaveErrors,
       this.shouldShowSelectAllStatusAlert(),
+      this.shouldShowVisibilityStatusAlert(),
     ].some(item => item);
 
     return !this.isTableLoading() && hasStatusAlert;
@@ -432,7 +439,7 @@ class CouponDetails extends React.Component {
     if (features.CODE_VISIBILITY && getColumnIndexForKey('is_public') === -1) {
       // Add `is_public` column if it doesn't already exist
       tableColumns.splice(tableColumns.length, 0, {
-        label: 'Is Public?',
+        label: 'Visibility',
         key: 'is_public',
       });
     }
@@ -463,7 +470,10 @@ class CouponDetails extends React.Component {
 
   handleVisibilitySelect(newValue) {
     const { tableColumns, visibilityToggle } = this.state;
-    const value = newValue || visibilityToggle;
+    // Paragon InputSelect will use the `label` if the value isn't defined
+    // this will intentionally keep the value set as undefined so that qs.stringify
+    // won't send along a value we didn't set to the API.
+    const value = newValue === 'Both' ? undefined : newValue || visibilityToggle;
     this.resetCodeActionStatus();
     this.setState({
       tableColumns,
@@ -537,13 +547,8 @@ class CouponDetails extends React.Component {
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
-      case 'make_public': {
-        stateKey = 'isCodeMakePublicSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
-        break;
-      }
-      case 'make_private': {
-        stateKey = 'isCodeMakePrivateSuccessful';
+      case 'visibility': {
+        stateKey = 'isCodeVisibilitySuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
@@ -626,7 +631,7 @@ class CouponDetails extends React.Component {
       assignments_remaining: `${code.redemptions.total - code.redemptions.used - code.redemptions.num_assignments}`,
       assignment_date: `${code.assignment_date}`,
       last_reminder_date: `${code.last_reminder_date}`,
-      is_public: `${code.is_public}`,
+      is_public: code.is_public ? 'Public' : 'Private',
       actions: this.getActionButton(code),
       select: (
         <CheckBox
@@ -724,7 +729,7 @@ class CouponDetails extends React.Component {
         couponId: id,
         codeIds,
         isPublic,
-        onSuccess: response => this.handleCodeActionSuccess('assign', response),
+        onSuccess: response => this.handleCodeActionSuccess('visibility', response),
       };
       this.props.updateCodeVisibility(options);
     }
@@ -961,6 +966,9 @@ class CouponDetails extends React.Component {
                     {doesCodeActionHaveErrors && this.renderErrorMessage({
                       title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
                       message: '',
+                    })}
+                    {this.shouldShowVisibilityStatusAlert() && this.renderInfoMessage({
+                      message: "You've selected one or more public codes. If you wish to assign codes in bulk, please select only private codes.",
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
