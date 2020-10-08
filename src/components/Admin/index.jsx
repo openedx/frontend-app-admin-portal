@@ -315,9 +315,9 @@ class Admin extends React.Component {
                       {error && this.renderErrorMessage()}
                       {loading && this.renderLoadingMessage()}
                     </div>
-                  ) : ((
+                  ) : (
                     <AdminCards />
-                  ))}
+                  )}
                 </div>
                 <div className="row mt-4">
                   <div className="col">

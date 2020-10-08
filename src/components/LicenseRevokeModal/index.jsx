@@ -6,6 +6,7 @@ import { Button, Icon, Modal } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 
 import NewRelicService from '../../data/services/NewRelicService';
+import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/constants';
 
 import './LicenseRevokeModal.scss';
 
@@ -68,6 +69,22 @@ class LicenseRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  shouldRenderRevocationCapMessaging() {
+    const {
+      subscriptionPlan,
+      licenseStatus,
+    } = this.props;
+
+    if (licenseStatus !== ACTIVATED) {
+      return false;
+    }
+
+    const { revocations } = subscriptionPlan;
+    const revocationCapLimit = revocations.remaining * (SHOW_REVOCATION_CAP_PERCENT / 100);
+
+    return revocations.applied > revocationCapLimit;
+  }
+
   renderBody() {
     const {
       user,
@@ -80,15 +97,17 @@ class LicenseRevokeModal extends React.Component {
 
     return (
       <React.Fragment>
-        <StatusAlert
-          alertType="warning"
-          message={
-            <p className="m-0">
-              You have already revoked {revocations.applied} licenses. You
-              have {revocations.remaining} left on your plan.
-            </p>
-          }
-        />
+        {this.shouldRenderRevocationCapMessaging() && (
+          <StatusAlert
+            alertType="warning"
+            message={
+              <p className="m-0">
+                You have already revoked {revocations.applied} licenses. You
+                have {revocations.remaining} left on your plan.
+              </p>
+            }
+          />
+        )}
         <div className="license-details">
           <React.Fragment>
             {submitFailed && this.renderErrorMessage()}
@@ -102,10 +121,12 @@ class LicenseRevokeModal extends React.Component {
               assign <strong>{user.userEmail}</strong> to another license, but they
               will need to re-enroll in any course after being assigned a new license.
             </p>
-            <p>
-              You have <strong>{licenseOverview.assigned}</strong> licenses that are
-              in pending status that could be removed or re-assigned.
-            </p>
+            {this.shouldRenderRevocationCapMessaging() && (
+              <p>
+                You have <strong>{licenseOverview.assigned}</strong> licenses that are
+                in pending status that could be removed or re-assigned.
+              </p>
+            )}
           </React.Fragment>
         </div>
       </React.Fragment>
@@ -163,7 +184,7 @@ class LicenseRevokeModal extends React.Component {
           >
             <React.Fragment>
               {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              Revoke license
+              OK
             </React.Fragment>
           </Button>,
         ]}
@@ -210,6 +231,7 @@ LicenseRevokeModal.propTypes = {
   licenseOverview: PropTypes.shape({
     assigned: PropTypes.number.isRequired,
   }).isRequired,
+  licenseStatus: PropTypes.string.isRequired,
 };
 
 export default reduxForm({

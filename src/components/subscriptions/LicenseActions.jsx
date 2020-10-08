@@ -49,6 +49,7 @@ export default function LicenseAction({ user }) {
                 currentPage={currentPage}
                 subscriptionPlan={details}
                 licenseOverview={overview}
+                licenseStatus={user.status}
               />
             ),
           }];
@@ -84,6 +85,7 @@ export default function LicenseAction({ user }) {
                 currentPage={currentPage}
                 subscriptionPlan={details}
                 licenseOverview={overview}
+                licenseStatus={user.status}
               />
             ),
           }];
