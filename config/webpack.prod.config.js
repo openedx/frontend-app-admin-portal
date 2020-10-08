@@ -25,7 +25,12 @@ module.exports = Merge.smart(commonConfig, {
       // Babel is configured with the .babelrc file at the root of the project.
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules\/(?!@edx)/,
+        include: [
+          path.resolve(__dirname, '../src'),
+        ],
+        exclude: [
+          path.resolve(__dirname, '../node_modules'),
+        ],
         loader: 'babel-loader',
         options: {
           compact: true,
