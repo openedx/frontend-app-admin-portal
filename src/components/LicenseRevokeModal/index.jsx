@@ -123,7 +123,7 @@ class LicenseRevokeModal extends React.Component {
               assign <strong>{user.userEmail}</strong> to another license, but they
               will need to re-enroll in any course after being assigned a new license.
             </p>
-            {this.shouldRenderRevocationCapMessaging() && (
+            {this.shouldRenderRevocationCapMessaging() && licenseOverview.assigned > 0 && (
               <p>
                 You have <strong>{licenseOverview.assigned}</strong> licenses that are
                 in pending status that could be removed or re-assigned.
