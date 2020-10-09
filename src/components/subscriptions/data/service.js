@@ -2,7 +2,7 @@ import faker from 'faker';
 import moment from 'moment';
 import qs from 'query-string';
 
-import { ACTIVATED, ASSIGNED, REVOKED } from '../constants';
+import { ACTIVATED, ASSIGNED, REVOKED, PAGE_SIZE } from '../constants';
 
 import apiClient from '../../../data/apiClient';
 import { configuration } from '../../../config';
@@ -111,6 +111,7 @@ class LicenseManagerApiService {
   static fetchSubscriptionUsers(subscriptionUUID, options) {
     const queryParams = {
       ...options,
+      page_size: PAGE_SIZE,
     };
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;
