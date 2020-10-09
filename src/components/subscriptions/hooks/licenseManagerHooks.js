@@ -104,12 +104,11 @@ export const useSubscriptionUsers = ({ subscriptionUUID, options: { status, sear
   const [error, setError] = useState(null);
 
   const fetch = () => {
-    setIsLoading(true);
-
     if (!subscriptionUUID) {
       return;
     }
 
+    setIsLoading(true);
     LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, { status, search, page })
       .then((response) => {
         setIsLoading(false);
