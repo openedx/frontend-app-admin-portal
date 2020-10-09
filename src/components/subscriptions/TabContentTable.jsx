@@ -18,7 +18,6 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
-  PAGE_SIZE,
 } from './constants';
 
 const columns = [
@@ -159,7 +158,7 @@ function TabContentTable({ enterpriseSlug }) {
               <div className="mt-3 d-flex justify-content-center">
                 <Pagination
                   onPageSelect={page => fetchSubscriptionUsers({ searchQuery, page })}
-                  pageCount={Math.ceil(users.count / PAGE_SIZE)}
+                  pageCount={users.numPages}
                   currentPage={currentPage}
                   paginationLabel={activeTabData.paginationLabel}
                 />
