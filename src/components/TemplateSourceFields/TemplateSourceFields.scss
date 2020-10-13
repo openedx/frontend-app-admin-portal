@@ -3,11 +3,25 @@
     &:focus:before {
       border-radius: 0.3rem;
     }
+
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
   }
 
   #btn-old-email-template {
     &:focus:before {
       border-radius: 0.3rem;
+    }
+
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  .template-source-btn-wrapper {
+    width: 100%;
+
+    button {
+      width: 100%;
     }
   }
 }

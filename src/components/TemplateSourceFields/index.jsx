@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from '@edx/paragon';
+import { Button, Input, OverlayTrigger, Tooltip } from '@edx/paragon';
 import { Field } from 'redux-form';
 
 import RenderField from '../RenderField';
@@ -107,34 +107,61 @@ class TemplateSourceFields extends React.Component {
     return (
       <React.Fragment>
         <div
-          className="btn-group d-flex mb-3 template-source-fields"
+          className="d-flex mb-3 template-source-fields"
           role="group"
           aria-label="Press the button to select the template source"
         >
-          <Button
-            variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
-            id="btn-new-email-template"
-            key="btn-new-email-template"
-            className="rounded-left"
-            style={{
-                pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
-            }}
-            aria-pressed={emailTemplateSource === newEmail ? 'true' : 'false'}
-            onClick={() => this.updateState(newEmail)}
-          >New Email
-          </Button>
-          <Button
-            variant={emailTemplateSource !== newEmail ? 'primary' : 'outline-primary'}
-            id="btn-old-email-template"
-            key="btn-old-email-template"
-            className="rounded-right"
-            style={{
-                pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
-            }}
-            aria-pressed={emailTemplateSource === fromTemplate ? 'true' : 'false'}
-            onClick={() => this.updateState(fromTemplate)}
-          >From Template
-          </Button>
+          <OverlayTrigger
+            key="btn-new-email-tooltip"
+            placement="top"
+            overlay={
+              <Tooltip id="tooltip-top">
+                Create new code assignment message. If you’d like to save the message as a
+                template for future use, click “Save Template” before you “Assign Code”.
+              </Tooltip>
+            }
+          >
+            <span className="template-source-btn-wrapper">
+              <Button
+                variant={emailTemplateSource === newEmail ? 'primary' : 'outline-primary'}
+                id="btn-new-email-template"
+                key="btn-new-email-template"
+                className="rounded-left"
+                style={{
+                    pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
+                }}
+                aria-pressed={emailTemplateSource === newEmail ? 'true' : 'false'}
+                onClick={() => this.updateState(newEmail)}
+              >New Email
+              </Button>
+            </span>
+          </OverlayTrigger>
+
+          <OverlayTrigger
+            key="btn-from-template-tooltip"
+            placement="top"
+            overlay={
+              <Tooltip id="tooltip-top">
+                Make code assignment easier by loading any existing templates you have made here.
+                Just click the dropdown on Template Name.
+              </Tooltip>
+            }
+          >
+            <span className="template-source-btn-wrapper">
+              <Button
+                variant={emailTemplateSource !== newEmail ? 'primary' : 'outline-primary'}
+                id="btn-old-email-template"
+                key="btn-old-email-template"
+                className="rounded-right"
+                style={{
+                    pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
+                }}
+                aria-pressed={emailTemplateSource === fromTemplate ? 'true' : 'false'}
+                onClick={() => this.updateState(fromTemplate)}
+              >From Template
+              </Button>
+            </span>
+          </OverlayTrigger>
         </div>
         {emailTemplateSource === newEmail ?
           <Field
