@@ -322,6 +322,10 @@ class BaseCodeAssignmentModal extends React.Component {
       options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
     }
 
+    if (formData['template-id']) {
+      options.template_id = formData['template-id'];
+    }
+
     if (isBulkAssign) {
       const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
       const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];

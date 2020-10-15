@@ -123,6 +123,10 @@ class CodeReminderModal extends React.Component {
       template_closing: formData['email-template-closing'],
     };
 
+    if (formData['template-id']) {
+      options.template_id = formData['template-id'];
+    }
+
     if (isBulkRemind && !data.selectedCodes.length) {
       options.code_filter = selectedToggle;
     } else if (isBulkRemind && data.selectedCodes.length) {
