@@ -12,6 +12,8 @@ import SubscriptionDetails from './SubscriptionDetails';
 import AddUsersButton from './AddUsersButton';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
+import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
+import SubscriptionExpirationModal from './SubscriptionExpirationModal';
 
 import { TAB_PENDING_USERS } from './constants';
 
@@ -25,6 +27,8 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <SubscriptionData enterpriseId={enterpriseId}>
+        <SubscriptionExpirationBanner />
+        <SubscriptionExpirationModal />
         <main role="main" className="manage-subscription">
           <div className="container-fluid mt-3">
             <div className="row mb-5">

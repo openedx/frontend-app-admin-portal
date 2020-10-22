@@ -21,3 +21,11 @@ export const DEFAULT_PAGE = 1;
 
 // used to determine whether to show the revocation cap messaging in the license revoke modal
 export const SHOW_REVOCATION_CAP_PERCENT = 80;
+
+// Subscription expiration
+// Days until expiration threshold constants
+export const SUBSCRIPTION_EXPIRATION_FIRST_THRESHOLD = 120;
+export const SUBSCRIPTION_EXPIRATION_SECOND_THRESHOLD = 60;
+export const SUBSCRIPTION_EXPIRATION_THIRD_THRESHOLD = 30;
+// Prefix for cookies that determine if the user has seen the modal for that threshold of expiration
+export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration-modal-';
