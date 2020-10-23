@@ -184,6 +184,7 @@ class CodeReminderModal extends React.Component {
               name="email-template-subject"
               component={RenderField}
               label="Customize Email Subject"
+              type="text"
             />
             <Field
               id="email-template-greeting"

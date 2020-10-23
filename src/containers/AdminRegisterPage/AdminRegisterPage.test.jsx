@@ -45,14 +45,12 @@ AdminRegisterPageWrapper.propTypes = {
 
 describe('<AdminRegisterPage />', () => {
   it('renders loading message when not authenticated (redirect to enterprise proxy login)', () => {
-    // Note: this test does not assert that the redirect to the proxy login works since
-    // JSdom does not implement global.location. Due to this, JSdom outputs a "Not
-    // implemented: navigation" warning for this test that can safely be ignored.
     const wrapper = mount(<AdminRegisterPageWrapper />);
 
     // verify that the loading message appears during redirect
     const LoadingComponent = <LoadingMessage className="admin-register" />;
     expect(wrapper.contains(LoadingComponent)).toBeTruthy();
+    expect(global.location.href).toBeTruthy();
   });
 
   it('displays error alert when user is authenticated but no has JWT roles', () => {
