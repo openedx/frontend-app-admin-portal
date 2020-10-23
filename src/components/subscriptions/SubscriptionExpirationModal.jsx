@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import Cookies from 'universal-cookie';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Modal, MailtoLink } from '@edx/paragon';
-import Cookies from 'universal-cookie';
 
 import { SubscriptionContext } from './SubscriptionData';
 import {
@@ -17,10 +17,10 @@ import Img from '../../components/Img';
 import edxLogo from '../../images/edx-logo.png';
 import { formatTimestamp } from '../../utils';
 
-const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
+export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
 
-function SubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
+export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;
 
@@ -134,7 +134,7 @@ function SubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScree
   );
 }
 
-SubscriptionExpirationModal.propTypes = {
+BaseSubscriptionExpirationModal.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableCodeManagementScreen: PropTypes.bool.isRequired,
 };
@@ -144,4 +144,5 @@ const mapStateToProps = state => ({
   enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
 });
 
-export default connect(mapStateToProps)(SubscriptionExpirationModal);
+const SubscriptionExpirationModal = connect(mapStateToProps)(BaseSubscriptionExpirationModal);
+export default SubscriptionExpirationModal;

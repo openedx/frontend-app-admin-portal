@@ -40,7 +40,7 @@ export default function SubscriptionExpirationBanner() {
 
   return (
     <StatusAlert
-      className="mt-1"
+      className="expiration-alert mt-1"
       alertType={alertType}
       message={renderMessage(daysUntilExpiration)}
       dismissible={dismissible}
