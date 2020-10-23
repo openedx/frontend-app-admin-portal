@@ -50,7 +50,6 @@ class AdminSearchForm extends React.Component {
     } = this.props;
     const courseTitles = new Set(tableData.map(en => en.course_title).sort());
     const courseDates = new Set(tableData.map(en => en.course_start).sort().reverse());
-
     return (
       <div className="row">
         <div className="col-12 pr-md-0 mb-0">
@@ -64,7 +63,7 @@ class AdminSearchForm extends React.Component {
                       className="w-100"
                       as="select"
                       aria-labelledby="course-title-search"
-                      value={searchCourseQuery}
+                      value={searchCourseQuery || ''}
                       onChange={e => this.onCourseSelect(e)}
                     >
                       <option value="">All Courses</option>

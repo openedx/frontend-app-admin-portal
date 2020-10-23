@@ -2405,6 +2405,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         aria-labelledby="course-title-search"
                         className="w-100 form-control"
                         onChange={[Function]}
+                        value=""
                       >
                         <option
                           value=""
@@ -3127,6 +3128,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         aria-labelledby="course-title-search"
                         className="w-100 form-control"
                         onChange={[Function]}
+                        value=""
                       >
                         <option
                           value=""
