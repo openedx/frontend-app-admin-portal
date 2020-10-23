@@ -2,23 +2,20 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { Modal } from '@edx/paragon';
+import { Button, Modal } from '@edx/paragon';
 
 import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from './SubscriptionExpirationModal';
 import { SubscriptionContext } from './SubscriptionData';
-import { SUBSCRIPTION_DAYS_REMAINING_MODERATE } from './constants';
+import {
+  SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+  SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+  SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+} from './constants';
 import { addDays, getSubscriptionExpirationDetails } from './test-utils';
 
 
 const history = createMemoryHistory({
   initialEntries: ['/'],
-});
-
-jest.mock('universal-cookie', () => {
-  const mockCookie = {
-    get: jest.fn(() => true),
-  };
-  return jest.fn(() => mockCookie);
 });
 
 /* eslint-disable react/prop-types */
@@ -63,26 +60,44 @@ describe('<SubscriptionExpirationModal />', () => {
     expect(modal.prop('dialogClassName')).toEqual(`${MODAL_DIALOG_CLASS_NAME} expired`);
   });
 
-  test('does not render a modal if we are past an expiration threshold but they have the "seen" cookie', () => {
-    const daysUntilExpiration = SUBSCRIPTION_DAYS_REMAINING_MODERATE - 1;
+  test('includes a link to the code mgmt page if the enterprise has the page enabled and the subscription has expired', () => {
+    const daysUntilExpiration = -1;
     const subscriptionState = getSubscriptionExpirationDetails(
       daysUntilExpiration,
       addDays(new Date(), daysUntilExpiration),
     );
-
     const wrapper = mount(<ModalWithContext subscriptionState={subscriptionState} />);
-    expect(wrapper.exists(Modal)).toEqual(false);
+    expect(wrapper.text().includes('code management page')).toBe(false);
+
+    const wrapperWithCodeManagement = mount(<ModalWithContext
+      subscriptionState={subscriptionState}
+      enableCodeManagementScreen
+    />);
+    expect(wrapperWithCodeManagement.text().includes('code management page')).toBe(true);
   });
 
-  test('renders a modal if we are past an expiration threshold and no cookie says the user has seen it', () => {
-    const daysUntilExpiration = SUBSCRIPTION_DAYS_REMAINING_MODERATE - 1;
-    const subscriptionState = getSubscriptionExpirationDetails(
-      daysUntilExpiration,
-      addDays(new Date(), daysUntilExpiration),
-    );
+  test('renders a modal for each expiration threshold that the user has not yet seen', () => {
+    const thresholds = [
+      SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+      SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+      SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+    ];
+    Object.values(thresholds).forEach((threshold) => {
+      const daysUntilExpiration = threshold - 1;
+      const subscriptionState = getSubscriptionExpirationDetails(
+        daysUntilExpiration,
+        addDays(new Date(), daysUntilExpiration),
+      );
 
-    const wrapper = mount(<ModalWithContext subscriptionState={subscriptionState} />);
-    const modal = wrapper.find(Modal);
-    expect(modal.prop('dialogClassName')).toEqual(`${MODAL_DIALOG_CLASS_NAME}`);
+      const wrapper = mount(<ModalWithContext subscriptionState={subscriptionState} />);
+      const modal = wrapper.find(Modal);
+      expect(modal.prop('dialogClassName')).toEqual(`${MODAL_DIALOG_CLASS_NAME}`);
+
+      // Click the ok button, and now we should no longer see the modal again
+      const closeButton = modal.find(Button);
+      closeButton.simulate('click');
+      const updatedWrapper = mount(<ModalWithContext subscriptionState={subscriptionState} />);
+      expect(updatedWrapper.exists(Modal)).toEqual(false);
+    });
   });
 });
