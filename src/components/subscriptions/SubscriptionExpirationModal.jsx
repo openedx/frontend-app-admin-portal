@@ -7,9 +7,9 @@ import Cookies from 'universal-cookie';
 
 import { SubscriptionContext } from './SubscriptionData';
 import {
-  SUBSCRIPTION_EXPIRATION_FIRST_THRESHOLD,
-  SUBSCRIPTION_EXPIRATION_SECOND_THRESHOLD,
-  SUBSCRIPTION_EXPIRATION_THIRD_THRESHOLD,
+  SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+  SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+  SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from './constants';
 
@@ -17,8 +17,10 @@ import Img from '../../components/Img';
 import edxLogo from '../../images/edx-logo.png';
 import { formatTimestamp } from '../../utils';
 
+const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
-function SubscriptionExpirationModal({ enterpriseSlug }) {
+
+function SubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;
 
@@ -56,16 +58,18 @@ function SubscriptionExpirationModal({ enterpriseSlug }) {
       </p>
       <ul>
         <li>
-          To reactivate your subscriptions please cotact the edX Customer Success team at
+          To reactivate your subscriptions please contact the edX Customer Success team at
           {' '}
           <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
         </li>
         <li>
           View your learner progress in the <Link to={`/${enterpriseSlug}/admin/learners`}>learner management page</Link>
         </li>
-        <li>
-          Manage your codes in the <Link to={`/${enterpriseSlug}/admin/coupons`}>code management page</Link>
-        </li>
+        {enableCodeManagementScreen &&
+          <li>
+            Manage your codes in the <Link to={`/${enterpriseSlug}/admin/coupons`}>code management page</Link>
+          </li>
+        }
       </ul>
     </React.Fragment>
   );
@@ -75,42 +79,46 @@ function SubscriptionExpirationModal({ enterpriseSlug }) {
   if (subscriptionExpired) {
     return (
       <Modal
+        dialogClassName={`${MODAL_DIALOG_CLASS_NAME} expired`}
         renderHeaderCloseButton={false}
         renderDefaultCloseButton={false}
         title={null}
         body={renderExpiredBody()}
+        onClose={() => {}}
         open
       />
     );
   }
 
-  if (daysUntilExpiration > SUBSCRIPTION_EXPIRATION_FIRST_THRESHOLD) {
+  if (daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {
     return null;
   }
 
-  let expirationThreshold = SUBSCRIPTION_EXPIRATION_FIRST_THRESHOLD;
-  if (details.daysUntilExpiration <= SUBSCRIPTION_EXPIRATION_SECOND_THRESHOLD) {
-    expirationThreshold = SUBSCRIPTION_EXPIRATION_SECOND_THRESHOLD;
-  }
-  if (daysUntilExpiration <= SUBSCRIPTION_EXPIRATION_THIRD_THRESHOLD) {
-    expirationThreshold = SUBSCRIPTION_EXPIRATION_THIRD_THRESHOLD;
-  }
+  const thresholds = [
+    SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+    SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+    SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+  ];
+  // Finds the first expiration threshold (from most severe to least) that the current
+  // `daysUntilExpiration` falls into
+  const expirationThreshold = thresholds.find(threshold => threshold >= daysUntilExpiration);
   const seenCurrentExpirationModalCookieName = `${SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX}${expirationThreshold}`;
   const cookies = new Cookies();
   const seenCurrentExpirationModal = cookies.get(seenCurrentExpirationModalCookieName);
-  // If they have already seen the expiration modal for their current threshold (as deterrmined by
-  // the cookie), don't show them anything
+  // If they have already seen the expiration modal for their current expiration range (as
+  // determined by the cookie), don't show them anything
   if (seenCurrentExpirationModal) {
     return null;
   }
 
   return (
     <Modal
+      dialogClassName={MODAL_DIALOG_CLASS_NAME}
       renderHeaderCloseButton={false}
       title={renderTitle()}
       body={renderBody()}
       closeText="Ok"
-      // Mark that the user has seen this threshold's expiration modal when they close it
+      // Mark that the user has seen this range's expiration modal when they close it
       onClose={() => {
         cookies.set(
           seenCurrentExpirationModalCookieName,
@@ -128,10 +136,12 @@ function SubscriptionExpirationModal({ enterpriseSlug }) {
 
 SubscriptionExpirationModal.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableCodeManagementScreen: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
 });
 
 export default connect(mapStateToProps)(SubscriptionExpirationModal);
