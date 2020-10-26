@@ -15,6 +15,22 @@ jest.mock('../../data/services/EcommerceApiService');
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
+
+const sampleEmailTemplate = {
+  'email-template-greeting': 'Sample email greeting.. ',
+  'email-template-body': 'Sample email body template.. ',
+  'email-template-closing': 'Sample email closing template.. ',
+};
+
+const emailDefaults = {
+  'template-id': 0,
+  'template-name-select': '',
+  'email-template-subject': 'Sample email subject.. ',
+  'email-template-greeting': 'Sample email greeting.. ',
+  'email-template-body': 'Sample email body template.. ',
+  'email-template-closing': 'Sample email closing template.. ',
+};
+
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
@@ -26,49 +42,13 @@ const initialStore = {
     allTemplates: [],
     emailTemplateSource: 'new_email',
     default: {
-      assign: {
-        'email-template-subject': 'Sample email subject.. ',
-        'email-template-greeting': 'Sample email greeting.. ',
-        'email-template-body': 'Sample email body template.. ',
-        'email-template-closing': 'Sample email closing template.. ',
-      },
-      remind: {
-        'email-template-subject': 'Sample email subject.. ',
-        'email-template-greeting': 'Sample email greeting.. ',
-        'email-template-body': 'Sample email body template.. ',
-        'email-template-closing': 'Sample email closing template.. ',
-      },
-      revoke: {
-        'email-template-subject': 'Sample email subject.. ',
-        'email-template-greeting': 'Sample email greeting.. ',
-        'email-template-body': 'Sample email body template.. ',
-        'email-template-closing': 'Sample email closing template.. ',
-      },
+      assign: sampleEmailTemplate,
+      remind: sampleEmailTemplate,
+      revoke: sampleEmailTemplate,
     },
-    assign: {
-      'template-id': 0,
-      'template-name-select': '',
-      'email-template-subject': 'Sample email subject.. ',
-      'email-template-greeting': 'Sample email greeting.. ',
-      'email-template-body': 'Sample email body template.. ',
-      'email-template-closing': 'Sample email closing template.. ',
-    },
-    remind: {
-      'template-id': 0,
-      'template-name-select': '',
-      'email-template-subject': 'Sample email subject.. ',
-      'email-template-greeting': 'Sample email greeting.. ',
-      'email-template-body': 'Sample email body template.. ',
-      'email-template-closing': 'Sample email closing template.. ',
-    },
-    revoke: {
-      'template-id': 0,
-      'template-name-select': '',
-      'email-template-subject': 'Sample email subject.. ',
-      'email-template-greeting': 'Sample email greeting.. ',
-      'email-template-body': 'Sample email body template.. ',
-      'email-template-closing': 'Sample email closing template.. ',
-    },
+    assign: emailDefaults,
+    remind: emailDefaults,
+    revoke: emailDefaults,
   },
 };
 

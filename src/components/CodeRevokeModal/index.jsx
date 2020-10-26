@@ -171,6 +171,7 @@ class CodeRevokeModal extends React.Component {
               id="email-template-subject"
               name="email-template-subject"
               component={RenderField}
+              type="text"
               label="Customize Email Subject"
             />
             <Field
