@@ -19,6 +19,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/SupportPage/SupportPage";
 @import "./components/subscriptions/styles/LicenseActions";
 @import "./components/subscriptions/styles/SubscriptionManagementPage";
+@import "./components/subscriptions/styles/SubscriptionExpirationModal";
 
 body {
   overflow-x: hidden;
