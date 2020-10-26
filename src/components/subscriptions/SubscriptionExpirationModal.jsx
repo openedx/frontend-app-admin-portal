@@ -51,14 +51,14 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
       <Img className="w-25 my-5 mx-auto d-block" src={edxLogo} alt="edX logo" />
       <p>
         Your subscription license expired on {formatTimestamp({ timestamp: expirationDate })}.
-        To access your subscription management page contact edX and reactivate your subscriptions.
+        To access your subscription management page contact edX and reactivate your subscription(s).
       </p>
       <p>
         What to do next?
       </p>
       <ul>
         <li>
-          To reactivate your subscriptions please contact the edX Customer Success team at
+          To reactivate your subscription(s) please contact the edX Customer Success team at
           {' '}
           <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
         </li>
