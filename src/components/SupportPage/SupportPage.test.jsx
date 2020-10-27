@@ -7,7 +7,7 @@ describe('<SupportPage />', () => {
   it('renders correctly', () => {
     const tree = renderer
       .create((
-        <SupportPage />
+        <SupportPage match={{ url: 'example.com' }} />
       ))
       .toJSON();
     expect(tree).toMatchSnapshot();
