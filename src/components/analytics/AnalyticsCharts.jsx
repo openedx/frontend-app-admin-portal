@@ -30,7 +30,6 @@ export default function AnalyticsCharts(enterpriseId) {
   }, []);
   let url = null;
   if (configuration.TABLEAU_URL) {
-    console.log('url-', configuration.TABLEAU_URL);
     url = `${configuration.TABLEAU_URL}/views/enterpriseadminanalytics/enroll_dash`;
   }
   const filters = {};
