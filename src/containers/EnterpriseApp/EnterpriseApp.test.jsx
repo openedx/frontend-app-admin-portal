@@ -105,36 +105,49 @@ describe('EnterpriseApp', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
-
-  it('handles location change properly', () => {
-    // There is some logic where we collapse the sidebar on menu click on mobile
-    // so we test that here as well. Note that we need to set the window width
-    // to mobile first.
-    const initialWidth = global.innerWidth;
-    global.innerWidth = breakpoints.small.minWidth;
-
-    const store = mockStore({
-      ...initialState,
-      sidebar: {
-        ...initialState.sidebar,
-        isExpandedByToggle: true,
-      },
+  describe('location changes', () => {
+    beforeEach(() => {
+      // Avoid `attachTo: document.body` Warning
+      const div = document.createElement('div');
+      div.setAttribute('id', 'container');
+      document.body.appendChild(div);
     });
-
-    const wrapper = mount(
-      <EnterpriseAppWrapper store={store} />,
-      { attachTo: document.body },
-    );
-
-    wrapper.setProps({
-      location: {
-        pathname: '/test-enterprise-slug/admin/codes',
-      },
+    afterEach(() => {
+      const div = document.getElementById('container');
+      if (div) {
+        document.body.removeChild(div);
+      }
     });
+    it('handles location change properly', () => {
+      // There is some logic where we collapse the sidebar on menu click on mobile
+      // so we test that here as well. Note that we need to set the window width
+      // to mobile first.
+      const initialWidth = global.innerWidth;
+      global.innerWidth = breakpoints.small.minWidth;
 
-    // ensure focus is set on content wrapper
-    expect(document.activeElement.className).toEqual('content-wrapper');
-    global.innerWidth = initialWidth;
+      const store = mockStore({
+        ...initialState,
+        sidebar: {
+          ...initialState.sidebar,
+          isExpandedByToggle: true,
+        },
+      });
+
+      const wrapper = mount(
+        <EnterpriseAppWrapper store={store} />,
+        { attachTo: document.getElementById('container') },
+      );
+
+      wrapper.setProps({
+        location: {
+          pathname: '/test-enterprise-slug/admin/codes',
+        },
+      });
+
+      // ensure focus is set on content wrapper
+      expect(document.activeElement.className).toEqual('content-wrapper');
+      global.innerWidth = initialWidth;
+    });
   });
 
   it('toggles sidebar toggle on componentWillUnmount', () => {

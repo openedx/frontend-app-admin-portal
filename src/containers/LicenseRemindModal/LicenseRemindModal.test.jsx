@@ -22,6 +22,9 @@ const LicenseRemindModalWrapper = props => (
         user={user}
         onClose={() => {}}
         onSuccess={() => {}}
+        subscriptionUUID="bears4education"
+        fetchSubscriptionUsers={() => {}}
+        fetchSubscriptionDetails={() => {}}
         {...props}
       />
     </Provider>

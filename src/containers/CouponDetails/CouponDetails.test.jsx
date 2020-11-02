@@ -13,11 +13,21 @@ import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
 import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
+import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 
 const sampleEmailTemplate = {
+  'email-template-greeting': 'Sample email greeting.. ',
+  'email-template-body': 'Sample email body template.. ',
+  'email-template-closing': 'Sample email closing template.. ',
+};
+
+const emailDefaults = {
+  'template-id': 0,
+  'template-name-select': '',
+  'email-template-subject': 'Sample email subject.. ',
   'email-template-greeting': 'Sample email greeting.. ',
   'email-template-body': 'Sample email body template.. ',
   'email-template-closing': 'Sample email closing template.. ',
@@ -42,11 +52,15 @@ const initialState = {
   emailTemplate: {
     loading: false,
     error: null,
+    emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       assign: sampleEmailTemplate,
       remind: sampleEmailTemplate,
       revoke: sampleEmailTemplate,
     },
+    assign: emailDefaults,
+    remind: emailDefaults,
+    revoke: emailDefaults,
   },
 };
 
