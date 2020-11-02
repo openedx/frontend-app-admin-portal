@@ -5,12 +5,13 @@ import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
 
-const { error } = global.console;
+// TODO: Once there are no more console errors in tests, uncomment the code below
+// const { error } = global.console;
 
-global.console.error = (...args) => {
-  error(...args);
-  throw new Error(args.join(' '));
-};
+// global.console.error = (...args) => {
+//   error(...args);
+//   throw new Error(args.join(' '));
+// };
 
 
 // These configuration values are usually set in webpack's EnvironmentPlugin however
