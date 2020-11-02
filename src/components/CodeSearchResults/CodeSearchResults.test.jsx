@@ -17,6 +17,7 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 
 const sampleEmailTemplate = {
+  'email-template-subject': 'Sample email subject.. ',
   'email-template-greeting': 'Sample email greeting.. ',
   'email-template-body': 'Sample email body template.. ',
   'email-template-closing': 'Sample email closing template.. ',
@@ -25,10 +26,7 @@ const sampleEmailTemplate = {
 const emailDefaults = {
   'template-id': 0,
   'template-name-select': '',
-  'email-template-subject': 'Sample email subject.. ',
-  'email-template-greeting': 'Sample email greeting.. ',
-  'email-template-body': 'Sample email body template.. ',
-  'email-template-closing': 'Sample email closing template.. ',
+  ...sampleEmailTemplate,
 };
 
 const initialStore = {
@@ -42,13 +40,13 @@ const initialStore = {
     allTemplates: [],
     emailTemplateSource: 'new_email',
     default: {
-      assign: sampleEmailTemplate,
-      remind: sampleEmailTemplate,
-      revoke: sampleEmailTemplate,
+      assign: { ...sampleEmailTemplate },
+      remind: { ...sampleEmailTemplate },
+      revoke: { ...sampleEmailTemplate },
     },
-    assign: emailDefaults,
-    remind: emailDefaults,
-    revoke: emailDefaults,
+    assign: { ...emailDefaults },
+    remind: { ...emailDefaults },
+    revoke: { ...emailDefaults },
   },
 };
 
