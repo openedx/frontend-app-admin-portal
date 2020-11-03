@@ -41,6 +41,7 @@ const UserSubscriptionModalWrapper = props => (
         availableSubscriptionCount={10}
         onClose={() => {}}
         onSuccess={() => {}}
+        subscriptionUUID="foo"
         {...props}
       />
     </Provider>
