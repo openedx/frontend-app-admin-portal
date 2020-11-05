@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Input, Icon, Modal } from '@edx/paragon';
+import { Button, Icon, Modal } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
@@ -13,7 +12,6 @@ import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
-import IconWithTooltip from '../IconWithTooltip';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
@@ -37,7 +35,6 @@ class BaseCodeAssignmentModal extends React.Component {
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-    this.autoReminderField = this.autoReminderField.bind(this);
   }
 
   componentDidMount() {
@@ -318,7 +315,6 @@ class BaseCodeAssignmentModal extends React.Component {
       template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
-      enable_nudge_emails: formData['enable-nudge-emails'],
     };
 
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
@@ -363,27 +359,6 @@ class BaseCodeAssignmentModal extends React.Component {
           _error: errors,
         });
       });
-  }
-
-  autoReminderField({ input }) {
-    return (
-      <div className="auto-reminder-warpper">
-        <label className="ml-4">
-          <Input
-            {...input}
-            type="checkbox"
-            checked={input.value}
-            id="autoReminderCheckbox"
-          />
-          Automate reminders
-        </label>
-        <IconWithTooltip
-          icon={faInfoCircle}
-          altText="More information"
-          tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
-        />
-      </div>
-    );
   }
 
   renderBody() {
@@ -443,10 +418,6 @@ class BaseCodeAssignmentModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
-            />
-            <Field
-              name="enable-nudge-emails"
-              component={this.autoReminderField}
             />
           </div>
         </form>
