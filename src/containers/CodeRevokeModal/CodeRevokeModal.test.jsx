@@ -49,6 +49,7 @@ const codeRevokeRequestData = (numCodes) => {
   const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
   return {
     assignments: Array(numCodes).fill(assignment),
+    do_not_email: false,
     template: revokeEmailTemplate.body,
     template_subject: revokeEmailTemplate.subject,
     template_greeting: revokeEmailTemplate.greeting || '',

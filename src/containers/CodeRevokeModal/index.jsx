@@ -5,11 +5,17 @@ import CodeRevokeModal from '../../components/CodeRevokeModal';
 import sendCodeRevoke from '../../data/actions/codeRevoke';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 
-const mapStateToProps = state => ({
-  initialValues: state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL ?
-    state.emailTemplate.default.revoke : state.emailTemplate.revoke,
-  enableReinitialize: true,
-});
+const mapStateToProps = (state) => {
+  let initialValues = state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL ?
+    state.emailTemplate.default.revoke : state.emailTemplate.revoke;
+
+  initialValues = { ...initialValues, 'do-not-email': false };
+
+  return {
+    initialValues,
+    enableReinitialize: true,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   sendCodeRevoke: (couponId, options) => new Promise((resolve, reject) => {
