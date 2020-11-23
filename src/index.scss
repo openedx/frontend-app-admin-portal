@@ -1,8 +1,10 @@
 // ... Any custom SCSS variables should be defined here
 $modal-max-width: 650px;
 
-@import "~@edx/paragon/scss/edx/theme.scss";
-@import "~@edx/paragon/scss/edx/fonts.scss"; // Roboto
+@import "~@edx/brand/paragon/fonts";
+@import "~@edx/brand/paragon/variables";
+@import "~@edx/paragon/scss/core/core";
+@import "~@edx/brand/paragon/overrides";
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
@@ -23,6 +25,20 @@ $fa-font-path: "~font-awesome/fonts";
 
 body {
   overflow-x: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+div.enterprise-app {
+  flex: 1;
+}
+
+footer {
+  flex: none;
 }
 
 form {
