@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { configuration } from '../../config';
 
 import Img from '../../components/Img';
-
-import EdxLogo from '../../images/edx-logo.png';
 import './Footer.scss';
 
 class Footer extends React.Component {
@@ -45,7 +44,7 @@ class Footer extends React.Component {
         <div className="row justify-content-between align-items-center">
           <div className="col-xs-12 col-md-4 logo-links">
             <Link className="logo" to="/">
-              <Img src={EdxLogo} alt="edX logo" />
+              <Img src={configuration.LOGO_URL} alt="edX logo" />
             </Link>
             {enterpriseLogo && !enterpriseLogoNotFound && this.renderEnterpriseLogo()}
           </div>

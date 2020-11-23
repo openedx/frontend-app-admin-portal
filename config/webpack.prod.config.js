@@ -11,6 +11,19 @@ const ChunkRenamePlugin = require('chunk-rename-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
+const dotenv = require('dotenv');
+const Dotenv = require('dotenv-webpack');
+
+
+// Add process env vars. Currently used only for setting the
+// server port and the publicPath
+const result = dotenv.config({
+  path: path.resolve(process.cwd(), '.env.development'),
+});
+
+if (result.error) {
+  throw result.error;
+}
 
 module.exports = Merge.smart(commonConfig, {
   mode: 'production',
@@ -141,33 +154,15 @@ module.exports = Merge.smart(commonConfig, {
     new HtmlWebpackPlugin({
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
-      favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
+      FAVICON_URL: process.env.FAVICON_URL || null,
       excludeAssets: [/\/demoDataLoader.*.js/],
+    }),
+    new Dotenv({
+      path: path.resolve(process.cwd(), '../.env'),
+      systemvars: true,
     }),
     new HtmlWebpackExcludeAssetsPlugin(),
     new webpack.EnvironmentPlugin({
-      // default values of undefined to force definition in the environment at build time
-      NODE_ENV: 'production',
-      BASE_URL: null,
-      LMS_BASE_URL: null,
-      LOGIN_URL: null,
-      LOGOUT_URL: null,
-      SURVEY_MONKEY_URL: 'null',
-      CSRF_TOKEN_API_PATH: null,
-      REFRESH_ACCESS_TOKEN_ENDPOINT: null,
-      DATA_API_BASE_URL: null,
-      ECOMMERCE_BASE_URL: null,
-      LICENSE_MANAGER_BASE_URL: null,
-      ACCESS_TOKEN_COOKIE_NAME: null,
-      USER_INFO_COOKIE_NAME: null,
-      SEGMENT_KEY: null,
-      FULLSTORY_ORG_ID: null,
-      FULLSTORY_ENABLED: true,
-      NEW_RELIC_APP_ID: null,
-      NEW_RELIC_LICENSE_KEY: null,
-      ENTERPRISE_LEARNER_PORTAL_URL: null,
-      TABLEAU_URL: null,
-
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,

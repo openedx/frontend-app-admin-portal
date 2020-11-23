@@ -1,9 +1,11 @@
+@import "~@edx/brand/paragon/variables";
+
 .table {
-  font-size: 0.875rem;
+  font-size: $font-size-sm;
 
   th.sortable > button {
     padding-left: 0;
-    font-size: 0.875rem;
+    font-size: $font-size-sm;
     font-weight: 600;
     text-align: left;
     background: none;

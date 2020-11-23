@@ -12,14 +12,14 @@ import {
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from './constants';
-
+import { configuration } from '../../config';
 import Img from '../../components/Img';
-import edxLogo from '../../images/edx-logo.png';
 import { formatTimestamp } from '../../utils';
+
 
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
-
+const edxLogo = configuration.LOGO_URL;
 export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;

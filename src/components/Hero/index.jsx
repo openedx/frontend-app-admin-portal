@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import edXLogoForBanner from '../../images/edx-logo-for-banner.png';
 import './Hero.scss';
+
+import { configuration } from '../../config';
+
+const edxWhiteSemiTransparentLogo = configuration.LOGO_WHITE_URL;
 
 const Hero = props => (
   <div className="hero py-4 pt-md-5 pb-md-0">
@@ -12,7 +15,7 @@ const Hero = props => (
           <h1>{props.title}</h1>
         </div>
         <div className="col-12 col-md-3 text-md-right mt-2">
-          <img src={edXLogoForBanner} alt="edX logo" />
+          <img src={edxWhiteSemiTransparentLogo} alt="edX logo" />
         </div>
       </div>
     </div>

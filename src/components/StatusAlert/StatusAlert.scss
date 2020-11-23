@@ -1,7 +1,9 @@
+@import "~@edx/brand/paragon/variables";
+
 .alert {
   .icon {
     .fa  {
-      font-size: 1.5rem;
+      font-size: $font-size-lg;
     }
   }
 
