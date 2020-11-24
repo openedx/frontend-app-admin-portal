@@ -140,7 +140,6 @@ class Sidebar extends React.Component {
         onFocus={() => !this.isSidebarExpanded() && expandSidebar()}
         onMouseLeave={() => this.shouldSidebarCollapse() && collapseSidebar()}
         onBlur={() => this.shouldSidebarCollapse() && collapseSidebar()}
-        aria-expanded={this.isSidebarExpanded()}
         ref={this.element}
       >
         <div className="sidebar-content py-2">

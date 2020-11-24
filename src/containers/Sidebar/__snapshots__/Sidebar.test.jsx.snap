@@ -2,7 +2,6 @@
 
 exports[`<Sidebar /> renders correctly 1`] = `
 <nav
-  aria-expanded={false}
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
   id="sidebar"
@@ -87,7 +86,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
 
 exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
 <nav
-  aria-expanded={false}
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
   id="sidebar"
@@ -130,7 +128,6 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
 
 exports[`<Sidebar /> renders correctly when expanded 1`] = `
 <nav
-  aria-expanded={true}
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded has-shadow"
   id="sidebar"
@@ -203,7 +200,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
 
 exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
 <nav
-  aria-expanded={true}
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
   id="sidebar"
