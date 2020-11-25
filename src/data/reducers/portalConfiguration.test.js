@@ -1,23 +1,12 @@
-import portalConfiguration from './portalConfiguration';
+import portalConfiguration, { PORTAL_CONFIG_INITIAL_STATE as initialState }
+  from './portalConfiguration';
+
 import {
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
-const initialState = {
-  loading: false,
-  error: null,
-  enterpriseId: null,
-  enterpriseName: null,
-  enterpriseSlug: null,
-  enterpriseLogo: null,
-  enableCodeManagementScreen: false,
-  enableReportingConfigScreen: false,
-  enableSubscriptionManagementScreen: false,
-  enableSamlConfigurationScreen: false,
-  enableAnalyticsScreen: false,
-};
 
 const enterpriseData = {
   uuid: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
@@ -33,6 +22,7 @@ const enterpriseData = {
   enable_portal_subscription_management_screen: true,
   enable_portal_saml_configuration_screen: true,
   enable_analytics_screen: true,
+  enable_learner_portal: false,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -52,6 +42,7 @@ describe('portalConfiguration reducer', () => {
       enableSubscriptionManagementScreen: enterpriseData.enable_portal_subscription_management_screen, // eslint-disable-line max-len
       enableSamlConfigurationScreen: enterpriseData.enable_portal_saml_configuration_screen,
       enableAnalyticsScreen: enterpriseData.enable_analytics_screen,
+      enableLearnerPortal: enterpriseData.enable_learner_portal,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
