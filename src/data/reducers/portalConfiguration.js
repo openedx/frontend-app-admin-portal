@@ -13,6 +13,7 @@ const initialState = {
   enterpriseSlug: null,
   enterpriseLogo: null,
   enableCodeManagementScreen: false,
+  enableBulkEnrollmentScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
@@ -39,6 +40,7 @@ const portalConfiguration = (state = initialState, action) => {
           ? action.payload.data.branding_configuration.logo
           : null,
         enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen,
+        enableBulkEnrollmentScreen: action.payload.data.enable_bulk_enrollment_screen,
         enableReportingConfigScreen: action.payload.data.enable_portal_reporting_config_screen,
         enableSubscriptionManagementScreen: action.payload.data.enable_portal_subscription_management_screen, // eslint-disable-line max-len
         enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,

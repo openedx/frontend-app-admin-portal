@@ -367,7 +367,7 @@ class BaseCodeAssignmentModal extends React.Component {
 
   autoReminderField({ input }) {
     return (
-      <div className="auto-reminder-warpper">
+      <div className="auto-reminder-wrapper">
         <label className="ml-4">
           <Input
             {...input}

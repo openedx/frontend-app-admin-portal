@@ -60,6 +60,12 @@ class Sidebar extends React.Component {
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       },
       {
+        title: 'Bulk Enrollment',
+        to: `${baseUrl}/admin/bulkenrollment`,
+        iconClassName: 'fa-tags',
+        hidden: !features.BULK_ENROLLMENT, // TODO : add to backend || !enableBulkEnrollmentScreen,
+      },
+      {
         title: 'Reporting Configurations',
         to: `${baseUrl}/admin/reporting`,
         iconClassName: 'fa-file',
@@ -163,6 +169,7 @@ class Sidebar extends React.Component {
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
+  enableBulkEnrollmentScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
@@ -176,6 +183,7 @@ Sidebar.propTypes = {
   collapseSidebar: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   isExpandedByToggle: PropTypes.bool.isRequired,
+  enableBulkEnrollmentScreen: PropTypes.bool,
   enableCodeManagementScreen: PropTypes.bool,
   enableReportingConfigScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,

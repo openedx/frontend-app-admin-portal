@@ -10,6 +10,7 @@ import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import SupportPage from '../../containers/SupportPage';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
+import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
@@ -164,6 +165,14 @@ class EnterpriseApp extends React.Component {
                       }
                     />,
                   ]}
+                  {features.BULK_ENROLLMENT &&
+                    <Route
+                      key="bulk-enrollment"
+                      exact
+                      path={`${baseUrl}/admin/bulkenrollment`}
+                      render={routeProps => <BulkEnrollmentPage {...routeProps} />}
+                    />
+                  }
                   {features.REPORTING_CONFIGURATIONS &&
                     <Route
                       key="reporting-config"
@@ -233,6 +242,7 @@ EnterpriseApp.defaultProps = {
   enterpriseId: null,
   error: null,
   enableCodeManagementScreen: false,
+  enabledBulkEnrollmentScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
@@ -257,6 +267,7 @@ EnterpriseApp.propTypes = {
   authentication: PropTypes.shape().isRequired,
   userAccount: PropTypes.shape().isRequired,
   enableCodeManagementScreen: PropTypes.bool,
+  enabledBulkEnrollmentScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
