@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import { reducer as formReducer } from 'redux-form';
 import { userAccount } from '@edx/frontend-auth';
 
@@ -21,12 +21,12 @@ const identityReducer = (state) => {
   return newState;
 };
 
-const rootReducer = combineReducers({
+const rootReducer = history => combineReducers({
   // The authentication state is added as initialState when
   // creating the store in data/store.js.
   authentication: identityReducer,
   form: formReducer,
-  routerReducer,
+  router: connectRouter(history),
   dashboardAnalytics,
   portalConfiguration,
   table,

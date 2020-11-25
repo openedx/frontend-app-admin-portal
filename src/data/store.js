@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import { createLogger } from 'redux-logger';
 import { createMiddleware } from 'redux-beacon';
 import Segment, { trackEvent, trackPageView } from '@redux-beacon/segment';
-import { routerMiddleware, LOCATION_CHANGE } from 'react-router-redux';
+import { routerMiddleware, LOCATION_CHANGE } from 'connected-react-router';
 import { FETCH_CSV_REQUEST } from './constants/csv';
 import { PAGINATION_REQUEST, SORT_REQUEST } from './constants/table';
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
 import { paginateTable, sortTable, clearTable } from '../../data/actions/table';
@@ -32,7 +32,7 @@ const TableContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { withRef: true },
+  { forwardRef: true },
 )(TableComponent);
 
 export default withRouter(TableContainer);
