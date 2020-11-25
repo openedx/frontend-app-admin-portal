@@ -5,8 +5,11 @@ import { configuration } from '../../config';
 
 class LmsApiService {
   static baseUrl = configuration.LMS_BASE_URL;
+
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
+
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
+
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
 
   static fetchCourseOutline(courseId) {
@@ -111,6 +114,5 @@ class LmsApiService {
     return apiClient.get(samlConfigUrl);
   }
 }
-
 
 export default LmsApiService;

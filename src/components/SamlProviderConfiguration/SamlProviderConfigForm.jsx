@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
+import {
+  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+} from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 import SamlConfiguration from '../SamlConfiguration';
 
@@ -16,7 +18,6 @@ const SUBMIT_STATES = {
   COMPLETE: 'complete',
   PENDING: 'pending',
 };
-
 
 class SamlProviderConfigForm extends React.Component {
   state = {
@@ -51,13 +52,13 @@ class SamlProviderConfigForm extends React.Component {
     // validate the form
     const invalidFields = this.validateProviderConfigForm(formData, requiredFields);
     if (!isEmpty(invalidFields)) {
-      this.setState({
+      this.setState((state) => ({
         invalidFields: {
-          ...this.state.invalidFields,
+          ...state.invalidFields,
           ...invalidFields,
         },
         submitState: SUBMIT_STATES.default,
-      });
+      }));
       return;
     }
 
@@ -92,17 +93,16 @@ class SamlProviderConfigForm extends React.Component {
     } = this.state;
     let errorAlert;
     if (error) {
-      errorAlert =
-        (
-          <div className="form-group is-invalid align-items-left">
-            <StatusAlert
-              alertType="danger"
-              iconClassName="fa fa-times-circle"
-              title="Unable to submit config form:"
-              message={error}
-            />
-          </div>
-        );
+      errorAlert = (
+        <div className="form-group is-invalid align-items-left">
+          <StatusAlert
+            alertType="danger"
+            iconClassName="fa fa-times-circle"
+            title="Unable to submit config form:"
+            message={error}
+          />
+        </div>
+      );
     }
 
     return (
@@ -330,7 +330,8 @@ class SamlProviderConfigForm extends React.Component {
             />
           </div>
           <div className="col col-2">
-            {config && deleteEnabled &&
+            {config && deleteEnabled
+              && (
               <Button
                 variant="outline-danger"
                 className=" mr-3"
@@ -338,7 +339,7 @@ class SamlProviderConfigForm extends React.Component {
               >
                 <Icon className="fa fa-times danger" /> Delete
               </Button>
-            }
+              )}
           </div>
         </div>
         <div className="row">

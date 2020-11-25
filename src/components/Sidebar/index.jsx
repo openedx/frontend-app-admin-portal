@@ -27,8 +27,8 @@ class Sidebar extends React.Component {
 
     // Pass new width up to parent component if `isExpandedByToggle` or `isMobile` props change
     const shouldUpdateSidebarWidth = (
-      isExpandedByToggle !== prevProps.isExpandedByToggle ||
-      isMobile !== prevProps.isMobile
+      isExpandedByToggle !== prevProps.isExpandedByToggle
+      || isMobile !== prevProps.isMobile
     );
 
     if (shouldUpdateSidebarWidth) {

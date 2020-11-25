@@ -9,8 +9,7 @@ import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
   PAGINATION_FAILURE,
-} from '../../data/constants/table';
-
+} from '../constants/table';
 
 const mockStore = configureMockStore([thunk]);
 const axiosMock = new MockAdapter(apiClient);

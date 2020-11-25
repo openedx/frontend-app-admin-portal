@@ -21,8 +21,8 @@ const rewire = () => {
       const ordering = options.ordering || 'user_email';
       const isDesc = ordering.startsWith('-');
       const orderField = isDesc ? ordering.substring(1) : ordering;
-      const result = (typeof a[orderField] === 'string') ? a[orderField].localeCompare(b[orderField]) :
-        a[orderField] - b[orderField];
+      const result = (typeof a[orderField] === 'string') ? a[orderField].localeCompare(b[orderField])
+        : a[orderField] - b[orderField];
 
       return isDesc ? -result : result;
     };
@@ -51,8 +51,8 @@ const rewire = () => {
       const ordering = options.ordering || 'user_email';
       const isDesc = ordering.startsWith('-');
       const orderField = isDesc ? ordering.substring(1) : ordering;
-      const result = (typeof a[orderField] === 'string') ? a[orderField].localeCompare(b[orderField]) :
-        a[orderField] - b[orderField];
+      const result = (typeof a[orderField] === 'string') ? a[orderField].localeCompare(b[orderField])
+        : a[orderField] - b[orderField];
 
       return isDesc ? -result : result;
     };

@@ -135,8 +135,8 @@ const unredeemedCodes = allCodes.filter(code => (
   code.assigned_to !== undefined && code.redemptions.used < code.redemptions.total
 ));
 const partiallyRedeemedCodes = allCodes.filter(code => (
-  (code.redemptions.used > minRedemptionsCount &&
-    code.redemptions.used < code.redemptions.total)
+  (code.redemptions.used > minRedemptionsCount
+    && code.redemptions.used < code.redemptions.total)
 ));
 const redeemedCodes = allCodes.filter(code => (
   code.redemptions.total === code.redemptions.used
@@ -145,11 +145,11 @@ const redeemedCodes = allCodes.filter(code => (
 const getCodes = ({ codeFilter = unassignedCodesFilter, couponHasError = false }) => {
   if (codeFilter === unassignedCodesFilter) {
     return unassignedCodes;
-  } else if (codeFilter === unredeemedCodesFilter) {
+  } if (codeFilter === unredeemedCodesFilter) {
     return unredeemedCodes;
-  } else if (codeFilter === partiallyRedeemedCodesFilter) {
+  } if (codeFilter === partiallyRedeemedCodesFilter) {
     return partiallyRedeemedCodes;
-  } else if (codeFilter === redeemedCodesFilter) {
+  } if (codeFilter === redeemedCodesFilter) {
     return redeemedCodes;
   }
   return getAllCodes(couponHasError);

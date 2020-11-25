@@ -5,11 +5,11 @@ import Helmet from 'react-helmet';
 import qs from 'query-string';
 
 import TableContainer from '../../containers/TableContainer';
-import LoadingMessage from '../../components/LoadingMessage';
+import LoadingMessage from '../LoadingMessage';
 import LmsApiService from '../../data/services/LmsApiService';
 import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
-import SurveyPage from '../../components/SurveyPage';
+import SurveyPage from '../SurveyPage';
 import { updateUrl } from '../../utils';
 
 class EnterpriseList extends React.Component {
@@ -39,16 +39,6 @@ class EnterpriseList extends React.Component {
     }
   }
 
-  handleSearch(query) {
-    this.setState({
-      searchQuery: query,
-      searchSubmitted: true,
-    });
-    this.props.searchEnterpriseList({
-      search: query || undefined,
-    });
-  }
-
   formatEnterpriseData = enterprises => enterprises.map(enterprise => ({
     link: <Link to={`/${enterprise.slug}/admin/learners`}>{enterprise.name}</Link>,
     name: enterprise.name,
@@ -65,6 +55,16 @@ class EnterpriseList extends React.Component {
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
   }
 
+  handleSearch(query) {
+    this.setState({
+      searchQuery: query,
+      searchSubmitted: true,
+    });
+    this.props.searchEnterpriseList({
+      search: query || undefined,
+    });
+  }
+
   shouldRenderRedirectToEnterpriseAdminPage() {
     const {
       enterpriseList,
@@ -75,8 +75,8 @@ class EnterpriseList extends React.Component {
     const enterprises = enterpriseList && enterpriseList.results;
 
     return (
-      !loading && !error && enterprises && enterprises.length === 1 &&
-      enterpriseList.num_pages === 1 && !searchSubmitted
+      !loading && !error && enterprises && enterprises.length === 1
+      && enterpriseList.num_pages === 1 && !searchSubmitted
     );
   }
 
@@ -92,7 +92,8 @@ class EnterpriseList extends React.Component {
       <ErrorPage
         status={error.response && error.response.status}
         message={error.message}
-      />);
+      />
+    );
   }
 
   render() {
@@ -109,7 +110,7 @@ class EnterpriseList extends React.Component {
       return this.renderError(error);
     }
     return loading && !enterpriseList ? <LoadingMessage className="table-loading" /> : (
-      <React.Fragment>
+      <>
         <SurveyPage />
         <Helmet>
           <title>Enterprise List</title>
@@ -134,9 +135,8 @@ class EnterpriseList extends React.Component {
             </div>
             <div className="row mt-2">
               <div className="col">
-                {this.shouldRenderRedirectToEnterpriseAdminPage() &&
-                  this.renderRedirectToEnterpriseAdminPage()
-                }
+                {this.shouldRenderRedirectToEnterpriseAdminPage()
+                  && this.renderRedirectToEnterpriseAdminPage()}
                 <TableContainer
                   id="enterprise-list"
                   className="enterprise-list"
@@ -149,11 +149,10 @@ class EnterpriseList extends React.Component {
             </div>
           </div>
         </main>
-      </React.Fragment>
+      </>
     );
   }
 }
-
 
 EnterpriseList.defaultProps = {
   enterpriseList: null,

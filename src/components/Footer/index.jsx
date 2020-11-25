@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { configuration } from '../../config';
 
-import Img from '../../components/Img';
+import Img from '../Img';
 import './Footer.scss';
 
 class Footer extends React.Component {

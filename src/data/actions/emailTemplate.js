@@ -91,5 +91,4 @@ export const setEmailTemplateSource = emailTemplateSource => (
   }
 );
 
-
 export default fetchEmailTemplates;

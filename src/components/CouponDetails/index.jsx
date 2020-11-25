@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, CheckBox, Icon, InputSelect } from '@edx/paragon';
+import {
+  Button, CheckBox, Icon, InputSelect,
+} from '@edx/paragon';
 
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
@@ -239,9 +241,9 @@ class CouponDetails extends React.Component {
     const codeHasError = errors.find(errorItem => errorItem.code === code.code);
     if (assignedTo) {
       return (
-        <React.Fragment>
+        <>
           {!codeHasError && (
-            <React.Fragment>
+            <>
               <RemindButton
                 couponId={id}
                 couponTitle={couponTitle}
@@ -252,7 +254,7 @@ class CouponDetails extends React.Component {
                 onSuccess={response => this.handleCodeActionSuccess('remind', response)}
               />
               {' | '}
-            </React.Fragment>
+            </>
           )}
           <RevokeButton
             couponId={id}
@@ -263,7 +265,7 @@ class CouponDetails extends React.Component {
             }}
             onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
           />
-        </React.Fragment>
+        </>
       );
     }
 
@@ -298,12 +300,12 @@ class CouponDetails extends React.Component {
   }
 
   setModalState({ key, options }) {
-    this.setState({
+    this.setState((state) => ({
       modals: {
-        ...this.state.modals,
+        ...state.modals,
         [key]: options,
       },
-    });
+    }));
   }
 
   getSelectAllCheckBoxLabel = () => {
@@ -337,20 +339,20 @@ class CouponDetails extends React.Component {
 
     if (!tableData || selectedToggle !== 'unassigned') {
       return false;
-    } else if (hasAllCodesSelected) {
+    } if (hasAllCodesSelected) {
       return true;
     }
 
     return (
-      selectedCodes.length === tableData.results.length &&
-      selectedCodes.length !== tableData.count
+      selectedCodes.length === tableData.results.length
+      && selectedCodes.length !== tableData.count
     );
   }
 
   shouldShowVisibilityStatusAlert() {
     const { selectedCodes } = this.state;
-    return features.CODE_VISIBILITY && (selectedCodes.some(code => code.is_public) &&
-      selectedCodes.some(code => !code.is_public));
+    return features.CODE_VISIBILITY && (selectedCodes.some(code => code.is_public)
+      && selectedCodes.some(code => !code.is_public));
   }
 
   hasStatusAlert() {
@@ -487,8 +489,8 @@ class CouponDetails extends React.Component {
     const { couponDetailsTable: { data: tableData } } = this.props;
 
     const allCodesForPageSelected = (
-      tableData && tableData.results && tableData.results.length !== 0 &&
-      selectedCodes.length === tableData.results.length
+      tableData && tableData.results && tableData.results.length !== 0
+      && selectedCodes.length === tableData.results.length
     );
     const hasPartialSelection = selectedCodes.length > 0 && !allCodesForPageSelected;
 
@@ -563,12 +565,12 @@ class CouponDetails extends React.Component {
     this.resetCodeActionStatus();
 
     if (stateKey) {
-      this.setState({
+      this.setState((state) => ({
         [stateKey]: true,
-        refreshIndex: this.state.refreshIndex + 1, // force new table instance
+        refreshIndex: state.refreshIndex + 1, // force new table instance
         selectedCodes: [],
         doesCodeActionHaveErrors,
-      }, () => {
+      }), () => {
         this.updateSelectAllCheckBox();
       });
     }
@@ -835,8 +837,9 @@ class CouponDetails extends React.Component {
         ])}
       >
         <div className="col">
-          {isExpanded &&
-            <React.Fragment>
+          {isExpanded
+            && (
+            <>
               <div className="details-header row no-gutters mb-3">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
                   <h3>Coupon Details</h3>
@@ -864,7 +867,8 @@ class CouponDetails extends React.Component {
                     disabled={this.isTableLoading()}
                     onChange={this.handleToggleSelect}
                   />
-                  {features.CODE_VISIBILITY &&
+                  {features.CODE_VISIBILITY
+                    && (
                     <div className="d-inline pl-4">
                       <InputSelect
                         className="mt-1"
@@ -876,7 +880,7 @@ class CouponDetails extends React.Component {
                         onChange={this.handleVisibilitySelect}
                       />
                     </div>
-                  }
+                    )}
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
@@ -897,14 +901,15 @@ class CouponDetails extends React.Component {
                   </Button>
                 </div>
               </div>
-              {this.hasStatusAlert() &&
+              {this.hasStatusAlert()
+                && (
                 <div className="row mb-3">
                   <div className="col">
                     {shouldDisplayErrors && this.renderErrorMessage({
                       message: (
-                        <React.Fragment>
-                          {errors.length > 1 ?
-                            `${errors.length} errors have occurred: ` : 'An error has occurred: '}
+                        <>
+                          {errors.length > 1
+                            ? `${errors.length} errors have occurred: ` : 'An error has occurred: '}
                           <ul className="m-0 pl-4">
                             {errors.map(error => (
                               <li key={error.code}>
@@ -913,12 +918,12 @@ class CouponDetails extends React.Component {
                               </li>
                             ))}
                           </ul>
-                        </React.Fragment>
+                        </>
                       ),
                     })}
                     {couponOverviewError && !couponOverviewLoading && this.renderErrorMessage({
                       message: (
-                        <React.Fragment>
+                        <>
                           Failed to fetch coupon overview data ({couponOverviewError.message}).
                           <Button
                             variant="link"
@@ -927,13 +932,13 @@ class CouponDetails extends React.Component {
                           >
                             Please try again.
                           </Button>
-                        </React.Fragment>
+                        </>
                       ),
                     })}
                     {isCodeAssignmentSuccessful && this.renderSuccessMessage({
                       title: 'Successfully assigned code(s)',
                       message: (
-                        <React.Fragment>
+                        <>
                           To view the newly assigned code(s), filter by
                           <Button
                             variant="link"
@@ -948,7 +953,7 @@ class CouponDetails extends React.Component {
                           >
                             unredeemed codes.
                           </Button>
-                        </React.Fragment>
+                        </>
                       ),
                     })}
                     {isCodeReminderSuccessful && this.renderSuccessMessage({
@@ -969,25 +974,25 @@ class CouponDetails extends React.Component {
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
-                        <React.Fragment>
+                        <>
                           {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
                           {!hasAllCodesSelected && (
-                            <Button
-                              variant="link"
-                              className="p-0 pl-1 border-0"
-                              onClick={() => this.setState({
-                                hasAllCodesSelected: true,
-                              })}
-                            >
-                              {`Select all ${tableData.count} codes?`}
-                            </Button>
+                          <Button
+                            variant="link"
+                            className="p-0 pl-1 border-0"
+                            onClick={() => this.setState({
+                              hasAllCodesSelected: true,
+                            })}
+                          >
+                            {`Select all ${tableData.count} codes?`}
+                          </Button>
                           )}
-                        </React.Fragment>
+                        </>
                       ),
                     })}
                   </div>
                 </div>
-              }
+                )}
               <TableContainer
                 // Setting a key to force a new instance of the TableContainer
                 // when the selected toggle and/or the refresh index changes.
@@ -1002,29 +1007,32 @@ class CouponDetails extends React.Component {
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
-              {modals.assignment &&
+              {modals.assignment
+                && (
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('assign', response)}
                 />
-              }
-              {modals.revoke &&
+                )}
+              {modals.revoke
+                && (
                 <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
                 />
-              }
-              {modals.remind &&
+                )}
+              {modals.remind
+                && (
                 <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('remind', response)}
                 />
-              }
-            </React.Fragment>
-          }
+                )}
+            </>
+            )}
         </div>
       </div>
     );

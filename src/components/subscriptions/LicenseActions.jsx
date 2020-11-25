@@ -11,7 +11,7 @@ import { SubscriptionContext } from './SubscriptionData';
 import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
 import { ACTIVATED, ASSIGNED } from './constants';
 
-export default function LicenseAction({ user }) {
+const LicenseAction = (props) => {
   const { addToast } = useContext(ToastsContext);
 
   const {
@@ -25,6 +25,7 @@ export default function LicenseAction({ user }) {
 
   const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
+  const { user } = props;
 
   const licenseActions = useMemo(
     () => {
@@ -111,10 +112,12 @@ export default function LicenseAction({ user }) {
       ))}
     </div>
   );
-}
+};
 
 LicenseAction.propTypes = {
   user: PropTypes.shape({
     status: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+export default LicenseAction;

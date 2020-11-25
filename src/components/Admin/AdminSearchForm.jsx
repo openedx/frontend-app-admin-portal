@@ -6,7 +6,6 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Form } from '@edx/paragon';
 
-
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
@@ -22,8 +21,8 @@ class AdminSearchForm extends React.Component {
       },
     } = prevProps;
 
-    if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery ||
-        searchDateQuery !== prevSearchDateQuery) {
+    if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery
+        || searchDateQuery !== prevSearchDateQuery) {
       this.handleSearch();
     }
   }
@@ -73,7 +72,8 @@ class AdminSearchForm extends React.Component {
                           key={title}
                         >
                           {title}
-                        </option>))}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </div>
@@ -95,8 +95,7 @@ class AdminSearchForm extends React.Component {
                       onChange={event => updateUrl({
                         search_start_date: event.target.value,
                         page: 1,
-                        })
-                    }
+                      })}
                       disabled={!searchCourseQuery}
                     >
                       <option value="">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
@@ -106,7 +105,8 @@ class AdminSearchForm extends React.Component {
                           key={date}
                         >
                           {moment(date).format('MMMM D, YYYY')}
-                        </option>))}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </div>

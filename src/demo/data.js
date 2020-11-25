@@ -24,8 +24,8 @@ const getEnrollments = () => {
     const courseStart = faker.date.past();
     const courseEnd = faker.date.future();
     const progressStatus = index < numPassed ? 'Passed' : 'Failed';
-    const grade = progressStatus === 'Passed' ? faker.random.number({ min: 70, max: 100 }) :
-      faker.random.number({ max: 70 });
+    const grade = progressStatus === 'Passed' ? faker.random.number({ min: 70, max: 100 })
+      : faker.random.number({ max: 70 });
     const lastActivityDate = progressStatus === 'Passed' ? faker.date.recent(7) : dateInPastMonths;
     const passedTimestamp = progressStatus === 'Passed' ? faker.date.recent(7) : null;
 

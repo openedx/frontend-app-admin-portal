@@ -160,19 +160,19 @@ class CodeReminderModal extends React.Component {
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
           {!isBulkRemind && this.hasIndividualRemindData() && (
-            <React.Fragment>
+            <>
               <p>Code: {data.code}</p>
               <p>Email: {data.email}</p>
-            </React.Fragment>
+            </>
           )}
           {isBulkRemind && numberOfSelectedCodes > 0 && (
-            <React.Fragment>
+            <>
               <p className="bulk-selected-codes">Selected Codes: {numberOfSelectedCodes}</p>
-            </React.Fragment>
+            </>
           )}
         </div>
         <form onSubmit={e => e.preventDefault()}>
@@ -207,7 +207,7 @@ class CodeReminderModal extends React.Component {
             />
           </div>
         </form>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -243,12 +243,12 @@ class CodeReminderModal extends React.Component {
   renderTitle() {
     const { title, data } = this.props;
     return (
-      <React.Fragment>
+      <>
         <span className="d-block">{title}</span>
         <small>
           {data.selectedCodes && data.selectedCodes.length === 0 ? 'Remind All' : 'Assignment Reminder'}
         </small>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -263,7 +263,7 @@ class CodeReminderModal extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           ref={this.modalRef}
           dialogClassName="code-reminder"
@@ -276,10 +276,10 @@ class CodeReminderModal extends React.Component {
               className="code-remind-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
-              <React.Fragment>
+              <>
                 {mode === 'remind' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {'Remind'}
-              </React.Fragment>
+              </>
             </Button>,
             <SaveTemplateButton
               key="save-remind-template-btn"
@@ -291,7 +291,7 @@ class CodeReminderModal extends React.Component {
           onClose={onClose}
           open
         />
-      </React.Fragment>
+      </>
     );
   }
 }

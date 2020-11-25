@@ -4,7 +4,6 @@ import { ValidationFormGroup, Input } from '@edx/paragon';
 import LMSApiService from '../../data/services/LmsApiService';
 import NewRelicService from '../../data/services/NewRelicService';
 
-
 class SamlConfiguration extends React.Component {
   state = {
     configs: [],
@@ -18,8 +17,8 @@ class SamlConfiguration extends React.Component {
         loading: false,
       }))
       .catch((error) => {
-        const errorMsg = error.message || error.response.status === 500 ?
-          error.message : JSON.stringify(error.response.data);
+        const errorMsg = error.message || error.response.status === 500
+          ? error.message : JSON.stringify(error.response.data);
         NewRelicService.logAPIErrorResponse(errorMsg);
         this.setState({
           loading: false,

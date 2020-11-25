@@ -61,8 +61,7 @@ describe('Demo enrollment data', () => {
   });
 
   it('includes titles from the static courses list', () => {
-    const enrollmentTitles = enrollments.reduce((acc, enrollment) =>
-      acc.concat(enrollment.course_title), []);
+    const enrollmentTitles = enrollments.reduce((acc, enrollment) => acc.concat(enrollment.course_title), []);
 
     const demoTitles = courses.map(course => course.title);
 
@@ -88,4 +87,3 @@ describe('Demo overview data', () => {
     expect(overview).toEqual(expectedOverview);
   });
 });
-

@@ -7,7 +7,6 @@ import useWindowSize from '../../hooks/useWindowSize';
 
 jest.mock('./../../hooks/useWindowSize');
 
-
 const defaultAltText = 'infoooo';
 const defaultTooltipText = 'Tooool';
 const DEFAULT_PROPS = {

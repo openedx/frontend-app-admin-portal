@@ -7,7 +7,7 @@ export default function SubscriptionDetails() {
   const { details } = useContext(SubscriptionContext);
 
   return (
-    <React.Fragment>
+    <>
       <h3>Details</h3>
       <div className="mt-3 d-flex align-items-center">
         <div className="mr-5">
@@ -27,6 +27,6 @@ export default function SubscriptionDetails() {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }

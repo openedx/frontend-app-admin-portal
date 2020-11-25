@@ -18,7 +18,7 @@ export default function LicenseStatus({ user }) {
           return {
             iconClassName: 'fa-hourglass-half text-muted',
             text: (
-              <React.Fragment>
+              <>
                 <span>Pending</span>
                 {
                   user.lastRemindDate && (
@@ -27,7 +27,7 @@ export default function LicenseStatus({ user }) {
                     </span>
                   )
                 }
-              </React.Fragment>
+              </>
             ),
           };
         case REVOKED:
@@ -45,12 +45,12 @@ export default function LicenseStatus({ user }) {
   );
 
   return (
-    <React.Fragment>
+    <>
       {licenseStatus.iconClassName && (
         <i className={classNames('fa mr-2', licenseStatus.iconClassName)} />
       )}
       {licenseStatus.text}
-    </React.Fragment>
+    </>
   );
 }
 

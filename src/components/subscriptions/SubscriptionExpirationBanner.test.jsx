@@ -10,7 +10,6 @@ import {
 } from './constants';
 import { addDays, getSubscriptionExpirationDetails } from './test-utils';
 
-
 /* eslint-disable react/prop-types */
 const BannerWithContext = ({
   subscriptionState = {},

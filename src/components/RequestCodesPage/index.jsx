@@ -25,7 +25,7 @@ class RequestCodesPage extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Helmet>
           <title>Request More Codes</title>
         </Helmet>
@@ -52,7 +52,7 @@ class RequestCodesPage extends React.Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

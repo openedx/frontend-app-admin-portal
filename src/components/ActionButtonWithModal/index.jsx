@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 
 class ActionButtonWithModal extends React.Component {
+  // eslint-disable-next-line react/state-in-constructor
   state = {
     isModalOpen: false,
   };
@@ -15,7 +16,7 @@ class ActionButtonWithModal extends React.Component {
     } = this.props;
     const { isModalOpen } = this.state;
     return (
-      <React.Fragment>
+      <>
         <Button
           variant={variant}
           className={buttonClassName}
@@ -26,7 +27,7 @@ class ActionButtonWithModal extends React.Component {
         {isModalOpen && renderModal({
           closeModal: () => this.setIsModalOpen(false),
         })}
-      </React.Fragment>
+      </>
     );
   }
 }
