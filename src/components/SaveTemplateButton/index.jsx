@@ -127,7 +127,7 @@ class SaveTemplateButton extends React.Component {
 
   render() {
     const { submitState } = this.state;
-    const { handleSubmit } = this.props;
+    const { handleSubmit, disabled } = this.props;
     const buttonIconClasses = {
       default: 'outline-primary',
       pending: 'outline-primary',
@@ -150,6 +150,7 @@ class SaveTemplateButton extends React.Component {
           complete: <Icon className="fa fa-check-circle" />,
         }}
         disabledStates={[SUBMIT_STATES.PENDING]}
+        disabled={disabled}
       />
     );
   }
@@ -162,6 +163,7 @@ SaveTemplateButton.defaultProps = {
     remind: { 'template-id': 0 },
     revoke: { 'template-id': 0 },
   },
+  disabled: false,
 };
 
 SaveTemplateButton.propTypes = {
@@ -171,6 +173,7 @@ SaveTemplateButton.propTypes = {
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   emailTemplates: PropTypes.objectOf(PropTypes.any),
+  disabled: PropTypes.bool,
 };
 
 export default SaveTemplateButton;

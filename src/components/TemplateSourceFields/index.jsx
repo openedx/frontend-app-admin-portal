@@ -49,7 +49,9 @@ class TemplateSourceFields extends React.Component {
     setEmailTemplateSource(EMAIL_TEMPLATE_SOURCE_NEW_EMAIL);
   }
 
-  selectRenderField({ input, templateOptions, changeFromEmailTemplate }) {
+  selectRenderField({
+    input, templateOptions, changeFromEmailTemplate, disabled,
+  }) {
     return (
       <div className="template-select-wrapper mb-3">
         <label htmlFor="templateNameSelect">Template Name</label>
@@ -59,6 +61,7 @@ class TemplateSourceFields extends React.Component {
           id="templateNameSelect"
           options={templateOptions}
           onChange={changeFromEmailTemplate}
+          disabled={disabled}
         />
       </div>
     );
@@ -100,7 +103,7 @@ class TemplateSourceFields extends React.Component {
   }
 
   render() {
-    const { emailTemplateSource } = this.props;
+    const { emailTemplateSource, disabled } = this.props;
     const newEmail = EMAIL_TEMPLATE_SOURCE_NEW_EMAIL;
     const fromTemplate = EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE;
 
@@ -171,6 +174,7 @@ class TemplateSourceFields extends React.Component {
             component={RenderField}
             label="Template Name"
             required
+            disabled={disabled}
           />
           :
           <Field
@@ -178,6 +182,7 @@ class TemplateSourceFields extends React.Component {
             component={this.selectRenderField}
             templateOptions={this.state.templateOptions}
             changeFromEmailTemplate={this.changeFromEmailTemplate}
+            disabled={disabled}
           />
         }
       </React.Fragment>
@@ -187,6 +192,7 @@ class TemplateSourceFields extends React.Component {
 
 TemplateSourceFields.defaultProps = {
   allEmailTemplates: [],
+  disabled: false,
 };
 
 TemplateSourceFields.propTypes = {
@@ -196,6 +202,7 @@ TemplateSourceFields.propTypes = {
   currentFromTemplate: PropTypes.func.isRequired,
   fetchEmailTemplates: PropTypes.func.isRequired,
   allEmailTemplates: PropTypes.arrayOf(PropTypes.shape({})),
+  disabled: PropTypes.bool,
 };
 
 export default TemplateSourceFields;

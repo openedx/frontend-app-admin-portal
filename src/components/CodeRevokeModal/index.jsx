@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import { Button, Icon, Input, Modal } from '@edx/paragon';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
+import IconWithTooltip from '../IconWithTooltip';
 
 import { validateEmailTemplateFields } from '../../utils';
 
@@ -20,9 +23,11 @@ class CodeRevokeModal extends React.Component {
 
     this.state = {
       mode: 'revoke',
+      doNotEmail: false,
     };
 
     this.setMode = this.setMode.bind(this);
+    this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
@@ -60,6 +65,10 @@ class CodeRevokeModal extends React.Component {
 
   setMode(mode) {
     this.setState({ mode });
+  }
+
+  setDoNotEmail(doNotEmail) {
+    this.setState({ doNotEmail });
   }
 
   validateFormData(formData) {
@@ -108,6 +117,7 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
+      do_not_email: formData['do-not-email'],
     };
 
     if (formData['template-id']) {
@@ -140,12 +150,35 @@ class CodeRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  doNotEmailField({ input }) {
+    return (
+      <div className="do-not-email-wrapper">
+        <label className="ml-4">
+          <Input
+            {...input}
+            type="checkbox"
+            checked={input.value}
+            id="doNotEmailCheckbox"
+          />
+          Do not email
+        </label>
+        <IconWithTooltip
+          icon={faInfoCircle}
+          altText="More information"
+          tooltipText="By clicking this box, you can revoke this coupon code without emailing the learner."
+        />
+      </div>
+    );
+  }
+
   renderBody() {
     const {
       data,
       isBulkRevoke,
       submitFailed,
     } = this.props;
+
+    const { doNotEmail } = this.state;
 
     return (
       <React.Fragment>
@@ -166,19 +199,21 @@ class CodeRevokeModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="revoke" />
+            <TemplateSourceFields emailTemplateType="revoke" disabled={doNotEmail} />
             <Field
               id="email-template-subject"
               name="email-template-subject"
               component={RenderField}
               type="text"
               label="Customize Email Subject"
+              disabled={doNotEmail}
             />
             <Field
               id="email-template-greeting"
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
+              disabled={doNotEmail}
             />
             <Field
               id="email-template-body"
@@ -192,7 +227,16 @@ class CodeRevokeModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
+              disabled={doNotEmail}
             />
+            <Field
+              name="do-not-email"
+              component={this.doNotEmailField}
+              onChange={(event, newValue) => {
+                this.setDoNotEmail(newValue);
+              }}
+            />
+
           </div>
         </form>
       </React.Fragment>
@@ -247,6 +291,7 @@ class CodeRevokeModal extends React.Component {
     } = this.props;
     const {
       mode,
+      doNotEmail,
     } = this.state;
 
     return (
@@ -273,6 +318,7 @@ class CodeRevokeModal extends React.Component {
               templateType="revoke"
               setMode={this.setMode}
               handleSubmit={handleSubmit}
+              disabled={doNotEmail}
             />,
           ]}
           onClose={onClose}
