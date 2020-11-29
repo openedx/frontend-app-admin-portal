@@ -64,7 +64,7 @@ class Coupon extends React.Component {
       dimmed: false,
     }));
 
-    if (this.props.isExpanded) {
+    if (!this.state.isExpanded) {
       this.props.onExpand();
     } else {
       this.props.onCollapse();
