@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Input, Modal } from '@edx/paragon';
+import {
+  Button, Icon, Input, Modal,
+} from '@edx/paragon';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
