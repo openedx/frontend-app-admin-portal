@@ -9,7 +9,7 @@ import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
 import { SubscriptionContext } from './SubscriptionData';
 
 import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
-import { ACTIVATED, ASSIGNED } from './constants';
+import { ACTIVATED, ASSIGNED } from './data/constants';
 
 export default function LicenseAction({ user }) {
   const { addToast } = useContext(ToastsContext);

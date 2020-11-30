@@ -9,7 +9,7 @@ import {
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
   DEFAULT_PAGE,
-} from './constants';
+} from './data/constants';
 
 export default function LicenseAllocationNavigation() {
   const {

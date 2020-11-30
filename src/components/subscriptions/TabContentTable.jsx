@@ -18,7 +18,7 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
-} from './constants';
+} from './data/constants';
 
 const columns = [
   {

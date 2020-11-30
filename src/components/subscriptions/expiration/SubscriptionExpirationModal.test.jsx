@@ -5,13 +5,13 @@ import { createMemoryHistory } from 'history';
 import { Button, Modal } from '@edx/paragon';
 
 import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from './SubscriptionExpirationModal';
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionContext } from '../SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-} from './constants';
-import { addDays, getSubscriptionExpirationDetails } from './test-utils';
+} from '../data/constants';
+import { addDays, getSubscriptionExpirationDetails } from '../test-utils';
 
 
 const history = createMemoryHistory({

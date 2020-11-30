@@ -5,17 +5,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Modal, MailtoLink } from '@edx/paragon';
 
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionContext } from '../SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
-} from './constants';
+} from '../data/constants';
 
-import Img from '../../components/Img';
-import edxLogo from '../../images/edx-logo.png';
-import { formatTimestamp } from '../../utils';
+import Img from '../../Img';
+import edxLogo from '../../../images/edx-logo.png';
+import { formatTimestamp } from '../../../utils';
 
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 

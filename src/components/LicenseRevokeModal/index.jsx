@@ -6,7 +6,7 @@ import { Button, Icon, Modal } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 
 import NewRelicService from '../../data/services/NewRelicService';
-import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/constants';
+import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/data/constants';
 
 import './LicenseRevokeModal.scss';
 

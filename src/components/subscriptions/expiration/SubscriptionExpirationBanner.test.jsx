@@ -2,13 +2,13 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionContext } from '../SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-} from './constants';
-import { addDays, getSubscriptionExpirationDetails } from './test-utils';
+} from '../data/constants';
+import { addDays, getSubscriptionExpirationDetails } from '../test-utils';
 
 
 /* eslint-disable react/prop-types */

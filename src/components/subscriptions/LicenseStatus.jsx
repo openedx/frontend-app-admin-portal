@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { formatTimestamp } from '../../utils';
-import { ACTIVATED, ASSIGNED, REVOKED } from './constants';
+import { ACTIVATED, ASSIGNED, REVOKED } from './data/constants';
 
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(

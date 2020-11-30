@@ -13,7 +13,7 @@ import {
   REVOKED,
   ALL_USERS,
   DEFAULT_PAGE,
-} from './constants';
+} from './data/constants';
 
 import { useSubscriptionData } from './hooks/licenseManagerHooks';
 import { camelCaseObject } from '../../utils';

@@ -2,7 +2,7 @@ import faker from 'faker';
 import moment from 'moment';
 import qs from 'query-string';
 
-import { ACTIVATED, ASSIGNED, REVOKED, PAGE_SIZE } from '../constants';
+import { ACTIVATED, ASSIGNED, REVOKED, PAGE_SIZE } from './constants';
 
 import apiClient from '../../../data/apiClient';
 import { configuration } from '../../../config';

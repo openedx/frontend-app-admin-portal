@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 import LicenseManagerApiService from '../data/service';
 import NewRelicService from '../../../data/services/NewRelicService';
-import { SUBSCRIPTION_USERS, SUBSCRIPTION_USERS_OVERVIEW, SUBSCRIPTIONS, NETWORK_ERROR_MESSAGE } from '../constants';
+import { SUBSCRIPTION_USERS, SUBSCRIPTION_USERS_OVERVIEW, SUBSCRIPTIONS, NETWORK_ERROR_MESSAGE } from '../data/constants';
 
 
 export const useSubscriptions = (enterpriseId) => {
@@ -28,7 +28,7 @@ export const useSubscriptions = (enterpriseId) => {
         subscriptionsData.results = subscriptionsList.filter((
           subscription => subscription.is_active
         ));
-
+        console.log(subscriptionsData);
         setSubscriptions(subscriptionsData);
         setHasSubscription(subscriptionsData?.results?.length > 0);
       })
