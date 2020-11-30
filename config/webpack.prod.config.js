@@ -7,7 +7,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackNewRelicPlugin = require('html-webpack-new-relic-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
 const dotenv = require('dotenv');
 const Dotenv = require('dotenv-webpack');
@@ -67,10 +66,12 @@ module.exports = merge(commonConfig, {
           {
             loader: 'sass-loader', // compiles Sass to CSS
             options: {
-              includePaths: [
-                path.join(__dirname, '../node_modules'),
-                path.join(__dirname, '../src'),
-              ],
+              sassOptions: {
+                includePaths: [
+                  path.join(__dirname, '../node_modules'),
+                  path.join(__dirname, '../src'),
+                ],
+              },
             },
           },
         ],
@@ -152,7 +153,6 @@ module.exports = merge(commonConfig, {
       path: path.resolve(process.cwd(), '../.env'),
       systemvars: true,
     }),
-    new HtmlWebpackExcludeAssetsPlugin(),
     new webpack.EnvironmentPlugin({
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
