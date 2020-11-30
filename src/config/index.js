@@ -1,5 +1,4 @@
 import qs from 'query-string';
-// import { getConfig } from '@edx/frontend-platform';
 
 const hasFeatureFlagEnabled = (featureFlag) => {
   const { features } = qs.parse(window.location.search);
@@ -29,6 +28,7 @@ const configuration = {
   ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
   LOGO_URL: process.env.LOGO_URL,
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
+  LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
 };
 
 const features = {

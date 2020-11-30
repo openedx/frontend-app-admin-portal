@@ -15,7 +15,7 @@ const commonConfig = require('./webpack.common.config.js');
 // Add process env vars. Currently used only for setting the
 // server port and the publicPath
 const result = dotenv.config({
-  path: path.resolve(process.cwd(), '.env.development'),
+  path: path.resolve(process.cwd(), '.env'),
 });
 
 if (result.error) {

@@ -18,7 +18,6 @@ import { formatTimestamp } from '../../utils';
 
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
-const edxLogo = configuration.LOGO_URL;
 export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;
@@ -47,7 +46,7 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
 
   const renderExpiredBody = () => (
     <>
-      <Img className="w-25 my-5 mx-auto d-block" src={edxLogo} alt="edX logo" />
+      <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
       <p>
         Your subscription license expired on {formatTimestamp({ timestamp: expirationDate })}.
         To access your subscription management page contact edX and reactivate your subscription(s).
