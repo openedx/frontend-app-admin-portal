@@ -26,6 +26,11 @@ const configuration = {
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
   TABLEAU_URL: process.env.TABLEAU_URL,
   ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
+  ALGOLIA: {
+    APP_ID: process.env.ALGOLIA_APP_ID,
+    SEARCH_API_KEY: process.env.ALGOLIA_SEARCH_API_KEY,
+    INDEX_NAME: process.env.ALGOLIA_INDEX_NAME,
+  },
 };
 
 const features = {

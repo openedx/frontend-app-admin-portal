@@ -1,10 +1,13 @@
 import React from 'react';
+import { SearchData } from '@edx/frontend-enterprise';
+
+import CourseSearch from './CourseSearch';
 
 function BulkEnrollmentPage() {
   return (
-    <div>
-      Hello Bulk Enrollment World!
-    </div>
+    <SearchData>
+      <CourseSearch />
+    </SearchData>
   );
 }
 
