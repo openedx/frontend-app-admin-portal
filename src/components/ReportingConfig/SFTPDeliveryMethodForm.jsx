@@ -60,8 +60,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               onBlur={e => handleBlur(e)}
             />
           </ValidationFormGroup>
-          {config
-            && (
+          {config && (
             <div className="form-group">
               <label htmlFor="changePassword">Change Password</label>
               <Input
@@ -72,7 +71,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
                 onChange={() => setChecked(!checked)}
               />
             </div>
-            )}
+          )}
           <ValidationFormGroup
             for="encryptedSftpPassword"
             helpText="The password to use to securely access the host. The password will be encrypted when stored in the database"

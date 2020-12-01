@@ -161,8 +161,7 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <RequestCodesPage {...routeProps} />}
                     />,
                   ]}
-                  {features.REPORTING_CONFIGURATIONS
-                    && (
+                  {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"
                       exact
@@ -172,18 +171,16 @@ class EnterpriseApp extends React.Component {
                         : <LoadingMessage className="overview" />
                       )}
                     />
-                    )}
-                  {enableSubscriptionManagementScreen
-                    && (
+                  )}
+                  {enableSubscriptionManagementScreen && (
                     <Route
                       key="subscription-management"
                       exact
                       path={`${baseUrl}/admin/subscriptions`}
                       render={routeProps => <SubscriptionManagementPage {...routeProps} />}
                     />
-                    )}
-                  {features.ANALYTICS && enableAnalyticsScreen
-                    && (
+                  )}
+                  {features.ANALYTICS && enableAnalyticsScreen && (
                     <Route
                       key="analytics"
                       exact
@@ -194,9 +191,8 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                    )}
-                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen
-                    && (
+                  )}
+                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
                     <Route
                       key="saml-configuration"
                       exact
@@ -207,7 +203,7 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                    )}
+                  )}
                   <Route
                     key="support"
                     exact

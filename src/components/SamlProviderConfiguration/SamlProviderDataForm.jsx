@@ -161,8 +161,7 @@ class SamlProviderDataForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          {!pData
-            && (
+          {!pData && (
             <div className="col-col2">
               <StatefulButton
                 state={submitState}
@@ -185,9 +184,8 @@ class SamlProviderDataForm extends React.Component {
                 variant="primary"
               />
             </div>
-            )}
-          {pData && deleteEnabled
-            && (
+          )}
+          {pData && deleteEnabled && (
             <div className="col col-2">
               <Button
                 className="btn-outline-danger  mr-3"
@@ -196,7 +194,7 @@ class SamlProviderDataForm extends React.Component {
                 <Icon className="fa fa-times danger" /> Delete
               </Button>
             </div>
-            )}
+          )}
         </div>
         <div className="row">
           <div className="col col-3 mt-3">

@@ -185,22 +185,21 @@ class NumberCard extends React.Component {
               <span>
                 {this.formatTitle(title)}
               </span>
-              {iconClassName
-                && (
-                <Icon className={
-                  classNames(
-                    'd-flex align-items-center justify-content-center',
-                    iconClassName,
-                  )
-}
+              {iconClassName && (
+                <Icon
+                  className={
+                    classNames(
+                      'd-flex align-items-center justify-content-center',
+                      iconClassName,
+                    )
+                  }
                 />
-                )}
+              )}
             </h3>
             <p className="card-text">{description}</p>
           </div>
         </div>
-        {detailActions
-          && (
+        {detailActions && (
           <div className="card-footer">
             <div className="footer-title">
               <Button
@@ -243,7 +242,7 @@ class NumberCard extends React.Component {
               {this.renderDetailActions()}
             </div>
           </div>
-          )}
+        )}
       </div>
     );
   }

@@ -339,7 +339,9 @@ class CouponDetails extends React.Component {
 
     if (!tableData || selectedToggle !== 'unassigned') {
       return false;
-    } if (hasAllCodesSelected) {
+    }
+
+    if (hasAllCodesSelected) {
       return true;
     }
 
@@ -837,8 +839,7 @@ class CouponDetails extends React.Component {
         ])}
       >
         <div className="col">
-          {isExpanded
-            && (
+          {isExpanded && (
             <>
               <div className="details-header row no-gutters mb-3">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
@@ -867,8 +868,7 @@ class CouponDetails extends React.Component {
                     disabled={this.isTableLoading()}
                     onChange={this.handleToggleSelect}
                   />
-                  {features.CODE_VISIBILITY
-                    && (
+                  {features.CODE_VISIBILITY && (
                     <div className="d-inline pl-4">
                       <InputSelect
                         className="mt-1"
@@ -880,7 +880,7 @@ class CouponDetails extends React.Component {
                         onChange={this.handleVisibilitySelect}
                       />
                     </div>
-                    )}
+                  )}
                 </div>
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
@@ -901,8 +901,7 @@ class CouponDetails extends React.Component {
                   </Button>
                 </div>
               </div>
-              {this.hasStatusAlert()
-                && (
+              {this.hasStatusAlert() && (
                 <div className="row mb-3">
                   <div className="col">
                     {shouldDisplayErrors && this.renderErrorMessage({
@@ -977,22 +976,22 @@ class CouponDetails extends React.Component {
                         <>
                           {hasAllCodesSelected ? `All ${tableData.count} codes are selected.` : `${selectedCodes.length} codes are selected.`}
                           {!hasAllCodesSelected && (
-                          <Button
-                            variant="link"
-                            className="p-0 pl-1 border-0"
-                            onClick={() => this.setState({
-                              hasAllCodesSelected: true,
-                            })}
-                          >
-                            {`Select all ${tableData.count} codes?`}
-                          </Button>
+                            <Button
+                              variant="link"
+                              className="p-0 pl-1 border-0"
+                              onClick={() => this.setState({
+                                hasAllCodesSelected: true,
+                              })}
+                            >
+                              {`Select all ${tableData.count} codes?`}
+                            </Button>
                           )}
                         </>
                       ),
                     })}
                   </div>
                 </div>
-                )}
+              )}
               <TableContainer
                 // Setting a key to force a new instance of the TableContainer
                 // when the selected toggle and/or the refresh index changes.
@@ -1007,32 +1006,29 @@ class CouponDetails extends React.Component {
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
-              {modals.assignment
-                && (
+              {modals.assignment && (
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('assign', response)}
                 />
-                )}
-              {modals.revoke
-                && (
+              )}
+              {modals.revoke && (
                 <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
                 />
-                )}
-              {modals.remind
-                && (
+              )}
+              {modals.remind && (
                 <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
                   onSuccess={response => this.handleCodeActionSuccess('remind', response)}
                 />
-                )}
+              )}
             </>
-            )}
+          )}
         </div>
       </div>
     );

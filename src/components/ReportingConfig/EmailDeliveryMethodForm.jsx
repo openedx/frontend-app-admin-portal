@@ -22,12 +22,14 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             id="email"
             name="emailRaw"
             defaultValue={config ? config.email.join('\n') : undefined}
-            onBlur={e => handleBlur(e, () => !isEmpty(e.target.value.split('\n')
-              .filter(email => !isEmail(email))))}
+            onBlur={e => handleBlur(e, () => {
+              const rows = e.target.value.split('\n');
+              const emails = rows.filter(email => !isEmail(email));
+              return !isEmpty(emails);
+            })}
           />
         </ValidationFormGroup>
-        {config
-          && (
+        {config && (
           <div className="form-group">
             <label htmlFor="changePassword">Change Password</label>
             <Input
@@ -38,7 +40,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               onChange={() => setChecked(!checked)}
             />
           </div>
-          )}
+        )}
         <ValidationFormGroup
           for="encryptedPassword"
           helpText="This password will be used to secure the zip file. It will be encrypted when stored in the database."

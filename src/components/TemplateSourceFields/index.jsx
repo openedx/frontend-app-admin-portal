@@ -169,27 +169,25 @@ class TemplateSourceFields extends React.Component {
             </span>
           </OverlayTrigger>
         </div>
-        {emailTemplateSource === newEmail
-          ? (
-            <Field
-              id="templateNameInput"
-              name="template-name"
-              type="text"
-              component={RenderField}
-              label="Template Name"
-              required
-              disabled={disabled}
-            />
-          )
-          : (
-            <Field
-              name="template-name-select"
-              component={this.selectRenderField}
-              templateOptions={this.state.templateOptions}
-              changeFromEmailTemplate={this.changeFromEmailTemplate}
-              disabled={disabled}
-            />
-          )}
+        {emailTemplateSource === newEmail ? (
+          <Field
+            id="templateNameInput"
+            name="template-name"
+            type="text"
+            component={RenderField}
+            label="Template Name"
+            required
+            disabled={disabled}
+          />
+        ) : (
+          <Field
+            name="template-name-select"
+            component={this.selectRenderField}
+            templateOptions={this.state.templateOptions}
+            changeFromEmailTemplate={this.changeFromEmailTemplate}
+            disabled={disabled}
+          />
+        )}
       </>
     );
   }

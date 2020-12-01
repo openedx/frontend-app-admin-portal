@@ -48,14 +48,13 @@ class SupportPage extends React.Component {
                   }}
                   match={match}
                 />
-              )
-                : (
-                  <p>
-                    For assistance, please contact the edX Customer Success team at
-                    {' '}
-                    <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
-                  </p>
-                )}
+              ) : (
+                <p>
+                  For assistance, please contact the edX Customer Success team at
+                  {' '}
+                  <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+                </p>
+              )}
             </div>
           </div>
         </div>

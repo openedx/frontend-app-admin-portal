@@ -11,8 +11,6 @@ import apiClient from '../../data/apiClient';
 
 import './Header.scss';
 
-const logo = configuration.LOGO_URL;
-
 class Header extends React.Component {
   componentDidMount() {
     if (this.props.username) {
@@ -32,6 +30,7 @@ class Header extends React.Component {
 
   renderLogo() {
     const { enterpriseLogo, enterpriseName } = this.props;
+    const logo = configuration.LOGO_URL;
     return (
       <Img
         src={enterpriseLogo || logo}

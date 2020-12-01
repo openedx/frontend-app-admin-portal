@@ -330,8 +330,7 @@ class SamlProviderConfigForm extends React.Component {
             />
           </div>
           <div className="col col-2">
-            {config && deleteEnabled
-              && (
+            {config && deleteEnabled && (
               <Button
                 variant="outline-danger"
                 className=" mr-3"
@@ -339,7 +338,7 @@ class SamlProviderConfigForm extends React.Component {
               >
                 <Icon className="fa fa-times danger" /> Delete
               </Button>
-              )}
+            )}
           </div>
         </div>
         <div className="row">

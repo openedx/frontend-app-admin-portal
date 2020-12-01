@@ -10,9 +10,12 @@ function renderErrorComponent(status, message) {
   const errorMessage = message || 'An unknown error has occured.';
   if (status === 404) {
     return <NotFoundPage />;
-  } if (status === 403) {
+  }
+
+  if (status === 403) {
     return <ForbiddenPage />;
   }
+
   return (
     <>
       <Helmet>

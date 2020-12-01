@@ -156,8 +156,7 @@ class SamlProviderConfiguration extends React.Component {
       <main role="main">
         <div>
           <>
-            {providerConfig
-              && (
+            {providerConfig && (
               <div
                 key={providerConfig.id}
                 className="mb-3"
@@ -196,9 +195,8 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </Collapsible>
               </div>
-              )}
-            {providerData
-              && (
+            )}
+            {providerData && (
               <div
                 key={providerData.id}
                 className="mb-3"
@@ -231,9 +229,8 @@ class SamlProviderConfiguration extends React.Component {
 
                 </Collapsible>
               </div>
-              )}
-            {!providerConfig
-              && (
+            )}
+            {!providerConfig && (
               <Collapsible
                 styling="basic"
                 title="Add a SAML Provider Configuration"
@@ -246,9 +243,8 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </div>
               </Collapsible>
-              )}
-            {(providerConfig && !providerData)
-              && (
+            )}
+            {(providerConfig && !providerData) && (
               <Collapsible
                 styling="basic"
                 title="Add SAML Provider Data"
@@ -262,7 +258,7 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </div>
               </Collapsible>
-              )}
+            )}
           </>
         </div>
       </main>

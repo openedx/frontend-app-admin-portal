@@ -361,15 +361,14 @@ class ReportingConfigForm extends React.Component {
               variant="primary"
             />
           </ValidationFormGroup>
-          {config
-            && (
+          {config && (
             <Button
               className="btn-outline-danger  mr-3"
               onClick={() => this.props.deleteConfig(config.uuid)}
             >
               <Icon className="fa fa-times danger" /> Delete
             </Button>
-            )}
+          )}
         </div>
       </form>
     );
