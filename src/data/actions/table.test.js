@@ -9,7 +9,7 @@ import {
   PAGINATION_FAILURE,
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
-} from '../../data/constants/table';
+} from '../constants/table';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 
 const mockStore = configureMockStore([thunk]);
@@ -18,7 +18,6 @@ const enterpriseId = 'test-enterprise';
 const axiosMock = new MockAdapter(apiClient);
 apiClient.isAccessTokenExpired = jest.fn();
 apiClient.isAccessTokenExpired.mockReturnValue(false);
-
 
 describe('actions', () => {
   afterEach(() => {

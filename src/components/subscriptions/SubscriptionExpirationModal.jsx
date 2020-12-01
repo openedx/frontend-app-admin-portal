@@ -12,13 +12,11 @@ import {
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from './constants';
-
-import Img from '../../components/Img';
-import edxLogo from '../../images/edx-logo.png';
+import { configuration } from '../../config';
+import Img from '../Img';
 import { formatTimestamp } from '../../utils';
 
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
-
 
 export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
   const { details } = useContext(SubscriptionContext);
@@ -29,7 +27,7 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
   );
 
   const renderBody = () => (
-    <React.Fragment>
+    <>
       <p>
         Your current subscription is set to expire in {daysUntilExpiration} days.
         In order to minimize course access disruptions for your learners, make sure your invoice has
@@ -43,12 +41,12 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
       <i>
         Access expires on {formatTimestamp({ timestamp: expirationDate })}
       </i>
-    </React.Fragment>
+    </>
   );
 
   const renderExpiredBody = () => (
-    <React.Fragment>
-      <Img className="w-25 my-5 mx-auto d-block" src={edxLogo} alt="edX logo" />
+    <>
+      <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
       <p>
         Your subscription license expired on {formatTimestamp({ timestamp: expirationDate })}.
         To access your subscription management page contact edX and reactivate your subscription(s).
@@ -65,13 +63,14 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
         <li>
           View your learner progress in the <Link to={`/${enterpriseSlug}/admin/learners`}>learner management page</Link>
         </li>
-        {enableCodeManagementScreen &&
+        {enableCodeManagementScreen
+          && (
           <li>
             Manage your codes in the <Link to={`/${enterpriseSlug}/admin/coupons`}>code management page</Link>
           </li>
-        }
+          )}
       </ul>
-    </React.Fragment>
+    </>
   );
 
   // If the subscription has already expired, we show a different un-dismissible modal

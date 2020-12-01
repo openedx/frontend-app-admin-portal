@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Container, Row, Col, Alert, MailtoLink } from '@edx/paragon';
+import {
+  Container, Row, Col, Alert, MailtoLink,
+} from '@edx/paragon';
 
 import LoadingMessage from '../LoadingMessage';
 

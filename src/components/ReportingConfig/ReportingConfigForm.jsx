@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
+import {
+  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+} from '@edx/paragon';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
 
@@ -41,6 +43,7 @@ const MONTHLY_MAX = 31;
 const MONTHLY_MIN = 1;
 
 class ReportingConfigForm extends React.Component {
+  // eslint-disable-next-line react/state-in-constructor
   state = {
     frequency: this.props.config ? this.props.config.frequency : 'monthly',
     deliveryMethod: this.props.config ? this.props.config.deliveryMethod : 'email',
@@ -61,6 +64,7 @@ class ReportingConfigForm extends React.Component {
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
     return invalidFields;
   };
+
   /**
    * Handles the state change for when a form field validation onBlur is called. An
    * optional second param can be added to give a specific validation function,
@@ -71,15 +75,14 @@ class ReportingConfigForm extends React.Component {
    */
   handleBlur = (e, validationFunction) => {
     // One special case for email fields
-    this.setState({
+    this.setState((state) => ({
       invalidFields: {
-        ...this.state.invalidFields,
-        [e.target.name]: validationFunction ?
-          validationFunction()
-          :
-          !e.target.value.length,
+        ...state.invalidFields,
+        [e.target.name]: validationFunction
+          ? validationFunction()
+          : !e.target.value.length,
       },
-    });
+    }));
   };
 
   /**
@@ -103,13 +106,13 @@ class ReportingConfigForm extends React.Component {
     const invalidFields = this.validateReportingForm(formData, requiredFields);
     // if there are invalid fields, reflect that in the UI
     if (!isEmpty(invalidFields)) {
-      this.setState({
+      this.setState((state) => ({
         invalidFields: {
-          ...this.state.invalidFields,
+          ...state.invalidFields,
           ...invalidFields,
         },
         submitState: SUBMIT_STATES.default,
-      });
+      }));
       return;
     }
 
@@ -358,14 +361,14 @@ class ReportingConfigForm extends React.Component {
               variant="primary"
             />
           </ValidationFormGroup>
-          {config &&
+          {config && (
             <Button
               className="btn-outline-danger  mr-3"
               onClick={() => this.props.deleteConfig(config.uuid)}
             >
               <Icon className="fa fa-times danger" /> Delete
             </Button>
-          }
+          )}
         </div>
       </form>
     );

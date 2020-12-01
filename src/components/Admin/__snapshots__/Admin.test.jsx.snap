@@ -25,7 +25,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -129,7 +129,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -701,7 +701,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -1273,7 +1273,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -1849,7 +1849,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -2572,7 +2572,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -3295,7 +3295,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -3871,7 +3871,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -4447,7 +4447,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -5023,7 +5023,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -5595,7 +5595,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -6171,7 +6171,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -6303,7 +6303,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         >
           <img
             alt="edX logo"
-            src="test-file-stub"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>

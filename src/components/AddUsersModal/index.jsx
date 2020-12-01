@@ -135,7 +135,7 @@ class AddUsersModal extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && this.renderErrorMessage()}
         <form onSubmit={e => e.preventDefault()}>
           <p>Unassigned licenses: {availableSubscriptionCount}</p>
@@ -182,7 +182,7 @@ class AddUsersModal extends React.Component {
             />
           </div>
         </form>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -214,9 +214,9 @@ class AddUsersModal extends React.Component {
     const { title } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <span className="d-block">{title}</span>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -228,7 +228,7 @@ class AddUsersModal extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           ref={this.modalRef}
           dialogClassName="add-users"
@@ -241,17 +241,17 @@ class AddUsersModal extends React.Component {
               className="subscribe-users-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
-              <React.Fragment>
+              <>
                 {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 Assign Licenses
-              </React.Fragment>
+              </>
             </Button>,
           ]}
           closeText="Cancel"
           onClose={onClose}
           open
         />
-      </React.Fragment>
+      </>
     );
   }
 }

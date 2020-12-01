@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, OverlayTrigger, Tooltip } from '@edx/paragon';
+import {
+  Button, Input, OverlayTrigger, Tooltip,
+} from '@edx/paragon';
 import { Field } from 'redux-form';
 
 import RenderField from '../RenderField';
@@ -34,11 +36,12 @@ class TemplateSourceFields extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { allEmailTemplates, emailTemplateSource } = this.props;
-    if (allEmailTemplates !== prevProps.allEmailTemplates &&
-        emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
+    if (allEmailTemplates !== prevProps.allEmailTemplates
+        && emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
       this.makeOptions(this.props);
-      const emailTemplate = this.props.allEmailTemplates.filter(item =>
-        item.email_type === prevProps.emailTemplateType);
+      const emailTemplate = this.props.allEmailTemplates.filter(
+        item => item.email_type === prevProps.emailTemplateType,
+      );
       this.dispatchUpdatedTemplate(emailTemplate);
     }
   }
@@ -108,7 +111,7 @@ class TemplateSourceFields extends React.Component {
     const fromTemplate = EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE;
 
     return (
-      <React.Fragment>
+      <>
         <div
           className="d-flex mb-3 template-source-fields"
           role="group"
@@ -117,12 +120,12 @@ class TemplateSourceFields extends React.Component {
           <OverlayTrigger
             key="btn-new-email-tooltip"
             placement="top"
-            overlay={
+            overlay={(
               <Tooltip id="tooltip-top">
                 Create new code assignment message. If you’d like to save the message as a
                 template for future use, click “Save Template” before you “Assign Code”.
               </Tooltip>
-            }
+            )}
           >
             <span className="template-source-btn-wrapper">
               <Button
@@ -131,7 +134,7 @@ class TemplateSourceFields extends React.Component {
                 key="btn-new-email-template"
                 className="rounded-left"
                 style={{
-                    pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
+                  pointerEvents: emailTemplateSource === newEmail ? 'none' : 'auto',
                 }}
                 aria-pressed={emailTemplateSource === newEmail ? 'true' : 'false'}
                 onClick={() => this.updateState(newEmail)}
@@ -143,12 +146,12 @@ class TemplateSourceFields extends React.Component {
           <OverlayTrigger
             key="btn-from-template-tooltip"
             placement="top"
-            overlay={
+            overlay={(
               <Tooltip id="tooltip-top">
                 Make code assignment easier by loading any existing templates you have made here.
                 Just click the dropdown on Template Name.
               </Tooltip>
-            }
+            )}
           >
             <span className="template-source-btn-wrapper">
               <Button
@@ -157,7 +160,7 @@ class TemplateSourceFields extends React.Component {
                 key="btn-old-email-template"
                 className="rounded-right"
                 style={{
-                    pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
+                  pointerEvents: emailTemplateSource === fromTemplate ? 'none' : 'auto',
                 }}
                 aria-pressed={emailTemplateSource === fromTemplate ? 'true' : 'false'}
                 onClick={() => this.updateState(fromTemplate)}
@@ -166,7 +169,7 @@ class TemplateSourceFields extends React.Component {
             </span>
           </OverlayTrigger>
         </div>
-        {emailTemplateSource === newEmail ?
+        {emailTemplateSource === newEmail ? (
           <Field
             id="templateNameInput"
             name="template-name"
@@ -176,7 +179,7 @@ class TemplateSourceFields extends React.Component {
             required
             disabled={disabled}
           />
-          :
+        ) : (
           <Field
             name="template-name-select"
             component={this.selectRenderField}
@@ -184,8 +187,8 @@ class TemplateSourceFields extends React.Component {
             changeFromEmailTemplate={this.changeFromEmailTemplate}
             disabled={disabled}
           />
-        }
-      </React.Fragment>
+        )}
+      </>
     );
   }
 }

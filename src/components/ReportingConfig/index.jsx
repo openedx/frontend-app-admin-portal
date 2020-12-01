@@ -8,6 +8,7 @@ import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 
 class ReportingConfig extends React.Component {
+  // eslint-disable-next-line react/state-in-constructor
   state = {
     loading: true,
     reportingConfigs: [],
@@ -57,10 +58,12 @@ class ReportingConfig extends React.Component {
       await LMSApiService.deleteReportingConfig(uuid);
       const deletedIndex = this.state.reportingConfigs
         .findIndex(config => config.uuid === uuid);
-      const reportingConfigsCopy = this.state.reportingConfigs;
-      reportingConfigsCopy.splice(deletedIndex, 1);
-      this.setState({
-        reportingConfigs: reportingConfigsCopy,
+
+      this.setState((state) => {
+        const newReportingConfig = { ...state.reportingConfigs }.splice(deletedIndex, 1);
+        return {
+          reportingConfigs: newReportingConfig,
+        };
       });
       return undefined;
     } catch (error) {
@@ -105,46 +108,44 @@ class ReportingConfig extends React.Component {
     return (
       <main role="main">
         <div>
-          <React.Fragment>
-            {reportingConfigs &&
-              reportingConfigs.map(config => (
-                <div
-                  key={config.uuid}
-                  className="mb-3"
-                >
-                  <Collapsible
-                    styling="card"
-                    className="shadow"
-                    title={
-                      <div className="row justify-content-around flex-fill">
-                        <Icon
-                          className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
-                        />
-                        <div className="col">
-                          <h3 className="h6">Report Type:</h3>
-                          <p>{config.data_type}</p>
-                        </div>
-                        <div className="col">
-                          <h3 className="h6">Delivery Method:</h3>
-                          <p>{config.delivery_method}</p>
-                        </div>
-                        <div className="col">
-                          <h3 className="h6">Frequency:</h3>
-                          <p>{config.frequency}</p>
-                        </div>
+          <>
+            {reportingConfigs && reportingConfigs.map(config => (
+              <div
+                key={config.uuid}
+                className="mb-3"
+              >
+                <Collapsible
+                  styling="card"
+                  className="shadow"
+                  title={(
+                    <div className="row justify-content-around flex-fill">
+                      <Icon
+                        className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
+                      />
+                      <div className="col">
+                        <h3 className="h6">Report Type:</h3>
+                        <p>{config.data_type}</p>
                       </div>
-                    }
-                  >
-                    <ReportingConfigForm
-                      config={camelCaseObject(config)}
-                      updateConfig={this.updateConfig}
-                      createConfig={this.createConfig}
-                      deleteConfig={this.deleteConfig}
-                    />
-                  </Collapsible>
-                </div>
-              ))
-            }
+                      <div className="col">
+                        <h3 className="h6">Delivery Method:</h3>
+                        <p>{config.delivery_method}</p>
+                      </div>
+                      <div className="col">
+                        <h3 className="h6">Frequency:</h3>
+                        <p>{config.frequency}</p>
+                      </div>
+                    </div>
+                  )}
+                >
+                  <ReportingConfigForm
+                    config={camelCaseObject(config)}
+                    updateConfig={this.updateConfig}
+                    createConfig={this.createConfig}
+                    deleteConfig={this.deleteConfig}
+                  />
+                </Collapsible>
+              </div>
+            ))}
             <Collapsible
               styling="basic"
               title="Add a reporting Configuration"
@@ -157,7 +158,7 @@ class ReportingConfig extends React.Component {
                 />
               </div>
             </Collapsible>
-          </React.Fragment>
+          </>
         </div>
       </main>
     );

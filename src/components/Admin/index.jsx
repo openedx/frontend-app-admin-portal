@@ -5,9 +5,9 @@ import qs from 'query-string';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
-import Hero from '../../components/Hero';
-import StatusAlert from '../../components/StatusAlert';
-import LoadingMessage from '../../components/LoadingMessage';
+import Hero from '../Hero';
+import StatusAlert from '../StatusAlert';
+import LoadingMessage from '../LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -16,7 +16,6 @@ import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
-
 
 import AdminCards from '../../containers/AdminCards';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
@@ -297,9 +296,9 @@ class Admin extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <>
         {!loading && !error && !this.hasAnalyticsData() ? this.renderLoadingMessage() : (
-          <React.Fragment>
+          <>
             <main role="main">
               <Helmet title="Learner Progress Report" />
               <Hero title="Learner Progress Report" />
@@ -341,26 +340,29 @@ class Admin extends React.Component {
                 <div className="row">
                   <div className="col">
                     {!error && !loading && !this.hasEmptyData() && (
-                      <React.Fragment>
+                      <>
                         <div className="row pb-3">
                           <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
-                            {lastUpdatedDate &&
-                              <React.Fragment>
+                            {lastUpdatedDate
+                              && (
+                              <>
                                 Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                              </React.Fragment>
-                            }
+                              </>
+                              )}
 
                           </div>
                           <div className="col-12 col-md-6 col-xl-8">
                             {this.renderDownloadButton()}
                           </div>
                         </div>
-                        {this.displaySearchBar() && <AdminSearchForm
+                        {this.displaySearchBar() && (
+                        <AdminSearchForm
                           searchParams={searchParams}
                           searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                           tableData={this.getTableData() ? this.getTableData().results : []}
-                        />}
-                      </React.Fragment>
+                        />
+                        )}
+                      </>
                     )}
                     {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
                     <div className="mt-3 mb-5">
@@ -370,9 +372,9 @@ class Admin extends React.Component {
                 </div>
               </div>
             </main>
-          </React.Fragment>
+          </>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

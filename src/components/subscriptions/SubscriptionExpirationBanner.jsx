@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { MailtoLink } from '@edx/paragon';
 
-import StatusAlert from '../../components/StatusAlert';
+import StatusAlert from '../StatusAlert';
 import { SubscriptionContext } from './SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -14,14 +14,14 @@ export default function SubscriptionExpirationBanner() {
   const { daysUntilExpiration } = details;
 
   const renderMessage = () => (
-    <React.Fragment>
+    <>
       Your subscription is {daysUntilExpiration} days from expiration.
       Contact the edX Customer Success team at
       {' '}
       <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
       {' '}
       to extend your contract.
-    </React.Fragment>
+    </>
   );
 
   if (daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {

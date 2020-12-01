@@ -17,7 +17,7 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
       >
         <img
           alt="edX logo"
-          src="test-file-stub"
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -83,7 +83,7 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
       >
         <img
           alt="edX logo"
-          src="test-file-stub"
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
       <a

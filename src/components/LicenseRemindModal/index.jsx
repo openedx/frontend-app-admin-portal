@@ -10,7 +10,6 @@ import { validateEmailTemplateFields } from '../../utils';
 import emailTemplate from './emailTemplate';
 import NewRelicService from '../../data/services/NewRelicService';
 
-
 class LicenseRemindModal extends React.Component {
   constructor(props) {
     super(props);
@@ -120,16 +119,16 @@ class LicenseRemindModal extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
-          <React.Fragment>
+          <>
             {isBulkRemind ? (
               <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
             ) : (
               <p className="bulk-selected-codes">Email: {user.userEmail}</p>
             )}
-          </React.Fragment>
+          </>
         </div>
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
@@ -155,7 +154,7 @@ class LicenseRemindModal extends React.Component {
             />
           </div>
         </form>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -182,19 +181,21 @@ class LicenseRemindModal extends React.Component {
       </div>
     );
   }
+
   renderTitle() {
     const { title, subtitle } = this.props;
     return (
-      <React.Fragment>
+      <>
         <span className="d-block">{title}</span>
         {subtitle && (
           <small>
             {subtitle}
           </small>
         )}
-      </React.Fragment>
+      </>
     );
   }
+
   render() {
     const {
       onClose,
@@ -202,7 +203,7 @@ class LicenseRemindModal extends React.Component {
       handleSubmit,
     } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Modal
           ref={this.modalRef}
           dialogClassName="license-remind"
@@ -215,17 +216,17 @@ class LicenseRemindModal extends React.Component {
               className="license-remind-save-btn btn-primary"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
-              <React.Fragment>
+              <>
                 {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {'Send Reminder'}
-              </React.Fragment>
+              </>
             </Button>,
           ]}
           closeText="Cancel"
           onClose={onClose}
           open
         />
-      </React.Fragment>
+      </>
     );
   }
 }

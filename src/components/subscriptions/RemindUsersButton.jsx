@@ -16,12 +16,12 @@ const RemindUsersButton = ({
   searchQuery,
 }) => (
   <ActionButtonWithModal
-    buttonLabel={
-      <React.Fragment>
+    buttonLabel={(
+      <>
         <i className="fa fa-refresh mr-2" aria-hidden />
         Remind all ({pendingUsersCount})
-      </React.Fragment>
-    }
+      </>
+    )}
     buttonClassName="p-0"
     variant="link"
     renderModal={({ closeModal }) => (

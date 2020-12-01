@@ -6,16 +6,18 @@ import StatusAlert from '../StatusAlert';
 import NotFoundPage from '../NotFoundPage';
 import ForbiddenPage from '../ForbiddenPage';
 
-
 function renderErrorComponent(status, message) {
   const errorMessage = message || 'An unknown error has occured.';
   if (status === 404) {
     return <NotFoundPage />;
-  } else if (status === 403) {
+  }
+
+  if (status === 403) {
     return <ForbiddenPage />;
   }
+
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <title>Error</title>
       </Helmet>
@@ -28,7 +30,7 @@ function renderErrorComponent(status, message) {
           />
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 

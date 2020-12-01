@@ -32,21 +32,14 @@ class SamlProviderConfiguration extends React.Component {
       });
     })
       .catch((error) => {
-        const errorMsg = error.message || error.response.status === 500 ?
-          error.message : JSON.stringify(error.response.data);
+        const errorMsg = error.message || error.response.status === 500
+          ? error.message : JSON.stringify(error.response.data);
         NewRelicService.logAPIErrorResponse(errorMsg);
         this.setState({
           error,
           loading: false,
         });
       });
-  }
-
-  handleErrors(error) {
-    const errorMsg = error.message || error.response?.status === 500 ?
-      error.message : JSON.stringify(error.response.data);
-    NewRelicService.logAPIErrorResponse(errorMsg);
-    return errorMsg;
   }
 
   /**
@@ -136,6 +129,13 @@ class SamlProviderConfiguration extends React.Component {
     }
   }
 
+  handleErrors(error) {
+    const errorMsg = error.message || error.response?.status === 500
+      ? error.message : JSON.stringify(error.response.data);
+    NewRelicService.logAPIErrorResponse(errorMsg);
+    return errorMsg;
+  }
+
   render() {
     const {
       providerConfig, error, providerData, loading, deleteEnabled,
@@ -155,8 +155,8 @@ class SamlProviderConfiguration extends React.Component {
     return (
       <main role="main">
         <div>
-          <React.Fragment>
-            {providerConfig &&
+          <>
+            {providerConfig && (
               <div
                 key={providerConfig.id}
                 className="mb-3"
@@ -164,7 +164,7 @@ class SamlProviderConfiguration extends React.Component {
                 <Collapsible
                   styling="card"
                   className="shadow"
-                  title={
+                  title={(
                     <div className="row justify-content-around flex-fill">
                       <Icon
                         className={classNames(
@@ -184,7 +184,7 @@ class SamlProviderConfiguration extends React.Component {
                         <p>{providerConfig.metadata_source}</p>
                       </div>
                     </div>
-                      }
+                  )}
                 >
                   <SamlProviderConfigForm
                     config={camelCaseObject(providerConfig)}
@@ -195,8 +195,8 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </Collapsible>
               </div>
-            }
-            {providerData &&
+            )}
+            {providerData && (
               <div
                 key={providerData.id}
                 className="mb-3"
@@ -204,7 +204,7 @@ class SamlProviderConfiguration extends React.Component {
                 <Collapsible
                   styling="card"
                   className="shadow"
-                  title={
+                  title={(
                     <div className="row justify-content-around flex-fill">
                       <div className="col">
                         <h3 className="h6">Fetched At:</h3>
@@ -219,7 +219,7 @@ class SamlProviderConfiguration extends React.Component {
                         <p>{providerData.sso_url}</p>
                       </div>
                     </div>
-                  }
+                  )}
                 >
                   <SamlProviderDataForm
                     pData={camelCaseObject(providerData)}
@@ -229,8 +229,8 @@ class SamlProviderConfiguration extends React.Component {
 
                 </Collapsible>
               </div>
-            }
-            {!providerConfig &&
+            )}
+            {!providerConfig && (
               <Collapsible
                 styling="basic"
                 title="Add a SAML Provider Configuration"
@@ -243,8 +243,8 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </div>
               </Collapsible>
-            }
-            {(providerConfig && !providerData) &&
+            )}
+            {(providerConfig && !providerData) && (
               <Collapsible
                 styling="basic"
                 title="Add SAML Provider Data"
@@ -258,8 +258,8 @@ class SamlProviderConfiguration extends React.Component {
                   />
                 </div>
               </Collapsible>
-            }
-          </React.Fragment>
+            )}
+          </>
         </div>
       </main>
     );

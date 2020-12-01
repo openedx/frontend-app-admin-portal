@@ -46,7 +46,6 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
   className="enterprise-app"
 >
   <nav
-    aria-expanded={false}
     aria-label="sidebar"
     className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
     id="sidebar"

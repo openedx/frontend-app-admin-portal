@@ -2,8 +2,9 @@ import { useState, useEffect, useMemo } from 'react';
 
 import LicenseManagerApiService from '../data/service';
 import NewRelicService from '../../../data/services/NewRelicService';
-import { SUBSCRIPTION_USERS, SUBSCRIPTION_USERS_OVERVIEW, SUBSCRIPTIONS, NETWORK_ERROR_MESSAGE } from '../constants';
-
+import {
+  SUBSCRIPTION_USERS, SUBSCRIPTION_USERS_OVERVIEW, SUBSCRIPTIONS, NETWORK_ERROR_MESSAGE,
+} from '../constants';
 
 export const useSubscriptions = (enterpriseId) => {
   const [subscriptions, setSubscriptions] = useState({
@@ -168,8 +169,7 @@ export const useSubscriptionData = ({
   });
 
   const isInProgress = useMemo(
-    () =>
-      isLoadingSubscriptions || isLoadingSubscriptionUsersOverview || isLoadingSubscriptionUsers,
+    () => isLoadingSubscriptions || isLoadingSubscriptionUsersOverview || isLoadingSubscriptionUsers,
     [isLoadingSubscriptions, isLoadingSubscriptionUsersOverview, isLoadingSubscriptionUsers],
   );
 
@@ -177,7 +177,6 @@ export const useSubscriptionData = ({
     () => subscriptionsError || subscriptionUsersOverviewError || subscriptionUsersError,
     [subscriptionsError, subscriptionUsersOverviewError, subscriptionUsersError],
   );
-
 
   const fetch = () => {
     // This method will fetch subscriptions and after the successfully fetching subscriptions

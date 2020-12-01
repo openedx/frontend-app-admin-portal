@@ -1,7 +1,7 @@
 .loading {
   background: #f2f8fb;
-  font-size: 1.125rem;
-  
+  font-size: $font-size-lg;
+
   &.table-loading,
   &.request-codes,
   &.support,

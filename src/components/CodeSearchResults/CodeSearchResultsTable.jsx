@@ -119,7 +119,7 @@ const CodeSearchResultsTable = ({
       assignedTo: assignedTo || defaultEmptyValue,
       redemptionDate: redemptionDate || defaultEmptyValue,
       actions: !isRedeemed && isAssigned ? (
-        <React.Fragment>
+        <>
           <RemindButton
             couponId={couponId}
             couponTitle={couponName}
@@ -139,7 +139,7 @@ const CodeSearchResultsTable = ({
             }}
             onSuccess={onRevokeSuccess}
           />
-        </React.Fragment>
+        </>
       ) : defaultEmptyValue,
     }));
   };

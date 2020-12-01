@@ -1,23 +1,32 @@
 // This is the dev Webpack config. All settings here should prefer a fast build
 // time at the expense of creating larger, unoptimized bundles.
-const Merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dotenv = require('dotenv');
+const Dotenv = require('dotenv-webpack');
 
 const commonConfig = require('./webpack.common.config.js');
 
-module.exports = Merge.smart(commonConfig, {
-  mode: 'development',
-  entry: [
-    // enable react's custom hot dev client so we get errors reported in the browser
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    path.resolve(__dirname, '../src/segment.js'),
-    path.resolve(__dirname, '../src/index.jsx'),
+// Add process env vars. Currently used only for setting the
+// server port and the publicPath
+const result = dotenv.config({
+  path: path.resolve(process.cwd(), '.env.development'),
+});
 
-    // Uncomment this entrypoint to return static demo data instead of calling the data-api
-    // path.resolve(__dirname, '../src/demo/index.js'),
-  ],
+if (result.error) {
+  throw result.error;
+}
+
+module.exports = merge(commonConfig, {
+  mode: 'development',
+  entry: {
+    hot: require.resolve('react-dev-utils/webpackHotDevClient'),
+    segment: path.resolve(__dirname, '../src/segment.js'),
+    app: path.resolve(__dirname, '../src/index.jsx'),
+  },
+
   module: {
     // Specify file-by-file rules to Webpack. Some file-types need a particular kind of loader.
     rules: [
@@ -52,10 +61,12 @@ module.exports = Merge.smart(commonConfig, {
             loader: 'sass-loader', // compiles Sass to CSS
             options: {
               sourceMap: true,
-              includePaths: [
-                path.join(__dirname, '../node_modules'),
-                path.join(__dirname, '../src'),
-              ],
+              sassOptions: {
+                includePaths: [
+                  path.join(__dirname, '../node_modules'),
+                  path.join(__dirname, '../src'),
+                ],
+              },
             },
           },
         ],
@@ -83,7 +94,7 @@ module.exports = Merge.smart(commonConfig, {
                 interlaced: false,
               },
               pngquant: {
-                quality: '65-90',
+                quality: [0.65, 0.90],
                 speed: 4,
               },
             },
@@ -98,26 +109,13 @@ module.exports = Merge.smart(commonConfig, {
     new HtmlWebpackPlugin({
       inject: true, // Appends script tags linking to the webpack bundles at the end of the body
       template: path.resolve(__dirname, '../public/index.html'),
-      favicon: path.resolve(__dirname, '../src/images/favicon.ico'),
+      FAVICON_URL: process.env.FAVICON_URL || null,
+    }),
+    new Dotenv({
+      path: path.resolve(process.cwd(), '.env.development'),
+      systemvars: true,
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
-      BASE_URL: 'http://localhost:1991',
-      LMS_BASE_URL: 'http://localhost:18000',
-      LOGIN_URL: 'http://localhost:18000/login',
-      LOGOUT_URL: 'http://localhost:18000/logout',
-      SURVEY_MONKEY_URL: 'https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd_2BubSJEoVMSXyhpZ3VDb5_2BknEVoWfJFNQnAE6Sqt_2BFck.js',
-      CSRF_TOKEN_API_PATH: '/csrf/api/v1/token',
-      REFRESH_ACCESS_TOKEN_ENDPOINT: 'http://localhost:18000/login_refresh',
-      DATA_API_BASE_URL: 'http://localhost:8000',
-      ECOMMERCE_BASE_URL: 'http://localhost:18130',
-      LICENSE_MANAGER_BASE_URL: 'http://localhost:18170',
-      ENTERPRISE_LEARNER_PORTAL_URL: 'http://localhost:8734',
-      SEGMENT_KEY: null,
-      FULLSTORY_ORG_ID: null,
-      FULLSTORY_ENABLED: false,
-      ACCESS_TOKEN_COOKIE_NAME: 'edx-jwt-cookie-header-payload',
-      USER_INFO_COOKIE_NAME: 'edx-user-info',
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,

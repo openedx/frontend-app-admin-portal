@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { StatusAlert as Alert, Icon } from '@edx/paragon';
 
-import './StatusAlert.scss';
-
 const StatusAlert = (props) => {
   const {
     alertType,
@@ -21,11 +19,12 @@ const StatusAlert = (props) => {
       className={className}
       alertType={alertType}
       dismissible={dismissible}
-      dialog={
+      dialog={(
         <div className={
           classNames({
             'd-flex': iconClassName,
-          })}
+          })
+}
         >
           {iconClassName && (
             <div className="icon mr-2">
@@ -39,7 +38,7 @@ const StatusAlert = (props) => {
             {message}
           </div>
         </div>
-      }
+      )}
       onClose={onClose}
       open
     />

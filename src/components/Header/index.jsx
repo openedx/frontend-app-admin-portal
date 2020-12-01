@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Dropdown } from '@edx/paragon';
+import { configuration } from '../../config';
 
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
 import apiClient from '../../data/apiClient';
 
-import EdxLogo from '../../images/edx-logo.png';
 import './Header.scss';
 
 class Header extends React.Component {
@@ -30,11 +30,12 @@ class Header extends React.Component {
 
   renderLogo() {
     const { enterpriseLogo, enterpriseName } = this.props;
+    const logo = configuration.LOGO_URL;
     return (
       <Img
-        src={enterpriseLogo || EdxLogo}
+        src={enterpriseLogo || logo}
         alt={`${enterpriseName || 'edX'} logo`}
-        onError={(e) => { e.target.src = EdxLogo; }}
+        onError={(e) => { e.target.src = logo; }}
       />
     );
   }

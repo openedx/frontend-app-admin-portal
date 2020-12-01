@@ -23,7 +23,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
   const { addToast } = useContext(ToastsContext);
 
   return (
-    <React.Fragment>
+    <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <SubscriptionData enterpriseId={enterpriseId}>
@@ -56,7 +56,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                       fetchSubscriptionDetails,
                       setActiveTab,
                     }) => (
-                      <React.Fragment>
+                      <>
                         <p className="lead">
                           {details.licenses.allocated}
                           {' of '}
@@ -80,7 +80,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                             />
                           </div>
                         </div>
-                      </React.Fragment>
+                      </>
                     )}
                   </SubscriptionConsumer>
                 </div>
@@ -97,7 +97,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
           </div>
         </main>
       </SubscriptionData>
-    </React.Fragment>
+    </>
   );
 }
 

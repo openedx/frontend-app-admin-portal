@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import EcommerceApiService from '../../data/services/EcommerceApiService';
+import EcommerceApiService from '../services/EcommerceApiService';
 import { saveTemplate } from './emailTemplate';
 
 import {

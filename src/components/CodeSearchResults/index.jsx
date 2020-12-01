@@ -86,12 +86,12 @@ class CodeSearchResults extends React.Component {
       <TransitionReplace>
         {isOpen ? (
           <div key="code-search-results" className="code-search-results border-bottom pb-4">
-            <React.Fragment>
+            <>
               <CodeSearchResultsHeading
                 searchQuery={searchQuery}
                 onClose={onClose}
               />
-              <React.Fragment>
+              <>
                 {isCodeReminderSuccessful && this.renderSuccessMessage({
                   message: `A reminder was successfully sent to ${searchQuery}.`,
                 })}
@@ -104,8 +104,8 @@ class CodeSearchResults extends React.Component {
                   onRemindSuccess={this.handleRemindOnSuccess}
                   onRevokeSuccess={this.handleRevokeOnSuccess}
                 />
-              </React.Fragment>
-            </React.Fragment>
+              </>
+            </>
           </div>
         ) : null}
       </TransitionReplace>

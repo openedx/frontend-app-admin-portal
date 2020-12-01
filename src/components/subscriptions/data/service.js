@@ -2,7 +2,9 @@ import faker from 'faker';
 import moment from 'moment';
 import qs from 'query-string';
 
-import { ACTIVATED, ASSIGNED, REVOKED, PAGE_SIZE } from '../constants';
+import {
+  ACTIVATED, ASSIGNED, REVOKED, PAGE_SIZE,
+} from '../constants';
 
 import apiClient from '../../../data/apiClient';
 import { configuration } from '../../../config';
@@ -48,8 +50,7 @@ function updateUserRemindTimeStamp({ userId, bulkRemind, lastRemindDate }) {
       return users;
     }
   } else {
-    return users.map(user =>
-      (user.licenseStatus === ASSIGNED ? { ...user, lastRemindDate } : user));
+    return users.map(user => (user.licenseStatus === ASSIGNED ? { ...user, lastRemindDate } : user));
   }
 
   return null;

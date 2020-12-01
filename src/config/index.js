@@ -26,6 +26,9 @@ const configuration = {
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
   TABLEAU_URL: process.env.TABLEAU_URL,
   ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
+  LOGO_URL: process.env.LOGO_URL,
+  LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
+  LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
 };
 
 const features = {
