@@ -25,6 +25,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         >
           <img
             alt="edX logo"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -218,6 +219,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         >
           <img
             alt="edX logo"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -416,6 +418,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         >
           <img
             alt="edX logo"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>
@@ -586,6 +589,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         >
           <img
             alt="edX logo"
+            src="https://edx-cdn.org/v3/stage/logo-white.svg"
           />
         </div>
       </div>

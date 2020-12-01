@@ -17,6 +17,7 @@ exports[`<Header /> does not render profile image or dropdown if unauthenticated
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -41,6 +42,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -105,6 +107,7 @@ exports[`<Header /> renders edX logo correctly 1`] = `
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -154,6 +157,7 @@ exports[`<Header /> renders profile image correctly 1`] = `
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -213,6 +217,7 @@ exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = 
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
@@ -255,6 +260,7 @@ exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
         <img
           alt="edX logo"
           onError={[Function]}
+          src="https://edx-cdn.org/v3/prod/logo.svg"
         />
       </a>
     </div>
