@@ -83,7 +83,7 @@
     "babel-test": "0.2.3",
     "chunk-rename-webpack-plugin": "1.1.1",
     "clean-webpack-plugin": "0.1.19",
-    "codecov": "3.7.2",
+    "codecov": "3.8.1",
     "css-loader": "3.6.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.3",
