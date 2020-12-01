@@ -30,6 +30,7 @@ class CodeRevokeModal extends React.Component {
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.doNotEmailField = this.doNotEmailField.bind(this);
   }
 
   componentDidMount() {
@@ -151,13 +152,15 @@ class CodeRevokeModal extends React.Component {
   }
 
   doNotEmailField({ input }) {
+    const { doNotEmail } = this.state;
+
     return (
       <div className="do-not-email-wrapper">
         <label className="ml-4">
           <Input
             {...input}
             type="checkbox"
-            checked={input.value}
+            checked={doNotEmail}
             id="doNotEmailCheckbox"
           />
           Do not email
