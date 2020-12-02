@@ -9,10 +9,12 @@ import SubscriptionDetails from './SubscriptionDetails';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 import LicenseAllocationDetails from './LicenseAllocationDetails';
+import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 
 const PAGE_TITLE = 'Subscription Management';
 
 function SubscriptionManagementPage({ enterpriseId }) {
+  const dummy = false;
   return (
     <React.Fragment>
       <Helmet title={PAGE_TITLE} />
@@ -21,8 +23,11 @@ function SubscriptionManagementPage({ enterpriseId }) {
         <SubscriptionExpirationBanner />
         <SubscriptionExpirationModal />
         <main role="main" className="manage-subscription">
-          <SubscriptionDetails />
-          <LicenseAllocationDetails />
+          {dummy && <MultipleSubscriptionsPage />}
+          <React.Fragment>
+            <SubscriptionDetails />
+            <LicenseAllocationDetails />
+          </React.Fragment>
         </main>
       </SubscriptionData>
     </React.Fragment>
