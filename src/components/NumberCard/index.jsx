@@ -78,7 +78,7 @@ class NumberCard extends React.Component {
     }), () => {
       // Wait until after the state is set for the DOM elements
       // to render before we set focus.
-      if (!this.state.detailsExpanded) {
+      if (this.state.detailsExpanded) {
         this.detailActionItemRefs[this.state.focusIndex].focus();
         this.addEvents();
       } else {
