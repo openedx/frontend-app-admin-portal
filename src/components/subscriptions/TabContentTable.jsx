@@ -104,7 +104,7 @@ function TabContentTable({ enterpriseSlug }) {
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
-        <h3 className="h4 mb-3">{activeTabData.title}</h3>
+        <h3 className="mb-3">{activeTabData.title}</h3>
         {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
           <RemindUsersButton
             pendingUsersCount={overview.assigned}

@@ -46,9 +46,9 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
             <div className="row mb-3">
               <div className="col">
                 <div className="mb-3">
-                  <h3 className="mb-2">
+                  <h2 className="mb-2">
                     License Allocation
-                  </h3>
+                  </h2>
                   <SubscriptionConsumer>
                     {({
                       details,
