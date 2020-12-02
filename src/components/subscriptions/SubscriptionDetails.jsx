@@ -8,7 +8,7 @@ export default function SubscriptionDetails() {
 
   return (
     <>
-      <h3>Details</h3>
+      <h2>Details</h2>
       <div className="mt-3 d-flex align-items-center">
         <div className="mr-5">
           <div className="text-uppercase text-muted">
