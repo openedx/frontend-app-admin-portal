@@ -59,7 +59,7 @@ class Header extends React.Component {
             // that doesn't address focus management, so using the now-deprecated
             // previous version of the Dropdown component until the a11y issue is fixed.
             <Dropdown.Deprecated>
-              <Dropdown.Deprecated.Button className="bg-white text-dark">
+              <Dropdown.Deprecated.Button className="btn-light">
                 {this.getProfileIconElement()}
                 {email}
               </Dropdown.Deprecated.Button>
