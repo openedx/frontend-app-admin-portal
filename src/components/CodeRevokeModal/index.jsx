@@ -105,6 +105,8 @@ class CodeRevokeModal extends React.Component {
       sendCodeRevoke,
     } = this.props;
 
+    const { doNotEmail } = this.state;
+
     /* eslint-disable no-underscore-dangle */
     const errors = {
       _error: [],
@@ -120,7 +122,7 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
-      do_not_email: formData['do-not-email'],
+      do_not_email: doNotEmail,
     };
 
     if (formData['template-id']) {
