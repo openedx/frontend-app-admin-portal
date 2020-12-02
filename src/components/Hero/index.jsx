@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './Hero.scss';
-
 import { configuration } from '../../config';
 
 const Hero = ({ title }) => {

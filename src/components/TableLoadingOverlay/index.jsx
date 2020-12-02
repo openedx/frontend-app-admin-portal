@@ -1,8 +1,6 @@
 import React from 'react';
 import LoadingMessage from '../LoadingMessage';
 
-import './TableLoadingOverlay.scss';
-
 const TableLoadingOverlay = () => (
   <>
     <div className="table-loading-overlay" />

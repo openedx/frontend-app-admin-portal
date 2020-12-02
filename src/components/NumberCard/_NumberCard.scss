@@ -29,8 +29,8 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
   .card-body {
     .fa {
-      background: #dceef7;
-      color: #005686;
+      background: $info-100;
+      color: $info-700;
       font-size: $font-size-lg;
       border-radius: 100%;
       width: 3.75rem;
@@ -41,7 +41,7 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   .card-footer {
     position: relative;
     font-size: $font-size-sm;
-    background: #ffffff;
+    background: $white;
     padding: 0;
     border: $card-border-width solid $card-border-color;
     @include border-radius($card-border-radius);
@@ -59,7 +59,7 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     .toggle-collapse {
       padding: 1rem 1.25rem;
       font-weight: 600;
-      color: #313131;
+      color: $dark-700;
       font-size: $font-size-sm;
       text-decoration: none;
 
@@ -86,20 +86,17 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         border-radius: 0;
         justify-content: space-between;
         align-content: center;
-        color: #005686;
 
         &:hover {
-          background: lighten(#dceef7, 3%);
-          color: #005686;
+          background: $info-100;
         }
 
         &:focus {
           box-shadow: $input-btn-focus-box-shadow;
-          color: #005686;
         }
 
         &.active {
-          background: #dceef7;
+          background: $info-100;
         }
 
         span.label {
