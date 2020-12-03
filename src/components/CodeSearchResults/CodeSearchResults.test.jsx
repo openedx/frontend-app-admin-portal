@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { render, fireEvent, screen } from './cs.testutils';
+import { render } from './cs.testutils';
 import CodeSearchResults from './index';
 import '@testing-library/jest-dom';
 
