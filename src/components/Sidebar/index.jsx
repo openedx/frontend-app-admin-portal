@@ -89,6 +89,12 @@ class Sidebar extends React.Component {
         iconClassName: 'fa-support',
         hidden: !features.SUPPORT,
       },
+      {
+        title: 'Bulk Enrollment',
+        to: `${baseUrl}/admin/bulkenrollment`,
+        iconClassName: 'fa-book-open',
+        hidden: !features.BULK_ENROLLMENT,
+      },
     ];
   }
 

@@ -6,6 +6,7 @@ import { breakpoints } from '@edx/paragon';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
+import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import SupportPage from '../../containers/SupportPage';
@@ -161,6 +162,15 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <RequestCodesPage {...routeProps} />}
                     />,
                   ]}
+                  {features.BULK_ENROLLMENT
+                    && (
+                    <Route
+                      key="bulk-enrollment"
+                      exact
+                      path={`${baseUrl}/admin/bulkenrollment`}
+                      render={routeProps => <BulkEnrollmentPage {...routeProps} />}
+                    />
+                    )}
                   {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"
