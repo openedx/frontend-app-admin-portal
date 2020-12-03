@@ -19,17 +19,15 @@
       top: 0;
 
       .nav-link {
-        &.active {
-          background: $primary-200;
+        color: $gray-700;
 
-          &:hover,
-          &:focus {
-            background: $primary-300;
-          }
+        &.active {
+          background: $primary;
+          color: $white;
         }
 
-        &:hover,
-        &:focus {
+        &:not(.active):hover,
+        &:not(.active):focus {
           background: $gray-200;
         }
       }

@@ -6,7 +6,7 @@ import { Icon } from '@edx/paragon';
 
 const IconLink = props => (
   <NavLink
-    className="nav-link text-left text-secondary rounded-0"
+    className="nav-link text-left rounded-0"
     to={props.to}
   >
     <Icon

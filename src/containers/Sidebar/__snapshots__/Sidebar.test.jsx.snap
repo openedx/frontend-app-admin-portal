@@ -21,7 +21,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
@@ -42,7 +42,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
@@ -63,7 +63,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
@@ -105,7 +105,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
@@ -147,7 +147,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
@@ -164,7 +164,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
@@ -181,7 +181,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
@@ -219,7 +219,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
@@ -236,7 +236,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
@@ -253,7 +253,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left text-secondary rounded-0"
+          className="nav-link text-left rounded-0"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
