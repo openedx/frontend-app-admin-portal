@@ -3,9 +3,8 @@ import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import TabContentTable from './TabContentTable';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
 
-
 const LicenseAllocationDetails = () => (
-  <React.Fragment>
+  <>
     <div className="container-fluid">
       <div className="row mb-3">
         <div className="col">
@@ -23,7 +22,7 @@ const LicenseAllocationDetails = () => (
         </div>
       </div>
     </div>
-  </React.Fragment>
+  </>
 );
 
 export default LicenseAllocationDetails;

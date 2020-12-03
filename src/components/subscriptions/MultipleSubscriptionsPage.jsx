@@ -13,7 +13,7 @@ const MultipleSubscriptionsPage = () => {
   };
   console.log(subsContext);
   return (
-    <React.Fragment>
+    <>
       <div className="mt-3 mb-3">
         <h3>
           Invite your learners to access your course catalog and manage your subscription batches
@@ -81,7 +81,7 @@ const MultipleSubscriptionsPage = () => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -13,7 +13,7 @@ import {
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
 } from '../data/constants';
 
-import { configuration } from '../../../config'
+import { configuration } from '../../../config';
 import Img from '../../Img';
 import { formatTimestamp } from '../../../utils';
 

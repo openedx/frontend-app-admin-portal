@@ -15,7 +15,7 @@ const LicenseAllocationHeader = () => {
   const { addToast } = useContext(ToastsContext);
 
   return (
-    <React.Fragment>
+    <>
       <h3 className="mb-2">
         License Allocation
       </h3>
@@ -42,7 +42,7 @@ const LicenseAllocationHeader = () => {
           />
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
