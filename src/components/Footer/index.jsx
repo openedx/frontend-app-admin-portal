@@ -44,7 +44,7 @@ class Footer extends React.Component {
         <div className="row justify-content-between align-items-center">
           <div className="col-xs-12 col-md-4 logo-links">
             <Link className="logo border-right pr-4" to="/">
-              <Img src={configuration.LOGO_URL} alt="edX logo" />
+              <Img src={configuration.LOGO_TRADEMARK_URL} alt="edX logo" />
             </Link>
             {enterpriseLogo && !enterpriseLogoNotFound && this.renderEnterpriseLogo()}
           </div>

@@ -52,7 +52,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
       <button
         aria-expanded={false}
         aria-haspopup={true}
-        className="dropdown-toggle btn btn-light"
+        className="dropdown-toggle btn btn-outline-primary"
         id="pgn__dropdown-trigger-1"
         onClick={[Function]}
         type="button"
@@ -167,7 +167,7 @@ exports[`<Header /> renders profile image correctly 1`] = `
       <button
         aria-expanded={false}
         aria-haspopup={true}
-        className="dropdown-toggle btn btn-light"
+        className="dropdown-toggle btn btn-outline-primary"
         id="pgn__dropdown-trigger-0"
         onClick={[Function]}
         type="button"
