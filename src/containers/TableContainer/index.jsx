@@ -32,7 +32,7 @@ const TableContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { withRef: true },
+  { forwardRef: true },
 )(TableComponent);
 
 export default withRouter(TableContainer);

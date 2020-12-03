@@ -8,7 +8,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 import { Helmet } from 'react-helmet';
 import { PrivateRoute } from '@edx/frontend-auth';
 import * as FullStory from '@fullstory/browser';

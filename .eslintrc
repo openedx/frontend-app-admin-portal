@@ -8,7 +8,8 @@
         "devDependencies": [
           "config/*.js",
           "**/*.test.jsx",
-          "**/*.test.js"
+          "**/*.test.js",
+          "**/*.testutils.jsx"
         ]
       }
     ],

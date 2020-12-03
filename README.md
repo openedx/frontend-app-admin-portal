@@ -74,3 +74,7 @@ To support scenarios where demonstration data is required or the API is not avai
 return static demo data instead of hitting the API. To enable:
 - In production: Load `demoDataLoader.js` to the page using [a bookmarklet](https://codepen.io/edx/live/e5f46af8f39968b9693c8414091f6cc3/)
 - In development: Uncomment the entrypoint `../src/demo/index.js` in `webpack.dev.config.js`
+
+## Dev notes on React router ecosystem
+
+https://github.com/supasate/connected-react-router/blob/master/examples/basic/package.json

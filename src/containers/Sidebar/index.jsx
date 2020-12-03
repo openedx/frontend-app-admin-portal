@@ -27,5 +27,5 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { withRef: true },
+  { forwardRef: true },
 )(Sidebar));

@@ -2,11 +2,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
+import { render, fireEvent, screen } from './cs.testutils';
 import CodeSearchResults from './index';
+import '@testing-library/jest-dom';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 
@@ -61,19 +61,18 @@ describe('<CodeSearchResults />', () => {
   describe('basic rendering', () => {
     it('should render nothing visible when isOpen prop is false', () => {
       const store = getMockStore({ ...initialStore });
-      const tree = renderer
-        .create((
-          <MemoryRouter>
-            <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-              />
-            </Provider>
-          </MemoryRouter>
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const tree = render(
+        <MemoryRouter>
+          <CodeSearchResults
+            onClose={jest.fn()}
+            searchQuery="test@test.com"
+          />
+        </MemoryRouter>,
+        {
+          store,
+        },
+      );
+      expect(tree.queryByText('abc')).not.toBeInTheDocument();
     });
 
     it('should render loading', () => {
@@ -87,20 +86,19 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <MemoryRouter>
-            <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                isOpen
-              />
-            </Provider>
-          </MemoryRouter>
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const tree = render(
+        <MemoryRouter>
+          <CodeSearchResults
+            onClose={jest.fn()}
+            searchQuery="test@test.com"
+            isOpen
+          />
+        </MemoryRouter>,
+        {
+          store,
+        },
+      );
+      expect(tree.queryByText('test')).toBeInTheDocument();
     });
 
     it('should render table data', () => {
@@ -148,15 +146,15 @@ describe('<CodeSearchResults />', () => {
       });
       const tree = renderer
         .create((
-          <MemoryRouter>
-            <Provider store={store}>
+          <Provider store={store}>
+            <MemoryRouter>
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
                 isOpen
               />
-            </Provider>
-          </MemoryRouter>
+            </MemoryRouter>
+          </Provider>
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -188,15 +186,15 @@ describe('<CodeSearchResults />', () => {
       });
       const tree = renderer
         .create((
-          <MemoryRouter>
-            <Provider store={store}>
+          <Provider store={store}>
+            <MemoryRouter>
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="FAG2LVLNHAKIXQ0Q"
                 isOpen
               />
-            </Provider>
-          </MemoryRouter>
+            </MemoryRouter>
+          </Provider>
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -219,15 +217,15 @@ describe('<CodeSearchResults />', () => {
       });
       const tree = renderer
         .create((
-          <MemoryRouter>
-            <Provider store={store}>
+          <Provider store={store}>
+            <MemoryRouter>
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
                 isOpen
               />
-            </Provider>
-          </MemoryRouter>
+            </MemoryRouter>
+          </Provider>
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -246,15 +244,15 @@ describe('<CodeSearchResults />', () => {
       });
       const tree = renderer
         .create((
-          <MemoryRouter>
-            <Provider store={store}>
+          <Provider store={store}>
+            <MemoryRouter>
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
                 isOpen
               />
-            </Provider>
-          </MemoryRouter>
+            </MemoryRouter>
+          </Provider>
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -289,15 +287,15 @@ describe('<CodeSearchResults />', () => {
         },
       });
       const wrapper = mount((
-        <MemoryRouter>
-          <Provider store={store}>
+        <Provider store={store}>
+          <MemoryRouter>
             <CodeSearchResults
               onClose={jest.fn()}
               searchQuery="test@test.com"
               isOpen
             />
-          </Provider>
-        </MemoryRouter>
+          </MemoryRouter>
+        </Provider>
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
@@ -344,15 +342,15 @@ describe('<CodeSearchResults />', () => {
         },
       });
       const wrapper = mount((
-        <MemoryRouter>
-          <Provider store={store}>
+        <Provider store={store}>
+          <MemoryRouter>
             <CodeSearchResults
               onClose={jest.fn()}
               searchQuery="test@test.com"
               isOpen
             />
-          </Provider>
-        </MemoryRouter>
+          </MemoryRouter>
+        </Provider>
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
@@ -389,15 +387,15 @@ describe('<CodeSearchResults />', () => {
         },
       });
       const wrapper = mount((
-        <MemoryRouter>
-          <Provider store={store}>
+        <Provider store={store}>
+          <MemoryRouter>
             <CodeSearchResults
               onClose={jest.fn()}
               searchQuery="test@test.com"
               isOpen
             />
-          </Provider>
-        </MemoryRouter>
+          </MemoryRouter>
+        </Provider>
       ));
       expect(wrapper.find('CodeSearchResults').state('isCodeRevokeSuccessful')).toBeFalsy();
       wrapper.find('RevokeButton').simulate('click');
@@ -425,15 +423,15 @@ describe('<CodeSearchResults />', () => {
       },
     });
     const wrapper = mount((
-      <MemoryRouter>
-        <Provider store={store}>
+      <Provider store={store}>
+        <MemoryRouter>
           <CodeSearchResults
             onClose={mockOnClose}
             searchQuery="test@test.com"
             isOpen
           />
-        </Provider>
-      </MemoryRouter>
+        </MemoryRouter>
+      </Provider>
     ));
 
     wrapper.find('.close-search-results-btn').first().simulate('click');
