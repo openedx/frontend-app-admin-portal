@@ -57,8 +57,8 @@ class NumberCard extends React.Component {
   }
 
   handleDocumentClick(e) {
-    if (this.containerRef && this.containerRef.contains(e.target) &&
-      this.containerRef !== e.target) {
+    if (this.containerRef && this.containerRef.contains(e.target)
+      && this.containerRef !== e.target) {
       return;
     }
     this.toggleDetails();
@@ -72,14 +72,13 @@ class NumberCard extends React.Component {
   }
 
   toggleDetails() {
-    const detailsExpanded = !this.state.detailsExpanded;
-    this.setState({
-      detailsExpanded,
+    this.setState((state) => ({
+      detailsExpanded: !state.detailsExpanded,
       focusIndex: 0,
-    }, () => {
+    }), () => {
       // Wait until after the state is set for the DOM elements
       // to render before we set focus.
-      if (detailsExpanded) {
+      if (this.state.detailsExpanded) {
         this.detailActionItemRefs[this.state.focusIndex].focus();
         this.addEvents();
       } else {
@@ -155,9 +154,8 @@ class NumberCard extends React.Component {
           <span className="label">
             {action.label}
           </span>
-          {action.loading &&
-            <Icon className="fa fa-spinner fa-spin ml-2" />
-          }
+          {action.loading
+            && <Icon className="fa fa-spinner fa-spin ml-2" />}
         </div>
       </Link>
     ));
@@ -187,19 +185,21 @@ class NumberCard extends React.Component {
               <span>
                 {this.formatTitle(title)}
               </span>
-              {iconClassName &&
-                <Icon className={
-                  classNames(
-                    'd-flex align-items-center justify-content-center',
-                    iconClassName,
-                  )}
+              {iconClassName && (
+                <Icon
+                  className={
+                    classNames(
+                      'd-flex align-items-center justify-content-center',
+                      iconClassName,
+                    )
+                  }
                 />
-              }
+              )}
             </h3>
             <p className="card-text">{description}</p>
           </div>
         </div>
-        {detailActions &&
+        {detailActions && (
           <div className="card-footer">
             <div className="footer-title">
               <Button
@@ -242,7 +242,7 @@ class NumberCard extends React.Component {
               {this.renderDetailActions()}
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

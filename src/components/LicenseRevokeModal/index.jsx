@@ -97,20 +97,20 @@ class LicenseRevokeModal extends React.Component {
     const { revocations } = subscriptionPlan;
 
     return (
-      <React.Fragment>
+      <>
         {this.shouldRenderRevocationCapAlert() && (
           <StatusAlert
             alertType="warning"
-            message={
+            message={(
               <p className="m-0">
                 You have already revoked {revocations.applied} licenses. You
                 have {revocations.remaining} revocations left on your plan.
               </p>
-            }
+            )}
           />
         )}
         <div className="license-details">
-          <React.Fragment>
+          <>
             {submitFailed && this.renderErrorMessage()}
             <p>
               Revoking a license will remove access to the subscription catalog
@@ -122,9 +122,9 @@ class LicenseRevokeModal extends React.Component {
               assign <strong>{user.userEmail}</strong> to another license, but they
               will need to re-enroll in any course after being assigned a new license.
             </p>
-          </React.Fragment>
+          </>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -177,10 +177,10 @@ class LicenseRevokeModal extends React.Component {
             className="license-revoke-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            <React.Fragment>
+            <>
               {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
               OK
-            </React.Fragment>
+            </>
           </Button>,
         ]}
         closeText="Cancel"

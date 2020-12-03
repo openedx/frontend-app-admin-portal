@@ -92,7 +92,6 @@ const isValidNumber = (value = '') => (!isEmpty(value) && !isNumeric(value, { no
 const maxLength = max => value => (value && value.length > max ? 'Must be 512 characters or less' : undefined);
 const maxLength512 = maxLength(512);
 
-
 /** camelCase <--> snake_case functions
  * Because responses from django come as snake_cased JSON, its best
  * to transform them into camelCase for use within components. Try
@@ -102,9 +101,9 @@ const maxLength512 = maxLength(512);
 const modifyObjectKeys = (object, modify) => {
   // If the passed in object is not an object, return it.
   if (
-    object === undefined ||
-    object === null ||
-    (typeof object !== 'object' && !Array.isArray(object))
+    object === undefined
+    || object === null
+    || (typeof object !== 'object' && !Array.isArray(object))
   ) {
     return object;
   }

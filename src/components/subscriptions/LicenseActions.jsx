@@ -11,7 +11,7 @@ import { SubscriptionContext } from './SubscriptionData';
 import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
 import { ACTIVATED, ASSIGNED } from './data/constants';
 
-export default function LicenseAction({ user }) {
+const LicenseAction = ({ user }) => {
   const { addToast } = useContext(ToastsContext);
 
   const {
@@ -111,10 +111,12 @@ export default function LicenseAction({ user }) {
       ))}
     </div>
   );
-}
+};
 
 LicenseAction.propTypes = {
   user: PropTypes.shape({
     status: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+export default LicenseAction;

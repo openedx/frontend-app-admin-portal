@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { ValidationFormGroup, Input, StatefulButton, Icon, Button } from '@edx/paragon';
+import {
+  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+} from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 
 export const REQUIRED_DATA_FIELDS = [
@@ -49,13 +51,13 @@ class SamlProviderDataForm extends React.Component {
     // validate the form
     const invalidFields = this.validateProviderDataForm(formData, requiredFields);
     if (!isEmpty(invalidFields)) {
-      this.setState({
+      this.setState((state) => ({
         invalidFields: {
-          ...this.state.invalidFields,
+          ...state.invalidFields,
           ...invalidFields,
         },
         submitState: SUBMIT_STATES.default,
-      });
+      }));
       return;
     }
 
@@ -81,17 +83,16 @@ class SamlProviderDataForm extends React.Component {
     } = this.state;
     let errorAlert;
     if (error) {
-      errorAlert =
-        (
-          <div className="form-group is-invalid align-items-left">
-            <StatusAlert
-              alertType="danger"
-              iconClassName="fa fa-times-circle"
-              title="Unable to submit Data form:"
-              message={error}
-            />
-          </div>
-        );
+      errorAlert = (
+        <div className="form-group is-invalid align-items-left">
+          <StatusAlert
+            alertType="danger"
+            iconClassName="fa fa-times-circle"
+            title="Unable to submit Data form:"
+            message={error}
+          />
+        </div>
+      );
     }
     return (
       <form
@@ -160,7 +161,7 @@ class SamlProviderDataForm extends React.Component {
           </div>
         </div>
         <div className="row">
-          {!pData &&
+          {!pData && (
             <div className="col-col2">
               <StatefulButton
                 state={submitState}
@@ -183,8 +184,8 @@ class SamlProviderDataForm extends React.Component {
                 variant="primary"
               />
             </div>
-          }
-          {pData && deleteEnabled &&
+          )}
+          {pData && deleteEnabled && (
             <div className="col col-2">
               <Button
                 className="btn-outline-danger  mr-3"
@@ -193,7 +194,7 @@ class SamlProviderDataForm extends React.Component {
                 <Icon className="fa fa-times danger" /> Delete
               </Button>
             </div>
-          }
+          )}
         </div>
         <div className="row">
           <div className="col col-3 mt-3">

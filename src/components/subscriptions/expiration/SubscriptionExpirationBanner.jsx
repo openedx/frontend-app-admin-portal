@@ -14,14 +14,14 @@ export default function SubscriptionExpirationBanner() {
   const { daysUntilExpiration } = details;
 
   const renderMessage = () => (
-    <React.Fragment>
+    <>
       Your subscription is {daysUntilExpiration} days from expiration.
       Contact the edX Customer Success team at
       {' '}
       <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
       {' '}
       to extend your contract.
-    </React.Fragment>
+    </>
   );
 
   if (daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {

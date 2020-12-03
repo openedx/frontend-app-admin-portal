@@ -7,8 +7,8 @@ import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTempl
 
 const mapStateToProps = state => ({
   couponDetailsTable: state.table['coupon-details'],
-  initialValues: state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL ?
-    state.emailTemplate.default.remind : state.emailTemplate.remind,
+  initialValues: state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL
+    ? state.emailTemplate.default.remind : state.emailTemplate.remind,
   enableReinitialize: true,
 });
 

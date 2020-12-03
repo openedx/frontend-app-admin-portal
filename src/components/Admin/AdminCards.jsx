@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import NumberCard from '../../components/NumberCard';
+import NumberCard from '../NumberCard';
 
 class AdminCards extends React.Component {
   constructor(props) {

@@ -90,7 +90,7 @@ class FileInput extends React.Component {
             {fileName || 'No File Chosen'}
           </span>
           {!fileName ? (
-            <React.Fragment>
+            <>
               <label
                 className={classNames(
                   'choose-file-btn',
@@ -125,9 +125,9 @@ class FileInput extends React.Component {
                   this.setState({ hasFocus: false });
                 }}
               />
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <Button
                 variant="link"
                 className="remove-file-btn p-1 ml-2"
@@ -137,12 +137,12 @@ class FileInput extends React.Component {
                   this.setState({ fileName: null });
                 }}
               >
-                <React.Fragment>
+                <>
                   <Icon className="fa fa-times mr-1" />
                   Remove
-                </React.Fragment>
+                </>
               </Button>
-            </React.Fragment>
+            </>
           )}
         </div>
       </ValidationFormGroup>

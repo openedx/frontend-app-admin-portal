@@ -6,12 +6,11 @@ import { connect } from 'react-redux';
 import { SubscriptionContext } from './SubscriptionData';
 import { formatTimestamp } from '../../utils';
 
-
 const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { details } = useContext(SubscriptionContext);
 
   return (
-    <React.Fragment>
+    <>
       <div className="container-fluid mt-3">
         <div className="row mb-5">
           <div className="col-12 col-lg-8 mb-3 mb-lg-0">
@@ -42,7 +41,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

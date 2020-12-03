@@ -25,7 +25,7 @@ class SupportPage extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Helmet>
           <title>Contact Support</title>
         </Helmet>
@@ -48,16 +48,17 @@ class SupportPage extends React.Component {
                   }}
                   match={match}
                 />
-              ) :
+              ) : (
                 <p>
                   For assistance, please contact the edX Customer Success team at
                   {' '}
                   <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
-                </p>}
+                </p>
+              )}
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

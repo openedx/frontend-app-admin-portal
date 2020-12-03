@@ -21,12 +21,12 @@ const SidebarToggle = (props) => {
       onClick={isExpandedByToggle ? collapseSidebar : expandSidebar}
       aria-controls="sidebar"
     >
-      <React.Fragment>
+      <>
         <Icon className={classNames('fa', iconClass)} />
         <span className="sr-only">
           {isExpandedByToggle ? 'close menu' : 'open menu'}
         </span>
-      </React.Fragment>
+      </>
     </Button>
   );
 };

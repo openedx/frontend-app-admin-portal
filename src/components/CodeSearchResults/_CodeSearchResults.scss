@@ -11,7 +11,7 @@
   .pagination {
     @extend .mb-0;
     button {
-      font-size: 0.875rem;
+      font-size: $font-size-sm;
     }
   }
 }

@@ -16,7 +16,7 @@ const PAGE_TITLE = 'Subscription Management';
 function SubscriptionManagementPage({ enterpriseId }) {
   const dummy = false;
   return (
-    <React.Fragment>
+    <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <SubscriptionData enterpriseId={enterpriseId}>
@@ -24,13 +24,13 @@ function SubscriptionManagementPage({ enterpriseId }) {
         <SubscriptionExpirationModal />
         <main role="main" className="manage-subscription">
           {dummy && <MultipleSubscriptionsPage />}
-          <React.Fragment>
+          <>
             <SubscriptionDetails />
             <LicenseAllocationDetails />
-          </React.Fragment>
+          </>
         </main>
       </SubscriptionData>
-    </React.Fragment>
+    </>
   );
 }
 

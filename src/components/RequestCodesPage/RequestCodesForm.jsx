@@ -7,7 +7,9 @@ import { Button, Icon } from '@edx/paragon';
 import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 
-import { isRequired, isValidEmail, isValidNumber, maxLength512 } from '../../utils';
+import {
+  isRequired, isValidEmail, isValidNumber, maxLength512,
+} from '../../utils';
 
 class RequestCodesForm extends React.Component {
   constructor(props) {
@@ -59,7 +61,7 @@ class RequestCodesForm extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && error && this.renderErrorMessage()}
         <div className="request-codes-form row">
           <div className="col-12 col-md-6 col-lg-4">
@@ -68,12 +70,12 @@ class RequestCodesForm extends React.Component {
                 name="emailAddress"
                 type="email"
                 component={RenderField}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Email Address
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired, isValidEmail]}
                 required
               />
@@ -81,12 +83,12 @@ class RequestCodesForm extends React.Component {
                 name="enterpriseName"
                 type="text"
                 component={RenderField}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Company
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired]}
                 required
                 disabled
@@ -110,10 +112,10 @@ class RequestCodesForm extends React.Component {
                 disabled={invalid || submitting}
                 className="btn-primary"
               >
-                <React.Fragment>
+                <>
                   {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                   Request Codes
-                </React.Fragment>
+                </>
               </Button>
               <Link
                 className="btn btn-link ml-3 form-cancel-btn"
@@ -125,7 +127,7 @@ class RequestCodesForm extends React.Component {
           </div>
         </div>
         {submitSucceeded && this.renderRedirect()}
-      </React.Fragment>
+      </>
     );
   }
 }

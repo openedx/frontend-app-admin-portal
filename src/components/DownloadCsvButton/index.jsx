@@ -23,10 +23,10 @@ class DownloadCsvButton extends React.Component {
         disabled={disabled || csvLoading}
         onClick={() => fetchCsv(fetchMethod)}
       >
-        <React.Fragment>
+        <>
           <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
           {buttonLabel}
-        </React.Fragment>
+        </>
       </Button>
     );
   }

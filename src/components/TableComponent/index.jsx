@@ -10,8 +10,6 @@ import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
 
-import './TableComponent.scss';
-
 class TableComponent extends React.Component {
   componentDidMount() {
     // Get initial data
@@ -133,14 +131,13 @@ class TableComponent extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {error && this.renderErrorMessage()}
         {loading && !data && this.renderLoadingMessage()}
-        {!loading && !error && data && data.length === 0 &&
-          this.renderEmptyDataMessage()
-        }
+        {!loading && !error && data && data.length === 0
+          && this.renderEmptyDataMessage()}
         {data && data.length > 0 && this.renderTableContent()}
-      </React.Fragment>
+      </>
     );
   }
 }

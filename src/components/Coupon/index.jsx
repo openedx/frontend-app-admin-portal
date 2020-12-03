@@ -59,14 +59,12 @@ class Coupon extends React.Component {
   }
 
   toggleCouponDetails() {
-    const isExpanded = !this.state.isExpanded;
-
-    this.setState({
-      isExpanded,
+    this.setState((state) => ({
+      isExpanded: !state.isExpanded,
       dimmed: false,
-    });
+    }));
 
-    if (isExpanded) {
+    if (!this.state.isExpanded) {
       this.props.onExpand();
     } else {
       this.props.onCollapse();

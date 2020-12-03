@@ -1,5 +1,5 @@
 {
-  "extends": "eslint-config-edx",
+  "extends": "@edx/eslint-config",
   "parser": "babel-eslint",
   "rules": {
     "import/no-extraneous-dependencies": [
@@ -21,7 +21,13 @@
           "every": [ "nesting", "id" ]
       },
       "allowChildren": true
-    }]
+    }],
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "controlComponents": ["Input"],
+      "assert": "either",
+      "depth": 3
+    }],
+    "react/state-in-constructor": [0]
   },
   "env": {
     "jest": true

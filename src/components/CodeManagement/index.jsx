@@ -183,7 +183,7 @@ class CodeManagement extends React.Component {
     const queryParams = qs.parse(location.search);
 
     return (
-      <React.Fragment>
+      <>
         {coupons.results.map((coupon, index) => (
           <Coupon
             ref={(node) => { this.couponRefs[index] = node; }}
@@ -206,7 +206,7 @@ class CodeManagement extends React.Component {
             paginationLabel="coupons pagination"
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -243,7 +243,7 @@ class CodeManagement extends React.Component {
     const { hasRequestedCodes, searchQuery } = this.state;
     const hasSearchQuery = !!searchQuery;
     return (
-      <React.Fragment>
+      <>
         <Helmet>
           <title>Code Management</title>
         </Helmet>
@@ -276,19 +276,19 @@ class CodeManagement extends React.Component {
                   onClick={this.handleRefreshData}
                   disabled={loading}
                 >
-                  <React.Fragment>
+                  <>
                     <Icon className="fa fa-refresh mr-2" />
                     Refresh data
-                  </React.Fragment>
+                  </>
                 </Button>
                 <Link
                   className="request-codes-btn btn btn-primary"
                   to={`${match.path}/request`}
                 >
-                  <React.Fragment>
+                  <>
                     <Icon className="fa fa-plus mr-2" />
                     Request more codes
-                  </React.Fragment>
+                  </>
                 </Link>
               </div>
             </div>
@@ -321,7 +321,7 @@ class CodeManagement extends React.Component {
             </div>
           </div>
         </main>
-      </React.Fragment>
+      </>
     );
   }
 }

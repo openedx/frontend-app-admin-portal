@@ -51,7 +51,7 @@ export default function AnalyticsCharts(enterpriseId) {
 
   if (token && url) {
     return (
-      <React.Fragment>
+      <>
         <div>
           <TableauReport
             url={url}
@@ -60,7 +60,7 @@ export default function AnalyticsCharts(enterpriseId) {
             filters={filters}
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
   return null;

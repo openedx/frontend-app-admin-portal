@@ -102,7 +102,7 @@ function TabContentTable({ enterpriseSlug }) {
   );
 
   return (
-    <React.Fragment>
+    <>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="h4 mb-3">{activeTabData.title}</h3>
         {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
@@ -130,22 +130,22 @@ function TabContentTable({ enterpriseSlug }) {
         />
       ))}
       {!isLoading && !errors && (
-        <React.Fragment>
+        <>
           {tableData?.length > 0 ? (
-            <React.Fragment>
+            <>
               {hasNoRevocationsRemaining && (
                 <StatusAlert
                   alertType="warning"
-                  message={
-                    <React.Fragment>
+                  message={(
+                    <>
                       You have reached your revoke access limit. For help
                       managing your subscription licenses,
                       {' '}
                       <Link to={`/${enterpriseSlug}/admin/support`} className="alert-link">
                         contact Customer Support
                       </Link>.
-                    </React.Fragment>
-                  }
+                    </>
+                  )}
                 />
               )}
               <div className="table-responsive">
@@ -163,9 +163,9 @@ function TabContentTable({ enterpriseSlug }) {
                   paginationLabel={activeTabData.paginationLabel}
                 />
               </div>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <hr className="mt-0" />
               <StatusAlert
                 alertType="warning"
@@ -174,11 +174,11 @@ function TabContentTable({ enterpriseSlug }) {
                 dismissible={false}
                 open
               />
-            </React.Fragment>
+            </>
           )}
-        </React.Fragment>
+        </>
       )}
-    </React.Fragment>
+    </>
   );
 }
 

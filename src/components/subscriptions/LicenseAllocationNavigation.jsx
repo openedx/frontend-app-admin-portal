@@ -19,7 +19,6 @@ export default function LicenseAllocationNavigation() {
     setCurrentPage,
   } = useContext(SubscriptionContext);
 
-
   const tabs = useMemo(
     () => [
       {
@@ -58,6 +57,7 @@ export default function LicenseAllocationNavigation() {
                 { 'font-weight-bold': activeTab === tab.key },
               )}
               onClick={() => updateTabWithDefaultPage(tab.key)}
+              type="button"
             >
               {tab.text}
             </button>

@@ -13,7 +13,6 @@ import {
 } from '../data/constants';
 import { addDays, getSubscriptionExpirationDetails } from '../test-utils';
 
-
 const history = createMemoryHistory({
   initialEntries: ['/'],
 });

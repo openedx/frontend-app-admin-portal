@@ -48,7 +48,7 @@ class SupportForm extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && error && this.renderErrorMessage()}
         {submitSucceeded && this.renderSuccessMessage()}
         <div className="support-form row">
@@ -58,12 +58,12 @@ class SupportForm extends React.Component {
                 name="emailAddress"
                 type="email"
                 component={RenderField}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Email Address
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired, isValidEmail]}
                 required
               />
@@ -71,12 +71,12 @@ class SupportForm extends React.Component {
                 name="enterpriseName"
                 type="text"
                 component={RenderField}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Company
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired]}
                 required
                 disabled
@@ -85,12 +85,12 @@ class SupportForm extends React.Component {
                 name="subject"
                 type="text"
                 component={RenderField}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Subject
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired]}
                 required
               />
@@ -98,12 +98,12 @@ class SupportForm extends React.Component {
                 name="notes"
                 type="text"
                 component={TextAreaAutoSize}
-                label={
-                  <React.Fragment>
+                label={(
+                  <>
                     Notes
                     <span className="required">*</span>
-                  </React.Fragment>
-                }
+                  </>
+                )}
                 validate={[isRequired, maxLength512]}
                 required
               />
@@ -112,15 +112,15 @@ class SupportForm extends React.Component {
                 disabled={invalid || submitting}
                 className="btn-primary"
               >
-                <React.Fragment>
+                <>
                   {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                   Contact Support
-                </React.Fragment>
+                </>
               </Button>
             </form>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

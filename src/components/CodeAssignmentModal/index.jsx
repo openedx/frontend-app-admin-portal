@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Input, Icon, Modal } from '@edx/paragon';
+import {
+  Button, Input, Icon, Modal,
+} from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -180,8 +182,8 @@ class BaseCodeAssignmentModal extends React.Component {
       errors[textAreaKey] = message;
       errors._error.push(message);
     } else if (
-      numberOfSelectedCodes && shouldValidateSelectedCodes &&
-      validTextAreaEmails.length > numberOfSelectedCodes
+      numberOfSelectedCodes && shouldValidateSelectedCodes
+      && validTextAreaEmails.length > numberOfSelectedCodes
     ) {
       const message = getTooManyAssignmentsMessage({
         emails: validTextAreaEmails,
@@ -203,8 +205,8 @@ class BaseCodeAssignmentModal extends React.Component {
       errors[csvFileKey] = message;
       errors._error.push(message);
     } else if (
-      numberOfSelectedCodes && shouldValidateSelectedCodes &&
-      validCsvEmails.length > numberOfSelectedCodes
+      numberOfSelectedCodes && shouldValidateSelectedCodes
+      && validCsvEmails.length > numberOfSelectedCodes
     ) {
       const message = getTooManyAssignmentsMessage({
         isCsv: true,
@@ -396,20 +398,20 @@ class BaseCodeAssignmentModal extends React.Component {
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
-            <React.Fragment>
+            <>
               <p>Unassigned Codes: {data.unassignedCodes}</p>
               {numberOfSelectedCodes > 0 && <p>Selected Codes: {numberOfSelectedCodes}</p>}
-            </React.Fragment>
+            </>
           )}
           {!isBulkAssign && this.hasIndividualAssignData() && (
-            <React.Fragment>
+            <>
               <p>Code: {data.code.code}</p>
               <p className="code-remaining-uses">Remaining Uses: {data.remainingUses}</p>
-            </React.Fragment>
+            </>
           )}
         </div>
         <form onSubmit={e => e.preventDefault()}>
@@ -450,7 +452,7 @@ class BaseCodeAssignmentModal extends React.Component {
             />
           </div>
         </form>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -487,10 +489,10 @@ class BaseCodeAssignmentModal extends React.Component {
     const { title } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <span className="d-block">{title}</span>
         <small>Code Assignment</small>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -506,7 +508,7 @@ class BaseCodeAssignmentModal extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           ref={this.modalRef}
           dialogClassName="code-assignment"
@@ -518,10 +520,10 @@ class BaseCodeAssignmentModal extends React.Component {
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
             >
-              <React.Fragment>
+              <>
                 {mode === 'assign' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
-              </React.Fragment>
+              </>
             </Button>,
             <SaveTemplateButton
               key="save-assign-template-btn"
@@ -533,7 +535,7 @@ class BaseCodeAssignmentModal extends React.Component {
           onClose={onClose}
           open
         />
-      </React.Fragment>
+      </>
     );
   }
 }

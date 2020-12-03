@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Input, Modal } from '@edx/paragon';
+import {
+  Button, Icon, Input, Modal,
+} from '@edx/paragon';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
@@ -30,6 +32,7 @@ class CodeRevokeModal extends React.Component {
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.doNotEmailField = this.doNotEmailField.bind(this);
   }
 
   componentDidMount() {
@@ -102,6 +105,8 @@ class CodeRevokeModal extends React.Component {
       sendCodeRevoke,
     } = this.props;
 
+    const { doNotEmail } = this.state;
+
     /* eslint-disable no-underscore-dangle */
     const errors = {
       _error: [],
@@ -117,7 +122,7 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData['email-template-subject'],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
-      do_not_email: formData['do-not-email'],
+      do_not_email: doNotEmail,
     };
 
     if (formData['template-id']) {
@@ -151,13 +156,15 @@ class CodeRevokeModal extends React.Component {
   }
 
   doNotEmailField({ input }) {
+    const { doNotEmail } = this.state;
+
     return (
       <div className="do-not-email-wrapper">
         <label className="ml-4">
           <Input
             {...input}
             type="checkbox"
-            checked={input.value}
+            checked={doNotEmail}
             id="doNotEmailCheckbox"
           />
           Do not email
@@ -181,19 +188,19 @@ class CodeRevokeModal extends React.Component {
     const { doNotEmail } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         {submitFailed && this.renderErrorMessage()}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
-            <React.Fragment>
+            <>
               {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">Selected Codes: {data.selectedCodes.length}</p>}
-            </React.Fragment>
+            </>
           )}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
-            <React.Fragment>
+            <>
               <p className="code">Code: {data.code}</p>
               <p className="email">Email: {data.assigned_to}</p>
-            </React.Fragment>
+            </>
           )}
         </div>
         <form onSubmit={e => e.preventDefault()}>
@@ -239,7 +246,7 @@ class CodeRevokeModal extends React.Component {
 
           </div>
         </form>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -265,8 +272,8 @@ class CodeRevokeModal extends React.Component {
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
-              error[0]
-            )}
+            error[0]
+          )}
         />
       </div>
     );
@@ -276,10 +283,10 @@ class CodeRevokeModal extends React.Component {
     const { title } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <span className="d-block">{title}</span>
         <small>Code Revoke</small>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -295,7 +302,7 @@ class CodeRevokeModal extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Modal
           ref={this.modalRef}
           dialogClassName="code-revoke"
@@ -308,10 +315,10 @@ class CodeRevokeModal extends React.Component {
               className="code-revoke-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >
-              <React.Fragment>
+              <>
                 {mode === 'revoke' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 Revoke
-              </React.Fragment>
+              </>
             </Button>,
             <SaveTemplateButton
               key="save-revoke-template-btn"
@@ -324,7 +331,7 @@ class CodeRevokeModal extends React.Component {
           onClose={onClose}
           open
         />
-      </React.Fragment>
+      </>
     );
   }
 }

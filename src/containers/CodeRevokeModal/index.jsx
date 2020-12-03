@@ -6,10 +6,8 @@ import sendCodeRevoke from '../../data/actions/codeRevoke';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 
 const mapStateToProps = (state) => {
-  let initialValues = state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL ?
-    state.emailTemplate.default.revoke : state.emailTemplate.revoke;
-
-  initialValues = { ...initialValues, 'do-not-email': false };
+  const initialValues = state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL
+    ? state.emailTemplate.default.revoke : state.emailTemplate.revoke;
 
   return {
     initialValues,

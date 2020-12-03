@@ -63,9 +63,9 @@ class EnterpriseApp extends React.Component {
     }
 
     if (
-      this.sidebarRef &&
-      this.sidebarRef.props.isMobile &&
-      this.sidebarRef.props.isExpandedByToggle
+      this.sidebarRef
+      && this.sidebarRef.props.isMobile
+      && this.sidebarRef.props.isExpandedByToggle
     ) {
       this.sidebarRef.props.collapseSidebar(true);
     }
@@ -76,7 +76,8 @@ class EnterpriseApp extends React.Component {
       <ErrorPage
         status={error.response && error.response.status}
         message={error.message}
-      />);
+      />
+    );
   }
 
   render() {
@@ -114,7 +115,7 @@ class EnterpriseApp extends React.Component {
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
           {matches => (
-            <React.Fragment>
+            <>
               <Sidebar
                 baseUrl={baseUrl}
                 wrappedComponentRef={(node) => {
@@ -151,42 +152,35 @@ class EnterpriseApp extends React.Component {
                       key="code-management"
                       exact
                       path={`${baseUrl}/admin/coupons`}
-                      render={routeProps =>
-                        <CodeManagementPage {...routeProps} />
-                      }
+                      render={routeProps => <CodeManagementPage {...routeProps} />}
                     />,
                     <Route
                       key="request-codes"
                       exact
                       path={`${baseUrl}/admin/coupons/request`}
-                      render={routeProps =>
-                        <RequestCodesPage {...routeProps} />
-                      }
+                      render={routeProps => <RequestCodesPage {...routeProps} />}
                     />,
                   ]}
-                  {features.REPORTING_CONFIGURATIONS &&
+                  {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"
                       exact
                       path={`${baseUrl}/admin/reporting`}
-                      render={routeProps => (this.props.enterpriseId ?
-                        <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
-                        :
-                        <LoadingMessage className="overview" />
+                      render={routeProps => (this.props.enterpriseId
+                        ? <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
+                        : <LoadingMessage className="overview" />
                       )}
                     />
-                  }
-                  {enableSubscriptionManagementScreen &&
+                  )}
+                  {enableSubscriptionManagementScreen && (
                     <Route
                       key="subscription-management"
                       exact
                       path={`${baseUrl}/admin/subscriptions`}
-                      render={routeProps =>
-                        <SubscriptionManagementPage {...routeProps} />
-                      }
+                      render={routeProps => <SubscriptionManagementPage {...routeProps} />}
                     />
-                  }
-                  {features.ANALYTICS && enableAnalyticsScreen &&
+                  )}
+                  {features.ANALYTICS && enableAnalyticsScreen && (
                     <Route
                       key="analytics"
                       exact
@@ -197,8 +191,8 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                  }
-                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen &&
+                  )}
+                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
                     <Route
                       key="saml-configuration"
                       exact
@@ -209,19 +203,17 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                  }
+                  )}
                   <Route
                     key="support"
                     exact
                     path={`${baseUrl}/admin/support`}
-                    render={routeProps =>
-                      <SupportPage {...routeProps} />
-                    }
+                    render={routeProps => <SupportPage {...routeProps} />}
                   />
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>
-            </React.Fragment>
+            </>
           )}
         </MediaQuery>
       </div>

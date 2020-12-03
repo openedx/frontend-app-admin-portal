@@ -27,8 +27,8 @@ class Sidebar extends React.Component {
 
     // Pass new width up to parent component if `isExpandedByToggle` or `isMobile` props change
     const shouldUpdateSidebarWidth = (
-      isExpandedByToggle !== prevProps.isExpandedByToggle ||
-      isMobile !== prevProps.isMobile
+      isExpandedByToggle !== prevProps.isExpandedByToggle
+      || isMobile !== prevProps.isMobile
     );
 
     if (shouldUpdateSidebarWidth) {
@@ -140,7 +140,6 @@ class Sidebar extends React.Component {
         onFocus={() => !this.isSidebarExpanded() && expandSidebar()}
         onMouseLeave={() => this.shouldSidebarCollapse() && collapseSidebar()}
         onBlur={() => this.shouldSidebarCollapse() && collapseSidebar()}
-        aria-expanded={this.isSidebarExpanded()}
         ref={this.element}
       >
         <div className="sidebar-content py-2">

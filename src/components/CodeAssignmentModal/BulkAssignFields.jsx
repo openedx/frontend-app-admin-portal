@@ -11,7 +11,7 @@ class BulkAssignFields extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <h3 className="mb-2">Add Users</h3>
         <div className="pl-4 field-group">
           <Field
@@ -34,7 +34,7 @@ class BulkAssignFields extends React.Component {
             normalize={this.normalizeFileUpload}
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
