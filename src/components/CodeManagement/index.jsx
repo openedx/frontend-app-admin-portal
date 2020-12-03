@@ -255,7 +255,7 @@ class CodeManagement extends React.Component {
               <div className="col-12 col-xl-3 mb-3 mb-xl-0">
                 <h2>Overview</h2>
               </div>
-              <div className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1">
+              <div className="col-12 col-xl-4 mb-3 mb-xl-0">
                 <SearchBar
                   placeholder="Search by email or code..."
                   onSearch={(query) => {
@@ -269,7 +269,7 @@ class CodeManagement extends React.Component {
                   value={searchQuery}
                 />
               </div>
-              <div className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right">
+              <div className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right">
                 <Button
                   variant="link"
                   className="mr-2"
