@@ -16,9 +16,7 @@ const LicenseAllocationHeader = () => {
 
   return (
     <>
-      <h3 className="mb-2">
-        License Allocation
-      </h3>
+      <h2 className="mb-2">License Allocation</h2>
       <p className="lead">
         {details.licenses.allocated}
         {' of '}
