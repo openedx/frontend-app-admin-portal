@@ -20,12 +20,11 @@
 
       .nav-link {
         &.active {
-          $nav-link-bg: map-get($theme-color-levels, 'primary-200');
-          background: $nav-link-bg;
+          background: $primary-200;
 
           &:hover,
           &:focus {
-            background: darken($nav-link-bg, 5%);
+            background: $primary-300;
           }
         }
 
