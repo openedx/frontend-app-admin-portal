@@ -65,7 +65,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
         >
           <a
             aria-current={null}
-            className="nav-link text-left text-secondary rounded-0"
+            className="nav-link text-left rounded-0"
             href="//admin/learners"
             onClick={[Function]}
           >
@@ -86,7 +86,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
         >
           <a
             aria-current={null}
-            className="nav-link text-left text-secondary rounded-0"
+            className="nav-link text-left rounded-0"
             href="//admin/coupons"
             onClick={[Function]}
           >
@@ -107,7 +107,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
         >
           <a
             aria-current={null}
-            className="nav-link text-left text-secondary rounded-0"
+            className="nav-link text-left rounded-0"
             href="//admin/subscriptions"
             onClick={[Function]}
           >
