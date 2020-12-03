@@ -4,7 +4,6 @@ footer {
     align-items: center;
 
     .logo {
-      border-right: 1px solid #d4d4d4;
       padding: 0 1.5rem;
 
       img {
@@ -12,27 +11,6 @@ footer {
         max-width: 100px;
         width: auto;
       }
-
-      &:first-child {
-        padding-left: 0;
-      }
-
-      &:last-child {
-        border-right: 0;
-        padding-right: 0;
-      }
-    }
-  }
-
-  .nav-item {
-    border-right: 1px solid #d4d4d4;
-
-    &:last-child {
-      border-right: 0;
-    }
-
-    .nav-link {
-      padding: 0 1rem;
     }
   }
 

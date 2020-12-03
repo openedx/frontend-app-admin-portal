@@ -1,0 +1,16 @@
+.hero {
+  // NOTE: image path is relative to where the _Hero.scss partial is imported in index.scss
+  background: url(./images/heading-banner-bg.png);
+  background-repeat: no-repeat;
+  background-color: $info;
+  background-position: center;
+  background-size: cover;
+
+  h1 {
+    color: $white;
+  }
+
+  img {
+    max-width: 90px;
+  }
+}

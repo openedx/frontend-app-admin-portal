@@ -2,7 +2,7 @@
 
 exports[`<Header /> does not render profile image or dropdown if unauthenticated 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -27,7 +27,7 @@ exports[`<Header /> does not render profile image or dropdown if unauthenticated
 
 exports[`<Header /> renders default profile image correctly 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -92,7 +92,7 @@ exports[`<Header /> renders default profile image correctly 1`] = `
 
 exports[`<Header /> renders edX logo correctly 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -117,7 +117,7 @@ exports[`<Header /> renders edX logo correctly 1`] = `
 
 exports[`<Header /> renders enterprise logo correctly 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -142,7 +142,7 @@ exports[`<Header /> renders enterprise logo correctly 1`] = `
 
 exports[`<Header /> renders profile image correctly 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -202,7 +202,7 @@ exports[`<Header /> renders profile image correctly 1`] = `
 
 exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
@@ -227,7 +227,7 @@ exports[`<Header /> renders sidebar toggle correctly does not show toggle 1`] = 
 
 exports[`<Header /> renders sidebar toggle correctly does show toggle 1`] = `
 <header
-  className="container-fluid"
+  className="container-fluid border-bottom"
 >
   <nav
     aria-label="header"
