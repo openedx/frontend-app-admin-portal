@@ -4,16 +4,21 @@ import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const IconLink = props => (
-  <NavLink
-    className="nav-link text-left rounded-0"
-    to={props.to}
-  >
-    <FontAwesomeIcon icon={props.icon} className={classNames([{ 'mr-2': props.isExpanded }])} />
-    {!props.isExpanded ? <span className="sr-only">{props.title}</span> : null}
-    {props.isExpanded && props.title}
-  </NavLink>
-);
+const IconLink = props => {
+  const {
+    to, isExpanded, title, icon,
+  } = props;
+  return (
+    <NavLink
+      className="nav-link text-left rounded-0"
+      to={to}
+    >
+      <FontAwesomeIcon icon={icon} className={classNames([{ 'mr-2': isExpanded }])} />
+      {!isExpanded ? <span className="sr-only">{title}</span> : null}
+      {isExpanded && title}
+    </NavLink>
+  );
+};
 
 IconLink.defaultProps = {
   icon: null,
