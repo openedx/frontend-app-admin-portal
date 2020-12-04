@@ -52,6 +52,7 @@ export default function LicenseAllocationNavigation() {
         {tabs.map(tab => (
           <li key={tab.key}>
             <button
+              id={`navigation-${tab.key}`}
               className={classNames(
                 'btn btn-link btn-block pl-0 text-left',
                 { 'font-weight-bold': activeTab === tab.key },

@@ -2,7 +2,9 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Pagination, Table } from '@edx/paragon';
+import {
+  Card, Pagination, Table,
+} from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
 import { ToastsContext } from '../Toasts';
@@ -19,6 +21,7 @@ import {
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
 } from './constants';
+import AddUsersButton from './AddUsersButton';
 
 const columns = [
   {
@@ -38,6 +41,7 @@ const columns = [
 function TabContentTable({ enterpriseSlug }) {
   const {
     activeTab,
+    setActiveTab,
     users,
     searchQuery,
     details,
@@ -101,6 +105,24 @@ function TabContentTable({ enterpriseSlug }) {
     [users],
   );
 
+  const SubscriptionZeroStateMessaging = () => (
+    <Card className="text-center">
+      <Card.Body>
+        <h2>Get Started</h2>
+        <p className="py-2 lead">
+          Assign your learners to a subscription license to enable their learning experiences on edX.
+        </p>
+        <AddUsersButton
+          onSuccess={({ numSuccessfulAssignments }) => {
+            fetchSubscriptionDetails();
+            addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);
+            setActiveTab(TAB_PENDING_USERS);
+          }}
+        />
+      </Card.Body>
+    </Card>
+  );
+
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
@@ -131,49 +153,55 @@ function TabContentTable({ enterpriseSlug }) {
       ))}
       {!isLoading && !errors && (
         <>
-          {tableData?.length > 0 ? (
-            <>
-              {hasNoRevocationsRemaining && (
-                <StatusAlert
-                  alertType="warning"
-                  message={(
-                    <>
-                      You have reached your revoke access limit. For help
-                      managing your subscription licenses,
-                      {' '}
-                      <Link to={`/${enterpriseSlug}/admin/support`} className="alert-link">
-                        contact Customer Support
-                      </Link>.
-                    </>
-                  )}
-                />
-              )}
-              <div className="table-responsive">
-                <Table
-                  data={tableData}
-                  columns={columns}
-                  className="table-striped"
-                />
-              </div>
-              <div className="mt-3 d-flex justify-content-center">
-                <Pagination
-                  onPageSelect={page => fetchSubscriptionUsers({ searchQuery, page })}
-                  pageCount={users.numPages}
-                  currentPage={currentPage}
-                  paginationLabel={activeTabData.paginationLabel}
-                />
-              </div>
-            </>
+          {activeTab === TAB_ALL_USERS && tableData?.length === 0 ? (
+            <SubscriptionZeroStateMessaging />
           ) : (
             <>
-              <hr className="mt-0" />
-              <StatusAlert
-                alertType="warning"
-                title="No results found"
-                message={activeTabData.noResultsLabel}
-                dismissible={false}
-                open
-              />
+              {tableData?.length > 0 ? (
+                <>
+                  {hasNoRevocationsRemaining && (
+                    <StatusAlert
+                      alertType="warning"
+                      message={(
+                        <>
+                          You have reached your revoke access limit. For help
+                          managing your subscription licenses,
+                          {' '}
+                          <Link to={`/${enterpriseSlug}/admin/support`} className="alert-link">
+                            contact Customer Support
+                          </Link>.
+                        </>
+                      )}
+                    />
+                  )}
+                  <div className="table-responsive">
+                    <Table
+                      data={tableData}
+                      columns={columns}
+                      className="table-striped"
+                    />
+                  </div>
+                  <div className="mt-3 d-flex justify-content-center">
+                    <Pagination
+                      onPageSelect={page => fetchSubscriptionUsers({ searchQuery, page })}
+                      pageCount={users.numPages}
+                      currentPage={currentPage}
+                      paginationLabel={activeTabData.paginationLabel}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <hr className="mt-0" />
+                  <StatusAlert
+                    alertType="warning"
+                    title="No results found"
+                    message={activeTabData.noResultsLabel}
+                    dismissible={false}
+                    open
+                  />
+                </>
+              )}
             </>
           )}
         </>
