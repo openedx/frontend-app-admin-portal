@@ -13,6 +13,10 @@ import { Helmet } from 'react-helmet';
 import { PrivateRoute } from '@edx/frontend-auth';
 import * as FullStory from '@fullstory/browser';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
+
 import EnterpriseApp from './containers/EnterpriseApp';
 import Header from './containers/Header';
 import Footer from './containers/Footer';
@@ -31,6 +35,9 @@ import history from './data/history';
 import { configuration } from './config';
 
 import './index.scss';
+
+// font awesome
+library.add(fab, faBookOpen);
 
 if (configuration.FULLSTORY_ORG_ID) {
   FullStory.init({

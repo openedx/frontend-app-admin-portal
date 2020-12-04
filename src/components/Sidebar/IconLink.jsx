@@ -2,36 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { Icon } from '@edx/paragon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const IconLink = props => (
   <NavLink
     className="nav-link text-left text-secondary rounded-0"
     to={props.to}
   >
-    <Icon
-      className={classNames([
-        'fa',
-        props.iconClassName,
-        {
-          'mr-2': props.isExpanded,
-        },
-      ])}
-      screenReaderText={!props.isExpanded ? props.title : undefined}
-    />
+    <FontAwesomeIcon icon={props.icon} className={classNames([{ 'mr-2': props.isExpanded }])} />
+    {!props.isExpanded ? <span className="sr-only">{props.title}</span> : null}
     {props.isExpanded && props.title}
   </NavLink>
 );
 
 IconLink.defaultProps = {
-  iconClassName: null,
+  icon: '',
   isExpanded: false,
 };
 
 IconLink.propTypes = {
   title: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
-  iconClassName: PropTypes.string,
+  icon: PropTypes.string,
   isExpanded: PropTypes.bool,
 };
 

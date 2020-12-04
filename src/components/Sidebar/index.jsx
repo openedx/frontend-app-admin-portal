@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
+import {
+  faCreditCard, faTags, faChartLine, faChartBar, faBookOpen,
+} from '@fortawesome/free-solid-svg-icons';
+
 import IconLink from './IconLink';
 
 import { features } from '../../config';
@@ -51,48 +56,48 @@ class Sidebar extends React.Component {
       {
         title: 'Learner Report',
         to: `${baseUrl}/admin/learners`,
-        iconClassName: 'fa-line-chart',
+        icon: faChartLine,
       },
       {
         title: 'Code Management',
         to: `${baseUrl}/admin/coupons`,
-        iconClassName: 'fa-tags',
+        icon: faTags,
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       },
       {
         title: 'Reporting Configurations',
         to: `${baseUrl}/admin/reporting`,
-        iconClassName: 'fa-file',
+        icon: faFile,
         hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
       },
       {
         title: 'Subscription Management',
         to: `${baseUrl}/admin/subscriptions`,
-        iconClassName: 'fa-credit-card',
+        icon: faCreditCard,
         hidden: !enableSubscriptionManagementScreen,
       },
       {
         title: 'Analytics',
         to: `${baseUrl}/admin/analytics`,
-        iconClassName: 'fa-bar-chart',
+        icon: faChartBar,
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
       },
       {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
-        iconClassName: 'fa-id-card',
+        icon: faIdCard,
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
       },
       {
         title: 'Support',
         to: `${baseUrl}/admin/support`,
-        iconClassName: 'fa-support',
+        icon: faLifeRing,
         hidden: !features.SUPPORT,
       },
       {
         title: 'Bulk Enrollment',
         to: `${baseUrl}/admin/bulkenrollment`,
-        iconClassName: 'fa-book-open',
+        icon: faBookOpen,
         hidden: !features.BULK_ENROLLMENT,
       },
     ];
