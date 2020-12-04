@@ -25,7 +25,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -45,7 +45,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         </h2>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+        className="col-12 col-xl-4 mb-3 mb-xl-0"
       >
         <div
           className="pgn__searchfield d-flex"
@@ -109,7 +109,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
         </div>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
+        className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="mr-2 btn btn-link"
@@ -219,7 +219,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -239,7 +239,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         </h2>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+        className="col-12 col-xl-4 mb-3 mb-xl-0"
       >
         <div
           className="pgn__searchfield d-flex"
@@ -303,7 +303,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         </div>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
+        className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="mr-2 btn btn-link"
@@ -418,7 +418,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -438,7 +438,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         </h2>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+        className="col-12 col-xl-4 mb-3 mb-xl-0"
       >
         <div
           className="pgn__searchfield d-flex"
@@ -502,7 +502,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
         </div>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
+        className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="mr-2 btn btn-link"
@@ -589,7 +589,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -609,7 +609,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         </h2>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 offset-xl-1"
+        className="col-12 col-xl-4 mb-3 mb-xl-0"
       >
         <div
           className="pgn__searchfield d-flex"
@@ -673,7 +673,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         </div>
       </div>
       <div
-        className="col-12 col-xl-4 mb-3 mb-xl-0 text-xl-right"
+        className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
       >
         <button
           className="mr-2 btn btn-link"

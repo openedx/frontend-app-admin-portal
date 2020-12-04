@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const IconLink = props => (
   <NavLink
-    className="nav-link text-left text-secondary rounded-0"
+    className="nav-link text-left rounded-0"
     to={props.to}
   >
     <FontAwesomeIcon icon={props.icon} className={classNames([{ 'mr-2': props.isExpanded }])} />

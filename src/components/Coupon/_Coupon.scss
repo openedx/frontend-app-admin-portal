@@ -19,13 +19,12 @@
   }
 
   &.border-danger {
-    $danger-100: map-get($theme-color-levels, 'danger-100');
     .metadata {
       background: $danger-100;
 
       &:hover,
       &:focus {
-        background: darken($danger-100, 2%);
+        background: $danger-200;
       }
     }
   }
