@@ -16,14 +16,14 @@ const IconLink = props => (
 );
 
 IconLink.defaultProps = {
-  icon: '',
+  icon: null,
   isExpanded: false,
 };
 
 IconLink.propTypes = {
   title: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
-  icon: PropTypes.string,
+  icon: PropTypes.shape({}),
   isExpanded: PropTypes.bool,
 };
 
