@@ -25,11 +25,23 @@ exports[`<Sidebar /> renders correctly 1`] = `
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-line-chart"
-            id="Icon4"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-chart-line fa-w-16 "
+            data-icon="chart-line"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           <span
             className="sr-only"
           >
@@ -46,11 +58,23 @@ exports[`<Sidebar /> renders correctly 1`] = `
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-tags"
-            id="Icon5"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-tags fa-w-20 "
+            data-icon="tags"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 640 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           <span
             className="sr-only"
           >
@@ -67,11 +91,23 @@ exports[`<Sidebar /> renders correctly 1`] = `
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-credit-card"
-            id="Icon6"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-credit-card fa-w-18 "
+            data-icon="credit-card"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 576 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 432c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V256H0v176zm192-68c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-40zm-128 0c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12v-40zM576 80v48H0V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           <span
             className="sr-only"
           >
@@ -109,11 +145,23 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-line-chart"
-            id="Icon10"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-chart-line fa-w-16 "
+            data-icon="chart-line"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           <span
             className="sr-only"
           >
@@ -151,11 +199,23 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-line-chart mr-2"
-            id="Icon14"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-chart-line fa-w-16 mr-2"
+            data-icon="chart-line"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Learner Report
         </a>
       </li>
@@ -168,11 +228,23 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-tags mr-2"
-            id="Icon15"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-tags fa-w-20 mr-2"
+            data-icon="tags"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 640 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Code Management
         </a>
       </li>
@@ -185,11 +257,23 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-credit-card mr-2"
-            id="Icon16"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-credit-card fa-w-18 mr-2"
+            data-icon="credit-card"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 576 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 432c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V256H0v176zm192-68c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-40zm-128 0c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12v-40zM576 80v48H0V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Subscription Management
         </a>
       </li>
@@ -223,11 +307,23 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-line-chart mr-2"
-            id="Icon20"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-chart-line fa-w-16 mr-2"
+            data-icon="chart-line"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Learner Report
         </a>
       </li>
@@ -240,11 +336,23 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-tags mr-2"
-            id="Icon21"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-tags fa-w-20 mr-2"
+            data-icon="tags"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 640 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Code Management
         </a>
       </li>
@@ -257,11 +365,23 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
-          <span
-            aria-hidden={true}
-            className="fa fa-credit-card mr-2"
-            id="Icon22"
-          />
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-credit-card fa-w-18 mr-2"
+            data-icon="credit-card"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 576 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 432c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V256H0v176zm192-68c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-40zm-128 0c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H76c-6.6 0-12-5.4-12-12v-40zM576 80v48H0V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
           Subscription Management
         </a>
       </li>
