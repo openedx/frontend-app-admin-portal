@@ -44,12 +44,10 @@ describe('LicenseRemindModalWrapper', () => {
     const wrapper = mount(<LicenseRemindModalWrapper
       user={user}
       title="Remind"
-      subtitle="subtitle"
       isBulkRemind
       pendingUsersCount={pendingUsersCount}
     />);
-    expect(wrapper.find('.modal-title span').text()).toEqual('Remind');
-    expect(wrapper.find('.modal-title small').text()).toEqual('subtitle');
+    expect(wrapper.find('.modal-title').text()).toEqual('Remind');
 
     expect(wrapper.find('.assignment-details p.bulk-selected-codes').text()).toEqual(`Unredeemed Licenses: ${pendingUsersCount}`);
   });
@@ -60,7 +58,7 @@ describe('LicenseRemindModalWrapper', () => {
       title="Remind"
       isBulkRemind={false}
     />);
-    expect(wrapper.find('.modal-title span').text()).toEqual('Remind');
+    expect(wrapper.find('.modal-title').text()).toEqual('Remind');
 
     expect(wrapper.find('.assignment-details p.bulk-selected-codes').text()).toEqual(`Email: ${user.userEmail}`);
   });

@@ -241,15 +241,7 @@ class CodeReminderModal extends React.Component {
   }
 
   renderTitle() {
-    const { title, data } = this.props;
-    return (
-      <>
-        <span className="d-block">{title}</span>
-        <small>
-          {data.selectedCodes && data.selectedCodes.length === 0 ? 'Remind All' : 'Assignment Reminder'}
-        </small>
-      </>
-    );
+    return this.props.title;
   }
 
   render() {

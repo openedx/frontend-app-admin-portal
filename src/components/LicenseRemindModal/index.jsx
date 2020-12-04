@@ -183,17 +183,7 @@ class LicenseRemindModal extends React.Component {
   }
 
   renderTitle() {
-    const { title, subtitle } = this.props;
-    return (
-      <>
-        <span className="d-block">{title}</span>
-        {subtitle && (
-          <small>
-            {subtitle}
-          </small>
-        )}
-      </>
-    );
+    return this.props.title;
   }
 
   render() {
@@ -235,7 +225,6 @@ LicenseRemindModal.defaultProps = {
   isBulkRemind: false,
   user: {},
   pendingUsersCount: 0,
-  subtitle: null,
   searchQuery: null,
   currentPage: null,
 };
@@ -252,7 +241,6 @@ LicenseRemindModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendLicenseReminder: PropTypes.func.isRequired,
-  subtitle: PropTypes.string,
   isBulkRemind: PropTypes.bool,
   pendingUsersCount: PropTypes.number,
   user: PropTypes.shape({

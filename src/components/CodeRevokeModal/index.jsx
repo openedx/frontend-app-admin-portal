@@ -280,14 +280,7 @@ class CodeRevokeModal extends React.Component {
   }
 
   renderTitle() {
-    const { title } = this.props;
-
-    return (
-      <>
-        <span className="d-block">{title}</span>
-        <small>Code Revoke</small>
-      </>
-    );
+    return this.props.title;
   }
 
   render() {

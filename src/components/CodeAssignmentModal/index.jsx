@@ -486,14 +486,7 @@ class BaseCodeAssignmentModal extends React.Component {
   }
 
   renderTitle() {
-    const { title } = this.props;
-
-    return (
-      <>
-        <span className="d-block">{title}</span>
-        <small>Code Assignment</small>
-      </>
-    );
+    return this.props.title;
   }
 
   render() {

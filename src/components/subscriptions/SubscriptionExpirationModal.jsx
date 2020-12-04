@@ -22,10 +22,6 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;
 
-  const renderTitle = () => (
-    <small>Renew your subscription</small>
-  );
-
   const renderBody = () => (
     <>
       <p>
@@ -114,9 +110,9 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
     <Modal
       dialogClassName={MODAL_DIALOG_CLASS_NAME}
       renderHeaderCloseButton={false}
-      title={renderTitle()}
+      title="Renew your subscription"
       body={renderBody()}
-      closeText="Ok"
+      closeText="OK"
       // Mark that the user has seen this range's expiration modal when they close it
       onClose={() => {
         cookies.set(
