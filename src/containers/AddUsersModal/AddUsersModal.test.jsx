@@ -11,7 +11,7 @@ import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate
 
 const mockStore = configureMockStore([thunk]);
 
-const modelTitle = 'AABBCC';
+const modalTitle = 'AABBCC';
 const data = {};
 const initialState = {
   portalConfiguration: {
@@ -37,7 +37,7 @@ const UserSubscriptionModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
       <AddUsersModal
-        title={modelTitle}
+        title={modalTitle}
         availableSubscriptionCount={10}
         onClose={() => {}}
         onSuccess={() => {}}
@@ -67,7 +67,7 @@ describe('UserSubscriptionModalWrapper', () => {
 
   it('renders user licenses modal', () => {
     const wrapper = mount(<UserSubscriptionModalWrapper data={data} />);
-    expect(wrapper.find('.modal-title span').text()).toEqual(modelTitle);
+    expect(wrapper.find('.modal-title').text()).toEqual(modalTitle);
     expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
   });
 });
