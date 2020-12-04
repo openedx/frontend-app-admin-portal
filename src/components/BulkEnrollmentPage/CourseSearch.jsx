@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-const CourseSearch = () => {
-  const { enterpriseConfig } = {
-    enterpriseConfig: {}, // todo: where to get this from?
-  };
-  const PAGE_TITLE = `Search courses - ${enterpriseConfig.name}`;
+const CourseSearch = ({ enterpriseId }) => {
+  const PAGE_TITLE = `Search courses - ${enterpriseId}`;
+
+  useEffect(() => {
+
+  }, []);
 
   return (
     <>
@@ -15,4 +18,12 @@ const CourseSearch = () => {
   );
 };
 
-export default CourseSearch;
+CourseSearch.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(CourseSearch);
