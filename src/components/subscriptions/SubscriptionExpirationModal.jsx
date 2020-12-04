@@ -22,10 +22,6 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
   const { details } = useContext(SubscriptionContext);
   const { daysUntilExpiration, expirationDate } = details;
 
-  const renderTitle = () => (
-    
-  );
-
   const renderBody = () => (
     <>
       <p>
