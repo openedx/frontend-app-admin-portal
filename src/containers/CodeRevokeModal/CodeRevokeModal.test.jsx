@@ -94,7 +94,6 @@ describe('CodeRevokeModalWrapper', () => {
 
     const wrapper = mount(<CodeRevokeModalWrapper data={data} />);
     expect(wrapper.find('.modal-title').text()).toEqual(couponTitle);
-    expect(wrapper.find('.modal-title').text()).toEqual('Code Revoke');
 
     expect(wrapper.find('.assignment-details p.code').text()).toEqual(`Code: ${data.code}`);
     expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);
