@@ -3,6 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 
+/**
+ * TODO: This does not display as per spec right now, needs work after algolia is updated
+ */
 const CourseSearchResults = ({
   searchResults,
 }) => {
