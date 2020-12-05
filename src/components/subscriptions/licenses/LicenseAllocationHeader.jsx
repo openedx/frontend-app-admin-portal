@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import SearchBar from '../SearchBar';
-import AddUsersButton from './AddUsersButton';
-import { TAB_PENDING_USERS } from './data/constants';
-import { SubscriptionContext } from './SubscriptionData';
-import { ToastsContext } from '../Toasts';
+import SearchBar from '../../SearchBar';
+import AddUsersButton from '../buttons/AddUsersButton';
+import { TAB_PENDING_USERS } from '../data/constants';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
+import { ToastsContext } from '../../Toasts';
 
 const LicenseAllocationHeader = () => {
   const {
@@ -11,7 +11,7 @@ const LicenseAllocationHeader = () => {
     fetchSubscriptionUsers,
     fetchSubscriptionDetails,
     setActiveTab,
-  } = useContext(SubscriptionContext);
+  } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
   return (

@@ -16,7 +16,6 @@ import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
-
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 
@@ -175,7 +174,6 @@ class EnterpriseApp extends React.Component {
                   {enableSubscriptionManagementScreen && (
                     <Route
                       key="subscription-management"
-                      exact
                       path={`${baseUrl}/admin/subscriptions`}
                       render={routeProps => <SubscriptionManagementPage {...routeProps} />}
                     />

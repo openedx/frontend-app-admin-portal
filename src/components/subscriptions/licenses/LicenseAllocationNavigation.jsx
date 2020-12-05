@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import classNames from 'classnames';
 
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
 
 import {
   TAB_ALL_USERS,
@@ -9,7 +9,7 @@ import {
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
   DEFAULT_PAGE,
-} from './data/constants';
+} from '../data/constants';
 
 export default function LicenseAllocationNavigation() {
   const {
@@ -17,7 +17,7 @@ export default function LicenseAllocationNavigation() {
     activeTab,
     setActiveTab,
     setCurrentPage,
-  } = useContext(SubscriptionContext);
+  } = useContext(SubscriptionDetailContext);
 
   const tabs = useMemo(
     () => [

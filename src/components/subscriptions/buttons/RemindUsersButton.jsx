@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import LicenseRemindModal from '../../containers/LicenseRemindModal';
-import ActionButtonWithModal from '../ActionButtonWithModal';
+import LicenseRemindModal from '../../../containers/LicenseRemindModal';
+import ActionButtonWithModal from '../../ActionButtonWithModal';
 
 const RemindUsersButton = ({
   onSuccess,

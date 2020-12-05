@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history';
 import { Button, Modal } from '@edx/paragon';
 
 import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from './SubscriptionExpirationModal';
-import { SubscriptionContext } from '../SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -24,12 +24,12 @@ const ModalWithContext = ({
 }) => (
   <Router history={history}>
     <Route exact path="/:enterpriseSlug/admin/subscriptions">
-      <SubscriptionContext.Provider value={subscriptionState}>
+      <SubscriptionDetailContext.Provider value={subscriptionState}>
         <BaseSubscriptionExpirationModal
           enterpriseSlug="test-enterprise"
           enableCodeManagementScreen={enableCodeManagementScreen}
         />
-      </SubscriptionContext.Provider>
+      </SubscriptionDetailContext.Provider>
     </Route>
   </Router>
 );

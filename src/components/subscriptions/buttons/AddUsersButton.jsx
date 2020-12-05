@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AddUsersModal from '../../containers/AddUsersModal';
-import ActionButtonWithModal from '../ActionButtonWithModal';
-import { SubscriptionConsumer } from './SubscriptionData';
+import AddUsersModal from '../../../containers/AddUsersModal';
+import ActionButtonWithModal from '../../ActionButtonWithModal';
+import { SubscriptionDetailConsumer } from '../SubscriptionDetailData';
 
 const AddUsersButton = ({
   onSuccess,
@@ -14,7 +14,7 @@ const AddUsersButton = ({
     buttonClassName="add-users-btn float-md-right"
     variant="primary"
     renderModal={({ closeModal }) => (
-      <SubscriptionConsumer>
+      <SubscriptionDetailConsumer>
         {({
           overview,
           details,
@@ -32,7 +32,7 @@ const AddUsersButton = ({
             }}
           />
         )}
-      </SubscriptionConsumer>
+      </SubscriptionDetailConsumer>
     )}
   />
 );

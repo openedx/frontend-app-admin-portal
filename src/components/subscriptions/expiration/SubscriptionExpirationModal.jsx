@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Modal, MailtoLink } from '@edx/paragon';
 
-import { SubscriptionContext } from '../SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -20,7 +20,7 @@ import { formatTimestamp } from '../../../utils';
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
 export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
-  const { details } = useContext(SubscriptionContext);
+  const { details } = useContext(SubscriptionDetailContext);
   const { daysUntilExpiration, expirationDate } = details;
 
   const renderTitle = () => (

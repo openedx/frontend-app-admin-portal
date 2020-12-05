@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionDetailContext } from './SubscriptionDetailData';
 import { formatTimestamp } from '../../utils';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
-  const { details } = useContext(SubscriptionContext);
+  const { details } = useContext(SubscriptionDetailContext);
 
   return (
     <>

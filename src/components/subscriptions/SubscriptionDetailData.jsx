@@ -20,10 +20,10 @@ import {
 import { useSubscriptionData } from './hooks/licenseManagerHooks';
 import { camelCaseObject } from '../../utils';
 
-export const SubscriptionContext = createContext();
-export const SubscriptionConsumer = SubscriptionContext.Consumer;
+export const SubscriptionDetailContext = createContext({});
+export const SubscriptionDetailConsumer = SubscriptionDetailContext.Consumer;
 
-export default function SubscriptionData({ children, enterpriseId }) {
+export default function SubscriptionDetailData({ children, enterpriseId }) {
   const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
   const [details, setDetails] = useState();
   const [overview, setOverview] = useState();
@@ -91,9 +91,9 @@ export default function SubscriptionData({ children, enterpriseId }) {
 
   if (hasInitialData) {
     return (
-      <SubscriptionContext.Provider value={value}>
+      <SubscriptionDetailContext.Provider value={value}>
         {children}
-      </SubscriptionContext.Provider>
+      </SubscriptionDetailContext.Provider>
     );
   }
 
@@ -108,7 +108,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
   );
 }
 
-SubscriptionData.propTypes = {
+SubscriptionDetailData.propTypes = {
   children: PropTypes.node.isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };

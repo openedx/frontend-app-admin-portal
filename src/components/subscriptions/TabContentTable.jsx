@@ -7,10 +7,10 @@ import { Pagination, Table } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 import { ToastsContext } from '../Toasts';
 import LoadingMessage from '../LoadingMessage';
-import LicenseStatus from './LicenseStatus';
-import LicenseActions from './LicenseActions';
-import { SubscriptionContext } from './SubscriptionData';
-import RemindUsersButton from './RemindUsersButton';
+import LicenseStatus from './licenses/LicenseStatus';
+import LicenseActions from './licenses/LicenseActions';
+import { SubscriptionDetailContext } from './SubscriptionDetailData';
+import RemindUsersButton from './buttons/RemindUsersButton';
 
 import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
 import {
@@ -47,7 +47,7 @@ function TabContentTable({ enterpriseSlug }) {
     isLoading,
     errors,
     currentPage,
-  } = useContext(SubscriptionContext);
+  } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
   const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);

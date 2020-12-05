@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { formatTimestamp } from '../../utils';
-import { ACTIVATED, ASSIGNED, REVOKED } from './data/constants';
+import { formatTimestamp } from '../../../utils';
+import { ACTIVATED, ASSIGNED, REVOKED } from '../data/constants';
 
 export default function LicenseStatus({ user }) {
   const licenseStatus = useMemo(

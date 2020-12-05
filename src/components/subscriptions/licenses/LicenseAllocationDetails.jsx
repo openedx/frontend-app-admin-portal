@@ -1,6 +1,6 @@
 import React from 'react';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
-import TabContentTable from './TabContentTable';
+import TabContentTable from '../TabContentTable';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
 
 const LicenseAllocationDetails = () => (

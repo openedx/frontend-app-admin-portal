@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { MailtoLink } from '@edx/paragon';
 
 import StatusAlert from '../../StatusAlert';
-import { SubscriptionContext } from '../SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -10,7 +10,7 @@ import {
 } from '../data/constants';
 
 export default function SubscriptionExpirationBanner() {
-  const { details } = useContext(SubscriptionContext);
+  const { details } = useContext(SubscriptionDetailContext);
   const { daysUntilExpiration } = details;
 
   const renderMessage = () => (

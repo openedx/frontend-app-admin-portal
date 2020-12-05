@@ -1,15 +1,15 @@
 import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import ActionButtonWithModal from '../ActionButtonWithModal';
-import { ToastsContext } from '../Toasts';
-import LicenseRemindModal from '../../containers/LicenseRemindModal';
-import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
+import ActionButtonWithModal from '../../ActionButtonWithModal';
+import { ToastsContext } from '../../Toasts';
+import LicenseRemindModal from '../../../containers/LicenseRemindModal';
+import LicenseRevokeModal from '../../../containers/LicenseRevokeModal';
 
-import { SubscriptionContext } from './SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailData';
 
-import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
-import { ACTIVATED, ASSIGNED } from './data/constants';
+import { useHasNoRevocationsRemaining } from '../hooks/licenseManagerHooks';
+import { ACTIVATED, ASSIGNED } from '../data/constants';
 
 const LicenseAction = ({ user }) => {
   const { addToast } = useContext(ToastsContext);
@@ -21,7 +21,7 @@ const LicenseAction = ({ user }) => {
     activeTab,
     details,
     currentPage,
-  } = useContext(SubscriptionContext);
+  } = useContext(SubscriptionDetailContext);
 
   const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
