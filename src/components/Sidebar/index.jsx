@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import {
-  faCreditCard, faTags, faChartLine, faChartBar, faBookOpen,
+  faCreditCard, faTags, faChartLine, faChartBar, faBookOpen, faUniversity,
 } from '@fortawesome/free-solid-svg-icons';
 
 import IconLink from './IconLink';
@@ -50,6 +50,7 @@ class Sidebar extends React.Component {
       enableSubscriptionManagementScreen,
       enableSamlConfigurationScreen,
       enableAnalyticsScreen,
+      enableLmsConfigurationsScreen,
     } = this.props;
 
     return [
@@ -99,6 +100,12 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/bulkenrollment`,
         icon: faBookOpen,
         hidden: !features.BULK_ENROLLMENT,
+      },
+      {
+        title: 'LMS Integration Configuration',
+        to: `${baseUrl}/admin/lmsintegrations`,
+        icon: faUniversity,
+        hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
       },
     ];
   }
@@ -176,6 +183,7 @@ Sidebar.defaultProps = {
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
+  enableLmsConfigurationsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
 };
@@ -191,6 +199,7 @@ Sidebar.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
+  enableLmsConfigurationsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };

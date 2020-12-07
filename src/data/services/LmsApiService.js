@@ -12,6 +12,8 @@ class LmsApiService {
 
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
 
+  static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
+
   static fetchCourseOutline(courseId) {
     const options = {
       course_id: courseId,
@@ -112,6 +114,18 @@ class LmsApiService {
   static fetchSamlConfigurations() {
     const samlConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/saml_configuration/`;
     return apiClient.get(samlConfigUrl);
+  }
+
+  static fetchMoodleConfig(uuid) {
+    return apiClient.get(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/?enterprise_customer=${uuid}`);
+  }
+
+  static postNewMoodleConfig(formData) {
+    return apiClient.post(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/`, formData, 'json');
+  }
+
+  static updateMoodleConfig(formData, configId) {
+    return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/${configId}/`, formData, 'json');
   }
 }
 

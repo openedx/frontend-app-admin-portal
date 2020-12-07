@@ -5,19 +5,13 @@ import {
   ValidationFormGroup, Input, StatefulButton, Icon, Button,
 } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
+import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
 export const REQUIRED_DATA_FIELDS = [
   'entityId',
   'ssoUrl',
   'publicKey',
 ];
-
-const SUBMIT_STATES = {
-  ERROR: 'error',
-  DEFAULT: 'default',
-  COMPLETE: 'complete',
-  PENDING: 'pending',
-};
 
 class SamlProviderDataForm extends React.Component {
   state = {

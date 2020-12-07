@@ -6,6 +6,7 @@ import {
 } from '@edx/paragon';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
+import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
 //  All the fields in this form that need to be validated can be added here.
 const REQUIRED_FIELDS = [
@@ -32,13 +33,6 @@ const REQUIRED_NEW_EMAIL_FIELDS = [
   ...REQUIRED_EMAIL_FIELDS,
   'encryptedPassword',
 ];
-// for the submit button
-const SUBMIT_STATES = {
-  ERROR: 'error',
-  DEFAULT: 'default',
-  COMPLETE: 'complete',
-  PENDING: 'pending',
-};
 const MONTHLY_MAX = 31;
 const MONTHLY_MIN = 1;
 
