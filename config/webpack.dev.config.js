@@ -123,6 +123,7 @@ module.exports = merge(commonConfig, {
         SUPPORT: true,
         SAML_CONFIGURATION: true,
         CODE_VISIBILITY: true,
+        EXTERNAL_LMS_CONFIGURATION: true,
       },
     }),
   ],

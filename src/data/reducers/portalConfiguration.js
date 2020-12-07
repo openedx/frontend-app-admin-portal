@@ -16,6 +16,7 @@ const initialState = {
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
+  enableLmsConfigurationsScreen: false,
   enableAnalyticsScreen: false,
 };
 
@@ -44,6 +45,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,
         enableAnalyticsScreen: action.payload.data.enable_analytics_screen,
         enableLearnerPortal: action.payload.data.enable_learner_portal,
+        enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -58,6 +60,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
         enableSamlConfigurationScreen: false,
+        enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
@@ -71,6 +74,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
         enableSamlConfigurationScreen: false,
+        enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
       };
     default:

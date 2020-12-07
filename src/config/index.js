@@ -44,6 +44,7 @@ const features = {
   SAML_CONFIGURATION: process.env.FEATURE_FLAGS.SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
   SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
   CODE_VISIBILITY: process.env.FEATURE_FLAGS.CODE_VISIBILITY || hasFeatureFlagEnabled('CODE_VISIBILITY'),
+  EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_FLAGS.EXTERNAL_LMS_CONFIGURATION || hasFeatureFlagEnabled('EXTERNAL_LMS_CONFIGURATION'),
 };
 
 export { configuration, features };
