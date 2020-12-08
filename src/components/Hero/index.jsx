@@ -12,7 +12,7 @@ const Hero = ({ title }) => {
           <div className="col-12 col-md-9 mb-2 mb-md-1">
             <h1>{title}</h1>
           </div>
-          <div className="col-12 col-md-3 text-md-right mt-2">
+          <div className="col-12 col-md-3 text-md-right">
             <img src={edxWhiteSemiTransparentLogo} alt="edX logo" />
           </div>
         </div>
