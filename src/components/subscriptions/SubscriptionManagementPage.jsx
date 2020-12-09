@@ -15,13 +15,12 @@ import TabContentTable from './TabContentTable';
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
 import SubscriptionExpirationModal from './SubscriptionExpirationModal';
 
-import { TAB_PENDING_USERS } from './constants';
+import { TAB_ALL_USERS, TAB_PENDING_USERS } from './constants';
 
 const PAGE_TITLE = 'Subscription Management';
 
 function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
   const { addToast } = useContext(ToastsContext);
-
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -55,6 +54,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                       fetchSubscriptionUsers,
                       fetchSubscriptionDetails,
                       setActiveTab,
+                      activeTab,
                     }) => (
                       <>
                         <p className="lead">
@@ -70,7 +70,8 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                               onClear={() => fetchSubscriptionUsers()}
                             />
                           </div>
-                          <div className="col-12 col-md-7">
+                          {(details.licenses.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
+                          <div className="col-12 col-md-7 text-md-right">
                             <AddUsersButton
                               onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                                 fetchSubscriptionDetails();
@@ -79,6 +80,7 @@ function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
                               }}
                             />
                           </div>
+                          )}
                         </div>
                       </>
                     )}
