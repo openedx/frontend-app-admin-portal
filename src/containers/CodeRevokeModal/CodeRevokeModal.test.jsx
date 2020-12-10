@@ -93,8 +93,7 @@ describe('CodeRevokeModalWrapper', () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
 
     const wrapper = mount(<CodeRevokeModalWrapper data={data} />);
-    expect(wrapper.find('.modal-title span').text()).toEqual(couponTitle);
-    expect(wrapper.find('.modal-title small').text()).toEqual('Code Revoke');
+    expect(wrapper.find('.modal-title').text()).toEqual(couponTitle);
 
     expect(wrapper.find('.assignment-details p.code').text()).toEqual(`Code: ${data.code}`);
     expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);

@@ -10,7 +10,6 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 @import "./components/EnterpriseApp/EnterpriseApp";
-@import "./components/CodeManagement/CodeManagement";
 @import "./components/CodeSearchResults/CodeSearchResults";
 @import "./components/Coupon/Coupon";
 @import "./components/CouponDetails/CouponDetails";
@@ -23,8 +22,10 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/subscriptions/styles/SubscriptionManagementPage";
 @import "./components/subscriptions/styles/SubscriptionExpirationModal";
 @import "./components/StatusAlert/StatusAlert";
-@import './components/LoadingMessage/LoadingMessage.scss';
-@import "./components/TableComponent/TableComponent.scss";
+@import './components/LoadingMessage/LoadingMessage';
+@import "./components/TableComponent/TableComponent";
+@import "./components/TableLoadingOverlay/TableLoadingOverlay";
+@import "./components/Hero/Hero";
 
 body {
   overflow-x: hidden;

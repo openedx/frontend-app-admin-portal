@@ -26,7 +26,7 @@ class Footer extends React.Component {
   renderEnterpriseLogo() {
     const { enterpriseLogo, enterpriseSlug, enterpriseName } = this.props;
     return (
-      <Link className="logo" to={`/${enterpriseSlug}`}>
+      <Link className="logo pl-4" to={`/${enterpriseSlug}`}>
         <Img
           src={enterpriseLogo}
           alt={`${enterpriseName} logo`}
@@ -43,26 +43,26 @@ class Footer extends React.Component {
       <footer className="container-fluid py-4 border-top">
         <div className="row justify-content-between align-items-center">
           <div className="col-xs-12 col-md-4 logo-links">
-            <Link className="logo" to="/">
-              <Img src={configuration.LOGO_URL} alt="edX logo" />
+            <Link className="logo border-right pr-4" to="/">
+              <Img src={configuration.LOGO_TRADEMARK_URL} alt="edX logo" />
             </Link>
             {enterpriseLogo && !enterpriseLogoNotFound && this.renderEnterpriseLogo()}
           </div>
           <div className="col-xs-12 col-md footer-links">
             <nav>
               <ul className="nav justify-content-end">
-                <li className="nav-item">
-                  <a className="nav-link" href="https://www.edx.org/edx-terms-service">
+                <li className="nav-item border-right">
+                  <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
                     Terms of Service
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="https://www.edx.org/edx-privacy-policy">
+                <li className="nav-item border-right">
+                  <a className="nav-link px-2" href="https://www.edx.org/edx-privacy-policy">
                     Privacy Policy
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={enterpriseSlug ? `/${enterpriseSlug}/admin/support` : '/public/support'}>
+                  <Link className="nav-link px-2" to={enterpriseSlug ? `/${enterpriseSlug}/admin/support` : '/public/support'}>
                     Support
                   </Link>
                 </li>

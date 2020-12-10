@@ -369,7 +369,7 @@ class BaseCodeAssignmentModal extends React.Component {
 
   autoReminderField({ input }) {
     return (
-      <div className="auto-reminder-warpper">
+      <div className="auto-reminder-wrapper">
         <label className="ml-4">
           <Input
             {...input}
@@ -486,14 +486,7 @@ class BaseCodeAssignmentModal extends React.Component {
   }
 
   renderTitle() {
-    const { title } = this.props;
-
-    return (
-      <>
-        <span className="d-block">{title}</span>
-        <small>Code Assignment</small>
-      </>
-    );
+    return this.props.title;
   }
 
   render() {

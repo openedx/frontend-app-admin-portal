@@ -21,11 +21,11 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -125,11 +125,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -697,11 +697,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -1269,11 +1269,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -1845,11 +1845,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -2568,11 +2568,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -3291,11 +3291,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -3867,11 +3867,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -4443,11 +4443,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -5019,11 +5019,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -5591,11 +5591,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -6167,11 +6167,11 @@ exports[`<Admin /> renders correctly with error state 1`] = `
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>
@@ -6299,11 +6299,11 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           </h1>
         </div>
         <div
-          className="col-12 col-md-3 text-md-right mt-2"
+          className="col-12 col-md-3 text-md-right"
         >
           <img
             alt="edX logo"
-            src="https://edx-cdn.org/v3/stage/logo-white.svg"
+            src="https://edx-cdn.org/v3/default/logo-white.svg"
           />
         </div>
       </div>

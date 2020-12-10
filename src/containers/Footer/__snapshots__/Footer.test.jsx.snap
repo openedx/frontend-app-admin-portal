@@ -11,13 +11,13 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
       className="col-xs-12 col-md-4 logo-links"
     >
       <a
-        className="logo"
+        className="logo border-right pr-4"
         href="/"
         onClick={[Function]}
       >
         <img
           alt="edX logo"
-          src="https://edx-cdn.org/v3/prod/logo.svg"
+          src="https://edx-cdn.org/v3/default/logo-trademark.svg"
         />
       </a>
     </div>
@@ -29,20 +29,20 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
           className="nav justify-content-end"
         >
           <li
-            className="nav-item"
+            className="nav-item border-right"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="https://www.edx.org/edx-terms-service"
             >
               Terms of Service
             </a>
           </li>
           <li
-            className="nav-item"
+            className="nav-item border-right"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="https://www.edx.org/edx-privacy-policy"
             >
               Privacy Policy
@@ -52,7 +52,7 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
             className="nav-item"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="/public/support"
               onClick={[Function]}
             >
@@ -77,17 +77,17 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
       className="col-xs-12 col-md-4 logo-links"
     >
       <a
-        className="logo"
+        className="logo border-right pr-4"
         href="/"
         onClick={[Function]}
       >
         <img
           alt="edX logo"
-          src="https://edx-cdn.org/v3/prod/logo.svg"
+          src="https://edx-cdn.org/v3/default/logo-trademark.svg"
         />
       </a>
       <a
-        className="logo"
+        className="logo pl-4"
         href="/test-enterprise"
         onClick={[Function]}
       >
@@ -106,20 +106,20 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
           className="nav justify-content-end"
         >
           <li
-            className="nav-item"
+            className="nav-item border-right"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="https://www.edx.org/edx-terms-service"
             >
               Terms of Service
             </a>
           </li>
           <li
-            className="nav-item"
+            className="nav-item border-right"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="https://www.edx.org/edx-privacy-policy"
             >
               Privacy Policy
@@ -129,7 +129,7 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
             className="nav-item"
           >
             <a
-              className="nav-link"
+              className="nav-link px-2"
               href="/test-enterprise/admin/support"
               onClick={[Function]}
             >

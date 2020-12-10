@@ -139,7 +139,7 @@ class LicenseRevokeModal extends React.Component {
   }
 
   renderTitle() {
-    return <small>Are you sure you want to revoke this license?</small>;
+    return 'Are you sure you want to revoke this license?';
   }
 
   render() {

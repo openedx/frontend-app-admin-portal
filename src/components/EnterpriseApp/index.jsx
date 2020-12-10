@@ -6,6 +6,7 @@ import { breakpoints } from '@edx/paragon';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
+import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import RequestCodesPage from '../../containers/RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import SupportPage from '../../containers/SupportPage';
@@ -18,6 +19,7 @@ import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
+import LmsConfigurations from '../../containers/LmsConfigurations';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -87,6 +89,7 @@ class EnterpriseApp extends React.Component {
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
       enableSamlConfigurationScreen,
+      enableLmsConfigurationsScreen,
       authentication,
       userAccount,
     } = this.props;
@@ -160,6 +163,15 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <RequestCodesPage {...routeProps} />}
                     />,
                   ]}
+                  {features.BULK_ENROLLMENT
+                    && (
+                    <Route
+                      key="bulk-enrollment"
+                      exact
+                      path={`${baseUrl}/admin/bulkenrollment`}
+                      render={routeProps => <BulkEnrollmentPage {...routeProps} />}
+                    />
+                    )}
                   {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"
@@ -208,6 +220,15 @@ class EnterpriseApp extends React.Component {
                     path={`${baseUrl}/admin/support`}
                     render={routeProps => <SupportPage {...routeProps} />}
                   />
+                  {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
+                    && (
+                    <Route
+                      key="lms-integrations"
+                      exact
+                      path={`${baseUrl}/admin/lmsintegrations`}
+                      render={routeProps => <LmsConfigurations {...routeProps} />}
+                    />
+                    )}
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>
@@ -226,6 +247,7 @@ EnterpriseApp.defaultProps = {
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
+  enableLmsConfigurationsScreen: false,
 };
 
 EnterpriseApp.propTypes = {
@@ -250,6 +272,7 @@ EnterpriseApp.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
+  enableLmsConfigurationsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 

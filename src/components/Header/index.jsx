@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Dropdown } from '@edx/paragon';
-import { configuration } from '../../config';
 
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
 import apiClient from '../../data/apiClient';
+import { configuration } from '../../config';
 
 import './Header.scss';
 
@@ -43,7 +43,7 @@ class Header extends React.Component {
   render() {
     const { email, hasSidebarToggle } = this.props;
     return (
-      <header className="container-fluid">
+      <header className="container-fluid border-bottom">
         <nav aria-label="header" className="navbar px-0 py-1 justify-content-between">
           <div>
             {hasSidebarToggle && <SidebarToggle />}
@@ -59,7 +59,7 @@ class Header extends React.Component {
             // that doesn't address focus management, so using the now-deprecated
             // previous version of the Dropdown component until the a11y issue is fixed.
             <Dropdown.Deprecated>
-              <Dropdown.Deprecated.Button>
+              <Dropdown.Deprecated.Button className="btn-outline-primary">
                 {this.getProfileIconElement()}
                 {email}
               </Dropdown.Deprecated.Button>

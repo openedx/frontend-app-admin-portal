@@ -5,12 +5,7 @@ import { SubmissionError } from 'redux-form';
 
 import { validateEmailTemplateFields } from '../../utils';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
-
-const SUBMIT_STATES = {
-  DEFAULT: 'default',
-  COMPLETE: 'complete',
-  PENDING: 'pending',
-};
+import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
 class SaveTemplateButton extends React.Component {
   constructor(props) {
