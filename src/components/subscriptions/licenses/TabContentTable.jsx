@@ -49,21 +49,14 @@ const TabContentTable = ({ enterpriseSlug }) => {
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
-  const {
-    subscriptionUsers: users,
-    error,
-  } = useSubscriptionUsers({
+  const users = useSubscriptionUsers({
     activeTab,
     currentPage,
     searchQuery,
     subscriptionUUID: subscription.uuid,
+    errors,
+    setErrors,
   });
-  if (error) {
-    setErrors({
-      ...errors,
-      [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-    });
-  }
   const hasErrors = Object.values(errors).length > 0;
   const hasLoadedUsers = !!(users?.numPages);
   const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;

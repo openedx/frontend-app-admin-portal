@@ -2,20 +2,25 @@ import { useEffect, useMemo, useState } from 'react';
 
 import LicenseManagerApiService from './service';
 import NewRelicService from '../../../data/services/NewRelicService';
-import { licenseStatusByTab, NETWORK_ERROR_MESSAGE, SUBSCRIPTIONS } from './constants';
+import {
+  licenseStatusByTab,
+  NETWORK_ERROR_MESSAGE,
+  SUBSCRIPTION_USERS,
+  SUBSCRIPTION_USERS_OVERVIEW,
+  SUBSCRIPTIONS,
+} from './constants';
 import { camelCaseObject } from '../../../utils';
 
 /*
 This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
  */
-export const useSubscriptions = (enterpriseId) => {
+export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({
     results: [],
     count: 0,
     next: null,
     previous: null,
   });
-  const [error, setError] = useState(null);
 
   const forceRefresh = () => {
     setSubscriptions({ ...subscriptions });
@@ -33,13 +38,15 @@ export const useSubscriptions = (enterpriseId) => {
       })
       .catch((err) => {
         NewRelicService.logAPIErrorResponse(err);
-        setError(err);
+        setErrors({
+          ...errors,
+          [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
+        });
       });
   }, [enterpriseId]);
 
   return {
     subscriptions,
-    error,
     forceRefresh,
   };
 };
@@ -48,7 +55,12 @@ export const useSubscriptions = (enterpriseId) => {
 This hook provides an object which outlines the number of users for each license state given a subscription UUID.
 It is also dependent on the search query state provided by SubscriptionDetailContext.
  */
-export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
+export const useSubscriptionUsersOverview = ({
+  subscriptionUUID,
+  search,
+  errors,
+  setErrors,
+}) => {
   const initialSubscriptionUsersOverview = {
     all: 0,
     activated: 0,
@@ -56,7 +68,6 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
     revoked: 0,
   };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (subscriptionUUID) {
@@ -73,15 +84,15 @@ export const useSubscriptionUsersOverview = ({ subscriptionUUID, search }) => {
         })
         .catch((err) => {
           NewRelicService.logAPIErrorResponse(err);
-          setError(err);
+          setErrors({
+            ...errors,
+            [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
+          });
         });
     }
   }, [subscriptionUUID, search]);
 
-  return {
-    subscriptionUsersOverview,
-    error,
-  };
+  return subscriptionUsersOverview;
 };
 
 /*
@@ -93,6 +104,8 @@ export const useSubscriptionUsers = ({
   currentPage,
   searchQuery,
   subscriptionUUID,
+  errors,
+  setErrors,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({
     results: [],
@@ -100,7 +113,6 @@ export const useSubscriptionUsers = ({
     next: null,
     previous: null,
   });
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!subscriptionUUID) {
@@ -117,14 +129,14 @@ export const useSubscriptionUsers = ({
       })
       .catch((err) => {
         NewRelicService.logAPIErrorResponse(err);
-        setError(err);
+        setErrors({
+          ...errors,
+          [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
+        });
       });
   }, [activeTab, currentPage, searchQuery, subscriptionUUID]);
 
-  return {
-    subscriptionUsers,
-    error,
-  };
+  return subscriptionUsers;
 };
 
 /*
@@ -135,15 +147,8 @@ export const useSubscriptionData = ({ enterpriseId }) => {
   const [errors, setErrors] = useState({});
   const {
     subscriptions,
-    error,
     forceRefresh,
-  } = useSubscriptions(enterpriseId);
-  if (error) {
-    setErrors({
-      ...errors,
-      [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
-    });
-  }
+  } = useSubscriptions(enterpriseId, errors, setErrors);
 
   return {
     subscriptions,

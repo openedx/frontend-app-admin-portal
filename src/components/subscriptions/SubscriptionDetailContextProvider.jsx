@@ -20,19 +20,12 @@ const SubscriptionDetailContextProvider = ({
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
   const { errors, setErrors } = useContext(SubscriptionContext);
-  const {
-    subscriptionUsersOverview: overview,
-    error,
-  } = useSubscriptionUsersOverview({
+  const overview = useSubscriptionUsersOverview({
     subscriptionUUID: subscription.uuid,
     search: searchQuery,
+    errors,
+    setErrors,
   });
-  if (error) {
-    setErrors({
-      ...errors,
-      [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
-    });
-  }
   const context = {
     activeTab,
     currentPage,
