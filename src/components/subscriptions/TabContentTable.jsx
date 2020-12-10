@@ -153,7 +153,7 @@ function TabContentTable({ enterpriseSlug }) {
       ))}
       {!isLoading && !errors && (
         <>
-          {activeTab === TAB_ALL_USERS && tableData?.length === 0 ? (
+          {activeTab === TAB_ALL_USERS && tableData?.length === 0 && !searchQuery ? (
             <SubscriptionZeroStateMessaging />
           ) : (
             <>
