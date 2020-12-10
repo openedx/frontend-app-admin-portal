@@ -16,6 +16,7 @@ frontend-app-admin-portal is a frontend that provides branded learning experienc
 ```
 $ git clone git@github.com:edx/frontend-app-admin-portal.git
 $ cd frontend-app-admin-portal
+$ nvm use (if using nvm) OR install and switch to version of node/npm as per the .nvmrc file to avoid issues during npm install or npm start (and to use the same version of node/npm as used by team plus CI builds)
 $ npm install
 $ npm start
 ```
