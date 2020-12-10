@@ -64,7 +64,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
       [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
     });
   }
-  const hasErrors = Object.values(errors).length;
+  const hasErrors = Object.values(errors).length > 0;
   const hasLoadedUsers = !!(users?.numPages);
   const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
 
@@ -115,7 +115,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
     <>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="mb-3">{activeTabData.title}</h3>
-        {(activeTab === TAB_PENDING_USERS && tableData?.length > 0) && (
+        {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
