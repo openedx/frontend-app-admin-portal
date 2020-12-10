@@ -58,13 +58,14 @@ const TabContentTable = ({ enterpriseSlug }) => {
     searchQuery,
     subscriptionUUID: subscription.uuid,
   });
-  console.log(users);
   if (error) {
     setErrors({
       ...errors,
       [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
     });
   }
+  const hasErrors = Object.values(errors).length;
+  const hasLoadedUsers = !!(users?.numPages);
   const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
 
   const activeTabData = useMemo(() => {
@@ -110,13 +111,11 @@ const TabContentTable = ({ enterpriseSlug }) => {
     ),
   })), [users]);
 
-  console.log(tableData);
-
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
         <h3 className="mb-3">{activeTabData.title}</h3>
-        {activeTab === TAB_PENDING_USERS && tableData?.length > 0 && (
+        {(activeTab === TAB_PENDING_USERS && tableData?.length > 0) && (
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
@@ -128,8 +127,10 @@ const TabContentTable = ({ enterpriseSlug }) => {
           />
         )}
       </div>
-      {!users?.results.length && <LoadingMessage className="loading mt-3 subscriptions" />}
-      {errors && Object.entries(errors).map(([title, message]) => (
+      {!hasLoadedUsers && (
+        <LoadingMessage className="loading mt-3 subscriptions" />
+      )}
+      {hasErrors && Object.entries(errors).map(([title, message]) => (
         <StatusAlert
           className="mt-3"
           alertType="danger"
@@ -139,7 +140,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
           key={title}
         />
       ))}
-      {!errors && (
+      {!hasErrors && (
         <>
           {tableData?.length > 0 ? (
             <>
