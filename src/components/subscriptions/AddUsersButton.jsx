@@ -10,7 +10,7 @@ const AddUsersButton = ({
   onClose,
 }) => (
   <ActionButtonWithModal
-    buttonLabel="Invite Learners"
+    buttonLabel="Invite learners"
     buttonClassName="add-users-btn"
     variant="primary"
     renderModal={({ closeModal }) => (
@@ -20,7 +20,7 @@ const AddUsersButton = ({
           details,
         }) => (
           <AddUsersModal
-            title="Invite Learners"
+            title="Invite learners"
             availableSubscriptionCount={overview.unassigned}
             subscriptionUUID={details.uuid}
             onSuccess={onSuccess}

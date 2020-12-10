@@ -27,6 +27,7 @@ const store = mockStore({
     enterpriseSlug: 'test-enterprise',
     enterpriseId: 'test-enterprise-id',
     enableSubscriptionManagementScreen: true,
+    enableCodeManagementScreen: true,
   },
 });
 
