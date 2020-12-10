@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
-import { SubscriptionDetailContext } from '../SubscriptionDetailData';
+import { SubscriptionContext } from '../SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -14,9 +14,9 @@ import { addDays, getSubscriptionExpirationDetails } from '../test-utils';
 const BannerWithContext = ({
   subscriptionState = {},
 }) => (
-  <SubscriptionDetailContext.Provider value={subscriptionState}>
+  <SubscriptionContext.Provider value={subscriptionState}>
     <SubscriptionExpirationBanner />
-  </SubscriptionDetailContext.Provider>
+  </SubscriptionContext.Provider>
 );
 /* eslint-enable react/prop-types */
 

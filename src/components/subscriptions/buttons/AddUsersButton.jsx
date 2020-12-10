@@ -1,41 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import AddUsersModal from '../../../containers/AddUsersModal';
 import ActionButtonWithModal from '../../ActionButtonWithModal';
-import { SubscriptionDetailConsumer } from '../SubscriptionDetailData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
-const AddUsersButton = ({
-  onSuccess,
-  onClose,
-}) => (
-  <ActionButtonWithModal
-    buttonLabel="Add Users"
-    buttonClassName="add-users-btn float-md-right"
-    variant="primary"
-    renderModal={({ closeModal }) => (
-      <SubscriptionDetailConsumer>
-        {({
-          overview,
-          details,
-        }) => (
-          <AddUsersModal
-            title="Add Users"
-            availableSubscriptionCount={overview.unassigned}
-            subscriptionUUID={details.uuid}
-            onSuccess={onSuccess}
-            onClose={() => {
-              closeModal();
-              if (onClose) {
-                onClose();
-              }
-            }}
-          />
-        )}
-      </SubscriptionDetailConsumer>
-    )}
-  />
-);
+const AddUsersButton = ({ onSuccess, onClose }) => {
+  const { overview, subscription } = useContext(SubscriptionDetailContext);
+  return (
+    <ActionButtonWithModal
+      buttonLabel="Add Users"
+      buttonClassName="add-users-btn float-md-right"
+      variant="primary"
+      renderModal={({ closeModal }) => (
+        <AddUsersModal
+          title="Add Users"
+          availableSubscriptionCount={overview.unassigned}
+          subscriptionUUID={subscription.uuid}
+          onSuccess={onSuccess}
+          onClose={() => {
+            closeModal();
+            if (onClose) {
+              onClose();
+            }
+          }}
+        />
+      )}
+    />
+  );
+};
 
 AddUsersButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,

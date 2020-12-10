@@ -1,24 +1,26 @@
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Pagination, Table } from '@edx/paragon';
 
-import StatusAlert from '../StatusAlert';
-import { ToastsContext } from '../Toasts';
-import LoadingMessage from '../LoadingMessage';
-import LicenseStatus from './licenses/LicenseStatus';
-import LicenseActions from './licenses/LicenseActions';
-import { SubscriptionDetailContext } from './SubscriptionDetailData';
-import RemindUsersButton from './buttons/RemindUsersButton';
-
-import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
+import LoadingMessage from '../../LoadingMessage';
+import StatusAlert from '../../StatusAlert';
+import { ToastsContext } from '../../Toasts';
+import RemindUsersButton from '../buttons/RemindUsersButton';
 import {
+  NETWORK_ERROR_MESSAGE,
+  SUBSCRIPTION_USERS,
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
-} from './data/constants';
+} from '../data/constants';
+import { useSubscriptionUsers } from '../data/hooks';
+import LicenseStatus from './LicenseStatus';
+import LicenseActions from './LicenseActions';
+import { SubscriptionContext } from '../SubscriptionData';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
 const columns = [
   {
@@ -35,71 +37,80 @@ const columns = [
   },
 ];
 
-function TabContentTable({ enterpriseSlug }) {
+const TabContentTable = ({ enterpriseSlug }) => {
+  const { errors, forceRefresh, setErrors } = useContext(SubscriptionContext);
   const {
     activeTab,
-    users,
-    searchQuery,
-    details,
-    fetchSubscriptionUsers,
-    fetchSubscriptionDetails,
-    overview,
-    isLoading,
-    errors,
     currentPage,
+    overview,
+    searchQuery,
+    setCurrentPage,
+    subscription,
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
-  const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
+  const {
+    subscriptionUsers: users,
+    error,
+  } = useSubscriptionUsers({
+    activeTab,
+    currentPage,
+    searchQuery,
+    subscriptionUUID: subscription.uuid,
+  });
+  console.log(users);
+  if (error) {
+    setErrors({
+      ...errors,
+      [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
+    });
+  }
+  const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
 
-  useEffect(() => {
-    fetchSubscriptionUsers({ searchQuery, currentPage });
-  }, [activeTab, currentPage]);
+  const activeTabData = useMemo(() => {
+    switch (activeTab) {
+      case TAB_ALL_USERS:
+        return {
+          title: 'All Users',
+          paginationLabel: 'pagination for all users',
+          noResultsLabel: 'There are no Pending, Activated or Revoked users',
+        };
+      case TAB_PENDING_USERS:
+        return {
+          title: 'Pending Users',
+          paginationLabel: 'pagination for pending users',
+          noResultsLabel: 'There are no pending users',
+        };
+      case TAB_LICENSED_USERS:
+        return {
+          title: 'Licensed Users',
+          paginationLabel: 'pagination for licensed users',
+          noResultsLabel: 'There are no licensed users',
+        };
+      case TAB_REVOKED_USERS:
+        return {
+          title: 'Revoked Users',
+          paginationLabel: 'pagination for revoked users',
+          noResultsLabel: 'There are no revoked users',
+        };
+      default:
+        return null;
+    }
+  }, [activeTab]);
 
-  const activeTabData = useMemo(
-    () => {
-      switch (activeTab) {
-        case TAB_ALL_USERS:
-          return {
-            title: 'All Users',
-            paginationLabel: 'pagination for all users',
-            noResultsLabel: 'There are no Pending, Activated or Revoked users',
-          };
-        case TAB_PENDING_USERS:
-          return {
-            title: 'Pending Users',
-            paginationLabel: 'pagination for pending users',
-            noResultsLabel: 'There are no pending users',
-          };
-        case TAB_LICENSED_USERS:
-          return {
-            title: 'Licensed Users',
-            paginationLabel: 'pagination for licensed users',
-            noResultsLabel: 'There are no licensed users',
-          };
-        case TAB_REVOKED_USERS:
-          return {
-            title: 'Revoked Users',
-            paginationLabel: 'pagination for revoked users',
-            noResultsLabel: 'There are no revoked users',
-          };
-        default:
-          return null;
-      }
-    },
-    [activeTab],
-  );
-
-  const tableData = useMemo(
-    () => users?.results?.map(user => ({
-      emailAddress: user.userEmail,
-      status: <LicenseStatus
+  const tableData = useMemo(() => users?.results?.map(user => ({
+    emailAddress: user.userEmail,
+    status: (
+      <LicenseStatus
         user={{ ...user, lastRemindDate: user.lastRemindDate }}
-      />,
-      actions: <LicenseActions user={user} />,
-    })),
-    [users],
-  );
+      />
+    ),
+    actions: (
+      <LicenseActions user={user} />
+    ),
+  })), [users]);
+
+  console.log(tableData);
 
   return (
     <>
@@ -109,16 +120,15 @@ function TabContentTable({ enterpriseSlug }) {
           <RemindUsersButton
             pendingUsersCount={overview.assigned}
             isBulkRemind
-            onSuccess={() => addToast('Reminders successfully sent')}
-            fetchSubscriptionDetails={fetchSubscriptionDetails}
-            fetchSubscriptionUsers={fetchSubscriptionUsers}
-            searchQuery={searchQuery}
-            subscriptionUUID={details.uuid}
-            currentPage={currentPage}
+            onSuccess={() => {
+              addToast('Reminders successfully sent');
+              forceRefresh();
+            }}
+            subscriptionUUID={subscription.uuid}
           />
         )}
       </div>
-      {isLoading && <LoadingMessage className="loading mt-3 subscriptions" />}
+      {!users?.results.length && <LoadingMessage className="loading mt-3 subscriptions" />}
       {errors && Object.entries(errors).map(([title, message]) => (
         <StatusAlert
           className="mt-3"
@@ -129,7 +139,7 @@ function TabContentTable({ enterpriseSlug }) {
           key={title}
         />
       ))}
-      {!isLoading && !errors && (
+      {!errors && (
         <>
           {tableData?.length > 0 ? (
             <>
@@ -157,7 +167,7 @@ function TabContentTable({ enterpriseSlug }) {
               </div>
               <div className="mt-3 d-flex justify-content-center">
                 <Pagination
-                  onPageSelect={page => fetchSubscriptionUsers({ searchQuery, page })}
+                  onPageSelect={page => setCurrentPage(page)}
                   pageCount={users.numPages}
                   currentPage={currentPage}
                   paginationLabel={activeTabData.paginationLabel}
@@ -180,7 +190,7 @@ function TabContentTable({ enterpriseSlug }) {
       )}
     </>
   );
-}
+};
 
 TabContentTable.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

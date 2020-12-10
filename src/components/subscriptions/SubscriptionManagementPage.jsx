@@ -5,44 +5,34 @@ import { Helmet } from 'react-helmet';
 import { Route } from 'react-router';
 
 import Hero from '../Hero';
-import SubscriptionDetailData from './SubscriptionDetailData';
-import SubscriptionDetails from './SubscriptionDetails';
-import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
-import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
-import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
+import SubscriptionData from './SubscriptionData';
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
+import SubscriptionDetailPage from './SubscriptionDetailPage';
 
 const PAGE_TITLE = 'Subscription Management';
 
 function SubscriptionManagementPage({ enterpriseId }) {
   return (
-    <>
+    <SubscriptionData enterpriseId={enterpriseId}>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <main role="main" className="manage-subscription">
-        <Route
-          key="subscription-list"
-          exact
-          path="/:enterpriseSlug/admin/subscriptions"
-          component={MultipleSubscriptionsPage}
-        />
-        <Route
-          key="subscription-detail"
-          exact
-          path="/:enterpriseSlug/admin/subscriptions/:uuid"
-          render={() => (
-            <>
-              <SubscriptionDetailData enterpriseId={enterpriseId}>
-                <SubscriptionExpirationBanner />
-                <SubscriptionExpirationModal />
-                <SubscriptionDetails />
-                <LicenseAllocationDetails />
-              </SubscriptionDetailData>
-            </>
-          )}
-        />
+        <div className="container-fluid">
+          <Route
+            key="subscription-list"
+            exact
+            path="/:enterpriseSlug/admin/subscriptions"
+            component={MultipleSubscriptionsPage}
+          />
+          <Route
+            key="subscription-detail"
+            exact
+            path="/:enterpriseSlug/admin/subscriptions/:subscriptionUUID"
+            component={SubscriptionDetailPage}
+          />
+        </div>
       </main>
-    </>
+    </SubscriptionData>
   );
 }
 

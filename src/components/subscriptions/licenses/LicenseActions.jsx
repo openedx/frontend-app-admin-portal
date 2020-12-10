@@ -5,25 +5,21 @@ import ActionButtonWithModal from '../../ActionButtonWithModal';
 import { ToastsContext } from '../../Toasts';
 import LicenseRemindModal from '../../../containers/LicenseRemindModal';
 import LicenseRevokeModal from '../../../containers/LicenseRevokeModal';
-
-import { SubscriptionDetailContext } from '../SubscriptionDetailData';
-
-import { useHasNoRevocationsRemaining } from '../hooks/licenseManagerHooks';
 import { ACTIVATED, ASSIGNED } from '../data/constants';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import { SubscriptionContext } from '../SubscriptionData';
 
 const LicenseAction = ({ user }) => {
   const { addToast } = useContext(ToastsContext);
-
+  const { forceRefresh } = useContext(SubscriptionContext);
   const {
-    fetchSubscriptionDetails,
-    fetchSubscriptionUsers,
-    searchQuery,
     activeTab,
-    details,
     currentPage,
+    searchQuery,
+    subscription,
   } = useContext(SubscriptionDetailContext);
 
-  const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
+  const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
 
   const licenseActions = useMemo(
@@ -40,13 +36,12 @@ const LicenseAction = ({ user }) => {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => addToast('License successfully revoked')}
+                onSuccess={() => {
+                  addToast('License successfully revoked');
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionPlan={details}
+                subscriptionPlan={subscription}
                 licenseStatus={user.status}
               />
             ),
@@ -60,13 +55,12 @@ const LicenseAction = ({ user }) => {
                 user={user}
                 isBulkRemind={false}
                 title="Remind User"
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionUUID={details.uuid}
-                onSuccess={() => addToast('Reminder successfully sent')}
+                subscriptionUUID={subscription.uuid}
+                onSuccess={() => {
+                  addToast('Reminder successfully sent');
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
               />
             ),
           }, {
@@ -75,13 +69,12 @@ const LicenseAction = ({ user }) => {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => addToast('License successfully revoked')}
+                onSuccess={() => {
+                  addToast('License successfully revoked');
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionPlan={details}
+                subscriptionPlan={subscription}
                 licenseStatus={user.status}
               />
             ),
