@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  DEFAULT_PAGE,
-  NETWORK_ERROR_MESSAGE,
-  SUBSCRIPTION_USERS_OVERVIEW,
-  TAB_ALL_USERS,
-} from './data/constants';
+import { DEFAULT_PAGE, TAB_ALL_USERS } from './data/constants';
 import { useSubscriptionUsersOverview } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 

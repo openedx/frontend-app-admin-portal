@@ -9,8 +9,6 @@ import StatusAlert from '../../StatusAlert';
 import { ToastsContext } from '../../Toasts';
 import RemindUsersButton from '../buttons/RemindUsersButton';
 import {
-  NETWORK_ERROR_MESSAGE,
-  SUBSCRIPTION_USERS,
   TAB_ALL_USERS,
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
