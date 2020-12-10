@@ -13,7 +13,7 @@ const MultipleSubscriptionsPage = ({ match }) => {
   const subscriptions = data.results;
   if (subscriptions.length === 1) {
     return (
-      <Redirect to={`${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
+      <Redirect to={`subscriptions/${subscriptions[0].uuid}`} />
     );
   }
 
