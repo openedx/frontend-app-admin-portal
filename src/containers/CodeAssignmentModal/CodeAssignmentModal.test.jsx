@@ -26,13 +26,6 @@ const initialState = {
       },
     },
   },
-  form: {
-    'code-assignment-modal-form': {
-      values: {
-        'email-address': 'test@edx.org',
-      },
-    },
-  },
   portalConfiguration: {
     enterpriseSlug: 'bearsRus',
     enableLearnerPortal: true,
@@ -44,7 +37,6 @@ const initialState = {
     emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
       assign: {
-        'email-address': '',
         'email-template-subject': assignEmailTemplate.subject,
         'email-template-greeting': assignEmailTemplate.greeting,
         'email-template-body': assignEmailTemplate.body,
@@ -52,7 +44,6 @@ const initialState = {
       },
     },
     assign: {
-      'email-address': '',
       'email-template-subject': assignEmailTemplate.subject,
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,

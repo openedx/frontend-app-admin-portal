@@ -19,7 +19,6 @@ const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 
 const sampleEmailTemplate = {
-  'email-address': '',
   'email-template-greeting': 'Sample email greeting.. ',
   'email-template-body': 'Sample email body template.. ',
   'email-template-closing': 'Sample email closing template.. ',
@@ -27,7 +26,6 @@ const sampleEmailTemplate = {
 
 const emailDefaults = {
   'template-id': 0,
-  'email-address': '',
   'template-name-select': '',
   'email-template-subject': 'Sample email subject.. ',
   'email-template-greeting': 'Sample email greeting.. ',
@@ -46,13 +44,6 @@ const initialState = {
   },
   table: {
     'coupon-details': {},
-  },
-  form: {
-    'code-assignment-modal-form': {
-      values: {
-        'email-address': '',
-      },
-    },
   },
   coupons: {
     couponOverviewLoading: false,

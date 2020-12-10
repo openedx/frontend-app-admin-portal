@@ -3,7 +3,6 @@ import {
   SAVE_TEMPLATE_SUCCESS,
   SAVE_TEMPLATE_FAILURE,
   CURRENT_FROM_TEMPLATE,
-  SET_EMAIL_ADDRESS,
 } from '../constants/emailTemplate';
 
 import emailTemplate, { initialState as emailTemplateReducerInitialState } from './emailTemplate';
@@ -15,7 +14,6 @@ const saveTemplateSuccessResponse = {
   email_body: 'I am email body',
   email_closing: 'I am email closing',
   name: 'template-1',
-  email_address: '',
   id: 4,
 };
 const saveTemplateErrorResponse = {
@@ -66,7 +64,6 @@ describe('emailTemplate reducer', () => {
       email_body: 'I am email body updated',
       email_closing: 'I am email closing updated',
       name: 'template-1 updated',
-      email_address: 'test@edx.org',
       id: 4,
     };
 
@@ -81,7 +78,6 @@ describe('emailTemplate reducer', () => {
           'email-template-body': saveTemplateSuccessResponse.email_body,
           'email-template-closing': saveTemplateSuccessResponse.email_closing,
           'template-name-select': saveTemplateSuccessResponse.name,
-          'email-address': saveTemplateSuccessResponse.email_address,
           'template-id': saveTemplateSuccessResponse.id,
         },
       },
@@ -98,7 +94,6 @@ describe('emailTemplate reducer', () => {
           'email-template-body': saveTemplateSuccessUpdatedResponse.email_body,
           'email-template-closing': saveTemplateSuccessUpdatedResponse.email_closing,
           'template-name-select': saveTemplateSuccessUpdatedResponse.name,
-          'email-address': saveTemplateSuccessUpdatedResponse.email_address,
           'template-id': saveTemplateSuccessUpdatedResponse.id,
         },
       },
@@ -160,57 +155,5 @@ describe('emailTemplate reducer', () => {
       },
     };
     expect(emailTemplate(undefined, errorResponseActionData)).toEqual(expected);
-  });
-
-  it('updates store with email address on switching between new and saved templates', () => {
-    const saveTemplateSuccessUpdatedResponse = {
-      email_address: 'test@edx.org',
-    };
-
-    const initialState = {
-      ...emailTemplateReducerInitialState,
-      saving: false,
-      error: null,
-      ...{
-        default: {
-          [emailType]: {
-            'email-template-subject': saveTemplateSuccessResponse.email_subject,
-            'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
-            'email-template-body': saveTemplateSuccessResponse.email_body,
-            'email-template-closing': saveTemplateSuccessResponse.email_closing,
-            'template-name-select': saveTemplateSuccessResponse.name,
-            'email-address': '',
-            'template-id': saveTemplateSuccessResponse.id,
-          },
-        },
-      },
-    };
-
-    const expected = {
-      ...emailTemplateReducerInitialState,
-      saving: false,
-      error: null,
-      ...{
-        default: {
-          [emailType]: {
-            'email-template-subject': saveTemplateSuccessResponse.email_subject,
-            'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
-            'email-template-body': saveTemplateSuccessResponse.email_body,
-            'email-template-closing': saveTemplateSuccessResponse.email_closing,
-            'template-name-select': saveTemplateSuccessResponse.name,
-            'email-address': saveTemplateSuccessUpdatedResponse.email_address,
-            'template-id': saveTemplateSuccessResponse.id,
-          },
-        },
-      },
-    };
-    const successResponseActionData = {
-      type: SET_EMAIL_ADDRESS,
-      payload: {
-        emailType,
-        emailAddress: 'test@edx.org',
-      },
-    };
-    expect(emailTemplate(initialState, successResponseActionData)).toEqual(expected);
   });
 });

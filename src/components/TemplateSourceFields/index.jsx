@@ -72,11 +72,8 @@ class TemplateSourceFields extends React.Component {
 
   updateState(emailTemplateSource) {
     const {
-      setEmailTemplateSource, allEmailTemplates, setEmailAddress, emailTemplateType, currentEmail,
+      setEmailTemplateSource, allEmailTemplates,
     } = this.props;
-    if (emailTemplateType === 'assign') {
-      setEmailAddress(currentEmail, emailTemplateType);
-    }
     setEmailTemplateSource(emailTemplateSource);
     if (emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
       this.makeOptions(this.props);
@@ -97,13 +94,9 @@ class TemplateSourceFields extends React.Component {
   }
 
   dispatchUpdatedTemplate(emailTemplate) {
-    const { currentFromTemplate, emailTemplateType, currentEmail } = this.props;
+    const { currentFromTemplate, emailTemplateType } = this.props;
     if (emailTemplate.length > 0) {
-      const firstEmailTemplate = emailTemplate[0];
-      if (emailTemplateType === 'assign') {
-        firstEmailTemplate.email_address = currentEmail;
-      }
-      currentFromTemplate(emailTemplateType, firstEmailTemplate);
+      currentFromTemplate(emailTemplateType, emailTemplate[0]);
     }
   }
 
@@ -203,15 +196,12 @@ class TemplateSourceFields extends React.Component {
 TemplateSourceFields.defaultProps = {
   allEmailTemplates: [],
   disabled: false,
-  currentEmail: '',
 };
 
 TemplateSourceFields.propTypes = {
   emailTemplateSource: PropTypes.string.isRequired,
   emailTemplateType: PropTypes.string.isRequired,
-  currentEmail: PropTypes.string,
   setEmailTemplateSource: PropTypes.func.isRequired,
-  setEmailAddress: PropTypes.func.isRequired,
   currentFromTemplate: PropTypes.func.isRequired,
   fetchEmailTemplates: PropTypes.func.isRequired,
   allEmailTemplates: PropTypes.arrayOf(PropTypes.shape({})),

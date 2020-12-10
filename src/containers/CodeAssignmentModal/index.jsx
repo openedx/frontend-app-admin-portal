@@ -4,7 +4,6 @@ import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
 import sendCodeAssignment from '../../data/actions/codeAssignment';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
-import { setEmailAddress } from '../../data/actions/emailTemplate';
 
 const mapStateToProps = (state) => {
   let initialValues = state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL
@@ -14,7 +13,6 @@ const mapStateToProps = (state) => {
   initialValues = { ...initialValues, 'enable-nudge-emails': true };
 
   return {
-    currentEmail: state.form['code-assignment-modal-form']?.values['email-address'],
     couponDetailsTable: state.table['coupon-details'],
     initialValues,
     enableReinitialize: true,
@@ -30,7 +28,6 @@ const mapDispatchToProps = dispatch => ({
       onError: (error) => { reject(error); },
     }));
   }),
-  setEmailAddress: (emailAddress, emailType) => dispatch(setEmailAddress(emailAddress, emailType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CodeAssignmentModal);
