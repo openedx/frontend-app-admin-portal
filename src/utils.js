@@ -144,17 +144,7 @@ const transformTemplate = (emailType, template) => ({
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
     'template-name-select': template.name,
-    'email-address': template.email_address,
     'template-id': template.id,
-  },
-});
-
-const updateTemplateEmailAddress = (emailType, emailAddress, state) => ({
-  default: {
-    [emailType]: {
-      ...state,
-      'email-address': emailAddress,
-    },
   },
 });
 
@@ -311,7 +301,6 @@ export {
   snakeCaseFormData,
   maxLength512,
   transformTemplate,
-  updateTemplateEmailAddress,
   validateEmailTemplateFields,
   updateAllTemplates,
   validateEmailAddresses,
