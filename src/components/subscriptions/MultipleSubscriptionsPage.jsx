@@ -3,7 +3,9 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Badge, Card, Row, Col } from '@edx/paragon';
+import {
+  Badge, Card, Row, Col,
+} from '@edx/paragon';
 
 import { SubscriptionContext } from './SubscriptionData';
 
