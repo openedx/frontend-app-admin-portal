@@ -7,11 +7,11 @@ import { createMemoryHistory } from 'history';
 import { jest } from '@jest/globals';
 
 import PropTypes from 'prop-types';
-import SubscriptionData from './SubscriptionData';
-import { ASSIGNED } from './data/constants';
-import { ToastsContext } from '../Toasts';
-import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
-import * as hooks from './data/hooks';
+import SubscriptionData from '../SubscriptionData';
+import { ASSIGNED } from '../data/constants';
+import { ToastsContext } from '../../Toasts';
+import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
+import * as hooks from '../data/hooks';
 
 export const TEST_ENTERPRISE_CUSTOMER_SLUG = 'test-enterprise';
 const TEST_ENTERPRISE_CUSTOMER_UUID = 'b5f07fee-1b34-458f-b672-19b55fc1bd10';

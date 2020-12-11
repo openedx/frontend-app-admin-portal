@@ -11,8 +11,8 @@ import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
-} from '../data/constants';
-import LicenseAllocationDetails from './LicenseAllocationDetails';
+} from '../../data/constants';
+import LicenseAllocationDetails from '../../licenses/LicenseAllocationDetails';
 import {
   SubscriptionManagementContext,
   SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,

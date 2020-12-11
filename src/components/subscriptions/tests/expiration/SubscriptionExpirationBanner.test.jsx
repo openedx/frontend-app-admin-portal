@@ -1,12 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
+import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-} from '../data/constants';
+} from '../../data/constants';
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,

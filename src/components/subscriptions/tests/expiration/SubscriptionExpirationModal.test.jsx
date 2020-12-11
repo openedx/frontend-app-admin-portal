@@ -3,12 +3,12 @@ import { mount } from 'enzyme';
 import { Button, Modal } from '@edx/paragon';
 
 import { describe, test } from '@jest/globals';
-import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from './SubscriptionExpirationModal';
+import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from '../../expiration/SubscriptionExpirationModal';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-} from '../data/constants';
+} from '../../data/constants';
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
