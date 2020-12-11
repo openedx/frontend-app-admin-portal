@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Badge, Card } from '@edx/paragon';
+import { Badge, Card, Row, Col } from '@edx/paragon';
 
 import { SubscriptionContext } from './SubscriptionData';
 
@@ -16,18 +16,18 @@ const MultipleSubscriptionsPage = ({ match }) => {
   }
   if (subscriptions.length === 1) {
     return (
-      <Redirect to={`subscriptions/${subscriptions[0].uuid}`} />
+      <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
     );
   }
 
-  const renderCard = (index) => {
+  const renderCard = (subscription = {}) => {
     const {
       uuid,
       title,
       startDate,
       expirationDate,
       licenses,
-    } = subscriptions[index] || {};
+    } = subscription;
     const {
       allocated,
       total,
@@ -35,31 +35,29 @@ const MultipleSubscriptionsPage = ({ match }) => {
     const startDateString = moment(startDate).format('MMMM D, YYYY');
     const expirationDateString = moment(expirationDate).format('MMMM D, YYYY');
     const isExpired = moment().isAfter(expirationDate);
-    // TODO: add bootstrap classes for smaller page sizes
     return (
-      <div className="mt-1" key={index}>
-        <Card>
-          <div className="m-3">
-            <div className="row ml-0 mr-0">
-              {/* TODO: Do we want to have this title link to the detail view? */}
-              <h4>{title}</h4>
-              <div className="ml-2">
-                {isExpired && (
+      <Col xs={12} md={6} xl={4} className="mb-3">
+        <Card className="subscription-card">
+          <Card.Body>
+            <Card.Title>
+              {title}
+              {isExpired && (
+                <div className="ml-2">
                   <Badge variant="danger">
                     Expired
                   </Badge>
-                )}
-              </div>
-            </div>
+                </div>
+              )}
+            </Card.Title>
             <p className="small">
               {startDateString} - {expirationDateString}
             </p>
             <p className="mt-3 mb-0 small">
               License assignments
             </p>
-            <div className="h4">
+            <p className="lead font-weight-bold">
               {allocated} of {total}
-            </div>
+            </p>
             <div className="d-flex">
               <div className="ml-auto">
                 <Link to={`/${enterpriseSlug}/admin/subscriptions/${uuid}`} className="btn btn-outline-primary">
@@ -67,73 +65,105 @@ const MultipleSubscriptionsPage = ({ match }) => {
                 </Link>
               </div>
             </div>
-          </div>
+          </Card.Body>
         </Card>
-      </div>
+      </Col>
     );
-  };
-
-  const renderCardsForColumn = columnIndex => {
-    const numSubscriptions = subscriptions.length;
-    const indexesToRender = [...Array(numSubscriptions).keys()].filter(num => num % 3 === columnIndex);
-    return indexesToRender.map(index => renderCard(index));
   };
 
   return (
     <>
-      <div className="mt-3 mb-3">
-        <h2 className="h3">
-          Invite your learners to access your course catalog and manage your subscription batches
-        </h2>
-      </div>
-      <div className="d-flex">
-        <div className="col-9 p-0">
-          <div className="mt-4 mb-2 text-secondary-500">
-            <h3 className="h4">Cohorts</h3>
-          </div>
-          <div className="row mr-3">
-            <div className="col pr-0">
-              {renderCardsForColumn(0)}
-            </div>
-            <div className="col pr-0">
-              {renderCardsForColumn(1)}
-            </div>
-            <div className="col pr-0">
-              {renderCardsForColumn(2)}
-            </div>
-          </div>
-        </div>
-        <div className="ml-auto col-3 p-0">
-          <div className="mt-4 mb-2 text-secondary-500">
-            <h3 className="h4">Need help?</h3>
-          </div>
-          <div className="pt-1">
-            <Card>
-              <Card.Body>
-                <h4>Customer support can help</h4>
-                <ul className="pl-4">
-                  <li>
-                    Manage your individual subscription batches
-                  </li>
-                  <li>
-                    Add new batches to your Subscription Management page
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet
-                  </li>
-                </ul>
-                <div className="d-flex">
-                  <div className="ml-auto">
-                    <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                      Contact Customer Support
-                    </Link>
-                  </div>
+      <Row>
+        <Col xs={12} lg={9}>
+          <h2>Cohorts</h2>
+          <p className="lead">
+            Invite your learners to access your course catalog and manage your subscription batches
+          </p>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} lg={9}>
+          <Row>
+            {subscriptions.map(subscription => renderCard(subscription))}
+          </Row>
+        </Col>
+        <Col>
+          <h3>Need help?</h3>
+          <Card>
+            <Card.Title>Customer support can help</Card.Title>
+            <Card.Body>
+              <ul className="pl-4">
+                <li>
+                  Manage your individual subscription batches
+                </li>
+                <li>
+                  Add new batches to your Subscription Management page
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet
+                </li>
+              </ul>
+              <div className="d-flex">
+                <div className="ml-auto">
+                  <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
+                    Contact Customer Support
+                  </Link>
                 </div>
-              </Card.Body>
-            </Card>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      {/* <div className="col-9 p-0">
+        <div className="mt-4 mb-2 text-secondary-500">
+          <h2>Cohorts</h2>
+          <p className="lead">
+            Invite your learners to access your course catalog and manage your subscription batches
+          </p>
+        </div>
+        <div className="row mr-3">
+          <div className="col pr-0">
+            {renderCardsForColumn(0)}
+          </div>
+          <div className="col pr-0">
+            {renderCardsForColumn(1)}
+          </div>
+          <div className="col pr-0">
+            {renderCardsForColumn(2)}
           </div>
         </div>
       </div>
+      <div className="ml-auto col-3 p-0">
+        <div className="mt-4 mb-2 text-secondary-500">
+          <h3 className="h4">Need help?</h3>
+        </div>
+        <div className="pt-1">
+          <Card>
+            <Card.Body>
+              <h4>Customer support can help</h4>
+              <ul className="pl-4">
+                <li>
+                  Manage your individual subscription batches
+                </li>
+                <li>
+                  Add new batches to your Subscription Management page
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet
+                </li>
+              </ul>
+              <div className="d-flex">
+                <div className="ml-auto">
+                  <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
+                    Contact Customer Support
+                  </Link>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+    </div> */}
     </>
   );
 };

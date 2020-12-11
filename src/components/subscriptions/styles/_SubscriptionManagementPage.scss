@@ -5,6 +5,12 @@
     }
   }
 
+  .subscription-card {
+    .card-title {
+      @extend .h4;
+    }
+  }
+
   @include media-breakpoint-up(lg) {
     .add-users-dropdown {
       float: right;
