@@ -2,34 +2,27 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
-import { SubscriptionContext } from '../SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
 } from '../data/constants';
-import { addDays, getSubscriptionExpirationDetails } from '../test-utils';
+import {
+  SUBSCRIPTION_PLAN_ZERO_STATE,
+  SubscriptionManagementContext,
+} from '../TestUtilities';
 
-/* eslint-disable react/prop-types */
-const BannerWithContext = ({
-  subscriptionState = {},
-}) => (
-  <SubscriptionContext.Provider value={subscriptionState}>
+// PropType validation for state is done by SubscriptionManagementContext
+// eslint-disable-next-line react/prop-types
+const ExpirationBannerWithContext = ({ detailState }) => (
+  <SubscriptionManagementContext detailState={detailState}>
     <SubscriptionExpirationBanner />
-  </SubscriptionContext.Provider>
+  </SubscriptionManagementContext>
 );
-/* eslint-enable react/prop-types */
 
 describe('<SubscriptionExpirationBanner />', () => {
   test('does not render an alert before the "moderate" days until expiration threshold', () => {
-    const daysUntilExpiration = SUBSCRIPTION_DAYS_REMAINING_MODERATE + 1;
-    // The actual date isn't relevant here, just how many days until expiration
-    const subscriptionState = getSubscriptionExpirationDetails(
-      daysUntilExpiration,
-      addDays(new Date(), daysUntilExpiration),
-    );
-
-    const wrapper = mount(<BannerWithContext subscriptionState={subscriptionState} />);
+    const wrapper = mount(<ExpirationBannerWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
     expect(wrapper.exists('.expiration-alert')).toEqual(false);
   });
 
@@ -39,15 +32,12 @@ describe('<SubscriptionExpirationBanner />', () => {
       SUBSCRIPTION_DAYS_REMAINING_SEVERE,
       SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
     ];
-    Object.values(thresholds).forEach((threshold) => {
-      const daysUntilExpiration = threshold - 1;
-      // The actual date isn't relevant here, just how many days until expiration
-      const subscriptionState = getSubscriptionExpirationDetails(
-        daysUntilExpiration,
-        addDays(new Date(), daysUntilExpiration),
-      );
-
-      const wrapper = mount(<BannerWithContext subscriptionState={subscriptionState} />);
+    Object.values(thresholds).forEach(threshold => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: threshold,
+      };
+      const wrapper = mount(<ExpirationBannerWithContext detailState={detailStateCopy} />);
       expect(wrapper.exists('.expiration-alert')).toEqual(true);
     });
   });
