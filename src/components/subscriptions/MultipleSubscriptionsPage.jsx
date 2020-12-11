@@ -102,7 +102,7 @@ const MultipleSubscriptionsPage = ({ match }) => {
                   Add new batches to your Subscription Management page
                 </li>
                 <li>
-                  Lorem ipsum dolor sit amet
+                  Help maximize the efficacy of your learning program
                 </li>
               </ul>
               <div className="d-flex">
