@@ -153,7 +153,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
       ))}
       {!hasErrors && hasLoadedUsers && (
         <>
-          {activeTab === TAB_ALL_USERS && tableData?.length === 0 ? (
+          {activeTab === TAB_ALL_USERS && tableData?.length === 0 && !searchQuery ? (
             <SubscriptionZeroStateMessaging />
           ) : (
             <>

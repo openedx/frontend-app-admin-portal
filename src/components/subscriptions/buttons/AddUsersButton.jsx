@@ -9,12 +9,12 @@ const AddUsersButton = ({ onSuccess, onClose }) => {
   const { overview, subscription } = useContext(SubscriptionDetailContext);
   return (
     <ActionButtonWithModal
-      buttonLabel="Invite Learners"
+      buttonLabel="Invite learners"
       buttonClassName="add-users-btn"
       variant="primary"
       renderModal={({ closeModal }) => (
         <AddUsersModal
-          title="Invite Learners"
+          title="Invite learners"
           availableSubscriptionCount={overview.unassigned}
           subscriptionUUID={subscription.uuid}
           onSuccess={onSuccess}
