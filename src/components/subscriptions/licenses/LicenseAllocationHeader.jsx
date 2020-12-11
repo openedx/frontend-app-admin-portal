@@ -28,8 +28,8 @@ const LicenseAllocationHeader = () => {
         <div className="col-12 col-md-5 mb-3 mb-md-0">
           <SearchBar
             placeholder="Search by email..."
-            onSearch={searchQuery => setSearchQuery({ searchQuery })}
-            onClear={() => setSearchQuery({})}
+            onSearch={searchQuery => setSearchQuery(searchQuery)}
+            onClear={() => setSearchQuery(null)}
           />
         </div>
         {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
