@@ -11,6 +11,9 @@ const MultipleSubscriptionsPage = ({ match }) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
+  if (subscriptions.length === 0) {
+    return null;
+  }
   if (subscriptions.length === 1) {
     return (
       <Redirect to={`subscriptions/${subscriptions[0].uuid}`} />

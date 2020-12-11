@@ -148,7 +148,7 @@ export const useSubscriptionData = ({ enterpriseId }) => {
   const {
     subscriptions,
     forceRefresh,
-  } = useSubscriptions(enterpriseId, errors, setErrors);
+  } = useSubscriptions({ enterpriseId, errors, setErrors });
 
   return {
     subscriptions,

@@ -20,9 +20,9 @@ const LicenseAllocationHeader = () => {
     <>
       <h2 className="mb-2">License Allocation</h2>
       <p className="lead">
-        {subscription.licenses.allocated}
+        {subscription.licenses?.allocated}
         {' of '}
-        {subscription.licenses.total} licenses allocated
+        {subscription.licenses?.total} licenses allocated
       </p>
       <div className="my-3 row">
         <div className="col-12 col-md-5 mb-3 mb-md-0">
@@ -32,7 +32,7 @@ const LicenseAllocationHeader = () => {
             onClear={() => setSearchQuery({})}
           />
         </div>
-        {(subscription.licenses.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
+        {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
           <div className="col-12 col-md-7 text-md-right">
             <AddUsersButton
               onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
