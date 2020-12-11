@@ -116,56 +116,6 @@ const MultipleSubscriptionsPage = ({ match }) => {
           </Card>
         </Col>
       </Row>
-      {/* <div className="col-9 p-0">
-        <div className="mt-4 mb-2 text-secondary-500">
-          <h2>Cohorts</h2>
-          <p className="lead">
-            Invite your learners to access your course catalog and manage your subscription batches
-          </p>
-        </div>
-        <div className="row mr-3">
-          <div className="col pr-0">
-            {renderCardsForColumn(0)}
-          </div>
-          <div className="col pr-0">
-            {renderCardsForColumn(1)}
-          </div>
-          <div className="col pr-0">
-            {renderCardsForColumn(2)}
-          </div>
-        </div>
-      </div>
-      <div className="ml-auto col-3 p-0">
-        <div className="mt-4 mb-2 text-secondary-500">
-          <h3 className="h4">Need help?</h3>
-        </div>
-        <div className="pt-1">
-          <Card>
-            <Card.Body>
-              <h4>Customer support can help</h4>
-              <ul className="pl-4">
-                <li>
-                  Manage your individual subscription batches
-                </li>
-                <li>
-                  Add new batches to your Subscription Management page
-                </li>
-                <li>
-                  Lorem ipsum dolor sit amet
-                </li>
-              </ul>
-              <div className="d-flex">
-                <div className="ml-auto">
-                  <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                    Contact Customer Support
-                  </Link>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
-      </div>
-    </div> */}
     </>
   );
 };
