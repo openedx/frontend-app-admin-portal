@@ -5,7 +5,8 @@
     }
   }
 
-  .subscription-card {
+  .subscription-card,
+  .support-card {
     .card-title {
       @extend .h4;
     }

@@ -89,9 +89,9 @@ const MultipleSubscriptionsPage = ({ match }) => {
         </Col>
         <Col>
           <h3>Need help?</h3>
-          <Card>
-            <Card.Title>Customer support can help</Card.Title>
+          <Card className="support-card">
             <Card.Body>
+              <Card.Title>Customer Support can help</Card.Title>
               <ul className="pl-4">
                 <li>
                   Manage your individual subscription batches
