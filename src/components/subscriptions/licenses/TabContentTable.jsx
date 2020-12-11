@@ -151,7 +151,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
           key={title}
         />
       ))}
-      {!hasErrors && (
+      {!hasErrors && hasLoadedUsers && (
         <>
           {activeTab === TAB_ALL_USERS && tableData?.length === 0 ? (
             <SubscriptionZeroStateMessaging />
