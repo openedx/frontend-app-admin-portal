@@ -5,7 +5,7 @@ import ActionButtonWithModal from '../../ActionButtonWithModal';
 import { ToastsContext } from '../../Toasts';
 import LicenseRemindModal from '../../../containers/LicenseRemindModal';
 import LicenseRevokeModal from '../../../containers/LicenseRevokeModal';
-import { ACTIVATED, ASSIGNED } from '../data/constants';
+import { ACTIVATED, ASSIGNED, TAB_REVOKED_USERS } from '../data/constants';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { SubscriptionContext } from '../SubscriptionData';
 
@@ -16,6 +16,7 @@ const LicenseAction = ({ user }) => {
     activeTab,
     currentPage,
     searchQuery,
+    setActiveTab,
     subscription,
   } = useContext(SubscriptionDetailContext);
 
@@ -38,6 +39,7 @@ const LicenseAction = ({ user }) => {
                 user={user}
                 onSuccess={() => {
                   addToast('License successfully revoked');
+                  setActiveTab(TAB_REVOKED_USERS);
                   forceRefresh();
                 }}
                 onClose={() => closeModal()}
@@ -71,6 +73,7 @@ const LicenseAction = ({ user }) => {
                 user={user}
                 onSuccess={() => {
                   addToast('License successfully revoked');
+                  setActiveTab(TAB_REVOKED_USERS);
                   forceRefresh();
                 }}
                 onClose={() => closeModal()}

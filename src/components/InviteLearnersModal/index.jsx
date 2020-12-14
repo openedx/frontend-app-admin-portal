@@ -15,7 +15,7 @@ import {
 } from '../../utils';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 
-class AddUsersModal extends React.Component {
+class InviteLearnersModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -210,16 +210,6 @@ class AddUsersModal extends React.Component {
     );
   }
 
-  renderTitle() {
-    const { title } = this.props;
-
-    return (
-      <>
-        <span className="d-block">{title}</span>
-      </>
-    );
-  }
-
   render() {
     const {
       onClose,
@@ -232,7 +222,7 @@ class AddUsersModal extends React.Component {
         <Modal
           ref={this.modalRef}
           dialogClassName="add-users"
-          title={this.renderTitle()}
+          title="Invite learners"
           body={this.renderBody()}
           buttons={[
             <Button
@@ -243,7 +233,7 @@ class AddUsersModal extends React.Component {
             >
               <>
                 {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Assign Licenses
+                Invite learners
               </>
             </Button>,
           ]}
@@ -256,11 +246,11 @@ class AddUsersModal extends React.Component {
   }
 }
 
-AddUsersModal.defaultProps = {
+InviteLearnersModal.defaultProps = {
   error: null,
 };
 
-AddUsersModal.propTypes = {
+InviteLearnersModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -269,7 +259,6 @@ AddUsersModal.propTypes = {
   error: PropTypes.arrayOf(PropTypes.string),
 
   // custom props
-  title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   addLicensesForUsers: PropTypes.func.isRequired,
@@ -281,4 +270,4 @@ AddUsersModal.propTypes = {
 
 export default reduxForm({
   form: 'license-assignment-modal-form',
-})(AddUsersModal);
+})(InviteLearnersModal);

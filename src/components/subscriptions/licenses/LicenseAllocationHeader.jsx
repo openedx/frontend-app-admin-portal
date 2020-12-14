@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import SearchBar from '../../SearchBar';
 import { ToastsContext } from '../../Toasts';
-import AddUsersButton from '../buttons/AddUsersButton';
+import InviteLearnersButton from '../buttons/InviteLearnersButton';
 import { TAB_ALL_USERS, TAB_PENDING_USERS } from '../data/constants';
 import { SubscriptionContext } from '../SubscriptionData';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
@@ -34,7 +34,7 @@ const LicenseAllocationHeader = () => {
         </div>
         {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
           <div className="col-12 col-md-7 text-md-right">
-            <AddUsersButton
+            <InviteLearnersButton
               onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                 forceRefresh();
                 addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);

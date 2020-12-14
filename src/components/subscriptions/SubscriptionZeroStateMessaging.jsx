@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Card } from '@edx/paragon';
-import AddUsersButton from './buttons/AddUsersButton';
+import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { TAB_PENDING_USERS } from './data/constants';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
@@ -17,7 +17,7 @@ const SubscriptionZeroStateMessaging = () => {
         <p className="py-2 lead">
           Assign your learners to a subscription license to enable their learning experiences on edX.
         </p>
-        <AddUsersButton
+        <InviteLearnersButton
           onSuccess={({ numSuccessfulAssignments }) => {
             forceRefresh();
             addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);

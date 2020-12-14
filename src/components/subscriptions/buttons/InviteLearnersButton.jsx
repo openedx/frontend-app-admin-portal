@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import AddUsersModal from '../../../containers/AddUsersModal';
+import InviteLearnersModal from '../../../containers/InviteLearnersModal';
 import ActionButtonWithModal from '../../ActionButtonWithModal';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
-const AddUsersButton = ({ onSuccess, onClose }) => {
+const InviteLearnersButton = ({ onSuccess, onClose }) => {
   const { overview, subscription } = useContext(SubscriptionDetailContext);
   return (
     <ActionButtonWithModal
@@ -13,8 +13,7 @@ const AddUsersButton = ({ onSuccess, onClose }) => {
       buttonClassName="add-users-btn"
       variant="primary"
       renderModal={({ closeModal }) => (
-        <AddUsersModal
-          title="Invite learners"
+        <InviteLearnersModal
           availableSubscriptionCount={overview.unassigned}
           subscriptionUUID={subscription.uuid}
           onSuccess={onSuccess}
@@ -30,13 +29,13 @@ const AddUsersButton = ({ onSuccess, onClose }) => {
   );
 };
 
-AddUsersButton.propTypes = {
+InviteLearnersButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func,
 };
 
-AddUsersButton.defaultProps = {
+InviteLearnersButton.defaultProps = {
   onClose: null,
 };
 
-export default AddUsersButton;
+export default InviteLearnersButton;
