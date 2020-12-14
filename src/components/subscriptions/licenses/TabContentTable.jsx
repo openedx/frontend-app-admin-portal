@@ -19,7 +19,7 @@ import LicenseStatus from './LicenseStatus';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { useSubscriptionUsers } from '../data/hooks';
 import { SubscriptionContext } from '../SubscriptionData';
-import SubscriptionZeroStateMessaging from '../SubscriptionZeroStateMessaging';
+import SubscriptionZeroStateMessage from '../SubscriptionZeroStateMessage';
 
 const columns = [
   {
@@ -135,7 +135,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
       {!hasErrors && hasLoadedUsers && (
         <>
           {activeTab === TAB_ALL_USERS && tableData?.length === 0 && !searchQuery ? (
-            <SubscriptionZeroStateMessaging />
+            <SubscriptionZeroStateMessage />
           ) : (
             <>
               {tableData?.length > 0 ? (

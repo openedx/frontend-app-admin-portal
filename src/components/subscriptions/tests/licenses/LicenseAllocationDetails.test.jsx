@@ -27,26 +27,26 @@ const LicenseAllocationDetailsWithContext = ({ detailState }) => (
   </SubscriptionManagementContext>
 );
 
-describe('<SubscriptionZeroStateMessaging />', () => {
+describe('<SubscriptionZeroStateMessage />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('displays the zero state on the default All Users tab with no allocations', () => {
     const wrapper = mount(<LicenseAllocationDetailsWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
-    expect(wrapper.find('SubscriptionZeroStateMessaging').exists()).toBeTruthy();
+    expect(wrapper.find('SubscriptionZeroStateMessage').exists()).toBeTruthy();
   });
 
   test('does not display the zero state on All Users tab when there are allocations', () => {
     const wrapper = mount(<LicenseAllocationDetailsWithContext detailState={SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE} />);
-    expect(wrapper.find('SubscriptionZeroStateMessaging').exists()).toBeFalsy();
+    expect(wrapper.find('SubscriptionZeroStateMessage').exists()).toBeFalsy();
   });
 
   const testTab = (tab, detailState) => {
     const wrapper = mount(<LicenseAllocationDetailsWithContext detailState={detailState} />);
     wrapper.find(`#navigation-${tab}`).simulate('click');
     wrapper.update();
-    expect(wrapper.find('SubscriptionZeroStateMessaging').exists()).toBeFalsy();
+    expect(wrapper.find('SubscriptionZeroStateMessage').exists()).toBeFalsy();
   };
 
   [TAB_PENDING_USERS, TAB_REVOKED_USERS, TAB_LICENSED_USERS].forEach((tab) => {

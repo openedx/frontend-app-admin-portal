@@ -6,7 +6,7 @@ import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 
-const SubscriptionZeroStateMessaging = () => {
+const SubscriptionZeroStateMessage = () => {
   const { addToast } = useContext(ToastsContext);
   const { forceRefresh } = useContext(SubscriptionContext);
   const { setActiveTab } = useContext(SubscriptionDetailContext);
@@ -29,4 +29,4 @@ const SubscriptionZeroStateMessaging = () => {
   );
 };
 
-export default SubscriptionZeroStateMessaging;
+export default SubscriptionZeroStateMessage;

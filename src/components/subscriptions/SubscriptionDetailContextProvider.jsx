@@ -33,7 +33,7 @@ const SubscriptionDetailContextProvider = ({
     setCurrentPage,
     setSearchQuery,
     subscription,
-  }), [activeTab, currentPage, hasMultipleSubscriptions, overview, searchQuery]);
+  }), [activeTab, currentPage, hasMultipleSubscriptions, overview, searchQuery, subscription]);
   return (
     <SubscriptionDetailContext.Provider value={context}>
       {children}

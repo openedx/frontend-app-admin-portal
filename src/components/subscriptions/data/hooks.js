@@ -12,7 +12,7 @@ import {
 import { camelCaseObject } from '../../../utils';
 
 /*
-This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
+ * This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
  */
 export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({
@@ -52,8 +52,8 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
 };
 
 /*
-This hook provides an object which outlines the number of users for each license state given a subscription UUID.
-It is also dependent on the search query state provided by SubscriptionDetailContext.
+ * This hook provides an object which outlines the number of users for each license state given a subscription UUID.
+ * It is also dependent on the search query state provided by SubscriptionDetailContext.
  */
 export const useSubscriptionUsersOverview = ({
   subscriptionUUID,
@@ -96,8 +96,8 @@ export const useSubscriptionUsersOverview = ({
 };
 
 /*
-This hook provides a list of users for a given subscription UUID.
-It is also dependent on state from SubscriptionDetailContext.
+ * This hook provides a list of users for a given subscription UUID.
+ * It is also dependent on state from SubscriptionDetailContext.
  */
 export const useSubscriptionUsers = ({
   activeTab,
@@ -140,8 +140,8 @@ export const useSubscriptionUsers = ({
 };
 
 /*
-This hook provides top level subscription data for the given enterprise customer UUID.
-It also provides an error state to be used by all subscription and license components.
+ * This hook provides top level subscription data for the given enterprise customer UUID.
+ * It also provides an error state to be used by all subscription and license components.
 */
 export const useSubscriptionData = ({ enterpriseId }) => {
   const [errors, setErrors] = useState({});
