@@ -127,6 +127,18 @@ class LmsApiService {
   static updateMoodleConfig(formData, configId) {
     return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/${configId}/`, formData, 'json');
   }
+
+  static fetchCanvasConfig(uuid) {
+    return apiClient.get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/?enterprise_customer=${uuid}`);
+  }
+
+  static postNewCanvasConfig(formData) {
+    return apiClient.post(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/`, formData, 'json');
+  }
+
+  static updateCanvasConfig(formData, id) {
+    return apiClient.patch(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData, 'json');
+  }
 }
 
 export default LmsApiService;
