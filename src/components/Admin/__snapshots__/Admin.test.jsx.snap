@@ -38,7 +38,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -148,7 +148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -726,7 +726,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -1304,7 +1304,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -1886,7 +1886,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -2615,7 +2615,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -3344,7 +3344,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -3926,7 +3926,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -4508,7 +4508,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -5090,7 +5090,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -5668,7 +5668,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -6250,7 +6250,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
@@ -6388,7 +6388,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       className="fade mt-3 alert alert-warning show"
       role="alert"
     >
-      Learner Progress Report will be down for planned maintenance on Wednesday, Dec 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
     </div>
     <div
       className="row mt-4"
