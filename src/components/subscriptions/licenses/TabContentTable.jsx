@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Card, Pagination, Table } from '@edx/paragon';
+import { Pagination, Table } from '@edx/paragon';
 
 import LoadingMessage from '../../LoadingMessage';
 import StatusAlert from '../../StatusAlert';
@@ -14,12 +14,12 @@ import {
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
 } from '../data/constants';
-import AddUsersButton from '../buttons/AddUsersButton';
 import LicenseActions from './LicenseActions';
 import LicenseStatus from './LicenseStatus';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { useSubscriptionUsers } from '../data/hooks';
 import { SubscriptionContext } from '../SubscriptionData';
+import SubscriptionZeroStateMessaging from '../SubscriptionZeroStateMessaging';
 
 const columns = [
   {
@@ -40,7 +40,6 @@ const TabContentTable = ({ enterpriseSlug }) => {
   const { errors, forceRefresh, setErrors } = useContext(SubscriptionContext);
   const {
     activeTab,
-    setActiveTab,
     currentPage,
     overview,
     searchQuery,
@@ -103,24 +102,6 @@ const TabContentTable = ({ enterpriseSlug }) => {
       <LicenseActions user={user} />
     ),
   })), [users]);
-
-  const SubscriptionZeroStateMessaging = () => (
-    <Card className="text-center">
-      <Card.Body>
-        <h2>Get Started</h2>
-        <p className="py-2 lead">
-          Assign your learners to a subscription license to enable their learning experiences on edX.
-        </p>
-        <AddUsersButton
-          onSuccess={({ numSuccessfulAssignments }) => {
-            forceRefresh();
-            addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);
-            setActiveTab(TAB_PENDING_USERS);
-          }}
-        />
-      </Card.Body>
-    </Card>
-  );
 
   return (
     <>

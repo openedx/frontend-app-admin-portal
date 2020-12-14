@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext, useContext, useMemo, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { DEFAULT_PAGE, TAB_ALL_USERS } from './data/constants';
 import { useSubscriptionUsersOverview } from './data/hooks';
@@ -21,7 +23,7 @@ const SubscriptionDetailContextProvider = ({
     errors,
     setErrors,
   });
-  const context = {
+  const context = useMemo(() => ({
     activeTab,
     currentPage,
     hasMultipleSubscriptions,
@@ -31,7 +33,7 @@ const SubscriptionDetailContextProvider = ({
     setCurrentPage,
     setSearchQuery,
     subscription,
-  };
+  }), [activeTab, currentPage, hasMultipleSubscriptions, overview, searchQuery]);
   return (
     <SubscriptionDetailContext.Provider value={context}>
       {children}
