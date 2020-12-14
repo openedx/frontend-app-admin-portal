@@ -11,7 +11,6 @@ import subscribeEmailTemplate from '../../components/InviteLearnersModal/emailTe
 
 const mockStore = configureMockStore([thunk]);
 
-const modalTitle = 'AABBCC';
 const data = {};
 const initialState = {
   portalConfiguration: {
@@ -37,7 +36,6 @@ const InviteLearnersModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
       <InviteLearnersModal
-        title={modalTitle}
         availableSubscriptionCount={10}
         onClose={() => {}}
         onSuccess={() => {}}
@@ -67,7 +65,6 @@ describe('UserSubscriptionModalWrapper', () => {
 
   it('renders user licenses modal', () => {
     const wrapper = mount(<InviteLearnersModalWrapper data={data} />);
-    expect(wrapper.find('.modal-title').text()).toEqual(modalTitle);
     expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
   });
 });
