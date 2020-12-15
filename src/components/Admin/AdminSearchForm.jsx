@@ -54,59 +54,59 @@ class AdminSearchForm extends React.Component {
         <div className="col-12 pr-md-0 mb-0">
           <div className="row w-100 m-0">
             <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
-                  <Form.Group>
-                    <Form.Label id="course-title-search" className="search-label mb-2">Filter by course</Form.Label>
-                    <Form.Control
-                      className="w-100"
-                      as="select"
-                      aria-labelledby="course-title-search"
-                      value={searchCourseQuery || ''}
-                      onChange={e => this.onCourseSelect(e)}
+              <Form.Group>
+                <Form.Label id="course-title-search" className="search-label mb-2">Filter by course</Form.Label>
+                <Form.Control
+                  className="w-100"
+                  as="select"
+                  aria-labelledby="course-title-search"
+                  value={searchCourseQuery || ''}
+                  onChange={e => this.onCourseSelect(e)}
+                >
+                  <option value="">All Courses</option>
+                  {courseTitles.map(title => (
+                    <option
+                      value={title}
+                      key={title}
                     >
-                      <option value="">All Courses</option>
-                      {courseTitles.map(title => (
-                        <option
-                          value={title}
-                          key={title}
-                        >
-                          {title}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Form.Group>
-                </div>
+                      {title}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </div>
             <div className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3">
-                  <Form.Group>
-                    <Form.Label id="date-search" className="search-label mb-2">
-                      Filter by start date
-                      <IconWithTooltip
-                        icon={faInfoCircle}
-                        altText="More information"
-                        tooltipText="A start date can be selected after the course name is selected."
-                      />
-                    </Form.Label>
-                    <Form.Control
-                      as="select"
-                      className="w-100"
-                      aria-labelledby="date-search"
-                      value={searchDateQuery}
-                      onChange={event => updateUrl({
-                        search_start_date: event.target.value,
-                        page: 1,
-                      })}
-                      disabled={!searchCourseQuery}
+              <Form.Group>
+                <Form.Label id="date-search" className="search-label mb-2">
+                  Filter by start date
+                  <IconWithTooltip
+                    icon={faInfoCircle}
+                    altText="More information"
+                    tooltipText="A start date can be selected after the course name is selected."
+                  />
+                </Form.Label>
+                <Form.Control
+                  as="select"
+                  className="w-100"
+                  aria-labelledby="date-search"
+                  value={searchDateQuery}
+                  onChange={event => updateUrl({
+                    search_start_date: event.target.value,
+                    page: 1,
+                  })}
+                  disabled={!searchCourseQuery}
+                >
+                  <option value="">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
+                  {searchCourseQuery && courseDates.map(date => (
+                    <option
+                      value={date}
+                      key={date}
                     >
-                      <option value="">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
-                      {searchCourseQuery && courseDates.map(date => (
-                        <option
-                          value={date}
-                          key={date}
-                        >
-                          {moment(date).format('MMMM D, YYYY')}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Form.Group>
+                      {moment(date).format('MMMM D, YYYY')}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </div>
             <div className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3">
               <Form.Label id="search-email-label" className="mb-2">Filter by email</Form.Label>
