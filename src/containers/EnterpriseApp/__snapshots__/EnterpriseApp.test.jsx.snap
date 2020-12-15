@@ -89,7 +89,7 @@ exports[`EnterpriseApp renders not found page correctly 1`] = `
             <span
               className="sr-only"
             >
-              Learner Report
+              Learner Progress Report
             </span>
           </a>
         </li>

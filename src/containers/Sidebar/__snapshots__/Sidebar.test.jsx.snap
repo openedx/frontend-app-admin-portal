@@ -45,7 +45,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           <span
             className="sr-only"
           >
-            Learner Report
+            Learner Progress Report
           </span>
         </a>
       </li>
@@ -165,7 +165,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           <span
             className="sr-only"
           >
-            Learner Report
+            Learner Progress Report
           </span>
         </a>
       </li>
@@ -216,7 +216,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
               style={Object {}}
             />
           </svg>
-          Learner Report
+          Learner Progress Report
         </a>
       </li>
       <li
@@ -324,7 +324,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
               style={Object {}}
             />
           </svg>
-          Learner Report
+          Learner Progress Report
         </a>
       </li>
       <li

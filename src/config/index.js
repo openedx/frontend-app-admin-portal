@@ -34,6 +34,7 @@ const configuration = {
   LOGO_URL: process.env.LOGO_URL,
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
+  SHOW_LEARNER_REPORT_MAINTENANCE_ALERT: process.env.SHOW_LEARNER_REPORT_MAINTENANCE_ALERT,
 };
 
 const features = {
