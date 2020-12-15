@@ -2,12 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import {
-  beforeEach,
-  describe,
-  jest,
-  test,
-} from '@jest/globals';
-import {
   TAB_LICENSED_USERS,
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,

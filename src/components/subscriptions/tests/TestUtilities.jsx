@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { createMemoryHistory } from 'history';
-import { jest } from '@jest/globals';
 
 import PropTypes from 'prop-types';
 import SubscriptionData from '../SubscriptionData';
@@ -105,8 +104,8 @@ export const mockUseSubscriptionData = (state) => ({
     results: [subscriptionPlan(state)],
   },
   errors: {},
-  setErrors: () => null,
-  forceRefresh: () => null,
+  setErrors: () => {},
+  forceRefresh: () => {},
 });
 
 export const mockUseSubscriptionUsers = (state) => ({

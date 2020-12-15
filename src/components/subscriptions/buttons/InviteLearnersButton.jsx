@@ -10,7 +10,7 @@ const InviteLearnersButton = ({ onSuccess, onClose }) => {
   return (
     <ActionButtonWithModal
       buttonLabel="Invite learners"
-      buttonClassName="add-users-btn"
+      buttonClassName="invite-users-btn"
       variant="primary"
       renderModal={({ closeModal }) => (
         <InviteLearnersModal

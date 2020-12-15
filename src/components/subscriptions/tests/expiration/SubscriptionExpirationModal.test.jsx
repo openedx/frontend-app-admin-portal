@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Button, Modal } from '@edx/paragon';
 
-import { describe, test } from '@jest/globals';
 import { MODAL_DIALOG_CLASS_NAME, BaseSubscriptionExpirationModal } from '../../expiration/SubscriptionExpirationModal';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
