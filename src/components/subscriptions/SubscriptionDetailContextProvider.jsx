@@ -5,27 +5,18 @@ import PropTypes from 'prop-types';
 import { DEFAULT_PAGE, TAB_ALL_USERS } from './data/constants';
 import { useSubscriptionUsersOverview } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
-import { NotFound } from '../NotFoundPage';
 
 export const SubscriptionDetailContext = createContext({});
 
-const SubscriptionDetailContextProvider = ({ children, subscriptionUUID }) => {
-  // Use UUID to find matching subscription plan in SubscriptionContext, return 404 if not found
-  const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
-  const subscription = Object.values(subscriptions.results).filter(sub => sub.uuid === subscriptionUUID)[0];
-  if (!subscriptions?.count || !subscription) {
-    return (
-      <NotFound />
-    );
-  }
-
+const SubscriptionDetailContextProvider = ({ children, subscription }) => {
   // Initialize state needed for the subscription detail view and provide in SubscriptionDetailContext
+  const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
   const hasMultipleSubscriptions = subscriptions.count > 1;
   const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
   const overview = useSubscriptionUsersOverview({
-    subscriptionUUID,
+    subscriptionUUID: subscription.uuid,
     search: searchQuery,
     errors,
     setErrors,
@@ -50,7 +41,9 @@ const SubscriptionDetailContextProvider = ({ children, subscriptionUUID }) => {
 
 SubscriptionDetailContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  subscriptionUUID: PropTypes.string.isRequired,
+  subscription: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default SubscriptionDetailContextProvider;
