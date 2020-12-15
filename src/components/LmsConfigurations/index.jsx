@@ -26,7 +26,9 @@ class LmsConfigurations extends React.Component {
     ]).then((responses) => {
       if (responses.some(response => response.reason?.request.status === 400
           || response.reason?.request.status > 404)) {
-        const errorRsp = responses.filter(response => response.reason?.request.status !== 404);
+        const errorRsp = responses.filter(
+          response => response.reason?.request.status !== 404 && response.status === 'rejected',
+        );
         const errorMsgs = [];
         let status = '';
         errorRsp.forEach((error) => {
@@ -41,7 +43,7 @@ class LmsConfigurations extends React.Component {
           canvasConfig: responses[1].status === 'fulfilled'
             ? responses[1].value.data.results[0] : null,
           blackboardConfig: responses[2].status === 'fulfilled'
-            ? responses[1].value.data.results[0] : null,
+            ? responses[2].value.data.results[0] : null,
           loading: false,
         });
       }

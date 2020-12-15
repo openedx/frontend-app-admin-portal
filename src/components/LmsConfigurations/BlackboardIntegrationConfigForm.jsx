@@ -12,8 +12,8 @@ import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
 export const REQUIRED_BLACKBOARD_CONFIG_FIELDS = [
   'blackboardBaseUrl',
-  'blackboardClientId',
-  'blackboardClientSecret',
+  'clientId',
+  'clientSecret',
 ];
 
 class BlackboardIntegrationConfigForm extends React.Component {
@@ -21,7 +21,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
     invalidFields: {},
     submitState: SUBMIT_STATES.DEFAULT,
     active: this.props.config?.active,
-    error: null,
+    error: undefined,
   }
 
   handleErrors = (error) => {
@@ -41,19 +41,19 @@ class BlackboardIntegrationConfigForm extends React.Component {
     transformedData.append('enterprise_customer', this.props.enterpriseId);
     try {
       const response = await LmsApiService.postNewBlackboardConfig(transformedData);
-      this.setState({ config: response.data });
+      this.setState({ config: response.data, error: undefined });
       return undefined;
     } catch (error) {
       return this.handleErrors(error);
     }
   }
 
-  updateBlackboardConfig = async (formData, configId) => {
+  updateBlackboardConfig = async (formData, configUuid) => {
     const transformedData = snakeCaseFormData(formData);
     transformedData.append('enterprise_customer', this.props.enterpriseId);
     try {
-      const response = await LmsApiService.updateBlackboardConfig(transformedData, configId);
-      this.setState({ config: response.data });
+      const response = await LmsApiService.updateBlackboardConfig(transformedData, configUuid);
+      this.setState({ config: response.data, error: undefined });
       return undefined;
     } catch (error) {
       return this.handleErrors(error);
@@ -78,43 +78,35 @@ class BlackboardIntegrationConfigForm extends React.Component {
    * @param {FormData} formData
    */
   handleSubmit = async (formData, config) => {
-    this.setState({ submitState: SUBMIT_STATES.PENDING, error: null });
-    let requiredFields = [];
-    requiredFields = [...REQUIRED_BLACKBOARD_CONFIG_FIELDS];
-    // validate the form
-    const invalidFields = this.validateBlackboardConfigForm(formData, requiredFields);
+    this.setState({ submitState: SUBMIT_STATES.PENDING });
+    const invalidFields = this.validateBlackboardConfigForm(formData, REQUIRED_BLACKBOARD_CONFIG_FIELDS);
     if (!isEmpty(invalidFields)) {
       this.setState({
         invalidFields: {
           ...invalidFields,
         },
-        submitState: SUBMIT_STATES.default,
+        submitState: SUBMIT_STATES.DEFAULT,
       });
       return;
     }
 
+    formData.append('enterprise_customer', this.props.enterpriseId);
+    formData.set('active', this.state.active);
+
+    let err;
     if (config) {
-      const err = await this.updateBlackboardConfig(formData, config.id);
-      if (err) {
-        this.setState({
-          submitState: SUBMIT_STATES.ERROR,
-          error: err,
-        });
-      } else {
-        this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-      }
+      err = await this.updateBlackboardConfig(formData, config.id);
     } else {
-      // ...or create a new configuration
-      const err = await this.createBlackboardConfig(formData);
-      if (err) {
-        this.setState({
-          submitState: SUBMIT_STATES.ERROR,
-          error: err,
-        });
-      } else {
-        this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-      }
+      err = await this.createBlackboardConfig(formData);
     }
+    if (err) {
+      this.setState({
+        submitState: SUBMIT_STATES.ERROR,
+        error: err,
+      });
+      return;
+    }
+    this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   }
 
   render() {
@@ -125,6 +117,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
       error,
     } = this.state;
     const { config } = this.props;
+
     let errorAlert;
     if (error) {
       errorAlert = (
@@ -186,17 +179,17 @@ class BlackboardIntegrationConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="blackboardClientId"
-              invalid={invalidFields.blackboardClientId}
+              for="clientId"
+              invalid={invalidFields.clientId}
               invalidMessage="Blackboard client ID is required."
               helpText="This should match the API Client ID found on Blackboard."
             >
-              <label htmlFor="blackboardClientId">Blackboard Client ID</label>
+              <label htmlFor="clientId">Blackboard Client ID</label>
               <Input
                 type="text"
-                id="blackboardClientId"
-                name="blackboardClientId"
-                defaultValue={config ? config.blackboardClientId : null}
+                id="clientId"
+                name="clientId"
+                defaultValue={config ? config.clientId : null}
               />
             </ValidationFormGroup>
           </div>
@@ -204,17 +197,17 @@ class BlackboardIntegrationConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <ValidationFormGroup
-              for="blackboardClientSecret"
-              invalid={invalidFields.blackboardClientSecret}
+              for="clientSecret"
+              invalid={invalidFields.clientSecret}
               invalidMessage="Blackboard client secret is required."
               helpText="This should match the API Client secret found on Blackboard."
             >
-              <label htmlFor="blackboardClientSecret">Blackboard Client Secret</label>
+              <label htmlFor="clientSecret">Blackboard Client Secret</label>
               <Input
                 type="text"
-                id="blackboardClientSecret"
-                name="blackboardClientSecret"
-                defaultValue={config ? config.blackboardClientSecret : null}
+                id="clientSecret"
+                name="clientSecret"
+                defaultValue={config ? config.clientSecret : null}
               />
             </ValidationFormGroup>
           </div>
@@ -224,8 +217,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
             <ValidationFormGroup
               for="refreshToken"
               helpText="The Blackboard API's refresh token token. This should be automatically propagated once you visit the oauth complete endpoint."
-              // invalid={invalidFields.refreshToken}
-              // invalidMessage="A refresh token must be provided."
             >
               <label htmlFor="refreshToken">Blackboard API Refresh Token</label>
               <Input
@@ -274,6 +265,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
 
 BlackboardIntegrationConfigForm.defaultProps = {
   config: null,
+  enterpriseId: null,
 };
 
 BlackboardIntegrationConfigForm.propTypes = {
@@ -281,10 +273,10 @@ BlackboardIntegrationConfigForm.propTypes = {
     active: PropTypes.bool,
     blackboardBaseUrl: PropTypes.string,
     refreshToken: PropTypes.string,
-    blackboardClientId: PropTypes.string,
-    blackboardClientSecret: PropTypes.string,
+    clientId: PropTypes.string,
+    clientSecret: PropTypes.string,
   }),
-  enterpriseId: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string,
 };
 
 export default BlackboardIntegrationConfigForm;
