@@ -16,11 +16,12 @@ import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
-
 import AdminCards from '../../containers/AdminCards';
+import AdminSearchForm from './AdminSearchForm';
+import MaintenanceAlert from './MaintenanceAlert';
+
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
-import AdminSearchForm from './AdminSearchForm';
 
 import './Admin.scss';
 
@@ -303,6 +304,7 @@ class Admin extends React.Component {
               <Helmet title="Learner Progress Report" />
               <Hero title="Learner Progress Report" />
               <div className="container-fluid">
+                <MaintenanceAlert />
                 <div className="row mt-4">
                   <div className="col">
                     <h2>Overview</h2>

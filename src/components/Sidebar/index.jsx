@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
 
     return [
       {
-        title: 'Learner Report',
+        title: 'Learner Progress Report',
         to: `${baseUrl}/admin/learners`,
         icon: faChartLine,
       },
