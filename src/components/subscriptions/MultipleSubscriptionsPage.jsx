@@ -76,10 +76,10 @@ const MultipleSubscriptionsPage = ({ match }) => {
   return (
     <>
       <Row>
-        <Col xs={12} lg={9}>
+        <Col xs={12} lg={6}>
           <h2>Cohorts</h2>
           <p className="lead">
-            Invite your learners to access your course catalog and manage your subscription batches
+            Invite your learners to access your course catalog and manage your subscription cohorts
           </p>
         </Col>
       </Row>
@@ -96,10 +96,10 @@ const MultipleSubscriptionsPage = ({ match }) => {
               <Card.Title>Customer Support can help</Card.Title>
               <ul className="pl-4">
                 <li>
-                  Manage your individual subscription batches
+                  Manage your individual subscription cohorts
                 </li>
                 <li>
-                  Add new batches to your Subscription Management page
+                  Add new cohorts to your Subscription Management page
                 </li>
                 <li>
                   Help maximize the efficacy of your learning program
