@@ -10,7 +10,7 @@ export default () => {
 
   return (
     <Alert variant="warning" className="mt-3">
-      Learner Progress Report will be down for planned maintenance on Wednesday, December 16th from 10am-12pm EST
+      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
     </Alert>
   );
 };
