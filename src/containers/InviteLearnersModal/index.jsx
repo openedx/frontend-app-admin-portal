@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import AddUsersModal from '../../components/AddUsersModal';
+import InviteLearnersModal from '../../components/InviteLearnersModal';
 
 import addLicensesForUsers from '../../data/actions/userSubscription';
 
@@ -19,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsersModal);
+export default connect(mapStateToProps, mapDispatchToProps)(InviteLearnersModal);

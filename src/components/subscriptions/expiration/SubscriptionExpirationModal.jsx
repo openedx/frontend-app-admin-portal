@@ -5,22 +5,22 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Modal, MailtoLink } from '@edx/paragon';
 
-import { SubscriptionContext } from './SubscriptionData';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
-} from './constants';
-import { configuration } from '../../config';
-import Img from '../Img';
-import { formatTimestamp } from '../../utils';
+} from '../data/constants';
+
+import { configuration } from '../../../config';
+import Img from '../../Img';
+import { formatTimestamp } from '../../../utils';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
 export const MODAL_DIALOG_CLASS_NAME = 'subscription-expiration';
 
 export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeManagementScreen }) {
-  const { details } = useContext(SubscriptionContext);
-  const { daysUntilExpiration, expirationDate } = details;
+  const { subscription: { daysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
 
   const renderBody = () => (
     <>

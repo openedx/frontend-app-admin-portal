@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
 import { MailtoLink } from '@edx/paragon';
 
-import StatusAlert from '../StatusAlert';
-import { SubscriptionContext } from './SubscriptionData';
+import StatusAlert from '../../StatusAlert';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-} from './constants';
+} from '../data/constants';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
-export default function SubscriptionExpirationBanner() {
-  const { details } = useContext(SubscriptionContext);
-  const { daysUntilExpiration } = details;
+const SubscriptionExpirationBanner = () => {
+  const { subscription: { daysUntilExpiration } } = useContext(SubscriptionDetailContext);
 
   const renderMessage = () => (
     <>
@@ -46,4 +45,6 @@ export default function SubscriptionExpirationBanner() {
       dismissible={dismissible}
     />
   );
-}
+};
+
+export default SubscriptionExpirationBanner;

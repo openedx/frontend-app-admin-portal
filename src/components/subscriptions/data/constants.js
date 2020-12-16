@@ -11,8 +11,14 @@ export const ASSIGNED = 'assigned';
 export const REVOKED = 'revoked';
 export const ALL_USERS = 'assigned,activated,revoked';
 
+export const licenseStatusByTab = {
+  [TAB_ALL_USERS]: ALL_USERS,
+  [TAB_LICENSED_USERS]: ACTIVATED,
+  [TAB_PENDING_USERS]: ASSIGNED,
+  [TAB_REVOKED_USERS]: REVOKED,
+};
+
 export const SUBSCRIPTIONS = 'Subscriptions';
-export const SUBSCRIPTION_OVERVIEW = 'Subscription Overview';
 export const SUBSCRIPTION_USERS = 'Subscription Users';
 export const SUBSCRIPTION_USERS_OVERVIEW = 'Subscription Users Overview';
 

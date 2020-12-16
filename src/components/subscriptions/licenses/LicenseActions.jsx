@@ -1,29 +1,26 @@
 import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import ActionButtonWithModal from '../ActionButtonWithModal';
-import { ToastsContext } from '../Toasts';
-import LicenseRemindModal from '../../containers/LicenseRemindModal';
-import LicenseRevokeModal from '../../containers/LicenseRevokeModal';
-
-import { SubscriptionContext } from './SubscriptionData';
-
-import { useHasNoRevocationsRemaining } from './hooks/licenseManagerHooks';
-import { ACTIVATED, ASSIGNED } from './constants';
+import ActionButtonWithModal from '../../ActionButtonWithModal';
+import { ToastsContext } from '../../Toasts';
+import LicenseRemindModal from '../../../containers/LicenseRemindModal';
+import LicenseRevokeModal from '../../../containers/LicenseRevokeModal';
+import { ACTIVATED, ASSIGNED, TAB_REVOKED_USERS } from '../data/constants';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import { SubscriptionContext } from '../SubscriptionData';
 
 const LicenseAction = ({ user }) => {
   const { addToast } = useContext(ToastsContext);
-
+  const { forceRefresh } = useContext(SubscriptionContext);
   const {
-    fetchSubscriptionDetails,
-    fetchSubscriptionUsers,
-    searchQuery,
     activeTab,
-    details,
     currentPage,
-  } = useContext(SubscriptionContext);
+    searchQuery,
+    setActiveTab,
+    subscription,
+  } = useContext(SubscriptionDetailContext);
 
-  const hasNoRevocationsRemaining = useHasNoRevocationsRemaining(details);
+  const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
 
   const licenseActions = useMemo(
@@ -40,13 +37,13 @@ const LicenseAction = ({ user }) => {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => addToast('License successfully revoked')}
+                onSuccess={() => {
+                  addToast('License successfully revoked');
+                  setActiveTab(TAB_REVOKED_USERS);
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionPlan={details}
+                subscriptionPlan={subscription}
                 licenseStatus={user.status}
               />
             ),
@@ -60,13 +57,12 @@ const LicenseAction = ({ user }) => {
                 user={user}
                 isBulkRemind={false}
                 title="Remind User"
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionUUID={details.uuid}
-                onSuccess={() => addToast('Reminder successfully sent')}
+                subscriptionUUID={subscription.uuid}
+                onSuccess={() => {
+                  addToast('Reminder successfully sent');
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
               />
             ),
           }, {
@@ -75,13 +71,13 @@ const LicenseAction = ({ user }) => {
             handleClick: closeModal => (
               <LicenseRevokeModal
                 user={user}
-                onSuccess={() => addToast('License successfully revoked')}
+                onSuccess={() => {
+                  addToast('License successfully revoked');
+                  setActiveTab(TAB_REVOKED_USERS);
+                  forceRefresh();
+                }}
                 onClose={() => closeModal()}
-                fetchSubscriptionDetails={fetchSubscriptionDetails}
-                fetchSubscriptionUsers={fetchSubscriptionUsers}
-                searchQuery={searchQuery}
-                currentPage={currentPage}
-                subscriptionPlan={details}
+                subscriptionPlan={subscription}
                 licenseStatus={user.status}
               />
             ),

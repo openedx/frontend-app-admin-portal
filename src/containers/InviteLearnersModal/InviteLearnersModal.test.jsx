@@ -6,12 +6,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import AddUsersModal from './index';
-import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
+import InviteLearnersModal from './index';
+import subscribeEmailTemplate from '../../components/InviteLearnersModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 
-const modalTitle = 'AABBCC';
 const data = {};
 const initialState = {
   portalConfiguration: {
@@ -33,11 +32,10 @@ const initialState = {
   },
 };
 
-const UserSubscriptionModalWrapper = props => (
+const InviteLearnersModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <AddUsersModal
-        title={modalTitle}
+      <InviteLearnersModal
         availableSubscriptionCount={10}
         onClose={() => {}}
         onSuccess={() => {}}
@@ -48,11 +46,11 @@ const UserSubscriptionModalWrapper = props => (
   </MemoryRouter>
 );
 
-UserSubscriptionModalWrapper.defaultProps = {
+InviteLearnersModalWrapper.defaultProps = {
   store: mockStore(initialState),
 };
 
-UserSubscriptionModalWrapper.propTypes = {
+InviteLearnersModalWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
@@ -66,8 +64,7 @@ describe('UserSubscriptionModalWrapper', () => {
   });
 
   it('renders user licenses modal', () => {
-    const wrapper = mount(<UserSubscriptionModalWrapper data={data} />);
-    expect(wrapper.find('.modal-title').text()).toEqual(modalTitle);
+    const wrapper = mount(<InviteLearnersModalWrapper data={data} />);
     expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
   });
 });

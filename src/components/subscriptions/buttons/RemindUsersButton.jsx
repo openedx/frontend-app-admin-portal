@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import LicenseRemindModal from '../../containers/LicenseRemindModal';
-import ActionButtonWithModal from '../ActionButtonWithModal';
+import LicenseRemindModal from '../../../containers/LicenseRemindModal';
+import ActionButtonWithModal from '../../ActionButtonWithModal';
 
 const RemindUsersButton = ({
   onSuccess,
@@ -10,10 +10,6 @@ const RemindUsersButton = ({
   pendingUsersCount,
   isBulkRemind,
   subscriptionUUID,
-  fetchSubscriptionDetails,
-  fetchSubscriptionUsers,
-  currentPage,
-  searchQuery,
 }) => (
   <ActionButtonWithModal
     buttonLabel={(
@@ -30,10 +26,6 @@ const RemindUsersButton = ({
         isBulkRemind={isBulkRemind}
         title="Remind Users"
         subscriptionUUID={subscriptionUUID}
-        searchQuery={searchQuery}
-        currentPage={currentPage}
-        fetchSubscriptionDetails={fetchSubscriptionDetails}
-        fetchSubscriptionUsers={fetchSubscriptionUsers}
         onSuccess={onSuccess}
         onClose={() => {
           closeModal();
@@ -49,20 +41,14 @@ const RemindUsersButton = ({
 RemindUsersButton.propTypes = {
   pendingUsersCount: PropTypes.number,
   isBulkRemind: PropTypes.bool.isRequired,
-  searchQuery: PropTypes.string,
-  currentPage: PropTypes.number,
   subscriptionUUID: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func,
-  fetchSubscriptionDetails: PropTypes.func.isRequired,
-  fetchSubscriptionUsers: PropTypes.func.isRequired,
 };
 
 RemindUsersButton.defaultProps = {
   onClose: null,
   pendingUsersCount: null,
-  searchQuery: null,
-  currentPage: null,
 };
 
 export default RemindUsersButton;

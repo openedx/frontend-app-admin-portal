@@ -14,7 +14,7 @@ import { transformTemplate, updateAllTemplates } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
-import subscribeEmailTemplate from '../../components/AddUsersModal/emailTemplate';
+import subscribeEmailTemplate from '../../components/InviteLearnersModal/emailTemplate';
 
 export const initialState = {
   saving: false,

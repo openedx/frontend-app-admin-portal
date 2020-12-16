@@ -1,7 +1,5 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames';
-
-import { SubscriptionContext } from './SubscriptionData';
 
 import {
   TAB_ALL_USERS,
@@ -9,37 +7,34 @@ import {
   TAB_PENDING_USERS,
   TAB_REVOKED_USERS,
   DEFAULT_PAGE,
-} from './constants';
+} from '../data/constants';
+import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
-export default function LicenseAllocationNavigation() {
+const LicenseAllocationNavigation = () => {
   const {
-    overview,
     activeTab,
+    overview,
     setActiveTab,
     setCurrentPage,
-  } = useContext(SubscriptionContext);
-
-  const tabs = useMemo(
-    () => [
-      {
-        key: TAB_ALL_USERS,
-        text: `All Users (${overview.assigned + overview.activated + overview.revoked})`,
-      },
-      {
-        key: TAB_LICENSED_USERS,
-        text: `Licensed Users (${overview.activated})`,
-      },
-      {
-        key: TAB_PENDING_USERS,
-        text: `Pending Users (${overview.assigned})`,
-      },
-      {
-        key: TAB_REVOKED_USERS,
-        text: `Revoked Users (${overview.revoked})`,
-      },
-    ],
-    [overview],
-  );
+  } = useContext(SubscriptionDetailContext);
+  const tabs = [
+    {
+      key: TAB_ALL_USERS,
+      text: `All Users (${overview.assigned + overview.activated + overview.revoked})`,
+    },
+    {
+      key: TAB_LICENSED_USERS,
+      text: `Licensed Users (${overview.activated})`,
+    },
+    {
+      key: TAB_PENDING_USERS,
+      text: `Pending Users (${overview.assigned})`,
+    },
+    {
+      key: TAB_REVOKED_USERS,
+      text: `Revoked Users (${overview.revoked})`,
+    },
+  ];
 
   function updateTabWithDefaultPage(key) {
     setActiveTab(key);
@@ -67,4 +62,6 @@ export default function LicenseAllocationNavigation() {
       </ul>
     </nav>
   );
-}
+};
+
+export default LicenseAllocationNavigation;

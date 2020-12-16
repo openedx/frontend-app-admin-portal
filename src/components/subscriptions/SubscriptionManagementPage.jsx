@@ -1,115 +1,47 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { Container } from '@edx/paragon';
 
 import Hero from '../Hero';
-import SearchBar from '../SearchBar';
-import { ToastsContext } from '../Toasts';
-import SubscriptionData, { SubscriptionConsumer } from './SubscriptionData';
-import SubscriptionDetails from './SubscriptionDetails';
-import AddUsersButton from './AddUsersButton';
-import LicenseAllocationNavigation from './LicenseAllocationNavigation';
-import TabContentTable from './TabContentTable';
-import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
-import SubscriptionExpirationModal from './SubscriptionExpirationModal';
-
-import { TAB_ALL_USERS, TAB_PENDING_USERS } from './constants';
+import SubscriptionData from './SubscriptionData';
+import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
+import SubscriptionDetailPage from './SubscriptionDetailPage';
 
 const PAGE_TITLE = 'Subscription Management';
 
-function SubscriptionManagementPage({ enterpriseSlug, enterpriseId }) {
-  const { addToast } = useContext(ToastsContext);
+function SubscriptionManagementPage({ enterpriseId }) {
   return (
-    <>
+    <SubscriptionData enterpriseId={enterpriseId}>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <SubscriptionData enterpriseId={enterpriseId}>
-        <SubscriptionExpirationBanner />
-        <SubscriptionExpirationModal />
-        <main role="main" className="manage-subscription">
-          <div className="container-fluid mt-3">
-            <div className="row mb-5">
-              <div className="col-12 col-lg-8 mb-3 mb-lg-0">
-                <SubscriptionDetails />
-              </div>
-              <div className="col-12 col-lg-4 text-lg-right">
-                <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                  Contact Customer Support
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="container-fluid">
-            <div className="row mb-3">
-              <div className="col">
-                <div className="mb-3">
-                  <h2 className="mb-2">
-                    License Allocation
-                  </h2>
-                  <SubscriptionConsumer>
-                    {({
-                      details,
-                      fetchSubscriptionUsers,
-                      fetchSubscriptionDetails,
-                      setActiveTab,
-                      activeTab,
-                    }) => (
-                      <>
-                        <p className="lead">
-                          {details.licenses.allocated}
-                          {' of '}
-                          {details.licenses.total} licenses allocated
-                        </p>
-                        <div className="my-3 row">
-                          <div className="col-12 col-md-5 mb-3 mb-md-0">
-                            <SearchBar
-                              placeholder="Search by email..."
-                              onSearch={searchQuery => fetchSubscriptionUsers({ searchQuery })}
-                              onClear={() => fetchSubscriptionUsers()}
-                            />
-                          </div>
-                          {(details.licenses.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
-                          <div className="col-12 col-md-7 text-md-right">
-                            <AddUsersButton
-                              onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
-                                fetchSubscriptionDetails();
-                                addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
-                                setActiveTab(TAB_PENDING_USERS);
-                              }}
-                            />
-                          </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </SubscriptionConsumer>
-                </div>
-                <div className="row my-4">
-                  <div className="col-12 col-lg-3 mb-2 mb-lg-0">
-                    <LicenseAllocationNavigation />
-                  </div>
-                  <div className="col-12 col-lg-9">
-                    <TabContentTable />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
-      </SubscriptionData>
-    </>
+      <main role="main" className="manage-subscription">
+        <Container className="py-3" fluid>
+          <Switch>
+            <Route
+              path="/:enterpriseSlug/admin/subscriptions"
+              component={MultipleSubscriptionsPage}
+              exact
+            />
+            <Route
+              path="/:enterpriseSlug/admin/subscriptions/:subscriptionUUID"
+              component={SubscriptionDetailPage}
+              exact
+            />
+          </Switch>
+        </Container>
+      </main>
+    </SubscriptionData>
   );
 }
 
 SubscriptionManagementPage.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 

@@ -4,10 +4,7 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
-
-import NewRelicService from '../../data/services/NewRelicService';
-import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/constants';
-
+import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/data/constants';
 import './LicenseRevokeModal.scss';
 
 class LicenseRevokeModal extends React.Component {
@@ -43,24 +40,12 @@ class LicenseRevokeModal extends React.Component {
     const {
       user,
       sendLicenseRevoke,
-      fetchSubscriptionDetails,
-      fetchSubscriptionUsers,
-      searchQuery,
-      currentPage,
       subscriptionPlan,
     } = this.props;
     const options = { user_email: user.userEmail };
 
     return sendLicenseRevoke(subscriptionPlan.uuid, options)
-      .then(async (response) => {
-        try {
-          await fetchSubscriptionDetails();
-          await fetchSubscriptionUsers({ searchQuery, currentPage });
-          this.props.onSuccess(response);
-        } catch (error) {
-          NewRelicService.logAPIErrorResponse(error);
-        }
-      })
+      .then(response => this.props.onSuccess(response))
       .catch((error) => {
         throw new SubmissionError({
           _error: [error.message],
@@ -193,8 +178,6 @@ class LicenseRevokeModal extends React.Component {
 
 LicenseRevokeModal.defaultProps = {
   error: null,
-  searchQuery: null,
-  currentPage: null,
 };
 
 LicenseRevokeModal.propTypes = {
@@ -212,10 +195,6 @@ LicenseRevokeModal.propTypes = {
   user: PropTypes.shape({
     userEmail: PropTypes.string.isRequired,
   }).isRequired,
-  fetchSubscriptionDetails: PropTypes.func.isRequired,
-  fetchSubscriptionUsers: PropTypes.func.isRequired,
-  searchQuery: PropTypes.string,
-  currentPage: PropTypes.number,
   subscriptionPlan: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     revocations: PropTypes.shape({
