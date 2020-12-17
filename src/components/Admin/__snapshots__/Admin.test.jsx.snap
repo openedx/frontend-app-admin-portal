@@ -35,12 +35,6 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -144,12 +138,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
@@ -723,12 +711,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -1300,12 +1282,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
@@ -1882,12 +1858,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
@@ -2603,12 +2573,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -3323,12 +3287,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -3904,12 +3862,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
@@ -4487,12 +4439,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -5069,12 +5015,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -5646,12 +5586,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
@@ -6229,12 +6163,6 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     className="container-fluid"
   >
     <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
-    <div
       className="row mt-4"
     >
       <div
@@ -6366,12 +6294,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
   <div
     className="container-fluid"
   >
-    <div
-      className="fade mt-3 alert alert-warning show"
-      role="alert"
-    >
-      Learner Progress Report will be down for planned maintenance on Thursday, December 17th from 10am-12pm EST
-    </div>
     <div
       className="row mt-4"
     >
