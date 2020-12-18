@@ -139,6 +139,18 @@ class LmsApiService {
   static updateCanvasConfig(formData, id) {
     return apiClient.patch(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData, 'json');
   }
+
+  static fetchBlackboardConfig(uuid) {
+    return apiClient.get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/?enterprise_customer=${uuid}`);
+  }
+
+  static postNewBlackboardConfig(formData) {
+    return apiClient.post(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/`, formData, 'json');
+  }
+
+  static updateBlackboardConfig(formData, configId) {
+    return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`, formData, 'json');
+  }
 }
 
 export default LmsApiService;
