@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
@@ -7,15 +7,45 @@ import {
 
 import LoadingMessage from '../LoadingMessage';
 
-import { redirectToProxyLogin } from '../../utils';
+import { getProxyLoginUrl, redirectToProxyLogin } from '../../utils';
+import apiClient from '../../data/apiClient';
 
 const AdminRegisterPage = ({ authentication, match }) => {
-  const enterpriseSlug = useMemo(
-    () => match.params.enterpriseSlug,
-    [match.params],
+  const { enterpriseSlug } = match.params;
+
+  useEffect(
+    () => {
+      if (!authentication?.username) {
+        // user is not authenticated
+        return;
+      }
+
+      if (!authentication.roles?.length) {
+        // user is authenticated but doesn't have any JWT roles; force a log out so their
+        // JWT roles gets refreshed. on their next login, the JWT roles will be updated
+        // and we can continue rendering a fallback UI if needed.
+        const logoutRedirectUrl = getProxyLoginUrl(enterpriseSlug);
+        apiClient.logout(logoutRedirectUrl);
+      }
+    },
+    [authentication?.username, authentication?.roles],
   );
 
   if (authentication?.username) {
+    if (!authentication.roles?.length) {
+      // user is authenticated but does not have any roles, so display a message while
+      // redirecting the user to the log out page.
+      return (
+        <Container fluid>
+          <Row className="py-3">
+            <Col>
+              <p>Logging out...</p>
+            </Col>
+          </Row>
+        </Container>
+      );
+    }
+
     if (!authentication.roles?.length) {
       // user is authenticated but does not have the roles that should be assigned during the
       // registration flow, likely suggesting the user created an account with a non-matching

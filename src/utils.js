@@ -275,12 +275,17 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
-const redirectToProxyLogin = (enterpriseSlug) => {
+const getProxyLoginUrl = (enterpriseSlug) => {
   const options = {
     enterprise_slug: enterpriseSlug,
     next: global.location,
   };
   const proxyLoginUrl = `${process.env.LMS_BASE_URL}/enterprise/proxy-login/?${qs.stringify(options)}`;
+  return proxyLoginUrl;
+};
+
+const redirectToProxyLogin = (enterpriseSlug) => {
+  const proxyLoginUrl = getProxyLoginUrl(enterpriseSlug);
   global.location.href = proxyLoginUrl;
 };
 
@@ -307,4 +312,5 @@ export {
   validateEmailAddressesFields,
   mergeErrors,
   redirectToProxyLogin,
+  getProxyLoginUrl,
 };
