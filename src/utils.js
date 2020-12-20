@@ -10,6 +10,7 @@ import isNumeric from 'validator/lib/isNumeric';
 
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from './data/constants/emailTemplate';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from './data/constants/addUsers';
+import { ENTERPRISE_ADMIN_ROLE_NAME } from './data/constants';
 import history from './data/history';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -289,6 +290,11 @@ const redirectToProxyLogin = (enterpriseSlug) => {
   global.location.href = proxyLoginUrl;
 };
 
+const hasEnterpriseAdminRole = roles => roles.some(role => {
+  const roleName = role.split(':')[0];
+  return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
+});
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -313,4 +319,5 @@ export {
   mergeErrors,
   redirectToProxyLogin,
   getProxyLoginUrl,
+  hasEnterpriseAdminRole,
 };
