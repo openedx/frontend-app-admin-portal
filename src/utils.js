@@ -10,6 +10,7 @@ import isNumeric from 'validator/lib/isNumeric';
 
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from './data/constants/emailTemplate';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from './data/constants/addUsers';
+import { ENTERPRISE_ADMIN_ROLE_NAME } from './data/constants';
 import history from './data/history';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -275,14 +276,24 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
-const redirectToProxyLogin = (enterpriseSlug) => {
+const getProxyLoginUrl = (enterpriseSlug) => {
   const options = {
     enterprise_slug: enterpriseSlug,
     next: global.location,
   };
   const proxyLoginUrl = `${process.env.LMS_BASE_URL}/enterprise/proxy-login/?${qs.stringify(options)}`;
+  return proxyLoginUrl;
+};
+
+const redirectToProxyLogin = (enterpriseSlug) => {
+  const proxyLoginUrl = getProxyLoginUrl(enterpriseSlug);
   global.location.href = proxyLoginUrl;
 };
+
+const hasEnterpriseAdminRole = roles => roles.some(role => {
+  const roleName = role.split(':')[0];
+  return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
+});
 
 export {
   formatPercentage,
@@ -307,4 +318,6 @@ export {
   validateEmailAddressesFields,
   mergeErrors,
   redirectToProxyLogin,
+  getProxyLoginUrl,
+  hasEnterpriseAdminRole,
 };

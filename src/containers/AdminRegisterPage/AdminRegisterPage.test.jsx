@@ -53,15 +53,21 @@ describe('<AdminRegisterPage />', () => {
     expect(global.location.href).toBeTruthy();
   });
 
-  it('displays error alert when user is authenticated but no has JWT roles', () => {
-    const store = mockStore({
-      authentication: {
-        username: 'edx',
-        roles: [],
-      },
+  [
+    { roles: [] },
+    { roles: ['enterprise_learner:*'] },
+  ].forEach(({ roles }) => {
+    it('displays logging out message alert when user is authenticated without "enterprise_admin" JWT role', () => {
+      const store = mockStore({
+        authentication: {
+          username: 'edx',
+          roles,
+        },
+      });
+
+      const wrapper = mount(<AdminRegisterPageWrapper store={store} />);
+      expect(wrapper.find('.admin-registration-logout').exists()).toBeTruthy();
     });
-    const wrapper = mount(<AdminRegisterPageWrapper store={store} />);
-    expect(wrapper.find('Alert').exists()).toBeTruthy();
   });
 
   it('redirects to /admin/register/activate route when user is authenticated and has JWT roles', () => {
