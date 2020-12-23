@@ -1,15 +1,12 @@
+import { getSubscriptionContactText } from '../../utils';
+
 const emailTemplate = {
-  greeting: 'Your Learning Manager has provided you with a license to give you access to take a course(s) on edX.',
-  body: `You have been assigned a license to an edX Enterprise Subscription. edX offers high-quality online courses from the world's best universities and institutions. After activating your license, you'll have instant access to enroll in a wide-array of courses.
+  greeting: 'We noticed you haven’t had a chance to start learning on edX!  It’s easy to get started and browse the course catalog.',
+  body: `{ENTERPRISE_NAME} partnered with edX to give everyone access to high-quality online courses. Start your subscription and browse courses in nearly every subject from Data Analytics, Digital Media, Business & Leadership, Communications, Computer Science and so much more. Courses are taught by experts from the world’s leading universities and corporations.
 
-Activate your license and begin your learning journey: {LICENSE_ACTIVATION_LINK}
-
-edX Login: {USER_EMAIL}
-Expiration Date: {EXPIRATION_DATE}
-
-You can bookmark the following link to easily access your learning portal in the future: {LEARNER_PORTAL_LINK}
-`,
-  closing: 'For any questions, please reach out to your Learning Manager.',
+Start learning: {LICENSE_ACTIVATION_LINK}
+  `,
+  closing: getSubscriptionContactText,
 };
 
 export default emailTemplate;

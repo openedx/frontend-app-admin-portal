@@ -1,17 +1,15 @@
-const emailTemplate = {
-  greeting: `Your Learning Manager has provided you with a license to give you access to take a course(s) on edX.
-`,
-  body: `You may redeem your license for any course(s) that are in your organization's subscription catalog. To redeem, you must [activate your license here](edx.org).
+import { getSubscriptionContactText } from '../../utils';
 
+const emailTemplate = {
+  greeting: 'Congratulations!',
+  body: `{ENTERPRISE_NAME} has partnered with edX to give you an unlimited subscription to learn on edX!  Take the best courses in the most in-demand subject areas and upskill for a new career opportunity.  Earn a professional certificate, start a program or just learn for fun.
 {LICENSE_ACTIVATION_LINK}
 
-edX Login: {USER_EMAIL}
-Expiration Date: {EXPIRATION_DATE}
+So you don’t have to search for this link, bookmark your learning portal now to have easy access to your subscription in the future.
 
-You can bookmark the following link to easily access your learning portal in the future: {LEARNER_PORTAL_LINK}
+{LEARNER_PORTAL_LINK}
 `,
-  closing: `
-For any questions, please reach out to your Learning Manager.`,
+  closing: getSubscriptionContactText,
 };
 
 export default emailTemplate;

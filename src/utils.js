@@ -295,6 +295,14 @@ const hasEnterpriseAdminRole = roles => roles.some(role => {
   return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
 });
 
+const getSubscriptionContactText = (contactEmail) => {
+  let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
+  if (contactEmail) {
+    contactText = `${contactText} at ${contactEmail}`;
+  }
+  return `${contactText}.`;
+};
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -320,4 +328,5 @@ export {
   redirectToProxyLogin,
   getProxyLoginUrl,
   hasEnterpriseAdminRole,
+  getSubscriptionContactText,
 };

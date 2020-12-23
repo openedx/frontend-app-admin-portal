@@ -8,6 +8,7 @@ import {
 const initialState = {
   loading: false,
   error: null,
+  contactEmail: null,
   enterpriseId: null,
   enterpriseName: null,
   enterpriseSlug: null,
@@ -29,6 +30,7 @@ const enterpriseData = {
     enterprise_slug: 'test-enterprise',
     logo: 'https://s3...',
   },
+  contact_email: 'fake@example.com',
   enable_portal_code_management_screen: true,
   enable_portal_reporting_config_screen: true,
   enable_portal_subscription_management_screen: true,
@@ -45,6 +47,7 @@ describe('portalConfiguration reducer', () => {
   it('updates fetch portal configuration success state', () => {
     const expected = {
       ...initialState,
+      contactEmail: enterpriseData.contact_email,
       enterpriseId: enterpriseData.uuid,
       enterpriseName: enterpriseData.name,
       enterpriseSlug: enterpriseData.slug,
