@@ -8,9 +8,10 @@ import {
   SET_EMAIL_TEMPLATE_SOURCE,
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   CURRENT_FROM_TEMPLATE,
+  SET_EMAIL_ADDRESS,
 } from '../constants/emailTemplate';
 
-import { transformTemplate, updateAllTemplates } from '../../utils';
+import { transformTemplate, updateAllTemplates, updateTemplateEmailAddress } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import revokeEmailTemplate from '../../components/CodeRevokeModal/emailTemplate';
@@ -23,6 +24,7 @@ export const initialState = {
   emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   default: {
     assign: {
+      'email-address': '',
       'email-template-subject': assignEmailTemplate.subject,
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
@@ -43,6 +45,7 @@ export const initialState = {
   },
   assign: {
     'template-id': 0,
+    'email-address': '',
     'template-name-select': '',
     'email-template-subject': assignEmailTemplate.subject,
     'email-template-greeting': assignEmailTemplate.greeting,
@@ -123,6 +126,14 @@ const emailTemplate = (state = initialState, action) => {
       return {
         ...state,
         emailTemplateSource: action.payload.emailTemplateSource,
+      };
+    case SET_EMAIL_ADDRESS:
+      return {
+        ...state,
+        saving: false,
+        error: null,
+        ...updateTemplateEmailAddress(action.payload.emailType, action.payload.emailAddress,
+          state.default[action.payload.emailType]),
       };
     default:
       return state;

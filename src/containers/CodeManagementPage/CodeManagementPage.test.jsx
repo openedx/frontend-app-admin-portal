@@ -27,6 +27,13 @@ const initialState = {
   table: {
     'coupon-details': {},
   },
+  form: {
+    'code-assignment-modal-form': {
+      values: {
+        'email-address': '',
+      },
+    },
+  },
 };
 
 const CodeManagementPageWrapper = props => (
