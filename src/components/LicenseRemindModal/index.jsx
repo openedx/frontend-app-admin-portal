@@ -23,6 +23,7 @@ class LicenseRemindModal extends React.Component {
 
   componentDidMount() {
     const { current: { firstFocusableElement } } = this.modalRef;
+    const { contactEmail } = this.props;
 
     if (firstFocusableElement) {
       firstFocusableElement.focus();
@@ -30,7 +31,7 @@ class LicenseRemindModal extends React.Component {
     this.props.initialize({
       'email-template-greeting': emailTemplate.greeting,
       'email-template-body': emailTemplate.body,
-      'email-template-closing': emailTemplate.closing,
+      'email-template-closing': emailTemplate.closing(contactEmail),
     });
   }
 
@@ -217,6 +218,7 @@ LicenseRemindModal.defaultProps = {
   isBulkRemind: false,
   user: {},
   pendingUsersCount: 0,
+  contactEmail: null,
 };
 LicenseRemindModal.propTypes = {
   // props From redux-form
@@ -237,6 +239,7 @@ LicenseRemindModal.propTypes = {
     userEmail: PropTypes.string,
   }),
   subscriptionUUID: PropTypes.string.isRequired,
+  contactEmail: PropTypes.string,
 };
 export default reduxForm({
   form: 'license-reminder-modal-form',

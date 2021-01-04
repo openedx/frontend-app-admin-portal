@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 
+import emailTemplate from './emailTemplate';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 import FileInput from '../FileInput';
@@ -28,10 +29,16 @@ class InviteLearnersModal extends React.Component {
 
   componentDidMount() {
     const { current: { firstFocusableElement } } = this.modalRef;
+    const { contactEmail } = this.props;
 
     if (firstFocusableElement) {
       firstFocusableElement.focus();
     }
+    this.props.initialize({
+      'email-template-greeting': emailTemplate.greeting,
+      'email-template-body': emailTemplate.body,
+      'email-template-closing': emailTemplate.closing(contactEmail),
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -248,6 +255,7 @@ class InviteLearnersModal extends React.Component {
 
 InviteLearnersModal.defaultProps = {
   error: null,
+  contactEmail: null,
 };
 
 InviteLearnersModal.propTypes = {
@@ -257,6 +265,7 @@ InviteLearnersModal.propTypes = {
   submitSucceeded: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,
   error: PropTypes.arrayOf(PropTypes.string),
+  initialize: PropTypes.func.isRequired,
 
   // custom props
   onClose: PropTypes.func.isRequired,
@@ -264,8 +273,8 @@ InviteLearnersModal.propTypes = {
   addLicensesForUsers: PropTypes.func.isRequired,
   subscriptionUUID: PropTypes.string.isRequired,
 
-  initialValues: PropTypes.shape({}).isRequired,
   availableSubscriptionCount: PropTypes.number.isRequired,
+  contactEmail: PropTypes.string,
 };
 
 export default reduxForm({

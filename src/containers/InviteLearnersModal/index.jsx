@@ -5,7 +5,7 @@ import InviteLearnersModal from '../../components/InviteLearnersModal';
 import addLicensesForUsers from '../../data/actions/userSubscription';
 
 const mapStateToProps = state => ({
-  initialValues: state.emailTemplate.subscribe,
+  contactEmail: state.portalConfiguration.contactEmail,
 });
 
 const mapDispatchToProps = dispatch => ({

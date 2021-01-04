@@ -8,6 +8,7 @@ import {
 const initialState = {
   loading: false,
   error: null,
+  contactEmail: null,
   enterpriseId: null,
   enterpriseName: null,
   enterpriseSlug: null,
@@ -33,6 +34,7 @@ const portalConfiguration = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
+        contactEmail: action.payload.data.contact_email,
         enterpriseId: action.payload.data.uuid,
         enterpriseName: action.payload.data.name,
         enterpriseSlug: action.payload.data.slug,
@@ -52,6 +54,7 @@ const portalConfiguration = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+        contactEmail: null,
         enterpriseId: null,
         enterpriseName: null,
         enterpriseSlug: null,
@@ -66,6 +69,7 @@ const portalConfiguration = (state = initialState, action) => {
     case CLEAR_PORTAL_CONFIGURATION:
       return {
         ...state,
+        contactEmail: null,
         enterpriseId: null,
         enterpriseName: null,
         enterpriseSlug: null,

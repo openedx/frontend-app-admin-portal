@@ -10,6 +10,18 @@ import LicenseRemindModal from './index';
 
 const mockStore = configureMockStore([thunk]);
 
+const initialState = {
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise',
+    contactEmail: 'fake@example.com',
+  },
+  subscriptionDetails: {
+    licenses: {
+      available: 1,
+    },
+  },
+};
+
 const user = {
   userEmail: 'edx@example.com',
 };
@@ -32,7 +44,7 @@ const LicenseRemindModalWrapper = props => (
 );
 
 LicenseRemindModalWrapper.defaultProps = {
-  store: mockStore({}),
+  store: mockStore(initialState),
 };
 
 LicenseRemindModalWrapper.propTypes = {

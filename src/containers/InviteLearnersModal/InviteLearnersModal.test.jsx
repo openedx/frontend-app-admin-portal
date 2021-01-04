@@ -7,23 +7,13 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
 import InviteLearnersModal from './index';
-import subscribeEmailTemplate from '../../components/InviteLearnersModal/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
 
-const data = {};
 const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise',
-  },
-  emailTemplate: {
-    loading: false,
-    error: null,
-    subscribe: {
-      'email-template-greeting': subscribeEmailTemplate.greeting || '',
-      'email-template-body': subscribeEmailTemplate.body,
-      'email-template-closing': subscribeEmailTemplate.closing,
-    },
+    contactEmail: 'fake@example.com',
   },
   subscriptionDetails: {
     licenses: {
@@ -64,7 +54,7 @@ describe('UserSubscriptionModalWrapper', () => {
   });
 
   it('renders user licenses modal', () => {
-    const wrapper = mount(<InviteLearnersModalWrapper data={data} />);
+    const wrapper = mount(<InviteLearnersModalWrapper data={{}} />);
     expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
   });
 });
