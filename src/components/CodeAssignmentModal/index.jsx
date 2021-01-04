@@ -73,6 +73,10 @@ class BaseCodeAssignmentModal extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.setEmailAddress('', 'assign');
+  }
+
   getNumberOfSelectedCodes() {
     const {
       data: {
@@ -419,7 +423,7 @@ class BaseCodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
           <div className="mt-4">
             <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="assign" />
+            <TemplateSourceFields emailTemplateType="assign" currentEmail={this.props.currentEmail} />
             <Field
               id="email-template-subject"
               name="email-template-subject"
@@ -537,11 +541,13 @@ BaseCodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
+  currentEmail: '',
 };
 
 BaseCodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
+  currentEmail: PropTypes.string,
   enableLearnerPortal: PropTypes.bool.isRequired,
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
@@ -556,6 +562,7 @@ BaseCodeAssignmentModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendCodeAssignment: PropTypes.func.isRequired,
+  setEmailAddress: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
       count: PropTypes.number,
