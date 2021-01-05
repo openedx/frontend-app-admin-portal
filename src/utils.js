@@ -145,9 +145,15 @@ const transformTemplate = (emailType, template) => ({
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
     'template-name-select': template.name,
+    'email-address': template.email_address,
     'template-id': template.id,
   },
 });
+
+const updateTemplateEmailAddress = (state, emailAddress) => {
+  state.default.assign['email-address'] = emailAddress; // eslint-disable-line no-param-reassign
+  state.assign['email-address'] = emailAddress; // eslint-disable-line no-param-reassign
+};
 
 const updateAllTemplates = (template, state) => {
   const { allTemplates } = state;
@@ -320,6 +326,7 @@ export {
   snakeCaseFormData,
   maxLength512,
   transformTemplate,
+  updateTemplateEmailAddress,
   validateEmailTemplateFields,
   updateAllTemplates,
   validateEmailAddresses,
