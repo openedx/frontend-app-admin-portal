@@ -1,0 +1,46 @@
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+import SuccessFactorsConfigForm, { REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS } from './SuccessFactorsIntegrationConfigForm';
+
+const formData = new FormData();
+REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'));
+
+describe('<SuccessFactorsConfigForm />', () => {
+  it('validation fails if required fields missing', () => {
+    const invalidFormData = new FormData();
+    const wrapper = shallow(<SuccessFactorsConfigForm enterpriseId="testing123" />);
+    const invalidFields = wrapper.instance().validateSuccessFactorsConfigForm(
+      invalidFormData,
+      REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS,
+    );
+    expect(Object.keys(invalidFields)).toEqual(REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS);
+  });
+
+  it('submit calls createSuccessFactorsConfig when config is not present', () => {
+    const wrapper = mount((
+      <SuccessFactorsConfigForm enterpriseId="testing123" />
+    ));
+    const spyCreate = jest.spyOn(wrapper.instance(), 'createSuccessFactorsConfig');
+    wrapper.instance().handleSubmit(formData);
+    expect(spyCreate).toHaveBeenCalledWith(formData);
+  });
+
+  it('submit calls updateSuccessFactorsConfig when config is present', () => {
+    const config = {
+      id: 1,
+      sapsfBaseUrl: 'testing.com',
+    };
+    const wrapper = mount((
+      <SuccessFactorsConfigForm enterpriseId="testing123" config={config} />
+    ));
+    const spyUpdate = jest.spyOn(wrapper.instance(), 'updateSuccessFactorsConfig');
+    wrapper.instance().handleSubmit(formData, config);
+    expect(spyUpdate).toHaveBeenCalledWith(formData, config.id);
+  });
+
+  it('show StatusAlert on errors', () => {
+    const wrapper = mount((<SuccessFactorsConfigForm enterpriseId="testing123" />));
+    wrapper.setState({ error: 'error occurred.' });
+    expect(wrapper.find('StatusAlert').first().props().message).toEqual('error occurred.');
+  });
+});

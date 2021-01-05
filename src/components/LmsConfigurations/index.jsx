@@ -4,6 +4,7 @@ import { Collapsible } from '@edx/paragon';
 import MoodleIntegrationConfigForm from './MoodleIntegrationConfigForm';
 import CanvasIntegrationConfigForm from './CanvasIntegrationConfigForm';
 import BlackboardIntegrationConfigForm from './BlackboardIntegrationConfigForm';
+import SuccessFactorsIntegrationConfigForm from './SuccessFactorsIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
 import { camelCaseObject } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
@@ -14,6 +15,7 @@ class LmsConfigurations extends React.Component {
     moodleConfig: null,
     canvasConfig: null,
     blackboardConfig: null,
+    sapsfConfig: null,
     error: null,
     loading: true,
   };
@@ -23,6 +25,7 @@ class LmsConfigurations extends React.Component {
       LmsApiService.fetchMoodleConfig(this.props.enterpriseId),
       LmsApiService.fetchCanvasConfig(this.props.enterpriseId),
       LmsApiService.fetchBlackboardConfig(this.props.enterpriseId),
+      LmsApiService.fetchSuccessFactorsConfig(this.props.enterpriseId),
     ]).then((responses) => {
       if (responses.some(response => response.reason?.request.status === 400
           || response.reason?.request.status > 404)) {
@@ -44,6 +47,8 @@ class LmsConfigurations extends React.Component {
             ? responses[1].value.data.results[0] : null,
           blackboardConfig: responses[2].status === 'fulfilled'
             ? responses[2].value.data.results[0] : null,
+          sapsfConfig: responses[3].status === 'fulfilled'
+            ? responses[3].value.data.results[0] : null,
           loading: false,
         });
       }
@@ -52,7 +57,7 @@ class LmsConfigurations extends React.Component {
 
   render() {
     const {
-      canvasConfig, moodleConfig, blackboardConfig, error, loading,
+      canvasConfig, moodleConfig, blackboardConfig, sapsfConfig, error, loading,
     } = this.state;
     if (loading) {
       return <LoadingMessage className="overview" />;
@@ -89,6 +94,14 @@ class LmsConfigurations extends React.Component {
         />
       );
     }
+    if (sapsfConfig) {
+      return (
+        <SuccessFactorsIntegrationConfigForm
+          config={camelCaseObject(sapsfConfig)}
+          enterpriseId={this.props.enterpriseId}
+        />
+      );
+    }
     return (
       <>
         <div
@@ -101,6 +114,13 @@ class LmsConfigurations extends React.Component {
             title="Moodle"
           >
             <MoodleIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
+          </Collapsible>
+          <Collapsible
+            styling="card"
+            className="shadow"
+            title="SAP Success Factors"
+          >
+            <SuccessFactorsIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
           </Collapsible>
         </div>
         <div
