@@ -69,9 +69,26 @@ $ npm start
 
 3. See data displayed in the admin portal
 
-## Using Demo Data
-This frontend application uses the [edx-enterprise-data-api](https://github.com/edx/edx-analytics-data-api/) as a backend API for data.
-To support scenarios where demonstration data is required or the API is not available, we also generate a script that can be loaded that will
-return static demo data instead of hitting the API. To enable:
-- In production: Load `demoDataLoader.js` to the page using [a bookmarklet](https://codepen.io/edx/live/e5f46af8f39968b9693c8414091f6cc3/)
-- In development: Uncomment the entrypoint `../src/demo/index.js` in `webpack.dev.config.js`
+### Using local frontend libraries
+In order to use a local version of a frondend library, such as Paragon, you must create a `module.config.js` file in the root directory of your repo.
+It should contain aliases that webpack will use to resolve modules locally rather than using the module in `node_modules`.
+
+Sample `module.config.js` file:
+```
+module.exports = {
+/*
+  Modules you want to use from local source code.  Adding a module here means that when this app
+  runs its build, it'll resolve the source from peer directories of this app.
+  moduleName: the name you use to import code from the module.
+  dir: The relative path to the module's source code.
+  dist: The sub-directory of the source code where it puts its build artifact.  Often "dist".
+*/
+  localModules: [
+    { moduleName: '@edx/brand', dir: '../brand-edx.org' },
+    { moduleName: '@edx/paragon/scss/core', dir: '../paragon', dist: 'scss/core' },
+    { moduleName: '@edx/paragon', dir: '../paragon', dist: 'dist' },
+  ],
+};
+```
+
+NB: In order for webpack to properly resolve scss imports locally, you must use a `~` before the import, like so: `@import "~@edx/brand/paragon/fonts";`
