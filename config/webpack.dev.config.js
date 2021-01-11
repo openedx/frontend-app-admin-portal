@@ -19,12 +19,47 @@ if (result.error) {
   throw result.error;
 }
 
+function getLocalAliases() {
+  const aliases = {};
+
+  try {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const { localModules } = require(path.resolve(process.cwd(), 'module.config.js'));
+
+    let allPeerDependencies = [];
+    const excludedPeerPackages = [];
+    localModules.forEach(({ moduleName, dir, dist = '' }) => {
+      // eslint-disable-next-line import/no-dynamic-require, global-require
+      const { peerDependencies = {}, name } = require(path.resolve(process.cwd(), dir, 'package.json'));
+      allPeerDependencies = allPeerDependencies.concat(Object.keys(peerDependencies));
+      aliases[moduleName] = path.resolve(process.cwd(), dir, dist);
+      excludedPeerPackages.push(name);
+    });
+
+    allPeerDependencies = allPeerDependencies.filter((dep) => !excludedPeerPackages.includes(dep));
+
+    allPeerDependencies.forEach((dep) => {
+      aliases[dep] = path.resolve(process.cwd(), 'node_modules', dep);
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('No local module configuration file found. This is fine.');
+  }
+  return aliases;
+}
+
+const aliases = getLocalAliases();
+
 module.exports = merge(commonConfig, {
   mode: 'development',
   entry: {
     hot: require.resolve('react-dev-utils/webpackHotDevClient'),
     segment: path.resolve(__dirname, '../src/segment.js'),
     app: path.resolve(__dirname, '../src/index.jsx'),
+  },
+
+  resolve: {
+    alias: aliases,
   },
 
   module: {
