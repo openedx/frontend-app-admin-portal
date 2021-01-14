@@ -99,7 +99,7 @@ class Sidebar extends React.Component {
         title: 'Bulk Enrollment',
         to: `${baseUrl}/admin/bulkenrollment`,
         icon: faBookOpen,
-        hidden: !features.BULK_ENROLLMENT,
+        hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
       },
       {
         title: 'LMS Integration Configuration',
