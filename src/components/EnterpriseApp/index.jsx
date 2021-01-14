@@ -163,7 +163,7 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <RequestCodesPage {...routeProps} />}
                     />,
                   ]}
-                  {features.BULK_ENROLLMENT
+                  {(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen)
                     && (
                     <Route
                       key="bulk-enrollment"
