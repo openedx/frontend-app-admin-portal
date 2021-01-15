@@ -7,8 +7,8 @@ import {
 import { snakeCaseFormData } from '../../utils';
 import StatusAlert from '../StatusAlert';
 import LmsApiService from '../../data/services/LmsApiService';
-import NewRelicService from '../../data/services/NewRelicService';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
+import { handleErrors, validateLmsConfigForm } from './common';
 
 export const REQUIRED_CANVAS_CONFIG_FIELDS = [
   'clientId',
@@ -35,7 +35,7 @@ class CanvasIntegrationConfigForm extends React.Component {
       });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
   }
 
@@ -49,20 +49,13 @@ class CanvasIntegrationConfigForm extends React.Component {
       });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
-  }
-
-  validateCanvasConfigForm = (formData, requiredFields) => {
-    const invalidFields = requiredFields
-      .filter(field => !formData.get(field))
-      .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
-    return invalidFields;
   }
 
   handleSubmit = async (formData, config) => {
     await this.setState({ submitState: SUBMIT_STATES.PENDING });
-    const invalidFields = this.validateCanvasConfigForm(formData, REQUIRED_CANVAS_CONFIG_FIELDS);
+    const invalidFields = validateLmsConfigForm(formData, REQUIRED_CANVAS_CONFIG_FIELDS);
     if (!isEmpty(invalidFields)) {
       this.setState({
         invalidFields: {
@@ -89,13 +82,6 @@ class CanvasIntegrationConfigForm extends React.Component {
       return;
     }
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-  }
-
-  handleErrors(error) {
-    const errorMsg = error.message || error.response?.status === 500
-      ? error.message : JSON.stringify(error.response.data);
-    NewRelicService.logAPIErrorResponse(errorMsg);
-    return errorMsg;
   }
 
   render() {

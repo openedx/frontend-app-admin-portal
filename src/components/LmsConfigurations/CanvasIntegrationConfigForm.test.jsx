@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import CanvasIntegrationConfigForm, { REQUIRED_CANVAS_CONFIG_FIELDS } from './CanvasIntegrationConfigForm';
+import { validateLmsConfigForm } from './common';
 
 const config = {
   active: false,
@@ -20,18 +21,13 @@ const config = {
 
 describe('<CanvasIntegrationConfigForm />', () => {
   it('fails if any required field is missing', () => {
-    const wrapper = mount(
-      <CanvasIntegrationConfigForm
-        enterpriseId={config.enterpriseCustomer}
-      />,
-    );
     // Initialize form data
     const formData = new FormData();
     REQUIRED_CANVAS_CONFIG_FIELDS.forEach((requiredField) => formData.append(requiredField, config[requiredField]));
     // Remove form data one key at a time and validate
     REQUIRED_CANVAS_CONFIG_FIELDS.forEach((requiredField) => {
       formData.delete(requiredField);
-      const invalidFields = wrapper.instance().validateCanvasConfigForm(
+      const invalidFields = validateLmsConfigForm(
         formData,
         REQUIRED_CANVAS_CONFIG_FIELDS,
       );

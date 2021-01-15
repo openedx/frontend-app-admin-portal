@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import MoodleIntegrationConfigForm, { REQUIRED_MOODLE_CONFIG_FIELDS } from './MoodleIntegrationConfigForm';
+import { validateLmsConfigForm } from './common';
 
 const formData = new FormData();
 REQUIRED_MOODLE_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'));
@@ -8,8 +9,7 @@ REQUIRED_MOODLE_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'
 describe('<MoodleIntegrationConfigForm />', () => {
   it('validation fails if required fields missing', () => {
     const invalidFormData = new FormData();
-    const wrapper = shallow(<MoodleIntegrationConfigForm enterpriseId="testing123" />);
-    const invalidFields = wrapper.instance().validateMoodleConfigForm(
+    const invalidFields = validateLmsConfigForm(
       invalidFormData,
       REQUIRED_MOODLE_CONFIG_FIELDS,
     );

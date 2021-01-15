@@ -163,6 +163,18 @@ class LmsApiService {
   static updateSuccessFactorsConfig(formData, configId) {
     return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/${configId}/`, formData, 'json');
   }
+
+  static fetchDegreedConfig(uuid) {
+    return apiClient.get(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/?enterprise_customer=${uuid}`);
+  }
+
+  static postNewDegreedConfig(formData) {
+    return apiClient.post(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/`, formData, 'json');
+  }
+
+  static updateDegreedConfig(formData, configId) {
+    return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/${configId}/`, formData, 'json');
+  }
 }
 
 export default LmsApiService;

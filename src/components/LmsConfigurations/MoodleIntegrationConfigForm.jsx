@@ -7,8 +7,8 @@ import {
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
-import NewRelicService from '../../data/services/NewRelicService';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
+import { handleErrors, validateLmsConfigForm } from './common';
 
 export const REQUIRED_MOODLE_CONFIG_FIELDS = [
   'moodleBaseUrl',
@@ -21,13 +21,6 @@ class MoodleIntegrationConfigForm extends React.Component {
     submitState: SUBMIT_STATES.DEFAULT,
     active: this.props.config?.active,
     error: null,
-  }
-
-  handleErrors = (error) => {
-    const errorMsg = error.message || error.response?.status === 500
-      ? error.message : JSON.stringify(error.response.data);
-    NewRelicService.logAPIErrorResponse(errorMsg);
-    return errorMsg;
   }
 
   /**
@@ -43,7 +36,7 @@ class MoodleIntegrationConfigForm extends React.Component {
       this.setState({ config: response.data });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
   }
 
@@ -55,21 +48,8 @@ class MoodleIntegrationConfigForm extends React.Component {
       this.setState({ config: response.data });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
-  }
-
-  /**
-   * Validates this form. If the form is invalid, it will return the fields
-   * that were invalid. Otherwise, it will return an empty object.
-   * @param {FormData} formData
-   * @param {[String]} requiredFields
-   */
-  validateMoodleConfigForm = (formData, requiredFields) => {
-    const invalidFields = requiredFields
-      .filter(field => !formData.get(field))
-      .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
-    return invalidFields;
   }
 
   /**
@@ -89,7 +69,7 @@ class MoodleIntegrationConfigForm extends React.Component {
       requiredFields.push('duplicateCreds');
     }
     // validate the form
-    const invalidFields = this.validateMoodleConfigForm(formData, requiredFields);
+    const invalidFields = validateLmsConfigForm(formData, requiredFields);
     if (!isEmpty(invalidFields)) {
       this.setState({
         invalidFields: {
