@@ -5,6 +5,7 @@ import MoodleIntegrationConfigForm from './MoodleIntegrationConfigForm';
 import CanvasIntegrationConfigForm from './CanvasIntegrationConfigForm';
 import BlackboardIntegrationConfigForm from './BlackboardIntegrationConfigForm';
 import SuccessFactorsIntegrationConfigForm from './SuccessFactorsIntegrationConfigForm';
+import DegreedIntegrationConfigForm from './DegreedIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
 import { camelCaseObject } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
@@ -16,6 +17,7 @@ class LmsConfigurations extends React.Component {
     canvasConfig: null,
     blackboardConfig: null,
     sapsfConfig: null,
+    degreedConfig: null,
     error: null,
     loading: true,
   };
@@ -26,6 +28,7 @@ class LmsConfigurations extends React.Component {
       LmsApiService.fetchCanvasConfig(this.props.enterpriseId),
       LmsApiService.fetchBlackboardConfig(this.props.enterpriseId),
       LmsApiService.fetchSuccessFactorsConfig(this.props.enterpriseId),
+      LmsApiService.fetchDegreedConfig(this.props.enterpriseId),
     ]).then((responses) => {
       if (responses.some(response => response.reason?.request.status === 400
           || response.reason?.request.status > 404)) {
@@ -49,6 +52,8 @@ class LmsConfigurations extends React.Component {
             ? responses[2].value.data.results[0] : null,
           sapsfConfig: responses[3].status === 'fulfilled'
             ? responses[3].value.data.results[0] : null,
+          degreedConfig: responses[4].status === 'fulfilled'
+            ? responses[4].value.data.results[0] : null,
           loading: false,
         });
       }
@@ -57,7 +62,7 @@ class LmsConfigurations extends React.Component {
 
   render() {
     const {
-      canvasConfig, moodleConfig, blackboardConfig, sapsfConfig, error, loading,
+      canvasConfig, moodleConfig, blackboardConfig, sapsfConfig, degreedConfig, error, loading,
     } = this.state;
     if (loading) {
       return <LoadingMessage className="overview" />;
@@ -102,6 +107,15 @@ class LmsConfigurations extends React.Component {
         />
       );
     }
+
+    if (degreedConfig) {
+      return (
+        <DegreedIntegrationConfigForm
+          config={camelCaseObject(degreedConfig)}
+          enterpriseId={this.props.enterpriseId}
+        />
+      );
+    }
     return (
       <>
         <div
@@ -115,6 +129,11 @@ class LmsConfigurations extends React.Component {
           >
             <MoodleIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
           </Collapsible>
+        </div>
+        <div
+          key="successfactors-form-link"
+          className="mb-3"
+        >
           <Collapsible
             styling="card"
             className="shadow"
@@ -142,9 +161,21 @@ class LmsConfigurations extends React.Component {
           <Collapsible
             styling="card"
             className="shadow"
-            title="Canvas"
+            title="Blackboard"
           >
             <BlackboardIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
+          </Collapsible>
+        </div>
+        <div
+          key="degreed-form-link"
+          className="mb-3"
+        >
+          <Collapsible
+            styling="card"
+            className="shadow"
+            title="Degreed"
+          >
+            <DegreedIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
           </Collapsible>
         </div>
       </>

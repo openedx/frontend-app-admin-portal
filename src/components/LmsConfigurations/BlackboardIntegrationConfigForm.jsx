@@ -7,8 +7,8 @@ import {
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
-import NewRelicService from '../../data/services/NewRelicService';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
+import { handleErrors, validateLmsConfigForm } from './common';
 
 export const REQUIRED_BLACKBOARD_CONFIG_FIELDS = [
   'blackboardBaseUrl',
@@ -24,13 +24,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
     error: undefined,
   }
 
-  handleErrors = (error) => {
-    const errorMsg = error.message || error.response?.status === 500
-      ? error.message : JSON.stringify(error.response.data);
-    NewRelicService.logAPIErrorResponse(errorMsg);
-    return errorMsg;
-  }
-
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
    * Returns if there is an error.
@@ -44,7 +37,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
       this.setState({ config: response.data, error: undefined });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
   }
 
@@ -56,21 +49,8 @@ class BlackboardIntegrationConfigForm extends React.Component {
       this.setState({ config: response.data, error: undefined });
       return undefined;
     } catch (error) {
-      return this.handleErrors(error);
+      return handleErrors(error);
     }
-  }
-
-  /**
-   * Validates this form. If the form is invalid, it will return the fields
-   * that were invalid. Otherwise, it will return an empty object.
-   * @param {FormData} formData
-   * @param {[String]} requiredFields
-   */
-  validateBlackboardConfigForm = (formData, requiredFields) => {
-    const invalidFields = requiredFields
-      .filter(field => !formData.get(field))
-      .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
-    return invalidFields;
   }
 
   /**
@@ -79,7 +59,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
    */
   handleSubmit = async (formData, config) => {
     this.setState({ submitState: SUBMIT_STATES.PENDING });
-    const invalidFields = this.validateBlackboardConfigForm(formData, REQUIRED_BLACKBOARD_CONFIG_FIELDS);
+    const invalidFields = validateLmsConfigForm(formData, REQUIRED_BLACKBOARD_CONFIG_FIELDS);
     if (!isEmpty(invalidFields)) {
       this.setState({
         invalidFields: {

@@ -1,15 +1,15 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import SuccessFactorsConfigForm, { REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS } from './SuccessFactorsIntegrationConfigForm';
+import { mount } from 'enzyme';
+import SuccessFactorsIntegrationConfigForm, { REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS } from './SuccessFactorsIntegrationConfigForm';
+import { validateLmsConfigForm } from './common';
 
 const formData = new FormData();
 REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS.forEach(field => formData.append(field, 'testdata'));
 
-describe('<SuccessFactorsConfigForm />', () => {
+describe('<SuccessFactorsIntegrationConfigForm />', () => {
   it('validation fails if required fields missing', () => {
     const invalidFormData = new FormData();
-    const wrapper = shallow(<SuccessFactorsConfigForm enterpriseId="testing123" />);
-    const invalidFields = wrapper.instance().validateSuccessFactorsConfigForm(
+    const invalidFields = validateLmsConfigForm(
       invalidFormData,
       REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS,
     );
@@ -18,7 +18,7 @@ describe('<SuccessFactorsConfigForm />', () => {
 
   it('submit calls createSuccessFactorsConfig when config is not present', () => {
     const wrapper = mount((
-      <SuccessFactorsConfigForm enterpriseId="testing123" />
+      <SuccessFactorsIntegrationConfigForm enterpriseId="testing123" />
     ));
     const spyCreate = jest.spyOn(wrapper.instance(), 'createSuccessFactorsConfig');
     wrapper.instance().handleSubmit(formData);
@@ -31,7 +31,7 @@ describe('<SuccessFactorsConfigForm />', () => {
       sapsfBaseUrl: 'testing.com',
     };
     const wrapper = mount((
-      <SuccessFactorsConfigForm enterpriseId="testing123" config={config} />
+      <SuccessFactorsIntegrationConfigForm enterpriseId="testing123" config={config} />
     ));
     const spyUpdate = jest.spyOn(wrapper.instance(), 'updateSuccessFactorsConfig');
     wrapper.instance().handleSubmit(formData, config);
@@ -39,7 +39,7 @@ describe('<SuccessFactorsConfigForm />', () => {
   });
 
   it('show StatusAlert on errors', () => {
-    const wrapper = mount((<SuccessFactorsConfigForm enterpriseId="testing123" />));
+    const wrapper = mount((<SuccessFactorsIntegrationConfigForm enterpriseId="testing123" />));
     wrapper.setState({ error: 'error occurred.' });
     expect(wrapper.find('StatusAlert').first().props().message).toEqual('error occurred.');
   });
