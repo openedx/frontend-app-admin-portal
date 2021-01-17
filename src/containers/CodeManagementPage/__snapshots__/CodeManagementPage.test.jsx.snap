@@ -32,6 +32,12 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
     </div>
   </div>
   <div
+    className="fade mt-3 alert alert-warning show"
+    role="alert"
+  >
+    edX Subscriptions and Codes will be unavailable due to planned maintenance on Tuesday, January 19th between 10am and 11:30am EST.
+  </div>
+  <div
     className="container-fluid"
   >
     <div
@@ -224,6 +230,12 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    className="fade mt-3 alert alert-warning show"
+    role="alert"
+  >
+    edX Subscriptions and Codes will be unavailable due to planned maintenance on Tuesday, January 19th between 10am and 11:30am EST.
   </div>
   <div
     className="container-fluid"
@@ -425,6 +437,12 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
     </div>
   </div>
   <div
+    className="fade mt-3 alert alert-warning show"
+    role="alert"
+  >
+    edX Subscriptions and Codes will be unavailable due to planned maintenance on Tuesday, January 19th between 10am and 11:30am EST.
+  </div>
+  <div
     className="container-fluid"
   >
     <div
@@ -594,6 +612,12 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
         </div>
       </div>
     </div>
+  </div>
+  <div
+    className="fade mt-3 alert alert-warning show"
+    role="alert"
+  >
+    edX Subscriptions and Codes will be unavailable due to planned maintenance on Tuesday, January 19th between 10am and 11:30am EST.
   </div>
   <div
     className="container-fluid"
