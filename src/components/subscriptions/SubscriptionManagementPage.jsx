@@ -9,7 +9,7 @@ import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import SubscriptionDetailPage from './SubscriptionDetailPage';
-import MaintenanceAlert from "../MaintenanceAlert/MaintenanceAlert";
+import MaintenanceAlert from '../MaintenanceAlert/MaintenanceAlert';
 
 const PAGE_TITLE = 'Subscription Management';
 

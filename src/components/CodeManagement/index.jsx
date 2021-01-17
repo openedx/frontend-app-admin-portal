@@ -14,7 +14,7 @@ import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
 
 import { updateUrl } from '../../utils';
-import MaintenanceAlert from "../MaintenanceAlert/MaintenanceAlert";
+import MaintenanceAlert from '../MaintenanceAlert/MaintenanceAlert';
 
 class CodeManagement extends React.Component {
   constructor(props) {
