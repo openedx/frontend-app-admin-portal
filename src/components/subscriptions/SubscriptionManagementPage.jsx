@@ -9,6 +9,7 @@ import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import SubscriptionDetailPage from './SubscriptionDetailPage';
+import MaintenanceAlert from "../MaintenanceAlert/MaintenanceAlert";
 
 const PAGE_TITLE = 'Subscription Management';
 
@@ -17,6 +18,7 @@ function SubscriptionManagementPage({ enterpriseId }) {
     <SubscriptionData enterpriseId={enterpriseId}>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
+      <MaintenanceAlert />
       <main role="main" className="manage-subscription">
         <Container className="py-3" fluid>
           <Switch>

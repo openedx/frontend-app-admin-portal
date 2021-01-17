@@ -18,6 +18,7 @@ import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
 import AdminSearchForm from './AdminSearchForm';
+import MaintenanceAlert from '../MaintenanceAlert/MaintenanceAlert';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
@@ -303,6 +304,7 @@ class Admin extends React.Component {
               <Helmet title="Learner Progress Report" />
               <Hero title="Learner Progress Report" />
               <div className="container-fluid">
+                <MaintenanceAlert />
                 <div className="row mt-4">
                   <div className="col">
                     <h2>Overview</h2>
