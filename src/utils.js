@@ -296,10 +296,16 @@ const redirectToProxyLogin = (enterpriseSlug) => {
   global.location.href = proxyLoginUrl;
 };
 
-const hasEnterpriseAdminRole = roles => roles.some(role => {
-  const roleName = role.split(':')[0];
-  return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
-});
+const hasEnterpriseAdminRole = (roles) => {
+  if (!roles?.length) {
+    return false;
+  }
+
+  return roles.some((role) => {
+    const roleName = role.split(':').shift();
+    return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
+  });
+};
 
 const getSubscriptionContactText = (contactEmail) => {
   let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
