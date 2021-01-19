@@ -14,7 +14,6 @@ import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
 
 import { updateUrl } from '../../utils';
-import MaintenanceAlert from '../MaintenanceAlert/MaintenanceAlert';
 
 class CodeManagement extends React.Component {
   constructor(props) {
@@ -250,7 +249,6 @@ class CodeManagement extends React.Component {
         </Helmet>
         <main role="main">
           <Hero title="Code Management" />
-          <MaintenanceAlert />
           <div className="container-fluid">
             {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
             <div className="row mt-4 mb-3 no-gutters">
