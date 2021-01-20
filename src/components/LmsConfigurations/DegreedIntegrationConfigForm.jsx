@@ -194,7 +194,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               name="active"
               className="ml-3"
               checked={active}
-              onChange={() => setActive(prevState => ({ active: !prevState.active }))}
+              onChange={() => setActive(!active)}
             />
           </ValidationFormGroup>
         </div>
