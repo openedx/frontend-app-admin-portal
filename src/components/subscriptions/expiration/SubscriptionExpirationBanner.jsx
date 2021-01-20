@@ -10,16 +10,24 @@ import {
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
 const SubscriptionExpirationBanner = () => {
-  const { subscription: { daysUntilExpiration } } = useContext(SubscriptionDetailContext);
+  const { subscription: { daysUntilExpiration }, hasMultipleSubscriptions } = useContext(SubscriptionDetailContext);
 
   const renderMessage = () => (
     <>
-      Your subscription is {daysUntilExpiration} days from expiration.
-      Contact the edX Customer Success team at
-      {' '}
-      <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
-      {' '}
-      to extend your contract.
+      {hasMultipleSubscriptions && daysUntilExpiration <= 0 ? (
+        <>
+          This batch has expired. You are able to view the statuses of your invited learners.
+        </>
+      ) : (
+        <>
+          Your subscription is {daysUntilExpiration} days from expiration.
+          Contact the edX Customer Success team at
+          {' '}
+          <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
+          {' '}
+          to extend your contract.
+        </>
+      )}
     </>
   );
 

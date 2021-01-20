@@ -8,6 +8,9 @@ import {
 } from '@edx/paragon';
 
 import { SubscriptionContext } from './SubscriptionData';
+import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
+import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
+import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 
 const MultipleSubscriptionsPage = ({ match }) => {
   const { params: { enterpriseSlug } } = match;
@@ -21,6 +24,9 @@ const MultipleSubscriptionsPage = ({ match }) => {
       <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
     );
   }
+
+  const subscriptionFurthestFromExpiration = subscriptions.reduce((sub1, sub2) => (
+    new Date(sub1.expirationDate) > new Date(sub2.expirationDate) ? sub1 : sub2));
 
   const renderCard = (subscription = {}) => {
     const {
@@ -75,6 +81,12 @@ const MultipleSubscriptionsPage = ({ match }) => {
 
   return (
     <>
+      <SubscriptionDetailContextProvider subscription={subscriptionFurthestFromExpiration}>
+        { subscriptionFurthestFromExpiration.daysUntilExpiration > 0 && (
+          <SubscriptionExpirationBanner />
+        )}
+        <SubscriptionExpirationModal />
+      </SubscriptionDetailContextProvider>
       <Row>
         <Col xs={12} lg={6}>
           <h2>Cohorts</h2>

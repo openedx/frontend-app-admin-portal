@@ -22,9 +22,13 @@ const LicenseAction = ({ user }) => {
 
   const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
+  const subscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   const licenseActions = useMemo(
     () => {
+      if (subscriptionExpired) {
+        return noActionsAvailable;
+      }
       switch (user.status) {
         case ACTIVATED:
           if (hasNoRevocationsRemaining) {

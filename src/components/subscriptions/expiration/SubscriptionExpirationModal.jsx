@@ -44,7 +44,7 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
     <>
       <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
       <p>
-        Your subscription license expired on {formatTimestamp({ timestamp: expirationDate })}.
+        Your subscription license expired on <b>{formatTimestamp({ timestamp: expirationDate })}.</b>
         To access your subscription management page contact edX and reactivate your subscription(s).
       </p>
       <p>
@@ -55,9 +55,6 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
           To reactivate your subscription(s) please contact the edX Customer Success team at
           {' '}
           <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
-        </li>
-        <li>
-          View your learner progress in the <Link to={`/${enterpriseSlug}/admin/learners`}>learner management page</Link>
         </li>
         {enableCodeManagementScreen
           && (
