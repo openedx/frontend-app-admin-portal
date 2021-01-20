@@ -54,7 +54,7 @@ class CanvasIntegrationConfigForm extends React.Component {
   }
 
   handleSubmit = async (formData, config) => {
-    await this.setState({ submitState: SUBMIT_STATES.PENDING });
+    await this.setState({ submitState: SUBMIT_STATES.PENDING, error: null, invalidFields: {} });
     const invalidFields = validateLmsConfigForm(formData, REQUIRED_CANVAS_CONFIG_FIELDS);
     if (!isEmpty(invalidFields)) {
       this.setState({
@@ -67,7 +67,6 @@ class CanvasIntegrationConfigForm extends React.Component {
     }
 
     formData.append('enterprise_customer', this.props.enterpriseId);
-    formData.set('active', this.state.active);
     let err;
     if (config) {
       err = await this.updateCanvasConfig(formData, config.id);
@@ -116,6 +115,23 @@ class CanvasIntegrationConfigForm extends React.Component {
         }}
         onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
       >
+        <div className="row">
+          <div className="col col-6">
+            <ValidationFormGroup
+              for="active"
+            >
+              <label htmlFor="active">Active</label>
+              <Input
+                type="checkbox"
+                id="active"
+                name="active"
+                className="ml-3"
+                checked={active}
+                onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+              />
+            </ValidationFormGroup>
+          </div>
+        </div>
         <div className="row">
           <div className="col col-6">
             <ValidationFormGroup
@@ -188,23 +204,6 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 defaultValue={config ? config.canvasBaseUrl : null}
                 onChange={() => this.setState(prevState => ({ canvasBaseUrl: !prevState.canvasBaseUrl }))}
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-6">
-            <ValidationFormGroup
-              for="active"
-            >
-              <label htmlFor="active">Active</label>
-              <Input
-                type="checkbox"
-                id="active"
-                name="active"
-                className="ml-3"
-                checked={active}
-                onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
               />
             </ValidationFormGroup>
           </div>

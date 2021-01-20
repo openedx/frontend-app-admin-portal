@@ -137,7 +137,7 @@ class LmsApiService {
   }
 
   static updateCanvasConfig(formData, id) {
-    return apiClient.patch(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData, 'json');
+    return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData, 'json');
   }
 
   static fetchBlackboardConfig(uuid) {

@@ -71,7 +71,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
     }
 
     formData.append('enterprise_customer', this.props.enterpriseId);
-    formData.set('active', this.state.active);
 
     let err;
     if (config) {

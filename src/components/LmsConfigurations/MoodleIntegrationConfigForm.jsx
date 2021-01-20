@@ -57,7 +57,7 @@ class MoodleIntegrationConfigForm extends React.Component {
    * @param {FormData} formData
    */
   handleSubmit = async (formData, config) => {
-    this.setState({ submitState: SUBMIT_STATES.PENDING, error: null });
+    this.setState({ submitState: SUBMIT_STATES.PENDING, error: null, invalidFields: {} });
     let requiredFields = [];
     requiredFields = [...REQUIRED_MOODLE_CONFIG_FIELDS];
     if (!formData.get('token')) {

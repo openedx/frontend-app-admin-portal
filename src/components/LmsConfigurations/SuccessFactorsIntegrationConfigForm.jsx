@@ -60,7 +60,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
    * @param {FormData} formData
    */
   handleSubmit = async (formData, config) => {
-    this.setState({ submitState: SUBMIT_STATES.PENDING, error: null });
+    this.setState({ submitState: SUBMIT_STATES.PENDING, error: null, invalidFields: {} });
     const requiredFields = [...REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS];
 
     // validate the form

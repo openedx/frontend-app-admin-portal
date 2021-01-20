@@ -3,7 +3,7 @@ import NewRelicService from '../../data/services/NewRelicService';
 export const handleErrors = (error) => {
   const errorMsg = error.message || error.response?.status === 500
     ? error.message : JSON.stringify(error.response.data);
-  NewRelicService.logAPIErrorResponse(errorMsg);
+  NewRelicService.logAPIErrorResponse(error);
   return errorMsg;
 };
 
