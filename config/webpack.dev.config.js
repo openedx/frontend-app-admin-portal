@@ -159,6 +159,7 @@ module.exports = merge(commonConfig, {
         SAML_CONFIGURATION: true,
         CODE_VISIBILITY: true,
         EXTERNAL_LMS_CONFIGURATION: true,
+        BULK_ENROLLMENT: true,
       },
     }),
   ],
