@@ -10,6 +10,10 @@ import {
 } from './constants';
 
 import apiClient from '../../../data/apiClient';
+/* TODO: use import { getConfig } from '@edx/frontend-platform/config';
+  const config = getConfig();
+  To get base urls instead of the configuration here.
+*/
 import { configuration } from '../../../config';
 
 export function createSampleUser(licenseStatus) {
