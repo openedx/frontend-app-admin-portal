@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from './service';
 import NewRelicService from '../../../data/services/NewRelicService';
 import {
@@ -9,7 +10,6 @@ import {
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
 } from './constants';
-import { camelCaseObject } from '../../../utils';
 
 /*
  * This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
