@@ -6,6 +6,7 @@ import CanvasIntegrationConfigForm from './CanvasIntegrationConfigForm';
 import BlackboardIntegrationConfigForm from './BlackboardIntegrationConfigForm';
 import SuccessFactorsIntegrationConfigForm from './SuccessFactorsIntegrationConfigForm';
 import DegreedIntegrationConfigForm from './DegreedIntegrationConfigForm';
+import CornerstoneIntegrationConfigForm from './CornerstoneIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
 import { camelCaseObject } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
@@ -18,6 +19,7 @@ class LmsConfigurations extends React.Component {
     blackboardConfig: null,
     sapsfConfig: null,
     degreedConfig: null,
+    cornerstoneConfig: null,
     error: null,
     loading: true,
   };
@@ -29,6 +31,7 @@ class LmsConfigurations extends React.Component {
       LmsApiService.fetchBlackboardConfig(this.props.enterpriseId),
       LmsApiService.fetchSuccessFactorsConfig(this.props.enterpriseId),
       LmsApiService.fetchDegreedConfig(this.props.enterpriseId),
+      LmsApiService.fetchCornerstoneConfig(this.props.enterpriseId),
     ]).then((responses) => {
       if (responses.some(response => response.reason?.request.status === 400
           || response.reason?.request.status > 404)) {
@@ -54,6 +57,8 @@ class LmsConfigurations extends React.Component {
             ? responses[3].value.data.results[0] : null,
           degreedConfig: responses[4].status === 'fulfilled'
             ? responses[4].value.data.results[0] : null,
+          cornerstoneConfig: responses[5].status === 'fulfilled'
+            ? responses[5].value.data.results[0] : null,
           loading: false,
         });
       }
@@ -62,7 +67,8 @@ class LmsConfigurations extends React.Component {
 
   render() {
     const {
-      canvasConfig, moodleConfig, blackboardConfig, sapsfConfig, degreedConfig, error, loading,
+      canvasConfig, moodleConfig, blackboardConfig, sapsfConfig, degreedConfig, cornerstoneConfig,
+      error, loading,
     } = this.state;
     if (loading) {
       return <LoadingMessage className="overview" />;
@@ -107,7 +113,6 @@ class LmsConfigurations extends React.Component {
         />
       );
     }
-
     if (degreedConfig) {
       return (
         <DegreedIntegrationConfigForm
@@ -116,6 +121,15 @@ class LmsConfigurations extends React.Component {
         />
       );
     }
+    if (cornerstoneConfig) {
+      return (
+        <CornerstoneIntegrationConfigForm
+          config={camelCaseObject(cornerstoneConfig)}
+          enterpriseId={this.props.enterpriseId}
+        />
+      );
+    }
+
     return (
       <>
         <div
@@ -176,6 +190,18 @@ class LmsConfigurations extends React.Component {
             title="Degreed"
           >
             <DegreedIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
+          </Collapsible>
+        </div>
+        <div
+          key="cornerstone-form-link"
+          className="mb-3"
+        >
+          <Collapsible
+            styling="card"
+            className="shadow"
+            title="Cornerstone"
+          >
+            <CornerstoneIntegrationConfigForm enterpriseId={this.props.enterpriseId} />
           </Collapsible>
         </div>
       </>
