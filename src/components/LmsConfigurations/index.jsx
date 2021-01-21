@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible } from '@edx/paragon';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import MoodleIntegrationConfigForm from './MoodleIntegrationConfigForm';
 import CanvasIntegrationConfigForm from './CanvasIntegrationConfigForm';
 import BlackboardIntegrationConfigForm from './BlackboardIntegrationConfigForm';
 import SuccessFactorsIntegrationConfigForm from './SuccessFactorsIntegrationConfigForm';
 import DegreedIntegrationConfigForm from './DegreedIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
-import { camelCaseObject } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 
