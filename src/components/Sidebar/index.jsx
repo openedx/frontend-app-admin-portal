@@ -96,8 +96,8 @@ class Sidebar extends React.Component {
         hidden: !features.SUPPORT,
       },
       {
-        title: 'Bulk Enrollment',
-        to: `${baseUrl}/admin/bulkenrollment`,
+        title: 'Catalog Management',
+        to: `${baseUrl}/admin/catalog_management`,
         icon: faBookOpen,
         hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
       },
