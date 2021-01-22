@@ -168,7 +168,7 @@ class EnterpriseApp extends React.Component {
                     <Route
                       key="bulk-enrollment"
                       exact
-                      path={`${baseUrl}/admin/bulkenrollment`}
+                      path={`${baseUrl}/admin/catalog_management`}
                       render={routeProps => <BulkEnrollmentPage {...routeProps} />}
                     />
                     )}

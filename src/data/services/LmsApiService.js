@@ -8,6 +8,8 @@ class LmsApiService {
 
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
 
+  static enterpriseCustomerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/`;
+
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
 
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
@@ -174,6 +176,11 @@ class LmsApiService {
 
   static updateDegreedConfig(formData, configId) {
     return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/${configId}/`, formData, 'json');
+  }
+
+  static sendBulkEnrollment(enterpriseId, options) {
+    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseId}/enterprise_learners/`;
+    return apiClient.post(url, options, 'json');
   }
 }
 

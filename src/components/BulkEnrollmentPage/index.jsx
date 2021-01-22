@@ -1,10 +1,14 @@
 import React from 'react';
 
-import CourseSearch from './CourseSearch';
+import BulkEnrollmentButton from '../BulkEnrollmentButton';
 
 function BulkEnrollmentPage() {
   return (
-    <CourseSearch />
+    <BulkEnrollmentButton
+      enterpriseUuid=""
+      selectedCourseRunKeys={['']}
+      onSuccess={() => {}}
+    />
   );
 }
 
