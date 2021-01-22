@@ -7,6 +7,7 @@ import LmsConfigurations from './index';
 import LmsApiService from '../../data/services/LmsApiService';
 import { REQUIRED_BLACKBOARD_CONFIG_FIELDS } from './BlackboardIntegrationConfigForm';
 import { REQUIRED_DEGREED_CONFIG_FIELDS } from './DegreedIntegrationConfigForm';
+import { REQUIRED_CORNERSTONE_CONFIG_FIELDS } from './CornerstoneIntegrationConfigForm';
 
 jest.mock('./../../data/services/LmsApiService');
 
@@ -63,6 +64,16 @@ const badDegreedResponse = {
   request: { status: 400, statusText: 'Bad Request' },
 };
 
+const cornerstoneResponse = {
+  data: { results: [{}] },
+};
+const notFoundCornerstoneResponse = {
+  request: { status: 404, statusText: 'Not Found' },
+};
+const badCornerstoneResponse = {
+  request: { status: 400, statusText: 'Bad Request' },
+};
+
 REQUIRED_MOODLE_CONFIG_FIELDS.forEach((field) => {
   moodleResponse.data.results[0][field] = 'testdata';
 });
@@ -83,6 +94,10 @@ REQUIRED_DEGREED_CONFIG_FIELDS.forEach((field) => {
   degreedResponse.data.results[0][field] = 'testdata';
 });
 
+REQUIRED_CORNERSTONE_CONFIG_FIELDS.forEach((field) => {
+  cornerstoneResponse.data.results[0][field] = 'testdata';
+});
+
 const waitForAsync = () => new Promise(resolve => setImmediate(resolve));
 
 describe('<LmsConfigurations /> ', () => {
@@ -92,6 +107,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -107,6 +123,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -123,6 +140,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -137,6 +155,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockResolvedValue(canvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -151,6 +170,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockResolvedValue(successFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -163,13 +183,28 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchMoodleConfig.mockRejectedValue(notFoundMoodleResponse);
     LmsApiService.fetchBlackboardConfig.mockRejectedValue(notFoundBlackboardResponse);
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
-    LmsApiService.fetchSuccessFactorsConfig.mockResolvedValue(successFactorsResponse);
+    LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockResolvedValue(degreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(notFoundCornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
     wrapper.update();
     expect(wrapper.state().degreedConfig).toEqual(degreedResponse.data.results[0]);
+  });
+
+  it('gets the Cornerstone LMS configuration when present', async () => {
+    LmsApiService.fetchMoodleConfig.mockRejectedValue(notFoundMoodleResponse);
+    LmsApiService.fetchBlackboardConfig.mockRejectedValue(notFoundBlackboardResponse);
+    LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
+    LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
+    LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
+
+    const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
+    await waitForAsync();
+    wrapper.update();
+    expect(wrapper.state().cornerstoneConfig).toEqual(cornerstoneResponse.data.results[0]);
   });
 
   it('return Error Page when the Moodle LMS fetch request fails with error (not 404)', async () => {
@@ -181,6 +216,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -193,6 +229,7 @@ describe('<LmsConfigurations /> ', () => {
     expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
   });
 
   it('return Error Page when Blackboard LMS fetch request fails with an error (not 404)', async () => {
@@ -200,10 +237,10 @@ describe('<LmsConfigurations /> ', () => {
 
     // We want to ensure that the Blackboard fetch config method will cause the error page to display
     // if it encounters an unexpected error while the other pages succeed.
-    LmsApiService.fetchMoodleConfig.mockResolvedValue(blackboardResponse);
     LmsApiService.fetchCanvasConfig.mockResolvedValue(canvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -216,6 +253,7 @@ describe('<LmsConfigurations /> ', () => {
     expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
   });
 
   it('return Error Page when the Canvas LMS fetch request fails with error (not 404)', async () => {
@@ -224,6 +262,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(badCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(notFoundSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -236,6 +275,7 @@ describe('<LmsConfigurations /> ', () => {
     expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
   });
 
   it('return Error Page when the Success Factors LMS fetch request fails with error (not 404)', async () => {
@@ -244,6 +284,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockRejectedValue(badSuccessFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -256,6 +297,7 @@ describe('<LmsConfigurations /> ', () => {
     expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
   });
 
   it('return Error Page when the Degreed LMS fetch request fails with error (not 404)', async () => {
@@ -264,6 +306,7 @@ describe('<LmsConfigurations /> ', () => {
     LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
     LmsApiService.fetchSuccessFactorsConfig.mockResolvedValue(successFactorsResponse);
     LmsApiService.fetchDegreedConfig.mockRejectedValue(badDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockResolvedValue(cornerstoneResponse);
 
     const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
     await waitForAsync();
@@ -276,5 +319,28 @@ describe('<LmsConfigurations /> ', () => {
     expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
     expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
+  });
+
+  it('return Error Page when the Cornerstone LMS fetch request fails with error (not 404)', async () => {
+    LmsApiService.fetchMoodleConfig.mockRejectedValue(notFoundMoodleResponse);
+    LmsApiService.fetchBlackboardConfig.mockResolvedValue(blackboardResponse);
+    LmsApiService.fetchCanvasConfig.mockRejectedValue(notFoundCanvasResponse);
+    LmsApiService.fetchSuccessFactorsConfig.mockResolvedValue(successFactorsResponse);
+    LmsApiService.fetchDegreedConfig.mockRejectedValue(notFoundDegreedResponse);
+    LmsApiService.fetchCornerstoneConfig.mockRejectedValue(badCornerstoneResponse);
+
+    const wrapper = mount(<LmsConfigurations enterpriseId="testEnterpriseId" />);
+    await waitForAsync();
+    wrapper.update();
+
+    expect(wrapper.state().cornerstoneConfig).toBeFalsy();
+    expect(wrapper.find('ErrorPage').length).toBe(1);
+    expect(wrapper.find('MoodleIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('SuccessFactorsIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CanvasIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('BlackboardIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('DegreedIntegrationConfigForm').length).toBe(0);
+    expect(wrapper.find('CornerstoneIntegrationConfigForm').length).toBe(0);
   });
 });
