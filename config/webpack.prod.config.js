@@ -161,7 +161,7 @@ module.exports = merge(commonConfig, {
         SUPPORT: true,
         SAML_CONFIGURATION: true,
         CODE_VISIBILITY: false,
-        EXTERNAL_LMS_CONFIGURATION: false,
+        EXTERNAL_LMS_CONFIGURATION: true,
       },
     }),
     new HtmlWebpackNewRelicPlugin({
