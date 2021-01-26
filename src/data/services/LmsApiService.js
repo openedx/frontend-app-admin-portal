@@ -30,6 +30,7 @@ class LmsApiService {
   }
 
   static fetchEnterpriseList(options) {
+    console.log("OPTIONS", options)
     const queryParams = {
       page: 1,
       page_size: 50,

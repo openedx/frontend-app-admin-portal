@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
 
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import LoadingMessage from '../LoadingMessage';
 
 import {

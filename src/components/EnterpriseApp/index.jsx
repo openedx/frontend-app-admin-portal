@@ -10,7 +10,7 @@ import CodeManagementPage from '../../containers/CodeManagementPage';
 import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
-import SupportPage from '../../containers/SupportPage';
+import SupportPage from '../SupportPage';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
@@ -38,7 +38,6 @@ class EnterpriseApp extends React.Component {
     const {
       match: { params: { enterpriseSlug } },
     } = this.props;
-    console.log('ENTERRISE APP MOUNTED');
     this.props.fetchPortalConfiguration(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
   }
@@ -49,7 +48,6 @@ class EnterpriseApp extends React.Component {
     } = this.props;
 
     if (pathname !== prevProps.location.pathname) {
-      console.log('LOCATION CHANGE');
       this.handleSidebarMenuItemClick();
     }
   }
@@ -226,7 +224,13 @@ class EnterpriseApp extends React.Component {
                     key="support"
                     exact
                     path={`${baseUrl}/admin/support`}
-                    render={routeProps => <SupportPage {...routeProps} />}
+                    render={routeProps => (
+                      <SupportPage
+                        {...routeProps}
+                        emailAddress={email}
+                        enterpriseName={this.props.enterpriseName}
+                      />
+                    )}
                   />
                   {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
                     && (

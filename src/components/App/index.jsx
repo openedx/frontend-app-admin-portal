@@ -36,7 +36,7 @@ const AppWrapper = () => {
             <PageRoute exact path="/public/support" component={SupportPage} />
             <AuthenticatedPageRoute
               path="/enterprises"
-              component={EnterpriseIndexPage}
+              render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
               authenticatedAPIClient={apiClient}
               redirect={`${process.env.BASE_URL}/enterprises`}
             />
@@ -58,7 +58,7 @@ const AppWrapper = () => {
             />
             <AuthenticatedPageRoute
               path="/"
-              component={EnterpriseIndexPage}
+              render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
               authenticatedAPIClient={apiClient}
               redirect={process.env.BASE_URL}
             />
