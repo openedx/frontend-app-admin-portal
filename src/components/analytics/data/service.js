@@ -1,4 +1,4 @@
-import apiClient from '../../../data/apiClient';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../../config';
 
 class AnalyticsApiService {
@@ -11,7 +11,7 @@ class AnalyticsApiService {
     const queryParams = {
       ...options,
     };
-    return apiClient.get(AnalyticsApiService.tableauTokenUrl);
+    return getAuthenticatedHttpClient().get(AnalyticsApiService.tableauTokenUrl);
   }
 }
 

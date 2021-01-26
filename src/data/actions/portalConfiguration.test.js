@@ -1,8 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
 
-import apiClient from '../apiClient';
 import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
@@ -10,11 +8,9 @@ import {
   FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
+import { axiosMock } from '../../setupTest';
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {

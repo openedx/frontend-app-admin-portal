@@ -2,6 +2,7 @@ import faker from 'faker';
 import moment from 'moment';
 import qs from 'query-string';
 
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import {
   ACTIVATED,
   ASSIGNED,
@@ -9,11 +10,6 @@ import {
   PAGE_SIZE,
 } from './constants';
 
-import apiClient from '../../../data/apiClient';
-/* TODO: use import { getConfig } from '@edx/frontend-platform/config';
-  const config = getConfig();
-  To get base urls instead of the configuration here.
-*/
 import { configuration } from '../../../config';
 
 export function createSampleUser(licenseStatus) {
@@ -95,16 +91,18 @@ export function sendLicenseRevoke(options = {}) {
 class LicenseManagerApiService {
   static licenseManagerBaseUrl = `${configuration.LICENSE_MANAGER_BASE_URL}/api/v1`;
 
+  static apiClient = getAuthenticatedHttpClient
+
   static licenseAssign(options, subscriptionUUID) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/assign/`;
-    return apiClient.post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options, 'json');
   }
 
   static licenseRemind(options, subscriptionUUID, bulkRemind) {
     const remindUrl = bulkRemind ? 'remind-all' : 'remind';
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/${remindUrl}/`;
-    return apiClient.post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options, 'json');
   }
 
   static fetchSubscriptions(options) {
@@ -113,7 +111,7 @@ class LicenseManagerApiService {
     };
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return LicenseManagerApiService.apiClient().get(url);
   }
 
   static fetchSubscriptionUsers(subscriptionUUID, options) {
@@ -123,7 +121,7 @@ class LicenseManagerApiService {
     };
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return LicenseManagerApiService.apiClient().get(url);
   }
 
   static fetchSubscriptionUsersOverview(subscriptionUUID, options) {
@@ -132,12 +130,12 @@ class LicenseManagerApiService {
     };
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/overview/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return LicenseManagerApiService.apiClient().get(url);
   }
 
   static licenseRevoke(subscriptionUUID, options) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke/`;
-    return apiClient.post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options, 'json');
   }
 }
 

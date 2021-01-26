@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
 
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import LoadingMessage from '../LoadingMessage';
 
 import {
@@ -10,7 +11,6 @@ import {
   redirectToProxyLogin,
   hasEnterpriseAdminRole,
 } from '../../utils';
-import apiClient from '../../data/apiClient';
 
 const AdminRegisterPage = ({ authentication, match }) => {
   const { enterpriseSlug } = match.params;
@@ -21,12 +21,13 @@ const AdminRegisterPage = ({ authentication, match }) => {
         // user is not authenticated
         return;
       }
+      const history = useHistory();
 
       if (!hasEnterpriseAdminRole(authentication.roles)) {
         // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
         // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
         const logoutRedirectUrl = getProxyLoginUrl(enterpriseSlug);
-        apiClient.logout(logoutRedirectUrl);
+        history.push(logoutRedirectUrl);
       }
     },
     [authentication.username, authentication.roles],
@@ -74,4 +75,4 @@ AdminRegisterPage.propTypes = {
   }).isRequired,
 };
 
-export default AdminRegisterPage;
+export default withRouter(AdminRegisterPage);
