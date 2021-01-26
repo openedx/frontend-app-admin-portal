@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
 import { paginateTable, sortTable, clearTable } from '../../data/actions/table';

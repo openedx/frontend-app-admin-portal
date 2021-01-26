@@ -1,23 +1,18 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
 import { paginateTable, sortTable } from './table';
-import apiClient from '../apiClient';
 import {
   PAGINATION_FAILURE,
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
 } from '../constants/table';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
+import { axiosMock } from '../../setupTest';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';
-
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {
