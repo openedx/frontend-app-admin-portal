@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 
@@ -30,9 +30,14 @@ class EnterpriseList extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { location } = this.props;
+
+    console.log('PREV LOCATION', prevProps.location)
+    console.log('CURR LOCATION', location)
     if (location.search !== prevProps.location.search) {
       const { search } = qs.parse(location.search);
       const { search: prevSearch } = qs.parse(prevProps.location.search);
+      console.log("PREV SEARCH", prevSearch)
+      console.log("Search", search)
       if (search !== prevSearch) {
         this.handleSearch(search);
       }
@@ -51,7 +56,7 @@ class EnterpriseList extends React.Component {
       ...options,
       search: this.state.searchQuery || undefined,
     };
-
+    console.log("Calling API")
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
   }
 
@@ -182,4 +187,4 @@ EnterpriseList.propTypes = {
   error: PropTypes.instanceOf(Error),
 };
 
-export default EnterpriseList;
+export default withRouter(EnterpriseList);

@@ -4,12 +4,13 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { breakpoints } from '@edx/paragon';
 
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
 import BulkEnrollmentPage from '../BulkEnrollmentPage';
-import RequestCodesPage from '../../containers/RequestCodesPage';
+import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
-import SupportPage from '../../containers/SupportPage';
+import SupportPage from '../SupportPage';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
@@ -37,7 +38,6 @@ class EnterpriseApp extends React.Component {
     const {
       match: { params: { enterpriseSlug } },
     } = this.props;
-
     this.props.fetchPortalConfiguration(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
   }
@@ -59,6 +59,7 @@ class EnterpriseApp extends React.Component {
   handleSidebarMenuItemClick() {
     const contentRef = this.contentWrapperRef && this.contentWrapperRef.current;
     if (contentRef) {
+      console.log('CONTENT REF', contentRef);
       // Set focus on the page content container after clicking sidebar menu link
       contentRef.focus();
     }
@@ -90,8 +91,6 @@ class EnterpriseApp extends React.Component {
       enableAnalyticsScreen,
       enableSamlConfigurationScreen,
       enableLmsConfigurationsScreen,
-      authentication,
-      userAccount,
     } = this.props;
     const { sidebarWidth } = this.state;
     const {
@@ -99,9 +98,10 @@ class EnterpriseApp extends React.Component {
       params: { enterpriseSlug },
     } = match;
     const defaultContentPadding = 10; // 10px for appropriate padding
-
-    const isUserLoadedAndInactive = !!(userAccount?.loaded && !userAccount?.isActive);
-    const isUserMissingJWTRoles = !authentication?.roles?.length;
+    const { isActive, roles, email } = getAuthenticatedUser() || {};
+    // checking for undefined tells if if the user's info is hydrated
+    const isUserLoadedAndInactive = isActive !== undefined && !isActive;
+    const isUserMissingJWTRoles = !roles?.length;
 
     if (error) {
       return this.renderError(error);
@@ -160,7 +160,13 @@ class EnterpriseApp extends React.Component {
                       key="request-codes"
                       exact
                       path={`${baseUrl}/admin/coupons/request`}
-                      render={routeProps => <RequestCodesPage {...routeProps} />}
+                      render={routeProps => (
+                        <RequestCodesPage
+                          {...routeProps}
+                          emailAddress={email}
+                          enterpriseName={this.props.enterpriseName}
+                        />
+                      )}
                     />,
                   ]}
                   {(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen)
@@ -218,7 +224,13 @@ class EnterpriseApp extends React.Component {
                     key="support"
                     exact
                     path={`${baseUrl}/admin/support`}
-                    render={routeProps => <SupportPage {...routeProps} />}
+                    render={routeProps => (
+                      <SupportPage
+                        {...routeProps}
+                        emailAddress={email}
+                        enterpriseName={this.props.enterpriseName}
+                      />
+                    )}
                   />
                   {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
                     && (
@@ -242,6 +254,7 @@ class EnterpriseApp extends React.Component {
 
 EnterpriseApp.defaultProps = {
   enterpriseId: null,
+  enterpriseName: null,
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
@@ -258,6 +271,7 @@ EnterpriseApp.propTypes = {
     }).isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
+  enterpriseName: PropTypes.string,
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -266,8 +280,6 @@ EnterpriseApp.propTypes = {
     replace: PropTypes.func,
   }).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
-  authentication: PropTypes.shape().isRequired,
-  userAccount: PropTypes.shape().isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,

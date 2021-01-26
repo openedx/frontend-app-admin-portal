@@ -8,7 +8,9 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('@edx/frontend-platform/auth');
-const axiosMock = new MockAdapter(axios);
+
+// eslint-disable-next-line import/prefer-default-export
+export const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
 axios.isAccessTokenExpired = jest.fn();
 axios.isAccessTokenExpired.mockReturnValue(false);

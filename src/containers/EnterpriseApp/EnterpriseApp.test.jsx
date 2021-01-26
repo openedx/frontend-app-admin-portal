@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { breakpoints } from '@edx/paragon';
+import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
 
@@ -20,10 +21,6 @@ const mockStore = configureMockStore([thunk]);
 const initialState = {
   authentication: {
     roles: ['enterprise_admin:*'],
-  },
-  userAccount: {
-    loaded: true,
-    isActive: true,
   },
   dashboardAnalytics: {},
   portalConfiguration: {
@@ -72,7 +69,10 @@ EnterpriseAppWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
-describe('EnterpriseApp', () => {
+describe('<EnterpriseApp />', () => {
+  afterEach(() => {
+    axiosMock.reset();
+  });
   it('renders not found page correctly', () => {
     const tree = renderer
       .create((
@@ -145,6 +145,7 @@ describe('EnterpriseApp', () => {
       });
 
       // ensure focus is set on content wrapper
+      console.log('ACTIVE ELEMENT', document.activeElement.className);
       expect(document.activeElement.className).toEqual('content-wrapper');
       global.innerWidth = initialWidth;
     });
