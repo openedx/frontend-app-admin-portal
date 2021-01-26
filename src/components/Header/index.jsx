@@ -1,102 +1,120 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Button, Icon, Dropdown } from '@edx/paragon';
+import {
+  Dropdown, Navbar, AvatarButton, Nav,
+} from '@edx/paragon';
 
+import {
+ getAuthenticatedUser, hydrateAuthenticatedUser, getLogoutRedirectUrl,
+} from '@edx/frontend-platform/auth';
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
-import apiClient from '../../data/apiClient';
 import { configuration } from '../../config';
 
 import './Header.scss';
 
-class Header extends React.Component {
-  componentDidMount() {
-    if (this.props.username) {
-      this.props.fetchUserAccount(this.props.username);
+export const Logo = ({ enterpriseLogo, enterpriseName }) => {
+  const logo = configuration.LOGO_URL;
+
+  return (
+    <Img
+      src={enterpriseLogo || logo}
+      alt={`${enterpriseName || 'edX'} logo`}
+      onError={(e) => { e.target.src = logo; }}
+    />
+  );
+};
+
+Logo.defaultProps = {
+  enterpriseLogo: configuration.LOGO_URL,
+};
+
+Logo.propTypes = {
+  enterpriseLogo: PropTypes.string,
+  enterpriseName: PropTypes.string.isRequired,
+};
+
+export const HeaderDropdown = ({ user }) => {
+  const { profileImage, email } = user;
+  const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
+  const avatarScreenReaderText = `Profile image for ${email}`;
+
+  return (
+    <Dropdown>
+      <Dropdown.Toggle
+        as={AvatarButton}
+        src={avatarImage}
+        id="avatar-dropdown"
+        size="md"
+        alt={avatarScreenReaderText}
+      >
+        {email}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item
+          href={getLogoutRedirectUrl()}
+        >
+          Logout
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+};
+
+HeaderDropdown.propTypes = {
+  user: PropTypes.shape({
+    profileImage: {
+      hasImage: PropTypes.bool.isRequired,
+      imageUrlMedium: PropTypes.string,
+    },
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+const Header = ({
+  hasSidebarToggle, enterpriseName, enterpriseLogo,
+}) => {
+  const user = getAuthenticatedUser();
+  useEffect(() => {
+    if (user && !user.email) {
+      hydrateAuthenticatedUser();
     }
-  }
+    // rehydrate if the username changes
+  }, [user?.username]);
 
-  getProfileIconElement() {
-    const { email, userProfileImageUrl } = this.props;
-    const screenReaderText = `Profile image for ${email}`;
 
-    if (userProfileImageUrl) {
-      return <Img className="user-profile-img mr-2" src={userProfileImageUrl} alt={screenReaderText} />;
-    }
-    return <Icon className="fa fa-user mr-2" screenReaderText={screenReaderText} />;
-  }
+  return (
+    <header className="container-fluid border-bottom">
+      <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
+        <Nav>
+          {hasSidebarToggle && <SidebarToggle />}
 
-  renderLogo() {
-    const { enterpriseLogo, enterpriseName } = this.props;
-    const logo = configuration.LOGO_URL;
-    return (
-      <Img
-        src={enterpriseLogo || logo}
-        alt={`${enterpriseName || 'edX'} logo`}
-        onError={(e) => { e.target.src = logo; }}
-      />
-    );
-  }
+          <Nav.Link
+            href="/"
+            className="navbar-brand"
+          >
+            <Logo enterpriseLogo={enterpriseLogo} enterpriseName={enterpriseName || ''} />
+          </Nav.Link>
 
-  render() {
-    const { email, hasSidebarToggle } = this.props;
-    return (
-      <header className="container-fluid border-bottom">
-        <nav aria-label="header" className="navbar px-0 py-1 justify-content-between">
-          <div>
-            {hasSidebarToggle && <SidebarToggle />}
-            <Link
-              to="/"
-              className="navbar-brand"
-            >
-              {this.renderLogo()}
-            </Link>
-          </div>
-          {email && (
-            // TODO: @edx/paragon's Dropdown is now a passthru component from react-bootstrap
-            // that doesn't address focus management, so using the now-deprecated
-            // previous version of the Dropdown component until the a11y issue is fixed.
-            <Dropdown.Deprecated>
-              <Dropdown.Deprecated.Button className="btn-outline-primary">
-                {this.getProfileIconElement()}
-                {email}
-              </Dropdown.Deprecated.Button>
-              <Dropdown.Deprecated.Menu>
-                <Button
-                  variant="link"
-                  className="dropdown-item"
-                  onClick={() => apiClient.logout()}
-                >
-                  Logout
-                </Button>
-              </Dropdown.Deprecated.Menu>
-            </Dropdown.Deprecated>
-          )}
-        </nav>
-      </header>
-    );
-  }
-}
+        </Nav>
+        {user && user.email && (
+          <HeaderDropdown user={user} />
+        )}
+      </Navbar>
+    </header>
+  );
+};
 
 Header.propTypes = {
   enterpriseLogo: PropTypes.string,
   enterpriseName: PropTypes.string,
-  email: PropTypes.string,
-  username: PropTypes.string,
-  userProfileImageUrl: PropTypes.string,
-  fetchUserAccount: PropTypes.func,
   hasSidebarToggle: PropTypes.bool,
 };
 
 Header.defaultProps = {
   enterpriseLogo: null,
   enterpriseName: null,
-  email: null,
-  username: null,
-  userProfileImageUrl: null,
-  fetchUserAccount: () => {},
   hasSidebarToggle: false,
 };
 
