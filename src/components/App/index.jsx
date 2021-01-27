@@ -1,7 +1,6 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Router } from 'react-router-dom';
 
-import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 
@@ -24,7 +23,7 @@ const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   return (
     <AppProvider store={store}>
-      <ConnectedRouter history={history}>
+      <Router history={history}>
         <ToastsProvider>
           <Helmet
             titleTemplate="%s - edX Admin Portal"
@@ -66,7 +65,7 @@ const AppWrapper = () => {
           </Switch>
           <Footer />
         </ToastsProvider>
-      </ConnectedRouter>
+      </Router>
     </AppProvider>
   );
 };

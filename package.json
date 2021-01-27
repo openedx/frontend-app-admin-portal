@@ -54,7 +54,6 @@
     "react-responsive": "6.1.2",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-router-redux": "5.0.0-alpha.9",
     "react-spinners": "0.3.2",
     "react-textarea-autosize": "7.1.2",
     "redux": "3.7.2",

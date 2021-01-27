@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import EnterpriseList from '../../components/EnterpriseList';
 import { clearPortalConfiguration } from '../../data/actions/portalConfiguration';
 import searchEnterpriseList from '../../data/actions/enterpriseList';
