@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { SubmissionError } from 'redux-form';
 import { MailtoLink } from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
 
 import SupportForm from './SupportForm';
 import Hero from '../Hero';
 import { features } from '../../config/index';
 
 import ZendeskApiService from '../../data/services/ZendeskApiService';
-import NewRelicService from '../../data/services/NewRelicService';
 
 class SupportPage extends React.Component {
   hasEmailAndEnterpriseName() {
@@ -39,7 +39,7 @@ class SupportPage extends React.Component {
                     ZendeskApiService.createZendeskTicket(options)
                       .then(response => response)
                       .catch((error) => {
-                        NewRelicService.logAPIErrorResponse(error);
+                        logError(error);
                         throw new SubmissionError({ _error: error });
                       })
                   )}

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { logError } from '@edx/frontend-platform/logging';
 
-import NewRelicService from '../../data/services/NewRelicService';
 
 class ErrorBoundary extends React.Component {
   componentDidCatch(error) {
-    NewRelicService.logError(error);
+    logError(error);
   }
 
   render() {

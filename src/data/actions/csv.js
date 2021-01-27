@@ -1,3 +1,4 @@
+import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver/FileSaver';
 
 import {
@@ -7,7 +8,6 @@ import {
   CLEAR_CSV,
 } from '../constants/csv';
 import store from '../store';
-import NewRelicService from '../services/NewRelicService';
 
 const fetchCsvRequest = csvId => ({
   type: FETCH_CSV_REQUEST,
@@ -35,7 +35,7 @@ const fetchCsv = (csvId, fetchMethod) => (
         dispatch(fetchCsvSuccess(csvId));
       })
       .catch((error) => {
-        NewRelicService.logAPIErrorResponse(error);
+        logError(error)
         dispatch(fetchCsvFailure(csvId, error));
       });
   }
