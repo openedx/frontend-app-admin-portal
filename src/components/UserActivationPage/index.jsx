@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useMemo, useState,
+  useContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -7,7 +7,7 @@ import {
   Container, Row, Col, Alert, MailtoLink,
 } from '@edx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-
+import { useInterval } from '../../hooks';
 import LoadingMessage from '../LoadingMessage';
 import { ToastsContext } from '../Toasts';
 
@@ -20,9 +20,8 @@ const UserActivationPage = ({
 }) => {
   const user = getAuthenticatedUser();
   const {
-    username, roles, email, isActive,
+    username, roles, isActive,
   } = user;
-  console.log('USER UAP', user);
   const [isPollingUserAccount, setIsPollingUserAccount] = useState(false);
   const enterpriseSlug = useMemo(
     () => match.params.enterpriseSlug,
@@ -30,37 +29,23 @@ const UserActivationPage = ({
   );
   const { addToast } = useContext(ToastsContext);
 
-//   useEffect(
-//     () => {
-//       let timeout;
-//       if (username && !isActive) {
-//         // user is authenticated and we finished hydrating the full user metadata, but
-//         // the user has not verified their email address. we start polling for their user
-//         // metadata every USER_ACCOUNT_POLLING_TIMEOUT milliseconds.
-//         setIsPollingUserAccount(true);
-
-//         timeout = setTimeout(() => {
-//           hydrateAuthenticatedUser();
-//         }, USER_ACCOUNT_POLLING_TIMEOUT);
-//       }
-//       return () => {
-//         if (timeout) {
-//           clearInterval(timeout);
-//         }
-//       };
-//     },
-//     // stringifying the data allows us to get a quick deep equality
-//     [JSON.stringify(user)],
-//   );
+  useInterval(() => {
+    if (username && !isActive) {
+      setIsPollingUserAccount(true);
+      hydrateAuthenticatedUser();
+    } else if (isActive) {
+      setIsPollingUserAccount(false);
+    }
+  }, USER_ACCOUNT_POLLING_TIMEOUT);
 
   if (username) {
     // user is authenticated, but doesn't have any JWT roles so redirect the user to
     // `:enterpriseSlug/admin/register` to display the proper error message.
-    // if (!roles?.length) {
-    //   return (
-    //     <Redirect to={`/${enterpriseSlug}/admin/register`} />
-    //   );
-    // }
+    if (!roles?.length) {
+      return (
+        <Redirect to={`/${enterpriseSlug}/admin/register`} />
+      );
+    }
 
     // user data is hydrated with a verified email address, so redirect the user
     // to the default page in the Admin Portal.
