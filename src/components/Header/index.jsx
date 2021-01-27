@@ -5,7 +5,7 @@ import {
 } from '@edx/paragon';
 
 import {
- getAuthenticatedUser, hydrateAuthenticatedUser, getLogoutRedirectUrl,
+  getAuthenticatedUser, hydrateAuthenticatedUser, getLogoutRedirectUrl,
 } from '@edx/frontend-platform/auth';
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
@@ -36,9 +36,9 @@ Logo.propTypes = {
 };
 
 export const HeaderDropdown = ({ user }) => {
-  const { profileImage, email } = user;
+  const { profileImage, username } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
-  const avatarScreenReaderText = `Profile image for ${email}`;
+  const avatarScreenReaderText = `Profile image for ${username}`;
 
   return (
     <Dropdown>
@@ -49,7 +49,7 @@ export const HeaderDropdown = ({ user }) => {
         size="md"
         alt={avatarScreenReaderText}
       >
-        {email}
+        {username}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
@@ -64,11 +64,11 @@ export const HeaderDropdown = ({ user }) => {
 
 HeaderDropdown.propTypes = {
   user: PropTypes.shape({
-    profileImage: {
+    profileImage: PropTypes.shape({
       hasImage: PropTypes.bool.isRequired,
       imageUrlMedium: PropTypes.string,
-    },
-    email: PropTypes.string.isRequired,
+    }),
+    username: PropTypes.string.isRequired,
   }).isRequired,
 };
 
@@ -77,12 +77,12 @@ const Header = ({
 }) => {
   const user = getAuthenticatedUser();
   useEffect(() => {
+    // if there is no email, the user data has not been hydrated
     if (user && !user.email) {
       hydrateAuthenticatedUser();
     }
     // rehydrate if the username changes
-  }, [user?.username]);
-
+  }, [user?.username, user?.id]);
 
   return (
     <header className="container-fluid border-bottom">
@@ -98,7 +98,7 @@ const Header = ({
           </Nav.Link>
 
         </Nav>
-        {user && user.email && (
+        {user?.username && (
           <HeaderDropdown user={user} />
         )}
       </Navbar>

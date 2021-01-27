@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
+import { logError } from '@edx/frontend-platform/logging';
 
-import NewRelicService from '../../data/services/NewRelicService';
 import ErrorBoundary from './index';
 
 global.newrelic = {
@@ -27,7 +27,7 @@ describe('<ErrorBoundary />', () => {
   });
   it('logs the error', () => {
     const welcomeError = new Error('Catch me if you can!');
-    NewRelicService.logError = jest.fn();
+    logError = jest.fn();
 
     const wrapper = shallow((
       <ErrorBoundary>
@@ -35,6 +35,6 @@ describe('<ErrorBoundary />', () => {
       </ErrorBoundary>
     ));
     wrapper.find(Welcome).simulateError(welcomeError);
-    expect(NewRelicService.logError).toHaveBeenCalledWith(new Error('Catch me if you can!'));
+    expect(logError).toHaveBeenCalledWith(new Error('Catch me if you can!'));
   });
 });

@@ -59,7 +59,6 @@ class EnterpriseApp extends React.Component {
   handleSidebarMenuItemClick() {
     const contentRef = this.contentWrapperRef && this.contentWrapperRef.current;
     if (contentRef) {
-      console.log('CONTENT REF', contentRef);
       // Set focus on the page content container after clicking sidebar menu link
       contentRef.focus();
     }

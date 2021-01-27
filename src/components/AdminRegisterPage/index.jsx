@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import LoadingMessage from '../LoadingMessage';
 
@@ -11,8 +12,10 @@ import {
   hasEnterpriseAdminRole,
 } from '../../utils';
 
-const AdminRegisterPage = ({ authentication, match }) => {
+const AdminRegisterPage = ({ match }) => {
   const { enterpriseSlug } = match.params;
+  const authentication = getAuthenticatedUser();
+  const history = useHistory();
 
   useEffect(
     () => {
@@ -20,7 +23,6 @@ const AdminRegisterPage = ({ authentication, match }) => {
         // user is not authenticated
         return;
       }
-      const history = useHistory();
 
       if (!hasEnterpriseAdminRole(authentication.roles)) {
         // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
@@ -66,7 +68,6 @@ const AdminRegisterPage = ({ authentication, match }) => {
 };
 
 AdminRegisterPage.propTypes = {
-  authentication: PropTypes.shape().isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,

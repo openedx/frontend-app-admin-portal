@@ -1,9 +1,9 @@
+import { logError } from '@edx/frontend-platform/logging';
 import {
   USER_SUBSCRIPTION_REQUEST,
   USER_SUBSCRIPTION_SUCCESS,
   USER_SUBSCRIPTION_FAILURE,
 } from '../constants/userSubscription';
-import NewRelicService from '../services/NewRelicService';
 
 import LicenseManagerApiService from '../../components/subscriptions/data/service';
 
@@ -37,7 +37,7 @@ const addLicensesForUsers = ({
       dispatch(sendUserSubscriptionSuccess(response));
       onSuccess(response);
     }).catch((error) => {
-      NewRelicService.logAPIErrorResponse(error);
+      logError(error)
       dispatch(sendUserSubscriptionFailure(error));
       onError(error);
     });

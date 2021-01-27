@@ -145,7 +145,6 @@ describe('<EnterpriseApp />', () => {
       });
 
       // ensure focus is set on content wrapper
-      console.log('ACTIVE ELEMENT', document.activeElement.className);
       expect(document.activeElement.className).toEqual('content-wrapper');
       global.innerWidth = initialWidth;
     });
