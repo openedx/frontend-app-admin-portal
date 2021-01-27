@@ -4,7 +4,6 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    segment: path.resolve(__dirname, '../src/segment.js'),
     app: path.resolve(__dirname, '../src/index.jsx'),
   },
   output: {
