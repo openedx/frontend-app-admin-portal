@@ -95,7 +95,7 @@ class LicenseRemindModal extends React.Component {
     return sendLicenseReminder(options, subscriptionUUID, isBulkRemind)
       .then(response => this.props.onSuccess(response))
       .catch((error) => {
-        logError(error)
+        logError(error);
         throw new SubmissionError({
           _error: [error.message],
         });

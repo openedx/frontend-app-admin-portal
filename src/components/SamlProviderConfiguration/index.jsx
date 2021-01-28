@@ -4,10 +4,10 @@ import moment from 'moment';
 import { Collapsible, Icon } from '@edx/paragon';
 import classNames from 'classnames';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { logError } from '@edx/frontend-platform/logging';
 import SamlProviderConfigForm from './SamlProviderConfigForm';
 import SamlProviderDataForm from './SamlProviderDataForm';
 import { snakeCaseFormData } from '../../utils';
-import NewRelicService from '../../data/services/NewRelicService';
 import LmsApiService from '../../data/services/LmsApiService';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
@@ -35,7 +35,7 @@ class SamlProviderConfiguration extends React.Component {
       .catch((error) => {
         const errorMsg = error.message || error.response.status === 500
           ? error.message : JSON.stringify(error.response.data);
-        NewRelicService.logAPIErrorResponse(errorMsg);
+        logError.logAPIErrorResponse(errorMsg);
         this.setState({
           error,
           loading: false,
@@ -133,7 +133,7 @@ class SamlProviderConfiguration extends React.Component {
   handleErrors(error) {
     const errorMsg = error.message || error.response?.status === 500
       ? error.message : JSON.stringify(error.response.data);
-    NewRelicService.logAPIErrorResponse(errorMsg);
+    logError(errorMsg);
     return errorMsg;
   }
 

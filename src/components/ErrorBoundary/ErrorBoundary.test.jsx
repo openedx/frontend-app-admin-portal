@@ -5,6 +5,8 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import ErrorBoundary from './index';
 
+jest.mock('@edx/frontend-platform/logging');
+
 global.newrelic = {
   addPageAction: jest.fn(),
   noticeError: jest.fn(),
@@ -27,7 +29,6 @@ describe('<ErrorBoundary />', () => {
   });
   it('logs the error', () => {
     const welcomeError = new Error('Catch me if you can!');
-    logError = jest.fn();
 
     const wrapper = shallow((
       <ErrorBoundary>

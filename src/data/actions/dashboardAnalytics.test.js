@@ -1,8 +1,6 @@
-
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import {axiosMock} from '../../setupTest';
+import { axiosMock } from '../../setupTest';
 import {
   clearDashboardAnalytics,
   fetchDashboardAnalytics,
@@ -14,6 +12,7 @@ import {
   CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 
+jest.mock('@edx/frontend-platform/logging');
 const mockStore = configureMockStore([thunk]);
 
 describe('actions', () => {

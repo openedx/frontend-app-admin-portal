@@ -10,7 +10,6 @@ import LoadingMessage from '../LoadingMessage';
 
 import LmsApiService from '../../data/services/LmsApiService';
 
-
 class RequestCodesPage extends React.Component {
   hasEmailAndEnterpriseName() {
     const { emailAddress, enterpriseName } = this.props;
@@ -39,7 +38,7 @@ class RequestCodesPage extends React.Component {
                     LmsApiService.requestCodes(options)
                       .then(response => response)
                       .catch((error) => {
-                        logError(error)
+                        logError(error);
                         throw new SubmissionError({ _error: error });
                       })
                   )}

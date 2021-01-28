@@ -6,6 +6,7 @@ import React from 'react';
 import snakeCase from 'lodash/snakeCase';
 import DegreedIntegrationConfigForm from './DegreedIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
+// eslint-disable-next-line no-unused-vars
 
 jest.mock('../../data/services/LmsApiService', () => ({
   postNewDegreedConfig: jest.fn(),

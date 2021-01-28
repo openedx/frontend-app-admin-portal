@@ -31,7 +31,7 @@ const fetchPortalConfiguration = slug => (
         dispatch(fetchPortalConfigurationSuccess(response.data));
       })
       .catch((error) => {
-        logError(error)
+        logError(error);
         dispatch(fetchPortalConfigurationFailure(error));
       });
   }

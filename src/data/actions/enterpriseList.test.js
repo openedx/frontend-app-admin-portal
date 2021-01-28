@@ -8,7 +8,7 @@ import {
   PAGINATION_SUCCESS,
   PAGINATION_FAILURE,
 } from '../constants/table';
-import {axiosMock} from '../../setupTest';
+import { axiosMock } from '../../setupTest';
 
 const mockStore = configureMockStore([thunk]);
 

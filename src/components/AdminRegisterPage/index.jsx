@@ -31,11 +31,11 @@ const AdminRegisterPage = ({ match }) => {
         history.push(logoutRedirectUrl);
       }
     },
-    [authentication.username, authentication.roles],
+    [authentication?.username, authentication?.roles],
   );
 
-  if (authentication.username) {
-    if (!hasEnterpriseAdminRole(authentication.roles)) {
+  if (authentication?.username) {
+    if (!hasEnterpriseAdminRole(authentication?.roles)) {
       // user is authenticated but doesn't have the `enterprise_admin` JWT role, so display a message while
       // redirecting the user to the log out page.
       return (

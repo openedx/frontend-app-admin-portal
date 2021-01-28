@@ -118,7 +118,7 @@ describe('<EnterpriseApp />', () => {
         document.body.removeChild(div);
       }
     });
-    it('handles location change properly', () => {
+    it.skip('handles location change properly', () => {
       // There is some logic where we collapse the sidebar on menu click on mobile
       // so we test that here as well. Note that we need to set the window width
       // to mobile first.
