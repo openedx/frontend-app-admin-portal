@@ -11,6 +11,7 @@ import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
 import { configuration } from '../../config';
+import { getProxyLoginUrl } from '../../utils';
 
 import './Header.scss';
 
@@ -35,7 +36,7 @@ Logo.propTypes = {
   enterpriseName: PropTypes.string.isRequired,
 };
 
-export const HeaderDropdown = ({ user }) => {
+export const HeaderDropdown = ({ user, enterpriseSlug }) => {
   const { profileImage, username } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
   const avatarScreenReaderText = `Profile image for ${username}`;
@@ -53,13 +54,17 @@ export const HeaderDropdown = ({ user }) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
-          href={getLogoutRedirectUrl()}
+          href={getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug))}
         >
           Logout
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
+};
+
+HeaderDropdown.defaultProps = {
+  enterpriseSlug: null,
 };
 
 HeaderDropdown.propTypes = {
@@ -70,10 +75,11 @@ HeaderDropdown.propTypes = {
     }),
     username: PropTypes.string.isRequired,
   }).isRequired,
+  enterpriseSlug: PropTypes.string,
 };
 
 const Header = ({
-  hasSidebarToggle, enterpriseName, enterpriseLogo,
+  hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
 }) => {
   const user = getAuthenticatedUser();
   useEffect(() => {
@@ -99,7 +105,7 @@ const Header = ({
 
         </Nav>
         {user?.username && (
-          <HeaderDropdown user={user} />
+          <HeaderDropdown user={user} enterpriseSlug={enterpriseSlug} />
         )}
       </Navbar>
     </header>
@@ -109,12 +115,14 @@ const Header = ({
 Header.propTypes = {
   enterpriseLogo: PropTypes.string,
   enterpriseName: PropTypes.string,
+  enterpriseSlug: PropTypes.string,
   hasSidebarToggle: PropTypes.bool,
 };
 
 Header.defaultProps = {
   enterpriseLogo: null,
   enterpriseName: null,
+  enterpriseSlug: null,
   hasSidebarToggle: false,
 };
 
