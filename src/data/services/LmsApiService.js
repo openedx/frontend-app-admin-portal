@@ -181,20 +181,20 @@ class LmsApiService {
   }
 
   static fetchCornerstoneConfig(uuid) {
-    return apiClient.get(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/?enterprise_customer=${uuid}`);
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewCornerstoneConfig(formData) {
-    return apiClient.post(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/`, formData, 'json');
   }
 
   static updateCornerstoneConfig(formData, configId) {
-    return apiClient.put(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/${configId}/`, formData, 'json');
   }
 
   static sendBulkEnrollment(enterpriseId, options) {
     const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseId}/enterprise_learners/`;
-    return apiClient.post(url, options, 'json');
+    return LmsApiService.apiClient().post(url, options, 'json');
   }
 }
 
