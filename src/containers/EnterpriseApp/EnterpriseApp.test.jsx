@@ -39,8 +39,9 @@ const initialState = {
   },
 };
 
-const EnterpriseAppWrapper = ({ store, ...props }) => (
-  <MemoryRouter initialEntries={['/test-enterprise-slug/admin/learners']}>
+// eslint-disable-next-line react/prop-types
+const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
+  <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
       <EnterpriseApp
         match={{
@@ -77,12 +78,7 @@ describe('<EnterpriseApp />', () => {
     const tree = renderer
       .create((
         <EnterpriseAppWrapper
-          match={{
-            url: '/',
-            params: {
-              enterpriseSlug: '',
-            },
-          }}
+          initialEntries={['/']}
         />
       ))
       .toJSON();
@@ -139,9 +135,7 @@ describe('<EnterpriseApp />', () => {
       );
 
       wrapper.setProps({
-        location: {
-          pathname: '/test-enterprise-slug/admin/codes',
-        },
+        initialEntries: ['/test-enterprise-slug/admin/codes'],
       });
 
       // ensure focus is set on content wrapper
