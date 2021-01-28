@@ -21,7 +21,6 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
     "@edx/brand": "npm:@edx/brand-openedx@1.1.0",
-    "@edx/frontend-logging": "2.1.0",
     "@edx/paragon": "^13.1.2",
     "@edx/frontend-platform": "1.8.2",
     "@fortawesome/fontawesome-svg-core": "1.2.32",
