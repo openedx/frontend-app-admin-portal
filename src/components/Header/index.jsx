@@ -95,14 +95,12 @@ const Header = ({
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
         <Nav>
           {hasSidebarToggle && <SidebarToggle />}
-
           <Nav.Link
             href="/"
             className="navbar-brand"
           >
-            <Logo enterpriseLogo={enterpriseLogo} enterpriseName={enterpriseName || ''} />
+            <Logo enterpriseLogo={enterpriseLogo} enterpriseName={enterpriseName} />
           </Nav.Link>
-
         </Nav>
         {user?.username && (
           <HeaderDropdown user={user} enterpriseSlug={enterpriseSlug} />
@@ -121,7 +119,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   enterpriseLogo: null,
-  enterpriseName: null,
+  enterpriseName: '',
   enterpriseSlug: null,
   hasSidebarToggle: false,
 };
