@@ -6,7 +6,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import AdminPage from '.';
 
-jest.mock('@edx/frontend-platform');
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
