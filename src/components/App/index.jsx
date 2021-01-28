@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Router } from 'react-router-dom';
-
 import { Helmet } from 'react-helmet';
-import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 
+import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+
 import EnterpriseApp from '../../containers/EnterpriseApp';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
@@ -13,7 +13,6 @@ import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
 import SupportPage from '../SupportPage';
-// import { withErrorBoundary } from '../ErrorBoundary';
 import { ToastsProvider, Toasts } from '../Toasts';
 
 import store from '../../data/store';
@@ -69,7 +68,5 @@ const AppWrapper = () => {
     </AppProvider>
   );
 };
-
-// const PortalAppWrapper = withErrorBoundary(AppWrapper);
 
 export default AppWrapper;
