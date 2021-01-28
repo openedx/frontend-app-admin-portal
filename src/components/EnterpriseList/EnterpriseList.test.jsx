@@ -9,6 +9,7 @@ import qs from 'query-string';
 
 import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
+import SearchBar from '../SearchBar';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -31,8 +32,9 @@ const store = mockStore({
   },
 });
 
-const EnterpriseListWrapper = props => (
-  <MemoryRouter>
+// eslint-disable-next-line react/prop-types
+const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
+  <MemoryRouter initialEntries={initialEntries}>
     <Provider store={store}>
       <EnterpriseList
         enterpriseList={{
@@ -40,7 +42,7 @@ const EnterpriseListWrapper = props => (
         }}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
-        {...props}
+        {...rest}
       />
     </Provider>
   </MemoryRouter>
@@ -90,21 +92,17 @@ describe('<EnterpriseList />', () => {
     });
 
     it('with search query and empty enterprises data', () => {
-      const tree = renderer
-        .create((
-          <EnterpriseListWrapper
-            enterpriseList={{
-              ...mockEnterpriseList,
-              count: 0,
-              results: [],
-            }}
-            location={{
-              search: '?search=enterprise%20name',
-            }}
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      wrapper = mount(
+        <EnterpriseListWrapper
+          initialEntries={['/?search=enterprise%20name']}
+          enterpriseList={{
+            ...mockEnterpriseList,
+            count: 0,
+            results: [],
+          }}
+        />,
+      );
+      expect(wrapper.find(SearchBar).props().value).toEqual('enterprise name');
     });
 
     it('with error state', () => {
