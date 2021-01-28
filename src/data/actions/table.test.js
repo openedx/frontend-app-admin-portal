@@ -1,6 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import qs from 'query-string';
+// eslint-disable-next-line no-unused-vars
+import { logError } from '@edx/frontend-platform/logging';
 
 import { paginateTable, sortTable } from './table';
 import {
@@ -10,6 +12,8 @@ import {
 } from '../constants/table';
 import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
 import { axiosMock } from '../../setupTest';
+
+jest.mock('@edx/frontend-platform/logging');
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';

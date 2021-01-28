@@ -37,7 +37,7 @@ const addLicensesForUsers = ({
       dispatch(sendUserSubscriptionSuccess(response));
       onSuccess(response);
     }).catch((error) => {
-      logError(error)
+      logError(error);
       dispatch(sendUserSubscriptionFailure(error));
       onError(error);
     });

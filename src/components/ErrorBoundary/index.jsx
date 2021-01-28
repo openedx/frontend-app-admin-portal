@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
 
-
 class ErrorBoundary extends React.Component {
   componentDidCatch(error) {
     logError(error);

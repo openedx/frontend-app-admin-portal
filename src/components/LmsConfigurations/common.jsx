@@ -1,9 +1,9 @@
-import NewRelicService from '../../data/services/NewRelicService';
+import { logError } from '@edx/frontend-platform/logging';
 
 export const handleErrors = (error) => {
   const errorMsg = error.message || error.response?.status === 500
     ? error.message : JSON.stringify(error.response.data);
-  NewRelicService.logAPIErrorResponse(error);
+  logError(errorMsg);
   return errorMsg;
 };
 

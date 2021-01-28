@@ -70,7 +70,7 @@ const paginateTable = (tableId, fetchMethod, pageNumber) => (
     return fetchMethod(enterpriseId, options).then((response) => {
       dispatch(paginationSuccess(tableId, response.data, options.ordering));
     }).catch((error) => {
-      logError(error)
+      logError(error);
       dispatch(paginationFailure(tableId, error));
     });
   }
@@ -132,7 +132,7 @@ const sortTable = (tableId, fetchMethod, ordering) => (
     return fetchMethod(enterpriseId, options).then((response) => {
       dispatch(sortSuccess(tableId, ordering, response.data));
     }).catch((error) => {
-      logError(error)
+      logError(error);
       dispatch(sortFailure(tableId, error));
     });
   }

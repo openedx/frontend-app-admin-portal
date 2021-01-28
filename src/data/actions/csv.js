@@ -35,7 +35,7 @@ const fetchCsv = (csvId, fetchMethod) => (
         dispatch(fetchCsvSuccess(csvId));
       })
       .catch((error) => {
-        logError(error)
+        logError(error);
         dispatch(fetchCsvFailure(csvId, error));
       });
   }

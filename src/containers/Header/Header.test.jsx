@@ -99,7 +99,7 @@ describe('<Header />', () => {
     const wrapper = mount(<HeaderWrapper store={store} />);
     const userImg = wrapper.find(AvatarButton);
     expect(userImg.props().src).toEqual(userData.profileImage.imageUrlMedium);
-    expect(userImg.props().alt).toContain(userData.email);
+    expect(userImg.props().alt).toContain(userData.username);
   });
 
   it('does not render profile image or dropdown if unauthenticated', () => {
