@@ -21,7 +21,7 @@ export const Logo = ({ enterpriseLogo, enterpriseName }) => {
   return (
     <Img
       src={enterpriseLogo || logo}
-      alt={`${enterpriseName || 'edX'} logo`}
+      alt={`${enterpriseName} logo`}
       onError={(e) => { e.target.src = logo; }}
     />
   );
@@ -29,11 +29,12 @@ export const Logo = ({ enterpriseLogo, enterpriseName }) => {
 
 Logo.defaultProps = {
   enterpriseLogo: configuration.LOGO_URL,
+  enterpriseName: 'edX',
 };
 
 Logo.propTypes = {
   enterpriseLogo: PropTypes.string,
-  enterpriseName: PropTypes.string.isRequired,
+  enterpriseName: PropTypes.string,
 };
 
 export const HeaderDropdown = ({ user, enterpriseSlug }) => {
@@ -118,9 +119,10 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  enterpriseLogo: null,
-  enterpriseName: '',
-  enterpriseSlug: null,
+  // undefined ensures that any components it is passed to use the default props
+  enterpriseLogo: undefined,
+  enterpriseName: undefined,
+  enterpriseSlug: undefined,
   hasSidebarToggle: false,
 };
 
