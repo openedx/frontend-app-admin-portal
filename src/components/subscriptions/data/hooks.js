@@ -30,10 +30,6 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
     LicenseManagerApiService.fetchSubscriptions({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
         const { data: subscriptionsData } = camelCaseObject(response);
-        const subscriptionsList = subscriptionsData?.results || [];
-        subscriptionsData.results = subscriptionsList.filter((
-          subscription => subscription.isActive
-        ));
         setSubscriptions(subscriptionsData);
       })
       .catch((err) => {
