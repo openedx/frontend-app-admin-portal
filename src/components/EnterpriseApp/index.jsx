@@ -96,6 +96,7 @@ class EnterpriseApp extends React.Component {
       url: baseUrl,
       params: { enterpriseSlug },
     } = match;
+
     const defaultContentPadding = 10; // 10px for appropriate padding
     const { isActive, roles, email } = getAuthenticatedUser() || {};
     // checking for undefined tells if if the user's info is hydrated
@@ -115,7 +116,7 @@ class EnterpriseApp extends React.Component {
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
-          {matches => (
+          {matchesMediaQ => (
             <>
               <Sidebar
                 baseUrl={baseUrl}
@@ -127,14 +128,14 @@ class EnterpriseApp extends React.Component {
                     sidebarWidth: width + defaultContentPadding,
                   });
                 }}
-                isMobile={!matches}
+                isMobile={!matchesMediaQ}
               />
               <div
                 className="content-wrapper"
                 tabIndex="-1"
                 ref={this.contentWrapperRef}
                 style={{
-                  paddingLeft: matches ? sidebarWidth : defaultContentPadding,
+                  paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                 }}
               >
                 <Switch>
