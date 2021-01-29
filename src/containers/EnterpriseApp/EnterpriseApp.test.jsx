@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { breakpoints } from '@edx/paragon';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -14,14 +14,19 @@ import EnterpriseApp from './index';
 import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
 import { features } from '../../config';
+import NotFoundPage from '../../components/NotFoundPage';
 
 features.CODE_MANAGEMENT = true;
 
+getAuthenticatedUser.mockReturnValue({
+  isActive: true,
+  email: 'foo@bar.com',
+  roles: ['enterprise_admin:*'],
+  username: 'foo',
+});
+
 const mockStore = configureMockStore([thunk]);
 const initialState = {
-  authentication: {
-    roles: ['enterprise_admin:*'],
-  },
   dashboardAnalytics: {},
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
@@ -45,9 +50,9 @@ const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
     <Provider store={store}>
       <EnterpriseApp
         match={{
-          url: '/test-enterprise-slug',
+          url: '/foo/bar',
           params: {
-            enterpriseSlug: 'test-enterprise-slug',
+            enterpriseSlug: 'foo',
           },
         }}
         location={{
@@ -57,6 +62,9 @@ const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
           replace: () => {},
         }}
         {...props}
+        portalConfiguration={{
+          enterpriseId: null,
+        }}
       />
     </Provider>
   </MemoryRouter>
@@ -75,31 +83,42 @@ describe('<EnterpriseApp />', () => {
     axiosMock.reset();
   });
   it('renders not found page correctly', () => {
-    const tree = renderer
-      .create((
-        <EnterpriseAppWrapper
-          initialEntries={['/']}
-        />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('renders error page correctly', () => {
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
         ...initialState.portalConfiguration,
-        error: Error('test error'),
+        enterpriseId: null,
+      },
+    });
+    const wrapper = mount((
+      <EnterpriseAppWrapper
+        initialEntries={[{ pathname: '/foo/bar' }]}
+        store={store}
+        match={{
+          url: '/foo',
+          path: '/:enterpriseSlug',
+          params: { enterpriseSlug: 'foo' },
+        }}
+      />
+    ));
+    expect(wrapper.find(NotFoundPage).length).toEqual(1);
+    expect(wrapper.text()).toContain(404);
+  });
+
+  it('renders error page correctly', () => {
+    const err = 'test error';
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        ...initialState.portalConfiguration,
+        error: Error(err),
       },
     });
 
-    const tree = renderer
-      .create((
-        <EnterpriseAppWrapper store={store} />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const wrapper = mount((
+      <EnterpriseAppWrapper store={store} />
+    ));
+    expect(wrapper.text()).toContain(err);
   });
   describe('location changes', () => {
     beforeEach(() => {
@@ -135,7 +154,9 @@ describe('<EnterpriseApp />', () => {
       );
 
       wrapper.setProps({
-        initialEntries: ['/test-enterprise-slug/admin/codes'],
+        location: {
+          pathname: '/test-enterprise-slug/admin/codes',
+        },
       });
 
       // ensure focus is set on content wrapper
