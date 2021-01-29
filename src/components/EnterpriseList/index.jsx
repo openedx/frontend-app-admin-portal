@@ -12,6 +12,8 @@ import SearchBar from '../SearchBar';
 import SurveyPage from '../SurveyPage';
 import { updateUrl } from '../../utils';
 
+export const TITLE = 'Enterprise List';
+
 class EnterpriseList extends React.Component {
   constructor(props) {
     super(props);
@@ -113,13 +115,13 @@ class EnterpriseList extends React.Component {
       <>
         <SurveyPage />
         <Helmet>
-          <title>Enterprise List</title>
+          <title>{TITLE}</title>
         </Helmet>
         <main role="main">
           <div className="container-fluid">
             <div className="row mt-4">
               <div className="col-sm-12 col-md">
-                <h1>Enterprise List</h1>
+                <h1>{TITLE}</h1>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
                 <SearchBar
