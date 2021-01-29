@@ -29,12 +29,8 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   useMemo((page = 1) => {
     LicenseManagerApiService.fetchSubscriptions({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
-        const { data: subscriptionsData } = response;
-        const subscriptionsList = subscriptionsData?.results || [];
-        subscriptionsData.results = subscriptionsList.filter((
-          subscription => subscription.is_active
-        ));
-        setSubscriptions(camelCaseObject(subscriptionsData));
+        const { data: subscriptionsData } = camelCaseObject(response);
+        setSubscriptions(subscriptionsData);
       })
       .catch((err) => {
         NewRelicService.logAPIErrorResponse(err);
