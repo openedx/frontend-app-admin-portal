@@ -26,8 +26,6 @@ subscribe(APP_INIT_ERROR, (error) => {
 
 initialize({
   messages: [],
-  // We don't require authenticated users so that we can perform our own auth redirect to a proxy login that depends on
-  // the route, rather than the LMS like frontend-platform does.
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });
