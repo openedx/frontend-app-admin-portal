@@ -10,7 +10,6 @@ import CsvUpload from '../CsvUpload';
 class BulkEnrollmentModal extends React.Component {
   constructor(props) {
     super(props);
-
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
@@ -57,8 +56,8 @@ class BulkEnrollmentModal extends React.Component {
     });
 
     return Promise.all(bulkEnrollmentPromises)
-      .then((response) => {
-        this.props.onSuccess(response);
+      .then(() => {
+        this.props.onSuccess();
       })
       .catch((error) => {
         throw new SubmissionError({
@@ -153,6 +152,7 @@ class BulkEnrollmentModal extends React.Component {
   render() {
     const {
       onClose,
+      open,
       handleSubmit,
       submitting,
       title,
@@ -160,7 +160,7 @@ class BulkEnrollmentModal extends React.Component {
 
     return (
       <Modal
-        open
+        open={open}
         title={title}
         body={this.renderBody()}
         closeText="Cancel"
@@ -186,7 +186,9 @@ class BulkEnrollmentModal extends React.Component {
 BulkEnrollmentModal.defaultProps = {
   error: null,
   failedLearners: [],
+  selectedCourseRunKeys: [],
   title: 'Enroll Learners',
+  open: false,
 };
 
 BulkEnrollmentModal.propTypes = {
@@ -202,7 +204,8 @@ BulkEnrollmentModal.propTypes = {
   failedLearners: PropTypes.arrayOf(PropTypes.string),
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  selectedCourseRunKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  open: PropTypes.bool,
+  selectedCourseRunKeys: PropTypes.arrayOf(PropTypes.string),
   sendBulkEnrollment: PropTypes.func.isRequired,
   title: PropTypes.string,
 };

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { reset } from 'redux-form';
 
 import BulkEnrollmentModal from '../../components/BulkEnrollmentModal';
 
@@ -9,7 +10,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(sendBulkEnrollment({
       enterpriseUuid,
       options,
-      onSuccess: (response) => { resolve(response); },
+      onSuccess: (response) => {
+        resolve(response);
+        dispatch(reset('bulk-enrollment-modal-form'));
+      },
       onError: (error) => { reject(error); },
     }));
   }),

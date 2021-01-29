@@ -1,4 +1,5 @@
 import React from 'react';
+import { act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
@@ -20,7 +21,9 @@ const searchResults = {
   hits: [
     {
       title: testCourseName,
-      course_run: testCourseRunName,
+      advertised_course_run: {
+        key: testCourseRunName,
+      },
     },
   ],
 };
@@ -50,5 +53,31 @@ describe('<CourseSearch />', () => {
     expect(tableCells.length).toBe(3);
     expect(tableCells.at(1).prop('value')).toBe(testCourseName);
     expect(tableCells.at(2).prop('value')).toBe(testCourseRunName);
+  });
+
+  it('displays modal on click', () => {
+    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} />);
+
+    const dataTable = wrapper.find('DataTable');
+    act(() => {
+      dataTable.props().bulkActions[0].handleClick();
+    });
+    wrapper.update();
+    const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');
+    // Use the first toast found as it creates a child Toast as well
+    expect(bulkEnrollmentModal.props().open).toBe(true);
+  });
+
+  it('displays a toast on success', () => {
+    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} />);
+
+    const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');
+    act(() => {
+      bulkEnrollmentModal.props().onSuccess();
+    });
+    wrapper.update();
+    const toast = wrapper.find('Toast');
+    // Use the first toast found as it creates a child Toast as well
+    expect(toast.at(1).prop('show')).toBe(true);
   });
 });

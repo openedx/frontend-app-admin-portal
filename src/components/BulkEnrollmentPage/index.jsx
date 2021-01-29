@@ -1,15 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import BulkEnrollmentButton from '../BulkEnrollmentButton';
+import CourseSearch from './CourseSearch';
 
-function BulkEnrollmentPage() {
+function BulkEnrollmentPage({ enterpriseId }) {
   return (
-    <BulkEnrollmentButton
-      enterpriseUuid=""
-      selectedCourseRunKeys={['']}
-      onSuccess={() => {}}
-    />
+    <>
+      <CourseSearch
+        enterpriseId={enterpriseId}
+      />
+    </>
   );
 }
 
-export default BulkEnrollmentPage;
+BulkEnrollmentPage.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(BulkEnrollmentPage);
