@@ -32,6 +32,7 @@ describe('<AdminRegisterPage />', () => {
   });
   it('renders loading message when not authenticated (redirect to enterprise proxy login)', () => {
     getAuthenticatedUser.mockReturnValue({});
+
     const wrapper = mount(<AdminRegisterPageWrapper />);
 
     // verify that the loading message appears during redirect
