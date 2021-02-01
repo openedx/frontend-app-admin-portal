@@ -1,3 +1,4 @@
+import { logError } from '@edx/frontend-platform/logging';
 import {
   LICENSE_REVOKE_REQUEST,
   LICENSE_REVOKE_SUCCESS,
@@ -5,7 +6,6 @@ import {
 } from '../constants/licenseRevoke';
 
 import LicenseManagerApiService from '../../components/subscriptions/data/service';
-import NewRelicService from '../services/NewRelicService';
 
 const sendLicenseRevokeRequest = () => ({
   type: LICENSE_REVOKE_REQUEST,
@@ -39,7 +39,7 @@ const sendLicenseRevoke = ({
         onSuccess(response);
       })
       .catch((error) => {
-        NewRelicService.logAPIErrorResponse(error);
+        logError(error);
         dispatch(sendLicenseRevokeFailure(error));
         onError(error);
       });

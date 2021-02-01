@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<ErrorBoundary /> renders childern correctly when no error 1`] = `
-<h1>
-  Hi!
-</h1>
-`;

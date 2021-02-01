@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
+import { getAuthenticatedUser, getLogoutRedirectUrl } from '@edx/frontend-platform/auth';
 
 import LoadingMessage from '../LoadingMessage';
 
@@ -10,10 +11,11 @@ import {
   redirectToProxyLogin,
   hasEnterpriseAdminRole,
 } from '../../utils';
-import apiClient from '../../data/apiClient';
 
-const AdminRegisterPage = ({ authentication, match }) => {
+const AdminRegisterPage = ({ match }) => {
   const { enterpriseSlug } = match.params;
+  const authentication = getAuthenticatedUser();
+  const history = useHistory();
 
   useEffect(
     () => {
@@ -25,15 +27,15 @@ const AdminRegisterPage = ({ authentication, match }) => {
       if (!hasEnterpriseAdminRole(authentication.roles)) {
         // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
         // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
-        const logoutRedirectUrl = getProxyLoginUrl(enterpriseSlug);
-        apiClient.logout(logoutRedirectUrl);
+        const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
+        history.push(logoutRedirectUrl);
       }
     },
-    [authentication.username, authentication.roles],
+    [authentication?.username, authentication?.roles],
   );
 
-  if (authentication.username) {
-    if (!hasEnterpriseAdminRole(authentication.roles)) {
+  if (authentication?.username) {
+    if (!hasEnterpriseAdminRole(authentication?.roles)) {
       // user is authenticated but doesn't have the `enterprise_admin` JWT role, so display a message while
       // redirecting the user to the log out page.
       return (
@@ -66,7 +68,6 @@ const AdminRegisterPage = ({ authentication, match }) => {
 };
 
 AdminRegisterPage.propTypes = {
-  authentication: PropTypes.shape().isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
@@ -74,4 +75,4 @@ AdminRegisterPage.propTypes = {
   }).isRequired,
 };
 
-export default AdminRegisterPage;
+export default withRouter(AdminRegisterPage);

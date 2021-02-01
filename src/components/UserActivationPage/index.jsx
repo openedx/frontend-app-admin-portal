@@ -1,12 +1,13 @@
 import React, {
-  useContext, useEffect, useMemo, useState,
+  useContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
   Container, Row, Col, Alert, MailtoLink,
 } from '@edx/paragon';
-
+import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { useInterval } from '../../hooks';
 import LoadingMessage from '../LoadingMessage';
 import { ToastsContext } from '../Toasts';
 
@@ -16,10 +17,11 @@ const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
 const UserActivationPage = ({
   match,
-  authentication,
-  userAccount,
-  fetchUserAccount,
 }) => {
+  const user = getAuthenticatedUser();
+  const {
+    username, roles, isActive,
+  } = user;
   const [isPollingUserAccount, setIsPollingUserAccount] = useState(false);
   const enterpriseSlug = useMemo(
     () => match.params.enterpriseSlug,
@@ -27,31 +29,19 @@ const UserActivationPage = ({
   );
   const { addToast } = useContext(ToastsContext);
 
-  useEffect(
-    () => {
-      let timeout;
-      if (authentication?.username && userAccount?.loaded && !userAccount?.isActive) {
-        // user is authenticated and we finished hydrating the full user metadata, but
-        // the user has not verified their email address. we start polling for their user
-        // metadata every USER_ACCOUNT_POLLING_TIMEOUT milliseconds.
-        setIsPollingUserAccount(true);
-        timeout = setTimeout(() => {
-          fetchUserAccount(authentication.username);
-        }, USER_ACCOUNT_POLLING_TIMEOUT);
-      }
-      return () => {
-        if (timeout) {
-          clearInterval(timeout);
-        }
-      };
-    },
-    [authentication, userAccount],
-  );
+  useInterval(() => {
+    if (username && !isActive) {
+      setIsPollingUserAccount(true);
+      hydrateAuthenticatedUser();
+    } else if (isActive) {
+      setIsPollingUserAccount(false);
+    }
+  }, USER_ACCOUNT_POLLING_TIMEOUT);
 
-  if (authentication?.username) {
+  if (username) {
     // user is authenticated, but doesn't have any JWT roles so redirect the user to
     // `:enterpriseSlug/admin/register` to display the proper error message.
-    if (!authentication.roles?.length) {
+    if (!roles?.length) {
       return (
         <Redirect to={`/${enterpriseSlug}/admin/register`} />
       );
@@ -59,7 +49,7 @@ const UserActivationPage = ({
 
     // user data is hydrated with a verified email address, so redirect the user
     // to the default page in the Admin Portal.
-    if (userAccount?.loaded && userAccount?.isActive) {
+    if (isActive !== undefined && isActive) {
       addToast('Your edX administrator account was successfully activated.');
       return (
         <Redirect
@@ -72,7 +62,7 @@ const UserActivationPage = ({
     }
 
     // user data is hydrated with a unverified email address, so display a warning message
-    const isUserLoadedAndInactive = !!(userAccount?.loaded && !userAccount?.isActive);
+    const isUserLoadedAndInactive = !!(isActive !== undefined && !isActive);
     if (isUserLoadedAndInactive || isPollingUserAccount) {
       // user is authenticated but has not yet verified their email via the "Activate
       // your account" flow, so we should prevent access to the Admin Portal.
@@ -127,9 +117,6 @@ const UserActivationPage = ({
 };
 
 UserActivationPage.propTypes = {
-  authentication: PropTypes.shape().isRequired,
-  userAccount: PropTypes.shape().isRequired,
-  fetchUserAccount: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,

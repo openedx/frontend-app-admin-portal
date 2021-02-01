@@ -1,8 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
-
-import apiClient from '../apiClient';
+import { axiosMock } from '../../setupTest';
 import {
   clearDashboardAnalytics,
   fetchDashboardAnalytics,
@@ -14,10 +12,8 @@ import {
   CLEAR_DASHBOARD_ANALYTICS,
 } from '../constants/dashboardAnalytics';
 
+jest.mock('@edx/frontend-platform/logging');
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {

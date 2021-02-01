@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { SubmissionError } from 'redux-form';
+import { logError } from '@edx/frontend-platform/logging';
 
 import RequestCodesForm from './RequestCodesForm';
 import Hero from '../Hero';
 import LoadingMessage from '../LoadingMessage';
 
 import LmsApiService from '../../data/services/LmsApiService';
-
-import NewRelicService from '../../data/services/NewRelicService';
 
 class RequestCodesPage extends React.Component {
   hasEmailAndEnterpriseName() {
@@ -39,7 +38,7 @@ class RequestCodesPage extends React.Component {
                     LmsApiService.requestCodes(options)
                       .then(response => response)
                       .catch((error) => {
-                        NewRelicService.logAPIErrorResponse(error);
+                        logError(error);
                         throw new SubmissionError({ _error: error });
                       })
                   )}

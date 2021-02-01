@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
 import { validateEmailTemplateFields } from '../../utils';
 import emailTemplate from './emailTemplate';
-import NewRelicService from '../../data/services/NewRelicService';
 
 class LicenseRemindModal extends React.Component {
   constructor(props) {
@@ -95,7 +95,7 @@ class LicenseRemindModal extends React.Component {
     return sendLicenseReminder(options, subscriptionUUID, isBulkRemind)
       .then(response => this.props.onSuccess(response))
       .catch((error) => {
-        NewRelicService.logAPIErrorResponse(error);
+        logError(error);
         throw new SubmissionError({
           _error: [error.message],
         });
