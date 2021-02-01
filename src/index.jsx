@@ -51,16 +51,18 @@ const AppWrapper = () => (
             defaultTitle="edX Admin Portal"
           />
           <Toasts />
-          <SystemWideWarningBanner>
-            Some edX services will unavailable for a period of time due to planned maintenance Tuesday,
-            February 2 between 8pm and 9pm EST. See our
-            {' '}
-            <Hyperlink target="_blank" href="https://status.edx.org/incidents/bcp3b0pcvlk4">
-              status page
-            </Hyperlink>
-            {' '}
-            for more information.
-          </SystemWideWarningBanner>
+          {configuration?.SHOW_MAINTENANCE_ALERT && (
+            <SystemWideWarningBanner>
+              Some edX services will unavailable for a period of time due to planned maintenance Tuesday,
+              February 2 between 8pm and 9pm EST. See our
+              {' '}
+              <Hyperlink target="_blank" href="https://status.edx.org/incidents/bcp3b0pcvlk4">
+                status page
+              </Hyperlink>
+              {' '}
+              for more information.
+            </SystemWideWarningBanner>
+          )}
           <Header />
           <Switch>
             <Route exact path="/public/support" component={SupportPage} />
