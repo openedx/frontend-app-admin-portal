@@ -1,4 +1,4 @@
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import apiClient from '../apiClient';
 import { configuration } from '../../config';
 
 /**
@@ -25,7 +25,7 @@ class ZendeskApiService {
       custom_fields: [],
       tags: ['enterprise_admin_support'],
     };
-    return getAuthenticatedHttpClient().post(url, data, 'json');
+    return apiClient.post(url, data, 'json');
   }
 }
 

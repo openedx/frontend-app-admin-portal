@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import apiClient from '../../data/apiClient';
 
 const JwtAuthenticationRefresh = ({
   isAuthenticated,
   children,
 }) => {
-  const apiClient = getAuthenticatedHttpClient();
   const [isRefreshingJWT, setIsRefreshingJWT] = useState(true);
   useEffect(
     () => {

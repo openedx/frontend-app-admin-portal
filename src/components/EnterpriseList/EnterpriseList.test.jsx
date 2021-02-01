@@ -1,16 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
 import { MemoryRouter, Redirect } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import qs from 'query-string';
 
-import EnterpriseList, { TITLE } from './index';
+import EnterpriseList from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
-import SearchBar from '../SearchBar';
-import TableContainer from '../../containers/TableContainer';
-import LoadingMessage from '../LoadingMessage';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -33,9 +31,8 @@ const store = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
-const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
-  <MemoryRouter initialEntries={initialEntries}>
+const EnterpriseListWrapper = props => (
+  <MemoryRouter>
     <Provider store={store}>
       <EnterpriseList
         enterpriseList={{
@@ -43,7 +40,7 @@ const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
         }}
         searchEnterpriseList={() => {}}
         clearPortalConfiguration={() => {}}
-        {...rest}
+        {...props}
       />
     </Provider>
   </MemoryRouter>
@@ -55,79 +52,77 @@ describe('<EnterpriseList />', () => {
   describe('renders correctly', () => {
     it('call clearPortalConfiguration prop', () => {
       const mockClearPortalConfiguration = jest.fn();
-      mount(
-        <EnterpriseListWrapper
-          clearPortalConfiguration={mockClearPortalConfiguration}
-        />,
-      );
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper
+            clearPortalConfiguration={mockClearPortalConfiguration}
+          />
+        ))
+        .toJSON();
       expect(mockClearPortalConfiguration).toHaveBeenCalled();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with enterprises data', () => {
-      wrapper = mount(
-        <EnterpriseListWrapper
-          enterpriseList={mockEnterpriseList}
-          location={{
-            search: '',
-            path: '/',
-          }}
-        />,
-      );
-      const table = wrapper.find(TableContainer);
-      expect(table.length).toEqual(1);
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper
+            enterpriseList={mockEnterpriseList}
+          />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with empty enterprises data', () => {
-      wrapper = mount(
-        <EnterpriseListWrapper
-          enterpriseList={{
-            ...mockEnterpriseList,
-            count: 0,
-            results: [],
-          }}
-          location={{
-            search: '',
-            path: '/',
-          }}
-        />,
-      );
-      expect(wrapper.find('h1').text()).toEqual(TITLE);
-      expect(wrapper.find(TableContainer)).toHaveLength(1);
-      expect(wrapper.find(SearchBar)).toHaveLength(1);
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper
+            enterpriseList={{
+              ...mockEnterpriseList,
+              count: 0,
+              results: [],
+            }}
+          />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with search query and empty enterprises data', () => {
-      wrapper = mount(
-        <EnterpriseListWrapper
-          initialEntries={['/?search=enterprise%20name']}
-          enterpriseList={{
-            ...mockEnterpriseList,
-            count: 0,
-            results: [],
-          }}
-          location={{
-            search: '?search=enterprise%20name',
-            path: '/',
-          }}
-        />,
-      );
-      expect(wrapper.find(SearchBar).props().value).toEqual('enterprise name');
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper
+            enterpriseList={{
+              ...mockEnterpriseList,
+              count: 0,
+              results: [],
+            }}
+            location={{
+              search: '?search=enterprise%20name',
+            }}
+          />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with error state', () => {
-      const err = 'Network Error';
-      wrapper = mount(
-        <EnterpriseListWrapper error={Error('Network Error')} />,
-      );
-      expect(wrapper.text()).toContain(err);
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper error={Error('Network Error')} />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
     });
 
     it('with loading state', () => {
-      wrapper = mount(
-        <EnterpriseListWrapper loading enterpriseList={null} />,
-      );
-
-      expect(wrapper.find(LoadingMessage)).toHaveLength(1);
+      const tree = renderer
+        .create((
+          <EnterpriseListWrapper loading enterpriseList={null} />
+        ))
+        .toJSON();
+      expect(tree).toMatchSnapshot();
     });
 
     it('redirects when there is only one enterprise', () => {

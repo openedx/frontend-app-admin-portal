@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
+import { userAccount } from '@edx/frontend-auth';
 
 import dashboardAnalytics from './dashboardAnalytics';
 import portalConfiguration from './portalConfiguration';
@@ -24,10 +26,12 @@ const rootReducer = combineReducers({
   // creating the store in data/store.js.
   authentication: identityReducer,
   form: formReducer,
+  routerReducer,
   dashboardAnalytics,
   portalConfiguration,
   table,
   csv,
+  userAccount,
   coupons,
   sidebar,
   codeAssignment,

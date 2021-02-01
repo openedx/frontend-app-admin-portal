@@ -54,6 +54,7 @@ module.exports = merge(commonConfig, {
   mode: 'development',
   entry: {
     hot: require.resolve('react-dev-utils/webpackHotDevClient'),
+    segment: path.resolve(__dirname, '../src/segment.js'),
     app: path.resolve(__dirname, '../src/index.jsx'),
   },
 

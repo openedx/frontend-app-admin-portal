@@ -1,32 +1,30 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
+import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { breakpoints } from '@edx/paragon';
-import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
 
 import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
 import { features } from '../../config';
-import NotFoundPage from '../../components/NotFoundPage';
 
 features.CODE_MANAGEMENT = true;
 
-getAuthenticatedUser.mockReturnValue({
-  isActive: true,
-  email: 'foo@bar.com',
-  roles: ['enterprise_admin:*'],
-  username: 'foo',
-});
-
 const mockStore = configureMockStore([thunk]);
 const initialState = {
+  authentication: {
+    roles: ['enterprise_admin:*'],
+  },
+  userAccount: {
+    loaded: true,
+    isActive: true,
+  },
   dashboardAnalytics: {},
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
@@ -44,15 +42,14 @@ const initialState = {
   },
 };
 
-// eslint-disable-next-line react/prop-types
-const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
-  <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
+const EnterpriseAppWrapper = ({ store, ...props }) => (
+  <MemoryRouter initialEntries={['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
       <EnterpriseApp
         match={{
-          url: '/foo/bar',
+          url: '/test-enterprise-slug',
           params: {
-            enterpriseSlug: 'foo',
+            enterpriseSlug: 'test-enterprise-slug',
           },
         }}
         location={{
@@ -62,9 +59,6 @@ const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
           replace: () => {},
         }}
         {...props}
-        portalConfiguration={{
-          enterpriseId: null,
-        }}
       />
     </Provider>
   </MemoryRouter>
@@ -78,47 +72,38 @@ EnterpriseAppWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
-describe('<EnterpriseApp />', () => {
-  afterEach(() => {
-    axiosMock.reset();
-  });
+describe('EnterpriseApp', () => {
   it('renders not found page correctly', () => {
-    const store = mockStore({
-      ...initialState,
-      portalConfiguration: {
-        ...initialState.portalConfiguration,
-        enterpriseId: null,
-      },
-    });
-    const wrapper = mount((
-      <EnterpriseAppWrapper
-        initialEntries={[{ pathname: '/foo/bar' }]}
-        store={store}
-        match={{
-          url: '/foo',
-          path: '/:enterpriseSlug',
-          params: { enterpriseSlug: 'foo' },
-        }}
-      />
-    ));
-    expect(wrapper.find(NotFoundPage).length).toEqual(1);
-    expect(wrapper.text()).toContain(404);
+    const tree = renderer
+      .create((
+        <EnterpriseAppWrapper
+          match={{
+            url: '/',
+            params: {
+              enterpriseSlug: '',
+            },
+          }}
+        />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   it('renders error page correctly', () => {
-    const err = 'test error';
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
         ...initialState.portalConfiguration,
-        error: Error(err),
+        error: Error('test error'),
       },
     });
 
-    const wrapper = mount((
-      <EnterpriseAppWrapper store={store} />
-    ));
-    expect(wrapper.text()).toContain(err);
+    const tree = renderer
+      .create((
+        <EnterpriseAppWrapper store={store} />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
   describe('location changes', () => {
     beforeEach(() => {
@@ -133,7 +118,7 @@ describe('<EnterpriseApp />', () => {
         document.body.removeChild(div);
       }
     });
-    it.skip('handles location change properly', () => {
+    it('handles location change properly', () => {
       // There is some logic where we collapse the sidebar on menu click on mobile
       // so we test that here as well. Note that we need to set the window width
       // to mobile first.

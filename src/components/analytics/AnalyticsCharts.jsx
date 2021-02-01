@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { logError } from '@edx/frontend-platform/logging';
 
 import TableauReport from 'tableau-react-embed';
 import LoadingMessage from '../LoadingMessage';
@@ -8,6 +7,7 @@ import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
+import NewRelicService from '../../data/services/NewRelicService';
 
 // eslint-disable-next-line no-unused-vars
 export default function AnalyticsCharts(enterpriseId) {
@@ -23,7 +23,7 @@ export default function AnalyticsCharts(enterpriseId) {
         setToken(response.data);
       })
       .catch((err) => {
-        logError(err);
+        NewRelicService.logAPIErrorResponse(err);
         setIsLoading(false);
         setError(err);
       });
