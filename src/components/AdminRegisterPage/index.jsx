@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import { Container, Row, Col } from '@edx/paragon';
 import { getAuthenticatedUser, getLogoutRedirectUrl } from '@edx/frontend-platform/auth';
 
@@ -15,6 +15,7 @@ import {
 const AdminRegisterPage = ({ match }) => {
   const { enterpriseSlug } = match.params;
   const authentication = getAuthenticatedUser();
+  const history = useHistory();
 
   useEffect(
     () => {
@@ -27,7 +28,7 @@ const AdminRegisterPage = ({ match }) => {
         // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
         // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
         const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
-        global.location.href = logoutRedirectUrl;
+        history.push(logoutRedirectUrl);
       }
     },
     [authentication?.username, authentication?.roles],

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
