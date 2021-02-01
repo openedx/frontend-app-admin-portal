@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible, Icon } from '@edx/paragon';
-import { camelCaseObject } from '@edx/frontend-platform';
 import LMSApiService from '../../data/services/LmsApiService';
 import ReportingConfigForm from './ReportingConfigForm';
-import { snakeCaseFormData } from '../../utils';
+import { camelCaseObject, snakeCaseFormData } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 

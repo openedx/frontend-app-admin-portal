@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { logError } from '@edx/frontend-platform/logging';
 
-import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from './service';
+import NewRelicService from '../../../data/services/NewRelicService';
 import {
   licenseStatusByTab,
   NETWORK_ERROR_MESSAGE,
@@ -10,6 +9,7 @@ import {
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
 } from './constants';
+import { camelCaseObject } from '../../../utils';
 
 /*
  * This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
@@ -33,7 +33,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
         setSubscriptions(subscriptionsData);
       })
       .catch((err) => {
-        logError(err);
+        NewRelicService.logAPIErrorResponse(err);
         setErrors({
           ...errors,
           [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
@@ -79,7 +79,7 @@ export const useSubscriptionUsersOverview = ({
           setSubscriptionUsersOverview(camelCaseObject(subscriptionUsersOverviewData));
         })
         .catch((err) => {
-          logError(err);
+          NewRelicService.logAPIErrorResponse(err);
           setErrors({
             ...errors,
             [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
@@ -124,7 +124,7 @@ export const useSubscriptionUsers = ({
         setSubscriptionUsers(camelCaseObject(response.data));
       })
       .catch((err) => {
-        logError(err);
+        NewRelicService.logAPIErrorResponse(err);
         setErrors({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,

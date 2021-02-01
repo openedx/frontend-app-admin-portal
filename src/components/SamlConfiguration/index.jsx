@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ValidationFormGroup, Input } from '@edx/paragon';
-import { logError } from '@edx/frontend-platform/logging';
 import LMSApiService from '../../data/services/LmsApiService';
+import NewRelicService from '../../data/services/NewRelicService';
 
 class SamlConfiguration extends React.Component {
   state = {
@@ -19,7 +19,7 @@ class SamlConfiguration extends React.Component {
       .catch((error) => {
         const errorMsg = error.message || error.response.status === 500
           ? error.message : JSON.stringify(error.response.data);
-        logError(errorMsg);
+        NewRelicService.logAPIErrorResponse(errorMsg);
         this.setState({
           loading: false,
         });

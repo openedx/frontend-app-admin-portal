@@ -1,16 +1,20 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import MockAdapter from 'axios-mock-adapter';
 import qs from 'query-string';
 
+import apiClient from '../apiClient';
 import searchEnterpriseList from './enterpriseList';
 import {
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
   PAGINATION_FAILURE,
 } from '../constants/table';
-import { axiosMock } from '../../setupTest';
 
 const mockStore = configureMockStore([thunk]);
+const axiosMock = new MockAdapter(apiClient);
+apiClient.isAccessTokenExpired = jest.fn();
+apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {

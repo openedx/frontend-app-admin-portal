@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import AdminPage from '.';
+
+import AdminPage from './index';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({

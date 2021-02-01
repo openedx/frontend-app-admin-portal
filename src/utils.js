@@ -1,5 +1,6 @@
 import moment from 'moment';
 import qs from 'query-string';
+import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
@@ -119,6 +120,14 @@ const modifyObjectKeys = (object, modify) => {
   });
   return result;
 };
+
+const camelCaseObject = object => (
+  modifyObjectKeys(object, camelCase)
+);
+
+const snakeCaseObject = object => (
+  modifyObjectKeys(object, snakeCase)
+);
 
 const snakeCaseFormData = (formData) => {
   const transformedData = new FormData();
@@ -318,6 +327,8 @@ export {
   isValidEmail,
   isValidNumber,
   modifyObjectKeys,
+  camelCaseObject,
+  snakeCaseObject,
   snakeCaseFormData,
   maxLength512,
   transformTemplate,

@@ -1,4 +1,3 @@
-import { logError } from '@edx/frontend-platform/logging';
 import {
   LICENSE_REMIND_REQUEST,
   LICENSE_REMIND_SUCCESS,
@@ -6,6 +5,7 @@ import {
 } from '../constants/licenseReminder';
 
 import LicenseManagerApiService from '../../components/subscriptions/data/service';
+import NewRelicService from '../services/NewRelicService';
 
 const sendLicenseReminderRequest = () => ({
   type: LICENSE_REMIND_REQUEST,
@@ -39,7 +39,7 @@ const sendLicenseReminder = ({
         dispatch(sendLicenseReminderSuccess(response));
         onSuccess(response);
       }).catch((error) => {
-        logError(error);
+        NewRelicService.logAPIErrorResponse(error);
         dispatch(sendLicenseReminderFailure(error));
         onError(error);
       });
