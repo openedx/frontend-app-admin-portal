@@ -51,4 +51,9 @@ describe('<CourseSearch />', () => {
     expect(tableCells.at(1).prop('value')).toBe(testCourseName);
     expect(tableCells.at(2).prop('value')).toBe(testCourseRunName);
   });
+  it('returns an error message if there\'s an error', () => {
+    const errorMsg = 'It did not work';
+    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} error={{ message: errorMsg }} />);
+    expect(wrapper.text()).toContain(errorMsg);
+  });
 });

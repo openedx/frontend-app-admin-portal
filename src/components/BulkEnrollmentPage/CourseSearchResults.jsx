@@ -3,6 +3,8 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults, connectPagination } from 'react-instantsearch-dom';
 import { DataTable } from '@edx/paragon';
+import StatusAlert from '../StatusAlert';
+import LoadingMessage from '../LoadingMessage';
 
 const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
 
@@ -10,6 +12,8 @@ export const BaseCourseSearchResults = ({
   searchResults,
   searchState,
   setSearchState,
+  searching,
+  error,
 }) => {
   const columns = [
     {
@@ -21,49 +25,68 @@ export const BaseCourseSearchResults = ({
       accessor: 'course_run',
     },
   ];
-  console.log('SEARCH RESULTS PAGE INDEX', searchResults.page, searchState.page);
 
   const initialState = useMemo(() => ({
     pageSize: searchResults?.hitsPerPage,
     pageIndex: searchResults?.page || 0,
-  }), [searchResults?.pageIndex, searchResults?.nbPages, searchResults?.hitsPerPage]);
+  }), [searchResults?.nbPages, searchResults?.hitsPerPage]);
 
   const fetchData = (newData) => {
-    if (searchState?.page && newData.pageIndex + 1 !== searchState.page) {
+    // don't change the query before results come back
+    if (searchResults && searchState?.page && newData.pageIndex + 1 !== searchState.page) {
       setSearchState({ ...searchState, page: newData.pageIndex + 1 });
     }
   };
 
-  return (
-    <div className="container-fluid">
-
-      {searchResults && (
-      <DataTable
-        columns={columns}
-        data={searchResults?.hits || []}
-        itemCount={searchResults?.nbHits || 0}
-        EmptyTableComponent={emptyCourseResults}
-        isSelectable
-        isPaginated
-        manualPagination
-        pageCount={searchResults?.nbPages || 1}
-        initialState={initialState}
-        pageSize={searchResults?.hitsPerPage || 0}
-        fetchData={fetchData}
+  if (searching) {
+    return (<LoadingMessage className="overview mt-3" />);
+  }
+  if (error) {
+    return (
+      <StatusAlert
+        alertType="warning"
+        iconClassName="fa fa-exclamation-circle"
+        message={`An error occured while retrieving table data. ${error.message}`}
       />
-      )}
-    </div>
+    );
+  }
+  if (searchResults?.nbHits === 0) {
+    return (
+      <StatusAlert
+        alertType="warning"
+        iconClassName="fa fa-exclamation-circle"
+        message="There are no results."
+      />
+    );
+  }
+  return (
+    <DataTable
+      columns={columns}
+      data={searchResults?.hits || []}
+      itemCount={searchResults?.nbHits}
+      EmptyTableComponent={emptyCourseResults}
+      isSelectable
+      isPaginated
+      manualPagination
+      pageCount={searchResults?.nbPages || 1}
+      initialState={initialState}
+      pageSize={searchResults?.hitsPerPage || 0}
+      fetchData={fetchData}
+    />
   );
 };
 
 BaseCourseSearchResults.defaultProps = {
   searchResults: { nbHits: 0, hits: [] },
-
+  error: null,
 };
 
 BaseCourseSearchResults.propTypes = {
   searchResults: PropTypes.shape({ nbHits: PropTypes.number, hits: PropTypes.arrayOf(PropTypes.shape) }),
-  refine: PropTypes.func.isRequired,
+  searching: PropTypes.bool.isRequired,
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }),
 };
 
 export default connectPagination(connectStateResults(BaseCourseSearchResults));
