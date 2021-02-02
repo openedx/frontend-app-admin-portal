@@ -8,6 +8,8 @@ const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>
 
 export const BaseCourseSearchResults = ({
   searchResults,
+  searchState,
+  setSearchState,
 }) => {
   const columns = [
     {
@@ -19,12 +21,21 @@ export const BaseCourseSearchResults = ({
       accessor: 'course_run',
     },
   ];
+  console.log("SEARCH RESULTS", searchResults)
 
   const initialState = useMemo(() => ({
     pageSize: searchResults?.hitsPerPage,
     pageIndex: searchResults?.pageIndex || 0,
-    pageCount: searchResults?.nbPages || 1,
-  }), [searchResults?.pageIndex]);
+  }), [searchResults?.pageIndex, searchResults?.nbPages, searchResults?.hitsPerPage]);
+
+  console.log("INITIAL STATE", initialState)
+
+  const fetchData = (newData) => {
+    console.log(newData);
+    if (newData.pageIndex + 1 !== searchState.page) {
+      setSearchState({ ...searchState, page: newData.pageIndex + 1 });
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -37,9 +48,9 @@ export const BaseCourseSearchResults = ({
         isSelectable
         isPaginated
         manualPagination
-        pageCount={searchResults?.pageCount}
+        pageCount={searchResults?.pageCount || 1}
         initialState={initialState}
-
+        fetchData={fetchData}
       />
     </div>
   );

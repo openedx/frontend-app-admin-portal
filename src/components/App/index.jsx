@@ -17,56 +17,53 @@ import { ToastsProvider, Toasts } from '../Toasts';
 
 import store from '../../data/store';
 import history from '../../data/history';
-import QueryProvider from '../../containers/QueryProvider/QueryProvider';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   return (
     <AppProvider store={store}>
       <Router history={history}>
-        <QueryProvider>
-          <ToastsProvider>
-            <Helmet
-              titleTemplate="%s - edX Admin Portal"
-              defaultTitle="edX Admin Portal"
+        <ToastsProvider>
+          <Helmet
+            titleTemplate="%s - edX Admin Portal"
+            defaultTitle="edX Admin Portal"
+          />
+          <Toasts />
+          <Header />
+          <Switch>
+            <PageRoute exact path="/public/support" component={SupportPage} />
+            <AuthenticatedPageRoute
+              path="/enterprises"
+              render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
+              authenticatedAPIClient={apiClient}
+              redirect={`${process.env.BASE_URL}/enterprises`}
             />
-            <Toasts />
-            <Header />
-            <Switch>
-              <PageRoute exact path="/public/support" component={SupportPage} />
-              <AuthenticatedPageRoute
-                path="/enterprises"
-                render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-                authenticatedAPIClient={apiClient}
-                redirect={`${process.env.BASE_URL}/enterprises`}
-              />
-              <PageRoute
-                exact
-                path="/:enterpriseSlug/admin/register"
-                component={AdminRegisterPage}
-              />
-              <PageRoute
-                exact
-                path="/:enterpriseSlug/admin/register/activate"
-                component={UserActivationPage}
-              />
-              <AuthenticatedPageRoute
-                path="/:enterpriseSlug"
-                component={EnterpriseApp}
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              />
-              <AuthenticatedPageRoute
-                path="/"
-                render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              />
-              <PageRoute component={NotFoundPage} />
-            </Switch>
-            <Footer />
-          </ToastsProvider>
-        </QueryProvider>
+            <PageRoute
+              exact
+              path="/:enterpriseSlug/admin/register"
+              component={AdminRegisterPage}
+            />
+            <PageRoute
+              exact
+              path="/:enterpriseSlug/admin/register/activate"
+              component={UserActivationPage}
+            />
+            <AuthenticatedPageRoute
+              path="/:enterpriseSlug"
+              component={EnterpriseApp}
+              authenticatedAPIClient={apiClient}
+              redirect={process.env.BASE_URL}
+            />
+            <AuthenticatedPageRoute
+              path="/"
+              render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
+              authenticatedAPIClient={apiClient}
+              redirect={process.env.BASE_URL}
+            />
+            <PageRoute component={NotFoundPage} />
+          </Switch>
+          <Footer />
+        </ToastsProvider>
       </Router>
     </AppProvider>
   );
