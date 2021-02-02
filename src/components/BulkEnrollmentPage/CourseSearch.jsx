@@ -5,7 +5,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { InstantSearch, SearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, SearchBox, Configure } from 'react-instantsearch-dom';
 import CourseSearchResults from './CourseSearchResults';
 
 import { configuration } from '../../config';
@@ -17,32 +17,45 @@ const searchClient = algoliasearch(
 
 const DEBOUNCE_TIME = 400;
 const createURL = state => `?${qs.stringify(state)}`;
+const validateQuerystring = (queryObj) => {
+  const validatedQueryObj = { ...queryObj };
+  const { page } = queryObj;
+  if (typeof page !== 'number' || page <= 1) {
+    validatedQueryObj.page = 1;
+  }
+  return validatedQueryObj;
+};
 
-const searchStateToUrl = ({ location }, searchState) => (searchState ? `${location.pathname}${createURL(searchState)}` : '');
+const searchStateToUrl = ({ location, searchState }) => (searchState ? `${location.pathname}${createURL(searchState)}` : '');
 
-const urlToSearchState = ({ search }) => qs.parse(search.slice(1));
+const urlToSearchState = ({ search }) => {
+  const parsedSearch = qs.parse(search.slice(1));
+  const validatedSearch = validateQuerystring(parsedSearch);
+  return validatedSearch;
+};
 
 const CourseSearch = ({ enterpriseId }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseId}`;
   const location = useLocation();
   const history = useHistory();
+  console.log('url to search state', urlToSearchState(location));
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [debouncedSetState, setDebouncedSetState] = useState(null);
   const onSearchStateChange = updatedSearchState => {
     clearTimeout(debouncedSetState);
-
     setDebouncedSetState(
       setTimeout(() => {
-        history.pushState(
-          updatedSearchState,
-          null,
-          searchStateToUrl(updatedSearchState),
-        );
+        if (searchStateToUrl({ location, searchState: updatedSearchState })) {
+          history.push(
+            searchStateToUrl({ location, searchState: updatedSearchState }),
+          );
+        }
       }, DEBOUNCE_TIME),
     );
 
     setSearchState(updatedSearchState);
   };
+  console.log('SEARCH STATE', searchState);
 
   return (
     <>
@@ -54,8 +67,11 @@ const CourseSearch = ({ enterpriseId }) => {
         onSearchStateChange={onSearchStateChange}
         createURL={createURL}
       >
+        <Configure
+          hitsPerPage={25}
+        />
         <SearchBox />
-        <CourseSearchResults setSearchState={setSearchState} searchState={searchState} />
+        <CourseSearchResults setSearchState={onSearchStateChange} searchState={searchState} />
       </InstantSearch>
     </>
   );
