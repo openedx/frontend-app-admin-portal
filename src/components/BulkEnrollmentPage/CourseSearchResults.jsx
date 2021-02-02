@@ -7,6 +7,8 @@ import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 
 const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
+const ERROR_MESSAGE = 'An error occured while retrieving data.';
+export const NO_DATA_MESSAGE = 'There are no results.';
 
 export const BaseCourseSearchResults = ({
   searchResults,
@@ -44,9 +46,9 @@ export const BaseCourseSearchResults = ({
   if (error) {
     return (
       <StatusAlert
-        alertType="warning"
-        iconClassName="fa fa-exclamation-circle"
-        message={`An error occured while retrieving table data. ${error.message}`}
+        alertType="danger"
+        iconClassName="fa fa-times-circle"
+        message={`${ERROR_MESSAGE} ${error.message}`}
       />
     );
   }
@@ -55,7 +57,7 @@ export const BaseCourseSearchResults = ({
       <StatusAlert
         alertType="warning"
         iconClassName="fa fa-exclamation-circle"
-        message="There are no results."
+        message={NO_DATA_MESSAGE}
       />
     );
   }

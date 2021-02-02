@@ -4,7 +4,9 @@ import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { BaseCourseSearchResults } from './CourseSearchResults';
+import StatusAlert from '../StatusAlert';
+import { BaseCourseSearchResults, NO_DATA_MESSAGE } from './CourseSearchResults';
+import LoadingMessage from '../LoadingMessage';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -55,5 +57,14 @@ describe('<CourseSearch />', () => {
     const errorMsg = 'It did not work';
     const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} error={{ message: errorMsg }} />);
     expect(wrapper.text()).toContain(errorMsg);
+  });
+  it('renders a loading state when loading algolia results', () => {
+    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} searching />);
+    expect(wrapper.find(LoadingMessage)).toHaveLength(1);
+  });
+  it('renders a message when there are no results', () => {
+    const wrapper = mount(<CourseSearchWrapper searchResults={{ ...searchResults, nbHits: 0 }} />);
+    expect(wrapper.find(StatusAlert)).toHaveLength(1);
+    expect(wrapper.text()).toContain(NO_DATA_MESSAGE);
   });
 });
