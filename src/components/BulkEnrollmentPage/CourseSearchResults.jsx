@@ -31,11 +31,11 @@ export const BaseCourseSearchResults = ({
   const initialState = useMemo(() => ({
     pageSize: searchResults?.hitsPerPage,
     pageIndex: searchResults?.page || 0,
-  }), [searchResults?.nbPages, searchResults?.hitsPerPage]);
+  }), [searchResults?.page, searchResults?.hitsPerPage]);
 
   const fetchData = (newData) => {
     // don't change the query before results come back
-    if (searchResults && searchState?.page && newData.pageIndex + 1 !== searchState.page) {
+    if (!searching && searchState?.page && newData.pageIndex + 1 !== searchState.page) {
       setSearchState({ ...searchState, page: newData.pageIndex + 1 });
     }
   };
