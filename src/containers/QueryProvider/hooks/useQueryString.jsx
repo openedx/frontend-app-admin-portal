@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import qs from 'query-string';
 
 export const getPrefixedKeys = (obj, prefix) => {
@@ -22,24 +21,24 @@ export const excludeKeys = (obj, keysToExclude) => {
 };
 
 export const prefixKeys = (obj, prefix) => {
+  console.log('PREFIX', obj, prefix)
   const prefixedObj = {};
   Object.keys(obj).forEach(key => { prefixedObj[`${prefix}__${key}`] = obj[key]; });
   return prefixedObj;
 };
 
-export const getQueryString = ({ prefix = '', excludedParams = [] } = {}) => () => {
-  const { search } = useLocation();
+export const getQueryString = ({ prefix = '', excludedParams = [], search = '' } = {}) => {
   const relaventQueries = useMemo(
     () => {
       const queries = qs.parse(search);
       let filteredQueries = { ...queries };
       if (prefix) {
         filteredQueries = getPrefixedKeys(queries, prefix);
+        console.log("FILTERED QUERIES", filteredQueries);
       }
       if (excludedParams.length > 0) {
         filteredQueries = excludeKeys(filteredQueries, excludedParams);
       }
-
       return filteredQueries;
     },
     [search],
@@ -47,12 +46,9 @@ export const getQueryString = ({ prefix = '', excludedParams = [] } = {}) => () 
   return relaventQueries;
 };
 
-export const setQueryString = ({ prefix = '', excludedParams = [] } = {}) => (paramsToSet) => {
-  const { push } = useHistory();
-  const { url } = useLocation();
-  // get the whole querystring
-  const { search } = useLocation();
-
+export const getQueryParamsToSetString = ({
+  prefix = '', excludedParams = [], paramsToSet = {}, search = '',
+} = {}) => {
   const queriesToKeep = useMemo(() => {
     const qToKeep = {};
     const currentQuery = qs.parse(search);
@@ -64,23 +60,23 @@ export const setQueryString = ({ prefix = '', excludedParams = [] } = {}) => (pa
         .forEach(key => { qToKeep[key] = currentQuery[key]; });
     }
     return qToKeep;
-  }, [search]);
-
+  }, [search, prefix, excludedParams]);
+  console.log('QTK', queriesToKeep)
   let queriesToSet = {};
   if (prefix) {
     queriesToSet = { ...prefixKeys(paramsToSet, prefix), ...queriesToKeep };
   } else {
     queriesToSet = { ...paramsToSet, ...queriesToKeep };
   }
-
-  push(`${url}?${qs.stringify(queriesToSet)}`);
+  console.log('QTS', queriesToSet)
+  return qs.stringify(queriesToSet);
 };
 
 const useQueryString = (prefix = '', excludedParams = []) => {
   const getPrefixedQuery = useMemo(() => getQueryString({ prefix, excludedParams }), [prefix, excludedParams]);
   const query = getPrefixedQuery();
-  const setPrefixedQueryString = useMemo(() => setQueryString({ prefix, excludedParams }), [prefix, excludedParams]);
-  return [query, setPrefixedQueryString];
+  const getPrefixedQueryStringSetter = useMemo(() => setQueryString({ prefix, excludedParams }), [prefix, excludedParams]);
+  return [query, querySetter];
 };
 
 /**

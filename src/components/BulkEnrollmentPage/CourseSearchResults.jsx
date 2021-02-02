@@ -19,6 +19,7 @@ export const BaseCourseSearchResults = ({
       accessor: 'course_run',
     },
   ];
+
   const initialState = useMemo(() => ({
     pageSize: searchResults?.hitsPerPage,
     pageIndex: searchResults?.pageIndex || 0,
@@ -27,6 +28,7 @@ export const BaseCourseSearchResults = ({
 
   return (
     <div className="container-fluid">
+
       <DataTable
         columns={columns}
         data={searchResults?.hits || []}
@@ -37,6 +39,7 @@ export const BaseCourseSearchResults = ({
         manualPagination
         pageCount={searchResults?.pageCount}
         initialState={initialState}
+
       />
     </div>
   );
