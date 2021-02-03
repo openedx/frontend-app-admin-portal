@@ -77,6 +77,7 @@ module.exports = merge(commonConfig, {
           // Caches result of loader to the filesystem. Future builds will attempt to read from the
           // cache to avoid needing to run the expensive recompilation process on each run.
           cacheDirectory: true,
+          presets: ['@babel/preset-env'],
         },
       },
       // We are not extracting CSS from the javascript bundles in development because extracting
