@@ -44,7 +44,6 @@ module.exports = merge(commonConfig, {
         loader: 'babel-loader',
         options: {
           compact: true,
-          presets: ['@babel/preset-env'],
         },
       },
       // Webpack, by default, includes all CSS in the javascript bundles. Unfortunately, that means:
