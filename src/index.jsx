@@ -12,7 +12,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 import { PrivateRoute } from '@edx/frontend-auth';
 import * as FullStory from '@fullstory/browser';
-import { Hyperlink } from '@edx/paragon';
 
 import EnterpriseApp from './containers/EnterpriseApp';
 import Header from './containers/Header';
@@ -22,7 +21,6 @@ import AdminRegisterPage from './containers/AdminRegisterPage';
 import UserActivationPage from './containers/UserActivationPage';
 import JwtAuthenticationRefresh from './components/JwtAuthenticationRefresh';
 import NotFoundPage from './components/NotFoundPage';
-import { SystemWideWarningBanner } from './components/system-wide-banner';
 import SupportPage from './components/SupportPage';
 import { withErrorBoundary } from './components/ErrorBoundary';
 import { ToastsProvider, Toasts } from './components/Toasts';
@@ -51,18 +49,6 @@ const AppWrapper = () => (
             defaultTitle="edX Admin Portal"
           />
           <Toasts />
-          {configuration?.SHOW_MAINTENANCE_ALERT && (
-            <SystemWideWarningBanner>
-              Some edX services will unavailable for a period of time due to planned maintenance Tuesday,
-              February 2 between 8pm and 9pm EST. See our
-              {' '}
-              <Hyperlink target="_blank" href="https://status.edx.org/incidents/bcp3b0pcvlk4">
-                status page
-              </Hyperlink>
-              {' '}
-              for more information.
-            </SystemWideWarningBanner>
-          )}
           <Header />
           <Switch>
             <Route exact path="/public/support" component={SupportPage} />
