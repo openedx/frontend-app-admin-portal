@@ -55,7 +55,6 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.9",
-    "react-spinners": "0.3.2",
     "react-textarea-autosize": "7.1.2",
     "redux": "3.7.2",
     "redux-beacon": "2.1.0",
