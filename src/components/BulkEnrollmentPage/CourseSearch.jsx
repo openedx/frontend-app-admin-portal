@@ -24,7 +24,7 @@ const CourseSearch = ({ enterpriseId }) => {
         searchClient={searchClient}
       >
         <SearchBox />
-        <CourseSearchResults />
+        <CourseSearchResults enterpriseId={enterpriseId} />
       </InstantSearch>
     </>
   );
