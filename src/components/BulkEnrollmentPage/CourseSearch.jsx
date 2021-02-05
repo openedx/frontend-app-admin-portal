@@ -9,7 +9,7 @@ import { InstantSearch, Configure } from 'react-instantsearch-dom';
 import CourseSearchResults from './CourseSearchResults';
 
 import {
-  searchStateToUrl, urlToSearchState, DEBOUNCE_TIME, createURL,
+  searchStateToUrl, urlToSearchState, DEBOUNCE_TIME_MILLIS, createURL,
 } from '../../algoliaUtils';
 import { configuration } from '../../config';
 
@@ -34,7 +34,7 @@ const CourseSearch = ({ enterpriseId }) => {
             searchStateToUrl({ location, searchState: updatedSearchState }),
           );
         }
-      }, DEBOUNCE_TIME),
+      }, DEBOUNCE_TIME_MILLIS),
     );
 
     setSearchState(updatedSearchState);

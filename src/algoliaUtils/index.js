@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-export const DEBOUNCE_TIME = 400;
+export const DEBOUNCE_TIME_MILLIS = 400;
 export const ALGOLIA_KEYS_TO_EXCLUDE = ['configure'];
 
 export const excludeKeys = (obj, keysToExclude) => {

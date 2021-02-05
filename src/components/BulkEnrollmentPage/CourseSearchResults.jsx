@@ -9,8 +9,8 @@ import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 
 const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
-const ERROR_MESSAGE = 'An error occured while retrieving data.';
-export const NO_DATA_MESSAGE = 'There are no results.';
+const ERROR_MESSAGE = 'An error occured while retrieving data';
+export const NO_DATA_MESSAGE = 'There are no results';
 
 export const BaseCourseSearchResults = ({
   enterpriseId,
