@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build",
     "start": "NODE_ENV=development BABEL_ENV=development webpack-dev-server --config=config/webpack.dev.config.js --hot --inline --progress",
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "fedx-scripts jest --coverage --passWithNoTests --maxWorkers=50%",
+    "test": "fedx-scripts jest --passWithNoTests --maxWorkers=50%",
     "snapshot": "fedx-scripts jest --updateSnapshot"
   },
   "license": "AGPL-3.0",
@@ -30,6 +30,7 @@
     "@fortawesome/react-fontawesome": "0.1.12",
     "@fullstory/browser": "1.4.5",
     "@redux-beacon/segment": "1.1.0",
+    "@testing-library/react-hooks": "^5.0.3",
     "algoliasearch": "4.8.3",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.18.2",

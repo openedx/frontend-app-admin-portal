@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import {
+  Field, reduxForm, SubmissionError, reset,
+} from 'redux-form';
 import {
   Alert, Button, Icon, Modal,
 } from '@edx/paragon';
@@ -37,6 +39,15 @@ class BulkEnrollmentModal extends React.Component {
       // When there is an new error, focus on the error message status alert
       errorMessageRef.focus();
     }
+  }
+
+  handleModalClose = () => {
+    const {
+      onClose,
+      dispatch,
+    } = this.props;
+    dispatch(reset('bulk-enrollment-modal-form'));
+    onClose();
   }
 
   handleModalSubmit(formData) {
@@ -151,7 +162,6 @@ class BulkEnrollmentModal extends React.Component {
 
   render() {
     const {
-      onClose,
       open,
       handleSubmit,
       submitting,
@@ -164,7 +174,7 @@ class BulkEnrollmentModal extends React.Component {
         title={title}
         body={this.renderBody()}
         closeText="Cancel"
-        onClose={onClose}
+        onClose={() => this.handleModalClose()}
         buttons={[
           <Button
             key="enroll-submit-btn"
@@ -198,6 +208,7 @@ BulkEnrollmentModal.propTypes = {
   submitSucceeded: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,
   error: PropTypes.arrayOf(PropTypes.string),
+  dispatch: PropTypes.func.isRequired,
 
   // custom props
   enterpriseUuid: PropTypes.string.isRequired,
