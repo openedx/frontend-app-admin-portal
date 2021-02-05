@@ -56,8 +56,10 @@ const TabContentTable = ({ enterpriseSlug }) => {
     errors,
     setErrors,
   });
+
   const hasErrors = Object.values(errors).length > 0;
-  const hasLoadedUsers = !!(users?.numPages);
+  const hasLoadedUsers = !!(users?.numPages || users?.count);
+
   const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
 
   const activeTabData = useMemo(() => {
@@ -165,7 +167,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
                   <div className="mt-3 d-flex justify-content-center">
                     <Pagination
                       onPageSelect={page => setCurrentPage(page)}
-                      pageCount={users.numPages}
+                      pageCount={users.numPages || 1}
                       currentPage={currentPage}
                       paginationLabel={activeTabData.paginationLabel}
                     />

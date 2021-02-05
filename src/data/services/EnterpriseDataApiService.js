@@ -1,15 +1,17 @@
 import qs from 'query-string';
 
-import apiClient from '../apiClient';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
+  static apiClient = getAuthenticatedHttpClient;
+
   static enterpriseBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v0/enterprise/`;
 
   static fetchDashboardAnalytics(enterpriseId) {
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {
@@ -22,7 +24,7 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {
@@ -36,7 +38,7 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchEnrolledLearners(enterpriseId, options, { csv } = {}) {
@@ -51,7 +53,7 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchEnrolledLearnersForInactiveCourses(enterpriseId, options, { csv } = {}) {
@@ -68,7 +70,7 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchCompletedLearners(enterpriseId, options, { csv } = {}) {
@@ -81,7 +83,7 @@ class EnterpriseDataApiService {
     };
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
-    return apiClient.get(url);
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 }
 

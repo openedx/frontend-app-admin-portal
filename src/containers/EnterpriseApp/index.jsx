@@ -17,8 +17,7 @@ const mapStateToProps = (state) => {
     enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
-    authentication: state.authentication,
-    userAccount: state.userAccount,
+    enterpriseName: state.portalConfiguration.enterpriseName,
   };
 };
 

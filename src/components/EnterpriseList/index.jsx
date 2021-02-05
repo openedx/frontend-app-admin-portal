@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import qs from 'query-string';
 
@@ -11,6 +11,8 @@ import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
 import SurveyPage from '../SurveyPage';
 import { updateUrl } from '../../utils';
+
+export const TITLE = 'Enterprise List';
 
 class EnterpriseList extends React.Component {
   constructor(props) {
@@ -30,6 +32,7 @@ class EnterpriseList extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { location } = this.props;
+
     if (location.search !== prevProps.location.search) {
       const { search } = qs.parse(location.search);
       const { search: prevSearch } = qs.parse(prevProps.location.search);
@@ -51,7 +54,6 @@ class EnterpriseList extends React.Component {
       ...options,
       search: this.state.searchQuery || undefined,
     };
-
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
   }
 
@@ -113,13 +115,13 @@ class EnterpriseList extends React.Component {
       <>
         <SurveyPage />
         <Helmet>
-          <title>Enterprise List</title>
+          <title>{TITLE}</title>
         </Helmet>
         <main role="main">
           <div className="container-fluid">
             <div className="row mt-4">
               <div className="col-sm-12 col-md">
-                <h1>Enterprise List</h1>
+                <h1>{TITLE}</h1>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
                 <SearchBar
@@ -182,4 +184,4 @@ EnterpriseList.propTypes = {
   error: PropTypes.instanceOf(Error),
 };
 
-export default EnterpriseList;
+export default withRouter(EnterpriseList);

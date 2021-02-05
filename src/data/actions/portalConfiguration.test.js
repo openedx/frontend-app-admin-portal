@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
+// eslint-disable-next-line no-unused-vars
+import { logError } from '@edx/frontend-platform/logging';
 
-import apiClient from '../apiClient';
 import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
   FETCH_PORTAL_CONFIGURATION_REQUEST,
@@ -10,11 +10,11 @@ import {
   FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
+import { axiosMock } from '../../setupTest';
+
+jest.mock('@edx/frontend-platform/logging');
 
 const mockStore = configureMockStore([thunk]);
-const axiosMock = new MockAdapter(apiClient);
-apiClient.isAccessTokenExpired = jest.fn();
-apiClient.isAccessTokenExpired.mockReturnValue(false);
 
 describe('actions', () => {
   afterEach(() => {

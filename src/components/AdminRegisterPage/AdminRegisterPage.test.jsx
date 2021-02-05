@@ -1,50 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
-import LoadingMessage from '../../components/LoadingMessage';
+import LoadingMessage from '../LoadingMessage';
 import AdminRegisterPage from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 
-const mockStore = configureMockStore([thunk]);
 const history = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register`],
 });
-const initialState = {
-  authentication: {}, // default to unauthenticated
-};
 
 const AdminRegisterPageWrapper = ({
-  store,
   ...rest
 }) => (
   <Router history={history}>
-    <Provider store={store}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/register"
-        render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
-      />
-    </Provider>
+    <Route
+      exact
+      path="/:enterpriseSlug/admin/register"
+      render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
+    />
   </Router>
 );
 
-AdminRegisterPageWrapper.defaultProps = {
-  store: mockStore({ ...initialState }),
-};
-
-AdminRegisterPageWrapper.propTypes = {
-  store: PropTypes.shape(),
-};
-
 describe('<AdminRegisterPage />', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   it('renders loading message when not authenticated (redirect to enterprise proxy login)', () => {
+    getAuthenticatedUser.mockReturnValue({});
+
     const wrapper = mount(<AdminRegisterPageWrapper />);
 
     // verify that the loading message appears during redirect
@@ -58,26 +46,23 @@ describe('<AdminRegisterPage />', () => {
     { roles: ['enterprise_learner:*'] },
   ].forEach(({ roles }) => {
     it('displays logging out message alert when user is authenticated without "enterprise_admin" JWT role', () => {
-      const store = mockStore({
-        authentication: {
-          username: 'edx',
-          roles,
-        },
+      getAuthenticatedUser.mockReturnValue({
+        username: 'edx',
+        roles,
       });
 
-      const wrapper = mount(<AdminRegisterPageWrapper store={store} />);
+      const wrapper = mount(<AdminRegisterPageWrapper />);
       expect(wrapper.find('.admin-registration-logout').exists()).toBeTruthy();
     });
   });
 
   it('redirects to /admin/register/activate route when user is authenticated and has JWT roles', () => {
-    const store = mockStore({
-      authentication: {
-        username: 'edx',
-        roles: ['enterprise_admin:*'],
-      },
+    getAuthenticatedUser.mockReturnValue({
+      username: 'edx',
+      roles: ['enterprise_admin:*'],
     });
-    mount(<AdminRegisterPageWrapper store={store} />);
+
+    mount(<AdminRegisterPageWrapper />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
     expect(history.location.pathname).toEqual(expectedRedirectRoute);
   });
