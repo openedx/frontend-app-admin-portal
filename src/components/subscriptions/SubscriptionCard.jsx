@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Card, Badge } from '@edx/paragon';
+import { Card, Badge, Button } from '@edx/paragon';
 
 const SubscriptionCard = ({
   uuid,
@@ -43,9 +43,9 @@ const SubscriptionCard = ({
         </p>
         <div className="d-flex">
           <div className="ml-auto">
-            <Link to={`/${enterpriseSlug}/admin/subscriptions/${uuid}`} className="btn btn-outline-primary">
+            <Button as={Link} to={`/${enterpriseSlug}/admin/subscriptions/${uuid}`} variant="outline-primary">
               {isExpired ? 'View' : 'Manage'} learners
-            </Link>
+            </Button>
           </div>
         </div>
       </Card.Body>
