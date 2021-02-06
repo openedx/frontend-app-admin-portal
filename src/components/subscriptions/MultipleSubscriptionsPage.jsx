@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import {
   CardGrid,
   Row,
@@ -16,18 +17,17 @@ import SubscriptionsHelpPopover from './SubscriptionsHelpPopover';
 const MultipleSubscriptionsPage = ({ match }) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
-  let subscriptions = data.results;
+  const subscriptions = data.results;
 
   if (subscriptions.length === 0) {
     return null;
   }
-  // if (subscriptions.length === 1) {
-  //   return (
-  //     <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
-  //   );
-  // }
 
-  subscriptions = [subscriptions[0], subscriptions[0], subscriptions[0], subscriptions[0], subscriptions[0]];
+  if (subscriptions.length === 1) {
+    return (
+      <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
+    );
+  }
 
   const subscriptionFurthestFromExpiration = subscriptions.reduce((sub1, sub2) => (
     new Date(sub1.expirationDate) > new Date(sub2.expirationDate) ? sub1 : sub2));
@@ -64,32 +64,6 @@ const MultipleSubscriptionsPage = ({ match }) => {
             />
           ))}
         </CardGrid>
-        {/* <Col>
-          <h3>Need help?</h3>
-          <Card className="support-card">
-            <Card.Body>
-              <Card.Title>Customer Support can help</Card.Title>
-              <ul className="pl-4">
-                <li>
-                  Manage your individual subscription cohorts
-                </li>
-                <li>
-                  Add new cohorts to your Subscription Management page
-                </li>
-                <li>
-                  Help maximize the efficacy of your learning program
-                </li>
-              </ul>
-              <div className="d-flex">
-                <div className="ml-auto">
-                  <Link to={`/${enterpriseSlug}/admin/support`} className="btn btn-outline-primary">
-                    Contact Customer Support
-                  </Link>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col> */}
       </Row>
     </>
   );
