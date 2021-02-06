@@ -51,20 +51,19 @@ const MultipleSubscriptionsPage = ({ match }) => {
           <SubscriptionsHelpPopover enterpriseSlug={enterpriseSlug} />
         </Col>
       </Row>
-      <Row>
-        <CardGrid>
-          {subscriptions.map(subscription => (
-            <SubscriptionCard
-              uuid={subscription?.uuid}
-              title={subscription?.title}
-              enterpriseSlug={enterpriseSlug}
-              startDate={subscription?.startDate}
-              expirationDate={subscription?.expirationDate}
-              licenses={subscription?.licenses || {}}
-            />
-          ))}
-        </CardGrid>
-      </Row>
+      <CardGrid>
+        {subscriptions.map(subscription => (
+          <SubscriptionCard
+            key={subscription?.uuid}
+            uuid={subscription?.uuid}
+            title={subscription?.title}
+            enterpriseSlug={enterpriseSlug}
+            startDate={subscription?.startDate}
+            expirationDate={subscription?.expirationDate}
+            licenses={subscription?.licenses || {}}
+          />
+        ))}
+      </CardGrid>
     </>
   );
 };
