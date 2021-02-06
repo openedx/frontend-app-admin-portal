@@ -35,7 +35,7 @@ const SubscriptionsHelpPopover = ({ enterpriseSlug }) => (
       </Popover>
     )}
   >
-    <Button variant="tertiary" className="d-flex align-items-center">
+    <Button variant="outline-primary" className="d-flex align-items-center">
       <Icon src={Info} className="d-inline-block mr-2" />
       Need help?
     </Button>
