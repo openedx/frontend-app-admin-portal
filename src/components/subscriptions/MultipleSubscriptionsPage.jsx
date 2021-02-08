@@ -12,7 +12,6 @@ import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvid
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 import SubscriptionCard from './SubscriptionCard';
-import SubscriptionsHelpPopover from './SubscriptionsHelpPopover';
 
 const MultipleSubscriptionsPage = ({ match }) => {
   const { params: { enterpriseSlug } } = match;
@@ -46,9 +45,6 @@ const MultipleSubscriptionsPage = ({ match }) => {
           <p className="lead">
             Invite your learners to access your course catalog and manage your subscription cohorts
           </p>
-        </Col>
-        <Col className="d-flex flex-column align-items-end">
-          <SubscriptionsHelpPopover enterpriseSlug={enterpriseSlug} />
         </Col>
       </Row>
       <CardGrid>

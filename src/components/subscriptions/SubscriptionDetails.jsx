@@ -8,7 +8,6 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
-import SubscriptionsHelpPopover from './SubscriptionsHelpPopover';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { subscription, hasMultipleSubscriptions } = useContext(SubscriptionDetailContext);
@@ -44,9 +43,6 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
               </div>
             </div>
           </div>
-        </Col>
-        <Col className="d-flex flex-column align-items-end">
-          <SubscriptionsHelpPopover enterpriseSlug={enterpriseSlug} />
         </Col>
       </Row>
     </>
