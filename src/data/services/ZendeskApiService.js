@@ -25,7 +25,7 @@ class ZendeskApiService {
       custom_fields: [],
       tags: ['enterprise_admin_support'],
     };
-    return getAuthenticatedHttpClient().post(url, data, 'json');
+    return getAuthenticatedHttpClient().post(url, data);
   }
 }
 
