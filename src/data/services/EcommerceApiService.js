@@ -37,22 +37,22 @@ class EcommerceApiService {
 
   static sendCodeAssignment(couponId, options) {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/assign/`;
-    return EcommerceApiService.apiClient().post(url, options, 'json');
+    return EcommerceApiService.apiClient().post(url, options);
   }
 
   static sendCodeReminder(couponId, options) {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/remind/`;
-    return EcommerceApiService.apiClient().post(url, options, 'json');
+    return EcommerceApiService.apiClient().post(url, options);
   }
 
   static sendCodeRevoke(couponId, options) {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/revoke/`;
-    return EcommerceApiService.apiClient().post(url, options, 'json');
+    return EcommerceApiService.apiClient().post(url, options);
   }
 
   static sendCodeVisibility(couponId, codeIds, isPublic) {
     const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/visibility/`;
-    return EcommerceApiService.apiClient().post(url, { code_ids: codeIds, is_public: isPublic }, 'json');
+    return EcommerceApiService.apiClient().post(url, { code_ids: codeIds, is_public: isPublic });
   }
 
   static fetchCodeSearchResults(options) {
@@ -79,9 +79,9 @@ class EcommerceApiService {
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/offer-assignment-email-template/${enterpriseId}/`;
     if (emailTemplateSource === EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE) {
       url = `${url}${options.id}/`;
-      return EcommerceApiService.apiClient().put(url, options, 'json');
+      return EcommerceApiService.apiClient().put(url, options);
     }
-    return EcommerceApiService.apiClient().post(url, options, 'json');
+    return EcommerceApiService.apiClient().post(url, options);
   }
 }
 

@@ -95,14 +95,14 @@ class LicenseManagerApiService {
 
   static licenseAssign(options, subscriptionUUID) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/assign/`;
-    return LicenseManagerApiService.apiClient().post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options);
   }
 
   static licenseRemind(options, subscriptionUUID, bulkRemind) {
     const remindUrl = bulkRemind ? 'remind-all' : 'remind';
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/${remindUrl}/`;
-    return LicenseManagerApiService.apiClient().post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options);
   }
 
   static fetchSubscriptions(options) {
@@ -135,7 +135,7 @@ class LicenseManagerApiService {
 
   static licenseRevoke(subscriptionUUID, options) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke/`;
-    return LicenseManagerApiService.apiClient().post(url, options, 'json');
+    return LicenseManagerApiService.apiClient().post(url, options);
   }
 }
 

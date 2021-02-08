@@ -61,7 +61,7 @@ class LmsApiService {
       notes: options.notes,
     };
     const requestCodesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/request_codes`;
-    return LmsApiService.apiClient().post(requestCodesUrl, postParams, 'json');
+    return LmsApiService.apiClient().post(requestCodesUrl, postParams);
   }
 
   static fetchReportingConfigs(uuid) {
@@ -69,12 +69,12 @@ class LmsApiService {
   }
 
   static postNewReportingConfig(formData) {
-    return LmsApiService.apiClient().post(LmsApiService.reportingConfigUrl, formData, 'json');
+    return LmsApiService.apiClient().post(LmsApiService.reportingConfigUrl, formData);
   }
 
   static updateReportingConfig(formData, uuid) {
     const reportingConfigUrl = `${LmsApiService.reportingConfigUrl}${uuid}/`;
-    return LmsApiService.apiClient().put(reportingConfigUrl, formData, 'json');
+    return LmsApiService.apiClient().put(reportingConfigUrl, formData);
   }
 
   static deleteReportingConfig(uuid) {
@@ -87,12 +87,12 @@ class LmsApiService {
   }
 
   static postNewProviderConfig(formData) {
-    return LmsApiService.apiClient().post(LmsApiService.providerConfigUrl, formData, 'json');
+    return LmsApiService.apiClient().post(LmsApiService.providerConfigUrl, formData);
   }
 
   static updateProviderConfig(formData, pid) {
     const providerConfigUrl = `${LmsApiService.providerConfigUrl}${pid}/`;
-    return LmsApiService.apiClient().put(providerConfigUrl, formData, 'json');
+    return LmsApiService.apiClient().put(providerConfigUrl, formData);
   }
 
   static deleteProviderConfig(pid, uuid) {
@@ -107,7 +107,7 @@ class LmsApiService {
 
   static createProviderData(formData) {
     const providerDataUrl = `${LmsApiService.providerDataUrl}`;
-    return LmsApiService.apiClient().post(providerDataUrl, formData, 'json');
+    return LmsApiService.apiClient().post(providerDataUrl, formData);
   }
 
   static deleteProviderData(pdid, uuid) {
@@ -125,11 +125,11 @@ class LmsApiService {
   }
 
   static postNewMoodleConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/`, formData);
   }
 
   static updateMoodleConfig(formData, configId) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/${configId}/`, formData);
   }
 
   static fetchCanvasConfig(uuid) {
@@ -137,11 +137,11 @@ class LmsApiService {
   }
 
   static postNewCanvasConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/`, formData);
   }
 
   static updateCanvasConfig(formData, id) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${id}/`, formData);
   }
 
   static fetchBlackboardConfig(uuid) {
@@ -149,11 +149,11 @@ class LmsApiService {
   }
 
   static postNewBlackboardConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/`, formData);
   }
 
   static updateBlackboardConfig(formData, configId) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`, formData);
   }
 
   static fetchSuccessFactorsConfig(uuid) {
@@ -161,11 +161,11 @@ class LmsApiService {
   }
 
   static postNewSuccessFactorsConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/`, formData);
   }
 
   static updateSuccessFactorsConfig(formData, configId) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/${configId}/`, formData);
   }
 
   static fetchDegreedConfig(uuid) {
@@ -173,11 +173,11 @@ class LmsApiService {
   }
 
   static postNewDegreedConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/`, formData);
   }
 
   static updateDegreedConfig(formData, configId) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/${configId}/`, formData);
   }
 
   static fetchCornerstoneConfig(uuid) {
@@ -185,16 +185,16 @@ class LmsApiService {
   }
 
   static postNewCornerstoneConfig(formData) {
-    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/`, formData, 'json');
+    return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/`, formData);
   }
 
   static updateCornerstoneConfig(formData, configId) {
-    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/${configId}/`, formData, 'json');
+    return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/${configId}/`, formData);
   }
 
   static sendBulkEnrollment(enterpriseId, options) {
     const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseId}/enterprise_learners/`;
-    return LmsApiService.apiClient().post(url, options, 'json');
+    return LmsApiService.apiClient().post(url, options);
   }
 }
 
