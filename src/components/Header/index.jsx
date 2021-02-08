@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
 } from '@edx/paragon';
@@ -94,7 +95,7 @@ const Header = ({
   return (
     <header className="container-fluid border-bottom">
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
-        <Nav>
+        <Nav aria-label="Main">
           {hasSidebarToggle && <SidebarToggle />}
           <Nav.Link
             href="/"
@@ -103,8 +104,16 @@ const Header = ({
             <Logo enterpriseLogo={enterpriseLogo} enterpriseName={enterpriseName} />
           </Nav.Link>
         </Nav>
-        {user?.username && (
-          <HeaderDropdown user={user} enterpriseSlug={enterpriseSlug} />
+        {(user?.username && enterpriseSlug) && (
+          <Nav aria-label="Secondary" className="align-items-center ml-auto">
+            <Link
+              to={`/${enterpriseSlug}/admin/support`}
+              className="text-gray-700 mr-3"
+            >
+              Help
+            </Link>
+            <HeaderDropdown user={user} enterpriseSlug={enterpriseSlug} />
+          </Nav>
         )}
       </Navbar>
     </header>

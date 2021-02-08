@@ -90,12 +90,6 @@ class Sidebar extends React.Component {
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
       },
       {
-        title: 'Support',
-        to: `${baseUrl}/admin/support`,
-        icon: faLifeRing,
-        hidden: !features.SUPPORT,
-      },
-      {
         title: 'Catalog Management',
         to: `${baseUrl}/admin/catalog_management`,
         icon: faBookOpen,
@@ -106,6 +100,13 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/lmsintegrations`,
         icon: faUniversity,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
+      },
+      // NOTE: keep "Support" link the last nav item
+      {
+        title: 'Support',
+        to: `${baseUrl}/admin/support`,
+        icon: faLifeRing,
+        hidden: !features.SUPPORT,
       },
     ];
   }

@@ -93,7 +93,9 @@ describe('<Header />', () => {
     };
     getAuthenticatedUser.mockReturnValue(userData);
     store = mockStore({
-      portalConfiguration: {},
+      portalConfiguration: {
+        enterpriseSlug: 'test-enterprise',
+      },
       sidebar: {},
     });
     const wrapper = mount(<HeaderWrapper store={store} />);
