@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
+import { SearchHeader, SearchData } from '@edx/frontend-enterprise';
 import CourseSearchResults from './CourseSearchResults';
 
 import {
@@ -17,6 +18,8 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
+
+export const NO_DATA_MESSAGE = 'There are no results';
 
 const CourseSearch = ({ enterpriseId }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseId}`;
@@ -41,26 +44,31 @@ const CourseSearch = ({ enterpriseId }) => {
   };
 
   return (
-    <div className="mt-4">
-      <Helmet title={PAGE_TITLE} />
-      <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
-        searchClient={searchClient}
-        searchState={searchState}
-        onSearchStateChange={onSearchStateChange}
-        createURL={createURL}
-      >
-        <Configure
-          filters={`enterprise_customer_uuids:${enterpriseId}`}
-          hitsPerPage={25}
-        />
-        <CourseSearchResults
-          enterpriseId={enterpriseId}
-          setSearchState={onSearchStateChange}
+    <SearchData>
+      <div className="mt-4">
+        <Helmet title={PAGE_TITLE} />
+        <InstantSearch
+          indexName={configuration.ALGOLIA.INDEX_NAME}
+          searchClient={searchClient}
           searchState={searchState}
-        />
-      </InstantSearch>
-    </div>
+          onSearchStateChange={onSearchStateChange}
+          createURL={createURL}
+        >
+          <Configure
+            filters={`enterprise_customer_uuids:${enterpriseId}`}
+            hitsPerPage={1}
+          />
+          <div className="container-fluid">
+            <SearchHeader />
+            <CourseSearchResults
+              enterpriseId={enterpriseId}
+              setSearchState={onSearchStateChange}
+              searchState={searchState}
+            />
+          </div>
+        </InstantSearch>
+      </div>
+    </SearchData>
   );
 };
 

@@ -1,12 +1,16 @@
-/* eslint-disable react/prop-types */
-import React, { useMemo, useState } from 'react';
+import React, {
+  useMemo, useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import { connectStateResults, connectPagination } from 'react-instantsearch-dom';
-import { DataTable, Toast } from '@edx/paragon';
+import { connectStateResults } from 'react-instantsearch-dom';
+import {
+  DataTable, Toast,
+} from '@edx/paragon';
 
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
+import ConnectedPagination from './ConnectedPagination';
 
 const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
 const ERROR_MESSAGE = 'An error occured while retrieving data';
@@ -15,12 +19,11 @@ export const NO_DATA_MESSAGE = 'There are no results';
 export const BaseCourseSearchResults = ({
   enterpriseId,
   searchResults,
-  searchState,
-  setSearchState,
-  searching,
+  // algolia recommends this prop instead of searching
+  isSearchStalled,
   error,
 }) => {
-  const columns = [
+  const columns = useMemo(() => [
     {
       Header: 'Course name',
       accessor: 'title',
@@ -29,9 +32,9 @@ export const BaseCourseSearchResults = ({
       Header: 'Course run',
       accessor: 'advertised_course_run.key',
     },
-  ];
+  ], []);
 
-  const initialState = useMemo(() => ({
+  const initialTableState = useMemo(() => ({
     pageSize: searchResults?.hitsPerPage,
     pageIndex: searchResults?.page || 0,
   }), [searchResults?.page, searchResults?.hitsPerPage]);
@@ -39,17 +42,12 @@ export const BaseCourseSearchResults = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
   const [showToast, setShowToast] = useState(false);
-  const fetchData = (newData) => {
-    // don't change the query before results come back
-    if (!searching && searchState?.page && newData.pageIndex + 1 !== searchState.page) {
-      setSearchState({ ...searchState, page: newData.pageIndex + 1 });
-    }
-  };
 
-  if (searching) {
+  if (isSearchStalled) {
     return (<LoadingMessage className="overview mt-3" />);
   }
-  if (error) {
+
+  if (!isSearchStalled && error) {
     return (
       <StatusAlert
         alertType="danger"
@@ -58,7 +56,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
-  if (searchResults?.nbHits === 0) {
+  if (!isSearchStalled && searchResults?.nbHits === 0) {
     return (
       <StatusAlert
         alertType="warning"
@@ -67,6 +65,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
+
   return (
     <>
       <BulkEnrollmentModal
@@ -85,7 +84,7 @@ export const BaseCourseSearchResults = ({
       >
         Your learners have been enrolled.
       </Toast>
-      <div className="container-fluid">
+      <div>
         <DataTable
           columns={columns}
           data={searchResults?.hits || []}
@@ -95,9 +94,8 @@ export const BaseCourseSearchResults = ({
           isPaginated
           manualPagination
           pageCount={searchResults?.nbPages || 1}
-          initialState={initialState}
+          initialState={initialTableState}
           pageSize={searchResults?.hitsPerPage || 0}
-          fetchData={fetchData}
           bulkActions={[{
             buttonText: 'Enroll Learners',
             handleClick: (selectedRows) => {
@@ -108,7 +106,14 @@ export const BaseCourseSearchResults = ({
               setModalOpen(true);
             },
           }]}
-        />
+        >
+          <DataTable.TableControlBar />
+          <DataTable.Table />
+          <DataTable.TableFooter>
+            <DataTable.RowStatus />
+            <ConnectedPagination />
+          </DataTable.TableFooter>
+        </DataTable>
       </div>
     </>
   );
@@ -121,12 +126,18 @@ BaseCourseSearchResults.defaultProps = {
 };
 
 BaseCourseSearchResults.propTypes = {
-  searchResults: PropTypes.shape({ nbHits: PropTypes.number, hits: PropTypes.arrayOf(PropTypes.shape) }),
+  searchResults: PropTypes.shape({
+    nbHits: PropTypes.number,
+    hits: PropTypes.arrayOf(PropTypes.shape({})),
+    nbPages: PropTypes.number,
+    hitsPerPage: PropTypes.number,
+    page: PropTypes.number,
+  }),
   enterpriseId: PropTypes.string,
-  searching: PropTypes.bool.isRequired,
+  isSearchStalled: PropTypes.bool.isRequired,
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
 };
 
-export default connectPagination(connectStateResults(BaseCourseSearchResults));
+export default connectStateResults(BaseCourseSearchResults);
