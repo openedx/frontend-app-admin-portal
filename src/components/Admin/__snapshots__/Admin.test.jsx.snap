@@ -5,30 +5,18 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -109,30 +97,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -681,30 +657,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -1253,30 +1217,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -1829,30 +1781,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -2543,30 +2483,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -3257,30 +3185,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -3833,30 +3749,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -4409,30 +4313,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -4985,30 +4877,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -5557,30 +5437,18 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -6133,30 +6001,18 @@ exports[`<Admin /> renders correctly with error state 1`] = `
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -6265,30 +6121,18 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Learner Progress Report
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div

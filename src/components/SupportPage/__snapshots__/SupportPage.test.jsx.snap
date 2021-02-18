@@ -3,30 +3,18 @@
 exports[`<SupportPage /> renders correctly 1`] = `
 Array [
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Contact Support
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Contact Support
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>,
   <div

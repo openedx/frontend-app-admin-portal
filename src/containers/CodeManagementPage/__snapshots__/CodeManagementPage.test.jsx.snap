@@ -5,30 +5,18 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Code Management
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Code Management
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -199,30 +187,18 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Code Management
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Code Management
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -398,30 +374,18 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Code Management
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Code Management
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
@@ -569,30 +533,18 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
   role="main"
 >
   <div
-    className="hero py-4 pt-md-5 pb-md-0"
+    className="hero"
   >
-    <div
-      className="container-fluid"
-    >
-      <div
-        className="row"
-      >
-        <div
-          className="col-12 col-md-9 mb-2 mb-md-1"
-        >
-          <h1>
-            Code Management
-          </h1>
-        </div>
-        <div
-          className="col-12 col-md-3 text-md-right"
-        >
-          <img
-            alt="edX logo"
-            src="https://edx-cdn.org/v3/default/logo-white.svg"
-          />
-        </div>
-      </div>
+    <div>
+      <h1>
+        Code Management
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/default/logo-white.svg"
+      />
     </div>
   </div>
   <div
