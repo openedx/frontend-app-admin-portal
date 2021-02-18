@@ -87,7 +87,7 @@ describe('<CourseSearch />', () => {
     expect(wrapper.text()).toContain(errorMsg);
   });
   it('renders a loading state when loading algolia results', () => {
-    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} searching />);
+    const wrapper = mount(<CourseSearchWrapper searchResults={searchResults} isSearchStalled />);
     expect(wrapper.find(LoadingMessage)).toHaveLength(1);
   });
   it('renders a message when there are no results', () => {
