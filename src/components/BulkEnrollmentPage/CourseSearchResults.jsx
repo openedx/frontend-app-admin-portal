@@ -6,14 +6,42 @@ import { connectStateResults } from 'react-instantsearch-dom';
 import {
   DataTable, Toast,
 } from '@edx/paragon';
+import moment from 'moment';
 
+import { connect } from 'react-redux';
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import ConnectedPagination from './ConnectedPagination';
+import { configuration } from '../../config';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
-export const NO_DATA_MESSAGE = 'There are no results';
+export const NO_DATA_MESSAGE = 'There are no course results';
+
+export const TABLE_HEADERS = {
+  courseName: 'Course name',
+  courseStartDate: 'Course start date',
+};
+
+export const CourseNameCell = ({ value, row, enterpriseSlug }) => (
+  <a href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}>{value}</a>
+);
+
+CourseNameCell.propTypes = {
+  value: PropTypes.string.isRequired,
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+export const FormattedDateCell = ({ value }) => <span>{moment(value).format('MMM D, YYYY')}</span>;
+
+FormattedDateCell.propTypes = {
+  value: PropTypes.string.isRequired,
+};
 
 export const BaseCourseSearchResults = ({
   enterpriseId,
@@ -21,15 +49,19 @@ export const BaseCourseSearchResults = ({
   // algolia recommends this prop instead of searching
   isSearchStalled,
   error,
+  enterpriseSlug,
 }) => {
   const columns = useMemo(() => [
     {
-      Header: 'Course name',
+      Header: TABLE_HEADERS.courseName,
       accessor: 'title',
+      // eslint-disable-next-line react/prop-types
+      Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
     },
     {
-      Header: 'Course run',
-      accessor: 'advertised_course_run.key',
+      Header: TABLE_HEADERS.courseStartDate,
+      accessor: 'advertised_course_run.start',
+      Cell: FormattedDateCell,
     },
   ], []);
 
@@ -124,6 +156,7 @@ BaseCourseSearchResults.defaultProps = {
 };
 
 BaseCourseSearchResults.propTypes = {
+  // from Algolia
   searchResults: PropTypes.shape({
     nbHits: PropTypes.number,
     hits: PropTypes.arrayOf(PropTypes.shape({})),
@@ -136,6 +169,12 @@ BaseCourseSearchResults.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
+  // from redux
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
-export default connectStateResults(BaseCourseSearchResults);
+const mapStateToProps = (state) => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connectStateResults(connect(mapStateToProps)(BaseCourseSearchResults));
