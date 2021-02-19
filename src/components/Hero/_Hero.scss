@@ -1,13 +1,13 @@
 .hero {
   background-repeat: no-repeat;
-  background-color: $info;
+  background-color: $primary-700;
   background-position: center;
   background-size: cover;
-  height: 8rem;
+  min-height: 8rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 1rem;
 
   h1 {
     color: $white;
