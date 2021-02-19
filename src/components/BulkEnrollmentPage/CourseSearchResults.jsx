@@ -12,7 +12,6 @@ import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
 import ConnectedPagination from './ConnectedPagination';
 
-const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no results';
 
@@ -89,7 +88,6 @@ export const BaseCourseSearchResults = ({
           columns={columns}
           data={searchResults?.hits || []}
           itemCount={searchResults?.nbHits}
-          EmptyTableComponent={emptyCourseResults}
           isSelectable
           isPaginated
           manualPagination
