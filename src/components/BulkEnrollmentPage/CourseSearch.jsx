@@ -45,29 +45,25 @@ const CourseSearch = ({ enterpriseId }) => {
 
   return (
     <SearchData>
-      <div className="mt-4">
-        <Helmet title={PAGE_TITLE} />
-        <InstantSearch
-          indexName={configuration.ALGOLIA.INDEX_NAME}
-          searchClient={searchClient}
+      <Helmet title={PAGE_TITLE} />
+      <InstantSearch
+        indexName={configuration.ALGOLIA.INDEX_NAME}
+        searchClient={searchClient}
+        searchState={searchState}
+        onSearchStateChange={onSearchStateChange}
+        createURL={createURL}
+      >
+        <Configure
+          filters={`enterprise_customer_uuids:${enterpriseId}`}
+          hitsPerPage={25}
+        />
+        <SearchHeader />
+        <CourseSearchResults
+          enterpriseId={enterpriseId}
+          setSearchState={onSearchStateChange}
           searchState={searchState}
-          onSearchStateChange={onSearchStateChange}
-          createURL={createURL}
-        >
-          <Configure
-            filters={`enterprise_customer_uuids:${enterpriseId}`}
-            hitsPerPage={1}
-          />
-          <div className="container-fluid">
-            <SearchHeader />
-            <CourseSearchResults
-              enterpriseId={enterpriseId}
-              setSearchState={onSearchStateChange}
-              searchState={searchState}
-            />
-          </div>
-        </InstantSearch>
-      </div>
+        />
+      </InstantSearch>
     </SearchData>
   );
 };
