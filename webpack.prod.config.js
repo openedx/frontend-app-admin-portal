@@ -2,7 +2,7 @@
 const { getBaseConfig } = require('@edx/frontend-build');
 const webpack = require('webpack');
 
-const config = getBaseConfig('webpack-dev');
+const config = getBaseConfig('webpack-prod');
 
 const modifiedConfig = {
   ...config,
