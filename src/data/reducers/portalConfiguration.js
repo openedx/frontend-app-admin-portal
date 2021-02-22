@@ -6,7 +6,7 @@ import {
 } from '../constants/portalConfiguration';
 
 const initialState = {
-  loading: false,
+  loading: true,
   error: null,
   contactEmail: null,
   enterpriseId: null,

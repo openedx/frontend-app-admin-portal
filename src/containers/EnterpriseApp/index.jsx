@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
+    loading: state.portalConfiguration.loading,
   };
 };
 

@@ -6,7 +6,7 @@ import {
 } from '../constants/portalConfiguration';
 
 const initialState = {
-  loading: false,
+  loading: true,
   error: null,
   contactEmail: null,
   enterpriseId: null,
@@ -45,8 +45,11 @@ describe('portalConfiguration reducer', () => {
   });
 
   it('updates fetch portal configuration success state', () => {
+    const succeededState = { ...initialState };
+    succeededState.loading = false;
+
     const expected = {
-      ...initialState,
+      ...succeededState,
       contactEmail: enterpriseData.contact_email,
       enterpriseId: enterpriseData.uuid,
       enterpriseName: enterpriseData.name,
@@ -66,9 +69,11 @@ describe('portalConfiguration reducer', () => {
   });
 
   it('updates fetch portal configuration failure state', () => {
+    const failedState = { ...initialState };
+    failedState.loading = false;
     const error = Error('Network Request');
     const expected = {
-      ...initialState,
+      ...failedState,
       error,
     };
     expect(portalConfiguration(undefined, {
