@@ -47,8 +47,9 @@ class AdminSearchForm extends React.Component {
       tableData,
       searchParams: { searchCourseQuery, searchDateQuery, searchQuery },
     } = this.props;
-    const courseTitles = new Set(tableData.map(en => en.course_title).sort());
-    const courseDates = new Set(tableData.map(en => en.course_start).sort().reverse());
+    const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
+    const courseDates = Array.from(new Set(tableData.map(en => en.course_start).sort().reverse()));
+
     return (
       <div className="row">
         <div className="col-12 pr-md-0 mb-0">
