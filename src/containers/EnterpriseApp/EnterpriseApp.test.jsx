@@ -26,6 +26,7 @@ getAuthenticatedUser.mockReturnValue({
 });
 
 const mockStore = configureMockStore([thunk]);
+
 const initialState = {
   dashboardAnalytics: {},
   portalConfiguration: {
@@ -33,6 +34,7 @@ const initialState = {
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
+    loading: false,
   },
   csv: {},
   table: {
@@ -103,6 +105,20 @@ describe('<EnterpriseApp />', () => {
     ));
     expect(wrapper.find(NotFoundPage).length).toEqual(1);
     expect(wrapper.text()).toContain(404);
+  });
+
+  it('renders the load page correctly', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        ...initialState.portalConfiguration, loading: true,
+      },
+    });
+
+    const wrapper = mount((
+      <EnterpriseAppWrapper store={store} />
+    ));
+    expect(wrapper.text()).toContain('Loading');
   });
 
   it('renders error page correctly', () => {

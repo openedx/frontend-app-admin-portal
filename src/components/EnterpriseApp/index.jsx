@@ -90,6 +90,7 @@ class EnterpriseApp extends React.Component {
       enableAnalyticsScreen,
       enableSamlConfigurationScreen,
       enableLmsConfigurationsScreen,
+      loading,
     } = this.props;
     const { sidebarWidth } = this.state;
     const {
@@ -113,6 +114,9 @@ class EnterpriseApp extends React.Component {
       );
     }
 
+    if (loading) {
+      return <LoadingMessage className="overview" />;
+    }
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>
@@ -261,6 +265,7 @@ EnterpriseApp.defaultProps = {
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
   enableLmsConfigurationsScreen: false,
+  loading: true,
 };
 
 EnterpriseApp.propTypes = {
@@ -286,6 +291,7 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
+  loading: PropTypes.bool,
 };
 
 export default EnterpriseApp;
