@@ -1,4 +1,5 @@
 import React, {
+  useContext,
   useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -6,13 +7,12 @@ import { connectStateResults } from 'react-instantsearch-dom';
 import {
   DataTable, Toast,
 } from '@edx/paragon';
+import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 import moment from 'moment';
 
-import { connect } from 'react-redux';
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
-import ConnectedPagination from './ConnectedPagination';
 import { configuration } from '../../config';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
@@ -48,9 +48,11 @@ export const BaseCourseSearchResults = ({
   searchResults,
   // algolia recommends this prop instead of searching
   isSearchStalled,
+  searchState,
   error,
   enterpriseSlug,
 }) => {
+  const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
     {
       Header: TABLE_HEADERS.courseName,
@@ -65,10 +67,15 @@ export const BaseCourseSearchResults = ({
     },
   ], []);
 
-  const initialTableState = useMemo(() => ({
-    pageSize: searchResults?.hitsPerPage,
-    pageIndex: searchResults?.page || 0,
-  }), [searchResults?.page, searchResults?.hitsPerPage]);
+  const page = useMemo(
+    () => {
+      if (refinementsFromQueryParams.page) {
+        return refinementsFromQueryParams.page;
+      }
+      return searchState && searchState.page;
+    },
+    [searchState?.page, refinementsFromQueryParams],
+  );
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
@@ -121,10 +128,7 @@ export const BaseCourseSearchResults = ({
           data={searchResults?.hits || []}
           itemCount={searchResults?.nbHits}
           isSelectable
-          isPaginated
-          manualPagination
           pageCount={searchResults?.nbPages || 1}
-          initialState={initialTableState}
           pageSize={searchResults?.hitsPerPage || 0}
           bulkActions={[{
             buttonText: 'Enroll Learners',
@@ -141,7 +145,7 @@ export const BaseCourseSearchResults = ({
           <DataTable.Table />
           <DataTable.TableFooter>
             <DataTable.RowStatus />
-            <ConnectedPagination />
+            <SearchPagination defaultRefinement={page} />
           </DataTable.TableFooter>
         </DataTable>
       </div>
@@ -164,17 +168,16 @@ BaseCourseSearchResults.propTypes = {
     hitsPerPage: PropTypes.number,
     page: PropTypes.number,
   }),
-  enterpriseId: PropTypes.string,
   isSearchStalled: PropTypes.bool.isRequired,
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
-  // from redux
+  searchState: PropTypes.shape({
+    page: PropTypes.number,
+  }).isRequired,
+  // from parent
+  enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connectStateResults(connect(mapStateToProps)(BaseCourseSearchResults));
+export default connectStateResults(BaseCourseSearchResults);
