@@ -7,7 +7,7 @@ import CourseSearch from './CourseSearch';
 
 function BulkEnrollmentPage({ enterpriseId }) {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid bulk-enrollment">
       <Hero title="Catalog Management" />
       <CourseSearch enterpriseId={enterpriseId} />
     </div>

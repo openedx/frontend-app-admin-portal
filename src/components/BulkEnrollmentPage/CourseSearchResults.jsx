@@ -1,55 +1,91 @@
-/* eslint-disable react/prop-types */
-import React, { useMemo, useState } from 'react';
+import React, {
+  useContext,
+  useMemo, useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import { connectStateResults, connectPagination } from 'react-instantsearch-dom';
-import { DataTable, Toast } from '@edx/paragon';
+import { connectStateResults } from 'react-instantsearch-dom';
+import {
+  DataTable, Toast,
+} from '@edx/paragon';
+import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
+import moment from 'moment';
 
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
 import LoadingMessage from '../LoadingMessage';
+import { configuration } from '../../config';
 
-const emptyCourseResults = () => <div>No Courses found for this Enterprise</div>;
 const ERROR_MESSAGE = 'An error occured while retrieving data';
-export const NO_DATA_MESSAGE = 'There are no results';
+export const NO_DATA_MESSAGE = 'There are no course results';
+
+export const TABLE_HEADERS = {
+  courseName: 'Course name',
+  courseStartDate: 'Course start date',
+};
+
+export const CourseNameCell = ({ value, row, enterpriseSlug }) => (
+  <a href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}>{value}</a>
+);
+
+CourseNameCell.propTypes = {
+  value: PropTypes.string.isRequired,
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+export const FormattedDateCell = ({ value }) => <span>{moment(value).format('MMM D, YYYY')}</span>;
+
+FormattedDateCell.propTypes = {
+  value: PropTypes.string.isRequired,
+};
 
 export const BaseCourseSearchResults = ({
   enterpriseId,
   searchResults,
+  // algolia recommends this prop instead of searching
+  isSearchStalled,
   searchState,
-  setSearchState,
-  searching,
   error,
+  enterpriseSlug,
 }) => {
-  const columns = [
+  const { refinementsFromQueryParams } = useContext(SearchContext);
+  const columns = useMemo(() => [
     {
-      Header: 'Course name',
+      Header: TABLE_HEADERS.courseName,
       accessor: 'title',
+      // eslint-disable-next-line react/prop-types
+      Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
     },
     {
-      Header: 'Course run',
-      accessor: 'advertised_course_run.key',
+      Header: TABLE_HEADERS.courseStartDate,
+      accessor: 'advertised_course_run.start',
+      Cell: FormattedDateCell,
     },
-  ];
+  ], []);
 
-  const initialState = useMemo(() => ({
-    pageSize: searchResults?.hitsPerPage,
-    pageIndex: searchResults?.page || 0,
-  }), [searchResults?.page, searchResults?.hitsPerPage]);
+  const page = useMemo(
+    () => {
+      if (refinementsFromQueryParams.page) {
+        return refinementsFromQueryParams.page;
+      }
+      return searchState && searchState.page;
+    },
+    [searchState?.page, refinementsFromQueryParams],
+  );
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
   const [showToast, setShowToast] = useState(false);
-  const fetchData = (newData) => {
-    // don't change the query before results come back
-    if (!searching && searchState?.page && newData.pageIndex + 1 !== searchState.page) {
-      setSearchState({ ...searchState, page: newData.pageIndex + 1 });
-    }
-  };
 
-  if (searching) {
+  if (isSearchStalled) {
     return (<LoadingMessage className="overview mt-3" />);
   }
-  if (error) {
+
+  if (!isSearchStalled && error) {
     return (
       <StatusAlert
         alertType="danger"
@@ -58,7 +94,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
-  if (searchResults?.nbHits === 0) {
+  if (!isSearchStalled && searchResults?.nbHits === 0) {
     return (
       <StatusAlert
         alertType="warning"
@@ -67,6 +103,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
+
   return (
     <>
       <BulkEnrollmentModal
@@ -85,19 +122,14 @@ export const BaseCourseSearchResults = ({
       >
         Your learners have been enrolled.
       </Toast>
-      <div className="container-fluid">
+      <div>
         <DataTable
           columns={columns}
           data={searchResults?.hits || []}
           itemCount={searchResults?.nbHits}
-          EmptyTableComponent={emptyCourseResults}
           isSelectable
-          isPaginated
-          manualPagination
           pageCount={searchResults?.nbPages || 1}
-          initialState={initialState}
           pageSize={searchResults?.hitsPerPage || 0}
-          fetchData={fetchData}
           bulkActions={[{
             buttonText: 'Enroll Learners',
             handleClick: (selectedRows) => {
@@ -108,7 +140,14 @@ export const BaseCourseSearchResults = ({
               setModalOpen(true);
             },
           }]}
-        />
+        >
+          <DataTable.TableControlBar />
+          <DataTable.Table />
+          <DataTable.TableFooter>
+            <DataTable.RowStatus />
+            <SearchPagination defaultRefinement={page} />
+          </DataTable.TableFooter>
+        </DataTable>
       </div>
     </>
   );
@@ -121,12 +160,24 @@ BaseCourseSearchResults.defaultProps = {
 };
 
 BaseCourseSearchResults.propTypes = {
-  searchResults: PropTypes.shape({ nbHits: PropTypes.number, hits: PropTypes.arrayOf(PropTypes.shape) }),
-  enterpriseId: PropTypes.string,
-  searching: PropTypes.bool.isRequired,
+  // from Algolia
+  searchResults: PropTypes.shape({
+    nbHits: PropTypes.number,
+    hits: PropTypes.arrayOf(PropTypes.shape({})),
+    nbPages: PropTypes.number,
+    hitsPerPage: PropTypes.number,
+    page: PropTypes.number,
+  }),
+  isSearchStalled: PropTypes.bool.isRequired,
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
+  searchState: PropTypes.shape({
+    page: PropTypes.number,
+  }).isRequired,
+  // from parent
+  enterpriseId: PropTypes.string,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
-export default connectPagination(connectStateResults(BaseCourseSearchResults));
+export default connectStateResults(BaseCourseSearchResults);
