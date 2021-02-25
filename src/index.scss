@@ -5,7 +5,7 @@ $modal-max-width: 650px;
 @import "~@edx/brand/paragon/variables";
 @import "~@edx/paragon/scss/core/core";
 @import "~@edx/brand/paragon/overrides";
-@import "~@edx/frontend-enterprise/dist/frontend-enterprise";
+@import "~@edx/frontend-enterprise/src/course-search/styles/index";
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
