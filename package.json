@@ -20,7 +20,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
-    "@edx/brand": "npm:@edx/brand-edx.org@^1.4.2",
+    "@edx/brand": "npm:@edx/brand-openedx@^1.1.0",
     "@edx/frontend-enterprise": "^4.6.2",
     "@edx/frontend-platform": "1.8.2",
     "@edx/paragon": "^13.12.0",
