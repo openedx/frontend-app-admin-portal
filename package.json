@@ -80,7 +80,7 @@
   "devDependencies": {
     "@edx/frontend-build": "5.5.1",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
-    "@testing-library/jest-dom": "5.10.1",
+    "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "10.4.9",
     "@testing-library/user-event": "12.1.10",
     "codecov": "3.7.0",
