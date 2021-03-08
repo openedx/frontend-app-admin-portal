@@ -6,13 +6,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Nodejs
+      uses: actions/setup-node@v1
       with:
         node-version: 12
-    - run: make validate-no-uncommitted-package-lock-changes
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run test
-    - run: npm run build
-    - run: npm run is-es5
+    - name: Validate package-lock changes
+      run: make validate-no-uncommitted-package-lock-changes
+    - name: Install dependencies
+      run: npm ci
+    - name: Lint
+      run: npm run lint
+    - name: Test
+      run: npm run test
+    - name: Build
+      run: npm run build
+    - name: es5 check
+      run: npm run is-es5
+    - name: Coverage
+      uses: codecov/codecov-action@v1
