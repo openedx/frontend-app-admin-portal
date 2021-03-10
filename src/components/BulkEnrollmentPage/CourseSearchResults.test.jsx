@@ -6,11 +6,11 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { SearchContext } from '@edx/frontend-enterprise';
 import { Button } from '@edx/paragon';
+import Skeleton from 'react-loading-skeleton';
 import StatusAlert from '../StatusAlert';
 import {
   BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS,
 } from './CourseSearchResults';
-import LoadingMessage from '../LoadingMessage';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -145,7 +145,7 @@ describe('<CourseSearchResults />', () => {
   });
   it('renders a loading state when loading algolia results', () => {
     const wrapper = mount(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
-    expect(wrapper.find(LoadingMessage)).toHaveLength(1);
+    expect(wrapper.find(Skeleton)).toHaveLength(1);
   });
   it('renders a message when there are no results', () => {
     const wrapper = mount(<CourseSearchWrapper

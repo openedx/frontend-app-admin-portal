@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
+import Skeleton from 'react-loading-skeleton';
 import {
   DataTable, Toast, Button,
 } from '@edx/paragon';
@@ -11,7 +12,6 @@ import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
-import LoadingMessage from '../LoadingMessage';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
@@ -98,7 +98,7 @@ export const BaseCourseSearchResults = ({
   }, [setModalOpen, setSelectedCourseRuns]);
 
   if (isSearchStalled) {
-    return (<LoadingMessage className="overview mt-3" />);
+    return (<Skeleton className="mt-3" height={50} count={25} />);
   }
 
   if (!isSearchStalled && error) {
