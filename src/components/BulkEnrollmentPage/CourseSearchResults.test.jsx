@@ -9,7 +9,7 @@ import { Button } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
 import StatusAlert from '../StatusAlert';
 import {
-  BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS,
+  BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS, ENROLL_TEXT,
 } from './CourseSearchResults';
 
 const mockStore = configureMockStore([thunk]);
@@ -73,6 +73,7 @@ describe('<EnrollButton />', () => {
   it('displays a button', () => {
     const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={() => {}} />);
     expect(wrapper.find(Button)).toHaveLength(1);
+    expect(wrapper.text()).toContain(ENROLL_TEXT);
   });
   it('opens the modal', () => {
     const openSpy = jest.fn();
@@ -101,7 +102,7 @@ describe('<CourseSearchResults />', () => {
     expect(tableHeaderCells.length).toBe(4);
     expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
     expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
-    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.enroll);
+    expect(tableHeaderCells.at(3).prop('Header')).toBe('');
 
     // Three table cells, one for sorting, one title, one course run
     const tableCells = wrapper.find('TableCell');

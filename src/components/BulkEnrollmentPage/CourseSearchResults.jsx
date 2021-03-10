@@ -16,11 +16,11 @@ import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
-
+export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {
   courseName: 'Course name',
   courseStartDate: 'Course start date',
-  enroll: 'Enroll',
+  enroll: '',
 };
 
 export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
@@ -34,7 +34,7 @@ export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
       variant="link"
       onClick={handleClick}
     >
-      Enroll
+      {ENROLL_TEXT}
     </Button>
   );
 };
@@ -146,7 +146,7 @@ export const BaseCourseSearchResults = ({
         pageCount={searchResults?.nbPages || 1}
         pageSize={searchResults?.hitsPerPage || 0}
         bulkActions={[{
-          buttonText: 'Enroll Learners',
+          buttonText: ENROLL_TEXT,
           handleClick: handleBulkEnrollClick,
         }]}
         additionalColumns={[
