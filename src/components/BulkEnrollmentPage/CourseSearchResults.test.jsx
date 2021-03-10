@@ -5,9 +5,10 @@ import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { SearchContext } from '@edx/frontend-enterprise';
+import { Button } from '@edx/paragon';
 import StatusAlert from '../StatusAlert';
 import {
-  BaseCourseSearchResults, CourseNameCell, FormattedDateCell, NO_DATA_MESSAGE, TABLE_HEADERS,
+  BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS,
 } from './CourseSearchResults';
 import LoadingMessage from '../LoadingMessage';
 
@@ -66,26 +67,28 @@ const CourseSearchWrapper = ({ value = { refinementsFromQueryParams }, props = d
   </Provider>
 );
 
-describe('CourseNameCell', () => {
-  const row = {
-    original: {
-      key: testCourseRunKey,
-    },
-  };
-  const slug = 'sluggy';
-  const wrapper = mount(<CourseNameCell value={testCourseName} row={row} enterpriseSlug={slug} />);
-  it('correctly formats a link', () => {
-    expect(wrapper.find('a').props().href).toEqual(`http://localhost:8734/${slug}/course/${row.original.key}`);
+describe('<EnrollButton />', () => {
+  const key = 'bears+101';
+  const row = { original: { advertised_course_run: { key } } };
+  it('displays a button', () => {
+    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={() => {}} />);
+    expect(wrapper.find(Button)).toHaveLength(1);
   });
-  it('displays the course name', () => {
-    expect(wrapper.text()).toEqual(testCourseName);
+  it('opens the modal', () => {
+    const openSpy = jest.fn();
+    const wrapper = mount(<EnrollButton row={row} setModalOpen={openSpy} setSelectedCourseRuns={() => {}} />);
+    const button = wrapper.find(Button);
+    button.simulate('click');
+    expect(openSpy).toHaveBeenCalledTimes(1);
+    expect(openSpy).toHaveBeenCalledWith(true);
   });
-});
-
-describe('<FormattedDateCell />', () => {
-  it('renders a formatted date', () => {
-    const wrapper = mount(<FormattedDateCell value={testStartDate} />);
-    expect(wrapper.text()).toEqual('Sep 10, 2020');
+  it('sets the selectedCourseRuns', () => {
+    const setCourseRunSpy = jest.fn();
+    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={setCourseRunSpy} />);
+    const button = wrapper.find(Button);
+    button.simulate('click');
+    expect(setCourseRunSpy).toHaveBeenCalledTimes(1);
+    expect(setCourseRunSpy).toHaveBeenCalledWith([key]);
   });
 });
 
@@ -93,17 +96,19 @@ describe('<CourseSearchResults />', () => {
   it('renders search results', () => {
     const wrapper = mount(<CourseSearchWrapper />);
 
-    // Three header columns, one for sorting, one for Course Name, one for Course Run
-    const tableHeadercells = wrapper.find('TableHeaderCell');
-    expect(tableHeadercells.length).toBe(3);
-    expect(tableHeadercells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
-    expect(tableHeadercells.at(2).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
+    // Four header columns, one for sorting, one for Course Name, one for Course Run, one for the enroll column
+    const tableHeaderCells = wrapper.find('TableHeaderCell');
+    expect(tableHeaderCells.length).toBe(4);
+    expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
+    expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
+    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.enroll);
 
     // Three table cells, one for sorting, one title, one course run
     const tableCells = wrapper.find('TableCell');
-    expect(tableCells.length).toBe(3);
+    expect(tableCells.length).toBe(4);
     expect(tableCells.at(1).text()).toBe(testCourseName);
     expect(tableCells.at(2).text()).toBe('Sep 10, 2020');
+    expect(tableCells.at(3).find(EnrollButton)).toHaveLength(1);
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
