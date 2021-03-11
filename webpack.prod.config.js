@@ -12,7 +12,7 @@ const modifiedConfig = {
       FEATURE_FLAGS: {
         CODE_MANAGEMENT: true,
         REPORTING_CONFIGURATIONS: true,
-        ANALYTICS: false,
+        ANALYTICS: true,
         SUPPORT: true,
         SAML_CONFIGURATION: true,
         CODE_VISIBILITY: false,
