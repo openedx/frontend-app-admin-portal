@@ -4,43 +4,51 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
+import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, Toast,
+  DataTable, Toast, Button,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
-import moment from 'moment';
 
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
-import LoadingMessage from '../LoadingMessage';
-import { configuration } from '../../config';
+import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
-
+export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {
   courseName: 'Course name',
   courseStartDate: 'Course start date',
+  enroll: '',
 };
 
-export const CourseNameCell = ({ value, row, enterpriseSlug }) => (
-  <a href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}>{value}</a>
-);
+export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
+  const handleClick = useMemo(() => () => {
+    setSelectedCourseRuns([row.original?.advertised_course_run?.key]);
+    setModalOpen(true);
+  }, [setSelectedCourseRuns, setModalOpen, row.original?.advertised_course_run?.key]);
+  return (
+    <Button
+      className="enroll-button"
+      variant="link"
+      onClick={handleClick}
+    >
+      {ENROLL_TEXT}
+    </Button>
+  );
+};
 
-CourseNameCell.propTypes = {
-  value: PropTypes.string.isRequired,
+EnrollButton.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      key: PropTypes.string.isRequired,
+      advertised_course_run: PropTypes.shape({
+        key: PropTypes.string,
+      }),
     }),
   }).isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-export const FormattedDateCell = ({ value }) => <span>{moment(value).format('MMM D, YYYY')}</span>;
-
-FormattedDateCell.propTypes = {
-  value: PropTypes.string.isRequired,
+  setSelectedCourseRuns: PropTypes.func.isRequired,
+  setModalOpen: PropTypes.func.isRequired,
 };
 
 export const BaseCourseSearchResults = ({
@@ -81,8 +89,16 @@ export const BaseCourseSearchResults = ({
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
   const [showToast, setShowToast] = useState(false);
 
+  const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
+    const courseRunKeys = selectedRows?.map(
+      (selectedRow) => selectedRow.original?.advertised_course_run?.key,
+    ) || [];
+    setSelectedCourseRuns(courseRunKeys);
+    setModalOpen(true);
+  }, [setModalOpen, setSelectedCourseRuns]);
+
   if (isSearchStalled) {
-    return (<LoadingMessage className="overview mt-3" />);
+    return (<Skeleton className="mt-3" height={50} count={25} />);
   }
 
   if (!isSearchStalled && error) {
@@ -122,33 +138,39 @@ export const BaseCourseSearchResults = ({
       >
         Your learners have been enrolled.
       </Toast>
-      <div>
-        <DataTable
-          columns={columns}
-          data={searchResults?.hits || []}
-          itemCount={searchResults?.nbHits}
-          isSelectable
-          pageCount={searchResults?.nbPages || 1}
-          pageSize={searchResults?.hitsPerPage || 0}
-          bulkActions={[{
-            buttonText: 'Enroll Learners',
-            handleClick: (selectedRows) => {
-              const courseRunKeys = selectedRows?.map(
-                (selectedRow) => selectedRow.original?.advertised_course_run?.key,
-              ) || [];
-              setSelectedCourseRuns(courseRunKeys);
-              setModalOpen(true);
-            },
-          }]}
-        >
-          <DataTable.TableControlBar />
-          <DataTable.Table />
-          <DataTable.TableFooter>
-            <DataTable.RowStatus />
-            <SearchPagination defaultRefinement={page} />
-          </DataTable.TableFooter>
-        </DataTable>
-      </div>
+      <DataTable
+        columns={columns}
+        data={searchResults?.hits || []}
+        itemCount={searchResults?.nbHits}
+        isSelectable
+        pageCount={searchResults?.nbPages || 1}
+        pageSize={searchResults?.hitsPerPage || 0}
+        bulkActions={[{
+          buttonText: ENROLL_TEXT,
+          handleClick: handleBulkEnrollClick,
+        }]}
+        additionalColumns={[
+          {
+            id: 'enroll',
+            Header: TABLE_HEADERS.enroll,
+            // eslint-disable-next-line react/prop-types
+            Cell: ({ row }) => (
+              <EnrollButton
+                row={row}
+                setSelectedCourseRuns={setSelectedCourseRuns}
+                setModalOpen={setModalOpen}
+              />
+            ),
+          },
+        ]}
+      >
+        <DataTable.TableControlBar />
+        <DataTable.Table />
+        <DataTable.TableFooter>
+          <DataTable.RowStatus />
+          <SearchPagination defaultRefinement={page} />
+        </DataTable.TableFooter>
+      </DataTable>
     </>
   );
 };
