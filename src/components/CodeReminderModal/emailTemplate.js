@@ -6,7 +6,7 @@ const emailTemplate = {
 
 edX Login: {USER_EMAIL}
 Access Code: {CODE}
-Expiration Date: {EXPIRATION_DATE}
+Code Expiration Date: {EXPIRATION_DATE}
 `,
   closing: `If your organization uses a branded learner portal, this code will be automatically applied to your account and can be redeemed for any available course.
   If your organization does not have a branded learner portal, you can insert the access code at checkout under "coupon code" for applicable courses.
