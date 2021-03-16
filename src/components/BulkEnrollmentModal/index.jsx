@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import {
   Field, reduxForm, SubmissionError, reset,
 } from 'redux-form';
+
+import { logError } from '@edx/frontend-platform/logging';
 import {
   Alert, Button, Icon, Modal,
+
 } from '@edx/paragon';
+
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import CsvUpload from '../CsvUpload';
+import { truncateString } from '../../utils';
 
 class BulkEnrollmentModal extends React.Component {
   constructor(props) {
@@ -36,7 +41,7 @@ class BulkEnrollmentModal extends React.Component {
     }
 
     if (submitFailed && error !== prevProps.error && errorMessageRef) {
-      // When there is an new error, focus on the error message status alert
+      // When there is a new error, focus on the error message status alert
       errorMessageRef.focus();
     }
   }
@@ -71,8 +76,16 @@ class BulkEnrollmentModal extends React.Component {
         this.props.onSuccess();
       })
       .catch((error) => {
+        const { customAttributes } = error;
+        // fall back to the error.message instead of showing no information but prefer the
+        // cleaner info from customAttributes
+        const customErrMessage = truncateString(
+          customAttributes ? (customAttributes.httpErrorResponseData || error.message) : error.message,
+          240,
+        );
+        logError(error, { enterpriseUuid });
         throw new SubmissionError({
-          _error: [error.message],
+          _error: [customErrMessage],
         });
       });
   }
@@ -84,12 +97,9 @@ class BulkEnrollmentModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <Alert
-          variant="danger"
-          dismissible
-        >
-          <Alert.Heading>Unable to assign codes.</Alert.Heading>
-          <p className="alert-body">{error}</p>
+        <Alert variant="danger">
+          <Alert.Heading>Unable to enroll learners</Alert.Heading>
+          <p className="alert-body text-break">{error}</p>
         </Alert>
       </div>
     );
@@ -101,18 +111,17 @@ class BulkEnrollmentModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <Alert
-          variant="danger"
-          dismissible
-        >
+        <Alert variant="danger">
           <Alert.Heading>
             Before you can invite learners to a course they must have a subscription license.
           </Alert.Heading>
-          <p className="alert-body">
+          <p className="alert-body text-justify">
             The following emails addresses are not yet associated with a subscription.
             Please take note of the following learners and invite them from the subscription management page.
           </p>
-          {failedLearners.map((failedLearner) => <p className="alert-email" key={`${failedLearner}-email`}>{failedLearner}</p>)}
+          {failedLearners.map((failedLearner) => (
+            <p className="mb-1 alert-email" key={`${failedLearner}-email`}>{failedLearner}</p>
+          ))}
         </Alert>
       </div>
     );
@@ -152,7 +161,9 @@ class BulkEnrollmentModal extends React.Component {
                 label="Email addresses"
                 type="file"
               />
-              <p>The file must be a CSV containing a single file of email addresses.</p>
+              <p>{`The file must be a CSV containing a single column of email addresses.
+                The first line must contain the word 'email'.`}
+              </p>
             </div>
           </div>
         </form>
