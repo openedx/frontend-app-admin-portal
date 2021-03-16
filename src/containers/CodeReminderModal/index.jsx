@@ -10,6 +10,8 @@ const mapStateToProps = state => ({
   initialValues: state.emailTemplate.emailTemplateSource === EMAIL_TEMPLATE_SOURCE_NEW_EMAIL
     ? state.emailTemplate.default.remind : state.emailTemplate.remind,
   enableReinitialize: true,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
 });
 
 const mapDispatchToProps = dispatch => ({
