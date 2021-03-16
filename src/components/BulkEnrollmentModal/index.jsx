@@ -7,6 +7,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import {
   Alert, Button, Icon, Modal,
+
 } from '@edx/paragon';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
