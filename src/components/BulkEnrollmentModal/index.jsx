@@ -119,9 +119,13 @@ class BulkEnrollmentModal extends React.Component {
             The following emails addresses are not yet associated with a subscription.
             Please take note of the following learners and invite them from the subscription management page.
           </p>
-          {failedLearners.map((failedLearner) => (
-            <p className="mb-1 alert-email" key={`${failedLearner}-email`}>{failedLearner}</p>
-          ))}
+          <ul className="list-group">
+            {failedLearners.map(failedLearner => (
+              <li className="list-group-item mb-1 alert-email" key={`${failedLearner}-email`}>
+                {failedLearner}
+              </li>
+            ))}
+          </ul>
         </Alert>
       </div>
     );
