@@ -11,7 +11,6 @@ import {
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import CsvUpload from '../CsvUpload';
-import { truncateString } from '../../utils';
 
 class BulkEnrollmentModal extends React.Component {
   constructor(props) {
@@ -77,11 +76,10 @@ class BulkEnrollmentModal extends React.Component {
       .catch((error) => {
         const { customAttributes } = error;
         // fall back to the error.message instead of showing no information but prefer the
-        // cleaner info from customAttributes
-        const customErrMessage = truncateString(
-          customAttributes ? (customAttributes.httpErrorResponseData || error.message) : error.message,
-          240,
-        );
+        // cleaner info from customAttributes (frontend-platform)
+        const customErrMessage = customAttributes ? (customAttributes.httpErrorResponseData || error.message)
+          : error.message;
+
         logError(error, { enterpriseUuid });
         throw new SubmissionError({
           _error: [customErrMessage],
