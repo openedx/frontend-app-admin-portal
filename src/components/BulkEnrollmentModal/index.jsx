@@ -7,7 +7,6 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import {
   Alert, Button, Icon, Modal,
-
 } from '@edx/paragon';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
@@ -92,6 +91,21 @@ class BulkEnrollmentModal extends React.Component {
 
   renderErrorMessage() {
     const { error } = this.props;
+    let errorRendered = error;
+    // handle 'non_field_error' as a special case for better UX, if we can parse it
+    try {
+      const errorAsJson = JSON.parse(error);
+      if (errorAsJson.non_field_errors) {
+        errorRendered = (
+          <>
+            <p>The following errors were encountered:</p>
+            <ul className="list-group">
+              {errorAsJson.non_field_errors.map(err => <li key={err}>{err}</li>)}
+            </ul>
+          </>
+        );
+      }
+    } catch (parseError) { errorRendered = error; }
     return (
       <div
         ref={this.errorMessageRef}
@@ -99,7 +113,7 @@ class BulkEnrollmentModal extends React.Component {
       >
         <Alert variant="danger">
           <Alert.Heading>Unable to enroll learners</Alert.Heading>
-          <p className="alert-body text-break">{error}</p>
+          <p className="alert-body text-break">{errorRendered}</p>
         </Alert>
       </div>
     );
