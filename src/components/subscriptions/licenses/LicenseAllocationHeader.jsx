@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
+import { Row, Col } from '@edx/paragon';
 import SearchBar from '../../SearchBar';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import DownloadCsvButton from '../buttons/DownloadCsvButton';
 
 const LicenseAllocationHeader = () => {
   const {
@@ -15,15 +17,18 @@ const LicenseAllocationHeader = () => {
         {' of '}
         {subscription.licenses?.total} licenses allocated
       </p>
-      <div className="my-3 row">
-        <div className="col-12 col-md-5 mb-3 mb-md-0">
+      <Row className="my-3">
+        <Col className="col-8">
           <SearchBar
             placeholder="Search by email..."
             onSearch={searchQuery => setSearchQuery(searchQuery)}
             onClear={() => setSearchQuery(null)}
           />
-        </div>
-      </div>
+        </Col>
+        <Col className="d-flex justify-content-end">
+          <DownloadCsvButton />
+        </Col>
+      </Row>
     </>
   );
 };
