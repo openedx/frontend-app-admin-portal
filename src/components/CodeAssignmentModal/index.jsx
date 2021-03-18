@@ -310,8 +310,10 @@ class BaseCodeAssignmentModal extends React.Component {
         hasAllCodesSelected,
       },
       sendCodeAssignment,
+      createPendingEnterpriseUsers,
       enableLearnerPortal,
       enterpriseSlug,
+      enterpriseUuid,
     } = this.props;
 
     this.setMode('assign');
@@ -336,10 +338,11 @@ class BaseCodeAssignmentModal extends React.Component {
       options.template_id = formData['template-id'];
     }
 
+    const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
+    const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
+    const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
+
     if (isBulkAssign) {
-      const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
-      const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
-      const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
       options.emails = validEmails;
 
       // Only includes `codes` in `options` if not all codes are selected.
@@ -351,7 +354,21 @@ class BaseCodeAssignmentModal extends React.Component {
       options.codes = [code.code];
     }
 
-    return sendCodeAssignment(couponId, options)
+    let pendingEnterpriseUserData;
+    if (hasTextAreaEmails) {
+      pendingEnterpriseUserData = validEmails.map((email) => ({
+        user_email: email,
+        enterprise_customer: enterpriseUuid,
+      }));
+    } else {
+      pendingEnterpriseUserData = {
+        user_email: formData['email-address'],
+        enterprise_customer: enterpriseUuid,
+      };
+    }
+
+    return createPendingEnterpriseUsers(pendingEnterpriseUserData)
+      .then(() => sendCodeAssignment(couponId, options))
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -547,6 +564,7 @@ BaseCodeAssignmentModal.defaultProps = {
 BaseCodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseUuid: PropTypes.string.isRequired,
   currentEmail: PropTypes.string,
   enableLearnerPortal: PropTypes.bool.isRequired,
   // props From redux-form
@@ -562,6 +580,7 @@ BaseCodeAssignmentModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendCodeAssignment: PropTypes.func.isRequired,
+  createPendingEnterpriseUsers: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
