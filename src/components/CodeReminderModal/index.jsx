@@ -270,7 +270,7 @@ class CodeReminderModal extends React.Component {
             >
               <>
                 {mode === 'remind' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                {'Remind'}
+                Remind
               </>
             </Button>,
             <SaveTemplateButton

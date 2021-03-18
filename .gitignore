@@ -4,10 +4,13 @@
 node_modules
 npm-debug.log
 coverage
-module.config.js
+module.config.js*
 
 dist/
 .idea
 
 # emacs
 *~
+
+# edx
+.env.private

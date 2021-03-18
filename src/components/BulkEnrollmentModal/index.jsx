@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import {
   Field, reduxForm, SubmissionError, reset,
 } from 'redux-form';
+
+import { logError } from '@edx/frontend-platform/logging';
 import {
   Alert, Button, Icon, Modal,
 } from '@edx/paragon';
+
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import CsvUpload from '../CsvUpload';
 
@@ -36,7 +39,7 @@ class BulkEnrollmentModal extends React.Component {
     }
 
     if (submitFailed && error !== prevProps.error && errorMessageRef) {
-      // When there is an new error, focus on the error message status alert
+      // When there is a new error, focus on the error message status alert
       errorMessageRef.focus();
     }
   }
@@ -71,25 +74,44 @@ class BulkEnrollmentModal extends React.Component {
         this.props.onSuccess();
       })
       .catch((error) => {
+        const { customAttributes } = error;
+        // fall back to the error.message instead of showing no information but prefer the
+        // cleaner info from customAttributes (frontend-platform)
+        const customErrMessage = customAttributes ? (customAttributes.httpErrorResponseData || error.message)
+          : error.message;
+
+        logError(error, { enterpriseUuid });
         throw new SubmissionError({
-          _error: [error.message],
+          _error: [customErrMessage],
         });
       });
   }
 
   renderErrorMessage() {
     const { error } = this.props;
+    let errorRendered = error;
+    // handle 'non_field_error' as a special case for better UX, if we can parse it
+    try {
+      const errorAsJson = JSON.parse(error);
+      if (errorAsJson.non_field_errors) {
+        errorRendered = (
+          <>
+            <p>The following errors were encountered:</p>
+            <ul className="list-group">
+              {errorAsJson.non_field_errors.map(err => <li key={err}>{err}</li>)}
+            </ul>
+          </>
+        );
+      }
+    } catch (parseError) { errorRendered = error; }
     return (
       <div
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <Alert
-          variant="danger"
-          dismissible
-        >
-          <Alert.Heading>Unable to assign codes.</Alert.Heading>
-          <p className="alert-body">{error}</p>
+        <Alert variant="danger">
+          <Alert.Heading>Unable to enroll learners</Alert.Heading>
+          <p className="alert-body text-break">{errorRendered}</p>
         </Alert>
       </div>
     );
@@ -101,18 +123,21 @@ class BulkEnrollmentModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <Alert
-          variant="danger"
-          dismissible
-        >
+        <Alert variant="danger">
           <Alert.Heading>
             Before you can invite learners to a course they must have a subscription license.
           </Alert.Heading>
-          <p className="alert-body">
+          <p className="alert-body text-justify">
             The following emails addresses are not yet associated with a subscription.
             Please take note of the following learners and invite them from the subscription management page.
           </p>
-          {failedLearners.map((failedLearner) => <p className="alert-email" key={`${failedLearner}-email`}>{failedLearner}</p>)}
+          <ul className="list-group">
+            {failedLearners.map(failedLearner => (
+              <li className="list-group-item mb-1 alert-email" key={`${failedLearner}-email`}>
+                {failedLearner}
+              </li>
+            ))}
+          </ul>
         </Alert>
       </div>
     );
@@ -152,7 +177,9 @@ class BulkEnrollmentModal extends React.Component {
                 label="Email addresses"
                 type="file"
               />
-              <p>The file must be a CSV containing a single file of email addresses.</p>
+              <p>{`The file must be a CSV containing a single column of email addresses.
+                The first line must contain the word 'email'.`}
+              </p>
             </div>
           </div>
         </form>

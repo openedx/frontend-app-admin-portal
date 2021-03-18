@@ -306,6 +306,13 @@ const getSubscriptionContactText = (contactEmail) => {
   return `${contactText}.`;
 };
 
+function truncateString(str, maxStrLength = 10) {
+  if (str.length <= maxStrLength) {
+    return str;
+  }
+  return `${str.slice(0, maxStrLength)}...`;
+}
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -331,4 +338,5 @@ export {
   getProxyLoginUrl,
   hasEnterpriseAdminRole,
   getSubscriptionContactText,
+  truncateString,
 };
