@@ -8,9 +8,20 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
+import { TAB_ALL_USERS, TAB_PENDING_USERS } from './data/constants';
+import InviteLearnersButton from './buttons/InviteLearnersButton';
+import { SubscriptionContext } from './SubscriptionData';
+import { ToastsContext } from '../Toasts';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
-  const { subscription, hasMultipleSubscriptions } = useContext(SubscriptionDetailContext);
+  const { forceRefresh } = useContext(SubscriptionContext);
+  const {
+    activeTab,
+    setActiveTab,
+    hasMultipleSubscriptions,
+    subscription,
+  } = useContext(SubscriptionDetailContext);
+  const { addToast } = useContext(ToastsContext);
   return (
     <>
       {hasMultipleSubscriptions && (
@@ -23,8 +34,21 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         </Row>
       )}
       <Row className="mb-5">
-        <Col xs={12} lg={8} className="mb-3 mb-lg-0">
-          <h2>{subscription?.title}</h2>
+        <Col className="mb-3 mb-lg-0">
+          <Row className="m-0 justify-content-between">
+            <h2>{subscription?.title}</h2>
+            {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
+              <div className="text-md-right">
+                <InviteLearnersButton
+                  onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
+                    forceRefresh();
+                    addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setActiveTab(TAB_PENDING_USERS);
+                  }}
+                />
+              </div>
+            )}
+          </Row>
           <div className="mt-3 d-flex align-items-center">
             <div className="mr-5">
               <div className="text-uppercase text-muted">
