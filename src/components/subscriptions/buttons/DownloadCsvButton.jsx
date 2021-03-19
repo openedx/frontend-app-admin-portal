@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseManagerApiService from '../data/service';
 import { ALL_USERS } from '../data/constants';
 import { configuration } from '../../../config';
-import PropTypes from 'prop-types';
 
 const DownloadCsvButton = ({ enterpriseSlug }) => {
   const { subscription } = useContext(SubscriptionDetailContext);
