@@ -18,6 +18,8 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
+  static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/pending-enterprise-learner/`
+
   static fetchCourseOutline(courseId) {
     const options = {
       course_id: courseId,
@@ -195,6 +197,10 @@ class LmsApiService {
   static sendBulkEnrollment(enterpriseId, options) {
     const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseId}/enterprise_learners/`;
     return LmsApiService.apiClient().post(url, options);
+  }
+
+  static createPendingEnterpriseUsers(formData) {
+    return LmsApiService.apiClient().post(LmsApiService.createPendingUsersUrl, formData);
   }
 }
 

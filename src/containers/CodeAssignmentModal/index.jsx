@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
 import sendCodeAssignment from '../../data/actions/codeAssignment';
+import createPendingEnterpriseUsers from '../../data/actions/createPendingEnterpriseUsers';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import { setEmailAddress } from '../../data/actions/emailTemplate';
 
@@ -18,6 +19,9 @@ const mapStateToProps = (state) => {
     couponDetailsTable: state.table['coupon-details'],
     initialValues,
     enableReinitialize: true,
+    enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+    enterpriseUuid: state.portalConfiguration.enterpriseId,
+    enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   };
 };
 
@@ -26,6 +30,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(sendCodeAssignment({
       couponId,
       options,
+      onSuccess: (response) => { resolve(response); },
+      onError: (error) => { reject(error); },
+    }));
+  }),
+  createPendingEnterpriseUsers: (users) => new Promise((resolve, reject) => {
+    dispatch(createPendingEnterpriseUsers({
+      users,
       onSuccess: (response) => { resolve(response); },
       onError: (error) => { reject(error); },
     }));
