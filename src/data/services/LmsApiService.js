@@ -18,7 +18,7 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
-  static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/pending-enterprise-learner/`
+  static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -199,8 +199,8 @@ class LmsApiService {
     return LmsApiService.apiClient().post(url, options);
   }
 
-  static createPendingEnterpriseUsers(formData) {
-    return LmsApiService.apiClient().post(LmsApiService.createPendingUsersUrl, formData);
+  static createPendingEnterpriseUsers(formData, uuid) {
+    return LmsApiService.apiClient().post(`${LmsApiService.createPendingUsersUrl}/${uuid}`, formData);
   }
 }
 

@@ -26,12 +26,13 @@ const createPendingUsersFailure = error => ({
 
 const createPendingEnterpriseUsers = ({
   users,
+  uuid,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(createPendingUsersRequest());
-    return LmsApiService.createPendingEnterpriseUsers(users)
+    return LmsApiService.createPendingEnterpriseUsers(users, uuid)
       .then((response) => {
         dispatch(createPendingUsersSuccess(response.data));
         onSuccess(response.data);
