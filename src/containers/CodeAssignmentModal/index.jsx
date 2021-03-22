@@ -34,9 +34,10 @@ const mapDispatchToProps = dispatch => ({
       onError: (error) => { reject(error); },
     }));
   }),
-  createPendingEnterpriseUsers: (users) => new Promise((resolve, reject) => {
+  createPendingEnterpriseUsers: (users, uuid) => new Promise((resolve, reject) => {
     dispatch(createPendingEnterpriseUsers({
       users,
+      uuid,
       onSuccess: (response) => { resolve(response); },
       onError: (error) => { reject(error); },
     }));

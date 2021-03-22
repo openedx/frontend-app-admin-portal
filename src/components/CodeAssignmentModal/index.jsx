@@ -367,7 +367,7 @@ class BaseCodeAssignmentModal extends React.Component {
       };
     }
 
-    return createPendingEnterpriseUsers(pendingEnterpriseUserData)
+    return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))
       .then((response) => {
         this.props.onSuccess(response);
