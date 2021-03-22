@@ -168,8 +168,8 @@ describe('CodeReminderModalWrapper', () => {
       data={{
         ...codeRemindData,
         selectedCodes: codeRemindData,
-        portalConfiguration: { ...codeRemindData.portalConfiguration, enableLearnerPortal: false },
       }}
+      store={{...initialState, portalConfiguration: { ...initialState.portalConfiguration, enableLearnerPortal: false }}}
       isBulkRemind
     />);
 
@@ -178,7 +178,7 @@ describe('CodeReminderModalWrapper', () => {
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
     const expectedData = codeReminderRequestData(2);
     delete expectedData.base_enterprise_url;
-    expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
+    expect(spy).toHaveBeenCalledWith(couponId, expectedData);
   });
 
   it('renders remind all modal if no code is selected for bulk remind', () => {

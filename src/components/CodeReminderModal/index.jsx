@@ -125,7 +125,6 @@ class CodeReminderModal extends React.Component {
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };
-
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
       options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
@@ -314,7 +313,7 @@ CodeReminderModal.propTypes = {
 
   // from redux
   enterpriseSlug: PropTypes.string.isRequired,
-  enableLearnerPortal: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
       count: PropTypes.number,
