@@ -14,7 +14,11 @@ const DownloadCsvButton = ({ enterpriseSlug }) => {
 
   const getCsvFileName = () => {
     const titleNoWhitespace = subscription.title.replace(/\s+/g, '');
-    return `${titleNoWhitespace}_export.csv`;
+    const currentDate = new Date();
+    const year = currentDate.getUTCFullYear();
+    const month = currentDate.getUTCMonth() + 1;
+    const day = currentDate.getUTCDate();
+    return `${titleNoWhitespace}-${year}-${month}-${day}.csv`;
   };
 
   const getLicenseActivationLink = (activationKey) => (
