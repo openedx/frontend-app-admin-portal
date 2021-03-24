@@ -169,7 +169,10 @@ describe('CodeReminderModalWrapper', () => {
         ...codeRemindData,
         selectedCodes: codeRemindData,
       }}
-      store={{...initialState, portalConfiguration: { ...initialState.portalConfiguration, enableLearnerPortal: false }}}
+      store={mockStore({
+        ...initialState,
+        portalConfiguration: { ...initialState.portalConfiguration, enableLearnerPortal: false },
+      })}
       isBulkRemind
     />);
 

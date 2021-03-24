@@ -327,7 +327,6 @@ class CodeAssignmentModal extends React.Component {
       template_closing: formData['email-template-closing'],
       enable_nudge_emails: formData['enable-nudge-emails'],
     };
-    console.log('ENABLE LEARNER PORTAL', enableLearnerPortal)
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
       options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
