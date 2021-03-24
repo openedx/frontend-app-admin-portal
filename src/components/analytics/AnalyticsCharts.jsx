@@ -36,6 +36,7 @@ export default function AnalyticsCharts(enterpriseId) {
   const options = {
     height: 900,
     width: 1250,
+    hideToolbar: true,
   };
   if (isLoading) {
     return <LoadingMessage className="analytics" />;
