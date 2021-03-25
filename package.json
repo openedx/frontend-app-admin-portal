@@ -33,7 +33,7 @@
     "@redux-beacon/segment": "1.1.0",
     "@testing-library/react-hooks": "^5.0.3",
     "algoliasearch": "4.8.6",
-    "axios-mock-adapter": "1.18.2",
+    "axios-mock-adapter": "1.19.0",
     "classnames": "2.2.6",
     "core-js": "^3.7.0",
     "faker": "4.1.0",
@@ -87,13 +87,13 @@
     "@testing-library/user-event": "12.8.1",
     "codecov": "3.7.1",
     "css-loader": "3.5.3",
-    "enzyme": "3.10.0",
+    "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "es-check": "5.1.0",
     "husky": "0.14.3",
     "identity-obj-proxy": "3.0.0",
     "node-sass": "4.14.1",
-    "react-dev-utils": "5.0.3",
+    "react-dev-utils": "11.0.4",
     "react-test-renderer": "16.13.1"
   }
 }
