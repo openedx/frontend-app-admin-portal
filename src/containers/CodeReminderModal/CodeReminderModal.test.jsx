@@ -15,7 +15,9 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
+import { configuration } from '../../config';
 
+const enterpriseSlug = 'bearsRus';
 const sampleCodeData = {
   code: 'test-code-1',
   assigned_to: 'test@bestrun.com',
@@ -75,12 +77,17 @@ const initialState = {
       'email-template-closing': remindEmailTemplate.closing,
     },
   },
+  portalConfiguration: {
+    enterpriseSlug,
+    enableLearnerPortal: true,
+  },
 };
 
 const couponId = 1;
 const data = {
   code: 'ABC101',
   assigned_to: 'edx@example.com',
+  base_enterprise_url: `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`,
 };
 
 const codeReminderRequestData = (numCodes, selectedToggle) => {
@@ -90,6 +97,7 @@ const codeReminderRequestData = (numCodes, selectedToggle) => {
     template_subject: remindEmailTemplate.subject,
     template_greeting: remindEmailTemplate.greeting,
     template_closing: remindEmailTemplate.closing,
+    base_enterprise_url: data.base_enterprise_url,
   };
   if (numCodes === 0) {
     options.code_filter = selectedToggle;
@@ -151,6 +159,29 @@ describe('CodeReminderModalWrapper', () => {
     expect(wrapper.find('#email-template')).toBeTruthy();
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
+  });
+
+  it('returns the correct data if learner portal is not enabled', () => {
+    spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
+    const codeRemindData = [data, data];
+    const wrapper = mount(<CodeReminderModalWrapper
+      data={{
+        ...codeRemindData,
+        selectedCodes: codeRemindData,
+      }}
+      store={mockStore({
+        ...initialState,
+        portalConfiguration: { ...initialState.portalConfiguration, enableLearnerPortal: false },
+      })}
+      isBulkRemind
+    />);
+
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
+    expect(wrapper.find('#email-template')).toBeTruthy();
+    wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    const expectedData = codeReminderRequestData(2);
+    delete expectedData.base_enterprise_url;
+    expect(spy).toHaveBeenCalledWith(couponId, expectedData);
   });
 
   it('renders remind all modal if no code is selected for bulk remind', () => {

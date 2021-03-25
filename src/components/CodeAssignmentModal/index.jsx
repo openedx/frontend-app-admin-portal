@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, Input, Icon, Modal,
@@ -24,7 +23,7 @@ import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../..
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
 
-class BaseCodeAssignmentModal extends React.Component {
+class CodeAssignmentModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -328,7 +327,6 @@ class BaseCodeAssignmentModal extends React.Component {
       template_closing: formData['email-template-closing'],
       enable_nudge_emails: formData['enable-nudge-emails'],
     };
-
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
       options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
@@ -554,14 +552,14 @@ class BaseCodeAssignmentModal extends React.Component {
   }
 }
 
-BaseCodeAssignmentModal.defaultProps = {
+CodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
   currentEmail: '',
 };
 
-BaseCodeAssignmentModal.propTypes = {
+CodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseUuid: PropTypes.string.isRequired,
@@ -600,13 +598,6 @@ BaseCodeAssignmentModal.propTypes = {
     remainingUses: PropTypes.number,
   }),
 };
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
-});
-
-const CodeAssignmentModal = connect(mapStateToProps)(BaseCodeAssignmentModal);
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
