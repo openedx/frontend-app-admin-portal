@@ -133,6 +133,11 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().get(url);
   }
 
+  static fetchSubscriptionLicenseDataCsv(subscriptionUUID) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/csv/`;
+    return LicenseManagerApiService.apiClient().get(url);
+  }
+
   static licenseRevoke(subscriptionUUID, options) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke/`;
     return LicenseManagerApiService.apiClient().post(url, options);

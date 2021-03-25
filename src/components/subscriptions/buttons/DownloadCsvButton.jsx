@@ -1,16 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { CSVLink } from 'react-csv';
+import { Icon, StatefulButton } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseManagerApiService from '../data/service';
-import { ALL_USERS } from '../data/constants';
-import { configuration } from '../../../config';
 
-const DownloadCsvButton = ({ enterpriseSlug }) => {
+const DownloadCsvButton = () => {
   const { subscription } = useContext(SubscriptionDetailContext);
-  const [csvData, setCsvData] = useState([]);
+  const [buttonState, setButtonState] = useState('default');
 
   const getCsvFileName = () => {
     const titleNoWhitespace = subscription.title.replace(/\s+/g, '');
@@ -21,56 +18,40 @@ const DownloadCsvButton = ({ enterpriseSlug }) => {
     return `${titleNoWhitespace}-${year}-${month}-${day}.csv`;
   };
 
-  const getLicenseActivationLink = (activationKey) => (
-    `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/licenses/${activationKey}/activate`
-  );
-
-  const options = {
-    status: ALL_USERS,
-  };
-
-  const headers = [
-    { label: 'Status', key: 'status' },
-    { label: 'User Email', key: 'userEmail' },
-    { label: 'Activation Date', key: 'activationDate' },
-    { label: 'Last Remind Date', key: 'lastRemindDate' },
-    { label: 'License Activation Link', key: 'activationLink' },
-  ];
-
-  LicenseManagerApiService.fetchSubscriptionUsers(subscription.uuid, options, 5000)
-    .then((response) => {
-      const licenseData = response.data.results.map(license => ({
-        status: license.status,
-        userEmail: license.user_email,
-        activationDate: license.activation_date,
-        lastRemindDate: license.last_remind_date,
-        activationLink: getLicenseActivationLink(license.activation_key),
-      }));
-      setCsvData(licenseData);
-    })
-    .catch((err) => {
-      logError(err);
-      // TODO: what should the UX be for error here?
-    });
-
   return (
-    <CSVLink
-      className="btn btn-outline-primary"
-      data={csvData}
-      filename={getCsvFileName()}
-      headers={headers}
-    >
-      Download CSV
-    </CSVLink>
+    <StatefulButton
+      state={buttonState}
+      variant="outline-primary"
+      labels={{
+        default: 'Download CSV',
+        pending: 'Downloading',
+        complete: 'Downloaded',
+      }}
+      icons={{
+        default: <Icon className="fa fa-download" />,
+        pending: <Icon className="fa fa-spinner fa-spin" />,
+        complete: <Icon className="fa fa-check" />,
+      }}
+      disabledStates={['pending']}
+      onClick={() => {
+        setButtonState('pending');
+        LicenseManagerApiService.fetchSubscriptionLicenseDataCsv(subscription.uuid)
+          .then(response => {
+            // download CSV
+            const blob = new Blob([response.data], {
+              type: 'text/csv',
+            });
+            saveAs(blob, getCsvFileName());
+            setButtonState('complete');
+          })
+          .catch(err => {
+            setButtonState('default');
+            logError(err);
+            // TODO: what should the UX be for error here?
+          });
+      }}
+    />
   );
 };
 
-DownloadCsvButton.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(DownloadCsvButton);
+export default DownloadCsvButton;
