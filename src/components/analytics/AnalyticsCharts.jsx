@@ -34,8 +34,9 @@ export default function AnalyticsCharts(enterpriseId) {
   }
   const filters = {};
   const options = {
-    height: 850,
-    width: 1200,
+    height: 900,
+    width: 1250,
+    hideToolbar: true,
   };
   if (isLoading) {
     return <LoadingMessage className="analytics" />;

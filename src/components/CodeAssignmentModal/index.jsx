@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, Input, Icon, Modal,
@@ -24,7 +23,7 @@ import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../..
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
 
-class BaseCodeAssignmentModal extends React.Component {
+class CodeAssignmentModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -310,8 +309,10 @@ class BaseCodeAssignmentModal extends React.Component {
         hasAllCodesSelected,
       },
       sendCodeAssignment,
+      createPendingEnterpriseUsers,
       enableLearnerPortal,
       enterpriseSlug,
+      enterpriseUuid,
     } = this.props;
 
     this.setMode('assign');
@@ -326,7 +327,6 @@ class BaseCodeAssignmentModal extends React.Component {
       template_closing: formData['email-template-closing'],
       enable_nudge_emails: formData['enable-nudge-emails'],
     };
-
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
       options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
@@ -336,10 +336,11 @@ class BaseCodeAssignmentModal extends React.Component {
       options.template_id = formData['template-id'];
     }
 
+    const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
+    const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
+    const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
+
     if (isBulkAssign) {
-      const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
-      const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
-      const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
       options.emails = validEmails;
 
       // Only includes `codes` in `options` if not all codes are selected.
@@ -351,7 +352,21 @@ class BaseCodeAssignmentModal extends React.Component {
       options.codes = [code.code];
     }
 
-    return sendCodeAssignment(couponId, options)
+    let pendingEnterpriseUserData;
+    if (hasTextAreaEmails) {
+      pendingEnterpriseUserData = validEmails.map((email) => ({
+        user_email: email,
+        enterprise_customer: enterpriseUuid,
+      }));
+    } else {
+      pendingEnterpriseUserData = {
+        user_email: formData['email-address'],
+        enterprise_customer: enterpriseUuid,
+      };
+    }
+
+    return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
+      .then(() => sendCodeAssignment(couponId, options))
       .then((response) => {
         this.props.onSuccess(response);
       })
@@ -537,16 +552,17 @@ class BaseCodeAssignmentModal extends React.Component {
   }
 }
 
-BaseCodeAssignmentModal.defaultProps = {
+CodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
   currentEmail: '',
 };
 
-BaseCodeAssignmentModal.propTypes = {
+CodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseUuid: PropTypes.string.isRequired,
   currentEmail: PropTypes.string,
   enableLearnerPortal: PropTypes.bool.isRequired,
   // props From redux-form
@@ -562,6 +578,7 @@ BaseCodeAssignmentModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   sendCodeAssignment: PropTypes.func.isRequired,
+  createPendingEnterpriseUsers: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
@@ -581,13 +598,6 @@ BaseCodeAssignmentModal.propTypes = {
     remainingUses: PropTypes.number,
   }),
 };
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
-});
-
-const CodeAssignmentModal = connect(mapStateToProps)(BaseCodeAssignmentModal);
 
 export default reduxForm({
   form: 'code-assignment-modal-form',

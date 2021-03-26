@@ -11,6 +11,7 @@ import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { validateEmailTemplateFields } from '../../utils';
 
+import { configuration } from '../../config';
 import './CodeReminderModal.scss';
 
 class CodeReminderModal extends React.Component {
@@ -109,6 +110,8 @@ class CodeReminderModal extends React.Component {
       selectedToggle,
       data,
       sendCodeReminder,
+      enableLearnerPortal,
+      enterpriseSlug,
     } = this.props;
     this.setMode('remind');
 
@@ -122,6 +125,10 @@ class CodeReminderModal extends React.Component {
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };
+    // If the enterprise has a learner portal, we should direct users to it in our assignment email
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
+    }
 
     if (formData['template-id']) {
       options.template_id = formData['template-id'];
@@ -304,18 +311,22 @@ CodeReminderModal.propTypes = {
   submitFailed: PropTypes.bool.isRequired,
   error: PropTypes.arrayOf(PropTypes.string),
 
-  // custom props
-  couponId: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  sendCodeReminder: PropTypes.func.isRequired,
+  // from redux
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
       count: PropTypes.number,
     }),
   }),
   initialValues: PropTypes.shape({}).isRequired,
+
+  // custom props
+  couponId: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
+  sendCodeReminder: PropTypes.func.isRequired,
   isBulkRemind: PropTypes.bool,
   selectedToggle: PropTypes.string,
   data: PropTypes.shape({

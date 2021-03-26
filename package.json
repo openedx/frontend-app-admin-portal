@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
     "@edx/brand": "npm:@edx/brand-openedx@^1.1.0",
-    "@edx/frontend-enterprise": "5.1.0",
+    "@edx/frontend-enterprise": "^5.2.1",
     "@edx/frontend-platform": "1.8.4",
     "@edx/paragon": "13.13.2",
     "@fortawesome/fontawesome-svg-core": "1.2.32",
@@ -33,7 +33,7 @@
     "@redux-beacon/segment": "1.1.0",
     "@testing-library/react-hooks": "^5.0.3",
     "algoliasearch": "4.8.3",
-    "axios-mock-adapter": "1.18.2",
+    "axios-mock-adapter": "1.19.0",
     "classnames": "2.2.6",
     "core-js": "^3.7.0",
     "faker": "4.1.0",
@@ -43,6 +43,7 @@
     "jest-environment-jsdom": "26.6.1",
     "jwt-decode": "2.2.0",
     "lodash": "4.17.20",
+    "lodash.debounce": "^4.0.8",
     "moment": "2.27.0",
     "prop-types": "15.7.2",
     "query-string": "5.1.1",
@@ -86,13 +87,13 @@
     "@testing-library/user-event": "12.8.1",
     "codecov": "3.7.1",
     "css-loader": "3.5.3",
-    "enzyme": "3.10.0",
+    "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "es-check": "^5.2.3",
     "husky": "0.14.3",
     "identity-obj-proxy": "3.0.0",
     "node-sass": "4.14.1",
-    "react-dev-utils": "5.0.3",
+    "react-dev-utils": "11.0.4",
     "react-test-renderer": "16.13.1"
   }
 }

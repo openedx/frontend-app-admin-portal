@@ -497,7 +497,7 @@ describe('CouponDetailsWrapper', () => {
       });
 
       // fake successful code assignment
-      wrapper.find('BaseCodeAssignmentModal').prop('onSuccess')();
+      wrapper.find('CodeAssignmentModal').prop('onSuccess')();
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeTruthy();
 
       wrapper.update();
