@@ -8,7 +8,12 @@ import { mount } from 'enzyme';
 import { SubmissionError } from 'redux-form';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import { SAVE_TEMPLATE_REQUEST, EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../../data/constants/emailTemplate';
+import {
+  SAVE_TEMPLATE_REQUEST,
+  EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+  OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
+  EMAIL_TEMPLATE_SUBJECT_KEY,
+} from '../../data/constants/emailTemplate';
 import SaveTemplateButton from './index';
 
 jest.mock('../../data/services/EcommerceApiService');
@@ -41,7 +46,7 @@ const saveTemplateData = {
   id: 1,
   email_type: 'assign',
   name: formData['template-name'],
-  email_subject: formData['email-template-subject'],
+  email_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
   email_greeting: formData['email-template-greeting'],
   email_closing: formData['email-template-closing'],
 };

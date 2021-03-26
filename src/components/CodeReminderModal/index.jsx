@@ -9,7 +9,8 @@ import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
-import { validateEmailTemplateFields } from '../../utils';
+import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
+import { validateEmailTemplateForm } from '../../data/validation/email';
 
 import './CodeReminderModal.scss';
 
@@ -25,7 +26,6 @@ class CodeReminderModal extends React.Component {
     };
 
     this.setMode = this.setMode.bind(this);
-    this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
   }
@@ -79,24 +79,6 @@ class CodeReminderModal extends React.Component {
     this.setState({ mode });
   }
 
-  validateFormData(formData) {
-    const emailTemplateKey = 'email-template-body';
-
-    /* eslint-disable no-underscore-dangle */
-    const errors = validateEmailTemplateFields(formData);
-
-    if (!formData[emailTemplateKey]) {
-      const message = 'An email template is required.';
-      errors[emailTemplateKey] = message;
-      errors._error.push(message);
-    }
-
-    if (errors._error.length > 0) {
-      throw new SubmissionError(errors);
-    }
-    /* eslint-enable no-underscore-dangle */
-  }
-
   hasIndividualRemindData() {
     const { data } = this.props;
     return ['code', 'email'].every(key => key in data);
@@ -113,12 +95,13 @@ class CodeReminderModal extends React.Component {
     this.setMode('remind');
 
     // Validate form data
-    this.validateFormData(formData);
+    const emailTemplateKey = 'email-template-body';
+    validateEmailTemplateForm(formData, emailTemplateKey);
 
     // Configure the options to send to the assignment reminder API endpoint
     const options = {
-      template: formData['email-template-body'],
-      template_subject: formData['email-template-subject'],
+      template: formData[emailTemplateKey],
+      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
     };

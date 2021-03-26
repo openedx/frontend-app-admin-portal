@@ -17,9 +17,10 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 import IconWithTooltip from '../IconWithTooltip';
 
-import { validateEmailTemplateFields } from '../../utils';
+import { validateEmailTemplateFields } from '../../data/validation/email';
 import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
+import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
@@ -269,7 +270,7 @@ class BaseCodeAssignmentModal extends React.Component {
     }
 
     /* eslint-disable no-underscore-dangle */
-    const emailFieldErrors = validateEmailTemplateFields(formData);
+    const emailFieldErrors = validateEmailTemplateFields(formData, emailTemplateKey);
 
     // combine errors
     errors = {
@@ -277,12 +278,6 @@ class BaseCodeAssignmentModal extends React.Component {
       ...emailFieldErrors,
       _error: [...errors._error, ...emailFieldErrors._error],
     };
-
-    if (!formData[emailTemplateKey]) {
-      const message = 'An email template is required.';
-      errors[emailTemplateKey] = message;
-      errors._error.push(message);
-    }
 
     if (Object.keys(errors) > 1 || errors._error.length > 0) {
       throw new SubmissionError(errors);
@@ -321,7 +316,7 @@ class BaseCodeAssignmentModal extends React.Component {
     // Configure the options to send to the assignment API endpoint
     const options = {
       template: formData['email-template-body'],
-      template_subject: formData['email-template-subject'],
+      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
       enable_nudge_emails: formData['enable-nudge-emails'],

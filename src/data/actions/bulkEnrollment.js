@@ -4,7 +4,7 @@ import {
   BULK_ENROLLMENT_FAILURE,
 } from '../constants/bulkEnrollment';
 
-import LmsApiService from '../services/LmsApiService';
+import LicenseManagerAPIService from '../services/LicenseManagerAPIService';
 
 const sendBulkEnrollmentRequest = () => ({
   type: BULK_ENROLLMENT_REQUEST,
@@ -32,7 +32,7 @@ const sendBulkEnrollment = ({
 }) => (
   (dispatch) => {
     dispatch(sendBulkEnrollmentRequest());
-    return LmsApiService.sendBulkEnrollment(enterpriseUuid, options)
+    return LicenseManagerAPIService.licenseBulkEnroll(enterpriseUuid, options)
       .then((response) => {
         dispatch(sendBulkEnrollmentSuccess(response.data));
         onSuccess(response.data);

@@ -8,8 +8,6 @@ import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
 import { history } from '@edx/frontend-platform/initialize';
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from './data/constants/emailTemplate';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from './data/constants/addUsers';
 import { ENTERPRISE_ADMIN_ROLE_NAME } from './data/constants';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
@@ -158,109 +156,6 @@ const updateAllTemplates = (template, state) => {
   return allTemplates;
 };
 
-// Validated email template form fields and returns errors if any.
-const validateEmailTemplateFields = (formData, isSubjectRequired = true) => {
-  const errors = {
-    _error: [],
-  };
-  const emailSubjectKey = 'email-template-subject';
-  const emailSubject = formData[emailSubjectKey];
-  if (isSubjectRequired && !emailSubject) {
-    const message = 'No email subject provided. Please enter email subject.';
-    errors[emailSubjectKey] = message;
-    errors._error.push(message); // eslint-disable-line no-underscore-dangle
-  }
-
-  const templateErrorMessages = {
-    'email-template-subject': {
-      limit: OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
-      message: `Email subject must be ${OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT} characters or less.`,
-    },
-    'email-template-greeting': {
-      limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
-      message: `Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
-    },
-    'email-template-closing': {
-      limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
-      message: `Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
-    },
-  };
-
-  /* eslint-disable no-underscore-dangle */
-  Object.entries(templateErrorMessages).forEach(([key, { limit, message }]) => {
-    if (formData[key] && formData[key].length > limit) {
-      errors[key] = message;
-      errors._error.push(message);
-    }
-  });
-  /* eslint-enable no-underscore-dangle */
-
-  return errors;
-};
-
-// Validates email addresses lists passed in as the argument.
-//
-// Returns an object with the following attributes.
-// validEmails: valid email addresses from the emails argument.
-// validEmailIndices: indices of the valid email addresses in the emails arguments.
-// invalidEmails: invalid email addresses from the emails argument.
-// invalidEmailIndices: indices of the invalid email addresses in the emails arguments.
-const validateEmailAddresses = (emails) => {
-  const result = {
-    validEmails: [],
-    validEmailIndices: [],
-    invalidEmails: [],
-    invalidEmailIndices: [],
-  };
-  if (!emails) {
-    return result;
-  }
-  emails.forEach((email, index) => {
-    if (email) {
-      if (!isEmail(email)) {
-        result.invalidEmails.push(email);
-        result.invalidEmailIndices.push(index);
-      } else {
-        result.validEmails.push(email);
-        result.validEmailIndices.push(index);
-      }
-    }
-  });
-  return result;
-};
-
-// Validate email address form fields and return errors with appropriate error messages.
-const validateEmailAddressesFields = (formData) => {
-  const errors = {
-    _error: [],
-  };
-  const userEmailsKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
-  const emailsCSVKey = EMAIL_ADDRESS_CSV_FORM_DATA;
-
-  const textAreaEmails = formData[userEmailsKey] && formData[userEmailsKey].split(/\r\n|\n/);
-  const csvEmails = formData[emailsCSVKey];
-
-  let {
-    invalidEmailIndices,
-  } = validateEmailAddresses(textAreaEmails || csvEmails);
-
-  // 1 is added to every index to fix off-by-one error in messages shown to the user.
-  invalidEmailIndices = invalidEmailIndices.map(i => i + 1);
-
-  if (invalidEmailIndices.length > 0) {
-    const lastEmail = invalidEmailIndices.pop();
-    const message = `Email address on line ${invalidEmailIndices.join(', ')} \
-      ${invalidEmailIndices.length !== 0 ? `and ${lastEmail}` : `${lastEmail}`} \
-      is invalid. Please try again.`;
-
-    errors[textAreaEmails ? userEmailsKey : emailsCSVKey] = message;
-    // eslint-disable-next-line no-underscore-dangle
-    errors._error.push(message);
-  }
-
-  return errors;
-};
-
 const mergeErrors = (object, other) => {
   const customizer = (objValue, srcValue) => {
     if (isArray(objValue)) {
@@ -313,6 +208,8 @@ function truncateString(str, maxStrLength = 10) {
   return `${str.slice(0, maxStrLength)}...`;
 }
 
+const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -329,14 +226,12 @@ export {
   maxLength512,
   transformTemplate,
   updateTemplateEmailAddress,
-  validateEmailTemplateFields,
   updateAllTemplates,
-  validateEmailAddresses,
-  validateEmailAddressesFields,
   mergeErrors,
   redirectToProxyLogin,
   getProxyLoginUrl,
   hasEnterpriseAdminRole,
   getSubscriptionContactText,
   truncateString,
+  normalizeFileUpload,
 };
