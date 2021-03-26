@@ -88,6 +88,7 @@ export const BaseCourseSearchResults = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  const [enrolledLearners, setEnrolledLearners] = useState([]);
 
   const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
     const courseRunKeys = selectedRows?.map(
@@ -131,12 +132,13 @@ export const BaseCourseSearchResults = ({
         onClose={() => setModalOpen(false)}
         open={modalOpen}
         selectedCourseRunKeys={selectedCourseRuns}
+        setEnrolledLearners={setEnrolledLearners}
       />
       <Toast
         onClose={() => setShowToast(false)}
         show={showToast}
       >
-        Your learners have been enrolled.
+        {enrolledLearners} learners have been enrolled.
       </Toast>
       <DataTable
         columns={columns}

@@ -8,13 +8,8 @@ import emailTemplate from './emailTemplate';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 import FileInput from '../FileInput';
-import {
-  validateEmailTemplateFields,
-  validateEmailAddresses,
-  validateEmailAddressesFields,
-  mergeErrors,
-} from '../../utils';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
+import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
+import { normalizeFileUpload } from '../../utils';
 
 class InviteLearnersModal extends React.Component {
   constructor(props) {
@@ -23,7 +18,6 @@ class InviteLearnersModal extends React.Component {
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
-    this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
@@ -61,66 +55,23 @@ class InviteLearnersModal extends React.Component {
     }
   }
 
-  validateFormData(formData) {
-    const userEmailsKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
-    const emailsCSVKey = EMAIL_ADDRESS_CSV_FORM_DATA;
-    const emailTemplateKey = 'email-template-body';
-
-    /* eslint-disable no-underscore-dangle */
-    // The 'subject' field is not required here.
-    let errors = validateEmailTemplateFields(formData, false);
-
-    if (!formData[emailTemplateKey]) {
-      const message = 'An email template is required.';
-      errors[emailTemplateKey] = message;
-      errors._error.push(message);
-    }
-
-    if (!formData[userEmailsKey] && !formData[emailsCSVKey]) {
-      const message = 'Either user emails or emails csv must be provided.';
-      errors[userEmailsKey] = message;
-      errors[emailsCSVKey] = message;
-      errors._error.push(message);
-    }
-
-    const emailFieldErrors = validateEmailAddressesFields(formData);
-    errors = mergeErrors(errors, emailFieldErrors);
-
-    if (errors._error.length > 0) {
-      throw new SubmissionError(errors);
-    }
-    /* eslint-enable no-underscore-dangle */
-  }
-
-  normalizeFileUpload(value) {
-    return value && value.split(/\r\n|\n/);
-  }
-
   handleModalSubmit(formData) {
     const {
       addLicensesForUsers,
       subscriptionUUID,
     } = this.props;
 
+    const emailTemplateKey = 'email-template-body';
     // Validate form data
-    this.validateFormData(formData);
+    validateEmailAddrTemplateForm(formData, emailTemplateKey);
 
     const options = {
-      template: formData['email-template-body'],
+      template: formData[emailTemplateKey],
       greeting: formData['email-template-greeting'],
       closing: formData['email-template-closing'],
     };
 
-    // Validate email addresses from both the text area and the CSV file and
-    //   submit to the backend for emails to be sent and/or error to be displayed
-    const emails = [];
-    if (formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].length) {
-      emails.push(...formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/));
-    }
-    if (formData[EMAIL_ADDRESS_CSV_FORM_DATA] && formData[EMAIL_ADDRESS_CSV_FORM_DATA].length) {
-      emails.push(...formData[EMAIL_ADDRESS_CSV_FORM_DATA]);
-    }
-    options.user_emails = validateEmailAddresses(emails).validEmails;
+    options.user_emails = returnValidatedEmails(formData);
 
     /* eslint-disable no-underscore-dangle */
     return addLicensesForUsers(options, subscriptionUUID)
@@ -165,7 +116,7 @@ class InviteLearnersModal extends React.Component {
               label="Upload Email Addresses"
               description="The file must be a CSV containing a single column of email addresses."
               accept=".csv"
-              normalize={this.normalizeFileUpload}
+              normalize={normalizeFileUpload}
             />
             <h3>Email Template</h3>
             <Field

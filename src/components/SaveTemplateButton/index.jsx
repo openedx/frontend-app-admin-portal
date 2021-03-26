@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { StatefulButton, Icon } from '@edx/paragon';
 import { SubmissionError } from 'redux-form';
 
-import { validateEmailTemplateFields } from '../../utils';
-import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
+import { validateEmailTemplateFields } from '../../data/validation/email';
+import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL, EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
 class SaveTemplateButton extends React.Component {
@@ -37,7 +37,7 @@ class SaveTemplateButton extends React.Component {
 
   validateFormData(formData) {
     const emailTemplateNameKey = 'template-name';
-    const errors = validateEmailTemplateFields(formData);
+    const errors = validateEmailTemplateFields(formData, emailTemplateNameKey);
 
     /* eslint-disable no-underscore-dangle */
     if (!formData[emailTemplateNameKey]) {
@@ -72,7 +72,7 @@ class SaveTemplateButton extends React.Component {
 
     const options = {
       email_type: templateType,
-      email_subject: formData['email-template-subject'],
+      email_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       email_greeting: formData['email-template-greeting'],
       email_closing: formData['email-template-closing'],
       name: formData['template-name'] || formData['template-name-select'],

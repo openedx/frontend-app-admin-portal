@@ -8,9 +8,9 @@ import {
   ASSIGNED,
   REVOKED,
   PAGE_SIZE,
-} from './constants';
+} from '../../components/subscriptions/data/constants';
 
-import { configuration } from '../../../config';
+import { configuration } from '../../config';
 
 export function createSampleUser(licenseStatus) {
   return {
@@ -135,6 +135,11 @@ class LicenseManagerApiService {
 
   static licenseRevoke(subscriptionUUID, options) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke/`;
+    return LicenseManagerApiService.apiClient().post(url, options);
+  }
+
+  static licenseBulkEnroll(enterpriseUuid, options) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?enterprise_customer_uuid=${enterpriseUuid}`;
     return LicenseManagerApiService.apiClient().post(url, options);
   }
 }

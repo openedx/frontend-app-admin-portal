@@ -14,7 +14,8 @@ import StatusAlert from '../StatusAlert';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 import IconWithTooltip from '../IconWithTooltip';
 
-import { validateEmailTemplateFields } from '../../utils';
+import { validateEmailTemplateForm } from '../../data/validation/email';
+import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class CodeRevokeModal extends React.Component {
 
     this.setMode = this.setMode.bind(this);
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
-    this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.doNotEmailField = this.doNotEmailField.bind(this);
   }
@@ -74,24 +74,6 @@ class CodeRevokeModal extends React.Component {
     this.setState({ doNotEmail });
   }
 
-  validateFormData(formData) {
-    const emailTemplateKey = 'email-template-body';
-
-    /* eslint-disable no-underscore-dangle */
-    const errors = validateEmailTemplateFields(formData);
-
-    if (!formData[emailTemplateKey]) {
-      const message = 'An email template is required.';
-      errors[emailTemplateKey] = message;
-      errors._error.push(message);
-    }
-
-    if (errors._error.length > 0) {
-      throw new SubmissionError(errors);
-    }
-    /* eslint-enable no-underscore-dangle */
-  }
-
   hasIndividualRevokeData() {
     const { data } = this.props;
     return ['code', 'assigned_to'].every(key => key in data);
@@ -111,15 +93,16 @@ class CodeRevokeModal extends React.Component {
     const errors = {
       _error: [],
     };
+    const emailTemplateKey = 'email-template-body';
 
     this.setMode('revoke');
 
     // Validate form data
-    this.validateFormData(formData);
+    validateEmailTemplateForm(formData, emailTemplateKey);
 
     const options = {
-      template: formData['email-template-body'],
-      template_subject: formData['email-template-subject'],
+      template: formData[emailTemplateKey],
+      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
       do_not_email: doNotEmail,

@@ -5,7 +5,7 @@ import {
   LICENSE_REMIND_FAILURE,
 } from '../constants/licenseReminder';
 
-import LicenseManagerApiService from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../services/LicenseManagerAPIService';
 
 const sendLicenseReminderRequest = () => ({
   type: LICENSE_REMIND_REQUEST,
