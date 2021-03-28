@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Icon, StatefulButton } from '@edx/paragon';
+import { StatefulButton } from '@edx/paragon';
+import { faCheck, faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
@@ -28,9 +30,9 @@ const DownloadCsvButton = () => {
         complete: 'Downloaded',
       }}
       icons={{
-        default: <Icon className="fa fa-download" />,
-        pending: <Icon className="fa fa-spinner fa-spin" />,
-        complete: <Icon className="fa fa-check" />,
+        default: <FontAwesomeIcon icon={faDownload} />,
+        pending: <FontAwesomeIcon icon={faSpinner} />,
+        complete: <FontAwesomeIcon icon={faCheck} />,
       }}
       disabledStates={['pending']}
       onClick={() => {

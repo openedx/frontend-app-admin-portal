@@ -114,10 +114,10 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().get(url);
   }
 
-  static fetchSubscriptionUsers(subscriptionUUID, options, pageSize = PAGE_SIZE) {
+  static fetchSubscriptionUsers(subscriptionUUID, options) {
     const queryParams = {
       ...options,
-      page_size: pageSize,
+      page_size: PAGE_SIZE,
     };
 
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/?${qs.stringify(queryParams)}`;

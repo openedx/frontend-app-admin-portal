@@ -17,15 +17,15 @@ const LicenseAllocationHeader = () => {
         {' of '}
         {subscription.licenses?.total} licenses allocated
       </p>
-      <Row className="my-3">
-        <Col className="col-8">
+      <Row>
+        <Col lg={6} xs={12} className="mt-2">
           <SearchBar
             placeholder="Search by email..."
             onSearch={searchQuery => setSearchQuery(searchQuery)}
             onClear={() => setSearchQuery(null)}
           />
         </Col>
-        <Col className="d-flex justify-content-end">
+        <Col className="d-flex justify-content-end mt-2">
           <DownloadCsvButton />
         </Col>
       </Row>
