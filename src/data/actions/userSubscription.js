@@ -5,7 +5,7 @@ import {
   USER_SUBSCRIPTION_FAILURE,
 } from '../constants/userSubscription';
 
-import LicenseManagerApiService from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../services/LicenseManagerAPIService';
 
 const sendSubscribeUsersRequest = () => ({
   type: USER_SUBSCRIPTION_REQUEST,

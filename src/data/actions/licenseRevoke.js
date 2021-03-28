@@ -5,7 +5,7 @@ import {
   LICENSE_REVOKE_FAILURE,
 } from '../constants/licenseRevoke';
 
-import LicenseManagerApiService from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../services/LicenseManagerAPIService';
 
 const sendLicenseRevokeRequest = () => ({
   type: LICENSE_REVOKE_REQUEST,

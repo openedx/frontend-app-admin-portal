@@ -10,7 +10,10 @@ import {
 } from '@edx/paragon';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
-import CsvUpload from '../CsvUpload';
+import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
+import { returnValidatedEmails } from '../../data/validation/email';
+import FileInput from '../FileInput';
+import { normalizeFileUpload } from '../../utils';
 
 class BulkEnrollmentModal extends React.Component {
   constructor(props) {
@@ -60,17 +63,15 @@ class BulkEnrollmentModal extends React.Component {
       selectedCourseRunKeys,
     } = this.props;
 
-    const bulkEnrollmentPromises = selectedCourseRunKeys.map((selectedCourseRunKey) => {
-      const options = {
-        course_run_key: selectedCourseRunKey,
-        email: formData['bulk-enrollment-email-addresses'],
-        email_csv: formData['bulk-enrollment-email-csv'],
-      };
-      return sendBulkEnrollment(enterpriseUuid, options);
-    });
+    const options = {
+      course_run_keys: selectedCourseRunKeys,
+      notify: true,
+    };
+    options.emails = returnValidatedEmails(formData);
 
-    return Promise.all(bulkEnrollmentPromises)
+    return sendBulkEnrollment(enterpriseUuid, options)
       .then(() => {
+        this.props.setEnrolledLearners(options.emails.length);
         this.props.onSuccess();
       })
       .catch((error) => {
@@ -160,8 +161,8 @@ class BulkEnrollmentModal extends React.Component {
             <h3>Add Learners</h3>
             <div>
               <Field
-                id="bulk-enrollment-email-addresses"
-                name="bulk-enrollment-email-addresses"
+                id={EMAIL_ADDRESS_TEXT_FORM_DATA}
+                name={EMAIL_ADDRESS_TEXT_FORM_DATA}
                 component={TextAreaAutoSize}
                 label="Email addresses"
                 type="text"
@@ -171,15 +172,14 @@ class BulkEnrollmentModal extends React.Component {
             <p>OR</p>
             <div>
               <Field
-                id="bulk-enrollment-email-csv"
-                name="bulk-enrollment-email-csv"
-                component={CsvUpload}
-                label="Email addresses"
-                type="file"
+                id={EMAIL_ADDRESS_CSV_FORM_DATA}
+                name={EMAIL_ADDRESS_CSV_FORM_DATA}
+                component={FileInput}
+                label="Upload email addresses"
+                accept=".csv"
+                normalize={normalizeFileUpload}
               />
-              <p>{`The file must be a CSV containing a single column of email addresses.
-                The first line must contain the word 'email'.`}
-              </p>
+              <p>The file must be a CSV containing a single column of email addresses.</p>
             </div>
           </div>
         </form>
@@ -246,6 +246,7 @@ BulkEnrollmentModal.propTypes = {
   selectedCourseRunKeys: PropTypes.arrayOf(PropTypes.string),
   sendBulkEnrollment: PropTypes.func.isRequired,
   title: PropTypes.string,
+  setEnrolledLearners: PropTypes.func.isRequired,
 };
 
 export default reduxForm({

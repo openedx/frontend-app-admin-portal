@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import LicenseManagerApiService from './service';
+import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
   licenseStatusByTab,
   NETWORK_ERROR_MESSAGE,

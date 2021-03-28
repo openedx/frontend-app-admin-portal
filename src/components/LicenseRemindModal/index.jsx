@@ -7,7 +7,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import StatusAlert from '../StatusAlert';
 
-import { validateEmailTemplateFields } from '../../utils';
+import { validateEmailTemplateForm } from '../../data/validation/email';
 import emailTemplate from './emailTemplate';
 
 class LicenseRemindModal extends React.Component {
@@ -17,7 +17,6 @@ class LicenseRemindModal extends React.Component {
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
-    this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
@@ -55,25 +54,6 @@ class LicenseRemindModal extends React.Component {
     }
   }
 
-  validateFormData(formData) {
-    const emailTemplateKey = 'email-template-body';
-
-    /* eslint-disable no-underscore-dangle */
-    // The 'subject' field is not required here
-    const errors = validateEmailTemplateFields(formData, false);
-
-    if (!formData[emailTemplateKey]) {
-      const message = 'An email template is required.';
-      errors[emailTemplateKey] = message;
-      errors._error.push(message);
-    }
-
-    if (errors._error.length > 0) {
-      throw new SubmissionError(errors);
-    }
-    /* eslint-enable no-underscore-dangle */
-  }
-
   handleModalSubmit(formData) {
     const {
       isBulkRemind,
@@ -82,7 +62,7 @@ class LicenseRemindModal extends React.Component {
       sendLicenseReminder,
     } = this.props;
     // Validate form data
-    this.validateFormData(formData);
+    validateEmailTemplateForm(formData, 'email-template-body');
     // Configure the options to send to the assignment reminder API endpoint
     const options = {
       greeting: formData['email-template-greeting'],

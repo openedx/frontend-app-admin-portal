@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import LicenseManagerApiService from '../../components/subscriptions/data/service';
+import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 import LicenseRevokeModal from './index';
 
 const mockStore = configureMockStore([thunk]);
