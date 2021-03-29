@@ -17,7 +17,7 @@ const LicenseAllocationHeader = () => {
         {' of '}
         {subscription.licenses?.total} licenses allocated
       </p>
-      <Row>
+      <Row className="justify-content-between">
         <Col lg={6} xs={12} className="mt-2">
           <SearchBar
             placeholder="Search by email..."
@@ -25,7 +25,7 @@ const LicenseAllocationHeader = () => {
             onClear={() => setSearchQuery(null)}
           />
         </Col>
-        <Col className="d-flex justify-content-end mt-2">
+        <Col xs={12} className="mt-2 col-lg-auto">
           <DownloadCsvButton />
         </Col>
       </Row>
