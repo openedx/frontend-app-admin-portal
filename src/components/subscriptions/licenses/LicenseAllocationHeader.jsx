@@ -18,14 +18,14 @@ const LicenseAllocationHeader = () => {
         {subscription.licenses?.total} licenses allocated
       </p>
       <Row className="justify-content-between">
-        <Col lg={6} xs={12} className="mt-2">
+        <Col lg={6} xs={12} className="mb-2">
           <SearchBar
             placeholder="Search by email..."
             onSearch={searchQuery => setSearchQuery(searchQuery)}
             onClear={() => setSearchQuery(null)}
           />
         </Col>
-        <Col xs={12} className="mt-2 col-lg-auto">
+        <Col xs={12} className="col-lg-auto">
           <DownloadCsvButton />
         </Col>
       </Row>

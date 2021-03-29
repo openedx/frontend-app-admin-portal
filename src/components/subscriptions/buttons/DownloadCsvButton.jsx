@@ -20,6 +20,24 @@ const DownloadCsvButton = () => {
     return `${titleNoWhitespace}-${year}-${month}-${day}.csv`;
   };
 
+  const handleClick = () => {
+    setButtonState('pending');
+    LicenseManagerApiService.fetchSubscriptionLicenseDataCsv(subscription.uuid)
+      .then(response => {
+        // download CSV
+        const blob = new Blob([response.data], {
+          type: 'text/csv',
+        });
+        saveAs(blob, getCsvFileName());
+        setButtonState('complete');
+      })
+      .catch(err => {
+        setButtonState('default');
+        logError(err);
+        // TODO: what should the UX be for error here?
+      });
+  };
+
   return (
     <StatefulButton
       state={buttonState}
@@ -35,23 +53,7 @@ const DownloadCsvButton = () => {
         complete: <FontAwesomeIcon icon={faCheck} />,
       }}
       disabledStates={['pending']}
-      onClick={() => {
-        setButtonState('pending');
-        LicenseManagerApiService.fetchSubscriptionLicenseDataCsv(subscription.uuid)
-          .then(response => {
-            // download CSV
-            const blob = new Blob([response.data], {
-              type: 'text/csv',
-            });
-            saveAs(blob, getCsvFileName());
-            setButtonState('complete');
-          })
-          .catch(err => {
-            setButtonState('default');
-            logError(err);
-            // TODO: what should the UX be for error here?
-          });
-      }}
+      onClick={handleClick}
     />
   );
 };
