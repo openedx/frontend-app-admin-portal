@@ -1,21 +1,14 @@
 import React, { useContext } from 'react';
+import { Row, Col } from '@edx/paragon';
 import SearchBar from '../../SearchBar';
-import { ToastsContext } from '../../Toasts';
-import InviteLearnersButton from '../buttons/InviteLearnersButton';
-import { TAB_ALL_USERS, TAB_PENDING_USERS } from '../data/constants';
-import { SubscriptionContext } from '../SubscriptionData';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import DownloadCsvButton from '../buttons/DownloadCsvButton';
 
 const LicenseAllocationHeader = () => {
-  const { forceRefresh } = useContext(SubscriptionContext);
   const {
-    activeTab,
-    setActiveTab,
     setSearchQuery,
     subscription,
   } = useContext(SubscriptionDetailContext);
-  const { addToast } = useContext(ToastsContext);
-
   return (
     <>
       <h2 className="mb-2">License Allocation</h2>
@@ -24,26 +17,18 @@ const LicenseAllocationHeader = () => {
         {' of '}
         {subscription.licenses?.total} licenses allocated
       </p>
-      <div className="my-3 row">
-        <div className="col-12 col-md-5 mb-3 mb-md-0">
+      <Row className="justify-content-between">
+        <Col lg={6} xs={12} className="mb-2">
           <SearchBar
             placeholder="Search by email..."
             onSearch={searchQuery => setSearchQuery(searchQuery)}
             onClear={() => setSearchQuery(null)}
           />
-        </div>
-        {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
-          <div className="col-12 col-md-7 text-md-right">
-            <InviteLearnersButton
-              onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
-                forceRefresh();
-                addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
-                setActiveTab(TAB_PENDING_USERS);
-              }}
-            />
-          </div>
-        )}
-      </div>
+        </Col>
+        <Col xs={12} className="col-lg-auto">
+          <DownloadCsvButton />
+        </Col>
+      </Row>
     </>
   );
 };
