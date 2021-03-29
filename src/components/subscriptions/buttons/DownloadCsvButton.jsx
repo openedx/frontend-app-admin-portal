@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
-import LicenseManagerApiService from '../data/service';
+import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
 const DownloadCsvButton = () => {
   const { subscription } = useContext(SubscriptionDetailContext);
