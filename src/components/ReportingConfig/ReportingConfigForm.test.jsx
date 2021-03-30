@@ -19,7 +19,16 @@ const config = {
   reportType: 'csv',
   pgpEncryptionKey: '',
   uuid: 'test-config-uuid',
+  enterpriseCustomerCatalogs: [{
+    uuid: 'test-enterprise-customer-catalog',
+    title: 'All Content',
+  }],
 };
+
+const availableCatalogs = [{
+  uuid: 'test-enterprise-customer-catalog',
+  title: 'All Content',
+}];
 
 const createConfig = () => { };
 const updateConfig = () => { };
@@ -31,6 +40,7 @@ describe('<ReportingConfigForm />', () => {
         config={config}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     expect(wrapper.exists('#email')).toEqual(true);
@@ -48,6 +58,7 @@ describe('<ReportingConfigForm />', () => {
         config={config}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     // test empty email field
@@ -67,6 +78,7 @@ describe('<ReportingConfigForm />', () => {
         config={config}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     wrapper.find('input#hourOfDay').simulate('blur');
@@ -81,6 +93,7 @@ describe('<ReportingConfigForm />', () => {
         config={config}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
@@ -101,6 +114,7 @@ describe('<ReportingConfigForm />', () => {
         config={configWithOldDataType}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
@@ -111,6 +125,7 @@ describe('<ReportingConfigForm />', () => {
         config={config}
         createConfig={createConfig}
         updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
@@ -121,5 +136,18 @@ describe('<ReportingConfigForm />', () => {
       },
     });
     expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
+  });
+  it('Pre-selects enterprise customer catalogs from the reporting config.', () => {
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={config}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+      />
+    ));
+    expect(
+      wrapper.find('select#enterpriseCustomerCatalogs').instance().value = ['test-enterprise-customer-catalog'],
+    );
   });
 });
