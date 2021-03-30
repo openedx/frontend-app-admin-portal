@@ -160,6 +160,13 @@ describe('email validation', () => {
       formData[EMAIL_TEMPLATE_SUBJECT_KEY] = 'Subject';
       expect(validateEmailTemplateForm(formData, templateKey)).toBeUndefined();
     });
+
+    it('returns nothing on successful validation (and no subject is required)', () => {
+      const formData = new FormData();
+      formData[EMAIL_ADDRESS_CSV_FORM_DATA] = ['bobby1@test.com', 'bobby2@test.com'];
+      formData[templateKey] = 'Template 1';
+      expect(validateEmailTemplateForm(formData, templateKey, false)).toBeUndefined();
+    });
   });
 
   describe('validate email address and template form', () => {
