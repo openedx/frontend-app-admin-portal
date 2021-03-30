@@ -194,11 +194,6 @@ class LmsApiService {
     return LmsApiService.apiClient().put(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/${configId}/`, formData);
   }
 
-  static sendBulkEnrollment(enterpriseId, options) {
-    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseId}/enterprise_learners/`;
-    return LmsApiService.apiClient().post(url, options);
-  }
-
   static createPendingEnterpriseUsers(formData, uuid) {
     return LmsApiService.apiClient().post(`${LmsApiService.createPendingUsersUrl}/${uuid}`, formData);
   }
