@@ -111,10 +111,10 @@ is invalid. Please try again.`;
   return errorsDict;
 };
 
-const validateEmailTemplateForm = (formData, templateKey) => {
+const validateEmailTemplateForm = (formData, templateKey, isSubjectRequired = true) => {
   // Takes redux form data and a string template key
   // Throws an error or otherwise returns nothing.
-  const errorsDict = validateEmailTemplateFields(formData, templateKey);
+  const errorsDict = validateEmailTemplateFields(formData, templateKey, isSubjectRequired);
 
   if (Object.keys(errorsDict) > 1 || errorsDict._error.length > 0) {
     throw new SubmissionError(errorsDict);
