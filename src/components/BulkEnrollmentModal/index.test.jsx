@@ -36,6 +36,7 @@ describe('<BulkEnrollmentModal />', () => {
     // Verify all expected fields are present.
     screen.getByLabelText('Email addresses');
     screen.getByLabelText('Upload email addresses');
+    screen.getByLabelText('Notify learners');
   });
 
   test('submit displays learner error alert if learners do not have valid subscriptions', () => {

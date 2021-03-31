@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReduxFormCheckbox /> renders checked correctly 1`] = `
+<div
+  className="form-group"
+>
+  <div
+    className="form-check"
+  >
+    <input
+      checked={true}
+      className="form-check-input position-static"
+      disabled={false}
+      id="active"
+      name="active"
+      type="checkbox"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ReduxFormCheckbox /> renders unchecked correctly 1`] = `
+<div
+  className="form-group"
+>
+  <div
+    className="form-check"
+  >
+    <input
+      checked={false}
+      className="form-check-input position-static"
+      disabled={false}
+      id="active"
+      name="active"
+      type="checkbox"
+    />
+  </div>
+</div>
+`;
