@@ -211,7 +211,7 @@ class BulkEnrollmentModal extends React.Component {
           >
             <>
               {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              {'Enroll Learners'}
+              Enroll Learners
             </>
           </Button>,
         ]}
