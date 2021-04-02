@@ -181,7 +181,7 @@ class LicenseRemindModal extends React.Component {
             >
               <>
                 {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                {'Send Reminder'}
+                Send Reminder
               </>
             </Button>,
           ]}
