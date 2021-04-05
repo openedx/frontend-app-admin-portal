@@ -155,7 +155,7 @@ describe('CodeReminderModalWrapper', () => {
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     expect(wrapper.find('#email-template')).toBeTruthy();
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
@@ -176,7 +176,7 @@ describe('CodeReminderModalWrapper', () => {
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     expect(wrapper.find('#email-template')).toBeTruthy();
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
     const expectedData = codeReminderRequestData(2);
@@ -194,7 +194,7 @@ describe('CodeReminderModalWrapper', () => {
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 3');
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 3');
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(0, selectedToggle));
   });

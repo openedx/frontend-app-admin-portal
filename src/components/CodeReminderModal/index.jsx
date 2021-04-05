@@ -6,7 +6,6 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
-import StatusAlert from '../StatusAlert';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
@@ -14,11 +13,7 @@ import { validateEmailTemplateForm } from '../../data/validation/email';
 import ModalError from './ModalError';
 import { configuration } from '../../config';
 import './CodeReminderModal.scss';
-
-export const displayCode = (code) => `Code: ${code}`;
-export const displayEmail = (email) => `Email: ${email}`;
-export const displaySelectedCodes = (numSelectedCodes) => `Selected codes: ${numSelectedCodes}`;
-
+import CodeDetails from './CodeDetails';
 
 export class BaseCodeReminderModal extends React.Component {
   constructor(props) {
@@ -159,19 +154,12 @@ export class BaseCodeReminderModal extends React.Component {
     return (
       <>
         {submitFailed && <ModalError title={mode} errors={error} />}
-        <div className="assignment-details mb-4">
-          {!isBulkRemind && this.hasIndividualRemindData() && (
-            <>
-              <p>{displayCode(data.code)}</p>
-              <p>{displayEmail(data.email)}</p>
-            </>
-          )}
-          {isBulkRemind && numberOfSelectedCodes > 0 && (
-            <>
-              <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
-            </>
-          )}
-        </div>
+        <CodeDetails
+          isBulkRemind={isBulkRemind}
+          hasIndividualRemindData={this.hasIndividualRemindData()}
+          data={data}
+          numberOfSelectedCodes={numberOfSelectedCodes}
+        />
         <form onSubmit={e => e.preventDefault()}>
           <div className="mt-4">
             <h3>Email Template</h3>
@@ -205,35 +193,6 @@ export class BaseCodeReminderModal extends React.Component {
           </div>
         </form>
       </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      remind: 'Unable to send reminder email',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
-        />
-      </div>
     );
   }
 

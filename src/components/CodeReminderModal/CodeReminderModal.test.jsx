@@ -7,7 +7,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import remindEmailTemplate from './emailTemplate';
-import { BaseCodeReminderModal, displayCode, displayEmail, displaySelectedCodes } from '.';
+import { BaseCodeReminderModal } from '.';
+import { displayCode, displayEmail, displaySelectedCodes } from './codeModalHelpers';
 
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
@@ -111,7 +112,6 @@ const initialState = {
 
 /* eslint-disable react/prop-types */
 const CodeReminderModalWrapper = (props) => {
-  console.log('PROPS', props);
   return (
   <MemoryRouter>
     <Provider store={mockStore(initialState)}>
