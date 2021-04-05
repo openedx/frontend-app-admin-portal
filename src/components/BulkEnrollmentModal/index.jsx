@@ -9,11 +9,21 @@ import {
   Alert, Button, Icon, Modal,
 } from '@edx/paragon';
 
+import ReduxFormCheckbox from '../ReduxFormCheckbox';
 import TextAreaAutoSize from '../TextAreaAutoSize';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
+import {
+  EMAIL_ADDRESS_TEXT_FORM_DATA,
+  EMAIL_ADDRESS_TEXT_LABEL,
+  EMAIL_ADDRESS_CSV_FORM_DATA,
+  EMAIL_ADDRESS_CSV_LABEL,
+  NOTIFY_LEARNERS_FORM_DATA,
+  NOTIFY_LEARNERS_LABEL,
+} from '../../data/constants/addUsers';
 import { returnValidatedEmails } from '../../data/validation/email';
 import FileInput from '../FileInput';
 import { normalizeFileUpload } from '../../utils';
+
+const NOTIFY_LEARNER_DEFAULT_VALUE = true;
 
 class BulkEnrollmentModal extends React.Component {
   constructor(props) {
@@ -65,7 +75,7 @@ class BulkEnrollmentModal extends React.Component {
 
     const options = {
       course_run_keys: selectedCourseRunKeys,
-      notify: true,
+      notify: formData.notify,
     };
     options.emails = returnValidatedEmails(formData);
 
@@ -164,7 +174,7 @@ class BulkEnrollmentModal extends React.Component {
                 id={EMAIL_ADDRESS_TEXT_FORM_DATA}
                 name={EMAIL_ADDRESS_TEXT_FORM_DATA}
                 component={TextAreaAutoSize}
-                label="Email addresses"
+                label={EMAIL_ADDRESS_TEXT_LABEL}
                 type="text"
               />
               <p>To add more than one user, enter one email address per line.</p>
@@ -175,11 +185,20 @@ class BulkEnrollmentModal extends React.Component {
                 id={EMAIL_ADDRESS_CSV_FORM_DATA}
                 name={EMAIL_ADDRESS_CSV_FORM_DATA}
                 component={FileInput}
-                label="Upload email addresses"
+                label={EMAIL_ADDRESS_CSV_LABEL}
                 accept=".csv"
                 normalize={normalizeFileUpload}
               />
               <p>The file must be a CSV containing a single column of email addresses.</p>
+            </div>
+            <div>
+              <Field
+                id={NOTIFY_LEARNERS_FORM_DATA}
+                name={NOTIFY_LEARNERS_FORM_DATA}
+                component={ReduxFormCheckbox}
+                label={NOTIFY_LEARNERS_LABEL}
+                type="checkbox"
+              />
             </div>
           </div>
         </form>
@@ -251,4 +270,5 @@ BulkEnrollmentModal.propTypes = {
 
 export default reduxForm({
   form: 'bulk-enrollment-modal-form',
+  initialValues: { notify: NOTIFY_LEARNER_DEFAULT_VALUE },
 })(BulkEnrollmentModal);
