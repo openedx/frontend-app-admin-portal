@@ -11,11 +11,16 @@ import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import { validateEmailTemplateForm } from '../../data/validation/email';
-
+import ModalError from './ModalError';
 import { configuration } from '../../config';
 import './CodeReminderModal.scss';
 
-class CodeReminderModal extends React.Component {
+export const displayCode = (code) => `Code: ${code}`;
+export const displayEmail = (email) => `Email: ${email}`;
+export const displaySelectedCodes = (numSelectedCodes) => `Selected codes: ${numSelectedCodes}`;
+
+
+export class BaseCodeReminderModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -145,23 +150,25 @@ class CodeReminderModal extends React.Component {
       data,
       isBulkRemind,
       submitFailed,
+      error,
     } = this.props;
+    const { mode } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
+        {submitFailed && <ModalError title={mode} errors={error} />}
         <div className="assignment-details mb-4">
           {!isBulkRemind && this.hasIndividualRemindData() && (
             <>
-              <p>Code: {data.code}</p>
-              <p>Email: {data.email}</p>
+              <p>{displayCode(data.code)}</p>
+              <p>{displayEmail(data.email)}</p>
             </>
           )}
           {isBulkRemind && numberOfSelectedCodes > 0 && (
             <>
-              <p className="bulk-selected-codes">Selected Codes: {numberOfSelectedCodes}</p>
+              <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
             </>
           )}
         </div>
@@ -278,7 +285,7 @@ class CodeReminderModal extends React.Component {
   }
 }
 
-CodeReminderModal.defaultProps = {
+BaseCodeReminderModal.defaultProps = {
   error: null,
   isBulkRemind: false,
   data: {},
@@ -286,7 +293,7 @@ CodeReminderModal.defaultProps = {
   couponDetailsTable: {},
 };
 
-CodeReminderModal.propTypes = {
+BaseCodeReminderModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -321,4 +328,4 @@ CodeReminderModal.propTypes = {
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
-})(CodeReminderModal);
+})(BaseCodeReminderModal);
