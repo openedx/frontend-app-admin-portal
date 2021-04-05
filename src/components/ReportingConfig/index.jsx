@@ -8,23 +8,32 @@ import { snakeCaseFormData } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 
+const STATUS_FULFILLED = 'fulfilled';
+
 class ReportingConfig extends React.Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     loading: true,
     reportingConfigs: [],
     error: undefined,
+    availableCatalogs: [],
   };
 
   // eslint-disable-next-line react/sort-comp
   newConfigFormRef = React.createRef();
 
   componentDidMount() {
-    LMSApiService.fetchReportingConfigs(this.props.enterpriseId)
-      .then(response => this.setState({
-        reportingConfigs: response.data.results,
-        loading: false,
-      }))
+    Promise.allSettled([
+      LMSApiService.fetchReportingConfigs(this.props.enterpriseId),
+      LMSApiService.fetchEnterpriseCustomerCatalogs(this.props.enterpriseId),
+    ])
+      .then((responses) => {
+        this.setState({
+          reportingConfigs: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined,
+          availableCatalogs: responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined,
+          loading: false,
+        });
+      })
       .catch(error => this.setState({
         error,
         loading: false,
@@ -94,7 +103,13 @@ class ReportingConfig extends React.Component {
   }
 
   render() {
-    const { reportingConfigs, loading, error } = this.state;
+    const {
+      reportingConfigs,
+      loading,
+      error,
+      availableCatalogs,
+    } = this.state;
+
     if (loading) {
       return <LoadingMessage className="overview" />;
     }
@@ -143,6 +158,7 @@ class ReportingConfig extends React.Component {
                     updateConfig={this.updateConfig}
                     createConfig={this.createConfig}
                     deleteConfig={this.deleteConfig}
+                    availableCatalogs={camelCaseObject(availableCatalogs)}
                   />
                 </Collapsible>
               </div>
@@ -156,6 +172,7 @@ class ReportingConfig extends React.Component {
               <div>
                 <ReportingConfigForm
                   createConfig={this.createConfig}
+                  availableCatalogs={camelCaseObject(availableCatalogs)}
                 />
               </div>
             </Collapsible>

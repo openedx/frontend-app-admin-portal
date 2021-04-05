@@ -131,7 +131,7 @@ class ReportingConfigForm extends React.Component {
   }
 
   render() {
-    const { config } = this.props;
+    const { config, availableCatalogs } = this.props;
     const {
       frequency,
       invalidFields,
@@ -139,6 +139,7 @@ class ReportingConfigForm extends React.Component {
       active,
       submitState,
     } = this.state;
+    const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
 
     return (
       <form
@@ -327,10 +328,31 @@ class ReportingConfigForm extends React.Component {
             handleBlur={this.handleBlur}
           />
         )}
+        <div className="col">
+          <ValidationFormGroup
+            for="enterpriseCustomerCatalogs"
+            helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
+          >
+            <label htmlFor="enterpriseCustomerCatalogs">Enterprise Customer Catalogs</label>
+            <Input
+              type="select"
+              id="enterpriseCustomerCatalogs"
+              name="enterpriseCustomerCatalogUuids"
+              multiple
+              defaultValue={selectedCatalogs}
+              options={
+                availableCatalogs.map(item => ({
+                  value: item.uuid,
+                  label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
+                }))
+              }
+            />
+          </ValidationFormGroup>
+        </div>
         <div className="row justify-content-between align-items-center form-group">
           <ValidationFormGroup
             for="submitButton"
-            invalidMessage="There was an error submiting, please try again."
+            invalidMessage="There was an error submitting, please try again."
             invalid={submitState === SUBMIT_STATES.ERROR}
             className="mb-0"
           >
@@ -391,7 +413,15 @@ ReportingConfigForm.propTypes = {
     sftpUsername: PropTypes.string,
     pgpEncryptionKey: PropTypes.string,
     uuid: PropTypes.string,
+    enterpriseCustomerCatalogs: PropTypes.arrayOf(PropTypes.shape({
+      uuid: PropTypes.string,
+      title: PropTypes.string,
+    })),
   }),
+  availableCatalogs: PropTypes.arrayOf(PropTypes.shape({
+    uuid: PropTypes.string,
+    title: PropTypes.string,
+  })).isRequired,
   createConfig: PropTypes.func.isRequired,
   updateConfig: PropTypes.func,
   deleteConfig: PropTypes.func,
