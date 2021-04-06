@@ -31,6 +31,7 @@ export const EMAIL_TEMPLATE_FIELDS = {
     name: EMAIL_TEMPLATE_BODY_ID,
     component: TextAreaAutoSize,
     label: 'Body',
+    disabled: true,
   },
   [EMAIL_TEMPLATE_CLOSING_ID]: {
     id: EMAIL_TEMPLATE_CLOSING_ID,

@@ -26,10 +26,25 @@ import { configuration } from '../../config';
 import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
 import CheckboxWithTooltip from './CheckboxWithTooltip';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 
 const ASSIGNMENT_ERROR_TITLES = {
   [MODAL_TYPES.assign]: 'Unable to assign codes',
   [MODAL_TYPES.save]: 'Unable to save template',
+};
+
+const ASSIGNMENT_MODAL_FIELDS = {
+  ...EMAIL_TEMPLATE_FIELDS,
+  'enable-nudge-emails': {
+    name: 'enable-nudge-emails',
+    id: 'enable-nudge-emails',
+    component: CheckboxWithTooltip,
+    className: 'auto-reminder-wrapper',
+    icon: faInfoCircle,
+    altText: 'More information',
+    tooltipText: 'edX will remind learners to redeem their code 3, 10, and 19 days after you assign it.',
+    label: 'Automate reminders',
+  },
 };
 
 export class BaseCodeAssignmentModal extends React.Component {
@@ -47,7 +62,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-    this.autoReminderField = this.autoReminderField.bind(this);
   }
 
   componentDidMount() {
@@ -389,36 +403,6 @@ export class BaseCodeAssignmentModal extends React.Component {
       });
   }
 
-  autoReminderField({ input }) {
-    return (
-      // <CheckboxWithTooltip
-      //   className="auto-reminder-wrapper"
-      //   icon={faInfoCircle}
-      //   altText="More information"
-      //   tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
-      //   {...props}
-      // />
-
-      <div className="auto-reminder-wrapper">
-        <label className="ml-4">
-          <Input
-            {...input}
-            type="checkbox"
-            checked={input.value}
-            id="autoReminderCheckbox"
-          />
-          Automate reminders
-        </label>
-        <IconWithTooltip
-          data-testid={'auto-reminder-icon'}
-          icon={faInfoCircle}
-          altText="More information"
-          tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
-        />
-      </div>
-    );
-  }
-
   renderBody() {
     const {
       data,
@@ -433,7 +417,7 @@ export class BaseCodeAssignmentModal extends React.Component {
 
     return (
       <>
-        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} />}
+        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} ref={this.errorMessageRef} />}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <>
@@ -451,43 +435,11 @@ export class BaseCodeAssignmentModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
-          <div className="mt-4">
-            <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="assign" currentEmail={this.props.currentEmail} />
-            <Field
-              id="email-template-subject"
-              name="email-template-subject"
-              component={RenderField}
-              type="text"
-              label="Customize Email Subject"
-            />
-            <Field
-              id="email-template-greeting"
-              name="email-template-greeting"
-              component={TextAreaAutoSize}
-              label="Customize Greeting"
-            />
-            <Field
-              id="email-template-body"
-              name="email-template-body"
-              component={TextAreaAutoSize}
-              label="Body"
-              disabled
-            />
-            <Field
-              id="email-template-closing"
-              name="email-template-closing"
-              component={TextAreaAutoSize}
-              label="Customize Closing"
-            />
-            <Field
-              name="enable-nudge-emails"
-              component={this.autoReminderField}
-              id="enable-nudge-emails"
-              // label="Automate reminders"
-            />
-          </div>
         </form>
+        <div className="mt-4">
+          <EmailTemplateForm emailTemplateType={MODAL_TYPES.assign} fields={ASSIGNMENT_MODAL_FIELDS} />
+        </div>
+
       </>
     );
   }

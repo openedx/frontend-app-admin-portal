@@ -17,7 +17,11 @@
     }
   }
 
-  .auto-reminder-wrapper label {
-    line-height: unset;
+  .auto-reminder-wrapper {
+    display: flex;
+    align-items: center;
+    .form-group {
+      margin-bottom: 0;
+    }
   }
 }
