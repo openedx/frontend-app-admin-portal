@@ -23,7 +23,14 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
-import { displayCode, displaySelectedCodes } from '../CodeModal';
+import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
+import CheckboxWithTooltip from './CheckboxWithTooltip';
+import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+
+const ASSIGNMENT_ERROR_TITLES = {
+  [MODAL_TYPES.assign]: 'Unable to assign codes',
+  [MODAL_TYPES.save]: 'Unable to save template',
+};
 
 export class BaseCodeAssignmentModal extends React.Component {
   constructor(props) {
@@ -384,6 +391,14 @@ export class BaseCodeAssignmentModal extends React.Component {
 
   autoReminderField({ input }) {
     return (
+      // <CheckboxWithTooltip
+      //   className="auto-reminder-wrapper"
+      //   icon={faInfoCircle}
+      //   altText="More information"
+      //   tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
+      //   {...props}
+      // />
+
       <div className="auto-reminder-wrapper">
         <label className="ml-4">
           <Input
@@ -395,6 +410,7 @@ export class BaseCodeAssignmentModal extends React.Component {
           Automate reminders
         </label>
         <IconWithTooltip
+          data-testid={'auto-reminder-icon'}
           icon={faInfoCircle}
           altText="More information"
           tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
@@ -408,13 +424,16 @@ export class BaseCodeAssignmentModal extends React.Component {
       data,
       isBulkAssign,
       submitFailed,
+      error,
     } = this.props;
+
+    const { mode } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
+        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} />}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <>
@@ -464,39 +483,12 @@ export class BaseCodeAssignmentModal extends React.Component {
             <Field
               name="enable-nudge-emails"
               component={this.autoReminderField}
+              id="enable-nudge-emails"
+              // label="Automate reminders"
             />
           </div>
         </form>
       </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      assign: 'Unable to assign codes',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
-        />
-      </div>
     );
   }
 
@@ -527,6 +519,7 @@ export class BaseCodeAssignmentModal extends React.Component {
               key="assign-submit-btn"
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
+              data-testid="submit-button"
             >
               <>
                 {mode === 'assign' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
