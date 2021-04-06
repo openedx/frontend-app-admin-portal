@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-
-import TextAreaAutoSize from '../TextAreaAutoSize';
-import RenderField from '../RenderField';
-import TemplateSourceFields from '../../containers/TemplateSourceFields';
+import { SAVE_TEMPLATE_MODE } from '../SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import { validateEmailTemplateForm } from '../../data/validation/email';
@@ -14,6 +11,43 @@ import ModalError from './ModalError';
 import { configuration } from '../../config';
 import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
+import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from './EmailTemplateForm';
+import { MODAL_TYPES } from './constants';
+
+const REMINDER_EMAIL_TEMPLATE_FIELDS = {
+  ...EMAIL_TEMPLATE_FIELDS,
+  'email-template-body': {
+    ...EMAIL_TEMPLATE_FIELDS['email-template-body'],
+    disabled: true,
+  },
+};
+const REMIND_MODE = MODAL_TYPES.remind;
+
+const ERROR_MESSAGE_TITLES = {
+  [REMIND_MODE]: 'Could not send reminder email',
+  [SAVE_TEMPLATE_MODE]: 'Could not save template',
+};
+
+const validateReminderEmails = (formData) => {
+  const errorsDict = {};
+  // const otherErrors = [];
+  // Object.keys(REMINDER_EMAIL_TEMPLATE_FIELDS).forEach((fieldKey) => {
+  //   const fieldError = validateEmailTemplateFieldsForForm(formData, fieldKey);
+  //   if (fieldError) {
+  //     errorsDict[fieldKey] = fieldError;
+  //     otherErrors.push(fieldError);
+  //   }
+  //   // eslint-disable-next-line no-underscore-dangle
+  //   console.log("FIELD ERRORS", fieldError)
+  //   console.log("OTHER ERRORS", otherErrors)
+  // });
+  // if (otherErrors.length > 0) {
+  //   // eslint-disable-next-line no-underscore-dangle
+  //   errorsDict._errors = errorsDict;
+  // }
+  // console.log('ERRORS DICT', errorsDict);
+  return errorsDict;
+};
 
 export class BaseCodeReminderModal extends React.Component {
   constructor(props) {
@@ -23,7 +57,7 @@ export class BaseCodeReminderModal extends React.Component {
     this.modalRef = React.createRef();
 
     this.state = {
-      mode: 'remind',
+      mode: REMIND_MODE,
     };
 
     this.setMode = this.setMode.bind(this);
@@ -52,7 +86,7 @@ export class BaseCodeReminderModal extends React.Component {
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (mode === 'remind' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === REMIND_MODE && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -95,7 +129,7 @@ export class BaseCodeReminderModal extends React.Component {
       enableLearnerPortal,
       enterpriseSlug,
     } = this.props;
-    this.setMode('remind');
+    this.setMode(REMIND_MODE);
 
     // Validate form data
     const emailTemplateKey = 'email-template-body';
@@ -148,50 +182,32 @@ export class BaseCodeReminderModal extends React.Component {
       error,
     } = this.props;
     const { mode } = this.state;
-
+    console.log('MODE', mode);
+    console.log('SUBMIT FAILED', submitFailed)
+    console.log('ERROR', error)
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
-
+    console.log('PROPS', this.props)
     return (
       <>
-        {submitFailed && <ModalError title={mode} errors={error} />}
+        {submitFailed && (
+          <Fields
+            title={ERROR_MESSAGE_TITLES[mode]}
+            component={ModalError}
+            names={Object.keys(REMINDER_EMAIL_TEMPLATE_FIELDS)}
+            nonFieldErrors={error}
+            ref={this.errorMessageRef}
+          />
+        )}
         <CodeDetails
           isBulkRemind={isBulkRemind}
           hasIndividualRemindData={this.hasIndividualRemindData()}
           data={data}
           numberOfSelectedCodes={numberOfSelectedCodes}
         />
-        <form onSubmit={e => e.preventDefault()}>
-          <div className="mt-4">
-            <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="remind" />
-            <Field
-              id="email-template-subject"
-              name="email-template-subject"
-              component={RenderField}
-              label="Customize Email Subject"
-              type="text"
-            />
-            <Field
-              id="email-template-greeting"
-              name="email-template-greeting"
-              component={TextAreaAutoSize}
-              label="Customize Greeting"
-            />
-            <Field
-              id="email-template-body"
-              name="email-template-body"
-              component={TextAreaAutoSize}
-              label="Body"
-              disabled
-            />
-            <Field
-              id="email-template-closing"
-              name="email-template-closing"
-              component={TextAreaAutoSize}
-              label="Customize Closing"
-            />
-          </div>
-        </form>
+        <EmailTemplateForm
+          emailTemplateType={MODAL_TYPES.remind}
+          fields={REMINDER_EMAIL_TEMPLATE_FIELDS}
+        />
       </>
     );
   }
@@ -225,13 +241,13 @@ export class BaseCodeReminderModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {mode === 'remind' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 Remind
               </>
             </Button>,
             <SaveTemplateButton
               key="save-remind-template-btn"
-              templateType="remind"
+              templateType={REMIND_MODE}
               setMode={this.setMode}
               handleSubmit={handleSubmit}
             />,
@@ -287,4 +303,5 @@ BaseCodeReminderModal.propTypes = {
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
+  validate: validateReminderEmails,
 })(BaseCodeReminderModal);

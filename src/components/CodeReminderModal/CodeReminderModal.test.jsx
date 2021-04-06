@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
 
@@ -13,10 +14,11 @@ import { displayCode, displayEmail, displaySelectedCodes } from './codeModalHelp
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
+import { EMAIL_FORM_NAME } from './EmailTemplateForm';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
-  Field: () => <div>FIELD</div>,
+  Field: ({ label, ...rest }) => <div {...rest}>{label}</div>,
 }));
 
 const sampleCodeData = {
@@ -143,5 +145,9 @@ describe('CodeReminderModal component', () => {
   it('displays bulk reminder data', () => {
     render(<CodeReminderModalWrapper isBulkRemind />);
     expect(screen.getByText(displaySelectedCodes(initialProps.data.selectedCodes.length))).toBeInTheDocument();
+  });
+  it('renders an email template form', () => {
+    render(<CodeReminderModalWrapper />);
+    expect(screen.getByText(EMAIL_FORM_NAME)).toBeInTheDocument();
   });
 });
