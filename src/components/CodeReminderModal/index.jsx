@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-import { SAVE_TEMPLATE_MODE } from '../SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import { validateEmailTemplateForm } from '../../data/validation/email';
-import ModalError from './ModalError';
+import ModalError from '../CodeModal/ModalError';
 import { configuration } from '../../config';
 import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
-import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from './EmailTemplateForm';
-import { MODAL_TYPES } from './constants';
+import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
+import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
@@ -24,29 +23,8 @@ const REMINDER_EMAIL_TEMPLATE_FIELDS = {
 const REMIND_MODE = MODAL_TYPES.remind;
 
 const ERROR_MESSAGE_TITLES = {
-  [REMIND_MODE]: 'Could not send reminder email',
-  [SAVE_TEMPLATE_MODE]: 'Could not save template',
-};
-
-const validateReminderEmails = (formData) => {
-  const errorsDict = {};
-  // const otherErrors = [];
-  // Object.keys(REMINDER_EMAIL_TEMPLATE_FIELDS).forEach((fieldKey) => {
-  //   const fieldError = validateEmailTemplateFieldsForForm(formData, fieldKey);
-  //   if (fieldError) {
-  //     errorsDict[fieldKey] = fieldError;
-  //     otherErrors.push(fieldError);
-  //   }
-  //   // eslint-disable-next-line no-underscore-dangle
-  //   console.log("FIELD ERRORS", fieldError)
-  //   console.log("OTHER ERRORS", otherErrors)
-  // });
-  // if (otherErrors.length > 0) {
-  //   // eslint-disable-next-line no-underscore-dangle
-  //   errorsDict._errors = errorsDict;
-  // }
-  // console.log('ERRORS DICT', errorsDict);
-  return errorsDict;
+  [MODAL_TYPES.remind]: 'Could not send reminder email',
+  [MODAL_TYPES.save]: 'Could not save template',
 };
 
 export class BaseCodeReminderModal extends React.Component {
@@ -182,19 +160,15 @@ export class BaseCodeReminderModal extends React.Component {
       error,
     } = this.props;
     const { mode } = this.state;
-    console.log('MODE', mode);
-    console.log('SUBMIT FAILED', submitFailed)
-    console.log('ERROR', error)
+
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
-    console.log('PROPS', this.props)
+
     return (
       <>
         {submitFailed && (
-          <Fields
+          <ModalError
             title={ERROR_MESSAGE_TITLES[mode]}
-            component={ModalError}
-            names={Object.keys(REMINDER_EMAIL_TEMPLATE_FIELDS)}
-            nonFieldErrors={error}
+            errors={error}
             ref={this.errorMessageRef}
           />
         )}
@@ -303,5 +277,4 @@ BaseCodeReminderModal.propTypes = {
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
-  validate: validateReminderEmails,
 })(BaseCodeReminderModal);

@@ -13,6 +13,9 @@ import {
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
 
+export const TEMPLATE_SOURCE_BUTTON_ARIA_LABEL = 'Press the button to select the template source';
+export const TEMLATE_SOURCE_FIELDS_TEST_ID = 'template-source-fields';
+
 class TemplateSourceFields extends React.Component {
   constructor(props) {
     super(props);
@@ -123,7 +126,8 @@ class TemplateSourceFields extends React.Component {
         <div
           className="d-flex mb-3 template-source-fields"
           role="group"
-          aria-label="Press the button to select the template source"
+          aria-label={TEMPLATE_SOURCE_BUTTON_ARIA_LABEL}
+          data-testid={TEMLATE_SOURCE_FIELDS_TEST_ID}
         >
           <OverlayTrigger
             key="btn-new-email-tooltip"

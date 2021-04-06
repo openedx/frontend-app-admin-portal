@@ -9,12 +9,12 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import remindEmailTemplate from './emailTemplate';
 import { BaseCodeReminderModal } from '.';
-import { displayCode, displayEmail, displaySelectedCodes } from './codeModalHelpers';
+import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
 
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
-import { EMAIL_FORM_NAME } from './EmailTemplateForm';
+import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),

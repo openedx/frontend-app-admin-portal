@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { displayCode, displayEmail, displaySelectedCodes } from './codeModalHelpers';
+import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
 
 const CodeDetails = ({
   isBulkRemind, hasIndividualRemindData, data, numberOfSelectedCodes,
