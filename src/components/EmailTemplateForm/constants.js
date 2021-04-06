@@ -2,6 +2,7 @@
 export const MODAL_TYPES = {
   remind: 'remind',
   save: 'save',
+  assign: 'assign',
 };
 
 export const EMAIL_TEMPLATE_GREETING_ID = 'email-template-greeting';

@@ -23,8 +23,9 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
+import { displayCode, displaySelectedCodes } from '../CodeModal';
 
-class CodeAssignmentModal extends React.Component {
+export class BaseCodeAssignmentModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -417,13 +418,13 @@ class CodeAssignmentModal extends React.Component {
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <>
-              <p>Unassigned Codes: {data.unassignedCodes}</p>
-              {numberOfSelectedCodes > 0 && <p>Selected Codes: {numberOfSelectedCodes}</p>}
+              <p>Unassigned codes: {data.unassignedCodes}</p>
+              {numberOfSelectedCodes > 0 && <p>{displaySelectedCodes(numberOfSelectedCodes)}</p>}
             </>
           )}
           {!isBulkAssign && this.hasIndividualAssignData() && (
             <>
-              <p>Code: {data.code.code}</p>
+              <p>{displayCode(data.code.code)}</p>
               <p className="code-remaining-uses">Remaining Uses: {data.remainingUses}</p>
             </>
           )}
@@ -547,14 +548,14 @@ class CodeAssignmentModal extends React.Component {
   }
 }
 
-CodeAssignmentModal.defaultProps = {
+BaseCodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
   currentEmail: '',
 };
 
-CodeAssignmentModal.propTypes = {
+BaseCodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseUuid: PropTypes.string.isRequired,
@@ -596,4 +597,4 @@ CodeAssignmentModal.propTypes = {
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
-})(CodeAssignmentModal);
+})(BaseCodeAssignmentModal);

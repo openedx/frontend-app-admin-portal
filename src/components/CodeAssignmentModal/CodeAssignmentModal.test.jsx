@@ -8,8 +8,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import remindEmailTemplate from './emailTemplate';
-import { BaseCodeReminderModal } from '.';
-import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
+import { BaseCodeAssignmentModal } from '.';
+import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
 
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
@@ -66,7 +66,7 @@ const initialProps = {
   title: 'Remind me',
   onClose: () => {},
   onSuccess: () => {},
-  sendCodeReminder: () => {},
+  sendCodeAssignment: () => {},
   couponDetailsTable: {
     data: {
       count: 1,
@@ -76,13 +76,15 @@ const initialProps = {
   isBulkRemind: false,
   selectedToggle: 'toggle',
   data: {
-    selectedCodes: [{ code: 'bulk', email: 'bulk2@foo.com' }],
-    code: 'ind',
-    email: 'ind@foo.com',
+    selectedCodes: [{ code: 'bulk' }],
+    unassignedCodes: 'bulk2',
+    code: { code: 'ind' },
+    remainingUses: 3,
+    hasAllCodesSelected: false,
   },
   enableLearnerPortal: false,
   enterpriseSlug: 'bearsRus',
-
+  setEmailAddress: () => {},
 };
 
 const mockStore = configureMockStore([thunk]);
@@ -96,14 +98,14 @@ const initialState = {
     error: null,
     emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
     default: {
-      remind: {
+      assign: {
         'email-template-subject': remindEmailTemplate.subject,
         'email-template-greeting': remindEmailTemplate.greeting,
         'email-template-body': remindEmailTemplate.body,
         'email-template-closing': remindEmailTemplate.closing,
       },
     },
-    remind: {
+    assign: {
       'email-template-subject': remindEmailTemplate.subject,
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
@@ -113,10 +115,10 @@ const initialState = {
 };
 
 /* eslint-disable react/prop-types */
-const CodeReminderModalWrapper = (props) => (
+const CodeAssignmentModalWrapper = (props) => (
   <MemoryRouter>
     <Provider store={mockStore(initialState)}>
-      <BaseCodeReminderModal
+      <BaseCodeAssignmentModal
         {...initialProps}
         {...props}
       />
@@ -125,28 +127,27 @@ const CodeReminderModalWrapper = (props) => (
 );
 /* eslint-enable react/prop-types */
 
-describe('CodeReminderModal component', () => {
+describe('CodeAssignmentModal component', () => {
   it('displays a modal', () => {
-    render(<CodeReminderModalWrapper />);
+    render(<CodeAssignmentModalWrapper />);
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();
   });
   it('displays an error', () => {
     const error = 'Errors ahoy!';
     const props = { ...initialProps, error: [error], submitFailed: true };
-    render(<CodeReminderModalWrapper {...props} />);
+    render(<CodeAssignmentModalWrapper {...props} />);
     expect(screen.getByText(error));
   });
-  it('displays individual reminder data', () => {
-    render(<CodeReminderModalWrapper />);
-    expect(screen.getByText(displayCode(initialProps.data.code))).toBeInTheDocument();
-    expect(screen.getByText(displayEmail(initialProps.data.email))).toBeInTheDocument();
+  it('displays individual assignment data', () => {
+    render(<CodeAssignmentModalWrapper />);
+    expect(screen.getByText(displayCode(initialProps.data.code.code))).toBeInTheDocument();
   });
-  it('displays bulk reminder data', () => {
-    render(<CodeReminderModalWrapper isBulkRemind />);
+  it('displays bulk assign data', () => {
+    render(<CodeAssignmentModalWrapper isBulkAssign />);
     expect(screen.getByText(displaySelectedCodes(initialProps.data.selectedCodes.length))).toBeInTheDocument();
   });
   it('renders an email template form', () => {
-    render(<CodeReminderModalWrapper />);
+    render(<CodeAssignmentModalWrapper />);
     expect(screen.getByText(EMAIL_FORM_NAME)).toBeInTheDocument();
   });
 });
