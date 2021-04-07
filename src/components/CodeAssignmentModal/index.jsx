@@ -20,7 +20,7 @@ import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
 import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
 import CheckboxWithTooltip from './CheckboxWithTooltip';
-import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import { EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES } from '../EmailTemplateForm/constants';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 
 const ASSIGNMENT_ERROR_TITLES = {
@@ -28,6 +28,7 @@ const ASSIGNMENT_ERROR_TITLES = {
   [MODAL_TYPES.save]: 'Unable to save template',
 };
 
+const EMAIL_TEMPLATE_NUDGE_EMAIL_ID = 'enable-nudge-emails';
 export const textAreaKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
 export const csvFileKey = EMAIL_ADDRESS_CSV_FORM_DATA;
 
@@ -67,29 +68,44 @@ export const getErrors = ({
   };
 
   /* eslint-disable no-underscore-dangle */
-  if (invalidTextAreaEmails.length > 0) {
-    const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
-    errors[textAreaKey] = invalidEmailMessage;
-    errors._error.push(invalidEmailMessage);
-  } else if (validTextAreaEmails.length > unassignedCodes) {
-    const message = getTooManyAssignmentsMessage({
-      emails: validTextAreaEmails,
-      numCodes: unassignedCodes,
-    });
-    errors[textAreaKey] = message;
-    errors._error.push(message);
-  } else if (
-    numberOfSelectedCodes && shouldValidateSelectedCodes
-    && validTextAreaEmails.length > numberOfSelectedCodes
-  ) {
-    const message = getTooManyAssignmentsMessage({
-      emails: validTextAreaEmails,
-      numCodes: numberOfSelectedCodes,
-      selected: true,
-    });
-    errors[textAreaKey] = message;
-    errors._error.push(message);
-  } else if (invalidCsvEmails.length > 0) {
+  if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
+    errors._error.push(NO_EMAIL_ADDRESS_ERROR);
+    return errors;
+  }
+
+  if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
+    errors._error.push(BOTH_TEXT_AREA_AND_CSV_ERROR);
+    return errors;
+  }
+
+  if (validTextAreaEmails.length > 0) {
+    if (invalidTextAreaEmails.length > 0) {
+      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
+      errors[textAreaKey] = invalidEmailMessage;
+      errors._error.push(invalidEmailMessage);
+    } else if (validTextAreaEmails.length > unassignedCodes) {
+      const message = getTooManyAssignmentsMessage({
+        emails: validTextAreaEmails,
+        numCodes: unassignedCodes,
+      });
+      errors[textAreaKey] = message;
+      errors._error.push(message);
+    } else if (
+      numberOfSelectedCodes && shouldValidateSelectedCodes
+      && validTextAreaEmails.length > numberOfSelectedCodes
+    ) {
+      const message = getTooManyAssignmentsMessage({
+        emails: validTextAreaEmails,
+        numCodes: numberOfSelectedCodes,
+        selected: true,
+      });
+      errors[textAreaKey] = message;
+      errors._error.push(message);
+    }
+    return errors;
+  }
+
+  if (invalidCsvEmails.length > 0) {
     const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails, csvEmails);
     errors[csvFileKey] = invalidEmailMessage;
     errors._error.push(invalidEmailMessage);
@@ -113,14 +129,6 @@ export const getErrors = ({
     });
     errors[csvFileKey] = message;
     errors._error.push(message);
-  } else if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
-    errors._error.push((
-      'No email addresses provided. Either manually enter email addresses or upload a CSV file.'
-    ));
-  } else if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
-    errors._error.push((
-      'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.'
-    ));
   }
 
   return errors;
@@ -128,9 +136,9 @@ export const getErrors = ({
 
 export const ASSIGNMENT_MODAL_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
-  'enable-nudge-emails': {
-    name: 'enable-nudge-emails',
-    id: 'enable-nudge-emails',
+  [EMAIL_TEMPLATE_NUDGE_EMAIL_ID]: {
+    name: EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
+    id: EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
     component: CheckboxWithTooltip,
     className: 'auto-reminder-wrapper',
     icon: faInfoCircle,
@@ -297,7 +305,7 @@ export class BaseCodeAssignmentModal extends React.Component {
 
   validateFormData(formData) {
     const { isBulkAssign } = this.props;
-    const emailTemplateKey = 'email-template-body';
+    const emailTemplateKey = EMAIL_TEMPLATE_BODY_ID;
     let errors;
 
     if (isBulkAssign) {
@@ -354,11 +362,11 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.validateFormData(formData);
     // Configure the options to send to the assignment API endpoint
     const options = {
-      template: formData['email-template-body'],
+      template: formData[EMAIL_TEMPLATE_BODY_ID],
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
-      template_greeting: formData['email-template-greeting'],
-      template_closing: formData['email-template-closing'],
-      enable_nudge_emails: formData['enable-nudge-emails'],
+      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
+      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
     };
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {

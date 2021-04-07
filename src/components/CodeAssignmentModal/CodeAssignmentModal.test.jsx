@@ -260,6 +260,7 @@ describe('CodeAssignmentModal component', () => {
       textAreaEmails: ['me@me.com', 'foo@bar.com'],
       validTextAreaEmails: ['foo@bar.com', 'sue@bear.com'],
       ...sampleInputCsv,
+      validCsvEmails: [],
     };
     it('returns an invalid email message for text area emails', () => {
       const result = getErrors(sampleInputTextArea);
