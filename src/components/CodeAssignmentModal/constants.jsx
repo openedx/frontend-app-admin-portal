@@ -2,7 +2,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
-import CheckboxWithTooltip from './CheckboxWithTooltip';
+import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
 
 export const ASSIGNMENT_ERROR_TITLES = {
   [MODAL_TYPES.assign]: 'Unable to assign codes',

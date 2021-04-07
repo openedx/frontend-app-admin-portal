@@ -8,21 +8,22 @@ const ReduxFormCheckbox = (props) => {
     label,
     helptext,
     input,
-  } = props
-  console.log('REDUX FORM CHECKBOX PROPS', props)
+  } = props;
+  console.log('REDUX FORM CHECKBOX PROPS', props);
   return (
-  <ValidationFormGroup
-    for={input.id}
-    helpText={helptext}
-  >
-    <Form.Check
-      {...input}
-      type="checkbox"
-      checked={input.checked}
-      label={label}
-    />
-  </ValidationFormGroup>
-)};
+    <ValidationFormGroup
+      for={input.id}
+      helpText={helptext}
+    >
+      <Form.Check
+        {...input}
+        type="checkbox"
+        checked={input.checked}
+        label={label}
+      />
+    </ValidationFormGroup>
+  );
+};
 
 ReduxFormCheckbox.defaultProps = {
   helptext: null,

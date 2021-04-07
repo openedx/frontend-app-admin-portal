@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReduxFormCheckbox from '../ReduxFormCheckbox';
+import classNames from 'classnames';
+import ReduxFormCheckbox from '.';
 import IconWithTooltip from '../IconWithTooltip';
+
+import './CheckboxWithTooltip.scss';
 
 const CheckboxWithTooltip = ({
   className, icon, altText, tooltipText, ...props
 }) => (
-  <div className={className}>
+  <div className={classNames('checkbox-with-tooltip', { className })}>
     <ReduxFormCheckbox {...props} />
     <IconWithTooltip
       icon={icon}

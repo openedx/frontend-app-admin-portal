@@ -43,13 +43,13 @@ export const EMAIL_TEMPLATE_FIELDS = {
 };
 
 const EmailTemplateForm = ({
-  children, emailTemplateType, fields, currentEmail,
+  children, emailTemplateType, fields, currentEmail, disabled,
 }) => (
   <form onSubmit={e => e.preventDefault()}>
     <div className="mt-4">
       <h3>{EMAIL_FORM_NAME}</h3>
-      <TemplateSourceFields emailTemplateType={emailTemplateType} currentEmail={currentEmail} />
-      {Object.values(fields).map(fieldProps => <Field {...fieldProps} key={fieldProps.id} />)}
+      <TemplateSourceFields emailTemplateType={emailTemplateType} currentEmail={currentEmail} disabled={disabled} />
+      {Object.values(fields).map(fieldProps => <Field key={fieldProps.id} disabled={disabled} {...fieldProps} />)}
       {children}
     </div>
   </form>
@@ -59,6 +59,7 @@ EmailTemplateForm.defaultProps = {
   children: null,
   fields: EMAIL_TEMPLATE_FIELDS,
   currentEmail: '',
+  disabled: false,
 };
 
 EmailTemplateForm.propTypes = {
@@ -66,6 +67,7 @@ EmailTemplateForm.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   fields: PropTypes.shape(),
   currentEmail: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default EmailTemplateForm;
