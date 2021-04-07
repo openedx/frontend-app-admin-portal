@@ -2,23 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Input, Modal,
+  Button, Icon, Modal,
 } from '@edx/paragon';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-
-import StatusAlert from '../StatusAlert';
-import IconWithTooltip from '../IconWithTooltip';
 
 import { validateEmailTemplateForm } from '../../data/validation/email';
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
-import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal';
+import {
+  displayCode, displayEmail, displaySelectedCodes, ModalError,
+} from '../CodeModal';
 import EmailTemplateForm from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
+
+const ERROR_MESSAGE_TITLES = {
+  [MODAL_TYPES.revoke]: 'Unable to revoke code(s)',
+  [MODAL_TYPES.save]: 'Unable to save template',
+};
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -35,7 +39,6 @@ class CodeRevokeModal extends React.Component {
     this.setMode = this.setMode.bind(this);
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.doNotEmailField = this.doNotEmailField.bind(this);
   }
 
   componentDidMount() {
@@ -146,13 +149,21 @@ class CodeRevokeModal extends React.Component {
       data,
       isBulkRevoke,
       submitFailed,
+      error,
     } = this.props;
 
-    const { doNotEmail } = this.state;
+    const { doNotEmail, mode } = this.state;
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
+        {submitFailed
+          && (
+          <ModalError
+            title={ERROR_MESSAGE_TITLES[mode]}
+            errors={error}
+            ref={this.errorMessageRef}
+          />
+          )}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
             <>
@@ -183,35 +194,6 @@ class CodeRevokeModal extends React.Component {
           />
         </EmailTemplateForm>
       </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      revoke: 'Unable to revoke code(s)',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
-        />
-      </div>
     );
   }
 
