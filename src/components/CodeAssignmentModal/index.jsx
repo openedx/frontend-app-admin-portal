@@ -461,7 +461,11 @@ export class BaseCodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
         </form>
         <div className="mt-4">
-          <EmailTemplateForm emailTemplateType={MODAL_TYPES.assign} fields={ASSIGNMENT_MODAL_FIELDS} />
+          <EmailTemplateForm
+            emailTemplateType={MODAL_TYPES.assign}
+            fields={ASSIGNMENT_MODAL_FIELDS}
+            currentEmail={this.props.currentEmail}
+          />
         </div>
 
       </>

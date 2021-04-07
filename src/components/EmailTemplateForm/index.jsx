@@ -42,11 +42,11 @@ export const EMAIL_TEMPLATE_FIELDS = {
   },
 };
 
-const EmailTemplateForm = ({ children, emailTemplateType, fields }) => (
+const EmailTemplateForm = ({ children, emailTemplateType, fields, currentEmail }) => (
   <form onSubmit={e => e.preventDefault()}>
     <div className="mt-4">
       <h3>{EMAIL_FORM_NAME}</h3>
-      <TemplateSourceFields emailTemplateType={emailTemplateType} />
+      <TemplateSourceFields emailTemplateType={emailTemplateType} currentEmail={currentEmail} />
       {Object.values(fields).map(fieldProps => <Field {...fieldProps} key={fieldProps.id} />)}
       {children}
     </div>
@@ -56,12 +56,14 @@ const EmailTemplateForm = ({ children, emailTemplateType, fields }) => (
 EmailTemplateForm.defaultProps = {
   children: null,
   fields: EMAIL_TEMPLATE_FIELDS,
+  currentEmail: '',
 };
 
 EmailTemplateForm.propTypes = {
   emailTemplateType: PropTypes.oneOf(Object.values(MODAL_TYPES)).isRequired,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   fields: PropTypes.shape(),
+  currentEmail: PropTypes.string,
 };
 
 export default EmailTemplateForm;
