@@ -42,7 +42,9 @@ export const EMAIL_TEMPLATE_FIELDS = {
   },
 };
 
-const EmailTemplateForm = ({ children, emailTemplateType, fields, currentEmail }) => (
+const EmailTemplateForm = ({
+  children, emailTemplateType, fields, currentEmail,
+}) => (
   <form onSubmit={e => e.preventDefault()}>
     <div className="mt-4">
       <h3>{EMAIL_FORM_NAME}</h3>

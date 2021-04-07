@@ -5,7 +5,6 @@ import {
   Button, Icon, Modal,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
@@ -19,134 +18,14 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
 import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
-import CheckboxWithTooltip from './CheckboxWithTooltip';
-import { EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES } from '../EmailTemplateForm/constants';
-import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
-
-const ASSIGNMENT_ERROR_TITLES = {
-  [MODAL_TYPES.assign]: 'Unable to assign codes',
-  [MODAL_TYPES.save]: 'Unable to save template',
-};
-
-const EMAIL_TEMPLATE_NUDGE_EMAIL_ID = 'enable-nudge-emails';
-export const textAreaKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
-export const csvFileKey = EMAIL_ADDRESS_CSV_FORM_DATA;
-
-export const getTooManyAssignmentsMessage = ({
-  isCsv = false,
-  emails,
-  numCodes,
-  selected,
-}) => {
-  let message = `You have ${numCodes}`;
-
-  message += ` ${numCodes > 1 ? 'codes' : 'code'}`;
-  message += ` ${selected ? 'selected' : 'remaining'}`;
-  message += `, but ${isCsv ? 'your file has' : 'you entered'}`;
-  message += ` ${emails.length} emails. Please try again.`;
-
-  return message;
-};
-
-export const getInvalidEmailMessage = (invalidEmailIndices, emails) => {
-  const firstInvalidIndex = [...invalidEmailIndices].shift();
-  const invalidEmail = emails[firstInvalidIndex];
-  const message = `Email address ${invalidEmail} on line ${firstInvalidIndex + 1} is invalid. Please try again.`;
-  return message;
-};
-
-export const NO_EMAIL_ADDRESS_ERROR = 'No email addresses provided. Either manually enter email addresses or upload a CSV file.';
-export const BOTH_TEXT_AREA_AND_CSV_ERROR = 'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.';
-
-export const getErrors = ({
-  invalidTextAreaEmails = [], textAreaEmails = [], validTextAreaEmails = [],
-  unassignedCodes, numberOfSelectedCodes, shouldValidateSelectedCodes,
-  invalidCsvEmails = [], csvEmails = [], validCsvEmails = [],
-}) => {
-  const errors = {
-    _error: [],
-  };
-
-  /* eslint-disable no-underscore-dangle */
-  if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
-    errors._error.push(NO_EMAIL_ADDRESS_ERROR);
-    return errors;
-  }
-
-  if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
-    errors._error.push(BOTH_TEXT_AREA_AND_CSV_ERROR);
-    return errors;
-  }
-
-  if (validTextAreaEmails.length > 0) {
-    if (invalidTextAreaEmails.length > 0) {
-      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
-      errors[textAreaKey] = invalidEmailMessage;
-      errors._error.push(invalidEmailMessage);
-    } else if (validTextAreaEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({
-        emails: validTextAreaEmails,
-        numCodes: unassignedCodes,
-      });
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    } else if (
-      numberOfSelectedCodes && shouldValidateSelectedCodes
-      && validTextAreaEmails.length > numberOfSelectedCodes
-    ) {
-      const message = getTooManyAssignmentsMessage({
-        emails: validTextAreaEmails,
-        numCodes: numberOfSelectedCodes,
-        selected: true,
-      });
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    }
-    return errors;
-  }
-
-  if (invalidCsvEmails.length > 0) {
-    const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails, csvEmails);
-    errors[csvFileKey] = invalidEmailMessage;
-    errors._error.push(invalidEmailMessage);
-  } else if (validCsvEmails.length > unassignedCodes) {
-    const message = getTooManyAssignmentsMessage({
-      isCsv: true,
-      emails: validCsvEmails,
-      numCodes: unassignedCodes,
-    });
-    errors[csvFileKey] = message;
-    errors._error.push(message);
-  } else if (
-    numberOfSelectedCodes && shouldValidateSelectedCodes
-    && validCsvEmails.length > numberOfSelectedCodes
-  ) {
-    const message = getTooManyAssignmentsMessage({
-      isCsv: true,
-      emails: validCsvEmails,
-      numCodes: numberOfSelectedCodes,
-      selected: true,
-    });
-    errors[csvFileKey] = message;
-    errors._error.push(message);
-  }
-
-  return errors;
-};
-
-export const ASSIGNMENT_MODAL_FIELDS = {
-  ...EMAIL_TEMPLATE_FIELDS,
-  [EMAIL_TEMPLATE_NUDGE_EMAIL_ID]: {
-    name: EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
-    id: EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
-    component: CheckboxWithTooltip,
-    className: 'auto-reminder-wrapper',
-    icon: faInfoCircle,
-    altText: 'More information',
-    tooltipText: 'edX will remind learners to redeem their code 3, 10, and 19 days after you assign it.',
-    label: 'Automate reminders',
-  },
-};
+import {
+  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
+} from '../EmailTemplateForm/constants';
+import EmailTemplateForm from '../EmailTemplateForm';
+import {
+  textAreaKey, csvFileKey, EMAIL_TEMPLATE_NUDGE_EMAIL_ID, ASSIGNMENT_ERROR_TITLES, ASSIGNMENT_MODAL_FIELDS,
+} from './constants';
+import { getErrors } from './validation';
 
 export class BaseCodeAssignmentModal extends React.Component {
   constructor(props) {
@@ -156,7 +35,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.modalRef = React.createRef();
 
     this.state = {
-      mode: 'assign',
+      mode: MODAL_TYPES.assign,
     };
 
     this.setMode = this.setMode.bind(this);
@@ -186,7 +65,7 @@ export class BaseCodeAssignmentModal extends React.Component {
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (mode === 'assign' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === MODAL_TYPES.assign && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -197,7 +76,7 @@ export class BaseCodeAssignmentModal extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.setEmailAddress('', 'assign');
+    this.props.setEmailAddress('', MODAL_TYPES.assign);
   }
 
   getNumberOfSelectedCodes() {
@@ -356,7 +235,7 @@ export class BaseCodeAssignmentModal extends React.Component {
       enterpriseUuid,
     } = this.props;
 
-    this.setMode('assign');
+    this.setMode(MODAL_TYPES.assign);
 
     // Validate form data
     this.validateFormData(formData);
@@ -502,13 +381,13 @@ export class BaseCodeAssignmentModal extends React.Component {
               data-testid="submit-button"
             >
               <>
-                {mode === 'assign' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
               </>
             </Button>,
             <SaveTemplateButton
               key="save-assign-template-btn"
-              templateType="assign"
+              templateType={MODAL_TYPES.assign}
               setMode={this.setMode}
               handleSubmit={handleSubmit}
             />,
