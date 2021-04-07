@@ -4,12 +4,11 @@ import { Form, ValidationFormGroup } from '@edx/paragon';
 
 const ReduxFormCheckbox = (props) => {
   const {
-    id,
     label,
     helptext,
     input,
   } = props;
-  console.log('REDUX FORM CHECKBOX PROPS', props);
+
   return (
     <ValidationFormGroup
       for={input.id}
