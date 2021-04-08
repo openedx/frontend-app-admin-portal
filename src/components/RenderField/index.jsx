@@ -10,22 +10,25 @@ const RenderField = ({
   disabled,
   required,
   meta: { touched, error },
-}) => (
-  <Form.Group>
-    <Form.Label>{label}</Form.Label>
-    <Form.Control
-      {...input}
-      type={type}
-      description={description}
-      disabled={disabled}
-      required={required}
-      isValid={touched && !error}
-      isInvalid={touched && error}
-    />
-    {error && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
-    {description && <Form.Text>{description}</Form.Text>}
-  </Form.Group>
-);
+}) => {
+  const hasError = !!(touched && error);
+  return (
+    <Form.Group>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        {...input}
+        type={type}
+        description={description}
+        disabled={disabled}
+        required={required}
+        isValid={touched && !error}
+        isInvalid={hasError}
+      />
+      {hasError && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
+      {description && <Form.Text>{description}</Form.Text>}
+    </Form.Group>
+  );
+};
 
 RenderField.defaultProps = {
   description: null,
@@ -34,6 +37,7 @@ RenderField.defaultProps = {
 };
 
 RenderField.propTypes = {
+  // props come from the redux-form Field component
   input: PropTypes.shape({}).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   type: PropTypes.string.isRequired,
