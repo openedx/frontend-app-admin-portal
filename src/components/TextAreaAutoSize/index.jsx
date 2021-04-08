@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
-import './TextAreaAutoSize.scss';
-
 const TextAreaAutoSize = ({
   id,
   input,
@@ -29,7 +27,7 @@ const TextAreaAutoSize = ({
         isInvalid={hasError}
         rows={3}
       />
-      {error && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
+      {hasError && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
       {description && <Form.Text>{description}</Form.Text>}
     </Form.Group>
   );
