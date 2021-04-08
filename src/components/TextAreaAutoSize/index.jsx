@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import TextArea from 'react-textarea-autosize';
-import { ValidationFormGroup } from '@edx/paragon';
+import { Form, FormControl } from '@edx/paragon';
 
 import './TextAreaAutoSize.scss';
 
@@ -16,28 +14,24 @@ const TextAreaAutoSize = ({
   meta: { touched, error },
 }) => {
   const hasError = !!(touched && error);
+
   return (
-    <ValidationFormGroup
-      for={id}
-      helpText={description}
-      invalid={hasError}
-      invalidMessage={error}
-    >
-      <label htmlFor={id}>{label}</label>
-      <TextArea
+    <Form.Group>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
         {...input}
         id={id}
-        className={classNames(
-          'form-control',
-          {
-            'is-invalid': hasError,
-          },
-        )}
+        as="textarea"
+        description={description}
         disabled={disabled}
         required={required}
-        minRows={3}
+        isValid={touched && !error}
+        isInvalid={hasError}
+        rows={3}
       />
-    </ValidationFormGroup>
+      {error && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
+      {description && <Form.Text>{description}</Form.Text>}
+    </Form.Group>
   );
 };
 

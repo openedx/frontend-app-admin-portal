@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InputText } from '@edx/paragon';
+import { Form, FormControl } from '@edx/paragon';
 
 const RenderField = ({
   input,
@@ -11,17 +11,20 @@ const RenderField = ({
   required,
   meta: { touched, error },
 }) => (
-  <InputText
-    {...input}
-    label={label}
-    type={type}
-    description={description}
-    disabled={disabled}
-    required={required}
-    isValid={!(touched && error)}
-    validationMessage={error}
-    themes={['danger']}
-  />
+  <Form.Group>
+    <Form.Label>{label}</Form.Label>
+    <Form.Control
+      {...input}
+      type={type}
+      description={description}
+      disabled={disabled}
+      required={required}
+      isValid={touched && !error}
+      isInvalid={touched && error}
+    />
+    {error && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
+    {description && <Form.Text>{description}</Form.Text>}
+  </Form.Group>
 );
 
 RenderField.defaultProps = {
