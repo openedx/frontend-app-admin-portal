@@ -26,6 +26,7 @@ const BulkEnrollmentModalWrapper = props => (
       <BulkEnrollmentModal
         onClose={() => {}}
         onSuccess={() => {}}
+        setEnrolledLearners={() => {}}
         enterpriseUuid="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
         {...props}
       />

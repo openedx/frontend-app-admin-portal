@@ -18,7 +18,7 @@ import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
-  Field: ({ label, ...rest }) => <div {...rest}>{label}</div>,
+  Field: ({ label, component, ...rest }) => <div {...rest}>{label}</div>,
 }));
 
 const sampleCodeData = {

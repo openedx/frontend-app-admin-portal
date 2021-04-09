@@ -74,7 +74,7 @@ export function BaseSubscriptionExpirationModal({ enterpriseSlug, enableCodeMana
         dialogClassName={`${MODAL_DIALOG_CLASS_NAME} expired`}
         renderHeaderCloseButton={false}
         renderDefaultCloseButton={false}
-        title={null}
+        title="Expired"
         body={renderExpiredBody()}
         onClose={() => {}}
         open

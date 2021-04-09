@@ -36,7 +36,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'bearsRus',
     enableLearnerPortal: true,
-    enterpriseUuid: 'bestId',
+    enterpriseId: 'bestId',
   },
   emailTemplate: {
     saving: false,

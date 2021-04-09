@@ -13,6 +13,7 @@ import {
   EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
   OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
   EMAIL_TEMPLATE_SUBJECT_KEY,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
 import SaveTemplateButton from './index';
 
@@ -58,6 +59,7 @@ const SaveTemplateButtonWrapper = props => (
     <Provider store={store}>
       <SaveTemplateButton
         templateType={templateType}
+        emailTemplateSource={EMAIL_TEMPLATE_SOURCE_NEW_EMAIL}
         setMode={() => {}}
         handleSubmit={submitFunction => () => submitFunction(formData)}
         {...props}

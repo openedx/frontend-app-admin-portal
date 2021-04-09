@@ -35,7 +35,6 @@ ReduxFormCheckbox.propTypes = {
   label: PropTypes.string.isRequired,
   input: PropTypes.shape({
     checked: PropTypes.bool,
-    id: PropTypes.string.isRequired,
   }).isRequired,
   helptext: PropTypes.string,
 };

@@ -11,6 +11,7 @@ exports[`<ReduxFormCheckbox /> renders checked correctly 1`] = `
       checked={true}
       className="form-check-input position-static"
       disabled={false}
+      id="id"
       type="checkbox"
     />
   </div>
@@ -28,6 +29,7 @@ exports[`<ReduxFormCheckbox /> renders unchecked correctly 1`] = `
       checked={false}
       className="form-check-input position-static"
       disabled={false}
+      id="id"
       type="checkbox"
     />
   </div>

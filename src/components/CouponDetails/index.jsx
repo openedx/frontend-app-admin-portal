@@ -18,6 +18,7 @@ import { features } from '../../config';
 import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
+import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -1010,21 +1011,21 @@ class CouponDetails extends React.Component {
                 <CodeAssignmentModal
                   {...modals.assignment}
                   onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess('assign', response)}
+                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.assign, response)}
                 />
               )}
               {modals.revoke && (
                 <CodeRevokeModal
                   {...modals.revoke}
                   onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
+                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.revoke, response)}
                 />
               )}
               {modals.remind && (
                 <CodeReminderModal
                   {...modals.remind}
                   onClose={this.resetModals}
-                  onSuccess={response => this.handleCodeActionSuccess('remind', response)}
+                  onSuccess={response => this.handleCodeActionSuccess(MODAL_TYPES.remind, response)}
                 />
               )}
             </>

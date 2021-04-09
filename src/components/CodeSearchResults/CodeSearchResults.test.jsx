@@ -33,6 +33,8 @@ const emailDefaults = {
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
+    enterpriseSlug: 'sluggy',
+    enableLearnerPortal: false,
   },
   table: {},
   emailTemplate: {
@@ -69,6 +71,8 @@ describe('<CodeSearchResults />', () => {
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
+                enableLearnerPortal={false}
+                enterpriseSlug="sluggy"
               />
             </Provider>
           </MemoryRouter>

@@ -38,6 +38,12 @@ const AdminWrapper = props => (
         fetchPortalConfiguration={() => {}}
         fetchCsv={() => {}}
         searchEnrollmentsList={() => {}}
+        tableData={[
+          {
+            course_title: 'Bears 101',
+            course_start: Date.now(),
+          },
+        ]}
         match={{
           params: {},
           url: '/',
