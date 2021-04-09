@@ -56,11 +56,10 @@ class AdminSearchForm extends React.Component {
           <div className="row w-100 m-0">
             <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
               <Form.Group>
-                <Form.Label id="course-title-search" className="search-label mb-2">Filter by course</Form.Label>
+                <Form.Label className="search-label mb-2">Filter by course</Form.Label>
                 <Form.Control
                   className="w-100"
                   as="select"
-                  aria-labelledby="course-title-search"
                   value={searchCourseQuery || ''}
                   onChange={e => this.onCourseSelect(e)}
                 >
@@ -78,7 +77,7 @@ class AdminSearchForm extends React.Component {
             </div>
             <div className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3">
               <Form.Group>
-                <Form.Label id="date-search" className="search-label mb-2">
+                <Form.Label className="search-label mb-2">
                   Filter by start date
                   <IconWithTooltip
                     icon={faInfoCircle}
@@ -89,7 +88,6 @@ class AdminSearchForm extends React.Component {
                 <Form.Control
                   as="select"
                   className="w-100"
-                  aria-labelledby="date-search"
                   value={searchDateQuery}
                   onChange={event => updateUrl({
                     search_start_date: event.target.value,

@@ -4,6 +4,7 @@ import { Form, ValidationFormGroup } from '@edx/paragon';
 
 const ReduxFormCheckbox = (props) => {
   const {
+    id,
     label,
     helptext,
     input,
@@ -11,11 +12,12 @@ const ReduxFormCheckbox = (props) => {
 
   return (
     <ValidationFormGroup
-      for={input.id}
+      for={id}
       helpText={helptext}
     >
       <Form.Check
         {...input}
+        id={id}
         type="checkbox"
         checked={input.checked}
         label={label}
@@ -29,6 +31,7 @@ ReduxFormCheckbox.defaultProps = {
 };
 
 ReduxFormCheckbox.propTypes = {
+  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   input: PropTypes.shape({
     checked: PropTypes.bool,

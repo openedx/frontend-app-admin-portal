@@ -171,7 +171,6 @@ class BulkEnrollmentModal extends React.Component {
             <h3>Add Learners</h3>
             <div>
               <Field
-                id={EMAIL_ADDRESS_TEXT_FORM_DATA}
                 name={EMAIL_ADDRESS_TEXT_FORM_DATA}
                 component={TextAreaAutoSize}
                 label={EMAIL_ADDRESS_TEXT_LABEL}

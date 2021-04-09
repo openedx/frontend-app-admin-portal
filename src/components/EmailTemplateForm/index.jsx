@@ -12,7 +12,6 @@ import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } 
 export const EMAIL_FORM_NAME = 'Email Template';
 export const EMAIL_TEMPLATE_FIELDS = {
   [EMAIL_TEMPLATE_SUBJECT_ID]: {
-    id: EMAIL_TEMPLATE_SUBJECT_ID,
     name: EMAIL_TEMPLATE_SUBJECT_ID,
     component: RenderField,
     label: 'Customize email subject',
@@ -20,21 +19,18 @@ export const EMAIL_TEMPLATE_FIELDS = {
     limit: OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
   },
   [EMAIL_TEMPLATE_GREETING_ID]: {
-    id: EMAIL_TEMPLATE_GREETING_ID,
     name: EMAIL_TEMPLATE_GREETING_ID,
     component: TextAreaAutoSize,
     label: 'Customize greeting',
     limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
   },
   [EMAIL_TEMPLATE_BODY_ID]: {
-    id: EMAIL_TEMPLATE_BODY_ID,
     name: EMAIL_TEMPLATE_BODY_ID,
     component: TextAreaAutoSize,
     label: 'Body',
     disabled: true,
   },
   [EMAIL_TEMPLATE_CLOSING_ID]: {
-    id: EMAIL_TEMPLATE_CLOSING_ID,
     name: EMAIL_TEMPLATE_CLOSING_ID,
     component: TextAreaAutoSize,
     label: 'Customize closing',
@@ -49,7 +45,7 @@ const EmailTemplateForm = ({
     <div className="mt-4">
       <h3>{EMAIL_FORM_NAME}</h3>
       <TemplateSourceFields emailTemplateType={emailTemplateType} currentEmail={currentEmail} disabled={disabled} />
-      {Object.values(fields).map(fieldProps => <Field key={fieldProps.id} disabled={disabled} {...fieldProps} />)}
+      {Object.values(fields).map(fieldProps => <Field key={fieldProps.name} disabled={disabled} {...fieldProps} />)}
       {children}
     </div>
   </form>

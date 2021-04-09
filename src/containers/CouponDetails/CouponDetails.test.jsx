@@ -15,6 +15,7 @@ import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import CodeReminderModal from '../CodeReminderModal';
+import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -498,7 +499,7 @@ describe('CouponDetails container', () => {
       });
 
       // fake successful code assignment
-      wrapper.find('CodeAssignmentModal').prop('onSuccess')();
+      wrapper.find(CodeAssignmentModal).prop('onSuccess')();
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeTruthy();
 
       wrapper.update();

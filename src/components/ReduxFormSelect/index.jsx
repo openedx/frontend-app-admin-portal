@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
 const ReduxFormSelect = ({
-  input, label: formLabel, disabled, options, description, meta: { touched, error }
+  input, label: formLabel, disabled, options, description, meta: { touched, error },
 }) => {
   const hasError = !!(touched && error);
   return (

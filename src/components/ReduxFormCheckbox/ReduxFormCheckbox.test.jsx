@@ -5,7 +5,7 @@ import ReduxFormCheckbox from './index';
 
 describe('<ReduxFormCheckbox />', () => {
   it('renders checked correctly', () => {
-    const inputProp = { checked: true };
+    const inputProp = { checked: true, id: 'foo' };
     const component = renderer
       .create((
         <ReduxFormCheckbox input={inputProp} />

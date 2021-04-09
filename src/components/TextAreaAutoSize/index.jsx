@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
 const TextAreaAutoSize = ({
-  id,
   input,
   label,
   description,
@@ -18,7 +17,6 @@ const TextAreaAutoSize = ({
       <Form.Label>{label}</Form.Label>
       <Form.Control
         {...input}
-        id={id}
         as="textarea"
         description={description}
         disabled={disabled}
@@ -40,7 +38,6 @@ TextAreaAutoSize.defaultProps = {
 };
 
 TextAreaAutoSize.propTypes = {
-  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   input: PropTypes.shape({}).isRequired,
   meta: PropTypes.shape({
