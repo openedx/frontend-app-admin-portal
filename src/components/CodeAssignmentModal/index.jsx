@@ -13,11 +13,12 @@ import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 
-import { validateEmailTemplateFields } from '../../utils';
+import { validateEmailTemplateFields} from '../../utils';
 import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
 import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 
 import './CodeAssignmentModal.scss';
+import LmsApiService from "../../data/services/LmsApiService";
 
 class CodeAssignmentModal extends React.Component {
   constructor(props) {
@@ -290,7 +291,20 @@ class CodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
-  handleModalSubmit(formData) {
+  getCleanedUsersDetails(emails, usersDetailsResponse) {
+    let usersDetails = []
+    emails.forEach((email) => {
+      const detailsResponse = usersDetailsResponse.find(details => details['email']===email)
+      usersDetails.push({
+        "email": email,
+        "id": detailsResponse? detailsResponse["id"]: null,
+        "username": detailsResponse? detailsResponse["username"]: null,
+      })
+    })
+    return usersDetails
+  }
+
+  async handleModalSubmit(formData) {
     const {
       isBulkAssign,
       couponId,
@@ -328,6 +342,15 @@ class CodeAssignmentModal extends React.Component {
       options.emails = [formData['email-address']];
       options.codes = [code.code];
     }
+
+    let user_emails_details_response = null
+    try {
+      const response = await LmsApiService.get_users_by_emails(options.emails);
+      user_emails_details_response =  response.data
+    } catch (error) {
+      user_emails_details_response = []
+    }
+    options.users_details = this.getCleanedUsersDetails(options.emails, user_emails_details_response)
 
     return sendCodeAssignment(couponId, options)
       .then((response) => {

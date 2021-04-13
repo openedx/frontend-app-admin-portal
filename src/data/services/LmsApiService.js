@@ -8,6 +8,7 @@ class LmsApiService {
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
+  static accountsUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts`;
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -105,6 +106,12 @@ class LmsApiService {
     const providerDataUrl = `${LmsApiService.providerDataUrl}${pdid}/?enterprise_customer_uuid=${uuid}`;
     return apiClient.delete(providerDataUrl);
   }
+
+  static get_users_by_emails(emails) {
+    const accountsEmailsUrl = `${LmsApiService.accountsUrl}?email=${emails.join()}`;
+    return apiClient.get(accountsEmailsUrl);
+  }
+
 }
 
 
