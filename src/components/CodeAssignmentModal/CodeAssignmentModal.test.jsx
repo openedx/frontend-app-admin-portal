@@ -19,6 +19,12 @@ import {
 } from '../../data/constants/emailTemplate';
 import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
+jest.mock('redux-form', () => ({
+  ...jest.requireActual('redux-form'),
+  // eslint-disable-next-line react/prop-types
+  Field: ({ label, ...rest }) => <div {...rest}>{label}</div>,
+}));
+
 const sampleCodeData = {
   code: 'test-code-1',
   assigned_to: 'test@bestrun.com',
@@ -128,18 +134,11 @@ const CodeAssignmentModalWrapper = (props) => (
 /* eslint-enable react/prop-types */
 
 describe('CodeAssignmentModal component', () => {
-  // beforeEach(() => jest.resetModules());
-
   it('displays a modal', () => {
     render(<CodeAssignmentModalWrapper />);
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();
   });
-  it.skip('displays an error', () => {
-    jest.mock('redux-form', () => ({
-      ...jest.requireActual('redux-form'),
-      // eslint-disable-next-line react/prop-types
-      Field: ({ label, ...rest }) => <div {...rest}>{label}</div>,
-    }));
+  it('displays an error', () => {
     // eslint-disable-next-line global-require, no-unused-vars
     const { Field } = require('redux-form');
     const error = 'Errors ahoy!';
@@ -153,9 +152,6 @@ describe('CodeAssignmentModal component', () => {
         </Provider>
       </MemoryRouter>,
     );
-
-    // const submitButton = screen.getByTestId('submit-button');
-    // userEvent.click(submitButton);
 
     expect(screen.getByText(error));
   });

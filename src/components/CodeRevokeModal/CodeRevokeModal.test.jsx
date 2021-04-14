@@ -128,8 +128,6 @@ const CodeRevokeModalWrapper = (props) => (
 /* eslint-enable react/prop-types */
 
 describe('CodeRevokeModal component', () => {
-  // beforeEach(() => jest.resetModules());
-
   it('displays a modal', () => {
     render(<CodeRevokeModalWrapper />);
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();

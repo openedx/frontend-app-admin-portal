@@ -23,7 +23,7 @@ import {
 } from '../EmailTemplateForm/constants';
 import EmailTemplateForm from '../EmailTemplateForm';
 import {
-  textAreaKey, csvFileKey, EMAIL_TEMPLATE_NUDGE_EMAIL_ID, ASSIGNMENT_ERROR_TITLES, ASSIGNMENT_MODAL_FIELDS,
+  EMAIL_TEMPLATE_NUDGE_EMAIL_ID, ASSIGNMENT_ERROR_TITLES, ASSIGNMENT_MODAL_FIELDS,
 } from './constants';
 import { getErrors } from './validation';
 
@@ -131,8 +131,8 @@ export class BaseCodeAssignmentModal extends React.Component {
   validateBulkAssign(formData) {
     const { data: { unassignedCodes, couponType } } = this.props;
 
-    const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split(/\r\n|\n/);
-    const csvEmails = formData[csvFileKey];
+    const textAreaEmails = formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/);
+    const csvEmails = formData[EMAIL_ADDRESS_CSV_FORM_DATA];
     const {
       validEmails: validTextAreaEmails,
       invalidEmailIndices: invalidTextAreaEmails,

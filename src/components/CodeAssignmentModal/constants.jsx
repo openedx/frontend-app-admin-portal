@@ -1,5 +1,4 @@
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../../data/constants/addUsers';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
@@ -9,8 +8,6 @@ export const ASSIGNMENT_ERROR_TITLES = {
   [MODAL_TYPES.save]: 'Unable to save template',
 };
 export const EMAIL_TEMPLATE_NUDGE_EMAIL_ID = 'enable-nudge-emails';
-export const textAreaKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
-export const csvFileKey = EMAIL_ADDRESS_CSV_FORM_DATA;
 
 export const ASSIGNMENT_MODAL_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,

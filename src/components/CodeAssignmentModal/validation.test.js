@@ -1,8 +1,8 @@
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../../data/constants/addUsers';
 import {
   getTooManyAssignmentsMessage, getInvalidEmailMessage, getErrors,
   NO_EMAIL_ADDRESS_ERROR, BOTH_TEXT_AREA_AND_CSV_ERROR,
 } from './validation';
-import { textAreaKey, csvFileKey } from './constants';
 
 describe('getTooManyAssignmentsMessage', () => {
   it('displays the number of codes', () => {
@@ -99,7 +99,7 @@ describe('getErrors', () => {
       sampleInputTextArea.invalidTextAreaEmails, sampleInputTextArea.textAreaEmails,
     );
     const expected = {
-      [textAreaKey]: errorMessage,
+      [EMAIL_ADDRESS_TEXT_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);
@@ -110,7 +110,7 @@ describe('getErrors', () => {
       emails: sampleInputTextArea.validTextAreaEmails, numCodes: sampleInputTextArea.unassignedCodes,
     });
     const expected = {
-      [textAreaKey]: errorMessage,
+      [EMAIL_ADDRESS_TEXT_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);
@@ -123,7 +123,7 @@ describe('getErrors', () => {
       selected: true,
     });
     const expected = {
-      [textAreaKey]: errorMessage,
+      [EMAIL_ADDRESS_TEXT_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);
@@ -132,7 +132,7 @@ describe('getErrors', () => {
     const result = getErrors({ ...sampleInputCsv, unassignedCodes: 2 });
     const errorMessage = getInvalidEmailMessage(sampleInputTextArea.invalidCsvEmails, sampleInputTextArea.csvEmails);
     const expected = {
-      [csvFileKey]: errorMessage,
+      [EMAIL_ADDRESS_CSV_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);
@@ -145,7 +145,7 @@ describe('getErrors', () => {
       numCodes: sampleInputCsv.unassignedCodes,
     });
     const expected = {
-      [csvFileKey]: errorMessage,
+      [EMAIL_ADDRESS_CSV_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);
@@ -161,7 +161,7 @@ describe('getErrors', () => {
       isCsv: true,
     });
     const expected = {
-      [csvFileKey]: errorMessage,
+      [EMAIL_ADDRESS_CSV_FORM_DATA]: errorMessage,
       _error: [errorMessage],
     };
     expect(result).toEqual(expected);

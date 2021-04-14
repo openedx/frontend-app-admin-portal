@@ -1,4 +1,4 @@
-import { csvFileKey, textAreaKey } from './constants';
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../../data/constants/addUsers';
 
 export const getTooManyAssignmentsMessage = ({
   isCsv = false,
@@ -49,14 +49,14 @@ export const getErrors = ({
   if (validTextAreaEmails.length > 0) {
     if (invalidTextAreaEmails.length > 0) {
       const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
-      errors[textAreaKey] = invalidEmailMessage;
+      errors[EMAIL_ADDRESS_TEXT_FORM_DATA] = invalidEmailMessage;
       errors._error.push(invalidEmailMessage);
     } else if (validTextAreaEmails.length > unassignedCodes) {
       const message = getTooManyAssignmentsMessage({
         emails: validTextAreaEmails,
         numCodes: unassignedCodes,
       });
-      errors[textAreaKey] = message;
+      errors[EMAIL_ADDRESS_TEXT_FORM_DATA] = message;
       errors._error.push(message);
     } else if (
       numberOfSelectedCodes && shouldValidateSelectedCodes
@@ -67,7 +67,7 @@ export const getErrors = ({
         numCodes: numberOfSelectedCodes,
         selected: true,
       });
-      errors[textAreaKey] = message;
+      errors[EMAIL_ADDRESS_TEXT_FORM_DATA] = message;
       errors._error.push(message);
     }
     return errors;
@@ -75,7 +75,7 @@ export const getErrors = ({
 
   if (invalidCsvEmails.length > 0) {
     const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails, csvEmails);
-    errors[csvFileKey] = invalidEmailMessage;
+    errors[EMAIL_ADDRESS_CSV_FORM_DATA] = invalidEmailMessage;
     errors._error.push(invalidEmailMessage);
   } else if (validCsvEmails.length > unassignedCodes) {
     const message = getTooManyAssignmentsMessage({
@@ -83,7 +83,7 @@ export const getErrors = ({
       emails: validCsvEmails,
       numCodes: unassignedCodes,
     });
-    errors[csvFileKey] = message;
+    errors[EMAIL_ADDRESS_CSV_FORM_DATA] = message;
     errors._error.push(message);
   } else if (
     numberOfSelectedCodes && shouldValidateSelectedCodes
@@ -95,7 +95,7 @@ export const getErrors = ({
       numCodes: numberOfSelectedCodes,
       selected: true,
     });
-    errors[csvFileKey] = message;
+    errors[EMAIL_ADDRESS_CSV_FORM_DATA] = message;
     errors._error.push(message);
   }
 
