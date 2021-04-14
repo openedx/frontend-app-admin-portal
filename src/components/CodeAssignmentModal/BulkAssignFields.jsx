@@ -14,6 +14,7 @@ const BulkAssignFields = () => (
         component={TextAreaAutoSize}
         label="Email Addresses"
         description="To add more than one user, enter one email address per line."
+        descriptionTestId="email-addresses-help-text"
       />
       <p className="pb-2">
         OR
@@ -24,6 +25,7 @@ const BulkAssignFields = () => (
         component={FileInput}
         label="Upload Email Addresses"
         description="The file must be a CSV containing a single column of email addresses."
+        descriptionTestId="csv-email-addresses-help-text"
         accept=".csv"
         normalize={normalizeFileUpload}
       />

@@ -9,6 +9,7 @@ const TextAreaAutoSize = ({
   disabled,
   required,
   meta: { touched, error },
+  descriptionTestId,
 }) => {
   const hasError = !!(touched && error);
 
@@ -26,7 +27,7 @@ const TextAreaAutoSize = ({
         rows={3}
       />
       {hasError && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
-      {description && <Form.Text>{description}</Form.Text>}
+      {description && <Form.Text id={descriptionTestId}>{description}</Form.Text>}
     </Form.Group>
   );
 };
@@ -35,6 +36,7 @@ TextAreaAutoSize.defaultProps = {
   description: null,
   disabled: false,
   required: false,
+  descriptionTestId: 'textarea-helptext',
 };
 
 TextAreaAutoSize.propTypes = {
@@ -47,6 +49,7 @@ TextAreaAutoSize.propTypes = {
   description: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  descriptionTestId: PropTypes.string,
 };
 
 export default TextAreaAutoSize;
