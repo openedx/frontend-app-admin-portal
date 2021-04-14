@@ -7,6 +7,8 @@ import { validateEmailTemplateFields } from '../../data/validation/email';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL, EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
+export const SAVE_TEMPLATE_MODE = 'save';
+
 class SaveTemplateButton extends React.Component {
   constructor(props) {
     super(props);

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CouponDetailsWrapper renders does not show Assign button for an unavailable coupon 1`] = `
+exports[`CouponDetails container renders does not show Assign button for an unavailable coupon 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -578,7 +578,7 @@ exports[`CouponDetailsWrapper renders does not show Assign button for an unavail
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with assignment and reminder dates table data 1`] = `
+exports[`CouponDetails container renders with assignment and reminder dates table data 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -1183,7 +1183,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with assignment and reminder dates table data 2`] = `
+exports[`CouponDetails container renders with assignment and reminder dates table data 2`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -1788,7 +1788,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with assignment and reminder dates table data 3`] = `
+exports[`CouponDetails container renders with assignment and reminder dates table data 3`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -2393,7 +2393,7 @@ exports[`CouponDetailsWrapper renders with assignment and reminder dates table d
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with collapsed coupon details 1`] = `
+exports[`CouponDetails container renders with collapsed coupon details 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3 d-none"
   id="coupon-details-1"
@@ -2404,7 +2404,7 @@ exports[`CouponDetailsWrapper renders with collapsed coupon details 1`] = `
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with error 1`] = `
+exports[`CouponDetails container renders with error 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -2651,7 +2651,7 @@ exports[`CouponDetailsWrapper renders with error 1`] = `
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
+exports[`CouponDetails container renders with expanded coupon details 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"
@@ -2854,7 +2854,7 @@ exports[`CouponDetailsWrapper renders with expanded coupon details 1`] = `
 </div>
 `;
 
-exports[`CouponDetailsWrapper renders with table data 1`] = `
+exports[`CouponDetails container renders with table data 1`] = `
 <div
   className="coupon-details row no-gutters px-2 my-3"
   id="coupon-details-1"

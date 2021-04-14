@@ -38,6 +38,7 @@ const LicenseRevokeModalWrapper = props => (
         fetchSubscriptionUsers={() => { }}
         subscriptionPlan={subscriptionPlan}
         licenseOverview={licenseOverview}
+        licenseStatus="active"
         {...props}
       />
     </Provider>

@@ -1,21 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
-import TextAreaAutoSize from '../TextAreaAutoSize';
-import RenderField from '../RenderField';
-import StatusAlert from '../StatusAlert';
-import TemplateSourceFields from '../../containers/TemplateSourceFields';
-
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import { validateEmailTemplateForm } from '../../data/validation/email';
-
+import ModalError from '../CodeModal/ModalError';
 import { configuration } from '../../config';
 import './CodeReminderModal.scss';
+import CodeDetails from './CodeDetails';
+import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
+import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 
-class CodeReminderModal extends React.Component {
+const REMINDER_EMAIL_TEMPLATE_FIELDS = {
+  ...EMAIL_TEMPLATE_FIELDS,
+  'email-template-body': {
+    ...EMAIL_TEMPLATE_FIELDS['email-template-body'],
+    disabled: true,
+  },
+};
+const REMIND_MODE = MODAL_TYPES.remind;
+
+const ERROR_MESSAGE_TITLES = {
+  [MODAL_TYPES.remind]: 'Could not send reminder email',
+  [MODAL_TYPES.save]: 'Could not save template',
+};
+
+export class BaseCodeReminderModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +35,7 @@ class CodeReminderModal extends React.Component {
     this.modalRef = React.createRef();
 
     this.state = {
-      mode: 'remind',
+      mode: REMIND_MODE,
     };
 
     this.setMode = this.setMode.bind(this);
@@ -52,7 +64,7 @@ class CodeReminderModal extends React.Component {
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (mode === 'remind' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === REMIND_MODE && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -95,7 +107,7 @@ class CodeReminderModal extends React.Component {
       enableLearnerPortal,
       enterpriseSlug,
     } = this.props;
-    this.setMode('remind');
+    this.setMode(REMIND_MODE);
 
     // Validate form data
     const emailTemplateKey = 'email-template-body';
@@ -145,88 +157,32 @@ class CodeReminderModal extends React.Component {
       data,
       isBulkRemind,
       submitFailed,
+      error,
     } = this.props;
+    const { mode } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
-        <div className="assignment-details mb-4">
-          {!isBulkRemind && this.hasIndividualRemindData() && (
-            <>
-              <p>Code: {data.code}</p>
-              <p>Email: {data.email}</p>
-            </>
-          )}
-          {isBulkRemind && numberOfSelectedCodes > 0 && (
-            <>
-              <p className="bulk-selected-codes">Selected Codes: {numberOfSelectedCodes}</p>
-            </>
-          )}
-        </div>
-        <form onSubmit={e => e.preventDefault()}>
-          <div className="mt-4">
-            <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="remind" />
-            <Field
-              id="email-template-subject"
-              name="email-template-subject"
-              component={RenderField}
-              label="Customize Email Subject"
-              type="text"
-            />
-            <Field
-              id="email-template-greeting"
-              name="email-template-greeting"
-              component={TextAreaAutoSize}
-              label="Customize Greeting"
-            />
-            <Field
-              id="email-template-body"
-              name="email-template-body"
-              component={TextAreaAutoSize}
-              label="Body"
-              disabled
-            />
-            <Field
-              id="email-template-closing"
-              name="email-template-closing"
-              component={TextAreaAutoSize}
-              label="Customize Closing"
-            />
-          </div>
-        </form>
-      </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      remind: 'Unable to send reminder email',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
+        {submitFailed && (
+          <ModalError
+            title={ERROR_MESSAGE_TITLES[mode]}
+            errors={error}
+            ref={this.errorMessageRef}
+          />
+        )}
+        <CodeDetails
+          isBulkRemind={isBulkRemind}
+          hasIndividualRemindData={this.hasIndividualRemindData()}
+          data={data}
+          numberOfSelectedCodes={numberOfSelectedCodes}
         />
-      </div>
+        <EmailTemplateForm
+          emailTemplateType={MODAL_TYPES.remind}
+          fields={REMINDER_EMAIL_TEMPLATE_FIELDS}
+        />
+      </>
     );
   }
 
@@ -259,13 +215,13 @@ class CodeReminderModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {mode === 'remind' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 Remind
               </>
             </Button>,
             <SaveTemplateButton
               key="save-remind-template-btn"
-              templateType="remind"
+              templateType={REMIND_MODE}
               setMode={this.setMode}
               handleSubmit={handleSubmit}
             />,
@@ -278,7 +234,7 @@ class CodeReminderModal extends React.Component {
   }
 }
 
-CodeReminderModal.defaultProps = {
+BaseCodeReminderModal.defaultProps = {
   error: null,
   isBulkRemind: false,
   data: {},
@@ -286,7 +242,7 @@ CodeReminderModal.defaultProps = {
   couponDetailsTable: {},
 };
 
-CodeReminderModal.propTypes = {
+BaseCodeReminderModal.propTypes = {
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -321,4 +277,4 @@ CodeReminderModal.propTypes = {
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
-})(CodeReminderModal);
+})(BaseCodeReminderModal);

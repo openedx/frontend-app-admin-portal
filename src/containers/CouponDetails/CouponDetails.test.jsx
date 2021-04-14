@@ -14,6 +14,8 @@ import EcommerceaApiService from '../../data/services/EcommerceApiService';
 import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
+import CodeReminderModal from '../CodeReminderModal';
+import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -142,7 +144,7 @@ const sampleTableData = {
   },
 };
 
-describe('CouponDetailsWrapper', () => {
+describe('CouponDetails container', () => {
   let wrapper;
   let store;
 
@@ -497,7 +499,7 @@ describe('CouponDetailsWrapper', () => {
       });
 
       // fake successful code assignment
-      wrapper.find('CodeAssignmentModal').prop('onSuccess')();
+      wrapper.find(CodeAssignmentModal).prop('onSuccess')();
       expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeTruthy();
 
       wrapper.update();
@@ -541,7 +543,7 @@ describe('CouponDetailsWrapper', () => {
       });
 
       // fake successful code assignment
-      wrapper.find('CodeReminderModal').prop('onSuccess')();
+      wrapper.find(CodeReminderModal).prop('onSuccess')();
       expect(wrapper.find('CouponDetails').instance().state.isCodeReminderSuccessful).toBeTruthy();
 
       wrapper.update();
@@ -560,7 +562,7 @@ describe('CouponDetailsWrapper', () => {
       });
 
       // fake code assignment 200 status with error in response data.
-      wrapper.find('CodeReminderModal').prop('onSuccess')([{ detail: 'failure' }]);
+      wrapper.find(CodeReminderModal).prop('onSuccess')([{ detail: 'failure' }]);
       expect(wrapper.find('CouponDetails').instance().state.doesCodeActionHaveErrors).toBeTruthy();
 
       // does not fetch overview data for coupon

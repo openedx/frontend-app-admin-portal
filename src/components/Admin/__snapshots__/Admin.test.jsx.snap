@@ -149,7 +149,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon21"
+                  id="Icon25"
                 />
               </h3>
               <p
@@ -186,7 +186,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon22"
+                      id="Icon26"
                     />
                     <span
                       className="sr-only"
@@ -242,7 +242,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon23"
+                  id="Icon27"
                 />
               </h3>
               <p
@@ -279,7 +279,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon24"
+                      id="Icon28"
                     />
                     <span
                       className="sr-only"
@@ -351,7 +351,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon25"
+                  id="Icon29"
                 />
               </h3>
               <p
@@ -388,7 +388,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon26"
+                      id="Icon30"
                     />
                     <span
                       className="sr-only"
@@ -476,7 +476,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon27"
+                  id="Icon31"
                 />
               </h3>
               <p
@@ -513,7 +513,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon28"
+                      id="Icon32"
                     />
                     <span
                       className="sr-only"
@@ -594,7 +594,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon29"
+                id="Icon33"
               />
               Reset to 
               Full Report
@@ -637,7 +637,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon30"
+                id="Icon34"
               />
               Download current report (CSV)
             </button>
@@ -709,7 +709,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon71"
+                  id="Icon75"
                 />
               </h3>
               <p
@@ -746,7 +746,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon72"
+                      id="Icon76"
                     />
                     <span
                       className="sr-only"
@@ -802,7 +802,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon73"
+                  id="Icon77"
                 />
               </h3>
               <p
@@ -839,7 +839,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon74"
+                      id="Icon78"
                     />
                     <span
                       className="sr-only"
@@ -911,7 +911,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon75"
+                  id="Icon79"
                 />
               </h3>
               <p
@@ -948,7 +948,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon76"
+                      id="Icon80"
                     />
                     <span
                       className="sr-only"
@@ -1036,7 +1036,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon77"
+                  id="Icon81"
                 />
               </h3>
               <p
@@ -1073,7 +1073,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon78"
+                      id="Icon82"
                     />
                     <span
                       className="sr-only"
@@ -1154,7 +1154,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon79"
+                id="Icon83"
               />
               Reset to 
               Full Report
@@ -1197,7 +1197,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon80"
+                id="Icon84"
               />
               Download current report (CSV)
             </button>
@@ -1269,7 +1269,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon81"
+                  id="Icon85"
                 />
               </h3>
               <p
@@ -1306,7 +1306,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon82"
+                      id="Icon86"
                     />
                     <span
                       className="sr-only"
@@ -1362,7 +1362,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon83"
+                  id="Icon87"
                 />
               </h3>
               <p
@@ -1399,7 +1399,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon84"
+                      id="Icon88"
                     />
                     <span
                       className="sr-only"
@@ -1471,7 +1471,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon85"
+                  id="Icon89"
                 />
               </h3>
               <p
@@ -1508,7 +1508,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon86"
+                      id="Icon90"
                     />
                     <span
                       className="sr-only"
@@ -1596,7 +1596,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon87"
+                  id="Icon91"
                 />
               </h3>
               <p
@@ -1633,7 +1633,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon88"
+                      id="Icon92"
                     />
                     <span
                       className="sr-only"
@@ -1714,7 +1714,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon89"
+                id="Icon93"
               />
               Reset to 
               Full Report
@@ -1761,7 +1761,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon90"
+                id="Icon94"
               />
               Download current report (CSV)
             </button>
@@ -1833,7 +1833,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon91"
+                  id="Icon95"
                 />
               </h3>
               <p
@@ -1870,7 +1870,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon92"
+                      id="Icon96"
                     />
                     <span
                       className="sr-only"
@@ -1926,7 +1926,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon93"
+                  id="Icon97"
                 />
               </h3>
               <p
@@ -1963,7 +1963,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon94"
+                      id="Icon98"
                     />
                     <span
                       className="sr-only"
@@ -2035,7 +2035,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon95"
+                  id="Icon99"
                 />
               </h3>
               <p
@@ -2072,7 +2072,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon96"
+                      id="Icon100"
                     />
                     <span
                       className="sr-only"
@@ -2160,7 +2160,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon97"
+                  id="Icon101"
                 />
               </h3>
               <p
@@ -2197,7 +2197,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon98"
+                      id="Icon102"
                     />
                     <span
                       className="sr-only"
@@ -2307,7 +2307,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon99"
+                id="Icon103"
               />
               Download full report (CSV)
             </button>
@@ -2326,37 +2326,42 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
               >
                 <div
-                  className="form-group"
+                  className="pgn__form-group"
                 >
                   <label
-                    className="search-label mb-2 form-label"
-                    id="course-title-search"
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field104"
                   >
                     Filter by course
                   </label>
-                  <select
-                    aria-labelledby="course-title-search"
-                    className="w-100 form-control"
-                    onChange={[Function]}
-                    value=""
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
                   >
-                    <option
+                    <select
+                      className="form-control"
+                      id="form-field104"
+                      onBlur={[Function]}
+                      onChange={[Function]}
                       value=""
                     >
-                      All Courses
-                    </option>
-                  </select>
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div
                 className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
               >
                 <div
-                  className="form-group"
+                  className="pgn__form-group"
                 >
                   <label
-                    className="search-label mb-2 form-label"
-                    id="date-search"
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field105"
                   >
                     Filter by start date
                     <svg
@@ -2382,25 +2387,30 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       />
                     </svg>
                   </label>
-                  <select
-                    aria-labelledby="date-search"
-                    className="w-100 form-control"
-                    disabled={true}
-                    onChange={[Function]}
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
                   >
-                    <option
-                      value=""
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field105"
+                      onBlur={[Function]}
+                      onChange={[Function]}
                     >
-                      Choose a course
-                    </option>
-                  </select>
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div
                 className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
               >
                 <label
-                  className="mb-2 form-label"
+                  className="pgn__form-label mb-2"
                   id="search-email-label"
                 >
                   Filter by email
@@ -2416,7 +2426,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-100"
+                      htmlFor="pgn-searchfield-input-106"
                     >
                       <span
                         className="sr-only"
@@ -2426,7 +2436,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     </label>
                     <input
                       className="form-control"
-                      id="pgn-searchfield-input-100"
+                      id="pgn-searchfield-input-106"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -3028,37 +3038,42 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
               >
                 <div
-                  className="form-group"
+                  className="pgn__form-group"
                 >
                   <label
-                    className="search-label mb-2 form-label"
-                    id="course-title-search"
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field10"
                   >
                     Filter by course
                   </label>
-                  <select
-                    aria-labelledby="course-title-search"
-                    className="w-100 form-control"
-                    onChange={[Function]}
-                    value=""
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
                   >
-                    <option
+                    <select
+                      className="form-control"
+                      id="form-field10"
+                      onBlur={[Function]}
+                      onChange={[Function]}
                       value=""
                     >
-                      All Courses
-                    </option>
-                  </select>
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div
                 className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
               >
                 <div
-                  className="form-group"
+                  className="pgn__form-group"
                 >
                   <label
-                    className="search-label mb-2 form-label"
-                    id="date-search"
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field11"
                   >
                     Filter by start date
                     <svg
@@ -3084,25 +3099,30 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                       />
                     </svg>
                   </label>
-                  <select
-                    aria-labelledby="date-search"
-                    className="w-100 form-control"
-                    disabled={true}
-                    onChange={[Function]}
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
                   >
-                    <option
-                      value=""
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field11"
+                      onBlur={[Function]}
+                      onChange={[Function]}
                     >
-                      Choose a course
-                    </option>
-                  </select>
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div
                 className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
               >
                 <label
-                  className="mb-2 form-label"
+                  className="pgn__form-label mb-2"
                   id="search-email-label"
                 >
                   Filter by email
@@ -3118,7 +3138,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-10"
+                      htmlFor="pgn-searchfield-input-12"
                     >
                       <span
                         className="sr-only"
@@ -3128,7 +3148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     </label>
                     <input
                       className="form-control"
-                      id="pgn-searchfield-input-10"
+                      id="pgn-searchfield-input-12"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -3237,7 +3257,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon61"
+                  id="Icon65"
                 />
               </h3>
               <p
@@ -3274,7 +3294,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon62"
+                      id="Icon66"
                     />
                     <span
                       className="sr-only"
@@ -3330,7 +3350,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon63"
+                  id="Icon67"
                 />
               </h3>
               <p
@@ -3367,7 +3387,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon64"
+                      id="Icon68"
                     />
                     <span
                       className="sr-only"
@@ -3439,7 +3459,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon65"
+                  id="Icon69"
                 />
               </h3>
               <p
@@ -3476,7 +3496,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon66"
+                      id="Icon70"
                     />
                     <span
                       className="sr-only"
@@ -3564,7 +3584,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon67"
+                  id="Icon71"
                 />
               </h3>
               <p
@@ -3601,7 +3621,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon68"
+                      id="Icon72"
                     />
                     <span
                       className="sr-only"
@@ -3682,7 +3702,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon69"
+                id="Icon73"
               />
               Reset to 
               Full Report
@@ -3729,7 +3749,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon70"
+                id="Icon74"
               />
               Download current report (CSV)
             </button>
@@ -3801,7 +3821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon51"
+                  id="Icon55"
                 />
               </h3>
               <p
@@ -3838,7 +3858,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon52"
+                      id="Icon56"
                     />
                     <span
                       className="sr-only"
@@ -3894,7 +3914,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon53"
+                  id="Icon57"
                 />
               </h3>
               <p
@@ -3931,7 +3951,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon54"
+                      id="Icon58"
                     />
                     <span
                       className="sr-only"
@@ -4003,7 +4023,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon55"
+                  id="Icon59"
                 />
               </h3>
               <p
@@ -4040,7 +4060,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon56"
+                      id="Icon60"
                     />
                     <span
                       className="sr-only"
@@ -4128,7 +4148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon57"
+                  id="Icon61"
                 />
               </h3>
               <p
@@ -4165,7 +4185,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon58"
+                      id="Icon62"
                     />
                     <span
                       className="sr-only"
@@ -4246,7 +4266,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon59"
+                id="Icon63"
               />
               Reset to 
               Full Report
@@ -4293,7 +4313,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon60"
+                id="Icon64"
               />
               Download current report (CSV)
             </button>
@@ -4365,7 +4385,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon31"
+                  id="Icon35"
                 />
               </h3>
               <p
@@ -4402,7 +4422,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon32"
+                      id="Icon36"
                     />
                     <span
                       className="sr-only"
@@ -4458,7 +4478,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon33"
+                  id="Icon37"
                 />
               </h3>
               <p
@@ -4495,7 +4515,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon34"
+                      id="Icon38"
                     />
                     <span
                       className="sr-only"
@@ -4567,7 +4587,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon35"
+                  id="Icon39"
                 />
               </h3>
               <p
@@ -4604,7 +4624,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon36"
+                      id="Icon40"
                     />
                     <span
                       className="sr-only"
@@ -4692,7 +4712,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon37"
+                  id="Icon41"
                 />
               </h3>
               <p
@@ -4729,7 +4749,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon38"
+                      id="Icon42"
                     />
                     <span
                       className="sr-only"
@@ -4810,7 +4830,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon39"
+                id="Icon43"
               />
               Reset to 
               Full Report
@@ -4857,7 +4877,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon40"
+                id="Icon44"
               />
               Download current report (CSV)
             </button>
@@ -4929,7 +4949,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon11"
+                  id="Icon15"
                 />
               </h3>
               <p
@@ -4966,7 +4986,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon12"
+                      id="Icon16"
                     />
                     <span
                       className="sr-only"
@@ -5022,7 +5042,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon13"
+                  id="Icon17"
                 />
               </h3>
               <p
@@ -5059,7 +5079,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon14"
+                      id="Icon18"
                     />
                     <span
                       className="sr-only"
@@ -5131,7 +5151,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon15"
+                  id="Icon19"
                 />
               </h3>
               <p
@@ -5168,7 +5188,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon16"
+                      id="Icon20"
                     />
                     <span
                       className="sr-only"
@@ -5256,7 +5276,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon17"
+                  id="Icon21"
                 />
               </h3>
               <p
@@ -5293,7 +5313,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon18"
+                      id="Icon22"
                     />
                     <span
                       className="sr-only"
@@ -5374,7 +5394,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon19"
+                id="Icon23"
               />
               Reset to 
               Full Report
@@ -5417,7 +5437,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon20"
+                id="Icon24"
               />
               Download current report (CSV)
             </button>
@@ -5489,7 +5509,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon41"
+                  id="Icon45"
                 />
               </h3>
               <p
@@ -5526,7 +5546,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon42"
+                      id="Icon46"
                     />
                     <span
                       className="sr-only"
@@ -5582,7 +5602,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon43"
+                  id="Icon47"
                 />
               </h3>
               <p
@@ -5619,7 +5639,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon44"
+                      id="Icon48"
                     />
                     <span
                       className="sr-only"
@@ -5691,7 +5711,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon45"
+                  id="Icon49"
                 />
               </h3>
               <p
@@ -5728,7 +5748,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon46"
+                      id="Icon50"
                     />
                     <span
                       className="sr-only"
@@ -5816,7 +5836,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon47"
+                  id="Icon51"
                 />
               </h3>
               <p
@@ -5853,7 +5873,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon48"
+                      id="Icon52"
                     />
                     <span
                       className="sr-only"
@@ -5934,7 +5954,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <span
                 aria-hidden={true}
                 className="fa fa-undo mr-2"
-                id="Icon49"
+                id="Icon53"
               />
               Reset to 
               Full Report
@@ -5981,7 +6001,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon50"
+                id="Icon54"
               />
               Download current report (CSV)
             </button>
@@ -6052,7 +6072,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon101"
+                  id="Icon109"
                 />
               </div>
               <div

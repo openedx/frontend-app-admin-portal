@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { SearchContext } from '@edx/frontend-enterprise';
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
+import { NOTIFY_LEARNERS_LABEL } from '../../data/constants/addUsers';
 
 const mockStore = configureMockStore([thunk]);
 const enterpriseId = 'test-enterprise';
@@ -36,7 +37,7 @@ describe('<BulkEnrollmentModal />', () => {
     // Verify all expected fields are present.
     screen.getByLabelText('Email addresses');
     screen.getByLabelText('Upload email addresses');
-    screen.getByLabelText('Notify learners');
+    screen.getByLabelText(NOTIFY_LEARNERS_LABEL);
   });
 
   test('submit displays learner error alert if learners do not have valid subscriptions', () => {

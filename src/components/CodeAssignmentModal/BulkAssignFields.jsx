@@ -10,7 +10,6 @@ const BulkAssignFields = () => (
     <h3 className="mb-2">Add Users</h3>
     <div className="pl-4 field-group">
       <Field
-        id="email-addresses"
         name="email-addresses"
         component={TextAreaAutoSize}
         label="Email Addresses"

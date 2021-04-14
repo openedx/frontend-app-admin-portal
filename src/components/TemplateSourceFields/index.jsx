@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, Input, OverlayTrigger, Tooltip,
+  Button, OverlayTrigger, Tooltip,
 } from '@edx/paragon';
 import { Field } from 'redux-form';
 
@@ -12,6 +12,11 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
+import ReduxFormSelect from '../ReduxFormSelect';
+
+export const TEMPLATE_SOURCE_BUTTON_ARIA_LABEL = 'Press the button to select the template source';
+export const TEMLATE_SOURCE_FIELDS_TEST_ID = 'template-source-fields';
+const TEMPLATE_NAME_LABEL = 'Template name';
 
 class TemplateSourceFields extends React.Component {
   constructor(props) {
@@ -50,24 +55,6 @@ class TemplateSourceFields extends React.Component {
     const { setEmailTemplateSource } = this.props;
     // set the email template source to default
     setEmailTemplateSource(EMAIL_TEMPLATE_SOURCE_NEW_EMAIL);
-  }
-
-  selectRenderField({
-    input, templateOptions, changeFromEmailTemplate, disabled,
-  }) {
-    return (
-      <div className="template-select-wrapper mb-3">
-        <label htmlFor="templateNameSelect">Template Name</label>
-        <Input
-          {...input}
-          type="select"
-          id="templateNameSelect"
-          options={templateOptions}
-          onChange={changeFromEmailTemplate}
-          disabled={disabled}
-        />
-      </div>
-    );
   }
 
   updateState(emailTemplateSource) {
@@ -123,7 +110,8 @@ class TemplateSourceFields extends React.Component {
         <div
           className="d-flex mb-3 template-source-fields"
           role="group"
-          aria-label="Press the button to select the template source"
+          aria-label={TEMPLATE_SOURCE_BUTTON_ARIA_LABEL}
+          data-testid={TEMLATE_SOURCE_FIELDS_TEST_ID}
         >
           <OverlayTrigger
             key="btn-new-email-tooltip"
@@ -183,17 +171,18 @@ class TemplateSourceFields extends React.Component {
             name="template-name"
             type="text"
             component={RenderField}
-            label="Template Name"
+            label={TEMPLATE_NAME_LABEL}
             required
             disabled={disabled}
           />
         ) : (
           <Field
             name="template-name-select"
-            component={this.selectRenderField}
-            templateOptions={this.state.templateOptions}
-            changeFromEmailTemplate={this.changeFromEmailTemplate}
+            component={ReduxFormSelect}
+            options={this.state.templateOptions}
+            onChange={this.changeFromEmailTemplate}
             disabled={disabled}
+            label={TEMPLATE_NAME_LABEL}
           />
         )}
       </>

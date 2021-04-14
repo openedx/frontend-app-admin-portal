@@ -16,8 +16,7 @@ describe('<AdminSearchForm />', () => {
     const wrapper = shallow(<AdminSearchForm {...DEFAULT_PROPS} />);
     expect(wrapper.find(FormControl)).toHaveLength(2);
     expect(wrapper.find(SearchBar)).toHaveLength(1);
-    expect(wrapper.text()).toContain('All Courses');
-    expect(wrapper.text()).toContain('Choose a course');
+    expect(wrapper.find(FormControl).at(1).text()).toContain('Choose a course');
   });
   [
     { searchQuery: 'foo' },

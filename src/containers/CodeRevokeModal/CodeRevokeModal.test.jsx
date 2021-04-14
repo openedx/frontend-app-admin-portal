@@ -101,9 +101,6 @@ describe('CodeRevokeModalWrapper', () => {
     expect(wrapper.find('.modal-body form h3').text()).toEqual('Email Template');
     wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
-
-    // TODO! uncomment when https://github.com/erikras/redux-form/issues/621 is resolved
-    // expect(wrapper.find('.modal-body form textarea').text()).toEqual(emailTemplate);
   });
 
   it('renders bulk assignment revoke modal', () => {
@@ -114,7 +111,7 @@ describe('CodeRevokeModalWrapper', () => {
       isBulkRevoke
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected Codes: 2');
+    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });

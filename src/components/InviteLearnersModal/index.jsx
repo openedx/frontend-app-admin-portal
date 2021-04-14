@@ -100,7 +100,6 @@ class InviteLearnersModal extends React.Component {
           <div className="mt-4">
             <h3>Add Users</h3>
             <Field
-              id="email-addresses"
               name="email-addresses"
               component={TextAreaAutoSize}
               label="Email Address"
@@ -120,20 +119,17 @@ class InviteLearnersModal extends React.Component {
             />
             <h3>Email Template</h3>
             <Field
-              id="email-template-greeting"
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
             />
             <Field
-              id="email-template-body"
               name="email-template-body"
               component={TextAreaAutoSize}
               label="Body"
               disabled
             />
             <Field
-              id="email-template-closing"
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"

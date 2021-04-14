@@ -8,7 +8,7 @@ describe('<ReduxFormCheckbox />', () => {
     const inputProp = { checked: true };
     const component = renderer
       .create((
-        <ReduxFormCheckbox input={inputProp} />
+        <ReduxFormCheckbox id="id" input={inputProp} />
       ))
       .toJSON();
     expect(component).toMatchSnapshot();
@@ -17,7 +17,7 @@ describe('<ReduxFormCheckbox />', () => {
     const inputProp = { checked: false };
     const component = renderer
       .create((
-        <ReduxFormCheckbox input={inputProp} />
+        <ReduxFormCheckbox id="id" input={inputProp} />
       ))
       .toJSON();
     expect(component).toMatchSnapshot();

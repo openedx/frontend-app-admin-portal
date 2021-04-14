@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Input, Icon, Modal,
+  Button, Icon, Modal,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import TextAreaAutoSize from '../TextAreaAutoSize';
-import RenderField from '../RenderField';
-import StatusAlert from '../StatusAlert';
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
-import TemplateSourceFields from '../../containers/TemplateSourceFields';
-import IconWithTooltip from '../IconWithTooltip';
 
 import { validateEmailTemplateFields } from '../../data/validation/email';
 import { ONCE_PER_CUSTOMER, MULTI_USE, CSV_HEADER_NAME } from '../../data/constants/coupons';
@@ -23,8 +17,17 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
+import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
+import {
+  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
+} from '../EmailTemplateForm/constants';
+import EmailTemplateForm from '../EmailTemplateForm';
+import {
+  EMAIL_TEMPLATE_NUDGE_EMAIL_ID, ASSIGNMENT_ERROR_TITLES, ASSIGNMENT_MODAL_FIELDS,
+} from './constants';
+import { getErrors } from './validation';
 
-class CodeAssignmentModal extends React.Component {
+export class BaseCodeAssignmentModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -32,14 +35,13 @@ class CodeAssignmentModal extends React.Component {
     this.modalRef = React.createRef();
 
     this.state = {
-      mode: 'assign',
+      mode: MODAL_TYPES.assign,
     };
 
     this.setMode = this.setMode.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-    this.autoReminderField = this.autoReminderField.bind(this);
   }
 
   componentDidMount() {
@@ -63,7 +65,7 @@ class CodeAssignmentModal extends React.Component {
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (mode === 'assign' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === MODAL_TYPES.assign && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -74,7 +76,7 @@ class CodeAssignmentModal extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.setEmailAddress('', 'assign');
+    this.props.setEmailAddress('', MODAL_TYPES.assign);
   }
 
   getNumberOfSelectedCodes() {
@@ -129,11 +131,8 @@ class CodeAssignmentModal extends React.Component {
   validateBulkAssign(formData) {
     const { data: { unassignedCodes, couponType } } = this.props;
 
-    const textAreaKey = EMAIL_ADDRESS_TEXT_FORM_DATA;
-    const csvFileKey = EMAIL_ADDRESS_CSV_FORM_DATA;
-
-    const textAreaEmails = formData[textAreaKey] && formData[textAreaKey].split(/\r\n|\n/);
-    const csvEmails = formData[csvFileKey];
+    const textAreaEmails = formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/);
+    const csvEmails = formData[EMAIL_ADDRESS_CSV_FORM_DATA];
     const {
       validEmails: validTextAreaEmails,
       invalidEmailIndices: invalidTextAreaEmails,
@@ -146,89 +145,15 @@ class CodeAssignmentModal extends React.Component {
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
     const shouldValidateSelectedCodes = ![ONCE_PER_CUSTOMER, MULTI_USE].includes(couponType);
 
-    const getTooManyAssignmentsMessage = ({
-      isCsv = false,
-      emails,
-      numCodes,
-      selected,
-    }) => {
-      let message = `You have ${numCodes}`;
-
-      message += ` ${numCodes > 1 ? 'codes' : 'code'}`;
-      message += ` ${selected ? 'selected' : 'remaining'}`;
-      message += `, but ${isCsv ? 'your file has' : 'you entered'}`;
-      message += ` ${emails.length} emails. Please try again.`;
-
-      return message;
-    };
-
-    const getInvalidEmailMessage = (invalidEmailIndices, emails) => {
-      const firstInvalidIndex = invalidEmailIndices.shift();
-      const invalidEmail = emails[firstInvalidIndex];
-      const message = `Email address ${invalidEmail} on line ${firstInvalidIndex + 1} is invalid. Please try again.`;
-      return message;
-    };
-
-    const errors = {
-      _error: [],
-    };
-
-    /* eslint-disable no-underscore-dangle */
-    if (invalidTextAreaEmails.length > 0) {
-      const invalidEmailMessage = getInvalidEmailMessage(invalidTextAreaEmails, textAreaEmails);
-      errors[textAreaKey] = invalidEmailMessage;
-      errors._error.push(invalidEmailMessage);
-    } else if (validTextAreaEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({
-        emails: validTextAreaEmails,
-        numCodes: unassignedCodes,
-      });
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    } else if (
-      numberOfSelectedCodes && shouldValidateSelectedCodes
-      && validTextAreaEmails.length > numberOfSelectedCodes
-    ) {
-      const message = getTooManyAssignmentsMessage({
-        emails: validTextAreaEmails,
-        numCodes: numberOfSelectedCodes,
-        selected: true,
-      });
-      errors[textAreaKey] = message;
-      errors._error.push(message);
-    } else if (invalidCsvEmails.length > 0) {
-      const invalidEmailMessage = getInvalidEmailMessage(invalidCsvEmails, csvEmails);
-      errors[csvFileKey] = invalidEmailMessage;
-      errors._error.push(invalidEmailMessage);
-    } else if (validCsvEmails.length > unassignedCodes) {
-      const message = getTooManyAssignmentsMessage({
-        isCsv: true,
-        emails: validCsvEmails,
-        numCodes: unassignedCodes,
-      });
-      errors[csvFileKey] = message;
-      errors._error.push(message);
-    } else if (
-      numberOfSelectedCodes && shouldValidateSelectedCodes
-      && validCsvEmails.length > numberOfSelectedCodes
-    ) {
-      const message = getTooManyAssignmentsMessage({
-        isCsv: true,
-        emails: validCsvEmails,
-        numCodes: numberOfSelectedCodes,
-        selected: true,
-      });
-      errors[csvFileKey] = message;
-      errors._error.push(message);
-    } else if (validTextAreaEmails.length === 0 && validCsvEmails.length === 0) {
-      errors._error.push((
-        'No email addresses provided. Either manually enter email addresses or upload a CSV file.'
-      ));
-    } else if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
-      errors._error.push((
-        'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.'
-      ));
-    }
+    const errors = getErrors({
+      unassignedCodes,
+      validTextAreaEmails,
+      invalidTextAreaEmails,
+      validCsvEmails,
+      invalidCsvEmails,
+      numberOfSelectedCodes,
+      shouldValidateSelectedCodes,
+    });
     /* eslint-enable no-underscore-dangle */
 
     return errors;
@@ -259,7 +184,7 @@ class CodeAssignmentModal extends React.Component {
 
   validateFormData(formData) {
     const { isBulkAssign } = this.props;
-    const emailTemplateKey = 'email-template-body';
+    const emailTemplateKey = EMAIL_TEMPLATE_BODY_ID;
     let errors;
 
     if (isBulkAssign) {
@@ -310,17 +235,17 @@ class CodeAssignmentModal extends React.Component {
       enterpriseUuid,
     } = this.props;
 
-    this.setMode('assign');
+    this.setMode(MODAL_TYPES.assign);
 
     // Validate form data
     this.validateFormData(formData);
     // Configure the options to send to the assignment API endpoint
     const options = {
-      template: formData['email-template-body'],
+      template: formData[EMAIL_TEMPLATE_BODY_ID],
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
-      template_greeting: formData['email-template-greeting'],
-      template_closing: formData['email-template-closing'],
-      enable_nudge_emails: formData['enable-nudge-emails'],
+      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
+      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
     };
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
@@ -381,49 +306,31 @@ class CodeAssignmentModal extends React.Component {
       });
   }
 
-  autoReminderField({ input }) {
-    return (
-      <div className="auto-reminder-wrapper">
-        <label className="ml-4">
-          <Input
-            {...input}
-            type="checkbox"
-            checked={input.value}
-            id="autoReminderCheckbox"
-          />
-          Automate reminders
-        </label>
-        <IconWithTooltip
-          icon={faInfoCircle}
-          altText="More information"
-          tooltipText="edX will remind learners to redeem their code 3, 10, and 19 days after you assign it."
-        />
-      </div>
-    );
-  }
-
   renderBody() {
     const {
       data,
       isBulkAssign,
       submitFailed,
+      error,
     } = this.props;
+
+    const { mode } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
+        {submitFailed && <ModalError title={ASSIGNMENT_ERROR_TITLES[mode]} errors={error} ref={this.errorMessageRef} />}
         <div className="assignment-details mb-4">
           {isBulkAssign && this.hasBulkAssignData() && (
             <>
-              <p>Unassigned Codes: {data.unassignedCodes}</p>
-              {numberOfSelectedCodes > 0 && <p>Selected Codes: {numberOfSelectedCodes}</p>}
+              <p>Unassigned codes: {data.unassignedCodes}</p>
+              {numberOfSelectedCodes > 0 && <p>{displaySelectedCodes(numberOfSelectedCodes)}</p>}
             </>
           )}
           {!isBulkAssign && this.hasIndividualAssignData() && (
             <>
-              <p>Code: {data.code.code}</p>
+              <p>{displayCode(data.code.code)}</p>
               <p className="code-remaining-uses">Remaining Uses: {data.remainingUses}</p>
             </>
           )}
@@ -431,71 +338,16 @@ class CodeAssignmentModal extends React.Component {
         <form onSubmit={e => e.preventDefault()}>
           {isBulkAssign && <BulkAssignFields />}
           {!isBulkAssign && <IndividualAssignFields />}
-          <div className="mt-4">
-            <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="assign" currentEmail={this.props.currentEmail} />
-            <Field
-              id="email-template-subject"
-              name="email-template-subject"
-              component={RenderField}
-              type="text"
-              label="Customize Email Subject"
-            />
-            <Field
-              id="email-template-greeting"
-              name="email-template-greeting"
-              component={TextAreaAutoSize}
-              label="Customize Greeting"
-            />
-            <Field
-              id="email-template-body"
-              name="email-template-body"
-              component={TextAreaAutoSize}
-              label="Body"
-              disabled
-            />
-            <Field
-              id="email-template-closing"
-              name="email-template-closing"
-              component={TextAreaAutoSize}
-              label="Customize Closing"
-            />
-            <Field
-              name="enable-nudge-emails"
-              component={this.autoReminderField}
-            />
-          </div>
         </form>
+        <div className="mt-4">
+          <EmailTemplateForm
+            emailTemplateType={MODAL_TYPES.assign}
+            fields={ASSIGNMENT_MODAL_FIELDS}
+            currentEmail={this.props.currentEmail}
+          />
+        </div>
+
       </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      assign: 'Unable to assign codes',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
-        />
-      </div>
     );
   }
 
@@ -526,15 +378,16 @@ class CodeAssignmentModal extends React.Component {
               key="assign-submit-btn"
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
+              data-testid="submit-button"
             >
               <>
-                {mode === 'assign' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
               </>
             </Button>,
             <SaveTemplateButton
               key="save-assign-template-btn"
-              templateType="assign"
+              templateType={MODAL_TYPES.assign}
               setMode={this.setMode}
               handleSubmit={handleSubmit}
             />,
@@ -547,14 +400,14 @@ class CodeAssignmentModal extends React.Component {
   }
 }
 
-CodeAssignmentModal.defaultProps = {
+BaseCodeAssignmentModal.defaultProps = {
   error: null,
   isBulkAssign: false,
   data: {},
   currentEmail: '',
 };
 
-CodeAssignmentModal.propTypes = {
+BaseCodeAssignmentModal.propTypes = {
   // props from redux
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseUuid: PropTypes.string.isRequired,
@@ -596,4 +449,4 @@ CodeAssignmentModal.propTypes = {
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
-})(CodeAssignmentModal);
+})(BaseCodeAssignmentModal);

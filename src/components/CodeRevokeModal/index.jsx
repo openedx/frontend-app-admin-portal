@@ -2,20 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Input, Modal,
+  Button, Icon, Modal,
 } from '@edx/paragon';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
-import TextAreaAutoSize from '../TextAreaAutoSize';
-import RenderField from '../RenderField';
-import StatusAlert from '../StatusAlert';
-import TemplateSourceFields from '../../containers/TemplateSourceFields';
-import IconWithTooltip from '../IconWithTooltip';
-
 import { validateEmailTemplateForm } from '../../data/validation/email';
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
+import {
+  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
+} from '../EmailTemplateForm/constants';
+import {
+  displayCode, displayEmail, displaySelectedCodes, ModalError,
+} from '../CodeModal';
+import EmailTemplateForm from '../EmailTemplateForm';
+import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
+
+const ERROR_MESSAGE_TITLES = {
+  [MODAL_TYPES.revoke]: 'Unable to revoke code(s)',
+  [MODAL_TYPES.save]: 'Unable to save template',
+};
 
 class CodeRevokeModal extends React.Component {
   constructor(props) {
@@ -25,14 +32,13 @@ class CodeRevokeModal extends React.Component {
     this.modalRef = React.createRef();
 
     this.state = {
-      mode: 'revoke',
+      mode: MODAL_TYPES.revoke,
       doNotEmail: false,
     };
 
     this.setMode = this.setMode.bind(this);
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.doNotEmailField = this.doNotEmailField.bind(this);
   }
 
   componentDidMount() {
@@ -56,7 +62,7 @@ class CodeRevokeModal extends React.Component {
 
     const errorMessageRef = this.errorMessageRef && this.errorMessageRef.current;
 
-    if (mode === 'revoke' && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
+    if (mode === MODAL_TYPES.revoke && submitSucceeded && submitSucceeded !== prevProps.submitSucceeded) {
       onClose();
     }
 
@@ -93,9 +99,9 @@ class CodeRevokeModal extends React.Component {
     const errors = {
       _error: [],
     };
-    const emailTemplateKey = 'email-template-body';
+    const emailTemplateKey = EMAIL_TEMPLATE_BODY_ID;
 
-    this.setMode('revoke');
+    this.setMode(MODAL_TYPES.revoke);
 
     // Validate form data
     validateEmailTemplateForm(formData, emailTemplateKey);
@@ -103,8 +109,8 @@ class CodeRevokeModal extends React.Component {
     const options = {
       template: formData[emailTemplateKey],
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
-      template_greeting: formData['email-template-greeting'],
-      template_closing: formData['email-template-closing'],
+      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
+      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
       do_not_email: doNotEmail,
     };
 
@@ -138,127 +144,56 @@ class CodeRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
-  doNotEmailField({ input }) {
-    const { doNotEmail } = this.state;
-
-    return (
-      <div className="do-not-email-wrapper">
-        <label className="ml-4">
-          <Input
-            {...input}
-            type="checkbox"
-            checked={doNotEmail}
-            id="doNotEmailCheckbox"
-          />
-          Do not email
-        </label>
-        <IconWithTooltip
-          icon={faInfoCircle}
-          altText="More information"
-          tooltipText="By clicking this box, you can revoke this coupon code without emailing the learner."
-        />
-      </div>
-    );
-  }
-
   renderBody() {
     const {
       data,
       isBulkRevoke,
       submitFailed,
+      error,
     } = this.props;
 
-    const { doNotEmail } = this.state;
+    const { doNotEmail, mode } = this.state;
 
     return (
       <>
-        {submitFailed && this.renderErrorMessage()}
+        {submitFailed
+          && (
+          <ModalError
+            title={ERROR_MESSAGE_TITLES[mode]}
+            errors={error}
+            ref={this.errorMessageRef}
+          />
+          )}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
             <>
-              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">Selected Codes: {data.selectedCodes.length}</p>}
+              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
             </>
           )}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>
-              <p className="code">Code: {data.code}</p>
-              <p className="email">Email: {data.assigned_to}</p>
+              <p className="code">{displayCode(data.code)}</p>
+              <p className="email">{displayEmail(data.assigned_to)}</p>
             </>
           )}
         </div>
-        <form onSubmit={e => e.preventDefault()}>
-          <div className="mt-4">
-            <h3>Email Template</h3>
-            <TemplateSourceFields emailTemplateType="revoke" disabled={doNotEmail} />
-            <Field
-              id="email-template-subject"
-              name="email-template-subject"
-              component={RenderField}
-              type="text"
-              label="Customize Email Subject"
-              disabled={doNotEmail}
-            />
-            <Field
-              id="email-template-greeting"
-              name="email-template-greeting"
-              component={TextAreaAutoSize}
-              label="Customize Greeting"
-              disabled={doNotEmail}
-            />
-            <Field
-              id="email-template-body"
-              name="email-template-body"
-              component={TextAreaAutoSize}
-              label="Body"
-              disabled
-            />
-            <Field
-              id="email-template-closing"
-              name="email-template-closing"
-              component={TextAreaAutoSize}
-              label="Customize Closing"
-              disabled={doNotEmail}
-            />
-            <Field
-              name="do-not-email"
-              component={this.doNotEmailField}
-              onChange={(event, newValue) => {
-                this.setDoNotEmail(newValue);
-              }}
-            />
-
-          </div>
-        </form>
+        <EmailTemplateForm emailTemplateType={MODAL_TYPES.revoke} disabled={doNotEmail}>
+          <Field
+            name="do-not-email"
+            className="do-not-email-wrapper"
+            component={CheckboxWithTooltip}
+            label="Do not email"
+            checked={doNotEmail}
+            id="doNotEmailCheckbox"
+            icon={faInfoCircle}
+            altText="More information"
+            tooltipText="By clicking this box, you can revoke this coupon code without emailing the learner."
+            onChange={(event, newValue) => {
+              this.setDoNotEmail(newValue);
+            }}
+          />
+        </EmailTemplateForm>
       </>
-    );
-  }
-
-  renderErrorMessage() {
-    const modeErrors = {
-      revoke: 'Unable to revoke code(s)',
-      save: 'Unable to save template',
-    };
-    const { error } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <div
-        ref={this.errorMessageRef}
-        tabIndex="-1"
-      >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={modeErrors[mode]}
-          message={error.length > 1 ? (
-            <ul className="m-0 pl-4">
-              {error.map(message => <li key={message}>{message}</li>)}
-            </ul>
-          ) : (
-            error[0]
-          )}
-        />
-      </div>
     );
   }
 
@@ -292,13 +227,13 @@ class CodeRevokeModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {mode === 'revoke' && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
                 Revoke
               </>
             </Button>,
             <SaveTemplateButton
               key="save-revoke-template-btn"
-              templateType="revoke"
+              templateType={MODAL_TYPES.revoke}
               setMode={this.setMode}
               handleSubmit={handleSubmit}
               disabled={doNotEmail}

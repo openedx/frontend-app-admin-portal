@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import CodeSearchResults from './index';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
+import CodeReminderModal from '../../containers/CodeReminderModal';
 
 jest.mock('../../data/services/EcommerceApiService');
 
@@ -32,6 +33,8 @@ const emailDefaults = {
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
+    enterpriseSlug: 'sluggy',
+    enableLearnerPortal: false,
   },
   table: {},
   emailTemplate: {
@@ -68,6 +71,8 @@ describe('<CodeSearchResults />', () => {
               <CodeSearchResults
                 onClose={jest.fn()}
                 searchQuery="test@test.com"
+                enableLearnerPortal={false}
+                enterpriseSlug="sluggy"
               />
             </Provider>
           </MemoryRouter>
@@ -303,7 +308,7 @@ describe('<CodeSearchResults />', () => {
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
       wrapper.find('RemindButton').simulate('click');
-      wrapper.find('CodeReminderModal').find('.code-remind-save-btn').first().simulate('click');
+      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
       await flushPromises();
       wrapper.update();
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
@@ -358,7 +363,7 @@ describe('<CodeSearchResults />', () => {
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
       wrapper.find('RemindButton').simulate('click');
-      wrapper.find('CodeReminderModal').find('.code-remind-save-btn').first().simulate('click');
+      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
       await flushPromises();
       wrapper.update();
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
