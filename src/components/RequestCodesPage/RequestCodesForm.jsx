@@ -68,6 +68,7 @@ class RequestCodesForm extends React.Component {
             <form onSubmit={handleSubmit}>
               <Field
                 name="emailAddress"
+                className="emailAddress"
                 type="email"
                 component={RenderField}
                 label={(
@@ -81,6 +82,7 @@ class RequestCodesForm extends React.Component {
               />
               <Field
                 name="enterpriseName"
+                className="enterpriseName"
                 type="text"
                 component={RenderField}
                 label={(
@@ -95,6 +97,7 @@ class RequestCodesForm extends React.Component {
               />
               <Field
                 name="numberOfCodes"
+                className="numberOfCodes"
                 type="number"
                 component={RenderField}
                 label="Number of Codes"
@@ -102,6 +105,7 @@ class RequestCodesForm extends React.Component {
               />
               <Field
                 name="notes"
+                className="notes"
                 type="text"
                 component={RenderField}
                 label="Notes"

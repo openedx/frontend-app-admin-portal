@@ -9,11 +9,13 @@ const RenderField = ({
   description,
   disabled,
   required,
+  className,
+  id,
   meta: { touched, error },
 }) => {
   const hasError = !!(touched && error);
   return (
-    <Form.Group>
+    <Form.Group id={id} className={className}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
         {...input}
@@ -34,6 +36,8 @@ RenderField.defaultProps = {
   description: null,
   disabled: false,
   required: false,
+  className: null,
+  id: null,
 };
 
 RenderField.propTypes = {
@@ -48,6 +52,8 @@ RenderField.propTypes = {
   description: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  className: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default RenderField;
