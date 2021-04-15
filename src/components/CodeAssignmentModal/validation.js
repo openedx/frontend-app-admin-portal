@@ -1,4 +1,6 @@
-import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../../data/constants/addUsers';
+import {
+  MAX_EMAIL_ADDRESS_ALLOWED, EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA,
+} from '../../data/constants/addUsers';
 
 export const getTooManyAssignmentsMessage = ({
   isCsv = false,
@@ -25,6 +27,7 @@ export const getInvalidEmailMessage = (invalidEmailIndices, emails) => {
 
 export const NO_EMAIL_ADDRESS_ERROR = 'No email addresses provided. Either manually enter email addresses or upload a CSV file.';
 export const BOTH_TEXT_AREA_AND_CSV_ERROR = 'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.';
+export const MAX_EMAILS_ADDRESS_ALLOWED_ERROR = 'You can add maximum of 500 Email Addresses at a time.';
 
 export const getErrors = ({
   invalidTextAreaEmails = [], textAreaEmails = [], validTextAreaEmails = [],
@@ -43,6 +46,11 @@ export const getErrors = ({
 
   if (validTextAreaEmails.length > 0 && validCsvEmails.length > 0) {
     errors._error.push(BOTH_TEXT_AREA_AND_CSV_ERROR);
+    return errors;
+  }
+
+  if (validTextAreaEmails.length > MAX_EMAIL_ADDRESS_ALLOWED) {
+    errors._error.push(MAX_EMAILS_ADDRESS_ALLOWED_ERROR);
     return errors;
   }
 

@@ -1,7 +1,11 @@
-import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../../data/constants/addUsers';
+import {
+  EMAIL_ADDRESS_CSV_FORM_DATA,
+  EMAIL_ADDRESS_TEXT_FORM_DATA,
+} from '../../data/constants/addUsers';
+import * as constants from '../../data/constants/addUsers';
 import {
   getTooManyAssignmentsMessage, getInvalidEmailMessage, getErrors,
-  NO_EMAIL_ADDRESS_ERROR, BOTH_TEXT_AREA_AND_CSV_ERROR,
+  NO_EMAIL_ADDRESS_ERROR, BOTH_TEXT_AREA_AND_CSV_ERROR, MAX_EMAILS_ADDRESS_ALLOWED_ERROR,
 } from './validation';
 
 describe('getTooManyAssignmentsMessage', () => {
@@ -173,5 +177,12 @@ describe('getErrors', () => {
   it('returns an error if both text area and csv have emails', () => {
     const result = getErrors({ validTextAreaEmails: ['foo'], validCsvEmails: ['bar'] });
     expect(result).toEqual({ _error: [BOTH_TEXT_AREA_AND_CSV_ERROR] });
+  });
+  it('returns a maximum email address error if email address are more than MAX_EMAIL_ADDRESS_ALLOWED', () => {
+    constants.MAX_EMAIL_ADDRESS_ALLOWED = 3;
+    const result = getErrors({
+      validTextAreaEmails: ['foo@bar.com', 'sue@bear.com', 'test@test.com', 'test1@test.com'],
+    });
+    expect(result).toEqual({ _error: [MAX_EMAILS_ADDRESS_ALLOWED_ERROR] });
   });
 });

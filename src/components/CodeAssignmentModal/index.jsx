@@ -5,6 +5,7 @@ import {
   Button, Icon, Modal,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
+import { logError } from '@edx/frontend-platform/logging';
 
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
@@ -17,6 +18,7 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
+import LmsApiService from '../../data/services/LmsApiService';
 import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
 import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
@@ -95,6 +97,19 @@ export class BaseCodeAssignmentModal extends React.Component {
 
   setMode(mode) {
     this.setState({ mode });
+  }
+
+  getCleanedUsersDetails(emails, usersDetailResponse) {
+    const usersDetail = [];
+    emails.forEach((email) => {
+      const detailResponse = usersDetailResponse.find(details => details.email === email);
+      usersDetail.push({
+        email,
+        lms_user_id: detailResponse ? detailResponse.lms_user_id : null,
+        username: detailResponse ? detailResponse.username : null,
+      });
+    });
+    return usersDetail;
   }
 
   validateEmailAddresses(emails, isCSV = false) {
@@ -219,7 +234,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
-  handleModalSubmit(formData) {
+  async handleModalSubmit(formData) {
     const {
       isBulkAssign,
       couponId,
@@ -284,6 +299,15 @@ export class BaseCodeAssignmentModal extends React.Component {
         enterprise_customer: enterpriseUuid,
       };
     }
+
+    let usersDetailResponse = [];
+    try {
+      const response = await LmsApiService.fetchUserDetailsFromEmail(options.emails);
+      usersDetailResponse = response.data;
+    } catch (error) {
+      logError(error);
+    }
+    options.users_details = this.getCleanedUsersDetails(options.emails, usersDetailResponse);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))
