@@ -1,15 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Hero from '../Hero';
+import { Container } from '@edx/paragon';
 
+import { Switch, Route } from 'react-router-dom';
+import Hero from '../Hero';
+import { MultipleSubscriptionsPage, SubscriptionData } from '../subscriptions';
 import CourseSearch from './CourseSearch';
 
 function BulkEnrollmentPage({ enterpriseId }) {
   return (
     <div className="container-fluid bulk-enrollment">
       <Hero title="Catalog Management" />
-      <CourseSearch enterpriseId={enterpriseId} />
+      <SubscriptionData enterpriseId={enterpriseId}>
+        <main role="main" className="manage-subscription">
+          <Switch>
+            <Route
+              path="/:enterpriseSlug/admin/catalog_management"
+              component={routeProps => (
+                <Container className="py3" fluid>
+                  <MultipleSubscriptionsPage {...routeProps} redirectPage="catalog_management" useCatalog />
+                </Container>
+              )}
+              exact
+            />
+            <Route
+              path="/:enterpriseSlug/admin/catalog_management/:subscriptionCatalogUuid"
+              component={CourseSearch}
+              exact
+            />
+          </Switch>
+        </main>
+      </SubscriptionData>
     </div>
   );
 }

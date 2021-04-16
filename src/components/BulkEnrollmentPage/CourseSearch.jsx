@@ -16,8 +16,9 @@ const searchClient = algoliasearch(
 
 export const NO_DATA_MESSAGE = 'There are no results';
 
-const CourseSearch = ({ enterpriseId, enterpriseSlug }) => {
+const CourseSearch = ({ enterpriseId, enterpriseSlug, match }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseId}`;
+  const { params: { subscriptionCatalogUuid } } = match;
 
   return (
     <SearchData>
@@ -27,7 +28,7 @@ const CourseSearch = ({ enterpriseId, enterpriseSlug }) => {
         searchClient={searchClient}
       >
         <Configure
-          filters={`enterprise_customer_uuids:${enterpriseId}`}
+          filters={`enterprise_catalog_uuids:${subscriptionCatalogUuid}`}
           hitsPerPage={25}
         />
         <SearchHeader />
@@ -46,8 +47,15 @@ CourseSearch.defaultProps = {
 };
 
 CourseSearch.propTypes = {
+  // from redux-store
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
+  // from react-router
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      subscriptionCatalogUuid: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -176,8 +176,7 @@ class EnterpriseApp extends React.Component {
                   {(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen)
                     && (
                     <Route
-                      key="bulk-enrollment"
-                      exact
+                      key="catalog_management"
                       path={`${baseUrl}/admin/catalog_management`}
                       render={routeProps => <BulkEnrollmentPage {...routeProps} />}
                     />
