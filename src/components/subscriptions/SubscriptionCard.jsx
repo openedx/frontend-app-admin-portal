@@ -11,6 +11,7 @@ const SubscriptionCard = ({
   startDate,
   expirationDate,
   redirectPage,
+  buttonText,
   licenses: {
     allocated,
     total,
@@ -19,6 +20,7 @@ const SubscriptionCard = ({
   const formattedStartDate = moment(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = moment(expirationDate).format('MMMM D, YYYY');
   const isExpired = moment().isAfter(expirationDate);
+  const buttonDisplayText = buttonText || `${isExpired ? 'View' : 'Manage'} learners`;
 
   return (
     <Card className="subscription-card w-100">
@@ -45,7 +47,7 @@ const SubscriptionCard = ({
         <div className="d-flex">
           <div className="ml-auto">
             <Button as={Link} to={`/${enterpriseSlug}/admin/${redirectPage}/${uuid}`} variant="outline-primary">
-              {isExpired ? 'View' : 'Manage'} learners
+              {buttonDisplayText}
             </Button>
           </div>
         </div>
@@ -56,6 +58,7 @@ const SubscriptionCard = ({
 
 SubscriptionCard.defaultProps = {
   redirectPage: 'subscriptions',
+  buttonText: null,
 };
 
 SubscriptionCard.propTypes = {
@@ -69,6 +72,7 @@ SubscriptionCard.propTypes = {
     total: PropTypes.number.isRequired,
   }).isRequired,
   redirectPage: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default SubscriptionCard;

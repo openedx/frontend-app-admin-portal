@@ -13,7 +13,11 @@ import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBan
 import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 import SubscriptionCard from './SubscriptionCard';
 
-const MultipleSubscriptionsPage = ({ match, redirectPage, useCatalog }) => {
+const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+
+const MultipleSubscriptionsPage = ({
+  match, redirectPage, useCatalog, leadText, buttonText,
+}) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
@@ -43,7 +47,7 @@ const MultipleSubscriptionsPage = ({ match, redirectPage, useCatalog }) => {
         <Col>
           <h2>Cohorts</h2>
           <p className="lead">
-            Invite your learners to access your course catalog and manage your subscription cohorts
+            {leadText}
           </p>
         </Col>
       </Row>
@@ -58,6 +62,7 @@ const MultipleSubscriptionsPage = ({ match, redirectPage, useCatalog }) => {
             expirationDate={subscription?.expirationDate}
             licenses={subscription?.licenses || {}}
             redirectPage={redirectPage}
+            buttonText={buttonText}
           />
         ))}
       </CardGrid>
@@ -68,6 +73,8 @@ const MultipleSubscriptionsPage = ({ match, redirectPage, useCatalog }) => {
 MultipleSubscriptionsPage.defaultProps = {
   redirectPage: 'subscriptions',
   useCatalog: false,
+  leadText: DEFAULT_LEAD_TEXT,
+  buttonText: null,
 };
 
 MultipleSubscriptionsPage.propTypes = {
@@ -78,6 +85,8 @@ MultipleSubscriptionsPage.propTypes = {
     }).isRequired,
   }).isRequired,
   useCatalog: PropTypes.bool,
+  leadText: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default MultipleSubscriptionsPage;

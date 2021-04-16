@@ -18,8 +18,14 @@ function BulkEnrollmentPage({ enterpriseId }) {
             <Route
               path="/:enterpriseSlug/admin/catalog_management"
               component={routeProps => (
-                <Container className="py3" fluid>
-                  <MultipleSubscriptionsPage {...routeProps} redirectPage="catalog_management" useCatalog />
+                <Container className="py-3" fluid>
+                  <MultipleSubscriptionsPage
+                    {...routeProps}
+                    redirectPage="catalog_management"
+                    useCatalog
+                    leadText="Enroll your learners in courses"
+                    buttonText="Enroll learners"
+                  />
                 </Container>
               )}
               exact
