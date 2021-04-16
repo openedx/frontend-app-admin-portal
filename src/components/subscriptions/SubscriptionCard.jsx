@@ -10,6 +10,7 @@ const SubscriptionCard = ({
   enterpriseSlug,
   startDate,
   expirationDate,
+  redirectPage,
   licenses: {
     allocated,
     total,
@@ -43,7 +44,7 @@ const SubscriptionCard = ({
         </p>
         <div className="d-flex">
           <div className="ml-auto">
-            <Button as={Link} to={`/${enterpriseSlug}/admin/subscriptions/${uuid}`} variant="outline-primary">
+            <Button as={Link} to={`/${enterpriseSlug}/admin/${redirectPage}/${uuid}`} variant="outline-primary">
               {isExpired ? 'View' : 'Manage'} learners
             </Button>
           </div>
@@ -51,6 +52,10 @@ const SubscriptionCard = ({
       </Card.Body>
     </Card>
   );
+};
+
+SubscriptionCard.defaultProps = {
+  redirectPage: 'subscriptions',
 };
 
 SubscriptionCard.propTypes = {
@@ -63,6 +68,7 @@ SubscriptionCard.propTypes = {
     allocated: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired,
   }).isRequired,
+  redirectPage: PropTypes.string,
 };
 
 export default SubscriptionCard;

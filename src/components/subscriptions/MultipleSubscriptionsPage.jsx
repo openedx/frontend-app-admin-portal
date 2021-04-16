@@ -13,7 +13,7 @@ import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBan
 import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 import SubscriptionCard from './SubscriptionCard';
 
-const MultipleSubscriptionsPage = ({ match }) => {
+const MultipleSubscriptionsPage = ({ match, redirectPage, useCatalog }) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
@@ -24,7 +24,7 @@ const MultipleSubscriptionsPage = ({ match }) => {
 
   if (subscriptions.length === 1) {
     return (
-      <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
+      <Redirect to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} />
     );
   }
 
@@ -51,12 +51,13 @@ const MultipleSubscriptionsPage = ({ match }) => {
         {subscriptions.map(subscription => (
           <SubscriptionCard
             key={subscription?.uuid}
-            uuid={subscription?.uuid}
+            uuid={useCatalog ? subscription?.enterpriseCatalogUuid : subscription?.uuid}
             title={subscription?.title}
             enterpriseSlug={enterpriseSlug}
             startDate={subscription?.startDate}
             expirationDate={subscription?.expirationDate}
             licenses={subscription?.licenses || {}}
+            redirectPage={redirectPage}
           />
         ))}
       </CardGrid>
@@ -64,12 +65,19 @@ const MultipleSubscriptionsPage = ({ match }) => {
   );
 };
 
+MultipleSubscriptionsPage.defaultProps = {
+  redirectPage: 'subscriptions',
+  useCatalog: false,
+};
+
 MultipleSubscriptionsPage.propTypes = {
+  redirectPage: PropTypes.string,
   match: PropTypes.shape({
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  useCatalog: PropTypes.bool,
 };
 
 export default MultipleSubscriptionsPage;
