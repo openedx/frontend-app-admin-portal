@@ -8,7 +8,7 @@ class LmsApiService {
 
   static baseUrl = configuration.LMS_BASE_URL;
 
-  static accountsUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts`;
+  static accountsSearchEmailsUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts/search_emails`;
 
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
 
@@ -207,8 +207,12 @@ class LmsApiService {
   }
 
   static fetchUserDetailsFromEmail(emails) {
-    const accountEmailsUrl = `${LmsApiService.accountsUrl}?email=${emails.join()}`;
-    return LmsApiService.apiClient().get(accountEmailsUrl);
+    return LmsApiService.apiClient().post(`${LmsApiService.accountsSearchEmailsUrl}`, emails,
+      {
+        headers: {
+          'Content-Type': 'application/merge-patch+json',
+        },
+      });
   }
 }
 

@@ -27,7 +27,7 @@ export const getInvalidEmailMessage = (invalidEmailIndices, emails) => {
 
 export const NO_EMAIL_ADDRESS_ERROR = 'No email addresses provided. Either manually enter email addresses or upload a CSV file.';
 export const BOTH_TEXT_AREA_AND_CSV_ERROR = 'You uploaded a CSV and manually entered email addresses. Please only use one of these fields.';
-export const MAX_EMAILS_ADDRESS_ALLOWED_ERROR = 'You can add maximum of 500 Email Addresses at a time.';
+export const MAX_EMAILS_ADDRESS_ALLOWED_ERROR = 'You have uploaded more than 500 email addresses. Please upload 500 or less.';
 
 export const getErrors = ({
   invalidTextAreaEmails = [], textAreaEmails = [], validTextAreaEmails = [],

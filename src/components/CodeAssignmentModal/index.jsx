@@ -99,17 +99,17 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.setState({ mode });
   }
 
-  getCleanedUsersDetails(emails, usersDetailResponse) {
-    const usersDetail = [];
+  getCleanedUsers(emails, usersResponse) {
+    const users = [];
     emails.forEach((email) => {
-      const detailResponse = usersDetailResponse.find(details => details.email === email);
-      usersDetail.push({
+      const user = usersResponse.find(details => details.email === email);
+      users.push({
         email,
-        lms_user_id: detailResponse ? detailResponse.lms_user_id : null,
-        username: detailResponse ? detailResponse.username : null,
+        lms_user_id: user ? user.id : null,
+        username: user ? user.username : null,
       });
     });
-    return usersDetail;
+    return users;
   }
 
   validateEmailAddresses(emails, isCSV = false) {
@@ -300,14 +300,15 @@ export class BaseCodeAssignmentModal extends React.Component {
       };
     }
 
-    let usersDetailResponse = [];
+    let usersResponse = [];
     try {
-      const response = await LmsApiService.fetchUserDetailsFromEmail(options.emails);
-      usersDetailResponse = response.data;
+      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: options.emails });
+      usersResponse = response.data;
     } catch (error) {
       logError(error);
+      throw new SubmissionError({ _error: error });
     }
-    options.users_details = this.getCleanedUsersDetails(options.emails, usersDetailResponse);
+    options.users = this.getCleanedUsers(options.emails, usersResponse);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))
