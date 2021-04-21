@@ -1,5 +1,8 @@
 # frontend-app-admin-portal
 
+![Build Status](https://github.com/edx/frontend-app-admin-portal/actions/workflows/ci.yml/badge.svg)
+![Coveralls](https://img.shields.io/coveralls/edx/frontend-app-admin-portal.svg?branch=master)
+
 ## Overview
 frontend-app-admin-portal is a frontend that provides branded learning experiences as well as a dashboard for enterprise learning administrators.
 
