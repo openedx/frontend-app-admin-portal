@@ -6,8 +6,7 @@ import { SubscriptionContext } from './SubscriptionData';
 
 import SubscriptionExpiration from './expiration/SubscriptionExpiration';
 import MultipleSubscriptionsPicker from './MultipleSubscriptionPicker';
-
-const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from './data/constants';
 
 const MultipleSubscriptionsPage = ({
   match, redirectPage, useCatalog, leadText, buttonText,
@@ -35,13 +34,14 @@ const MultipleSubscriptionsPage = ({
         leadText={leadText}
         buttonText={buttonText}
         subscriptions={subscriptions}
+        redirectPage={redirectPage}
       />
     </>
   );
 };
 
 MultipleSubscriptionsPage.defaultProps = {
-  redirectPage: 'subscriptions',
+  redirectPage: DEFAULT_REDIRECT_PAGE,
   useCatalog: false,
   leadText: DEFAULT_LEAD_TEXT,
   buttonText: null,

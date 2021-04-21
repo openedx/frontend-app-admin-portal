@@ -7,8 +7,7 @@ import {
 } from '@edx/paragon';
 
 import SubscriptionCard from './SubscriptionCard';
-
-export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+import { DEFAULT_LEAD_TEXT } from './data/constants';
 
 const MultipleSubscriptionsPicker = ({
   enterpriseSlug, useCatalog, leadText, buttonText, redirectPage, subscriptions,

@@ -4,8 +4,9 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { renderWithRouter } from '../../test/testUtils';
+import { DEFAULT_LEAD_TEXT } from '../data/constants';
 
-import MultipleSubscriptionsPicker, { DEFAULT_LEAD_TEXT } from '../MultipleSubscriptionPicker';
+import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
 
 const defaultProps = {
   enterpriseSlug: 'sluggy',
