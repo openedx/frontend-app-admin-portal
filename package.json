@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build",
     "start": "fedx-scripts webpack-dev-server --progress",
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "fedx-scripts jest --passWithNoTests --maxWorkers=50%",
+    "test": "fedx-scripts jest --coverage --passWithNoTests --maxWorkers=50%",
     "snapshot": "fedx-scripts jest --updateSnapshot"
   },
   "license": "AGPL-3.0",
