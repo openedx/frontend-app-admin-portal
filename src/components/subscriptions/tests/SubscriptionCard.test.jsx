@@ -27,25 +27,26 @@ describe('SubscriptionCard', () => {
     renderWithRouter(<SubscriptionCard {...defaultProps} />);
     expect(screen.getByText(defaultProps.title)).toBeInTheDocument();
   });
-
-  it('sets the correct default link', () => {
-    const buttonText = 'click me!';
-    const { history } = renderWithRouter(
-      <SubscriptionCard {...defaultProps} buttonText={buttonText} />,
-    );
-    const button = screen.getByText(buttonText);
-    userEvent.click(button);
-    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${defaultProps.uuid}`);
-  });
-  it('sets the correct link from props', () => {
-    const buttonText = 'click me!';
-    const redirectPage = 'customredirect';
-    const { history } = renderWithRouter(
-      <SubscriptionCard {...defaultProps} buttonText={buttonText} redirectPage={redirectPage} />,
-    );
-    const button = screen.getByText(buttonText);
-    userEvent.click(button);
-    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${redirectPage}/${defaultProps.uuid}`);
+  describe('button link', () => {
+    it('sets the correct default link', () => {
+      const buttonText = 'click me!';
+      const { history } = renderWithRouter(
+        <SubscriptionCard {...defaultProps} buttonText={buttonText} />,
+      );
+      const button = screen.getByText(buttonText);
+      userEvent.click(button);
+      expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${defaultProps.uuid}`);
+    });
+    it('sets the correct link from props, custom redirect', () => {
+      const buttonText = 'click me!';
+      const redirectPage = 'customredirect';
+      const { history } = renderWithRouter(
+        <SubscriptionCard {...defaultProps} buttonText={buttonText} redirectPage={redirectPage} />,
+      );
+      const button = screen.getByText(buttonText);
+      userEvent.click(button);
+      expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${redirectPage}/${defaultProps.uuid}`);
+    });
   });
   describe('button text', () => {
     it('displays text received as a prop', () => {

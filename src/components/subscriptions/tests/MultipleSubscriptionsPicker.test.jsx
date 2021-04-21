@@ -1,21 +1,23 @@
-import {
-  screen,
-} from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
+import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from '../../test/testUtils';
-import { DEFAULT_LEAD_TEXT } from '../data/constants';
+import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from '../data/constants';
 
 import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
 
+const firstCatalogUuid = 'catalogID1';
+const firstEnterpriseUuid = 'ided';
 const defaultProps = {
   enterpriseSlug: 'sluggy',
   subscriptions: [
     {
-      uuid: 'ided',
+      uuid: firstEnterpriseUuid,
       title: 'Enterprise A',
       startDate: '2021-04-13',
       expirationDate: '2024-04-13',
+      enterpriseCatalogUuid: firstCatalogUuid,
       licenses: {
         allocated: 10,
         total: 20,
@@ -26,6 +28,7 @@ const defaultProps = {
       title: 'Enterprise B',
       startDate: '2021-03-13',
       expirationDate: '2024-10-13',
+      enterpriseCatalogUuid: 'catalogID2',
       licenses: {
         allocated: 11,
         total: 30,
@@ -53,5 +56,23 @@ describe('MultipleSubscriptionsPicker', () => {
     defaultProps.subscriptions.forEach((subscription) => {
       expect(screen.getByText(subscription.title)).toBeInTheDocument();
     });
+  });
+  it('sets the uuid to the catalog uuid when useCatalog is true', () => {
+    const buttonText = 'Click me!';
+    const { history } = renderWithRouter(
+      <MultipleSubscriptionsPicker {...defaultProps} useCatalog buttonText={buttonText} />,
+    );
+    const button = screen.queryAllByText(buttonText)[0];
+    userEvent.click(button);
+    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${firstCatalogUuid}`);
+  });
+  it('sets the uuid to the enterprise uuid when useCatalog is false', () => {
+    const buttonText = 'Click me!';
+    const { history } = renderWithRouter(
+      <MultipleSubscriptionsPicker {...defaultProps} buttonText={buttonText} />,
+    );
+    const button = screen.queryAllByText(buttonText)[0];
+    userEvent.click(button);
+    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${firstEnterpriseUuid}`);
   });
 });
