@@ -6,6 +6,7 @@
   "scripts": {
     "build": "fedx-scripts webpack",
     "build:gh-pages": "NODE_ENV=development BABEL_ENV=development webpack --config=config/webpack.dev.config.js",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "deploy:gh-pages": "npm run build:gh-pages && gh-pages -d dist",
     "is-es5": "es-check es5 ./dist/*.js",
     "lint": "fedx-scripts eslint --ext .js --ext .jsx .",
@@ -86,6 +87,7 @@
     "@testing-library/react": "10.4.9",
     "@testing-library/user-event": "12.8.1",
     "codecov": "3.7.1",
+    "coveralls": "3.1.0",
     "css-loader": "3.5.3",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
