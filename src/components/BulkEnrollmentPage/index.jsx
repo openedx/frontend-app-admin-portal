@@ -23,7 +23,7 @@ function BulkEnrollmentPage({ enterpriseId }) {
                     {...routeProps}
                     redirectPage="catalog_management"
                     useCatalog
-                    leadText="Enroll your learners in courses"
+                    leadText="Choose a subscription to enroll your learners in courses"
                     buttonText="Enroll learners"
                   />
                 </Container>
