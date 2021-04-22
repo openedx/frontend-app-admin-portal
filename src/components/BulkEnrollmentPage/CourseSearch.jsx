@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import algoliasearch from 'algoliasearch/lite';
 import { connect } from 'react-redux';

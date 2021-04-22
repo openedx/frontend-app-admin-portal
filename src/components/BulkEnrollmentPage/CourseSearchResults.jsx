@@ -6,12 +6,11 @@ import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, Toast, Button,
+  DataTable, /* Toast, */ Button,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
-import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
-import BulkEnrollmentStepper from './BulkEnrollmentStepper';
+import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
@@ -25,13 +24,13 @@ export const TABLE_HEADERS = {
   enroll: '',
 };
 
-export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
+export const EnrollButton = ({ row, setStepperOpen }) => {
   const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
-  const handleClick = useMemo(() => () => {
-    setSelectedCourses(row);
-    setSelectedCourseRuns([row.original?.advertised_course_run?.key]);
-    setModalOpen(true);
-  }, [setSelectedCourseRuns, setModalOpen, row.original?.advertised_course_run?.key]);
+  const handleClick = () => {
+    setSelectedCourses([row.original]);
+    setStepperOpen(true);
+  };
+
   return (
     <Button
       className="enroll-button"
@@ -51,8 +50,7 @@ EnrollButton.propTypes = {
       }),
     }),
   }).isRequired,
-  setSelectedCourseRuns: PropTypes.func.isRequired,
-  setModalOpen: PropTypes.func.isRequired,
+  setStepperOpen: PropTypes.func.isRequired,
 };
 
 export const BaseCourseSearchResults = ({
@@ -90,20 +88,14 @@ export const BaseCourseSearchResults = ({
     [searchState?.page, refinementsFromQueryParams],
   );
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
-  const [showToast, setShowToast] = useState(false);
-  const [enrolledLearners, setEnrolledLearners] = useState([]);
+  const [stepperOpen, setStepperOpen] = useState(false);
+  // const [showToast, setShowToast] = useState(false);
   const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
 
   const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
-    // const courseRunKeys = selectedRows?.map(
-    //   (selectedRow) => selectedRow.original?.advertised_course_run?.key,
-    // ) || [];
-    // setSelectedCourseRuns(courseRunKeys);
-    setSelectedCourses(selectedRows);
-    setModalOpen(true);
-  }, [setModalOpen, setSelectedCourseRuns]);
+    setSelectedCourses(selectedRows.map((row) => row.original));
+    setStepperOpen(true);
+  }, [setStepperOpen, setSelectedCourses]);
 
   if (isSearchStalled) {
     return (
@@ -135,24 +127,20 @@ export const BaseCourseSearchResults = ({
 
   return (
     <>
-      {/* <BulkEnrollmentModal
-        onSuccess={() => {
-          setShowToast(true);
-          setModalOpen(false);
-        }}
-        enterpriseUuid={enterpriseId}
-        onClose={() => setModalOpen(false)}
-        open={modalOpen}
-        selectedCourseRunKeys={selectedCourseRuns}
-        setEnrolledLearners={setEnrolledLearners}
-      /> */}
-      <BulkEnrollmentStepper isOpen={modalOpen} close={() => setModalOpen(false)} subscriptionUUID={subscriptionUUID} />
-      <Toast
+      <BulkEnrollmentStepper
+        isOpen={stepperOpen}
+        close={() => setStepperOpen(false)}
+        subscriptionUUID={subscriptionUUID}
+        enterpriseId={enterpriseId}
+      />
+      {/* TODO: Update toast when stepper is complete to show the enrollment message.
+        And/or use the existing toast framework */}
+      {/* <Toast
         onClose={() => setShowToast(false)}
         show={showToast}
       >
         {`${enrolledLearners} learners have been enrolled.`}
-      </Toast>
+      </Toast> */}
       <DataTable
         columns={columns}
         data={searchResults?.hits || []}
@@ -172,8 +160,8 @@ export const BaseCourseSearchResults = ({
             Cell: ({ row }) => (
               <EnrollButton
                 row={row}
-                setSelectedCourseRuns={setSelectedCourseRuns}
-                setModalOpen={setModalOpen}
+                setSelectedCourseRuns={setSelectedCourses}
+                setStepperOpen={setStepperOpen}
               />
             ),
           },
