@@ -151,7 +151,7 @@ export const BaseCourseSearchResults = ({
         onClose={() => setShowToast(false)}
         show={showToast}
       >
-        {enrolledLearners} learners have been enrolled.
+        {`${enrolledLearners} learners have been enrolled.`}
       </Toast>
       <DataTable
         columns={columns}
