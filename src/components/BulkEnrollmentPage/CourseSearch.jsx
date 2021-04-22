@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
 import algoliasearch from 'algoliasearch/lite';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,6 +14,7 @@ import CourseSearchResults from './CourseSearchResults';
 import { configuration } from '../../config';
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import BulkEnrollContextProvider from './BulkEnrollmentContext';
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -53,10 +55,13 @@ export const BaseCourseSearch = ({
           hitsPerPage={25}
         />
         <SearchHeader />
-        <CourseSearchResults
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-        />
+        <BulkEnrollContextProvider>
+          <CourseSearchResults
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            subscriptionUUID={subscription.uuid}
+          />
+        </BulkEnrollContextProvider>
       </InstantSearch>
     </SearchData>
   );

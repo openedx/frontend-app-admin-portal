@@ -11,8 +11,10 @@ import {
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
 import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
+import BulkEnrollmentStepper from './BulkEnrollmentStepper';
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
+import { BulkEnrollContext } from './BulkEnrollmentContext';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -24,7 +26,9 @@ export const TABLE_HEADERS = {
 };
 
 export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
+  const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
   const handleClick = useMemo(() => () => {
+    setSelectedCourses(row);
     setSelectedCourseRuns([row.original?.advertised_course_run?.key]);
     setModalOpen(true);
   }, [setSelectedCourseRuns, setModalOpen, row.original?.advertised_course_run?.key]);
@@ -59,6 +63,7 @@ export const BaseCourseSearchResults = ({
   searchState,
   error,
   enterpriseSlug,
+  subscriptionUUID,
 }) => {
   const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
@@ -89,12 +94,14 @@ export const BaseCourseSearchResults = ({
   const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [enrolledLearners, setEnrolledLearners] = useState([]);
+  const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
 
   const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
-    const courseRunKeys = selectedRows?.map(
-      (selectedRow) => selectedRow.original?.advertised_course_run?.key,
-    ) || [];
-    setSelectedCourseRuns(courseRunKeys);
+    // const courseRunKeys = selectedRows?.map(
+    //   (selectedRow) => selectedRow.original?.advertised_course_run?.key,
+    // ) || [];
+    // setSelectedCourseRuns(courseRunKeys);
+    setSelectedCourses(selectedRows);
     setModalOpen(true);
   }, [setModalOpen, setSelectedCourseRuns]);
 
@@ -128,7 +135,7 @@ export const BaseCourseSearchResults = ({
 
   return (
     <>
-      <BulkEnrollmentModal
+      {/* <BulkEnrollmentModal
         onSuccess={() => {
           setShowToast(true);
           setModalOpen(false);
@@ -138,7 +145,8 @@ export const BaseCourseSearchResults = ({
         open={modalOpen}
         selectedCourseRunKeys={selectedCourseRuns}
         setEnrolledLearners={setEnrolledLearners}
-      />
+      /> */}
+      <BulkEnrollmentStepper isOpen={modalOpen} close={() => setModalOpen(false)} subscriptionUUID={subscriptionUUID} />
       <Toast
         onClose={() => setShowToast(false)}
         show={showToast}
@@ -207,6 +215,7 @@ BaseCourseSearchResults.propTypes = {
   // from parent
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string.isRequired,
+  subscriptionUUID: PropTypes.string.isRequired,
 };
 
 export default connectStateResults(BaseCourseSearchResults);
