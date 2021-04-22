@@ -91,7 +91,7 @@ class Sidebar extends React.Component {
       },
       {
         title: 'Catalog Management',
-        to: `${baseUrl}/admin/catalog_management`,
+        to: `${baseUrl}/admin/catalog-management`,
         icon: faBookOpen,
         hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
       },

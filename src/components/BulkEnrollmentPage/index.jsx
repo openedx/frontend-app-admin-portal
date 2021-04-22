@@ -16,12 +16,12 @@ function BulkEnrollmentPage({ enterpriseId }) {
         <main role="main" className="manage-subscription">
           <Switch>
             <Route
-              path="/:enterpriseSlug/admin/catalog_management"
+              path="/:enterpriseSlug/admin/catalog-management"
               component={routeProps => (
                 <Container className="py-3" fluid>
                   <MultipleSubscriptionsPage
                     {...routeProps}
-                    redirectPage="catalog_management"
+                    redirectPage="catalog-management"
                     useCatalog
                     leadText="Choose a subscription to enroll your learners in courses"
                     buttonText="Enroll learners"
@@ -31,7 +31,7 @@ function BulkEnrollmentPage({ enterpriseId }) {
               exact
             />
             <Route
-              path="/:enterpriseSlug/admin/catalog_management/:subscriptionUUID"
+              path="/:enterpriseSlug/admin/catalog-management/:subscriptionUUID"
               component={CourseSearch}
               exact
             />
