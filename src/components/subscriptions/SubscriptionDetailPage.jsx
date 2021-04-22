@@ -8,12 +8,19 @@ import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvid
 import { useSubscriptionFromParams } from './data/contextHooks';
 
 import { NotFound } from '../NotFoundPage';
+import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 
 const SubscriptionDetailPage = ({ match }) => {
-  const subscription = useSubscriptionFromParams({ match });
-  if (!subscription) {
+  const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
+  if (!subscription && !loadingSubscription) {
     return (
       <NotFound />
+    );
+  }
+
+  if (loadingSubscription) {
+    return (
+      <SubscriptionDetailsSkeleton />
     );
   }
   return (

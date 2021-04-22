@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
@@ -26,7 +26,9 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
     setSubscriptions({ ...subscriptions });
   };
 
-  useMemo((page = 1) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect((page = 1) => {
     LicenseManagerApiService.fetchSubscriptions({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
         const { data: subscriptionsData } = camelCaseObject(response);
@@ -38,12 +40,15 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
           ...errors,
           [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
         });
+      }).finally(() => {
+        setLoading(false);
       });
   }, [enterpriseId]);
 
   return {
     subscriptions,
     forceRefresh,
+    loading,
   };
 };
 
@@ -144,6 +149,7 @@ export const useSubscriptionData = ({ enterpriseId }) => {
   const {
     subscriptions,
     forceRefresh,
+    loading,
   } = useSubscriptions({ enterpriseId, errors, setErrors });
 
   return {
@@ -151,5 +157,6 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     errors,
     setErrors,
     forceRefresh,
+    loading,
   };
 };
