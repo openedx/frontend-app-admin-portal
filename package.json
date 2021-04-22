@@ -22,9 +22,9 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
     "@edx/brand": "npm:@edx/brand-openedx@^1.1.0",
-    "@edx/frontend-enterprise": "^5.2.1",
+    "@edx/frontend-enterprise": "^5.5.1",
     "@edx/frontend-platform": "1.8.4",
-    "@edx/paragon": "^14.5.0",
+    "@edx/paragon": "14.7.0",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
