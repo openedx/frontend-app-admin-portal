@@ -9,6 +9,7 @@ import {
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
+  TAB_ALL_USERS,
 } from './constants';
 
 /*
@@ -94,6 +95,40 @@ export const useSubscriptionUsersOverview = ({
   }, [subscriptionUUID, search]);
 
   return subscriptionUsersOverview;
+};
+
+export const useAllSubscriptionUsers = ({
+  subscriptionUUID,
+  errors,
+  setErrors,
+}) => {
+  const [subscriptionUsers, setSubscriptionUsers] = useState({
+    results: [],
+    count: 0,
+    next: null,
+    previous: null,
+  });
+  console.log('SUBSCRIPTION UUID', subscriptionUUID)
+
+  useEffect(() => {
+    if (!subscriptionUUID) {
+      return;
+    }
+
+    LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, { status: licenseStatusByTab[TAB_ALL_USERS] })
+      .then((response) => {
+        setSubscriptionUsers(camelCaseObject(response.data));
+      })
+      .catch((err) => {
+        logError(err);
+        setErrors({
+          ...errors,
+          [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
+        });
+      });
+  }, [subscriptionUUID]);
+
+  return subscriptionUsers;
 };
 
 /*
