@@ -9,7 +9,7 @@ import MultipleSubscriptionsPicker from './MultipleSubscriptionPicker';
 import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from './data/constants';
 
 const MultipleSubscriptionsPage = ({
-  match, redirectPage, useCatalog, leadText, buttonText,
+  match, redirectPage, leadText, buttonText,
 }) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
@@ -30,7 +30,6 @@ const MultipleSubscriptionsPage = ({
       <SubscriptionExpiration />
       <MultipleSubscriptionsPicker
         enterpriseSlug={enterpriseSlug}
-        useCatalog={useCatalog}
         leadText={leadText}
         buttonText={buttonText}
         subscriptions={subscriptions}
@@ -42,7 +41,6 @@ const MultipleSubscriptionsPage = ({
 
 MultipleSubscriptionsPage.defaultProps = {
   redirectPage: DEFAULT_REDIRECT_PAGE,
-  useCatalog: false,
   leadText: DEFAULT_LEAD_TEXT,
   buttonText: null,
 };
@@ -54,7 +52,6 @@ MultipleSubscriptionsPage.propTypes = {
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  useCatalog: PropTypes.bool,
   leadText: PropTypes.string,
   buttonText: PropTypes.string,
 };

@@ -57,16 +57,7 @@ describe('MultipleSubscriptionsPicker', () => {
       expect(screen.getByText(subscription.title)).toBeInTheDocument();
     });
   });
-  it('sets the uuid to the catalog uuid when useCatalog is true', () => {
-    const buttonText = 'Click me!';
-    const { history } = renderWithRouter(
-      <MultipleSubscriptionsPicker {...defaultProps} useCatalog buttonText={buttonText} />,
-    );
-    const button = screen.queryAllByText(buttonText)[0];
-    userEvent.click(button);
-    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${firstCatalogUuid}`);
-  });
-  it('sets the uuid to the enterprise uuid when useCatalog is false', () => {
+  it('sets the correct url on the button link', () => {
     const buttonText = 'Click me!';
     const { history } = renderWithRouter(
       <MultipleSubscriptionsPicker {...defaultProps} buttonText={buttonText} />,

@@ -10,7 +10,7 @@ import SubscriptionCard from './SubscriptionCard';
 import { DEFAULT_LEAD_TEXT } from './data/constants';
 
 const MultipleSubscriptionsPicker = ({
-  enterpriseSlug, useCatalog, leadText, buttonText, redirectPage, subscriptions,
+  enterpriseSlug, leadText, buttonText, redirectPage, subscriptions,
 }) => (
   <>
     <Row>
@@ -25,7 +25,7 @@ const MultipleSubscriptionsPicker = ({
       {subscriptions.map(subscription => (
         <SubscriptionCard
           key={subscription?.uuid}
-          uuid={useCatalog ? subscription?.enterpriseCatalogUuid : subscription?.uuid}
+          uuid={subscription?.uuid}
           title={subscription?.title}
           enterpriseSlug={enterpriseSlug}
           startDate={subscription?.startDate}
@@ -41,7 +41,6 @@ const MultipleSubscriptionsPicker = ({
 
 MultipleSubscriptionsPicker.defaultProps = {
   redirectPage: 'subscriptions',
-  useCatalog: false,
   leadText: DEFAULT_LEAD_TEXT,
   buttonText: null,
 };
@@ -51,7 +50,6 @@ MultipleSubscriptionsPicker.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   leadText: PropTypes.string,
   redirectPage: PropTypes.string,
-  useCatalog: PropTypes.bool,
   subscriptions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 

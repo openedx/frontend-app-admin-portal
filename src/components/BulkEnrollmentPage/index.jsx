@@ -31,7 +31,7 @@ function BulkEnrollmentPage({ enterpriseId }) {
               exact
             />
             <Route
-              path="/:enterpriseSlug/admin/catalog_management/:subscriptionCatalogUuid"
+              path="/:enterpriseSlug/admin/catalog_management/:subscriptionUUID"
               component={CourseSearch}
               exact
             />

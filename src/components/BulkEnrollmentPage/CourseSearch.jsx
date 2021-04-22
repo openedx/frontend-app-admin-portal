@@ -8,6 +8,8 @@ import { InstantSearch, Configure } from 'react-instantsearch-dom';
 import { SearchHeader, SearchData } from '@edx/frontend-enterprise';
 import CourseSearchResults from './CourseSearchResults';
 import { configuration } from '../../config';
+import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
+import { NotFound } from '../NotFoundPage';
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -18,7 +20,12 @@ export const NO_DATA_MESSAGE = 'There are no results';
 
 const CourseSearch = ({ enterpriseId, enterpriseSlug, match }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseId}`;
-  const { params: { subscriptionCatalogUuid } } = match;
+  const subscription = useSubscriptionFromParams({ match });
+  if (!subscription) {
+    return (
+      <NotFound />
+    );
+  }
 
   return (
     <SearchData>
@@ -28,7 +35,7 @@ const CourseSearch = ({ enterpriseId, enterpriseSlug, match }) => {
         searchClient={searchClient}
       >
         <Configure
-          filters={`enterprise_catalog_uuids:${subscriptionCatalogUuid}`}
+          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid}`}
           hitsPerPage={25}
         />
         <SearchHeader />
@@ -51,11 +58,7 @@ CourseSearch.propTypes = {
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   // from react-router
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      subscriptionCatalogUuid: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  match: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = state => ({
