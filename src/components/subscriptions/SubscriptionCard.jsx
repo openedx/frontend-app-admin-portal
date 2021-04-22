@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Card, Badge, Button } from '@edx/paragon';
+import { DEFAULT_REDIRECT_PAGE } from './data/constants';
 
 const SubscriptionCard = ({
   uuid,
@@ -57,7 +58,7 @@ const SubscriptionCard = ({
 };
 
 SubscriptionCard.defaultProps = {
-  redirectPage: 'subscriptions',
+  redirectPage: DEFAULT_REDIRECT_PAGE,
   buttonText: null,
 };
 

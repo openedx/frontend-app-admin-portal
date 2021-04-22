@@ -7,7 +7,7 @@ import {
 } from '@edx/paragon';
 
 import SubscriptionCard from './SubscriptionCard';
-import { DEFAULT_LEAD_TEXT } from './data/constants';
+import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from './data/constants';
 
 const MultipleSubscriptionsPicker = ({
   enterpriseSlug, leadText, buttonText, redirectPage, subscriptions,
@@ -40,7 +40,7 @@ const MultipleSubscriptionsPicker = ({
 );
 
 MultipleSubscriptionsPicker.defaultProps = {
-  redirectPage: 'subscriptions',
+  redirectPage: DEFAULT_REDIRECT_PAGE,
   leadText: DEFAULT_LEAD_TEXT,
   buttonText: null,
 };
