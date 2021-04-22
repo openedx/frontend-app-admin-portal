@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export const BulkEnrollContext = createContext({});
 
-export const BulkEnrollContextProvider = ({ children }) => {
+const BulkEnrollContextProvider = ({ children }) => {
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [selectedEmails, setSelectedEmails] = useState([]);
   const [selectedSubscription, setSelectedSubscription] = useState({});

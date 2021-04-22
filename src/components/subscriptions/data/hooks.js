@@ -108,7 +108,6 @@ export const useAllSubscriptionUsers = ({
     next: null,
     previous: null,
   });
-  console.log('SUBSCRIPTION UUID', subscriptionUUID)
 
   useEffect(() => {
     if (!subscriptionUUID) {
