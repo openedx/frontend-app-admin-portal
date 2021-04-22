@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { FullscreenModal, Stepper, Button, Container } from '@edx/paragon';
-import { AddLearnersStep } from './AddLearnersStep';
+import PropTypes from 'prop-types';
+import {
+  FullscreenModal, Stepper, Button, Container,
+} from '@edx/paragon';
+import AddLearnersStep from './AddLearnersStep';
+import ReviewStep from './ReviewStep';
 
 const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
   const steps = ['addLearners', 'review'];
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  console.log('CUTTENT STEP', currentStep)
 
   return (
     <>
@@ -27,7 +30,7 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="review">
-                <Button variant="outline-primary" onClick={() => setCurrentStep('add-learners')}>
+                <Button variant="outline-primary" onClick={() => setCurrentStep('addLearners')}>
                   Previous
                 </Button>
                 <Stepper.ActionRow.Spacer />
@@ -42,13 +45,19 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
             </Stepper.Step>
 
             <Stepper.Step eventKey="review" title="Review">
-              <h2>Review your work</h2>
+              <ReviewStep />
             </Stepper.Step>
           </Container>
         </FullscreenModal>
       </Stepper>
     </>
   );
+};
+
+BulkEnrollmentStepper.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  subscriptionUUID: PropTypes.string.isRequired,
 };
 
 export default BulkEnrollmentStepper;
