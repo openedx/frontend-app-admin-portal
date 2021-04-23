@@ -22,6 +22,7 @@ import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
+import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -116,7 +117,7 @@ class EnterpriseApp extends React.Component {
     }
 
     if (loading) {
-      return <LoadingMessage className="overview" />;
+      return <EnterpriseAppSkeleton />;
     }
     return (
       <div className="enterprise-app">
