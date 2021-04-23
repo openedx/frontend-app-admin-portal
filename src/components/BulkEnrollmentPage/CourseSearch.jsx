@@ -1,15 +1,18 @@
 import React from 'react';
-
 import algoliasearch from 'algoliasearch/lite';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { Redirect } from 'react-router';
+
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
 import { SearchHeader, SearchData } from '@edx/frontend-enterprise';
+import Skeleton from 'react-loading-skeleton';
+
 import CourseSearchResults from './CourseSearchResults';
 import { configuration } from '../../config';
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
-import { NotFound } from '../NotFoundPage';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -18,14 +21,22 @@ const searchClient = algoliasearch(
 
 export const NO_DATA_MESSAGE = 'There are no results';
 
-const CourseSearch = ({
+export const BaseCourseSearch = ({
   enterpriseId, enterpriseSlug, enterpriseName, match,
 }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseName}`;
-  const subscription = useSubscriptionFromParams({ match });
-  if (!subscription) {
+  const [subscription, isLoadingSubscription] = useSubscriptionFromParams({ match });
+  if (!subscription && !isLoadingSubscription) {
     return (
-      <NotFound />
+      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.bulkEnrollment}/`} />
+    );
+  }
+  if (isLoadingSubscription) {
+    return (
+      <div data-testid="skelly">
+        <Skeleton height={175} />
+        <Skeleton className="mt-3" height={50} count={25} />
+      </div>
     );
   }
 
@@ -50,14 +61,14 @@ const CourseSearch = ({
   );
 };
 
-CourseSearch.defaultProps = {
+BaseCourseSearch.defaultProps = {
   enterpriseId: '',
   enterpriseSlug: '',
   enterpriseName: '',
 };
 
-CourseSearch.propTypes = {
-  // from redux-store
+BaseCourseSearch.propTypes = {
+  // from redux store
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseName: PropTypes.string,
@@ -71,4 +82,4 @@ const mapStateToProps = state => ({
   enterpriseName: state.portalConfiguration.enterpriseName,
 });
 
-export default connect(mapStateToProps)(CourseSearch);
+export default connect(mapStateToProps)(BaseCourseSearch);

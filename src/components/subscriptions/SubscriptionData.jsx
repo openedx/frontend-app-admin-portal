@@ -12,6 +12,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
     errors,
     setErrors,
     forceRefresh,
+    loading,
   } = useSubscriptionData({ enterpriseId });
   const hasSubscription = subscriptions?.length > 0;
 
@@ -20,7 +21,8 @@ export default function SubscriptionData({ children, enterpriseId }) {
     errors,
     setErrors,
     forceRefresh,
-  }), [subscriptions, errors]);
+    loading,
+  }), [subscriptions, errors, loading]);
 
   if (subscriptions) {
     return (

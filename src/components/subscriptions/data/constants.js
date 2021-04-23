@@ -38,4 +38,3 @@ export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration
 
 // Multiple subscription picker
 export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
-export const DEFAULT_REDIRECT_PAGE = 'subscriptions';

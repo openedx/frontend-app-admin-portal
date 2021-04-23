@@ -3,9 +3,10 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from '../../test/testUtils';
-import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from '../data/constants';
+import { DEFAULT_LEAD_TEXT } from '../data/constants';
 
 import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
+import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 const firstCatalogUuid = 'catalogID1';
 const firstEnterpriseUuid = 'ided';
@@ -64,6 +65,6 @@ describe('MultipleSubscriptionsPicker', () => {
     );
     const button = screen.queryAllByText(buttonText)[0];
     userEvent.click(button);
-    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${firstEnterpriseUuid}`);
+    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${firstEnterpriseUuid}`);
   });
 });

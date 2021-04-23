@@ -10,10 +10,10 @@ import { SubscriptionContext } from '../SubscriptionData';
 export const useSubscriptionFromParams = ({ match }) => {
   // Use UUID to find matching subscription plan in SubscriptionContext, return 404 if not found
   const { params: { subscriptionUUID } } = match;
-  const { data: subscriptions } = useContext(SubscriptionContext);
+  const { data: subscriptions, loading } = useContext(SubscriptionContext);
   const enterpriseSubscriptions = Object.values(subscriptions.results).filter(sub => sub.uuid === subscriptionUUID);
   if (!subscriptions.count || enterpriseSubscriptions.length < 1) {
-    return null;
+    return [null, loading];
   }
-  return enterpriseSubscriptions[0];
+  return [enterpriseSubscriptions[0], loading];
 };

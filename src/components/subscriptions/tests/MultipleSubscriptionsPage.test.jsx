@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import React from 'react';
 import { renderWithRouter } from '../../test/testUtils';
 import { SubscriptionContext } from '../SubscriptionData';
-import { DEFAULT_REDIRECT_PAGE } from '../data/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
 
@@ -73,16 +73,16 @@ const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions
 describe('MultipleSubscriptionsPage', () => {
   it('displays a the MultipleSubscriptionPicker when there are multiple subscriptions', () => {
     renderWithRouter(<MultipleSubscriptionsPageWrapper {...defaultProps} />, {
-      route: `/${fakeSlug}/admin/subscriptions/`,
-      path: '/:enterpriseSlug/admin/subscriptions/',
+      route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+      path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
     });
     expect(screen.getByText('Cohorts')).toBeInTheDocument();
   });
   it('returns null if there are no subscriptions', () => {
     const subscriptions = { data: { results: [] } };
     renderWithRouter(<MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />, {
-      route: `/${fakeSlug}/admin/subscriptions/`,
-      path: '/:enterpriseSlug/admin/subscriptions/',
+      route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+      path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
     });
     expect(screen.queryByText('Cohorts')).not.toBeInTheDocument();
   });
@@ -105,11 +105,11 @@ describe('MultipleSubscriptionsPage', () => {
     const { history } = renderWithRouter(
       <MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />,
       {
-        route: `/${fakeSlug}/admin/subscriptions/`,
-        path: '/:enterpriseSlug/admin/subscriptions/',
+        route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
       },
     );
-    expect(history.location.pathname).toEqual(`/${fakeSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${subsUuid}`);
+    expect(history.location.pathname).toEqual(`/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subsUuid}`);
   });
   it('redirects if there is only one subscription, custom redirect page', () => {
     const redirectPage = 'bulkenrollment';
@@ -131,8 +131,8 @@ describe('MultipleSubscriptionsPage', () => {
     const { history } = renderWithRouter(
       <MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} redirectPage={redirectPage} />,
       {
-        route: `/${fakeSlug}/admin/subscriptions/`,
-        path: '/:enterpriseSlug/admin/subscriptions/',
+        route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
       },
     );
     expect(history.location.pathname).toEqual(`/${fakeSlug}/admin/${redirectPage}/${subsUuid}`);
