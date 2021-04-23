@@ -12,6 +12,7 @@ import Skeleton from 'react-loading-skeleton';
 import CourseSearchResults from './CourseSearchResults';
 import { configuration } from '../../config';
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -27,7 +28,7 @@ const CourseSearch = ({
   const [subscription, isLoadingSubscription] = useSubscriptionFromParams({ match });
   if (!subscription && !isLoadingSubscription) {
     return (
-      <Redirect to={`/${enterpriseSlug}/admin/catalog-management/`} />
+      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.bulkEnrollment}/`} />
     );
   }
   if (isLoadingSubscription) {

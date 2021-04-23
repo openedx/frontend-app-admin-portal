@@ -10,6 +10,7 @@ import {
 import IconLink from './IconLink';
 
 import { features } from '../../config';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class Sidebar extends React.Component {
       },
       {
         title: 'Catalog Management',
-        to: `${baseUrl}/admin/catalog-management`,
+        to: `${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`,
         icon: faBookOpen,
         hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
       },

@@ -21,6 +21,7 @@ import { AnalyticsPage } from '../analytics';
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 import LmsConfigurations from '../../containers/LmsConfigurations';
+import { ROUTE_NAMES } from './constants';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -176,8 +177,8 @@ class EnterpriseApp extends React.Component {
                   {(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen)
                     && (
                     <Route
-                      key="catalog-management"
-                      path={`${baseUrl}/admin/catalog-management`}
+                      key={ROUTE_NAMES.bulkEnrollment}
+                      path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`}
                       render={routeProps => <BulkEnrollmentPage {...routeProps} />}
                     />
                     )}
