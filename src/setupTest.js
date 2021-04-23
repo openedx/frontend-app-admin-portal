@@ -16,6 +16,25 @@ getAuthenticatedHttpClient.mockReturnValue(axios);
 axios.isAccessTokenExpired = jest.fn();
 axios.isAccessTokenExpired.mockReturnValue(false);
 
+// mock IntersectionObserver
+global.IntersectionObserver = class IntersectionObserver {
+  disconnect() {
+    return null;
+  }
+
+  observe() {
+    return null;
+  }
+
+  takeRecords() {
+    return null;
+  }
+
+  unobserve() {
+    return null;
+  }
+};
+
 // TODO: Once there are no more console errors in tests, uncomment the code below
 // const { error } = global.console;
 

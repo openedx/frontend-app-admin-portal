@@ -4,6 +4,7 @@ import { DataTable } from '@edx/paragon';
 
 import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
+import { ADD_LEARNERS_TITLE } from './constants';
 
 export const TABLE_HEADERS = {
   email: 'Email',
@@ -30,7 +31,7 @@ const AddLearnersStep = ({
 
   return (
     <>
-      <h2>Add learners</h2>
+      <h2>{ADD_LEARNERS_TITLE}</h2>
       <DataTable
         columns={tableColumns}
         data={userData}
@@ -43,7 +44,7 @@ const AddLearnersStep = ({
         }}
         bulkActions={[
           {
-            buttonText: 'Add learners',
+            buttonText: ADD_LEARNERS_TITLE,
             handleClick: handleAddLearnersClick,
           },
         ]}

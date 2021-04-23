@@ -5,6 +5,10 @@ import {
 } from '@edx/paragon';
 import AddLearnersStep from './AddLearnersStep';
 import ReviewStep from './ReviewStep';
+import {
+  STEPPER_TITLE, NEXT_BUTTON_TEXT, PREVIOUS_BUTTON_TEXT, FINAL_BUTTON_TEXT, PREV_BUTTON_TEST_ID, FINAL_BUTTON_TEST_ID,
+  NEXT_BUTTON_TEST_ID,
+} from './constants';
 
 const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
   const steps = ['addLearners', 'review'];
@@ -14,7 +18,7 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
     <>
       <Stepper activeKey={currentStep}>
         <FullscreenModal
-          title="Learner enrollment"
+          title={STEPPER_TITLE}
           className="bg-light-200"
           isOpen={isOpen}
           onClose={close}
@@ -26,15 +30,24 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
                   Cancel
                 </Button>
                 <Stepper.ActionRow.Spacer />
-                <Button onClick={() => setCurrentStep('review')}>Next</Button>
+                <Button
+                  onClick={() => setCurrentStep('review')}
+                  data-testid={NEXT_BUTTON_TEST_ID}
+                >
+                  {NEXT_BUTTON_TEXT}
+                </Button>
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="review">
-                <Button variant="outline-primary" onClick={() => setCurrentStep('addLearners')}>
-                  Previous
+                <Button
+                  variant="outline-primary"
+                  onClick={() => setCurrentStep('addLearners')}
+                  data-testid={PREV_BUTTON_TEST_ID}
+                >
+                  {PREVIOUS_BUTTON_TEXT}
                 </Button>
                 <Stepper.ActionRow.Spacer />
-                <Button onClick={close}>Apply</Button>
+                <Button onClick={close} data-testid={FINAL_BUTTON_TEST_ID}>{FINAL_BUTTON_TEXT}</Button>
               </Stepper.ActionRow>
             </>
           )}
