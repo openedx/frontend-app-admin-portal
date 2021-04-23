@@ -4,8 +4,8 @@ import Skeleton from 'react-loading-skeleton';
 const tableRowHeight = 50;
 const tableRowCount = 10;
 
-const SubscriptionDetailsSkeleton = () => (
-  <>
+const SubscriptionDetailsSkeleton = (props) => (
+  <div {...props}>
     <Skeleton height={175} />
     <Skeleton height={175} />
     <div className="d-md-flex">
@@ -16,7 +16,7 @@ const SubscriptionDetailsSkeleton = () => (
         <Skeleton height={tableRowHeight} count={tableRowCount} />
       </div>
     </div>
-  </>
+  </div>
 );
 
 export default SubscriptionDetailsSkeleton;

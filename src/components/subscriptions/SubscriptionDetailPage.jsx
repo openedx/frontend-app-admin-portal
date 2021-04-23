@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
 import SubscriptionDetails from './SubscriptionDetails';
@@ -7,20 +9,22 @@ import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
 import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
 import { useSubscriptionFromParams } from './data/contextHooks';
 
-import { NotFound } from '../NotFoundPage';
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const SubscriptionDetailPage = ({ match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
   if (!subscription && !loadingSubscription) {
+    const { params: { enterpriseSlug } } = match;
+
     return (
-      <NotFound />
+      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`} />
     );
   }
 
   if (loadingSubscription) {
     return (
-      <SubscriptionDetailsSkeleton />
+      <SubscriptionDetailsSkeleton data-testid="skelly" />
     );
   }
   return (
@@ -37,6 +41,7 @@ SubscriptionDetailPage.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       subscriptionUUID: PropTypes.string.isRequired,
+      enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 };

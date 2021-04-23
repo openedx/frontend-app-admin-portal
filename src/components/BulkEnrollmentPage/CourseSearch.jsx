@@ -21,7 +21,7 @@ const searchClient = algoliasearch(
 
 export const NO_DATA_MESSAGE = 'There are no results';
 
-const CourseSearch = ({
+export const BaseCourseSearch = ({
   enterpriseId, enterpriseSlug, enterpriseName, match,
 }) => {
   const PAGE_TITLE = `Search courses - ${enterpriseName}`;
@@ -33,10 +33,10 @@ const CourseSearch = ({
   }
   if (isLoadingSubscription) {
     return (
-      <>
+      <div data-testid="skelly">
         <Skeleton height={175} />
         <Skeleton className="mt-3" height={50} count={25} />
-      </>
+      </div>
     );
   }
 
@@ -61,14 +61,14 @@ const CourseSearch = ({
   );
 };
 
-CourseSearch.defaultProps = {
+BaseCourseSearch.defaultProps = {
   enterpriseId: '',
   enterpriseSlug: '',
   enterpriseName: '',
 };
 
-CourseSearch.propTypes = {
-  // from redux-store
+BaseCourseSearch.propTypes = {
+  // from redux store
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseName: PropTypes.string,
@@ -82,4 +82,4 @@ const mapStateToProps = state => ({
   enterpriseName: state.portalConfiguration.enterpriseName,
 });
 
-export default connect(mapStateToProps)(CourseSearch);
+export default connect(mapStateToProps)(BaseCourseSearch);
