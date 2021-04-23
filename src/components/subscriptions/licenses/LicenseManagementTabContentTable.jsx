@@ -36,7 +36,7 @@ const columns = [
   },
 ];
 
-const TabContentTable = ({ enterpriseSlug }) => {
+const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
   const { errors, forceRefresh, setErrors } = useContext(SubscriptionContext);
   const {
     activeTab,
@@ -193,7 +193,7 @@ const TabContentTable = ({ enterpriseSlug }) => {
   );
 };
 
-TabContentTable.propTypes = {
+LicenseManagementTabContentTable.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
@@ -201,4 +201,4 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(TabContentTable);
+export default connect(mapStateToProps)(LicenseManagementTabContentTable);

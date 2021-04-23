@@ -1,8 +1,8 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import StatusAlert from '../StatusAlert';
 import { useSubscriptionData } from './data/hooks';
+import StatusAlert from '../StatusAlert';
 
 export const SubscriptionContext = createContext({});
 

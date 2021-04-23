@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Card, Badge, Button } from '@edx/paragon';
+import { DEFAULT_REDIRECT_PAGE } from './data/constants';
 
 const SubscriptionCard = ({
   uuid,
@@ -10,6 +11,8 @@ const SubscriptionCard = ({
   enterpriseSlug,
   startDate,
   expirationDate,
+  redirectPage,
+  buttonText,
   licenses: {
     allocated,
     total,
@@ -18,6 +21,7 @@ const SubscriptionCard = ({
   const formattedStartDate = moment(startDate).format('MMMM D, YYYY');
   const formattedExpirationDate = moment(expirationDate).format('MMMM D, YYYY');
   const isExpired = moment().isAfter(expirationDate);
+  const buttonDisplayText = buttonText || `${isExpired ? 'View' : 'Manage'} learners`;
 
   return (
     <Card className="subscription-card w-100">
@@ -43,14 +47,19 @@ const SubscriptionCard = ({
         </p>
         <div className="d-flex">
           <div className="ml-auto">
-            <Button as={Link} to={`/${enterpriseSlug}/admin/subscriptions/${uuid}`} variant="outline-primary">
-              {isExpired ? 'View' : 'Manage'} learners
+            <Button as={Link} to={`/${enterpriseSlug}/admin/${redirectPage}/${uuid}`} variant="outline-primary">
+              {buttonDisplayText}
             </Button>
           </div>
         </div>
       </Card.Body>
     </Card>
   );
+};
+
+SubscriptionCard.defaultProps = {
+  redirectPage: DEFAULT_REDIRECT_PAGE,
+  buttonText: null,
 };
 
 SubscriptionCard.propTypes = {
@@ -63,6 +72,8 @@ SubscriptionCard.propTypes = {
     allocated: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired,
   }).isRequired,
+  redirectPage: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default SubscriptionCard;

@@ -1,6 +1,6 @@
 import React from 'react';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
-import TabContentTable from './TabContentTable';
+import LicenseManagementTabContentTable from './LicenseManagementTabContentTable';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
 
 const LicenseAllocationDetails = () => (
@@ -15,7 +15,7 @@ const LicenseAllocationDetails = () => (
             <LicenseAllocationNavigation />
           </div>
           <div className="col-12 col-lg-9">
-            <TabContentTable />
+            <LicenseManagementTabContentTable />
           </div>
         </div>
       </div>

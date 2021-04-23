@@ -1,19 +1,16 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import {
-  CardGrid,
-  Row,
-  Col,
-} from '@edx/paragon';
 
 import { SubscriptionContext } from './SubscriptionData';
-import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
-import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
-import SubscriptionExpirationModal from './expiration/SubscriptionExpirationModal';
-import SubscriptionCard from './SubscriptionCard';
 
-const MultipleSubscriptionsPage = ({ match }) => {
+import SubscriptionExpiration from './expiration/SubscriptionExpiration';
+import MultipleSubscriptionsPicker from './MultipleSubscriptionPicker';
+import { DEFAULT_LEAD_TEXT, DEFAULT_REDIRECT_PAGE } from './data/constants';
+
+const MultipleSubscriptionsPage = ({
+  match, redirectPage, leadText, buttonText,
+}) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
@@ -24,52 +21,39 @@ const MultipleSubscriptionsPage = ({ match }) => {
 
   if (subscriptions.length === 1) {
     return (
-      <Redirect to={`/${enterpriseSlug}/admin/subscriptions/${subscriptions[0].uuid}`} />
+      <Redirect to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} />
     );
   }
 
-  const subscriptionFurthestFromExpiration = subscriptions.reduce((sub1, sub2) => (
-    new Date(sub1.expirationDate) > new Date(sub2.expirationDate) ? sub1 : sub2));
-
   return (
     <>
-      <SubscriptionDetailContextProvider subscription={subscriptionFurthestFromExpiration}>
-        {subscriptionFurthestFromExpiration.daysUntilExpiration > 0 && (
-          <SubscriptionExpirationBanner />
-        )}
-        <SubscriptionExpirationModal />
-      </SubscriptionDetailContextProvider>
-      <Row>
-        <Col>
-          <h2>Cohorts</h2>
-          <p className="lead">
-            Invite your learners to access your course catalog and manage your subscription cohorts
-          </p>
-        </Col>
-      </Row>
-      <CardGrid>
-        {subscriptions.map(subscription => (
-          <SubscriptionCard
-            key={subscription?.uuid}
-            uuid={subscription?.uuid}
-            title={subscription?.title}
-            enterpriseSlug={enterpriseSlug}
-            startDate={subscription?.startDate}
-            expirationDate={subscription?.expirationDate}
-            licenses={subscription?.licenses || {}}
-          />
-        ))}
-      </CardGrid>
+      <SubscriptionExpiration />
+      <MultipleSubscriptionsPicker
+        enterpriseSlug={enterpriseSlug}
+        leadText={leadText}
+        buttonText={buttonText}
+        subscriptions={subscriptions}
+        redirectPage={redirectPage}
+      />
     </>
   );
 };
 
+MultipleSubscriptionsPage.defaultProps = {
+  redirectPage: DEFAULT_REDIRECT_PAGE,
+  leadText: DEFAULT_LEAD_TEXT,
+  buttonText: null,
+};
+
 MultipleSubscriptionsPage.propTypes = {
+  redirectPage: PropTypes.string,
   match: PropTypes.shape({
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  leadText: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default MultipleSubscriptionsPage;

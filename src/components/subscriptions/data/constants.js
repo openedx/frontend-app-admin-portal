@@ -35,3 +35,7 @@ export const SUBSCRIPTION_DAYS_REMAINING_SEVERE = 60;
 export const SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL = 30;
 // Prefix for cookies that determine if the user has seen the modal for that range of expiration
 export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration-modal-';
+
+// Multiple subscription picker
+export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+export const DEFAULT_REDIRECT_PAGE = 'subscriptions';
