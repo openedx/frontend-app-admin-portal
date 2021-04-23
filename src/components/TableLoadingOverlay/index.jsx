@@ -1,13 +1,8 @@
 import React from 'react';
-import LoadingMessage from '../LoadingMessage';
+import Skeleton from 'react-loading-skeleton';
 
-const TableLoadingOverlay = () => (
-  <>
-    <div className="table-loading-overlay" />
-    <div className="table-loading-message d-flex align-items-center justify-content-center ">
-      <LoadingMessage className="loading" />
-    </div>
-  </>
+const TableLoadingSkeleton = () => (
+  <Skeleton height={25} count={25} />
 );
 
-export default TableLoadingOverlay;
+export default TableLoadingSkeleton;

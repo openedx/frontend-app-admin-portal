@@ -1,3 +1,8 @@
+@import "~@edx/brand/paragon/fonts.scss";
+@import "~@edx/brand/paragon/variables.scss";
+@import "@edx/paragon/scss/core/core.scss";
+@import "~@edx/brand/paragon/overrides.scss";
+
 .table-title {
   display: inline-block;
   vertical-align: middle;
@@ -9,4 +14,24 @@
 
 .search-label {
   line-height: 1.5;
+}
+
+.admin-cards-skeleton {
+  span {
+    min-height: 200px;
+    width: 100%;
+    .react-loading-skeleton {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .admin-cards-skeleton {
+    span {
+      width: 23%;
+      margin-right: 2%;
+    }
+  }
 }

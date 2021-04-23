@@ -5,7 +5,6 @@ import qs from 'query-string';
 import { Pagination, Table } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
 
-import LoadingMessage from '../LoadingMessage';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
@@ -47,7 +46,6 @@ class TableComponent extends React.Component {
       ordering,
       formatData,
       id,
-      loading,
     } = this.props;
 
     const columnConfig = this.props.columns.map(column => ({
@@ -70,7 +68,6 @@ class TableComponent extends React.Component {
       <div className={className}>
         <div className="row">
           <div className="col">
-            {loading && <TableLoadingOverlay />}
             <div className="table-responsive">
               <Table
                 id={id}
@@ -99,7 +96,7 @@ class TableComponent extends React.Component {
   }
 
   renderLoadingMessage() {
-    return <LoadingMessage className="table-loading" />;
+    return <TableLoadingOverlay className="table-loading" />;
   }
 
   renderErrorMessage() {

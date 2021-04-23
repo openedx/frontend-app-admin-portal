@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import StatusAlert from '../StatusAlert';
-import LoadingMessage from '../LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -23,6 +22,7 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 import { formatTimestamp } from '../../utils';
 
 import './Admin.scss';
+import AdminCardsSkeleton from './AdminCardsSkeleton';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -271,7 +271,7 @@ class Admin extends React.Component {
   }
 
   renderLoadingMessage() {
-    return <LoadingMessage className="overview mt-3" />;
+    return <AdminCardsSkeleton />;
   }
 
   render() {
