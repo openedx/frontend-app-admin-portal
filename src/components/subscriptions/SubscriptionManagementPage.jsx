@@ -9,6 +9,7 @@ import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import SubscriptionDetailPage from './SubscriptionDetailPage';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const PAGE_TITLE = 'Subscription Management';
 
@@ -21,12 +22,12 @@ function SubscriptionManagementPage({ enterpriseId }) {
         <Container className="py-3" fluid>
           <Switch>
             <Route
-              path="/:enterpriseSlug/admin/subscriptions"
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
               component={MultipleSubscriptionsPage}
               exact
             />
             <Route
-              path="/:enterpriseSlug/admin/subscriptions/:subscriptionUUID"
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
               component={SubscriptionDetailPage}
               exact
             />

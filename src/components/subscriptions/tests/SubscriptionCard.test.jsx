@@ -8,7 +8,7 @@ import React from 'react';
 import { renderWithRouter } from '../../test/testUtils';
 
 import SubscriptionCard from '../SubscriptionCard';
-import { DEFAULT_REDIRECT_PAGE } from '../data/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 const defaultProps = {
   uuid: 'ided',
@@ -35,7 +35,7 @@ describe('SubscriptionCard', () => {
       );
       const button = screen.getByText(buttonText);
       userEvent.click(button);
-      expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${DEFAULT_REDIRECT_PAGE}/${defaultProps.uuid}`);
+      expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${defaultProps.uuid}`);
     });
     it('sets the correct link from props, custom redirect', () => {
       const buttonText = 'click me!';

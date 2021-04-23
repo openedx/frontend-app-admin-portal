@@ -196,7 +196,7 @@ class EnterpriseApp extends React.Component {
                   {enableSubscriptionManagementScreen && (
                     <Route
                       key="subscription-management"
-                      path={`${baseUrl}/admin/subscriptions`}
+                      path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
                       render={routeProps => <SubscriptionManagementPage {...routeProps} />}
                     />
                   )}
