@@ -99,7 +99,12 @@ export const BaseCourseSearchResults = ({
   }, [setModalOpen, setSelectedCourseRuns]);
 
   if (isSearchStalled) {
-    return (<Skeleton className="mt-3" height={50} count={25} />);
+    return (
+      <>
+        <div className="sr-only">Loading...</div>
+        <Skeleton className="mt-3" height={50} count={25} />
+      </>
+    );
   }
 
   if (!isSearchStalled && error) {

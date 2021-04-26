@@ -233,6 +233,11 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           </button>
         </div>
       </div>
+      <div
+        className="sr-only"
+      >
+        Loading...
+      </div>
       <span>
         <span
           className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"

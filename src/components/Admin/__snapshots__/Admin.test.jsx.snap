@@ -2,6 +2,7 @@
 
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -42,6 +43,11 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         <div
           className="admin-cards-skeleton mb-3 d-md-flex w-100"
         >
+          <div
+            className="sr-only"
+          >
+            Loading...
+          </div>
           <span>
             <span
               className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
@@ -125,6 +131,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -685,6 +692,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -1245,6 +1253,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -1809,6 +1818,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -2521,6 +2531,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -3233,6 +3244,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -3797,6 +3809,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -4361,6 +4374,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -4925,6 +4939,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -5485,6 +5500,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
 
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -6049,6 +6065,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
 
 exports[`<Admin /> renders correctly with error state 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -6169,6 +6186,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
 
 exports[`<Admin /> renders correctly with loading state 1`] = `
 <main
+  className="learner-progress-report"
   role="main"
 >
   <div
@@ -6209,6 +6227,11 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         <div
           className="admin-cards-skeleton mb-3 d-md-flex w-100"
         >
+          <div
+            className="sr-only"
+          >
+            Loading...
+          </div>
           <span>
             <span
               className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
@@ -6291,13 +6314,23 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
 `;
 
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
-<div
-  className="admin-cards-skeleton mb-3 d-md-flex w-100"
+<main
+  className="learner-progress-report"
+  role="main"
 >
+  <div
+    className="sr-only"
+  >
+    Loading...
+  </div>
   <span>
     <span
       className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-      style={Object {}}
+      style={
+        Object {
+          "height": "8rem",
+        }
+      }
     >
       ‌
     </span>
@@ -6305,26 +6338,14 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
   <span>
     <span
       className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-      style={Object {}}
+      style={
+        Object {
+          "height": "70vh",
+        }
+      }
     >
       ‌
     </span>
   </span>
-  <span>
-    <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-      style={Object {}}
-    >
-      ‌
-    </span>
-  </span>
-  <span>
-    <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-      style={Object {}}
-    >
-      ‌
-    </span>
-  </span>
-</div>
+</main>
 `;

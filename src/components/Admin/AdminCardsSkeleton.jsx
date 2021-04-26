@@ -5,6 +5,7 @@ const AdminCardsSkeleton = () => (
   <div
     className="admin-cards-skeleton mb-3 d-md-flex w-100"
   >
+    <div className="sr-only">Loading...</div>
     <Skeleton />
     <Skeleton />
     <Skeleton />
