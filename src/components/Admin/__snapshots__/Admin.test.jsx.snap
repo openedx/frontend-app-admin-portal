@@ -40,9 +40,40 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         className="col"
       >
         <div
-          className="loading d-flex align-items-center justify-content-center overview mt-3"
+          className="admin-cards-skeleton mb-3 d-md-flex w-100"
         >
-          Loading...
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
         </div>
       </div>
     </div>
@@ -6176,9 +6207,40 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         className="col"
       >
         <div
-          className="loading d-flex align-items-center justify-content-center overview mt-3"
+          className="admin-cards-skeleton mb-3 d-md-flex w-100"
         >
-          Loading...
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
+          <span>
+            <span
+              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              style={Object {}}
+            >
+              ‌
+            </span>
+          </span>
         </div>
       </div>
     </div>
@@ -6230,8 +6292,39 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
 
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 <div
-  className="loading d-flex align-items-center justify-content-center overview mt-3"
+  className="admin-cards-skeleton mb-3 d-md-flex w-100"
 >
-  Loading...
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={Object {}}
+    >
+      ‌
+    </span>
+  </span>
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={Object {}}
+    >
+      ‌
+    </span>
+  </span>
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={Object {}}
+    >
+      ‌
+    </span>
+  </span>
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={Object {}}
+    >
+      ‌
+    </span>
+  </span>
 </div>
 `;
