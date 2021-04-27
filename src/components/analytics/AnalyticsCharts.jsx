@@ -17,7 +17,7 @@ export default function AnalyticsCharts(enterpriseId) {
   // Fetch token
   useEffect(() => {
     setIsLoading(true);
-    AnalyticsApiService.fetchTableauToken()
+    AnalyticsApiService.fetchTableauToken(enterpriseId)
       .then((response) => {
         setIsLoading(false);
         setToken(response.data);

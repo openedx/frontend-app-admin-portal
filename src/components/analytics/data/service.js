@@ -11,7 +11,7 @@ class AnalyticsApiService {
     const queryParams = {
       ...options,
     };
-    return getAuthenticatedHttpClient().get(AnalyticsApiService.tableauTokenUrl);
+    return getAuthenticatedHttpClient().get(`${AnalyticsApiService.tableauTokenUrl}/${queryParams.enterpriseId}`);
   }
 }
 
