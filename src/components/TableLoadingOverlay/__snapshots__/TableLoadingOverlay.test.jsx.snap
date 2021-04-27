@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableLoadingOverlay renders a loading overlay 1`] = `
+Array [
+  <div
+    className="table-loading-overlay"
+  />,
+  <div
+    className="table-loading-message d-flex align-items-center justify-content-center "
+  >
+    <div
+      className="loading d-flex align-items-center justify-content-center loading"
+    >
+      Loading...
+    </div>
+  </div>,
+]
+`;

@@ -4,7 +4,7 @@ import LoadingMessage from '../LoadingMessage';
 const TableLoadingOverlay = () => (
   <>
     <div className="table-loading-overlay" />
-    <div className="table-loading-message d-lex align-items-center justify-content-center ">
+    <div className="table-loading-message d-flex align-items-center justify-content-center ">
       <LoadingMessage className="loading" />
     </div>
   </>
