@@ -6,6 +6,7 @@ const tableRowCount = 10;
 
 const SubscriptionDetailsSkeleton = (props) => (
   <div {...props}>
+    <div className="sr-only">Loading...</div>
     <Skeleton height={175} />
     <Skeleton height={175} />
     <div className="d-md-flex">

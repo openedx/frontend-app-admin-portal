@@ -5,7 +5,7 @@ import qs from 'query-string';
 import { Pagination, Table } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
 
-import LoadingMessage from '../LoadingMessage';
+import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
@@ -99,7 +99,7 @@ class TableComponent extends React.Component {
   }
 
   renderLoadingMessage() {
-    return <LoadingMessage className="table-loading" />;
+    return <TableLoadingSkeleton />;
   }
 
   renderErrorMessage() {

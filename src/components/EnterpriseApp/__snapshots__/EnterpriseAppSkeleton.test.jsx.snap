@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnterpriseAppSkeleton renders a skeleton 1`] = `
+Array [
+  <div
+    className="sr-only"
+  >
+    Loading...
+  </div>,
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={
+        Object {
+          "height": "8rem",
+        }
+      }
+    >
+      ‌
+    </span>
+  </span>,
+  <span>
+    <span
+      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      style={
+        Object {
+          "height": "70vh",
+        }
+      }
+    >
+      ‌
+    </span>
+  </span>,
+]
+`;

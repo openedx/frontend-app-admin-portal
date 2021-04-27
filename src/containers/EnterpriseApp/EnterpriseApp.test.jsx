@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { breakpoints } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import Skeleton from 'react-loading-skeleton';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -118,7 +119,7 @@ describe('<EnterpriseApp />', () => {
     const wrapper = mount((
       <EnterpriseAppWrapper store={store} />
     ));
-    expect(wrapper.text()).toContain('Loading');
+    expect(wrapper.find(Skeleton)).toHaveLength(2);
   });
 
   it('renders error page correctly', () => {

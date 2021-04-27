@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
 import StatusAlert from '../StatusAlert';
-import LoadingMessage from '../LoadingMessage';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -18,11 +17,12 @@ import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
 import AdminSearchForm from './AdminSearchForm';
+import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
 
-import './Admin.scss';
+import AdminCardsSkeleton from './AdminCardsSkeleton';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -270,10 +270,6 @@ class Admin extends React.Component {
     );
   }
 
-  renderLoadingMessage() {
-    return <LoadingMessage className="overview mt-3" />;
-  }
-
   render() {
     const {
       error,
@@ -296,85 +292,83 @@ class Admin extends React.Component {
     };
 
     return (
-      <>
-        {!loading && !error && !this.hasAnalyticsData() ? this.renderLoadingMessage() : (
+      <main role="main" className="learner-progress-report">
+        {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
           <>
-            <main role="main">
-              <Helmet title="Learner Progress Report" />
-              <Hero title="Learner Progress Report" />
-              <div className="container-fluid">
-                <div className="row mt-4">
-                  <div className="col">
-                    <h2>Overview</h2>
-                  </div>
+            <Helmet title="Learner Progress Report" />
+            <Hero title="Learner Progress Report" />
+            <div className="container-fluid">
+              <div className="row mt-4">
+                <div className="col">
+                  <h2>Overview</h2>
                 </div>
-                <div className="row mt-3">
-                  {(error || loading) ? (
+              </div>
+              <div className="row mt-3">
+                {(error || loading) ? (
+                  <div className="col">
+                    {error && this.renderErrorMessage()}
+                    {loading && <AdminCardsSkeleton />}
+                  </div>
+                ) : (
+                  <AdminCards />
+                )}
+              </div>
+              <div className="row mt-4">
+                <div className="col">
+                  <div className="row">
+                    <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
+                      <h2 className="table-title">{tableMetadata.title}</h2>
+                    </div>
+                    <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
+                      {actionSlug && this.renderUrlResetButton()}
+                      {filtersActive && this.renderFiltersResetButton()}
+                    </div>
+                  </div>
+                  <div className="row">
                     <div className="col">
-                      {error && this.renderErrorMessage()}
-                      {loading && this.renderLoadingMessage()}
-                    </div>
-                  ) : (
-                    <AdminCards />
-                  )}
-                </div>
-                <div className="row mt-4">
-                  <div className="col">
-                    <div className="row">
-                      <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                        <h2 className="table-title">{tableMetadata.title}</h2>
-                      </div>
-                      <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
-                        {actionSlug && this.renderUrlResetButton()}
-                        {filtersActive && this.renderFiltersResetButton()}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
-                        {tableMetadata.description && <p>{tableMetadata.description}</p>}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    {!error && !loading && !this.hasEmptyData() && (
-                      <>
-                        <div className="row pb-3">
-                          <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
-                            {lastUpdatedDate
-                              && (
-                              <>
-                                Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                              </>
-                              )}
-
-                          </div>
-                          <div className="col-12 col-md-6 col-xl-8">
-                            {this.renderDownloadButton()}
-                          </div>
-                        </div>
-                        {this.displaySearchBar() && (
-                        <AdminSearchForm
-                          searchParams={searchParams}
-                          searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                          tableData={this.getTableData() ? this.getTableData().results : []}
-                        />
-                        )}
-                      </>
-                    )}
-                    {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                    <div className="mt-3 mb-5">
-                      {enterpriseId && tableMetadata.component}
+                      {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
+                      {tableMetadata.description && <p>{tableMetadata.description}</p>}
                     </div>
                   </div>
                 </div>
               </div>
-            </main>
+              <div className="row">
+                <div className="col">
+                  {!error && !loading && !this.hasEmptyData() && (
+                    <>
+                      <div className="row pb-3">
+                        <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
+                          {lastUpdatedDate
+                            && (
+                            <>
+                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                            </>
+                            )}
+
+                        </div>
+                        <div className="col-12 col-md-6 col-xl-8">
+                          {this.renderDownloadButton()}
+                        </div>
+                      </div>
+                      {this.displaySearchBar() && (
+                      <AdminSearchForm
+                        searchParams={searchParams}
+                        searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                        tableData={this.getTableData() ? this.getTableData().results : []}
+                      />
+                      )}
+                    </>
+                  )}
+                  {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                  <div className="mt-3 mb-5">
+                    {enterpriseId && tableMetadata.component}
+                  </div>
+                </div>
+              </div>
+            </div>
           </>
         )}
-      </>
+      </main>
     );
   }
 }
