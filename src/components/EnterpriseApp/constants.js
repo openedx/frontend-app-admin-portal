@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 export const ROUTE_NAMES = {
-  bulkEnrollment: 'catalog-management',
+  bulkEnrollment: 'enrollment',
   subscriptionManagement: 'subscriptions',
 };
