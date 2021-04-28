@@ -207,12 +207,7 @@ class LmsApiService {
   }
 
   static fetchUserDetailsFromEmail(emails) {
-    return LmsApiService.apiClient().post(`${LmsApiService.accountsSearchEmailsUrl}`, emails,
-      {
-        headers: {
-          'Content-Type': 'application/merge-patch+json',
-        },
-      });
+    return LmsApiService.apiClient().post(`${LmsApiService.accountsSearchEmailsUrl}`, emails);
   }
 }
 

@@ -102,11 +102,11 @@ export class BaseCodeAssignmentModal extends React.Component {
   getCleanedUsers(emails, usersResponse) {
     const users = [];
     emails.forEach((email) => {
-      const user = usersResponse.find(details => details.email === email);
+      const user = usersResponse.find(userResponse => userResponse.email === email);
       users.push({
         email,
-        lms_user_id: user ? user.id : null,
-        username: user ? user.username : null,
+        lms_user_id: user ? user.id : undefined,
+        username: user ? user.username : undefined,
       });
     });
     return users;
