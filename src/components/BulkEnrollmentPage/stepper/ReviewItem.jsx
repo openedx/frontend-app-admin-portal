@@ -16,6 +16,7 @@ const ReviewItem = ({ row, accessor, dispatch }) => (
           <IconButton
             src={Delete}
             iconAs={Icon}
+            data-testid="delete-button"
             alt="Remove selection"
             onClick={() => dispatch(deleteSelectedRowAction(row.id))}
           />
@@ -27,7 +28,10 @@ const ReviewItem = ({ row, accessor, dispatch }) => (
 
 ReviewItem.propTypes = {
   /* Selected row from a DataTable instance */
-  row: PropTypes.shape({ values: PropTypes.shape({}).isRequired }).isRequired,
+  row: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    values: PropTypes.shape({}).isRequired,
+  }).isRequired,
   /* The accessor for the text that will be displayed for this row. Should be on the object row.values */
   accessor: PropTypes.string.isRequired,
   /* For dispatching actions on the rows. Will dispatch the deleteSelectedRowAction */

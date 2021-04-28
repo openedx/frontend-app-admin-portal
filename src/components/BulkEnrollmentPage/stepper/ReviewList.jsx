@@ -1,21 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert, Button, useToggle,
 } from '@edx/paragon';
 import ReviewItem from './ReviewItem';
 
-const ShowHideButton = ({
-  isShowingAll, showAll, show25, numRows, subject,
+export const NUM_ITEMS_DISPLAYED = 25;
+
+export const ShowHideButton = ({
+  isShowingAll, showAll, show25, numRows, subject, ...props
 }) => {
-  if (numRows < 25) {
+  if (numRows < NUM_ITEMS_DISPLAYED) {
     return null;
   }
   if (!isShowingAll) {
-    return <Button variant="link" size="inline" onClick={showAll}>Show {numRows - 25} more {subject.plural}</Button>;
+    return <Button variant="link" size="inline" onClick={showAll} {...props}>Show {numRows - 25} more {subject.plural}</Button>;
   }
 
-  return <Button variant="link" size="inline" onClick={show25}>Hide {numRows - 25} {subject.plural}</Button>;
+  return <Button variant="link" size="inline" onClick={show25} {...props}>Hide {numRows - 25} {subject.plural}</Button>;
 };
 
 ShowHideButton.propTypes = {
@@ -39,7 +41,7 @@ const ReviewList = ({
     if (isShowingAll) {
       return rows;
     }
-    return rows.slice(0, 25);
+    return rows.slice(0, NUM_ITEMS_DISPLAYED);
   }, [isShowingAll, rows]);
 
   return (
@@ -47,14 +49,22 @@ const ReviewList = ({
       <h3>{subject.title}</h3>
       <ul className="be-review-list">
         {rows.length < 1 && (
-          <Alert variant="danger">
+          <Alert variant="danger" data-testid="no-rows-alert">
             At least one {subject.singular} must be selected to enroll learners
-            <Button variant="link" size="inline" onClick={returnToSelection}>Return to {subject.singular} selection</Button>
+            <Button
+              data-testid="return-to-selection-button"
+              variant="link"
+              size="inline"
+              onClick={returnToSelection}
+            >
+              Return to {subject.singular} selection
+            </Button>
           </Alert>
         )}
         {displayRows.map((row) => <ReviewItem key={row.id} row={row} accessor={accessor} dispatch={dispatch} />)}
       </ul>
       <ShowHideButton
+        data-testid="show-hide"
         isShowingAll={isShowingAll}
         show25={show25}
         showAll={showAll}
