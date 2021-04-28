@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
@@ -12,6 +13,7 @@ import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import LmsApiService from '../../data/services/LmsApiService';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
@@ -74,6 +76,29 @@ export class BaseCodeReminderModal extends React.Component {
     }
   }
 
+  async getUserDetails(remindCodeEmails) {
+    try {
+      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: remindCodeEmails });
+      return response.data;
+    } catch (error) {
+      logError(error);
+      throw new SubmissionError({ _error: error });
+    }
+  }
+
+  getCleanedUsers(assignedEmail, assignedCode, usersResponse, assignments) {
+    const user = usersResponse.find(userResponse => userResponse.email === assignedEmail);
+    assignments.push({
+      user: {
+        email: assignedEmail,
+        lms_user_id: user ? user.id : null,
+        username: user ? user.username : null,
+      },
+      code: assignedCode,
+    });
+    return assignments;
+  }
+
   getNumberOfSelectedCodes() {
     const {
       data: { selectedCodes },
@@ -97,7 +122,7 @@ export class BaseCodeReminderModal extends React.Component {
     return ['code', 'email'].every(key => key in data);
   }
 
-  handleModalSubmit(formData) {
+  async handleModalSubmit(formData) {
     const {
       couponId,
       isBulkRemind,
@@ -131,13 +156,25 @@ export class BaseCodeReminderModal extends React.Component {
 
     if (isBulkRemind && !data.selectedCodes.length) {
       options.code_filter = selectedToggle;
-    } else if (isBulkRemind && data.selectedCodes.length) {
-      options.assignments = data.selectedCodes.map(code => ({
-        email: code.assigned_to,
-        code: code.code,
-      }));
     } else {
-      options.assignments = [{ email: data.email, code: data.code }];
+      let usersResponse = [];
+      const assignments = [];
+      if (isBulkRemind && data.selectedCodes.length) {
+        const remindCodeEmails = [];
+        data.selectedCodes.map(code => (
+          remindCodeEmails.push(code.assigned_to)
+        ));
+
+        usersResponse = await this.getUserDetails(remindCodeEmails);
+        data.selectedCodes.forEach((code) => {
+          this.getCleanedUsers(code.assigned_to, code.code, usersResponse, assignments);
+        });
+        options.assignments = assignments;
+      } else {
+        usersResponse = await this.getUserDetails([data.email]);
+        this.getCleanedUsers(data.email, data.code, usersResponse, assignments);
+        options.assignments = assignments;
+      }
     }
 
     return sendCodeReminder(couponId, options)
