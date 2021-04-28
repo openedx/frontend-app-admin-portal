@@ -36,11 +36,11 @@ const ReviewList = ({
 }) => {
   const [isShowingAll, showAll, show25] = useToggle(false);
   const displayRows = useMemo(() => {
-    if (showAll) {
+    if (isShowingAll) {
       return rows;
     }
     return rows.slice(0, 25);
-  }, [showAll]);
+  }, [isShowingAll, rows]);
 
   return (
     <div className="col col-6">

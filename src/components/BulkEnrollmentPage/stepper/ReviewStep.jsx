@@ -26,7 +26,11 @@ const ReviewStep = ({ setCurrentStep, close }) => {
 
   return (
     <>
-      <p>You're almost done! Review your selections and make any final changes before completing enrollment for your learners</p>
+      <p>
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        You're almost done! Review your selections and make any final changes before completing enrollment for
+        your learners.
+      </p>
       <h2 className="mb-5">{REVIEW_TITLE}</h2>
       <Row>
         <ReviewList
