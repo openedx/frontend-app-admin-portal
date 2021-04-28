@@ -7,6 +7,7 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
 import { setExportedTableInstance } from '../hooks';
 import { convertToSelectedRowsObject } from '../helpers';
+// import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
 
 export const TABLE_HEADERS = {
   email: 'Email',
@@ -30,8 +31,12 @@ const AddLearnersStep = ({
 }) => {
   const [errors, setErrors] = useState([]);
   const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
-  // TODO: Get an unpaginated list of users from the backend so that we can see all users here.
-  const { results: userData, count } = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
+  // TODO: Get an unpaginated list of all users from the backend. We can paginate on the frontend.
+  const [{ results: userData, count }, loading] = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

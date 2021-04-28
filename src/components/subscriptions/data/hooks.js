@@ -102,6 +102,7 @@ export const useAllSubscriptionUsers = ({
   errors,
   setErrors,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [subscriptionUsers, setSubscriptionUsers] = useState({
     results: [],
     count: 0,
@@ -113,8 +114,8 @@ export const useAllSubscriptionUsers = ({
     if (!subscriptionUUID) {
       return;
     }
-
-    LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, { status: licenseStatusByTab[TAB_ALL_USERS] })
+    setLoading(true);
+    LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, { status: licenseStatusByTab[TAB_ALL_USERS], page_size: 500 })
       .then((response) => {
         setSubscriptionUsers(camelCaseObject(response.data));
       })
@@ -124,10 +125,10 @@ export const useAllSubscriptionUsers = ({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
         });
-      });
+      }).finally(() => setLoading(false));
   }, [subscriptionUUID]);
 
-  return subscriptionUsers;
+  return [subscriptionUsers, loading];
 };
 
 /*
