@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   FullscreenModal, Stepper, Button, Container,
@@ -8,11 +8,16 @@ import ReviewStep from './ReviewStep';
 import {
   STEPPER_TITLE, NEXT_BUTTON_TEXT, PREVIOUS_BUTTON_TEXT, FINAL_BUTTON_TEXT, PREV_BUTTON_TEST_ID, FINAL_BUTTON_TEST_ID,
   NEXT_BUTTON_TEST_ID,
+  ADD_LEARNERS_STEP,
+  REVIEW_STEP,
 } from './constants';
+import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
-  const steps = ['addLearners', 'review'];
+  const steps = [ADD_LEARNERS_STEP, REVIEW_STEP];
   const [currentStep, setCurrentStep] = useState(steps[0]);
+  const { emails: [selectedEmails], courses: [selectedCourses] } = useContext(BulkEnrollContext);
+  const hasSelectedCoursesAndEmails = selectedEmails.length > 0 && selectedCourses.length > 0;
 
   return (
     <>
@@ -31,7 +36,7 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
                 </Button>
                 <Stepper.ActionRow.Spacer />
                 <Button
-                  onClick={() => setCurrentStep('review')}
+                  onClick={() => setCurrentStep(REVIEW_STEP)}
                   data-testid={NEXT_BUTTON_TEST_ID}
                 >
                   {NEXT_BUTTON_TEXT}
@@ -41,24 +46,24 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
               <Stepper.ActionRow eventKey="review">
                 <Button
                   variant="outline-primary"
-                  onClick={() => setCurrentStep('addLearners')}
+                  onClick={() => setCurrentStep(ADD_LEARNERS_STEP)}
                   data-testid={PREV_BUTTON_TEST_ID}
                 >
                   {PREVIOUS_BUTTON_TEXT}
                 </Button>
                 <Stepper.ActionRow.Spacer />
-                <Button onClick={close} data-testid={FINAL_BUTTON_TEST_ID}>{FINAL_BUTTON_TEXT}</Button>
+                <Button disabled={!hasSelectedCoursesAndEmails} onClick={close} data-testid={FINAL_BUTTON_TEST_ID}>{FINAL_BUTTON_TEXT}</Button>
               </Stepper.ActionRow>
             </>
           )}
         >
-          <Container size="md">
+          <Container size="lg">
             <Stepper.Step eventKey="addLearners" title="Add learners">
               <AddLearnersStep subscriptionUUID={subscriptionUUID} />
             </Stepper.Step>
 
             <Stepper.Step eventKey="review" title="Review">
-              <ReviewStep />
+              <ReviewStep setCurrentStep={setCurrentStep} close={close} />
             </Stepper.Step>
           </Container>
         </FullscreenModal>

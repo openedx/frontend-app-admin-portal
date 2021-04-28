@@ -10,3 +10,14 @@
     padding-left: 0;
   }
 }
+
+.be-review-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+  }
+}

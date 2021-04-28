@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, /* Toast, */ Button,
+  DataTable, /* Toast, */ Button, DataTableContext,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
@@ -14,6 +14,8 @@ import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
+import { setExportedTableInstance } from './hooks';
+import { convertToSelectedRowsObject } from './helpers';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -25,9 +27,9 @@ export const TABLE_HEADERS = {
 };
 
 export const EnrollButton = ({ row, setStepperOpen }) => {
-  const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
   const handleClick = () => {
-    setSelectedCourses([row.original]);
+    // our context depends on the row being selected, so set it to selected before opening the stepper
+    row.toggleRowSelected(true);
     setStepperOpen(true);
   };
 
@@ -42,13 +44,15 @@ export const EnrollButton = ({ row, setStepperOpen }) => {
   );
 };
 
+const ExportDataTableContext = () => {
+  const { courses: [, coursesDispatch] } = useContext(BulkEnrollContext);
+  setExportedTableInstance({ dispatch: coursesDispatch });
+  return null;
+};
+
 EnrollButton.propTypes = {
   row: PropTypes.shape({
-    original: PropTypes.shape({
-      advertised_course_run: PropTypes.shape({
-        key: PropTypes.string,
-      }),
-    }),
+    toggleRowSelected: PropTypes.func.isRequired,
   }).isRequired,
   setStepperOpen: PropTypes.func.isRequired,
 };
@@ -64,6 +68,7 @@ export const BaseCourseSearchResults = ({
   subscriptionUUID,
 }) => {
   const { refinementsFromQueryParams } = useContext(SearchContext);
+
   const columns = useMemo(() => [
     {
       Header: TABLE_HEADERS.courseName,
@@ -90,12 +95,11 @@ export const BaseCourseSearchResults = ({
 
   const [stepperOpen, setStepperOpen] = useState(false);
   // const [showToast, setShowToast] = useState(false);
-  const { courses: [, setSelectedCourses] } = useContext(BulkEnrollContext);
+  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
 
-  const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
-    setSelectedCourses(selectedRows.map((row) => row.original));
+  const handleBulkEnrollClick = useMemo(() => () => {
     setStepperOpen(true);
-  }, [setStepperOpen, setSelectedCourses]);
+  }, [setStepperOpen]);
 
   if (isSearchStalled) {
     return (
@@ -124,7 +128,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
-
+  console.log('SELECTED COURSES', selectedCourses)
   return (
     <>
       <BulkEnrollmentStepper
@@ -152,6 +156,10 @@ export const BaseCourseSearchResults = ({
           buttonText: ENROLL_TEXT,
           handleClick: handleBulkEnrollClick,
         }]}
+        initialState={{ selectedRowIds: convertToSelectedRowsObject(selectedCourses) }}
+        initialTableOptions={{
+          getRowId: (row) => row.key,
+        }}
         additionalColumns={[
           {
             id: 'enroll',
@@ -160,13 +168,13 @@ export const BaseCourseSearchResults = ({
             Cell: ({ row }) => (
               <EnrollButton
                 row={row}
-                setSelectedCourseRuns={setSelectedCourses}
                 setStepperOpen={setStepperOpen}
               />
             ),
           },
         ]}
       >
+        <ExportDataTableContext />
         <DataTable.TableControlBar />
         <DataTable.Table />
         <DataTable.TableFooter>

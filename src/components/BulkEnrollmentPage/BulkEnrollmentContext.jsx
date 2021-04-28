@@ -1,16 +1,20 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
+
+import selectedRowsReducer from './data/reducer';
 
 export const BulkEnrollContext = createContext({});
 
 const BulkEnrollContextProvider = ({ children }) => {
-  const [selectedCourses, setSelectedCourses] = useState([]);
-  const [selectedEmails, setSelectedEmails] = useState([]);
+  const [courseTableState, coursesDispatch] = useReducer(selectedRowsReducer, []);
+  const [emailTableState, emailsDispatch] = useReducer(selectedRowsReducer, []);
   const [selectedSubscription, setSelectedSubscription] = useState({});
+  console.log('COURSE TABLE STATE', courseTableState)
+  console.log('EMAIL TABLE STATE', emailTableState)
 
   const value = {
-    courses: [selectedCourses, setSelectedCourses],
-    emails: [selectedEmails, setSelectedEmails],
+    courses: [courseTableState, coursesDispatch],
+    emails: [emailTableState, emailsDispatch],
     subscription: [selectedSubscription, setSelectedSubscription],
   };
 
