@@ -12,10 +12,12 @@ jest.mock('../../subscriptions/data/hooks', () => ({
   useAllSubscriptionUsers: jest.fn(),
 }));
 
-useAllSubscriptionUsers.mockReturnValue({
+const mockTableData = {
   results: [],
   count: 0,
-});
+};
+
+useAllSubscriptionUsers.mockReturnValue([mockTableData, false]);
 
 const defaultProps = {
   isOpen: true,
@@ -39,5 +41,10 @@ describe('AddLearnersStep', () => {
     Object.values(TABLE_HEADERS).forEach((header) => {
       expect(screen.getByText(header)).toBeInTheDocument();
     });
+  });
+  it('displays a table skeleton when loading', () => {
+    useAllSubscriptionUsers.mockReturnValue([mockTableData, true]);
+    render(<StepperWrapper {...defaultProps} />);
+    expect(screen.getByTestId('skelly')).toBeInTheDocument();
   });
 });

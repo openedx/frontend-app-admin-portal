@@ -7,10 +7,13 @@ import thunk from 'redux-thunk';
 import { SearchContext } from '@edx/frontend-enterprise';
 import { Button } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
+import { useAllSubscriptionUsers } from '../subscriptions/data/hooks';
 import StatusAlert from '../StatusAlert';
+import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
   BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS, ENROLL_TEXT,
 } from './CourseSearchResults';
+import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -19,6 +22,15 @@ jest.mock('@edx/frontend-enterprise', () => ({
   ...jest.requireActual('@edx/frontend-enterprise'),
   SearchPagination: () => <div>PAGINATE ME</div>,
 }));
+
+jest.mock('../subscriptions/data/hooks', () => ({
+  useAllSubscriptionUsers: jest.fn(),
+}));
+
+useAllSubscriptionUsers.mockReturnValue([{
+  results: [],
+  count: 0,
+}, false]);
 
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
@@ -60,36 +72,40 @@ const refinementsFromQueryParams = {};
 const CourseSearchWrapper = ({ value = { refinementsFromQueryParams }, props = defaultProps }) => (
   <Provider store={mockStore()}>
     <SearchContext.Provider value={value}>
-      <BaseCourseSearchResults
-        {...props}
-      />
+      <BulkEnrollContextProvider>
+        <BaseCourseSearchResults
+          {...props}
+        />
+      </BulkEnrollContextProvider>
     </SearchContext.Provider>
   </Provider>
 );
 
 describe('<EnrollButton />', () => {
-  const key = 'bears+101';
-  const row = { original: { advertised_course_run: { key } } };
+  const row = { toggleRowSelected: jest.fn() };
+
+  beforeEach(() => {
+    row.toggleRowSelected.mockClear();
+  });
   it('displays a button', () => {
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={() => {}} />);
+    const wrapper = mount(<EnrollButton row={row} setStepperOpen={() => {}} />);
     expect(wrapper.find(Button)).toHaveLength(1);
     expect(wrapper.text()).toContain(ENROLL_TEXT);
   });
   it('opens the modal', () => {
     const openSpy = jest.fn();
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={openSpy} setSelectedCourseRuns={() => {}} />);
+    const wrapper = mount(<EnrollButton row={row} setStepperOpen={openSpy} />);
     const button = wrapper.find(Button);
     button.simulate('click');
     expect(openSpy).toHaveBeenCalledTimes(1);
     expect(openSpy).toHaveBeenCalledWith(true);
   });
-  it('sets the selectedCourseRuns', () => {
-    const setCourseRunSpy = jest.fn();
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={setCourseRunSpy} />);
+  it('toggles the row to be selected', () => {
+    const wrapper = mount(<EnrollButton row={row} />);
     const button = wrapper.find(Button);
     button.simulate('click');
-    expect(setCourseRunSpy).toHaveBeenCalledTimes(1);
-    expect(setCourseRunSpy).toHaveBeenCalledWith([key]);
+    expect(row.toggleRowSelected).toHaveBeenCalledTimes(1);
+    expect(row.toggleRowSelected).toHaveBeenCalledWith(true);
   });
 });
 
@@ -115,19 +131,22 @@ describe('<CourseSearchResults />', () => {
     const wrapper = mount(<CourseSearchWrapper />);
     expect(wrapper.text()).toContain('PAGINATE ME');
   });
-  it('displays modal on click', () => {
+  it('hides the stepper by default', () => {
     const wrapper = mount(<CourseSearchWrapper />);
-
-    const dataTable = wrapper.find('DataTable');
+    const stepper = wrapper.find(BulkEnrollmentStepper);
+    expect(stepper.props().isOpen).toBe(false);
+  });
+  it('displays stepper on enroll button click', () => {
+    const wrapper = mount(<CourseSearchWrapper />);
+    const enrollButton = wrapper.find(EnrollButton);
     act(() => {
-      dataTable.props().bulkActions[0].handleClick();
+      enrollButton.simulate('click');
     });
     wrapper.update();
-    const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');
-    // Use the first toast found as it creates a child Toast as well
-    expect(bulkEnrollmentModal.props().open).toBe(true);
+    const stepper = wrapper.find(BulkEnrollmentStepper);
+    expect(stepper.props().isOpen).toBe(true);
   });
-  it('displays a toast on success', () => {
+  it.skip('displays a toast on success', () => {
     const wrapper = mount(<CourseSearchWrapper />);
 
     const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');

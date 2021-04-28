@@ -5,12 +5,12 @@ import {
 } from '@edx/paragon';
 import ReviewItem from './ReviewItem';
 
-export const NUM_ITEMS_DISPLAYED = 25;
+export const MAX_ITEMS_DISPLAYED = 25;
 
 export const ShowHideButton = ({
   isShowingAll, showAll, show25, numRows, subject, ...props
 }) => {
-  if (numRows < NUM_ITEMS_DISPLAYED) {
+  if (numRows < MAX_ITEMS_DISPLAYED) {
     return null;
   }
   if (!isShowingAll) {
@@ -41,7 +41,7 @@ const ReviewList = ({
     if (isShowingAll) {
       return rows;
     }
-    return rows.slice(0, NUM_ITEMS_DISPLAYED);
+    return rows.slice(0, MAX_ITEMS_DISPLAYED);
   }, [isShowingAll, rows]);
 
   return (

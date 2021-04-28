@@ -128,7 +128,6 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
-  console.log('SELECTED COURSES', selectedCourses)
   return (
     <>
       <BulkEnrollmentStepper
