@@ -91,8 +91,8 @@ export class BaseCodeReminderModal extends React.Component {
     assignments.push({
       user: {
         email: assignedEmail,
-        lms_user_id: user ? user.id : null,
-        username: user ? user.username : null,
+        lms_user_id: user ? user.id : undefined,
+        username: user ? user.username : undefined,
       },
       code: assignedCode,
     });
