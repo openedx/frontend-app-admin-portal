@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import ReviewList, { ShowHideButton, NUM_ITEMS_DISPLAYED } from './ReviewList';
+import ReviewList, { ShowHideButton, MAX_ITEMS_DISPLAYED } from './ReviewList';
 import { deleteSelectedRowAction } from '../data/actions';
 
 const defaultProps = {
@@ -91,8 +91,8 @@ describe('ReviewList', () => {
     const button = screen.getByTestId('show-hide');
     userEvent.click(button);
     userEvent.click(button);
-    const rowsBeingShown = rows.splice(0, NUM_ITEMS_DISPLAYED);
-    const rowsBeingHidden = rows.splice(NUM_ITEMS_DISPLAYED);
+    const rowsBeingShown = rows.splice(0, MAX_ITEMS_DISPLAYED);
+    const rowsBeingHidden = rows.splice(MAX_ITEMS_DISPLAYED);
     rowsBeingShown.forEach((row) => {
       expect(screen.getByText(row.values.foo)).toBeInTheDocument();
     });
@@ -100,7 +100,7 @@ describe('ReviewList', () => {
       expect(screen.queryByText(row.values.foo)).not.toBeInTheDocument();
     });
   });
-  it('does not show the show/hide button when there are less than NUM_ITEMS_DISPLAYED rows', () => {
+  it('does not show the show/hide button when there are less than MAX_ITEMS_DISPLAYED rows', () => {
     render(<ReviewList {...defaultProps} />);
     expect(screen.queryByTestId('show-hide')).not.toBeInTheDocument();
   });
@@ -129,18 +129,18 @@ describe('ReviewList', () => {
       buttonProps.show25.mockClear();
       buttonProps.showAll.mockClear();
     });
-    it('returns null if there are less than  NUM_ITEMS_DISPLAYED rows', () => {
+    it('returns null if there are less than  MAX_ITEMS_DISPLAYED rows', () => {
       render(<ShowHideButton {...buttonProps} numRows={24} />);
       expect(screen.queryByTestId('test-button')).not.toBeInTheDocument();
     });
     it('has show all text when not showing all', () => {
       render(<ShowHideButton {...buttonProps} />);
-      expect(screen.getByText(`Show ${buttonProps.numRows - NUM_ITEMS_DISPLAYED} more ${buttonProps.subject.plural}`))
+      expect(screen.getByText(`Show ${buttonProps.numRows - MAX_ITEMS_DISPLAYED} more ${buttonProps.subject.plural}`))
         .toBeInTheDocument();
     });
     it('has hiding text when all rows are showing', () => {
       render(<ShowHideButton {...buttonProps} isShowingAll />);
-      expect(screen.getByText(`Hide ${buttonProps.numRows - NUM_ITEMS_DISPLAYED} ${buttonProps.subject.plural}`))
+      expect(screen.getByText(`Hide ${buttonProps.numRows - MAX_ITEMS_DISPLAYED} ${buttonProps.subject.plural}`))
         .toBeInTheDocument();
     });
     it('show button calls showAll func', () => {
