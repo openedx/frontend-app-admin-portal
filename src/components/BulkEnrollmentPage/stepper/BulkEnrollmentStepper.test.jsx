@@ -15,10 +15,10 @@ jest.mock('../../subscriptions/data/hooks', () => ({
   useAllSubscriptionUsers: jest.fn(),
 }));
 
-useAllSubscriptionUsers.mockReturnValue({
+useAllSubscriptionUsers.mockReturnValue([{
   results: [],
   count: 0,
-});
+}, false]);
 
 const defaultProps = {
   isOpen: true,
@@ -48,7 +48,7 @@ describe('BulkEnrollmentStepper', () => {
     render(<StepperWrapper {...defaultProps} />);
     const nextButton = screen.getByTestId(NEXT_BUTTON_TEST_ID);
     userEvent.click(nextButton);
-    expect(screen.getAllByText(REVIEW_TITLE)).toHaveLength(2);
+    expect(screen.getAllByText(REVIEW_TITLE)).toHaveLength(1);
     expect(screen.getByText(FINAL_BUTTON_TEXT)).toBeInTheDocument();
   });
   it('returns users to the add learners step when they click previous', () => {
