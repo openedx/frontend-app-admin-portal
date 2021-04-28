@@ -13,6 +13,7 @@ import {
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
+// TODO: Clear table selections on close
 const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
   const steps = [ADD_LEARNERS_STEP, REVIEW_STEP];
   const [currentStep, setCurrentStep] = useState(steps[0]);
