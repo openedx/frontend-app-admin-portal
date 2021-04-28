@@ -115,10 +115,12 @@ export const useAllSubscriptionUsers = ({
       return;
     }
     setLoading(true);
-    LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, { status: licenseStatusByTab[TAB_ALL_USERS], page_size: 500 })
-      .then((response) => {
-        setSubscriptionUsers(camelCaseObject(response.data));
-      })
+    LicenseManagerApiService.fetchSubscriptionUsers(
+      subscriptionUUID,
+      { status: licenseStatusByTab[TAB_ALL_USERS], page_size: 500 },
+    ).then((response) => {
+      setSubscriptionUsers(camelCaseObject(response.data));
+    })
       .catch((err) => {
         logError(err);
         setErrors({
