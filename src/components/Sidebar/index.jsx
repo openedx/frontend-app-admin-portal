@@ -91,7 +91,7 @@ class Sidebar extends React.Component {
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
       },
       {
-        title: 'Catalog Management',
+        title: 'Subscription Enrollment',
         to: `${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`,
         icon: faBookOpen,
         hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),

@@ -12,7 +12,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 function BulkEnrollmentPage({ enterpriseId }) {
   return (
     <div className="container-fluid bulk-enrollment">
-      <Hero title="Catalog Management" />
+      <Hero title="Subscription Enrollment" />
       <SubscriptionData enterpriseId={enterpriseId}>
         <main role="main" className="manage-subscription">
           <Switch>
