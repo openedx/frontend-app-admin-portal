@@ -53,7 +53,13 @@ const BulkEnrollmentStepper = ({ isOpen, close, subscriptionUUID }) => {
                   {PREVIOUS_BUTTON_TEXT}
                 </Button>
                 <Stepper.ActionRow.Spacer />
-                <Button disabled={!hasSelectedCoursesAndEmails} onClick={close} data-testid={FINAL_BUTTON_TEST_ID}>{FINAL_BUTTON_TEXT}</Button>
+                <Button
+                  disabled={!hasSelectedCoursesAndEmails}
+                  onClick={close}
+                  data-testid={FINAL_BUTTON_TEST_ID}
+                >
+                  {FINAL_BUTTON_TEXT}
+                </Button>
               </Stepper.ActionRow>
             </>
           )}
