@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, /* Toast, */ Button, DataTableContext,
+  DataTable, /* Toast, */ Button,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
