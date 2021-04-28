@@ -1,9 +1,11 @@
 export const STEPPER_TITLE = 'Learner enrollment';
 export const ADD_LEARNERS_TITLE = 'Add learners';
-export const REVIEW_TITLE = 'Review';
+export const REVIEW_TITLE = 'Review selections';
 export const NEXT_BUTTON_TEXT = 'Next';
 export const PREVIOUS_BUTTON_TEXT = 'Previous';
 export const FINAL_BUTTON_TEXT = 'Enroll learners';
 export const NEXT_BUTTON_TEST_ID = 'stepper-next';
 export const PREV_BUTTON_TEST_ID = 'stepper-prev';
 export const FINAL_BUTTON_TEST_ID = 'stepper-final';
+export const ADD_LEARNERS_STEP = 'addLearners';
+export const REVIEW_STEP = 'review';

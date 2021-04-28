@@ -5,6 +5,8 @@ import { DataTable } from '@edx/paragon';
 import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
+import { setExportedTableInstance } from '../hooks';
+import { convertToSelectedRowsObject } from '../helpers';
 
 export const TABLE_HEADERS = {
   email: 'Email',
@@ -17,18 +19,19 @@ const tableColumns = [
   },
 ];
 
+const ExportDataTableContext = () => {
+  const { emails: [, emailsDispatch] } = useContext(BulkEnrollContext);
+  setExportedTableInstance({ dispatch: emailsDispatch });
+  return null;
+};
+
 const AddLearnersStep = ({
   subscriptionUUID,
 }) => {
   const [errors, setErrors] = useState([]);
+  const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
   const { results: userData, count } = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
-  const { emails: [, setSelectedEmails] } = useContext(BulkEnrollContext);
-
-  const handleAddLearnersClick = useMemo(() => (selectedRows) => {
-    const selectedEmails = selectedRows.map((row) => row.original.userEmail);
-    setSelectedEmails(selectedEmails);
-  }, [setSelectedEmails]);
-
+  console.log('SELECTED EMAILS', selectedEmails)
   return (
     <>
       <h2>{ADD_LEARNERS_TITLE}</h2>
@@ -41,14 +44,17 @@ const AddLearnersStep = ({
         initialState={{
           pageSize: 25,
           pageIndex: 0,
+          selectedRowIds: convertToSelectedRowsObject(selectedEmails),
         }}
-        bulkActions={[
-          {
-            buttonText: ADD_LEARNERS_TITLE,
-            handleClick: handleAddLearnersClick,
-          },
-        ]}
-      />
+        initialTableOptions={{
+          getRowId: (row) => row.uuid,
+        }}
+      >
+        <ExportDataTableContext />
+        <DataTable.TableControlBar />
+        <DataTable.Table />
+        <DataTable.TableFooter />
+      </DataTable>
     </>
   );
 };
