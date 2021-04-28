@@ -5,7 +5,7 @@ export const setSelectedRowsAction = (rows) => ({
 });
 
 export const DELETE_ROW = 'DELETE ROW';
-export const deleteSelectedRowAction = (rowId) =>  ({
+export const deleteSelectedRowAction = (rowId) => ({
   type: DELETE_ROW,
   rowId,
 });

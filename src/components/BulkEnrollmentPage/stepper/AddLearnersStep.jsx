@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { DataTable } from '@edx/paragon';
 
@@ -7,7 +7,7 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
 import { setExportedTableInstance } from '../hooks';
 import { convertToSelectedRowsObject } from '../helpers';
-// import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
+import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
 
 export const TABLE_HEADERS = {
   email: 'Email',
@@ -35,7 +35,7 @@ const AddLearnersStep = ({
   const [{ results: userData, count }, loading] = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <TableLoadingSkeleton data-testid="skelly" />;
   }
 
   return (

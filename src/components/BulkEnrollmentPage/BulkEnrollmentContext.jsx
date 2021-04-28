@@ -9,8 +9,8 @@ const BulkEnrollContextProvider = ({ children }) => {
   const [courseTableState, coursesDispatch] = useReducer(selectedRowsReducer, []);
   const [emailTableState, emailsDispatch] = useReducer(selectedRowsReducer, []);
   const [selectedSubscription, setSelectedSubscription] = useState({});
-  console.log('COURSE TABLE STATE', courseTableState)
-  console.log('EMAIL TABLE STATE', emailTableState)
+  console.log('COURSE TABLE STATE', courseTableState);
+  console.log('EMAIL TABLE STATE', emailTableState);
 
   const value = {
     courses: [courseTableState, coursesDispatch],
