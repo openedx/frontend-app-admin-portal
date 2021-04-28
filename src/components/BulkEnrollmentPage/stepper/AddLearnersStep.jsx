@@ -30,8 +30,9 @@ const AddLearnersStep = ({
 }) => {
   const [errors, setErrors] = useState([]);
   const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
+  // TODO: Get an unpaginated list of users from the backend so that we can see all users here.
   const { results: userData, count } = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
-  console.log('SELECTED EMAILS', selectedEmails)
+
   return (
     <>
       <h2>{ADD_LEARNERS_TITLE}</h2>
