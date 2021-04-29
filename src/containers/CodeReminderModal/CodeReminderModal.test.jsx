@@ -16,6 +16,9 @@ import {
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
 import { configuration } from '../../config';
+import LmsApiService from '../../data/services/LmsApiService';
+
+jest.mock('../../data/services/LmsApiService');
 
 const enterpriseSlug = 'bearsRus';
 const sampleCodeData = {
@@ -26,6 +29,9 @@ const sampleCodeData = {
     used: 10,
   },
   error: null,
+};
+const usersResponse = {
+  data: [{ email: 'edx@example.com', id: 1, username: 'edx' }],
 };
 const sampleTableData = {
   loading: false,
@@ -84,6 +90,10 @@ const initialState = {
 };
 
 const couponId = 1;
+const user = {
+  id: 1,
+  username: 'edx',
+};
 const data = {
   code: 'ABC101',
   assigned_to: 'edx@example.com',
@@ -91,7 +101,7 @@ const data = {
 };
 
 const codeReminderRequestData = (numCodes, selectedToggle) => {
-  const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
+  const assignment = { code: `${data.code}`, user: { email: `${data.assigned_to}`, lms_user_id: `${user.id}`, username: `${user.username}` } };
   const options = {
     template: remindEmailTemplate.body,
     template_subject: remindEmailTemplate.subject,
@@ -149,6 +159,8 @@ describe('CodeReminderModalWrapper', () => {
 
   it('renders bulk reminder modal', () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
+    const mockPromiseResolve = () => Promise.resolve(usersResponse);
+    LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolve);
     const codeRemindData = [data, data];
     const wrapper = mount(<CodeReminderModalWrapper
       data={{ ...codeRemindData, selectedCodes: codeRemindData }}

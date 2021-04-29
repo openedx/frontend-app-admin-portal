@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import { Button, Icon, Modal } from '@edx/paragon';
-import { logError } from '@edx/frontend-platform/logging';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
@@ -13,7 +12,7 @@ import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
-import LmsApiService from '../../data/services/LmsApiService';
+import { getCleanedUsers, getUserDetails } from '../CodeModal';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
@@ -74,29 +73,6 @@ export class BaseCodeReminderModal extends React.Component {
       // When there is an new error, focus on the error message status alert
       errorMessageRef.focus();
     }
-  }
-
-  async getUserDetails(remindCodeEmails) {
-    try {
-      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: remindCodeEmails });
-      return response.data;
-    } catch (error) {
-      logError(error);
-      throw new SubmissionError({ _error: error });
-    }
-  }
-
-  getCleanedUsers(assignedEmail, assignedCode, usersResponse, assignments) {
-    const user = usersResponse.find(userResponse => userResponse.email === assignedEmail);
-    assignments.push({
-      user: {
-        email: assignedEmail,
-        lms_user_id: user ? user.id : undefined,
-        username: user ? user.username : undefined,
-      },
-      code: assignedCode,
-    });
-    return assignments;
   }
 
   getNumberOfSelectedCodes() {
@@ -165,14 +141,14 @@ export class BaseCodeReminderModal extends React.Component {
           remindCodeEmails.push(code.assigned_to)
         ));
 
-        usersResponse = await this.getUserDetails(remindCodeEmails);
+        usersResponse = await getUserDetails(remindCodeEmails);
         data.selectedCodes.forEach((code) => {
-          this.getCleanedUsers(code.assigned_to, code.code, usersResponse, assignments);
+          getCleanedUsers(code.assigned_to, code.code, usersResponse, assignments);
         });
         options.assignments = assignments;
       } else {
-        usersResponse = await this.getUserDetails([data.email]);
-        this.getCleanedUsers(data.email, data.code, usersResponse, assignments);
+        usersResponse = await getUserDetails([data.email]);
+        getCleanedUsers(data.email, data.code, usersResponse, assignments);
         options.assignments = assignments;
       }
     }
