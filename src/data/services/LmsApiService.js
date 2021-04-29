@@ -8,6 +8,8 @@ class LmsApiService {
 
   static baseUrl = configuration.LMS_BASE_URL;
 
+  static accountsSearchEmailsUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts/search_emails`;
+
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
 
   static enterpriseCustomerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/`;
@@ -202,6 +204,10 @@ class LmsApiService {
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
     return LmsApiService.apiClient().get(`${LmsApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
+  }
+
+  static fetchUserDetailsFromEmail(emails) {
+    return LmsApiService.apiClient().post(`${LmsApiService.accountsSearchEmailsUrl}`, emails);
   }
 }
 
