@@ -1,10 +1,3 @@
-import qs from 'query-string';
-
-const hasFeatureFlagEnabled = (featureFlag) => {
-  const { features } = qs.parse(window.location.search);
-  return features && features.split(',').includes(featureFlag);
-};
-
 const configuration = {
   BASE_URL: process.env.BASE_URL,
   LMS_BASE_URL: process.env.LMS_BASE_URL,
@@ -37,14 +30,14 @@ const configuration = {
 };
 
 const features = {
-  BULK_ENROLLMENT: process.env.FEATURE_FLAGS.BULK_ENROLLMENT || hasFeatureFlagEnabled('BULK_ENROLLMENT'),
-  CODE_MANAGEMENT: process.env.FEATURE_FLAGS.CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
-  REPORTING_CONFIGURATIONS: process.env.FEATURE_FLAGS.REPORTING_CONFIGURATIONS,
-  ANALYTICS: process.env.FEATURE_FLAGS.ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
-  SAML_CONFIGURATION: process.env.FEATURE_FLAGS.SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
-  SUPPORT: process.env.FEATURE_FLAGS.SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
-  CODE_VISIBILITY: process.env.FEATURE_FLAGS.CODE_VISIBILITY || hasFeatureFlagEnabled('CODE_VISIBILITY'),
-  EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_FLAGS.EXTERNAL_LMS_CONFIGURATION || hasFeatureFlagEnabled('EXTERNAL_LMS_CONFIGURATION'),
+  BULK_ENROLLMENT: process.env.FEATURE_BULK_ENROLLMENT,
+  CODE_MANAGEMENT: process.env.FEATURE_CODE_MANAGEMENT,
+  REPORTING_CONFIGURATIONS: process.env.FEATURE_REPORTING_CONFIGURATIONS,
+  ANALYTICS: process.env.FEATURE_ANALYTICS,
+  SAML_CONFIGURATION: process.env.FEATURE_SAML_CONFIGURATION,
+  SUPPORT: process.env.FEATURE_SUPPORT,
+  CODE_VISIBILITY: process.env.FEATURE_CODE_VISIBILITY,
+  EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_EXTERNAL_LMS_CONFIGURATION,
 };
 
 export { configuration, features };
