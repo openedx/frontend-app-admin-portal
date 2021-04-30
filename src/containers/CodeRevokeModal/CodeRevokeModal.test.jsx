@@ -15,6 +15,9 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
+import LmsApiService from '../../data/services/LmsApiService';
+
+jest.mock('../../data/services/LmsApiService');
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -45,8 +48,19 @@ const data = {
   code: 'ABC101',
   assigned_to: 'edx@example.com',
 };
+const usersResponse = {
+  data: [{ email: 'edx@example.com', id: 1, username: 'edx' }],
+};
 const codeRevokeRequestData = (numCodes) => {
-  const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
+  const assignment = {
+    code: data.code,
+    email: data.assigned_to,
+    user: {
+      email: data.assigned_to,
+      lms_user_id: usersResponse.data[0].id,
+      username: usersResponse.data[0].username,
+    },
+  };
   return {
     assignments: Array(numCodes).fill(assignment),
     do_not_email: false,
@@ -89,8 +103,11 @@ describe('CodeRevokeModalWrapper', () => {
     }
   });
 
-  it('renders individual assignment revoke modal', () => {
+  it('renders individual assignment revoke modal', async () => {
+    const flushPromises = () => new Promise(setImmediate);
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
+    const mockPromiseResolve = () => Promise.resolve(usersResponse);
+    LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolve);
 
     const wrapper = mount(<CodeRevokeModalWrapper data={data} />);
     expect(wrapper.find('.modal-title').text()).toEqual(couponTitle);
@@ -100,11 +117,15 @@ describe('CodeRevokeModalWrapper', () => {
 
     expect(wrapper.find('.modal-body form h3').text()).toEqual('Email Template');
     wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    await flushPromises();
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
   });
 
-  it('renders bulk assignment revoke modal', () => {
+  it('renders bulk assignment revoke modal', async () => {
+    const flushPromises = () => new Promise(setImmediate);
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
+    const mockPromiseResolve = () => Promise.resolve(usersResponse);
+    LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolve);
     const codeRevokeData = [data, data];
     const wrapper = mount(<CodeRevokeModalWrapper
       data={{ ...codeRevokeData, selectedCodes: codeRevokeData }}
@@ -113,6 +134,7 @@ describe('CodeRevokeModalWrapper', () => {
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    await flushPromises();
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });
 

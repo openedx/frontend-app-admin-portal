@@ -6,7 +6,7 @@ export const displayCode = (code) => `Code: ${code}`;
 export const displayEmail = (email) => `Email: ${email}`;
 export const displaySelectedCodes = (numSelectedCodes) => `Selected codes: ${numSelectedCodes}`;
 
-export function getCleanedUsers(assignedEmail, assignedCode, usersResponse, assignments) {
+export function appendUserDetails(assignedEmail, assignedCode, usersResponse, assignments) {
   const user = usersResponse.find(userResponse => userResponse.email === assignedEmail);
   assignments.push({
     user: {
@@ -14,6 +14,7 @@ export function getCleanedUsers(assignedEmail, assignedCode, usersResponse, assi
       lms_user_id: user ? user.id : undefined,
       username: user ? user.username : undefined,
     },
+    email: assignedEmail,
     code: assignedCode,
   });
   return assignments;

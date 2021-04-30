@@ -14,7 +14,7 @@ import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
 import {
-  displayCode, displayEmail, displaySelectedCodes, getCleanedUsers, getUserDetails, ModalError,
+  appendUserDetails, displayCode, displayEmail, displaySelectedCodes, getUserDetails, ModalError,
 } from '../CodeModal';
 import EmailTemplateForm from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
@@ -135,13 +135,13 @@ class CodeRevokeModal extends React.Component {
       usersResponse = await getUserDetails(revokeCodeEmails);
 
       data.selectedCodes.forEach((code) => {
-        getCleanedUsers(code.assigned_to, code.code, usersResponse, assignments);
+        appendUserDetails(code.assigned_to, code.code, usersResponse, assignments);
       });
 
       options.assignments = assignments;
     } else {
       usersResponse = await getUserDetails([data.assigned_to]);
-      getCleanedUsers(data.assigned_to, data.code, usersResponse, assignments);
+      appendUserDetails(data.assigned_to, data.code, usersResponse, assignments);
       options.assignments = assignments;
     }
 

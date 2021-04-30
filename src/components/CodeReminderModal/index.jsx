@@ -12,7 +12,7 @@ import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
-import { getCleanedUsers, getUserDetails } from '../CodeModal';
+import { appendUserDetails, getUserDetails } from '../CodeModal';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
@@ -143,12 +143,12 @@ export class BaseCodeReminderModal extends React.Component {
 
         usersResponse = await getUserDetails(remindCodeEmails);
         data.selectedCodes.forEach((code) => {
-          getCleanedUsers(code.assigned_to, code.code, usersResponse, assignments);
+          appendUserDetails(code.assigned_to, code.code, usersResponse, assignments);
         });
         options.assignments = assignments;
       } else {
         usersResponse = await getUserDetails([data.email]);
-        getCleanedUsers(data.email, data.code, usersResponse, assignments);
+        appendUserDetails(data.email, data.code, usersResponse, assignments);
         options.assignments = assignments;
       }
     }

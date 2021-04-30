@@ -10,7 +10,9 @@ import CodeSearchResults from './index';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CodeReminderModal from '../../containers/CodeReminderModal';
+import LmsApiService from '../../data/services/LmsApiService';
 
+jest.mock('../../data/services/LmsApiService');
 jest.mock('../../data/services/EcommerceApiService');
 
 const enterpriseId = 'test-enterprise';
@@ -306,6 +308,8 @@ describe('<CodeSearchResults />', () => {
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
+      const mockPromiseResolveUserDetails = () => Promise.resolve({ data: [] });
+      LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolveUserDetails);
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
       wrapper.find('RemindButton').simulate('click');
       wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
@@ -361,6 +365,8 @@ describe('<CodeSearchResults />', () => {
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
+      const mockPromiseResolveUserDetails = () => Promise.resolve({ data: [] });
+      LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolveUserDetails);
       expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
       wrapper.find('RemindButton').simulate('click');
       wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');

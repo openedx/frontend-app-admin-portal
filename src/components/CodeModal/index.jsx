@@ -1,4 +1,4 @@
 export { default as ModalError } from './ModalError';
 export {
-  displayCode, displayEmail, displaySelectedCodes, getCleanedUsers, getUserDetails,
+  appendUserDetails, displayCode, displayEmail, displaySelectedCodes, getUserDetails,
 } from './codeModalHelpers';
