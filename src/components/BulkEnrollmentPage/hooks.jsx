@@ -8,6 +8,7 @@ export const setExportedTableInstance = ({ dispatch }) => {
 
   useEffect(() => {
     if (tableInstance.selectedFlatRows) {
+      console.log('DISPATCHING SET SELECTED ROWS WITH', tableInstance.selectedFlatRows)
       dispatch(setSelectedRowsAction(tableInstance.selectedFlatRows));
     }
   }, [tableInstance?.selectedFlatRows.length]);
