@@ -9,3 +9,14 @@ export const deleteSelectedRowAction = (rowId) => ({
   type: DELETE_ROW,
   rowId,
 });
+
+export const ADD_ROW = 'ADD ROW';
+export const addSelectedRowAction = (row) => ({
+  type: ADD_ROW,
+  row,
+});
+
+export const CLEAR_SELECTION = 'CLEAR SELECTION';
+export const clearSelectionAction = () => ({
+  type: CLEAR_SELECTION,
+});
