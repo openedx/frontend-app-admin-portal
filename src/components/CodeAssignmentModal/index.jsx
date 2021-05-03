@@ -276,14 +276,11 @@ export class BaseCodeAssignmentModal extends React.Component {
     const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
 
     if (isBulkAssign) {
-      options.emails = validEmails;
-
       // Only includes `codes` in `options` if not all codes are selected.
       if (!hasAllCodesSelected) {
         options.codes = selectedCodes.map(selectedCode => selectedCode.code);
       }
     } else {
-      options.emails = [formData['email-address']];
       options.codes = [code.code];
     }
 
@@ -299,16 +296,16 @@ export class BaseCodeAssignmentModal extends React.Component {
         enterprise_customer: enterpriseUuid,
       };
     }
-
+    const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
     let usersResponse = [];
     try {
-      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: options.emails });
+      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: assignmentEmails });
       usersResponse = response.data;
     } catch (error) {
       logError(error);
       throw new SubmissionError({ _error: error });
     }
-    options.users = this.getCleanedUsers(options.emails, usersResponse);
+    options.users = this.getCleanedUsers(assignmentEmails, usersResponse);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))
