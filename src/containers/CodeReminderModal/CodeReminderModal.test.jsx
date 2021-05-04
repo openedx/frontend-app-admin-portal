@@ -16,6 +16,9 @@ import {
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
 import { configuration } from '../../config';
+import LmsApiService from '../../data/services/LmsApiService';
+
+jest.mock('../../data/services/LmsApiService');
 
 const enterpriseSlug = 'bearsRus';
 const sampleCodeData = {
@@ -26,6 +29,9 @@ const sampleCodeData = {
     used: 10,
   },
   error: null,
+};
+const usersResponse = {
+  data: [{ email: 'edx@example.com', id: 1, username: 'edx' }],
 };
 const sampleTableData = {
   loading: false,
@@ -91,7 +97,15 @@ const data = {
 };
 
 const codeReminderRequestData = (numCodes, selectedToggle) => {
-  const assignment = { code: `${data.code}`, email: `${data.assigned_to}` };
+  const assignment = {
+    code: data.code,
+    email: data.assigned_to,
+    user: {
+      email: data.assigned_to,
+      lms_user_id: usersResponse.data[0].id,
+      username: usersResponse.data[0].username,
+    },
+  };
   const options = {
     template: remindEmailTemplate.body,
     template_subject: remindEmailTemplate.subject,
@@ -147,8 +161,11 @@ describe('CodeReminderModalWrapper', () => {
     expect(wrapper.find('.assignment-detail').find('p')).toBeTruthy();
   });
 
-  it('renders bulk reminder modal', () => {
+  it('renders bulk reminder modal', async () => {
+    const flushPromises = () => new Promise(setImmediate);
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
+    const mockPromiseResolve = () => Promise.resolve(usersResponse);
+    LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolve);
     const codeRemindData = [data, data];
     const wrapper = mount(<CodeReminderModalWrapper
       data={{ ...codeRemindData, selectedCodes: codeRemindData }}
@@ -158,11 +175,15 @@ describe('CodeReminderModalWrapper', () => {
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     expect(wrapper.find('#email-template')).toBeTruthy();
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    await flushPromises();
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
   });
 
-  it('returns the correct data if learner portal is not enabled', () => {
+  it('returns the correct data if learner portal is not enabled', async () => {
+    const flushPromises = () => new Promise(setImmediate);
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
+    const mockPromiseResolve = () => Promise.resolve(usersResponse);
+    LmsApiService.fetchUserDetailsFromEmail.mockImplementation(mockPromiseResolve);
     const codeRemindData = [data, data];
     const wrapper = mount(<CodeReminderModalWrapper
       data={{
@@ -179,6 +200,7 @@ describe('CodeReminderModalWrapper', () => {
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     expect(wrapper.find('#email-template')).toBeTruthy();
     wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    await flushPromises();
     const expectedData = codeReminderRequestData(2);
     delete expectedData.base_enterprise_url;
     expect(spy).toHaveBeenCalledWith(couponId, expectedData);
