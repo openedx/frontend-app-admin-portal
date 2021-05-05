@@ -54,7 +54,6 @@ const usersResponse = {
 const codeRevokeRequestData = (numCodes) => {
   const assignment = {
     code: data.code,
-    email: data.assigned_to,
     user: {
       email: data.assigned_to,
       lms_user_id: usersResponse.data[0].id,

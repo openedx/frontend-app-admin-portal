@@ -5,7 +5,6 @@ import {
   Button, Icon, Modal,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
-import { logError } from '@edx/frontend-platform/logging';
 
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
@@ -18,8 +17,9 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
-import LmsApiService from '../../data/services/LmsApiService';
-import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
+import {
+  displayCode, displaySelectedCodes, getUserDetails, ModalError,
+} from '../CodeModal';
 import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
@@ -298,13 +298,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     }
     const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
     let usersResponse = [];
-    try {
-      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: assignmentEmails });
-      usersResponse = response.data;
-    } catch (error) {
-      logError(error);
-      throw new SubmissionError({ _error: error });
-    }
+    usersResponse = await getUserDetails(assignmentEmails);
     options.users = this.getCleanedUsers(assignmentEmails, usersResponse);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)

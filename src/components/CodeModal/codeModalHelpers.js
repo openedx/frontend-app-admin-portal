@@ -14,7 +14,6 @@ export function appendUserDetails(assignedEmail, assignedCode, usersResponse, as
       lms_user_id: user ? user.id : undefined,
       username: user ? user.username : undefined,
     },
-    email: assignedEmail,
     code: assignedCode,
   });
   return assignments;
