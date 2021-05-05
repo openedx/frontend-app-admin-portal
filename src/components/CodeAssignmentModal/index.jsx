@@ -5,7 +5,6 @@ import {
   Button, Icon, Modal,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
-import { logError } from '@edx/frontend-platform/logging';
 
 import BulkAssignFields from './BulkAssignFields';
 import IndividualAssignFields from './IndividualAssignFields';
@@ -18,8 +17,9 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
-import LmsApiService from '../../data/services/LmsApiService';
-import { displayCode, displaySelectedCodes, ModalError } from '../CodeModal';
+import {
+  displayCode, displaySelectedCodes, getUserDetails, ModalError,
+} from '../CodeModal';
 import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
@@ -276,14 +276,11 @@ export class BaseCodeAssignmentModal extends React.Component {
     const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
 
     if (isBulkAssign) {
-      options.emails = validEmails;
-
       // Only includes `codes` in `options` if not all codes are selected.
       if (!hasAllCodesSelected) {
         options.codes = selectedCodes.map(selectedCode => selectedCode.code);
       }
     } else {
-      options.emails = [formData['email-address']];
       options.codes = [code.code];
     }
 
@@ -299,16 +296,10 @@ export class BaseCodeAssignmentModal extends React.Component {
         enterprise_customer: enterpriseUuid,
       };
     }
-
+    const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
     let usersResponse = [];
-    try {
-      const response = await LmsApiService.fetchUserDetailsFromEmail({ emails: options.emails });
-      usersResponse = response.data;
-    } catch (error) {
-      logError(error);
-      throw new SubmissionError({ _error: error });
-    }
-    options.users = this.getCleanedUsers(options.emails, usersResponse);
+    usersResponse = await getUserDetails(assignmentEmails);
+    options.users = this.getCleanedUsers(assignmentEmails, usersResponse);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))
