@@ -63,19 +63,23 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
                        
-                      sort ascending
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
                 </button>
               </th>
@@ -89,19 +93,23 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Total Course Enrollment Count
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Total Course Enrollment Count
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -115,19 +123,23 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Total Completed Courses Count
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Total Completed Courses Count
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -141,19 +153,23 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
