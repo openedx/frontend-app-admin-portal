@@ -2,11 +2,14 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 
+import userEvent from '@testing-library/user-event';
 import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
 
 import { ADD_LEARNERS_TITLE } from './constants';
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
-import AddLearnersStep, { TABLE_HEADERS } from './AddLearnersStep';
+import AddLearnersStep, { LINK_TEXT, TABLE_HEADERS } from './AddLearnersStep';
+import { renderWithRouter } from '../../test/testUtils';
+import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 jest.mock('../../subscriptions/data/hooks', () => ({
   useAllSubscriptionUsers: jest.fn(),
@@ -20,9 +23,8 @@ const mockTableData = {
 useAllSubscriptionUsers.mockReturnValue([mockTableData, false]);
 
 const defaultProps = {
-  isOpen: true,
-  close: jest.fn(),
   subscriptionUUID: 'fakest-uuid',
+  enterpriseSlug: 'sluggiest',
 };
 
 const StepperWrapper = (props) => (
@@ -33,18 +35,24 @@ const StepperWrapper = (props) => (
 
 describe('AddLearnersStep', () => {
   it('displays a title', () => {
-    render(<StepperWrapper {...defaultProps} />);
+    renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByText(ADD_LEARNERS_TITLE)).toBeInTheDocument();
   });
   it('displays a table', () => {
-    render(<StepperWrapper {...defaultProps} />);
+    renderWithRouter(<StepperWrapper {...defaultProps} />);
     Object.values(TABLE_HEADERS).forEach((header) => {
       expect(screen.getByText(header)).toBeInTheDocument();
     });
   });
   it('displays a table skeleton when loading', () => {
     useAllSubscriptionUsers.mockReturnValue([mockTableData, true]);
-    render(<StepperWrapper {...defaultProps} />);
+    renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByTestId('skelly')).toBeInTheDocument();
+  });
+  it('links leaners to subscription management', () => {
+    const { history } = renderWithRouter(<StepperWrapper {...defaultProps} />);
+    const link = screen.getByText(LINK_TEXT);
+    userEvent.click(link);
+    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${defaultProps.subscriptionUUID}`);
   });
 });

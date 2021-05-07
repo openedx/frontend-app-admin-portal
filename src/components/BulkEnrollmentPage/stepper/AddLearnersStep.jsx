@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { DataTable } from '@edx/paragon';
 
+import { Link } from 'react-router-dom';
 import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
@@ -9,10 +10,13 @@ import { convertToSelectedRowsObject } from '../helpers';
 import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
 import { BaseSelectWithContext, BaseSelectWithContextHeader } from '../table/BulkEnrollSelect';
 import BaseSelectionStatus from '../table/BaseSelectionStatus';
+import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 export const TABLE_HEADERS = {
   email: 'Email',
 };
+
+export const LINK_TEXT = 'Subcription management';
 
 const tableColumns = [
   {
@@ -40,6 +44,7 @@ const selectColumn = {
 
 const AddLearnersStep = ({
   subscriptionUUID,
+  enterpriseSlug,
 }) => {
   const [errors, setErrors] = useState([]);
   const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
@@ -49,6 +54,11 @@ const AddLearnersStep = ({
 
   return (
     <>
+      <p>
+        Select learners to enroll from the list of all learners with an active or pending subscription license below.
+        If you wish to enroll additional learners not shown, please first invite them under{' '}
+        <Link to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscriptionUUID}`}>{LINK_TEXT}</Link>
+      </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
       {loading && <TableLoadingSkeleton data-testid="skelly" />}
       {!loading && userData && (
@@ -76,6 +86,7 @@ const AddLearnersStep = ({
 
 AddLearnersStep.propTypes = {
   subscriptionUUID: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 export default AddLearnersStep;

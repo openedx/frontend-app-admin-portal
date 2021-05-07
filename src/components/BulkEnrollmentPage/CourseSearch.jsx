@@ -11,6 +11,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
+
 export const NO_DATA_MESSAGE = 'There are no results';
 
 export const BaseCourseSearch = ({
@@ -25,7 +26,7 @@ export const BaseCourseSearch = ({
   }
   if (isLoadingSubscription) {
     return (
-      <div data-testid="skelly">
+      <div data-testid="subscription-skelly">
         <div className="sr-only">Loading...</div>
         <Skeleton height={175} />
         <Skeleton className="mt-3" height={50} count={25} />

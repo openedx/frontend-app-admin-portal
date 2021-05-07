@@ -70,17 +70,18 @@ EnrollButton.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export const BaseCourseSearchResults = ({
-  searchResults,
-  // algolia recommends this prop instead of searching
-  isSearchStalled,
-  searchState,
-  error,
-  enterpriseSlug,
-  goToNextStep,
-}) => {
-  const { refinementsFromQueryParams } = useContext(SearchContext);
+export const BaseCourseSearchResults = (props) => {
+  const {
+    searchResults,
+    // algolia recommends this prop instead of searching
+    isSearchStalled,
+    searchState,
+    error,
+    enterpriseSlug,
+    goToNextStep,
+  } = props;
 
+  const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
     {
       Header: TABLE_HEADERS.courseName,
@@ -135,6 +136,7 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
+
   return (
     <>
       {/* TODO: Update toast when stepper is complete to show the enrollment message.

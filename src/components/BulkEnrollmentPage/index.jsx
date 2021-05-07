@@ -6,7 +6,7 @@ import { Container } from '@edx/paragon';
 import { Switch, Route } from 'react-router-dom';
 import Hero from '../Hero';
 import { MultipleSubscriptionsPage, SubscriptionData } from '../subscriptions';
-import CourseSearch from './BulkEnrollWithSubscription';
+import CourseSearch from './CourseSearch';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 function BulkEnrollmentPage({ enterpriseId }) {

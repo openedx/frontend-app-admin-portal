@@ -39,7 +39,10 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
           </Stepper.Step>
 
           <Stepper.Step eventKey={ADD_LEARNERS_STEP} title={ADD_LEARNERS_TITLE}>
-            <AddLearnersStep subscriptionUUID={subscription.uuid} />
+            <AddLearnersStep
+              subscriptionUUID={subscription.uuid}
+              enterpriseSlug={enterpriseSlug}
+            />
           </Stepper.Step>
 
           <Stepper.Step eventKey={REVIEW_STEP} title={REVIEW_TITLE}>
