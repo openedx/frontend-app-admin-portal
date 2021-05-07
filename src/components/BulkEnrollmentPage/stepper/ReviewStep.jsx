@@ -3,7 +3,7 @@ import { Row } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
-import { ADD_LEARNERS_STEP, REVIEW_TITLE } from './constants';
+import { ADD_LEARNERS_STEP, ADD_COURSES_STEP, REVIEW_TITLE } from './constants';
 import ReviewList from './ReviewList';
 
 const EMAILS = {
@@ -18,7 +18,7 @@ const COURSES = {
   title: 'Courses',
 };
 
-const ReviewStep = ({ setCurrentStep, close }) => {
+const ReviewStep = ({ setCurrentStep }) => {
   const {
     emails: [selectedEmails, emailsDispatch],
     courses: [selectedCourses, coursesDispatch],
@@ -47,7 +47,7 @@ const ReviewStep = ({ setCurrentStep, close }) => {
           accessor="title"
           dispatch={coursesDispatch}
           subject={COURSES}
-          returnToSelection={close}
+          returnToSelection={() => setCurrentStep(ADD_COURSES_STEP)}
         />
       </Row>
     </>
@@ -57,8 +57,6 @@ const ReviewStep = ({ setCurrentStep, close }) => {
 ReviewStep.propTypes = {
   /* Function from the stepper to change steps */
   setCurrentStep: PropTypes.func.isRequired,
-  /* Function to close the stepper */
-  close: PropTypes.func.isRequired,
 };
 
 export default ReviewStep;

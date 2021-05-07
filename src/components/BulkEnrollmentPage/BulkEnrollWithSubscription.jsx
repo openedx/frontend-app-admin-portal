@@ -1,25 +1,15 @@
 import React from 'react';
 
-import algoliasearch from 'algoliasearch/lite';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Redirect } from 'react-router';
 
-import { InstantSearch, Configure } from 'react-instantsearch-dom';
-import { SearchHeader, SearchData } from '@edx/frontend-enterprise';
 import Skeleton from 'react-loading-skeleton';
-
-import CourseSearchResults from './CourseSearchResults';
-import { configuration } from '../../config';
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
+import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
 export const NO_DATA_MESSAGE = 'There are no results';
 
@@ -44,26 +34,16 @@ export const BaseCourseSearch = ({
   }
 
   return (
-    <SearchData>
+    <>
       <Helmet title={PAGE_TITLE} />
-      <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
-        searchClient={searchClient}
-      >
-        <Configure
-          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid}`}
-          hitsPerPage={25}
+      <BulkEnrollContextProvider>
+        <BulkEnrollmentStepper
+          subscription={subscription}
+          enterpriseId={enterpriseId}
+          enterpriseSlug={enterpriseSlug}
         />
-        <SearchHeader />
-        <BulkEnrollContextProvider>
-          <CourseSearchResults
-            enterpriseId={enterpriseId}
-            enterpriseSlug={enterpriseSlug}
-            subscriptionUUID={subscription.uuid}
-          />
-        </BulkEnrollContextProvider>
-      </InstantSearch>
-    </SearchData>
+      </BulkEnrollContextProvider>
+    </>
   );
 };
 

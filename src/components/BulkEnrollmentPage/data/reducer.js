@@ -1,7 +1,8 @@
-import { SET_SELECTED_ROWS, DELETE_ROW, ADD_ROW, CLEAR_SELECTION } from './actions';
+import {
+  SET_SELECTED_ROWS, DELETE_ROW, ADD_ROW, CLEAR_SELECTION,
+} from './actions';
 
 const selectedRowsReducer = (state = [], action) => {
-  console.log("DISPATCHED", action.type, action);
   switch (action.type) {
     case SET_SELECTED_ROWS:
       return action.rows;

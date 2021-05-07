@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
-import { BaseCourseSearch } from './CourseSearch';
+import { BaseCourseSearch } from './BulkEnrollWithSubscription';
 import { renderWithRouter } from '../test/testUtils';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 

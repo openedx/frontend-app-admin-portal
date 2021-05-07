@@ -1,8 +1,4 @@
 .bulk-enrollment {
-  .bg-brand-primary {
-    background-color: $primary-700;
-    color: $white
-  }
   .alert {
     margin-top: 2rem;
   }
@@ -20,4 +16,10 @@
     display: flex;
     justify-content: space-between;
   }
+}
+
+.sticky-stepper-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
