@@ -22,6 +22,7 @@ const defaultProps = {
 
 const fakeSubscription = {
   enterpriseCatalogUuid: 'bestCatalog',
+  uuid: 'fancy-uuid',
 };
 
 describe('<BaseCourseSearch />', () => {

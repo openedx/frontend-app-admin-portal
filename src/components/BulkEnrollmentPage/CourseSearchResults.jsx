@@ -58,6 +58,7 @@ export const EnrollButton = ({ row, goToNextStep, dispatch }) => {
       className="enroll-button"
       variant="link"
       onClick={handleClick}
+      data-testid="tableEnrollButton"
     >
       {ENROLL_TEXT}
     </Button>

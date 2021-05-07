@@ -78,7 +78,7 @@ describe('ReviewList', () => {
   it('lets users show all rows', () => {
     const rows = rowGenerator(30);
     render(<ReviewList {...defaultProps} rows={rows} />);
-    screen.debug();
+
     const button = screen.getByTestId('show-hide');
     userEvent.click(button);
     rows.forEach((row) => {
