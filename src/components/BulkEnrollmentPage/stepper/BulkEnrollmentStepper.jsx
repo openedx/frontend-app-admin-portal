@@ -24,8 +24,6 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
   const { emails: [selectedEmails], courses: [selectedCourses] } = useContext(BulkEnrollContext);
   const hasSelectedCoursesAndEmails = selectedEmails.length > 0 && selectedCourses.length > 0;
 
-  console.log('SELECTED COURSES', selectedCourses);
-
   return (
     <Stepper activeKey={currentStep}>
       <Stepper.Header className="my-3" />

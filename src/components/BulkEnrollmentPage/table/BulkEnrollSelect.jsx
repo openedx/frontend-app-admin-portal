@@ -10,7 +10,6 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 export const BaseSelectWithContext = ({ row, contextKey }) => {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
-
   const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows]);
 
   const toggleSelected = isSelected
@@ -24,6 +23,7 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
         {...row.getToggleRowSelectedProps()}
         checked={isSelected}
         onClick={toggleSelected}
+        data-testid="selectOne"
       />
     </div>
   );
@@ -49,17 +49,21 @@ export const BaseSelectWithContextHeader = ({
 
   return (
     <div>
-      <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} onClick={toggleAllRowsSelectedBulkEn} />
+      <IndeterminateCheckbox
+        {...getToggleAllRowsSelectedProps()}
+        onClick={toggleAllRowsSelectedBulkEn}
+        data-testid="selectAll"
+      />
     </div>
   );
 };
 
 BaseSelectWithContextHeader.propTypes = {
-  rows: PropTypes.shape({
+  rows: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-  }).isRequired,
+  })).isRequired,
   getToggleAllRowsSelectedProps: PropTypes.func.isRequired,
-  isAllRowsSelected: PropTypes.func.isRequired,
+  isAllRowsSelected: PropTypes.bool.isRequired,
   /* The key to get the required data from BulkEnrollContext */
   contextKey: PropTypes.string.isRequired,
 };
