@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { DataTable } from '@edx/paragon';
+import { DataTable, TextFilter } from '@edx/paragon';
 
 import { Link } from 'react-router-dom';
 import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
@@ -22,6 +22,7 @@ const tableColumns = [
   {
     Header: TABLE_HEADERS.email,
     accessor: 'userEmail',
+    Filter: TextFilter,
   },
 ];
 
@@ -69,6 +70,7 @@ const AddLearnersStep = ({
           itemCount={count}
           isSelectable
           isPaginated
+          isFilterable
           SelectionStatusComponent={AddLearnersSelectionStatus}
           initialState={{
             pageSize: 25,

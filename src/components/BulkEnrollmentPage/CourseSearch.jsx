@@ -11,7 +11,6 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
-
 export const NO_DATA_MESSAGE = 'There are no results';
 
 export const BaseCourseSearch = ({

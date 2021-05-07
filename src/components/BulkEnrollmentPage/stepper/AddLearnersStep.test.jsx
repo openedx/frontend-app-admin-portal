@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 
@@ -54,5 +54,10 @@ describe('AddLearnersStep', () => {
     const link = screen.getByText(LINK_TEXT);
     userEvent.click(link);
     expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${defaultProps.subscriptionUUID}`);
+  });
+  it('allows search by email', () => {
+    useAllSubscriptionUsers.mockReturnValue([mockTableData, false]);
+    renderWithRouter(<StepperWrapper {...defaultProps} />);
+    expect(screen.getByText('Search Email')).toBeInTheDocument();
   });
 });
