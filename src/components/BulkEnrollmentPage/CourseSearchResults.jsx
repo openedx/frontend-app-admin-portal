@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, /* Toast, */ Button,
+  DataTable, Button,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
@@ -107,7 +107,6 @@ export const BaseCourseSearchResults = (props) => {
     [searchState?.page, refinementsFromQueryParams],
   );
 
-  // const [showToast, setShowToast] = useState(false);
   const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
 
   if (isSearchStalled) {
@@ -140,14 +139,6 @@ export const BaseCourseSearchResults = (props) => {
 
   return (
     <>
-      {/* TODO: Update toast when stepper is complete to show the enrollment message.
-        And/or use the existing toast framework */}
-      {/* <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-      >
-        {`${enrolledLearners} learners have been enrolled.`}
-      </Toast> */}
       <DataTable
         columns={columns}
         data={searchResults?.hits || []}
