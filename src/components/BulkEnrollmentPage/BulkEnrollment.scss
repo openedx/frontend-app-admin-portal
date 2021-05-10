@@ -12,9 +12,19 @@
   margin: 0;
   padding: 0;
 
+  .card {
+    @extend .mb-1;
+  }
+
+  .card-body {
+    @extend .py-2;
+    @extend .px-3
+  }
+
   .list-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 }
 

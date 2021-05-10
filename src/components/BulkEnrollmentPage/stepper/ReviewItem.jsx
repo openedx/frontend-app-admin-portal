@@ -17,7 +17,7 @@ const ReviewItem = ({ row, accessor, dispatch }) => {
       <Card>
         <Card.Body>
           <Card.Text className="list-item">
-            {row.values[accessor]}
+            <span className="list-item-text">{row.values[accessor]}</span>
             <IconButton
               src={Delete}
               iconAs={Icon}

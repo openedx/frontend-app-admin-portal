@@ -53,6 +53,10 @@ describe('ReviewList', () => {
     render(<ReviewList {...defaultProps} />);
     expect(screen.getByText(defaultProps.subject.title)).toBeInTheDocument();
   });
+  it('displays the number of rows selected', () => {
+    render(<ReviewList {...defaultProps} />);
+    expect(screen.getByText(`${defaultProps.subject.title} selected: ${defaultProps.rows.length}`)).toBeInTheDocument();
+  });
   it('shows an alert if there are no rows', () => {
     render(<ReviewList {...defaultProps} rows={[]} />);
     expect(screen.getByTestId('no-rows-alert')).toBeInTheDocument();
