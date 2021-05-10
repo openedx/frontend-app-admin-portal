@@ -16,7 +16,7 @@ export const TABLE_HEADERS = {
   email: 'Email',
 };
 
-export const LINK_TEXT = 'Subcription management';
+export const LINK_TEXT = 'Subscription management';
 
 const tableColumns = [
   {
