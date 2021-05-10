@@ -8,8 +8,12 @@ import {
 } from '../data/actions';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
+export const SELECT_ONE_TEST_ID = 'selectOne';
+export const SELECT_ALL_TEST_ID = 'selectAll';
+
 export const BaseSelectWithContext = ({ row, contextKey }) => {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
+
   const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows]);
 
   const toggleSelected = isSelected
@@ -22,8 +26,9 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
       <IndeterminateCheckbox
         {...row.getToggleRowSelectedProps()}
         checked={isSelected}
-        onClick={toggleSelected}
-        data-testid="selectOne"
+        onChange={toggleSelected}
+        indeterminate={false}
+        data-testid={SELECT_ONE_TEST_ID}
       />
     </div>
   );
@@ -51,8 +56,9 @@ export const BaseSelectWithContextHeader = ({
     <div>
       <IndeterminateCheckbox
         {...getToggleAllRowsSelectedProps()}
+        checked={isAllRowsSelected}
         onClick={toggleAllRowsSelectedBulkEn}
-        data-testid="selectAll"
+        data-testid={SELECT_ALL_TEST_ID}
       />
     </div>
   );
