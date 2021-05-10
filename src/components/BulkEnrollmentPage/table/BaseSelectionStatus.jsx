@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, DataTableContext } from '@edx/paragon';
 
 import {
+  clearSelectionAction,
   setSelectedRowsAction,
 } from '../data/actions';
 
@@ -13,14 +14,11 @@ const BaseSelectionStatus = ({
   dispatch,
 }) => {
   const {
-    itemCount, isAllRowsSelected, rows, toggleAllRowsSelected,
+    itemCount, rows, toggleAllRowsSelected,
   } = useContext(DataTableContext);
+  const isAllRowsSelected = selectedRows.length === rows.length;
 
   const numSelectedRows = selectedRows.length;
-
-  const toggleAllRowsSelectedBulkEnroll = isAllRowsSelected
-    ? () => { toggleAllRowsSelected(false); dispatch(setSelectedRowsAction([])); }
-    : () => { toggleAllRowsSelected(true); dispatch(setSelectedRowsAction(rows)); };
 
   return (
     <div className={className}>
@@ -29,7 +27,7 @@ const BaseSelectionStatus = ({
         <Button
           variant="link"
           size="inline"
-          onClick={toggleAllRowsSelectedBulkEnroll}
+          onClick={() => { toggleAllRowsSelected(true); dispatch(setSelectedRowsAction(rows)); }}
         >
           Select all {itemCount}
         </Button>
@@ -38,7 +36,7 @@ const BaseSelectionStatus = ({
         <Button
           variant="link"
           size="inline"
-          onClick={toggleAllRowsSelectedBulkEnroll}
+          onClick={() => { toggleAllRowsSelected(false); dispatch(clearSelectionAction()); }}
         >
           Clear selection
         </Button>
