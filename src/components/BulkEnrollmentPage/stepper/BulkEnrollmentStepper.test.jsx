@@ -14,6 +14,7 @@ import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 
 import '../../../../__mocks__/react-instantsearch-dom';
 import { renderWithRouter } from '../../test/testUtils';
+import { ToastsContext } from '../../Toasts/ToastsProvider';
 
 jest.mock('../../subscriptions/data/hooks', () => ({
   useAllSubscriptionUsers: jest.fn(),
@@ -32,10 +33,14 @@ const defaultProps = {
   subscription: { uuid: 'fakest-uuid', enterpriseName: 'fakeCo', enterpriseCatalogUuid: '12345' },
 };
 
+const addToast = jest.fn();
+
 const StepperWrapper = (props) => (
-  <BulkEnrollContextProvider>
-    <BulkEnrollmentStepper {...props} />
-  </BulkEnrollContextProvider>
+  <ToastsContext.Provider value={{ addToast }}>
+    <BulkEnrollContextProvider>
+      <BulkEnrollmentStepper {...props} />
+    </BulkEnrollContextProvider>
+  </ToastsContext.Provider>
 );
 
 const navigateToAddLearners = () => {
