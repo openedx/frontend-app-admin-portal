@@ -1,6 +1,6 @@
 import React, {
   useContext,
-  useMemo, useState,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
@@ -10,12 +10,16 @@ import {
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
-import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 import StatusAlert from '../StatusAlert';
-import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
+import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
-import { setExportedTableInstance } from './hooks';
 import { convertToSelectedRowsObject } from './helpers';
+import {
+  setSelectedRowsAction,
+} from './data/actions';
+
+import BaseSelectionStatus from './table/BaseSelectionStatus';
+import { BaseSelectWithContext, BaseSelectWithContextHeader } from './table/BulkEnrollSelect';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -26,11 +30,27 @@ export const TABLE_HEADERS = {
   enroll: '',
 };
 
-export const EnrollButton = ({ row, setStepperOpen }) => {
+const AddCoursesSelectionStatus = (props) => {
+  const { courses: [selectedCourses, dispatch] } = useContext(BulkEnrollContext);
+
+  return <BaseSelectionStatus selectedRows={selectedCourses} dispatch={dispatch} {...props} />;
+};
+
+const SelectWithContext = (props) => <BaseSelectWithContext contextKey="courses" {...props} />;
+
+const SelectWithContextHeader = (props) => <BaseSelectWithContextHeader contextKey="courses" {...props} />;
+
+const selectColumn = {
+  id: 'selection',
+  Header: SelectWithContextHeader,
+  Cell: SelectWithContext,
+  disableSortBy: true,
+};
+
+export const EnrollButton = ({ row, goToNextStep, dispatch }) => {
   const handleClick = () => {
-    // our context depends on the row being selected, so set it to selected before opening the stepper
-    row.toggleRowSelected(true);
-    setStepperOpen(true);
+    dispatch(setSelectedRowsAction([row]));
+    goToNextStep();
   };
 
   return (
@@ -38,37 +58,31 @@ export const EnrollButton = ({ row, setStepperOpen }) => {
       className="enroll-button"
       variant="link"
       onClick={handleClick}
+      data-testid="tableEnrollButton"
     >
       {ENROLL_TEXT}
     </Button>
   );
 };
 
-const ExportDataTableContext = () => {
-  const { courses: [, coursesDispatch] } = useContext(BulkEnrollContext);
-  setExportedTableInstance({ dispatch: coursesDispatch });
-  return null;
-};
-
 EnrollButton.propTypes = {
-  row: PropTypes.shape({
-    toggleRowSelected: PropTypes.func.isRequired,
-  }).isRequired,
-  setStepperOpen: PropTypes.func.isRequired,
+  row: PropTypes.shape({ }).isRequired,
+  goToNextStep: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export const BaseCourseSearchResults = ({
-  enterpriseId,
-  searchResults,
-  // algolia recommends this prop instead of searching
-  isSearchStalled,
-  searchState,
-  error,
-  enterpriseSlug,
-  subscriptionUUID,
-}) => {
-  const { refinementsFromQueryParams } = useContext(SearchContext);
+export const BaseCourseSearchResults = (props) => {
+  const {
+    searchResults,
+    // algolia recommends this prop instead of searching
+    isSearchStalled,
+    searchState,
+    error,
+    enterpriseSlug,
+    goToNextStep,
+  } = props;
 
+  const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
     {
       Header: TABLE_HEADERS.courseName,
@@ -93,13 +107,8 @@ export const BaseCourseSearchResults = ({
     [searchState?.page, refinementsFromQueryParams],
   );
 
-  const [stepperOpen, setStepperOpen] = useState(false);
   // const [showToast, setShowToast] = useState(false);
-  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
-
-  const handleBulkEnrollClick = useMemo(() => () => {
-    setStepperOpen(true);
-  }, [setStepperOpen]);
+  const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
 
   if (isSearchStalled) {
     return (
@@ -128,14 +137,9 @@ export const BaseCourseSearchResults = ({
       />
     );
   }
+
   return (
     <>
-      <BulkEnrollmentStepper
-        isOpen={stepperOpen}
-        close={() => setStepperOpen(false)}
-        subscriptionUUID={subscriptionUUID}
-        enterpriseId={enterpriseId}
-      />
       {/* TODO: Update toast when stepper is complete to show the enrollment message.
         And/or use the existing toast framework */}
       {/* <Toast
@@ -148,13 +152,11 @@ export const BaseCourseSearchResults = ({
         columns={columns}
         data={searchResults?.hits || []}
         itemCount={searchResults?.nbHits}
+        manualSelectColumn={selectColumn}
+        SelectionStatusComponent={AddCoursesSelectionStatus}
         isSelectable
         pageCount={searchResults?.nbPages || 1}
         pageSize={searchResults?.hitsPerPage || 0}
-        bulkActions={[{
-          buttonText: ENROLL_TEXT,
-          handleClick: handleBulkEnrollClick,
-        }]}
         initialState={{ selectedRowIds: convertToSelectedRowsObject(selectedCourses) }}
         initialTableOptions={{
           getRowId: (row) => row.key,
@@ -167,13 +169,13 @@ export const BaseCourseSearchResults = ({
             Cell: ({ row }) => (
               <EnrollButton
                 row={row}
-                setStepperOpen={setStepperOpen}
+                dispatch={coursesDispatch}
+                goToNextStep={goToNextStep}
               />
             ),
           },
         ]}
       >
-        <ExportDataTableContext />
         <DataTable.TableControlBar />
         <DataTable.Table />
         <DataTable.TableFooter>
@@ -187,7 +189,6 @@ export const BaseCourseSearchResults = ({
 
 BaseCourseSearchResults.defaultProps = {
   searchResults: { nbHits: 0, hits: [] },
-  enterpriseId: '',
   error: null,
 };
 
@@ -208,9 +209,8 @@ BaseCourseSearchResults.propTypes = {
     page: PropTypes.number,
   }).isRequired,
   // from parent
-  enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string.isRequired,
-  subscriptionUUID: PropTypes.string.isRequired,
+  goToNextStep: PropTypes.func.isRequired,
 };
 
 export default connectStateResults(BaseCourseSearchResults);

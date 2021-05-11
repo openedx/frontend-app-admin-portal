@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableLoadingSkeleton renders a skeleton 1`] = `
-Array [
+<div>
   <div
     className="sr-only"
   >
     Loading...
-  </div>,
+  </div>
   <span>
     <span
       className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
@@ -258,6 +258,6 @@ Array [
     >
       ‌
     </span>
-  </span>,
-]
+  </span>
+</div>
 `;

@@ -28,11 +28,15 @@ exports[`CouponDetails container renders does not show Assign button for an unav
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon43"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon43"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -195,7 +199,11 @@ exports[`CouponDetails container renders does not show Assign button for an unav
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -606,11 +614,15 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon25"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon25"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -773,7 +785,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -944,7 +960,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Remind
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Remind
+                      </span>
                     </button>
                      | 
                     <button
@@ -953,7 +973,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Revoke
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Revoke
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -1100,7 +1124,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Assign
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Assign
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -1211,11 +1239,15 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon31"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon31"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -1378,7 +1410,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -1549,7 +1585,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Remind
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Remind
+                      </span>
                     </button>
                      | 
                     <button
@@ -1558,7 +1598,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Revoke
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Revoke
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -1705,7 +1749,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Assign
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Assign
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -1816,11 +1864,15 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon37"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon37"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -1983,7 +2035,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -2154,7 +2210,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Remind
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Remind
+                      </span>
                     </button>
                      | 
                     <button
@@ -2163,7 +2223,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Revoke
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Revoke
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -2310,7 +2374,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                       onClick={[Function]}
                       type="button"
                     >
-                      Assign
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Assign
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -2432,11 +2500,15 @@ exports[`CouponDetails container renders with error 1`] = `
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon7"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon7"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -2599,7 +2671,11 @@ exports[`CouponDetails container renders with error 1`] = `
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -2679,11 +2755,15 @@ exports[`CouponDetails container renders with expanded coupon details 1`] = `
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon1"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon1"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -2846,7 +2926,11 @@ exports[`CouponDetails container renders with expanded coupon details 1`] = `
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -2882,11 +2966,15 @@ exports[`CouponDetails container renders with table data 1`] = `
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa mr-2 fa-download"
-            id="Icon9"
-          />
-          Download full report (CSV)
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa mr-2 fa-download"
+              id="Icon9"
+            />
+            Download full report (CSV)
+          </span>
         </button>
       </div>
     </div>
@@ -3049,7 +3137,11 @@ exports[`CouponDetails container renders with table data 1`] = `
           onClick={[Function]}
           type="button"
         >
-          Go
+          <span
+            className="btn-icons-container"
+          >
+            Go
+          </span>
         </button>
       </div>
     </div>
@@ -3220,7 +3312,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                       onClick={[Function]}
                       type="button"
                     >
-                      Remind
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Remind
+                      </span>
                     </button>
                      | 
                     <button
@@ -3229,7 +3325,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                       onClick={[Function]}
                       type="button"
                     >
-                      Revoke
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Revoke
+                      </span>
                     </button>
                   </td>
                 </tr>
@@ -3376,7 +3476,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                       onClick={[Function]}
                       type="button"
                     >
-                      Assign
+                      <span
+                        className="btn-icons-container"
+                      >
+                        Assign
+                      </span>
                     </button>
                   </td>
                 </tr>

@@ -47,6 +47,7 @@ const ReviewList = ({
   return (
     <div className="col col-6">
       <h3>{subject.title}</h3>
+      <p>{subject.title} selected: {rows.length}</p>
       <ul className="be-review-list">
         {rows.length < 1 && (
           <Alert variant="danger" data-testid="no-rows-alert">
