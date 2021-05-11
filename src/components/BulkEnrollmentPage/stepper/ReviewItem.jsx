@@ -7,24 +7,30 @@ import PropTypes from 'prop-types';
 
 import { deleteSelectedRowAction } from '../data/actions';
 
-const ReviewItem = ({ row, accessor, dispatch }) => (
-  <li>
-    <Card>
-      <Card.Body>
-        <Card.Text className="list-item">
-          {row.values[accessor]}
-          <IconButton
-            src={Delete}
-            iconAs={Icon}
-            data-testid="delete-button"
-            alt="Remove selection"
-            onClick={() => dispatch(deleteSelectedRowAction(row.id))}
-          />
-        </Card.Text>
-      </Card.Body>
-    </Card>
-  </li>
-);
+const ReviewItem = ({ row, accessor, dispatch }) => {
+  const onClick = () => {
+    dispatch(deleteSelectedRowAction(row.id));
+  };
+
+  return (
+    <li>
+      <Card>
+        <Card.Body>
+          <Card.Text className="list-item">
+            <span className="list-item-text">{row.values[accessor]}</span>
+            <IconButton
+              src={Delete}
+              iconAs={Icon}
+              data-testid="delete-button"
+              alt="Remove selection"
+              onClick={onClick}
+            />
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </li>
+  );
+};
 
 ReviewItem.propTypes = {
   /* Selected row from a DataTable instance */
