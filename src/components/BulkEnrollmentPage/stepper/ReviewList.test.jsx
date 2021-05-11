@@ -53,6 +53,10 @@ describe('ReviewList', () => {
     render(<ReviewList {...defaultProps} />);
     expect(screen.getByText(defaultProps.subject.title)).toBeInTheDocument();
   });
+  it('displays the number of rows selected', () => {
+    render(<ReviewList {...defaultProps} />);
+    expect(screen.getByText(`${defaultProps.subject.title} selected: ${defaultProps.rows.length}`)).toBeInTheDocument();
+  });
   it('shows an alert if there are no rows', () => {
     render(<ReviewList {...defaultProps} rows={[]} />);
     expect(screen.getByTestId('no-rows-alert')).toBeInTheDocument();
@@ -78,7 +82,7 @@ describe('ReviewList', () => {
   it('lets users show all rows', () => {
     const rows = rowGenerator(30);
     render(<ReviewList {...defaultProps} rows={rows} />);
-    screen.debug();
+
     const button = screen.getByTestId('show-hide');
     userEvent.click(button);
     rows.forEach((row) => {

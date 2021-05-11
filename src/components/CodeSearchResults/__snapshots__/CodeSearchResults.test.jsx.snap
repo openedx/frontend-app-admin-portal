@@ -46,11 +46,15 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             type="button"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon10"
-            />
-            Close search results
+              className="btn-icons-container"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-times mr-2"
+                id="Icon10"
+              />
+              Close search results
+            </span>
           </button>
         </div>
       </div>
@@ -133,11 +137,15 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             type="button"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon12"
-            />
-            Close search results
+              className="btn-icons-container"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-times mr-2"
+                id="Icon12"
+              />
+              Close search results
+            </span>
           </button>
         </div>
       </div>
@@ -225,271 +233,277 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
             type="button"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon1"
-            />
-            Close search results
+              className="btn-icons-container"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-times mr-2"
+                id="Icon1"
+              />
+              Close search results
+            </span>
           </button>
         </div>
       </div>
-      <div
-        className="sr-only"
-      >
-        Loading...
+      <div>
+        <div
+          className="sr-only"
+        >
+          Loading...
+        </div>
+        <span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+          <span
+            className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+            style={
+              Object {
+                "height": 25,
+              }
+            }
+          >
+            ‌
+          </span>
+        </span>
       </div>
-      <span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-        <span
-          className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
-          style={
-            Object {
-              "height": 25,
-            }
-          }
-        >
-          ‌
-        </span>
-      </span>
     </div>
   </div>
 </div>
@@ -552,11 +566,15 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
             type="button"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon2"
-            />
-            Close search results
+              className="btn-icons-container"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-times mr-2"
+                id="Icon2"
+              />
+              Close search results
+            </span>
           </button>
         </div>
       </div>
@@ -927,11 +945,15 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
             type="button"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-times mr-2"
-              id="Icon7"
-            />
-            Close search results
+              className="btn-icons-container"
+            >
+              <span
+                aria-hidden={true}
+                className="fa fa-times mr-2"
+                id="Icon7"
+              />
+              Close search results
+            </span>
           </button>
         </div>
       </div>
@@ -1052,7 +1074,11 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                         onClick={[Function]}
                         type="button"
                       >
-                        Remind
+                        <span
+                          className="btn-icons-container"
+                        >
+                          Remind
+                        </span>
                       </button>
                        | 
                       <button
@@ -1061,7 +1087,11 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                         onClick={[Function]}
                         type="button"
                       >
-                        Revoke
+                        <span
+                          className="btn-icons-container"
+                        >
+                          Revoke
+                        </span>
                       </button>
                     </td>
                   </tr>

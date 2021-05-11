@@ -6,14 +6,13 @@ import selectedRowsReducer from './data/reducer';
 export const BulkEnrollContext = createContext({});
 
 const BulkEnrollContextProvider = ({ children }) => {
-  const [courseTableState, coursesDispatch] = useReducer(selectedRowsReducer, []);
-  const [emailTableState, emailsDispatch] = useReducer(selectedRowsReducer, []);
+  const [selectedCourses, coursesDispatch] = useReducer(selectedRowsReducer, []);
+  const [selectedEmails, emailsDispatch] = useReducer(selectedRowsReducer, []);
   const [selectedSubscription, setSelectedSubscription] = useState({});
-  console.log('SELECTED EMAILS', emailTableState)
 
   const value = {
-    courses: [courseTableState, coursesDispatch],
-    emails: [emailTableState, emailsDispatch],
+    courses: [selectedCourses, coursesDispatch],
+    emails: [selectedEmails, emailsDispatch],
     subscription: [selectedSubscription, setSelectedSubscription],
   };
 

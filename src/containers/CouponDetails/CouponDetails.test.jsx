@@ -384,7 +384,7 @@ describe('CouponDetails container', () => {
     />);
 
     const revokeButton = wrapper.find('table').find('button').find('.revoke-btn');
-    expect(revokeButton.prop('children')).toEqual('Revoke');
+    expect(revokeButton.text()).toEqual('Revoke');
 
     expect(wrapper.find('table').find('button').find('.remind-btn').length).toEqual(0);
   });
@@ -394,7 +394,7 @@ describe('CouponDetails container', () => {
 
     const openModalByActionButton = ({ key, label }) => {
       const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
-      expect(actionButton.prop('children')).toEqual(label);
+      expect(actionButton.text()).toEqual(label);
       actionButton.simulate('click');
       // TODO: The remind/revoke buttons now manage their modal state in their
       // own components, so we only need to worry about the `assign` action now.

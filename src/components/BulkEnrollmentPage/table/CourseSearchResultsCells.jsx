@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-import { configuration } from '../../config';
+import { configuration } from '../../../config';
 
 export const CourseNameCell = ({ value, row, enterpriseSlug }) => (
   <a href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}>{value}</a>

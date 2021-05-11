@@ -9,3 +9,5 @@ export const PREV_BUTTON_TEST_ID = 'stepper-prev';
 export const FINAL_BUTTON_TEST_ID = 'stepper-final';
 export const ADD_LEARNERS_STEP = 'addLearners';
 export const REVIEW_STEP = 'review';
+export const ADD_COURSES_STEP = 'chooseCourses';
+export const ADD_COURSES_TITLE = 'Add courses';
