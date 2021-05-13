@@ -9,7 +9,6 @@ import {
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
   SUBSCRIPTIONS,
-  TAB_ALL_USERS,
 } from './constants';
 
 /*
@@ -97,7 +96,11 @@ export const useSubscriptionUsersOverview = ({
   return subscriptionUsersOverview;
 };
 
-export const useAllSubscriptionUsers = ({
+/*
+ * This hook provides a list of active and pending users for a given subscription UUID.
+ * It is also dependent on state from SubscriptionDetailContext.
+ */
+export const useActiveSubscriptionUsers = ({
   subscriptionUUID,
   errors,
   setErrors,
@@ -117,7 +120,7 @@ export const useAllSubscriptionUsers = ({
     setLoading(true);
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
-      { status: licenseStatusByTab[TAB_ALL_USERS], page_size: 500 },
+      { active_only: 1, page_size: 10000 },
     ).then((response) => {
       setSubscriptionUsers(camelCaseObject(response.data));
     })

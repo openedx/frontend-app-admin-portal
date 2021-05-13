@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 
 import userEvent from '@testing-library/user-event';
-import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
+import { useActiveSubscriptionUsers } from '../../subscriptions/data/hooks';
 
 import { ADD_LEARNERS_TITLE } from './constants';
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
@@ -12,7 +12,7 @@ import { renderWithRouter } from '../../test/testUtils';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 jest.mock('../../subscriptions/data/hooks', () => ({
-  useAllSubscriptionUsers: jest.fn(),
+  useActiveSubscriptionUsers: jest.fn(),
 }));
 
 const mockTableData = {
@@ -20,7 +20,7 @@ const mockTableData = {
   count: 0,
 };
 
-useAllSubscriptionUsers.mockReturnValue([mockTableData, false]);
+useActiveSubscriptionUsers.mockReturnValue([mockTableData, false]);
 
 const defaultProps = {
   subscriptionUUID: 'fakest-uuid',
@@ -45,7 +45,7 @@ describe('AddLearnersStep', () => {
     });
   });
   it('displays a table skeleton when loading', () => {
-    useAllSubscriptionUsers.mockReturnValue([mockTableData, true]);
+    useActiveSubscriptionUsers.mockReturnValue([mockTableData, true]);
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByTestId('skelly')).toBeInTheDocument();
   });
@@ -56,7 +56,7 @@ describe('AddLearnersStep', () => {
     expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${defaultProps.subscriptionUUID}`);
   });
   it('allows search by email', () => {
-    useAllSubscriptionUsers.mockReturnValue([mockTableData, false]);
+    useActiveSubscriptionUsers.mockReturnValue([mockTableData, false]);
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByText('Search Email')).toBeInTheDocument();
   });

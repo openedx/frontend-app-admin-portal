@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
-import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
+import { useActiveSubscriptionUsers } from '../../subscriptions/data/hooks';
 
 import BulkEnrollmentStepper from './BulkEnrollmentStepper';
 import {
@@ -16,7 +16,7 @@ import '../../../../__mocks__/react-instantsearch-dom';
 import { renderWithRouter } from '../../test/testUtils';
 
 jest.mock('../../subscriptions/data/hooks', () => ({
-  useAllSubscriptionUsers: jest.fn(),
+  useActiveSubscriptionUsers: jest.fn(),
 }));
 
 const mockEmailResponse = {
@@ -24,7 +24,7 @@ const mockEmailResponse = {
   count: 2,
 };
 
-useAllSubscriptionUsers.mockReturnValue([mockEmailResponse, false]);
+useActiveSubscriptionUsers.mockReturnValue([mockEmailResponse, false]);
 
 const defaultProps = {
   enterpriseId: 'fakeID',
