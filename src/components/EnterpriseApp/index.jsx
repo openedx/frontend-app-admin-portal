@@ -10,7 +10,6 @@ import CodeManagementPage from '../../containers/CodeManagementPage';
 import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
-import SupportPage from '../SupportPage';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
@@ -225,18 +224,6 @@ class EnterpriseApp extends React.Component {
                       )}
                     />
                   )}
-                  <Route
-                    key="support"
-                    exact
-                    path={`${baseUrl}/admin/support`}
-                    render={routeProps => (
-                      <SupportPage
-                        {...routeProps}
-                        emailAddress={email}
-                        enterpriseName={this.props.enterpriseName}
-                      />
-                    )}
-                  />
                   {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
                     && (
                     <Route

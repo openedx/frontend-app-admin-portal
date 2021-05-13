@@ -4,6 +4,7 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { configuration } from '../../config';
 
 import Footer from './index';
 
@@ -44,6 +45,19 @@ describe('<Footer />', () => {
   });
 
   it('renders edX logo correctly', () => {
+    store = mockStore({
+      portalConfiguration: {},
+    });
+    tree = renderer
+      .create((
+        <FooterWrapper store={store} />
+      ))
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('renders correct help center link from config', () => {
+    configuration.ENTERPRISE_SUPPORT_URL = 'http://test-hc.com/hc';
     store = mockStore({
       portalConfiguration: {},
     });

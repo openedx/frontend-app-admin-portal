@@ -1,5 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Footer /> renders correct help center link from config 1`] = `
+<footer
+  className="container-fluid py-4 border-top"
+>
+  <div
+    className="row justify-content-between align-items-center"
+  >
+    <div
+      className="col-xs-12 col-md-4 logo-links"
+    >
+      <a
+        className="logo border-right pr-4"
+        href="/"
+        onClick={[Function]}
+      >
+        <img
+          alt="edX logo"
+          src="https://edx-cdn.org/v3/default/logo-trademark.svg"
+        />
+      </a>
+    </div>
+    <div
+      className="col-xs-12 col-md footer-links"
+    >
+      <nav>
+        <ul
+          className="nav justify-content-end"
+        >
+          <li
+            className="nav-item border-right"
+          >
+            <a
+              className="nav-link px-2"
+              href="https://www.edx.org/edx-terms-service"
+            >
+              Terms of Service
+            </a>
+          </li>
+          <li
+            className="nav-item border-right"
+          >
+            <a
+              className="nav-link px-2"
+              href="https://www.edx.org/edx-privacy-policy"
+            >
+              Privacy Policy
+            </a>
+          </li>
+          <li
+            className="nav-item"
+          >
+            <a
+              className="nav-link px-2"
+              href="http://test-hc.com/hc"
+              onClick={[Function]}
+              target="_blank"
+            >
+              Support
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+`;
+
 exports[`<Footer /> renders edX logo correctly 1`] = `
 <footer
   className="container-fluid py-4 border-top"
@@ -53,8 +120,9 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
           >
             <a
               className="nav-link px-2"
-              href="/public/support"
+              href="/"
               onClick={[Function]}
+              target="_blank"
             >
               Support
             </a>
@@ -130,8 +198,9 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
           >
             <a
               className="nav-link px-2"
-              href="/test-enterprise/admin/support"
+              href="/"
               onClick={[Function]}
+              target="_blank"
             >
               Support
             </a>

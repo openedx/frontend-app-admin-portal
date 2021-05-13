@@ -38,7 +38,7 @@ class Footer extends React.Component {
 
   render() {
     const { enterpriseLogoNotFound } = this.state;
-    const { enterpriseLogo, enterpriseSlug } = this.props;
+    const { enterpriseLogo } = this.props;
     return (
       <footer className="container-fluid py-4 border-top">
         <div className="row justify-content-between align-items-center">
@@ -62,7 +62,11 @@ class Footer extends React.Component {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link px-2" to={enterpriseSlug ? `/${enterpriseSlug}/admin/support` : '/public/support'}>
+                  <Link
+                    className="nav-link px-2"
+                    to={{ pathname: configuration.ENTERPRISE_SUPPORT_URL }}
+                    target="_blank"
+                  >
                     Support
                   </Link>
                 </li>
