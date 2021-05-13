@@ -9,7 +9,7 @@ import {
 
 import IconLink from './IconLink';
 
-import { features } from '../../config';
+import { configuration, features } from '../../config';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 class Sidebar extends React.Component {
@@ -105,9 +105,10 @@ class Sidebar extends React.Component {
       // NOTE: keep "Support" link the last nav item
       {
         title: 'Support',
-        to: `${baseUrl}/admin/support`,
+        to: configuration.ENTERPRISE_SUPPORT_URL,
         icon: faLifeRing,
         hidden: !features.SUPPORT,
+        external: true,
       },
     ];
   }

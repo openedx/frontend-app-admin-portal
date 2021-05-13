@@ -12,7 +12,6 @@ import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
 import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
-import SupportPage from '../SupportPage';
 import { ToastsProvider, Toasts } from '../Toasts';
 
 import store from '../../data/store';
@@ -29,7 +28,6 @@ const AppWrapper = () => {
         <Toasts />
         <Header />
         <Switch>
-          <PageRoute exact path="/public/support" component={SupportPage} />
           <AuthenticatedPageRoute
             path="/enterprises"
             render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
