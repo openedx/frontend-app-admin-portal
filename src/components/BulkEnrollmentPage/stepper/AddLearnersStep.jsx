@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DataTable, TextFilter } from '@edx/paragon';
 
 import { Link } from 'react-router-dom';
-import { useAllSubscriptionUsers } from '../../subscriptions/data/hooks';
+import { useActiveSubscriptionUsers } from '../../subscriptions/data/hooks';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
 import { convertToSelectedRowsObject } from '../helpers';
@@ -50,8 +50,7 @@ const AddLearnersStep = ({
   const [errors, setErrors] = useState([]);
   const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
 
-  // TODO: Get an unpaginated list of all users from the backend. We can paginate on the frontend.
-  const [{ results: userData, count }, loading] = useAllSubscriptionUsers({ subscriptionUUID, errors, setErrors });
+  const [{ results: userData, count }, loading] = useActiveSubscriptionUsers({ subscriptionUUID, errors, setErrors });
 
   return (
     <>
