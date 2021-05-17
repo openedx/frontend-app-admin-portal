@@ -5,14 +5,10 @@ exports[`<Sidebar /> renders correctly with close icon 1`] = `
   aria-controls="sidebar"
   className="sidebar-toggle-btn px-1 mr-2 text-dark btn btn-link"
   disabled={false}
+  iconBefore={[Function]}
   onClick={[Function]}
   type="button"
 >
-  <span
-    aria-hidden={true}
-    className="fa fa-times"
-    id="Icon2"
-  />
   <span
     className="sr-only"
   >
@@ -26,14 +22,10 @@ exports[`<Sidebar /> renders correctly with menu icon 1`] = `
   aria-controls="sidebar"
   className="sidebar-toggle-btn px-1 mr-2 text-dark btn btn-link"
   disabled={false}
+  iconBefore={[Function]}
   onClick={[Function]}
   type="button"
 >
-  <span
-    aria-hidden={true}
-    className="fa fa-bars"
-    id="Icon1"
-  />
   <span
     className="sr-only"
   >
