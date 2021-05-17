@@ -8,7 +8,6 @@ import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
 import { history } from '@edx/frontend-platform/initialize';
-import { ENTERPRISE_ADMIN_ROLE_NAME } from './data/constants';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
@@ -168,31 +167,6 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
-const getProxyLoginUrl = (enterpriseSlug) => {
-  const options = {
-    enterprise_slug: enterpriseSlug,
-    next: global.location,
-  };
-  const proxyLoginUrl = `${process.env.LMS_BASE_URL}/enterprise/proxy-login/?${qs.stringify(options)}`;
-  return proxyLoginUrl;
-};
-
-const redirectToProxyLogin = (enterpriseSlug) => {
-  const proxyLoginUrl = getProxyLoginUrl(enterpriseSlug);
-  global.location.href = proxyLoginUrl;
-};
-
-const hasEnterpriseAdminRole = (roles) => {
-  if (!roles?.length) {
-    return false;
-  }
-
-  return roles.some((role) => {
-    const roleName = role.split(':').shift();
-    return roleName === ENTERPRISE_ADMIN_ROLE_NAME;
-  });
-};
-
 const getSubscriptionContactText = (contactEmail) => {
   let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
   if (contactEmail) {
@@ -228,9 +202,6 @@ export {
   updateTemplateEmailAddress,
   updateAllTemplates,
   mergeErrors,
-  redirectToProxyLogin,
-  getProxyLoginUrl,
-  hasEnterpriseAdminRole,
   getSubscriptionContactText,
   truncateString,
   normalizeFileUpload,

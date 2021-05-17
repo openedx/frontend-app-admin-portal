@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
 } from '@edx/paragon';
+import { getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
 
 import {
   getAuthenticatedUser, hydrateAuthenticatedUser, getLogoutRedirectUrl,
@@ -11,7 +12,6 @@ import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
 import { configuration } from '../../config';
-import { getProxyLoginUrl } from '../../utils';
 
 import './Header.scss';
 

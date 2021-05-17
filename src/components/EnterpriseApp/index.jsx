@@ -118,6 +118,7 @@ class EnterpriseApp extends React.Component {
     if (loading) {
       return <EnterpriseAppSkeleton />;
     }
+
     return (
       <div className="enterprise-app">
         <MediaQuery minWidth={breakpoints.large.minWidth}>

@@ -1,115 +1,80 @@
-import React, {
-  useContext, useMemo, useState,
-} from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
   Container, Row, Col, Alert, MailtoLink,
 } from '@edx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { useInterval } from '../../hooks';
-import LoadingMessage from '../LoadingMessage';
-import { ToastsContext } from '../Toasts';
+import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
 
-import { redirectToProxyLogin } from '../../utils';
+import { useInterval } from '../../hooks';
+import { ToastsContext } from '../Toasts';
+import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
-const UserActivationPage = ({
-  match,
-}) => {
+const UserActivationPage = ({ match }) => {
   const user = getAuthenticatedUser();
-  const {
-    username, roles, isActive,
-  } = user;
-  const [isPollingUserAccount, setIsPollingUserAccount] = useState(false);
-  const enterpriseSlug = useMemo(
-    () => match.params.enterpriseSlug,
-    [match.params],
-  );
-  const { addToast } = useContext(ToastsContext);
 
-  useInterval(() => {
-    if (username && !isActive) {
-      setIsPollingUserAccount(true);
-      hydrateAuthenticatedUser();
-    } else if (isActive) {
-      setIsPollingUserAccount(false);
-    }
-  }, USER_ACCOUNT_POLLING_TIMEOUT);
-
-  if (username) {
-    // user is authenticated, but doesn't have any JWT roles so redirect the user to
-    // `:enterpriseSlug/admin/register` to display the proper error message.
-    if (!roles?.length) {
-      return (
-        <Redirect to={`/${enterpriseSlug}/admin/register`} />
-      );
-    }
-
-    // user data is hydrated with a verified email address, so redirect the user
-    // to the default page in the Admin Portal.
-    if (isActive !== undefined && isActive) {
-      addToast('Your edX administrator account was successfully activated.');
-      return (
-        <Redirect
-          to={{
-            pathname: `/${enterpriseSlug}/admin/learners`,
-            state: { adminRegistrationSuccess: true },
-          }}
-        />
-      );
-    }
-
-    // user data is hydrated with a unverified email address, so display a warning message
-    const isUserLoadedAndInactive = !!(isActive !== undefined && !isActive);
-    if (isUserLoadedAndInactive || isPollingUserAccount) {
-      // user is authenticated but has not yet verified their email via the "Activate
-      // your account" flow, so we should prevent access to the Admin Portal.
-      return (
-        <Container fluid>
-          <Row className="my-3 justify-content-md-center">
-            <Col xs lg={8} offset={1}>
-              <Alert variant="warning">
-                <p>
-                  In order to continue, you must verify your email address to activate
-                  your edX account. Please stay on this page as it will automatically refresh
-                  once your account is activated.
-                </p>
-                <p className="mb-0">
-                  If you run into further issues, please contact the edX Customer
-                  Success team at{' '}
-                  <MailtoLink className="alert-link" to="customersuccess@edx.org">
-                    customersuccess@edx.org
-                  </MailtoLink>.
-                </p>
-              </Alert>
-            </Col>
-          </Row>
-        </Container>
-      );
-    }
-
+  if (!user) {
+    // user is not authenticated, so redirect to enterprise proxy login flow
     return (
-      <Container fluid>
-        <Row className="my-3">
-          <Col>
-            <LoadingMessage className="user-activation" />
-          </Col>
-        </Row>
-      </Container>
+      <LoginRedirect
+        loadingDisplay={<EnterpriseAppSkeleton />}
+      />
+    );
+  }
+  const { enterpriseSlug } = match.params;
+  const { addToast } = useContext(ToastsContext);
+  const { roles, isActive } = user;
+
+  if (!roles?.length) {
+    // user is authenticated but doesn't have any JWT roles so redirect the user to
+    // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
+    return (
+      <Redirect to={`/${enterpriseSlug}/admin/register`} />
     );
   }
 
-  if (!isPollingUserAccount) {
-    redirectToProxyLogin(enterpriseSlug);
+  if (isActive === undefined) {
+    // user hydration is still pending when ``isActive`` is undefined, so display app skeleton state
+    return <EnterpriseAppSkeleton />;
   }
 
+  useInterval(() => {
+    if (!isActive) {
+      hydrateAuthenticatedUser();
+    }
+  }, USER_ACCOUNT_POLLING_TIMEOUT);
+
+  // user data is hydrated with a verified email address, so redirect the user
+  // to the default page in the Admin Portal.
+  if (isActive) {
+    addToast('Your edX administrator account was successfully activated.');
+    return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
+  }
+
+  // user data is hydrated with an unverified email address, so display a warning message since
+  // they have not yet verified their email via the "Activate your account" flow, so we should
+  // prevent access to the Admin Portal.
   return (
-    <Container fluid>
-      <Row className="my-3">
-        <Col>
-          <LoadingMessage className="user-activation" />
+    <Container style={{ flex: 1 }} fluid>
+      <Row className="my-3 justify-content-md-center">
+        <Col xs lg={8} offset={1}>
+          <Alert variant="warning">
+            <p>
+              In order to continue, you must verify your email address to activate
+              your edX account. Please stay on this page as it will automatically refresh
+              once your account is activated.
+            </p>
+            <p className="mb-0">
+              If you run into further issues, please contact the edX Customer
+              Success team at{' '}
+              <MailtoLink className="alert-link" to="customersuccess@edx.org">
+                customersuccess@edx.org
+              </MailtoLink>.
+            </p>
+          </Alert>
         </Col>
       </Row>
     </Container>
