@@ -52,6 +52,7 @@ class SamlConfiguration extends React.Component {
             key={this.state.loading ? 'loaded' : 'loading'}
             options={this.getConfigOptions()}
             defaultValue={this.props.currentConfig}
+            data-hj-suppress
           />
         </ValidationFormGroup>
       </div>

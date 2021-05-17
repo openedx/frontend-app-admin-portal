@@ -174,6 +174,7 @@ class TemplateSourceFields extends React.Component {
             label={TEMPLATE_NAME_LABEL}
             required
             disabled={disabled}
+            data-hj-suppress
           />
         ) : (
           <Field
@@ -183,6 +184,7 @@ class TemplateSourceFields extends React.Component {
             onChange={this.changeFromEmailTemplate}
             disabled={disabled}
             label={TEMPLATE_NAME_LABEL}
+            data-hj-suppress
           />
         )}
       </>

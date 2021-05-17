@@ -17,6 +17,7 @@ const IndividualAssignFields = () => (
         </>
       )}
       required
+      data-hj-suppress
     />
   </>
 );

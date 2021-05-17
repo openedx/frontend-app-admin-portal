@@ -158,6 +158,7 @@ class SamlProviderConfigForm extends React.Component {
                 onChange={() => this.setState(prevState => (
                   { syncLearnerProfileData: !prevState.syncLearnerProfileData }
                 ))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -176,6 +177,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="entityId"
                 name="entityId"
                 defaultValue={config ? config.entityId : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -194,6 +196,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="metadataSource"
                 name="metadataSource"
                 defaultValue={config ? config.metadataSource : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -210,6 +213,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="attrUserPermanentId"
                 name="attrUserPermanentId"
                 defaultValue={config ? config.attrUserPermanentId : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -226,6 +230,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="attrFullName"
                 name="attrFullName"
                 defaultValue={config ? config.attrFullName : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -242,6 +247,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="attrFirstName"
                 name="attrFirstName"
                 defaultValue={config ? config.attrFirstName : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -258,6 +264,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="attrLastName"
                 name="attrLastName"
                 defaultValue={config ? config.attrLastName : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -274,6 +281,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="attrEmail"
                 name="attrEmail"
                 defaultValue={config ? config.attrEmail : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -290,6 +298,7 @@ class SamlProviderConfigForm extends React.Component {
                 id="country"
                 name="country"
                 defaultValue={config ? config.country : ''}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

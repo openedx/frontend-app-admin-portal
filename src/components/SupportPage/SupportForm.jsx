@@ -66,6 +66,7 @@ class SupportForm extends React.Component {
                 )}
                 validate={[isRequired, isValidEmail]}
                 required
+                data-hj-suppress
               />
               <Field
                 name="enterpriseName"
@@ -80,6 +81,7 @@ class SupportForm extends React.Component {
                 validate={[isRequired]}
                 required
                 disabled
+                data-hj-suppress
               />
               <Field
                 name="subject"
@@ -93,6 +95,7 @@ class SupportForm extends React.Component {
                 )}
                 validate={[isRequired]}
                 required
+                data-hj-suppress
               />
               <Field
                 name="notes"
@@ -106,6 +109,7 @@ class SupportForm extends React.Component {
                 )}
                 validate={[isRequired, maxLength512]}
                 required
+                data-hj-suppress
               />
               <Button
                 type="submit"

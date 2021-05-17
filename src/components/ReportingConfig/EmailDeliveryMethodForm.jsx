@@ -27,6 +27,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               const emails = rows.filter(email => !isEmail(email));
               return !isEmpty(emails);
             })}
+            data-hj-suppress
           />
         </ValidationFormGroup>
         {config && (
@@ -54,6 +55,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             name="encryptedPassword"
             disabled={config && !checked}
             onBlur={e => handleBlur(e)}
+            data-hj-suppress
           />
         </ValidationFormGroup>
       </div>

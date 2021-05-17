@@ -104,6 +104,7 @@ class InviteLearnersModal extends React.Component {
               component={TextAreaAutoSize}
               label="Email Address"
               description="To add more than one user, enter one email address per line."
+              data-hj-suppress
             />
             <p className="pb-2">
               OR
@@ -116,12 +117,14 @@ class InviteLearnersModal extends React.Component {
               description="The file must be a CSV containing a single column of email addresses."
               accept=".csv"
               normalize={normalizeFileUpload}
+              data-hj-suppress
             />
             <h3>Email Template</h3>
             <Field
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
+              data-hj-suppress
             />
             <Field
               name="email-template-body"
@@ -133,6 +136,7 @@ class InviteLearnersModal extends React.Component {
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
+              data-hj-suppress
             />
           </div>
         </form>

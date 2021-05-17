@@ -8,8 +8,8 @@ const CodeDetails = ({
   <div className="assignment-details mb-4">
     {!isBulkRemind && hasIndividualRemindData && (
     <>
-      <p>{displayCode(data.code)}</p>
-      <p>{displayEmail(data.email)}</p>
+      <p data-hj-suppress>{displayCode(data.code)}</p>
+      <p data-hj-suppress>{displayEmail(data.email)}</p>
     </>
     )}
     {isBulkRemind && numberOfSelectedCodes > 0 && (

@@ -99,12 +99,12 @@ class LicenseRevokeModal extends React.Component {
             {submitFailed && this.renderErrorMessage()}
             <p>
               Revoking a license will remove access to the subscription catalog
-              for <strong>{user.userEmail}</strong>. They will still be able to
+              for <strong data-hj-suppress>{user.userEmail}</strong>. They will still be able to
               access their courses in the audit track and their certificates.
             </p>
             <p>
               This action cannot be undone. To re-enable access, you can
-              assign <strong>{user.userEmail}</strong> to another license, but they
+              assign <strong data-hj-suppress>{user.userEmail}</strong> to another license, but they
               will need to re-enroll in any course after being assigned a new license.
             </p>
           </>

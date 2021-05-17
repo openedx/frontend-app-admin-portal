@@ -208,6 +208,7 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
               id="cornerstoneBaseUrl"
               name="cornerstoneBaseUrl"
               defaultValue={config ? config.cornerstoneBaseUrl : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
