@@ -15,6 +15,7 @@ const BulkAssignFields = () => (
         label="Email Addresses"
         description="To add more than one user, enter one email address per line."
         descriptionTestId="email-addresses-help-text"
+        data-hj-suppress
       />
       <p className="pb-2">
         OR
@@ -28,6 +29,7 @@ const BulkAssignFields = () => (
         descriptionTestId="csv-email-addresses-help-text"
         accept=".csv"
         normalize={normalizeFileUpload}
+        data-hj-suppress
       />
     </div>
   </>

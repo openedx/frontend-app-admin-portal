@@ -99,7 +99,7 @@ class LicenseRemindModal extends React.Component {
             {isBulkRemind ? (
               <p className="bulk-selected-codes">Unredeemed Licenses: {pendingUsersCount}</p>
             ) : (
-              <p className="bulk-selected-codes">Email: {user.userEmail}</p>
+              <p className="bulk-selected-codes" data-hj-suppress>Email: {user.userEmail}</p>
             )}
           </>
         </div>
@@ -111,6 +111,7 @@ class LicenseRemindModal extends React.Component {
               name="email-template-greeting"
               component={TextAreaAutoSize}
               label="Customize Greeting"
+              data-hj-suppress
             />
             <Field
               id="email-template-body"
@@ -118,12 +119,14 @@ class LicenseRemindModal extends React.Component {
               component={TextAreaAutoSize}
               label="Body"
               disabled
+              data-hj-suppress
             />
             <Field
               id="email-template-closing"
               name="email-template-closing"
               component={TextAreaAutoSize}
               label="Customize Closing"
+              data-hj-suppress
             />
           </div>
         </form>

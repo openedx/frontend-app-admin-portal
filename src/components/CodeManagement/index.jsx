@@ -267,6 +267,7 @@ class CodeManagement extends React.Component {
                     this.removeQueryParams(['page']);
                   }}
                   value={searchQuery}
+                  inputProps={{ 'data-hj-suppress': true }}
                 />
               </div>
               <div className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right">

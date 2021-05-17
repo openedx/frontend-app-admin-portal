@@ -151,6 +151,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 id="blackboardBaseUrl"
                 name="blackboardBaseUrl"
                 defaultValue={config ? config.blackboardBaseUrl : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -169,6 +170,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 id="clientId"
                 name="clientId"
                 defaultValue={config ? config.clientId : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -187,6 +189,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 id="clientSecret"
                 name="clientSecret"
                 defaultValue={config ? config.clientSecret : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -203,6 +206,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 id="refreshToken"
                 name="refreshToken"
                 defaultValue={config ? config.refreshToken : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

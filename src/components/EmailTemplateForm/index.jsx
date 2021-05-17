@@ -17,24 +17,28 @@ export const EMAIL_TEMPLATE_FIELDS = {
     label: 'Customize email subject',
     type: 'text',
     limit: OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
+    'data-hj-suppress': true,
   },
   [EMAIL_TEMPLATE_GREETING_ID]: {
     name: EMAIL_TEMPLATE_GREETING_ID,
     component: TextAreaAutoSize,
     label: 'Customize greeting',
     limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+    'data-hj-suppress': true,
   },
   [EMAIL_TEMPLATE_BODY_ID]: {
     name: EMAIL_TEMPLATE_BODY_ID,
     component: TextAreaAutoSize,
     label: 'Body',
     disabled: true,
+    'data-hj-suppress': true,
   },
   [EMAIL_TEMPLATE_CLOSING_ID]: {
     name: EMAIL_TEMPLATE_CLOSING_ID,
     component: TextAreaAutoSize,
     label: 'Customize closing',
     limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+    'data-hj-suppress': true,
   },
 };
 

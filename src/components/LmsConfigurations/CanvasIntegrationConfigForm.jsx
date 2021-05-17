@@ -128,6 +128,7 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -147,6 +148,7 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 defaultValue={config ? config.clientId : ''}
                 onChange={() => this.setState(prevState => ({ clientId: !prevState.clientId }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -166,6 +168,7 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 defaultValue={config ? config.clientSecret : ''}
                 onChange={() => this.setState(prevState => ({ clientSecret: !prevState.clientSecret }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -185,6 +188,7 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 defaultValue={config ? config.canvasAccountId : null}
                 onChange={() => this.setState(prevState => ({ canvasAccountId: !prevState.canvasAccountId }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -204,6 +208,7 @@ class CanvasIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 defaultValue={config ? config.canvasBaseUrl : null}
                 onChange={() => this.setState(prevState => ({ canvasBaseUrl: !prevState.canvasBaseUrl }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

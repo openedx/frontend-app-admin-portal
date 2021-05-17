@@ -312,6 +312,7 @@ class ReportingConfigForm extends React.Component {
             id="pgpEncryptionKey"
             name="pgpEncryptionKey"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
+            data-hj-suppress
           />
         </ValidationFormGroup>
         {deliveryMethod === 'email' && (
