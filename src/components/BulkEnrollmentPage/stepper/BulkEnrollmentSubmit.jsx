@@ -3,7 +3,7 @@ import React, {
   useState,
 } from 'react';
 import {
-  Button, Form, AlertModal, Hyperlink, ActionRow, useToggle,
+  Button, Form, AlertModal, ActionRow, useToggle, MailtoLink,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
@@ -15,13 +15,18 @@ import {
   ALERT_MODAL_TITLE_TEXT,
   ALERT_MODAL_BODY_TEXT,
   SUPPORT_HYPERLINK_TEXT,
+  SUPPORT_EMAIL_SUBJECT,
+  SUPPORT_EMAIL_BODY,
 } from './constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ToastsContext } from '../../Toasts';
 import { clearSelectionAction } from '../data/actions';
+import { configuration } from '../../../config';
 
-export const BulkEnrollmentAlertModal = ({ isOpen, toggleClose, enterpriseSlug }) => (
+export const BulkEnrollmentAlertModal = ({
+  isOpen, toggleClose, enterpriseSlug, error, enterpriseId,
+}) => (
   <AlertModal
     title={ALERT_MODAL_TITLE_TEXT}
     isOpen={isOpen}
@@ -34,14 +39,16 @@ export const BulkEnrollmentAlertModal = ({ isOpen, toggleClose, enterpriseSlug }
   >
     <p>
       {ALERT_MODAL_BODY_TEXT}
-      <Hyperlink
-        destination={`/${enterpriseSlug}/admin/support`}
+      <MailtoLink
+        to={configuration.CUSTOMER_SUPPORT_EMAIL}
         target="_blank"
         rel="noopener noreferrer"
         data-testid={CUSTOMER_SUPPORT_HYPERLINK_TEST_ID}
+        subject={SUPPORT_EMAIL_SUBJECT + enterpriseSlug}
+        body={`enterprise UUID: ${enterpriseId}\n${ SUPPORT_EMAIL_BODY }${error}`}
       >
         {SUPPORT_HYPERLINK_TEXT}
-      </Hyperlink>
+      </MailtoLink>
     </p>
   </AlertModal>
 );
@@ -49,6 +56,8 @@ export const BulkEnrollmentAlertModal = ({ isOpen, toggleClose, enterpriseSlug }
 BulkEnrollmentAlertModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleClose: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
@@ -57,6 +66,7 @@ export const generateSuccessMessage = numEmails => `${numEmails} learners have b
 const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialStep }) => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(true);
+  const [error, setError] = useState(null);
   const handleChange = e => setChecked(e.target.checked);
 
   const {
@@ -90,6 +100,7 @@ const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialSte
       returnToInitialStep();
     }).catch((err) => {
       logError(err);
+      setError(err);
       toggleErrorModalOpen();
       setLoading(false);
     });
@@ -101,6 +112,8 @@ const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialSte
         enterpriseSlug={enterpriseSlug}
         toggleClose={toggleErrorModalClose}
         isOpen={isErrorModalOpen}
+        error={error}
+        enterpriseId={enterpriseId}
       />
       <Form.Checkbox
         checked={checked}

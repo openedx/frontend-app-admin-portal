@@ -12,12 +12,15 @@ import {
   FINAL_BUTTON_TEST_ID,
   CUSTOMER_SUPPORT_HYPERLINK_TEST_ID,
   ALERT_MODAL_TITLE_TEXT,
+  SUPPORT_EMAIL_SUBJECT,
+  SUPPORT_EMAIL_BODY,
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { clearSelectionAction } from '../data/actions';
 import { ToastsContext } from '../../Toasts/ToastsProvider';
 import { renderWithRouter } from '../../test/testUtils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
+import { configuration } from '../../../config';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true, // this property makes it work
@@ -26,15 +29,20 @@ jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
+const errorText = 'a 500 error occurred';
+const testSlug = 'test-enterprise';
+const testEntId = 'abc1234z-53c9-4071-b698-b8d436eb0295';
 const defaultProps = {
-  enterpriseId: 'abc1234z-53c9-4071-b698-b8d436eb0295',
-  enterpriseSlug: 'test-enterprise',
+  enterpriseId: testEntId,
+  enterpriseSlug: testSlug,
   returnToInitialStep: jest.fn(),
 };
 const defaultAlertProps = {
   isOpen: true,
   toggleClose: jest.fn(),
-  enterpriseSlug: 'test-enterprise',
+  enterpriseId: testEntId,
+  error: errorText,
+  enterpriseSlug: testSlug,
 };
 
 const emailsDispatch = jest.fn();
@@ -87,9 +95,8 @@ describe('BulkEnrollmentAlertModal', () => {
     expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument();
   });
 
-  // TODO find out how to test hyperlinks that open in new windows
-  it.skip('links to support', async () => {
-    const { history } = renderWithRouter(
+  it('links to support', async () => {
+    renderWithRouter(
       <BulkEnrollmentAlertModal {...defaultAlertProps} />,
       {
         route: '/',
@@ -98,9 +105,9 @@ describe('BulkEnrollmentAlertModal', () => {
     );
     /* click link */
     const supportLink = screen.getByTestId(CUSTOMER_SUPPORT_HYPERLINK_TEST_ID);
-    await userEvent.click(supportLink);
-    expect(history.location.pathname)
-      .toEqual(`/${defaultAlertProps.enterpriseSlug}/admin/support`);
+    expect(decodeURIComponent(supportLink.href)).toEqual(
+      `mailto:${configuration.CUSTOMER_SUPPORT_EMAIL}?body=enterprise UUID: ${testEntId}\n${SUPPORT_EMAIL_BODY}${errorText}&subject=${SUPPORT_EMAIL_SUBJECT + testSlug}`,
+    );
   });
 
   it('calls toggleClose when the close button is clicked', () => {
