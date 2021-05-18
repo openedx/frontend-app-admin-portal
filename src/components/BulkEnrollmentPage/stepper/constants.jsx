@@ -14,6 +14,8 @@ export const REVIEW_STEP = 'review';
 export const ADD_COURSES_STEP = 'chooseCourses';
 export const ADD_COURSES_TITLE = 'Add courses';
 export const ALERT_MODAL_TITLE_TEXT = 'An error occurred behind the scenes';
-export const ALERT_MODAL_BODY_TEXT = 'We were not able to enroll your learners. Please wait a few'
-                                   / ' minutes and try again. If the problem persists, please ';
+export const ALERT_MODAL_BODY_TEXT = `We were not able to enroll your learners. Please wait a few
+                                       minutes and try again. If the problem persists, please `;
 export const SUPPORT_HYPERLINK_TEXT = 'contact enterprise customer support.';
+export const SUPPORT_EMAIL_SUBJECT = 'An error occurred during Subscription Enrollment for enterprise ';
+export const SUPPORT_EMAIL_BODY = 'The following error occurred when attempting to enroll learners: ';
