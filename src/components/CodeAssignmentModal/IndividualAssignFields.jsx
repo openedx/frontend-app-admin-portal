@@ -5,7 +5,7 @@ import RenderField from '../RenderField';
 
 const IndividualAssignFields = () => (
   <>
-    <h3>Add User</h3>
+    <h3>Add learner</h3>
     <Field
       name="email-address"
       type="email"
