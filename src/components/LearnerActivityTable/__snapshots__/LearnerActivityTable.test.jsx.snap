@@ -32,19 +32,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
                        
-                      sort ascending
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
                 </button>
               </th>
@@ -58,19 +62,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Title
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -84,19 +92,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Price
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -110,19 +122,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Start Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -136,19 +152,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      End Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -162,19 +182,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Passed Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Passed Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -188,19 +212,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Current Grade
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -214,19 +242,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Progress Status
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -240,19 +272,23 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -526,19 +562,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
                        
-                      sort ascending
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
                 </button>
               </th>
@@ -552,19 +592,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Title
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -578,19 +622,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Price
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -604,19 +652,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Start Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -630,19 +682,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      End Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -656,19 +712,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Current Grade
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -682,19 +742,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Progress Status
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -708,19 +772,23 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -951,19 +1019,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Email
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
                        
-                      sort ascending
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort-asc"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
                 </button>
               </th>
@@ -977,19 +1049,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Title
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1003,19 +1079,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Course Price
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1029,19 +1109,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Start Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1055,19 +1139,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      End Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1081,19 +1169,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Current Grade
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1107,19 +1199,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Progress Status
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>
@@ -1133,19 +1229,23 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                   onClick={[Function]}
                   type="button"
                 >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
+                  <span
+                    className="btn-icons-container"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        className="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
                        
-                      click to sort
+                      <span
+                        aria-hidden={true}
+                        className="fa fa-sort"
+                      />
                     </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
                 </button>
               </th>

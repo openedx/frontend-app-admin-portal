@@ -10,12 +10,14 @@ exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
   type="button"
 >
   <span
-    className="d-flex align-items-center justify-content-center"
+    className="btn-icons-container"
   >
     <span
-      className=""
+      className="d-flex align-items-center justify-content-center"
     >
-      Save Template
+      <span>
+        Save Template
+      </span>
     </span>
   </span>
 </button>
@@ -31,12 +33,14 @@ exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
   type="button"
 >
   <span
-    className="d-flex align-items-center justify-content-center"
+    className="btn-icons-container"
   >
     <span
-      className=""
+      className="d-flex align-items-center justify-content-center"
     >
-      Save Template
+      <span>
+        Save Template
+      </span>
     </span>
   </span>
 </button>
@@ -52,12 +56,14 @@ exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = 
   type="button"
 >
   <span
-    className="d-flex align-items-center justify-content-center"
+    className="btn-icons-container"
   >
     <span
-      className=""
+      className="d-flex align-items-center justify-content-center"
     >
-      Save Template
+      <span>
+        Save Template
+      </span>
     </span>
   </span>
 </button>

@@ -107,11 +107,15 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa fa-refresh mr-2"
-            id="Icon2"
-          />
-          Refresh data
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-refresh mr-2"
+              id="Icon2"
+            />
+            Refresh data
+          </span>
         </button>
         <a
           className="request-codes-btn btn btn-primary"
@@ -290,11 +294,15 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa fa-refresh mr-2"
-            id="Icon16"
-          />
-          Refresh data
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-refresh mr-2"
+              id="Icon16"
+            />
+            Refresh data
+          </span>
         </button>
         <a
           className="request-codes-btn btn btn-primary"
@@ -478,11 +486,15 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa fa-refresh mr-2"
-            id="Icon13"
-          />
-          Refresh data
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-refresh mr-2"
+              id="Icon13"
+            />
+            Refresh data
+          </span>
         </button>
         <a
           className="request-codes-btn btn btn-primary"
@@ -638,11 +650,15 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
           type="button"
         >
           <span
-            aria-hidden={true}
-            className="fa fa-refresh mr-2"
-            id="Icon6"
-          />
-          Refresh data
+            className="btn-icons-container"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-refresh mr-2"
+              id="Icon6"
+            />
+            Refresh data
+          </span>
         </button>
         <a
           className="request-codes-btn btn btn-primary"

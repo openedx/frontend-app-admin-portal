@@ -44,27 +44,31 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
         onKeyDown={[Function]}
         type="button"
       >
-        <div
-          className="d-flex justify-content-between align-items-center"
+        <span
+          className="btn-icons-container"
         >
           <div
-            className="details-btn-text mr-1"
+            className="d-flex justify-content-between align-items-center"
           >
-            Details
-          </div>
-          <div>
-            <span
-              aria-hidden={true}
-              className="fa fa-caret-down"
-              id="Icon3"
-            />
-            <span
-              className="sr-only"
+            <div
+              className="details-btn-text"
             >
-              Show details
-            </span>
+              Details
+            </div>
+            <div>
+              <span
+                aria-hidden={true}
+                className="fa fa-caret-down"
+                id="Icon3"
+              />
+              <span
+                className="sr-only"
+              >
+                Show details
+              </span>
+            </div>
           </div>
-        </div>
+        </span>
       </button>
     </div>
     <div
