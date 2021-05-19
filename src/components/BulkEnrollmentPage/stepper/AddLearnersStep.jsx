@@ -49,7 +49,7 @@ const tableColumns = [
 ];
 
 const INITIAL_PAGE_INDEX = 0;
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 
 const AddLearnersStep = ({
   subscriptionUUID,
@@ -69,6 +69,7 @@ const AddLearnersStep = ({
       { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 },
     ).then((response) => {
       setData(camelCaseObject(response.data));
+      setErrors('');
     }).catch((err) => {
       logError(err);
       setErrors(err.message);

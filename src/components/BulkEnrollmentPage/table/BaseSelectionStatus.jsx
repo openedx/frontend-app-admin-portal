@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DataTableContext } from '@edx/paragon';
+import { checkForSelectedRows } from './helpers';
 
 import {
   clearSelectionAction,
   setSelectedRowsAction,
 } from '../data/actions';
-
-const checkIds = (selectedRows, currentRows) => currentRows.every(v => selectedRows.includes(v.id));
 
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
 const BaseSelectionStatus = ({
@@ -20,7 +19,7 @@ const BaseSelectionStatus = ({
   } = useContext(DataTableContext);
   const isAllRowsSelected = selectedRows.length === itemCount;
   const selectedRowIds = selectedRows.map((row) => row.id);
-  const areAllDisplayedRowsSelected = checkIds(selectedRowIds, rows);
+  const areAllDisplayedRowsSelected = checkForSelectedRows(selectedRowIds, rows);
 
   const numSelectedRows = selectedRows.length;
 
@@ -33,7 +32,7 @@ const BaseSelectionStatus = ({
           size="inline"
           onClick={() => { dispatch(setSelectedRowsAction(rows)); }}
         >
-          Select all {rows.length}
+          Select {rows.length}
         </Button>
       )}
       {numSelectedRows > 0 && (

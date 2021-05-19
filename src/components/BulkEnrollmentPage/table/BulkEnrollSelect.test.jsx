@@ -14,8 +14,6 @@ import {
 const emailsDispatch = jest.fn();
 const coursesDispatch = jest.fn();
 const defaultRow = {
-  getToggleRowSelectedProps: () => ({}),
-  toggleRowSelected: jest.fn(),
   id: 'foo',
 };
 
@@ -33,7 +31,6 @@ describe('BaseSelectWithContext', () => {
   beforeEach(() => {
     emailsDispatch.mockClear();
     coursesDispatch.mockClear();
-    defaultRow.toggleRowSelected.mockClear();
   });
   it('renders a checkbox', () => {
     render(<SelectWithContextWrapper><BaseSelectWithContext contextKey="emails" row={defaultRow} /></SelectWithContextWrapper>);
@@ -48,8 +45,6 @@ describe('BaseSelectWithContext', () => {
     expect(coursesDispatch).not.toHaveBeenCalled();
     expect(emailsDispatch).toHaveBeenCalledTimes(1);
     expect(emailsDispatch).toHaveBeenCalledWith(addSelectedRowAction(defaultRow));
-    expect(defaultRow.toggleRowSelected).toHaveBeenCalledTimes(1);
-    expect(defaultRow.toggleRowSelected).toHaveBeenCalledWith(true);
   });
   it('renders a selected checkbox', () => {
     render(
@@ -72,8 +67,6 @@ describe('BaseSelectWithContext', () => {
     expect(coursesDispatch).not.toHaveBeenCalled();
     expect(emailsDispatch).toHaveBeenCalledTimes(1);
     expect(emailsDispatch).toHaveBeenCalledWith(deleteSelectedRowAction(defaultRow.id));
-    expect(defaultRow.toggleRowSelected).toHaveBeenCalledTimes(1);
-    expect(defaultRow.toggleRowSelected).toHaveBeenCalledWith(false);
   });
 });
 
@@ -81,14 +74,12 @@ describe('BaseSelectWithContextHeader', () => {
   const rows = [{ id: 'foo' }, { id: 'bar' }, { id: 'baz' }];
   const defaultProps = {
     rows,
-    getToggleAllRowsSelectedProps: jest.fn().mockReturnValue({ onChange: () => {}, indeterminate: false }),
     isAllRowsSelected: false,
     contextKey: 'emails',
   };
   beforeEach(() => {
     emailsDispatch.mockClear();
     coursesDispatch.mockClear();
-    defaultProps.getToggleAllRowsSelectedProps.mockClear();
   });
   it('renders a checkbox', () => {
     render(<SelectWithContextWrapper><BaseSelectWithContextHeader contextKey="emails" {...defaultProps} /></SelectWithContextWrapper>);
@@ -106,17 +97,27 @@ describe('BaseSelectWithContextHeader', () => {
   it('renders a selected checkbox', () => {
     render(
       <SelectWithContextWrapper bulkEnrollInfo={{ ...defaultBulkEnrollInfo, emails: [[defaultRow], emailsDispatch] }}>
-        <BaseSelectWithContextHeader contextKey="emails" {...{ ...defaultProps, isAllRowsSelected: true }} />
+        <BaseSelectWithContextHeader contextKey="emails" {...{ ...defaultProps, rows: [defaultRow] }} />
       </SelectWithContextWrapper>,
     );
     const checkbox = screen.getByTestId(SELECT_ALL_TEST_ID);
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveProperty('checked', true);
   });
+  it('renders an indeterminate checkbox', () => {
+    render(
+      <SelectWithContextWrapper bulkEnrollInfo={{ ...defaultBulkEnrollInfo, emails: [[defaultRow], emailsDispatch] }}>
+        <BaseSelectWithContextHeader contextKey="emails" {...{ ...defaultProps, rows: [defaultRow, { id: 'zebra' }] }} />
+      </SelectWithContextWrapper>,
+    );
+    const checkbox = screen.getByTestId(SELECT_ALL_TEST_ID);
+    expect(checkbox).toBeInTheDocument();
+    expect(checkbox).toHaveProperty('indeterminate', true);
+  });
   it('deselects the row when selected checkbox is checked', () => {
     render(
       <SelectWithContextWrapper bulkEnrollInfo={{ ...defaultBulkEnrollInfo, emails: [[defaultRow], emailsDispatch] }}>
-        <BaseSelectWithContextHeader contextKey="emails" {...{ ...defaultProps, isAllRowsSelected: true }} />
+        <BaseSelectWithContextHeader contextKey="emails" {...{ ...defaultProps, rows: [defaultRow] }} />
       </SelectWithContextWrapper>,
     );
     const checkbox = screen.getByTestId(SELECT_ALL_TEST_ID);

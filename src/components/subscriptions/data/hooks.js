@@ -120,7 +120,7 @@ export const useActiveSubscriptionUsers = ({
     setLoading(true);
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
-      { active_only: 1, page_size: 10000 },
+      { active_only: 1, page_size: 3 },
     ).then((response) => {
       setSubscriptionUsers(camelCaseObject(response.data));
     })

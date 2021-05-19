@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { IndeterminateCheckbox } from '@edx/paragon';
+import { checkForSelectedRows } from './helpers';
 
 import {
   addSelectedRowAction, clearSelectionAction, deleteSelectedRowAction, setSelectedRowsAction,
@@ -37,21 +38,20 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
 
 BaseSelectWithContext.propTypes = {
   row: PropTypes.shape({
-    toggleRowSelected: PropTypes.func.isRequired,
-    getToggleRowSelectedProps: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
   }).isRequired,
   /* The key to get the required data from BulkEnrollContext */
   contextKey: PropTypes.string.isRequired,
 };
 
-const checkIds = (selectedRows, currentRows) => currentRows.every(v => selectedRows.includes(v.id));
-
 export const BaseSelectWithContextHeader = ({
   rows, contextKey,
 }) => {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
-  const isAllRowsSelected = checkIds(selectedRows.map(row => row.id), rows);
+
+  const selectedRowIds = selectedRows.map(row => row.id);
+  const isAllRowsSelected = checkForSelectedRows(selectedRows.map(row => row.id), rows);
+  const anyRowsSelected = rows.some((row) => selectedRowIds.includes(row.id));
   const toggleAllRowsSelectedBulkEn = isAllRowsSelected
     ? () => dispatch(clearSelectionAction())
     : () => dispatch(setSelectedRowsAction(rows));
@@ -62,7 +62,8 @@ export const BaseSelectWithContextHeader = ({
         style={{ cursor: 'pointer' }}
         title="Toggle all rows selected"
         checked={isAllRowsSelected}
-        onClick={toggleAllRowsSelectedBulkEn}
+        onChange={toggleAllRowsSelectedBulkEn}
+        indeterminate={anyRowsSelected && !isAllRowsSelected}
         data-testid={SELECT_ALL_TEST_ID}
       />
     </div>
