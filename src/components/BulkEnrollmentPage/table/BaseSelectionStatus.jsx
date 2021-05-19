@@ -7,6 +7,8 @@ import {
   setSelectedRowsAction,
 } from '../data/actions';
 
+const checkIds = (selectedRows, currentRows) => currentRows.every(v => selectedRows.includes(v.id));
+
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
 const BaseSelectionStatus = ({
   className,
@@ -14,29 +16,31 @@ const BaseSelectionStatus = ({
   dispatch,
 }) => {
   const {
-    itemCount, rows, toggleAllRowsSelected,
+    itemCount, rows,
   } = useContext(DataTableContext);
-  const isAllRowsSelected = selectedRows.length === rows.length;
+  const isAllRowsSelected = selectedRows.length === itemCount;
+  const selectedRowIds = selectedRows.map((row) => row.id);
+  const areAllDisplayedRowsSelected = checkIds(selectedRowIds, rows);
 
   const numSelectedRows = selectedRows.length;
 
   return (
     <div className={className}>
       <span>{isAllRowsSelected && 'All '}{numSelectedRows} selected </span>
-      {!isAllRowsSelected && (
+      {!areAllDisplayedRowsSelected && (
         <Button
           variant="link"
           size="inline"
-          onClick={() => { toggleAllRowsSelected(true); dispatch(setSelectedRowsAction(rows)); }}
+          onClick={() => { dispatch(setSelectedRowsAction(rows)); }}
         >
-          Select all {itemCount}
+          Select all {rows.length}
         </Button>
       )}
       {numSelectedRows > 0 && (
         <Button
           variant="link"
           size="inline"
-          onClick={() => { toggleAllRowsSelected(false); dispatch(clearSelectionAction()); }}
+          onClick={() => { dispatch(clearSelectionAction()); }}
         >
           Clear selection
         </Button>

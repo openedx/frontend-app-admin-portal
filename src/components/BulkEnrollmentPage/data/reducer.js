@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash';
 import {
   SET_SELECTED_ROWS, DELETE_ROW, ADD_ROW, CLEAR_SELECTION,
 } from './actions';
@@ -5,7 +6,8 @@ import {
 const selectedRowsReducer = (state = [], action) => {
   switch (action.type) {
     case SET_SELECTED_ROWS:
-      return action.rows;
+      return uniqBy([...state, ...action.rows], (row) => row.id);
+
     case DELETE_ROW:
       return state.filter((row) => row.id !== action.rowId);
     case ADD_ROW:

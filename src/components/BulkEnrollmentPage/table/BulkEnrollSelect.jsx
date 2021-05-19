@@ -17,14 +17,15 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
   const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows]);
 
   const toggleSelected = isSelected
-    ? () => { dispatch(deleteSelectedRowAction(row.id)); row.toggleRowSelected(false); }
-    : () => { dispatch(addSelectedRowAction(row)); row.toggleRowSelected(true); };
+    ? () => { dispatch(deleteSelectedRowAction(row.id)); }
+    : () => { dispatch(addSelectedRowAction(row)); };
 
   return (
     <div>
       {/* eslint-disable-next-line react/prop-types */}
       <IndeterminateCheckbox
-        {...row.getToggleRowSelectedProps()}
+        style={{ cursor: 'pointer' }}
+        title="Toggle row selected"
         checked={isSelected}
         onChange={toggleSelected}
         indeterminate={false}
@@ -44,10 +45,13 @@ BaseSelectWithContext.propTypes = {
   contextKey: PropTypes.string.isRequired,
 };
 
+const checkIds = (selectedRows, currentRows) => currentRows.every(v => selectedRows.includes(v.id));
+
 export const BaseSelectWithContextHeader = ({
-  getToggleAllRowsSelectedProps, isAllRowsSelected, rows, contextKey,
+  rows, contextKey,
 }) => {
-  const { [contextKey]: [, dispatch] } = useContext(BulkEnrollContext);
+  const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
+  const isAllRowsSelected = checkIds(selectedRows.map(row => row.id), rows);
   const toggleAllRowsSelectedBulkEn = isAllRowsSelected
     ? () => dispatch(clearSelectionAction())
     : () => dispatch(setSelectedRowsAction(rows));
@@ -55,7 +59,8 @@ export const BaseSelectWithContextHeader = ({
   return (
     <div>
       <IndeterminateCheckbox
-        {...getToggleAllRowsSelectedProps()}
+        style={{ cursor: 'pointer' }}
+        title="Toggle all rows selected"
         checked={isAllRowsSelected}
         onClick={toggleAllRowsSelectedBulkEn}
         data-testid={SELECT_ALL_TEST_ID}
@@ -68,8 +73,6 @@ BaseSelectWithContextHeader.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
   })).isRequired,
-  getToggleAllRowsSelectedProps: PropTypes.func.isRequired,
-  isAllRowsSelected: PropTypes.bool.isRequired,
   /* The key to get the required data from BulkEnrollContext */
   contextKey: PropTypes.string.isRequired,
 };

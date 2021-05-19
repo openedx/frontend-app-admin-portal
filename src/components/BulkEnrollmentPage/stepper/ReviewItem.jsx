@@ -21,6 +21,7 @@ const ReviewItem = ({ row, accessor, dispatch }) => {
             <IconButton
               src={Delete}
               iconAs={Icon}
+              style={{ cursor: 'pointer' }}
               data-testid="delete-button"
               alt="Remove selection"
               onClick={onClick}

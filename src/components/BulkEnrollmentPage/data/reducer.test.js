@@ -4,10 +4,22 @@ import {
 } from './actions';
 
 describe('selectedRowsReducer', () => {
-  it('can set rows', () => {
-    const selectedRows = [{ id: 1 }];
+  it('can set rows when there are no selected rows', () => {
+    const selectedRows = [];
     const newSelectedRows = [{ id: 2 }, { id: 3 }];
     expect(selectedRowsReducer(selectedRows, setSelectedRowsAction(newSelectedRows))).toEqual(newSelectedRows);
+  });
+  it('can add selected rows', () => {
+    const selectedRows = [{ id: 1 }];
+    const newSelectedRows = [{ id: 2 }, { id: 3 }];
+    const expected = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    expect(selectedRowsReducer(selectedRows, setSelectedRowsAction(newSelectedRows))).toEqual(expected);
+  });
+  it('dedupes added rows', () => {
+    const selectedRows = [{ id: 1 }];
+    const newSelectedRows = [{ id: 2 }, { id: 3 }, { id: 1 }];
+    const expected = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    expect(selectedRowsReducer(selectedRows, setSelectedRowsAction(newSelectedRows))).toEqual(expected);
   });
   it('can delete a row', () => {
     const selectedRows = [{ id: 2 }, { id: 3 }];
