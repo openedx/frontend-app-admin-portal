@@ -28,6 +28,16 @@
   }
 }
 
+@include media-breakpoint-down(md) {
+  .be-review-list {
+    display: flex;
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .sticky-stepper-footer {
   display: flex;
   flex-direction: column;

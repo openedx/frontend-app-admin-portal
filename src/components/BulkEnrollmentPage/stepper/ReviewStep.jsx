@@ -34,20 +34,20 @@ const ReviewStep = ({ setCurrentStep }) => {
       <h2 className="mb-5">{REVIEW_TITLE}</h2>
       <Row>
         <ReviewList
-          key="emails"
-          rows={selectedEmails}
-          accessor="userEmail"
-          dispatch={emailsDispatch}
-          subject={EMAILS}
-          returnToSelection={() => setCurrentStep(ADD_LEARNERS_STEP)}
-        />
-        <ReviewList
           key="courses"
           rows={selectedCourses}
           accessor="title"
           dispatch={coursesDispatch}
           subject={COURSES}
           returnToSelection={() => setCurrentStep(ADD_COURSES_STEP)}
+        />
+        <ReviewList
+          key="emails"
+          rows={selectedEmails}
+          accessor="userEmail"
+          dispatch={emailsDispatch}
+          subject={EMAILS}
+          returnToSelection={() => setCurrentStep(ADD_LEARNERS_STEP)}
         />
       </Row>
     </>
