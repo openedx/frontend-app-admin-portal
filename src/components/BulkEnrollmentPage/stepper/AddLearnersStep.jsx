@@ -1,8 +1,10 @@
 import React, {
-  useContext, useState, useMemo,
+  useContext, useState, useMemo, useCallback, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, DataTable, TextFilter } from '@edx/paragon';
+import {
+  Alert, DataTable, TextFilter,
+} from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -51,6 +53,12 @@ const tableColumns = [
 const INITIAL_PAGE_INDEX = 0;
 const PAGE_SIZE = 5;
 
+const useIsMounted = () => {
+  const componentIsMounted = useRef(true);
+  useEffect(() => () => { componentIsMounted.current = false; }, []);
+  return componentIsMounted;
+};
+
 const AddLearnersStep = ({
   subscriptionUUID,
   enterpriseSlug,
@@ -60,20 +68,28 @@ const AddLearnersStep = ({
   const [data, setData] = useState({ results: [], count: 0, numPages: 1 });
   const { emails: [selectedEmails] } = useContext(BulkEnrollContext);
   const { results, count, numPages } = data;
+  const isMounted = useIsMounted();
 
-  const fetchData = useMemo(() => (tableInstance = {}) => {
+  const fetchData = useCallback((tableInstance = {}) => {
     const pageIndex = tableInstance.pageIndex || INITIAL_PAGE_INDEX;
-
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
       { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 },
     ).then((response) => {
-      setData(camelCaseObject(response.data));
-      setErrors('');
+      if (isMounted.current) {
+        setData(camelCaseObject(response.data));
+        setErrors('');
+      }
     }).catch((err) => {
       logError(err);
-      setErrors(err.message);
-    }).finally(() => setLoading(false));
+      if (isMounted.current) {
+        setErrors(err.message);
+      }
+    }).finally(() => {
+      if (isMounted.current) {
+        setLoading(false);
+      }
+    });
   }, [subscriptionUUID, enterpriseSlug]);
 
   const selectedRowIds = useMemo(() => convertToSelectedRowsObject(selectedEmails), [selectedEmails]);
@@ -96,7 +112,6 @@ const AddLearnersStep = ({
         <Link to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscriptionUUID}`}>{LINK_TEXT}</Link>
       </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
-      {loading && <TableLoadingSkeleton data-testid="skelly" />}
       {errors && <Alert variant="danger">There was an error retrieving email data. Please try again later.</Alert>}
       <DataTable
         columns={tableColumns}
@@ -110,7 +125,17 @@ const AddLearnersStep = ({
         initialState={initialState}
         initialTableOptions={initialTableOptions}
         selectedFlatRows={selectedEmails}
-      />
+      >
+        {loading && <TableLoadingSkeleton data-testid="skelly" />}
+        {!loading
+          && (
+          <>
+            <DataTable.TableControlBar />
+            <DataTable.Table />
+            <DataTable.TableFooter />
+          </>
+          )}
+      </DataTable>
     </>
   );
 };

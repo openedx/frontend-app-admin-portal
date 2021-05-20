@@ -1,9 +1,9 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
-import { useActiveSubscriptionUsers } from '../../subscriptions/data/hooks';
+import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
 import BulkEnrollmentStepper from './BulkEnrollmentStepper';
 import {
@@ -15,17 +15,25 @@ import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 import '../../../../__mocks__/react-instantsearch-dom';
 import { renderWithRouter } from '../../test/testUtils';
 
-jest.mock('../../subscriptions/data/hooks', () => ({
-  useActiveSubscriptionUsers: jest.fn(),
+jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
+  __esModule: true,
+  default: {
+    fetchSubscriptionUsers: jest.fn(),
+  },
 }));
 
-const mockEmailResponse = {
-  results: [{ uuid: 'foo', userEmail: 'y@z.com' }, { uuid: 'bar', userEmail: 'a@z.com' }],
-  count: 2,
-};
+const mockLearnerData = [{ uuid: 'foo', userEmail: 'y@z.com' }, { uuid: 'bar', userEmail: 'a@z.com' }];
 
-useActiveSubscriptionUsers.mockReturnValue([mockEmailResponse, false]);
+const mockEmailResponse = Promise.resolve({
+  data: {
+    results: mockLearnerData,
+    count: 2,
+    numPages: 6,
+  },
+});
 
+LicenseManagerApiService.fetchSubscriptionUsers.mockReturnValue(mockEmailResponse);
+const flushPromises = () => new Promise(setImmediate);
 const defaultProps = {
   enterpriseId: 'fakeID',
   enterpriseSlug: 'fakr',
@@ -42,11 +50,12 @@ const navigateToAddLearners = () => {
   const selectAll = screen.getByTestId('selectAll');
   userEvent.click(selectAll);
   userEvent.click(screen.getByTestId(NEXT_BUTTON_TEST_ID));
+  flushPromises();
 };
 
-const navigateToReview = () => {
+const navigateToReview = async () => {
   navigateToAddLearners();
-  const selectAll = screen.getByTestId('selectAll');
+  const selectAll = await screen.findByTestId('selectAll');
   userEvent.click(selectAll);
   const nextButton = screen.getByTestId(NEXT_BUTTON_TEST_ID);
   userEvent.click(nextButton);
@@ -94,22 +103,27 @@ describe('BulkEnrollmentStepper', () => {
     userEvent.click(prevButton);
     expect(screen.getAllByText(ADD_COURSES_TITLE)).toHaveLength(2);
   });
-  it('displays the user emails', () => {
+  it('displays the user emails', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     navigateToAddLearners();
-    mockEmailResponse.results.forEach((result) => expect(screen.getByText(result.userEmail)).toBeInTheDocument());
+    expect(await screen.findByText(mockLearnerData[0].userEmail)).toBeInTheDocument();
+    expect(await screen.findByText(mockLearnerData[1].userEmail)).toBeInTheDocument();
   });
-  it('takes users to the review step when they click next', () => {
+  it('takes users to the review step when they click next', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
-    navigateToReview();
+    await navigateToReview();
     expect(screen.getAllByText(REVIEW_TITLE)).toHaveLength(2);
     expect(screen.getByText(FINAL_BUTTON_TEXT)).toBeInTheDocument();
   });
-  it('returns users to the add learners step when they click previous', () => {
-    renderWithRouter(<StepperWrapper {...defaultProps} />);
-    navigateToReview();
+  it('returns users to the add learners step when they click previous', async () => {
+    act(() => {
+      renderWithRouter(<StepperWrapper {...defaultProps} />);
+    });
+    await navigateToReview();
     const prevButton = screen.getByTestId(PREV_BUTTON_TEST_ID);
-    userEvent.click(prevButton);
+
+    act(() => { userEvent.click(prevButton); });
+
     expect(screen.getAllByText(ADD_LEARNERS_TITLE)).toHaveLength(2);
   });
 });
