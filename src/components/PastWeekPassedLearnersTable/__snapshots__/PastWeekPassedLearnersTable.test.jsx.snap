@@ -124,7 +124,11 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                awesome.me@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  awesome.me@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -146,7 +150,11 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                new@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  new@example.com
+                </span>
               </td>
               <td
                 className=""

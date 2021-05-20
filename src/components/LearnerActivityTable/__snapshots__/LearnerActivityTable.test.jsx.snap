@@ -304,7 +304,11 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                awesome.me@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  awesome.me@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -362,7 +366,11 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 className=""
                 scope={null}
               >
-                new@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  new@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -796,7 +804,11 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 className=""
                 scope={null}
               >
-                awesome.me@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  awesome.me@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -848,7 +860,11 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 className=""
                 scope={null}
               >
-                new@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  new@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -1245,7 +1261,11 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 className=""
                 scope={null}
               >
-                awesome.me@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  awesome.me@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -1297,7 +1317,11 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 className=""
                 scope={null}
               >
-                new@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  new@example.com
+                </span>
               </td>
               <td
                 className=""
