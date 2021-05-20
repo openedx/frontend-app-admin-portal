@@ -25,6 +25,7 @@ const PastWeekPassedLearnersTable = () => {
 
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
+    user_email: <span data-hj-suppress>{learner.user_email}</span>,
     passed_timestamp: formatTimestamp({ timestamp: learner.passed_timestamp }),
   }));
 

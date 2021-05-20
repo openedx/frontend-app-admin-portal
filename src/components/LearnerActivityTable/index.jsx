@@ -64,6 +64,7 @@ class LearnerActivityTable extends React.Component {
 
   formatTableData = enrollments => enrollments.map(enrollment => ({
     ...enrollment,
+    user_email: <span data-hj-suppress>{enrollment.user_email}</span>,
     last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
     course_start: formatTimestamp({ timestamp: enrollment.course_start }),
     course_end: formatTimestamp({ timestamp: enrollment.course_end }),

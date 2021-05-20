@@ -17,7 +17,10 @@ const CompletedLearnersTable = () => {
     },
   ];
 
-  const formatLearnerData = learners => learners;
+  const formatLearnerData = learners => learners.map(learner => ({
+    ...learner,
+    user_email: <span data-hj-suppress>{learner.user_email}</span>,
+  }));
 
   return (
     <TableContainer
