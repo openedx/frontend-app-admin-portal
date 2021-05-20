@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/prop-types */
-const React = require('react');
+import React from 'react';
 
 const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',

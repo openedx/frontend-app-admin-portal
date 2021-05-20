@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DataTableContext } from '@edx/paragon';
+import { checkForSelectedRows } from './helpers';
 
 import {
   clearSelectionAction,
@@ -14,29 +15,31 @@ const BaseSelectionStatus = ({
   dispatch,
 }) => {
   const {
-    itemCount, rows, toggleAllRowsSelected,
+    itemCount, rows,
   } = useContext(DataTableContext);
-  const isAllRowsSelected = selectedRows.length === rows.length;
+  const isAllRowsSelected = selectedRows.length === itemCount;
+  const selectedRowIds = selectedRows.map((row) => row.id);
+  const areAllDisplayedRowsSelected = checkForSelectedRows(selectedRowIds, rows);
 
   const numSelectedRows = selectedRows.length;
 
   return (
     <div className={className}>
       <span>{isAllRowsSelected && 'All '}{numSelectedRows} selected </span>
-      {!isAllRowsSelected && (
+      {!areAllDisplayedRowsSelected && (
         <Button
           variant="link"
           size="inline"
-          onClick={() => { toggleAllRowsSelected(true); dispatch(setSelectedRowsAction(rows)); }}
+          onClick={() => { dispatch(setSelectedRowsAction(rows)); }}
         >
-          Select all {itemCount}
+          Select {rows.length}
         </Button>
       )}
       {numSelectedRows > 0 && (
         <Button
           variant="link"
           size="inline"
-          onClick={() => { toggleAllRowsSelected(false); dispatch(clearSelectionAction()); }}
+          onClick={() => { dispatch(clearSelectionAction()); }}
         >
           Clear selection
         </Button>
