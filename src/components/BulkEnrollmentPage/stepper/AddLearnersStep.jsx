@@ -51,7 +51,7 @@ const tableColumns = [
 ];
 
 const INITIAL_PAGE_INDEX = 0;
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 25;
 
 const useIsMounted = () => {
   const componentIsMounted = useRef(true);
