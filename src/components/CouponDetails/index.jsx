@@ -623,6 +623,7 @@ class CouponDetails extends React.Component {
 
     return data.map(code => ({
       ...code,
+      code: <span data-hj-suppress>{code.code}</span>,
       assigned_to: code.error ? (
         <span className="text-danger">
           <Icon className="fa fa-exclamation-circle mr-2" screenReaderText="Error" />

@@ -30,6 +30,7 @@ const EnrolledLearnersForInactiveCoursesTable = () => {
 
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
+    user_email: <span data-hj-suppress>{learner.user_email}</span>,
     last_activity_date: formatTimestamp({
       timestamp: learner.last_activity_date,
     }),
