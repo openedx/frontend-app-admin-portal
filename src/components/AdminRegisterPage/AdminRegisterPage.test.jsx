@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
-import LoadingMessage from '../LoadingMessage';
+import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import AdminRegisterPage from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
@@ -30,14 +29,13 @@ describe('<AdminRegisterPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-  it('renders loading message when not authenticated (redirect to enterprise proxy login)', () => {
-    getAuthenticatedUser.mockReturnValue({});
+  it('renders loading skeleton when not authenticated (redirect to enterprise proxy login)', () => {
+    getAuthenticatedUser.mockReturnValue(null);
 
     const wrapper = mount(<AdminRegisterPageWrapper />);
 
-    // verify that the loading message appears during redirect
-    const LoadingComponent = <LoadingMessage className="admin-register" />;
-    expect(wrapper.contains(LoadingComponent)).toBeTruthy();
+    // verify that the loading skeleton appears during redirect
+    expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
     expect(global.location.href).toBeTruthy();
   });
 
@@ -45,18 +43,18 @@ describe('<AdminRegisterPage />', () => {
     { roles: [] },
     { roles: ['enterprise_learner:*'] },
   ].forEach(({ roles }) => {
-    it('displays logging out message alert when user is authenticated without "enterprise_admin" JWT role', () => {
+    it('displays app skeleton when user is authenticated without "enterprise_admin" JWT role', () => {
       getAuthenticatedUser.mockReturnValue({
         username: 'edx',
         roles,
       });
 
       const wrapper = mount(<AdminRegisterPageWrapper />);
-      expect(wrapper.find('.admin-registration-logout').exists()).toBeTruthy();
+      expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy();
     });
   });
 
-  it('redirects to /admin/register/activate route when user is authenticated and has JWT roles', () => {
+  it('redirects to /admin/register/activate route when user is authenticated and has "enterprise_admin" JWT role', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_admin:*'],
