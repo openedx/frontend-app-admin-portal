@@ -97,46 +97,6 @@ export const useSubscriptionUsersOverview = ({
 };
 
 /*
- * This hook provides a list of active and pending users for a given subscription UUID.
- * It is also dependent on state from SubscriptionDetailContext.
- */
-export const useActiveSubscriptionUsers = ({
-  subscriptionUUID,
-  errors,
-  setErrors,
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [subscriptionUsers, setSubscriptionUsers] = useState({
-    results: [],
-    count: 0,
-    next: null,
-    previous: null,
-  });
-
-  useEffect(() => {
-    if (!subscriptionUUID) {
-      return;
-    }
-    setLoading(true);
-    LicenseManagerApiService.fetchSubscriptionUsers(
-      subscriptionUUID,
-      { active_only: 1, page_size: 3 },
-    ).then((response) => {
-      setSubscriptionUsers(camelCaseObject(response.data));
-    })
-      .catch((err) => {
-        logError(err);
-        setErrors({
-          ...errors,
-          [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-        });
-      }).finally(() => setLoading(false));
-  }, [subscriptionUUID]);
-
-  return [subscriptionUsers, loading];
-};
-
-/*
  * This hook provides a list of users for a given subscription UUID.
  * It is also dependent on state from SubscriptionDetailContext.
  */

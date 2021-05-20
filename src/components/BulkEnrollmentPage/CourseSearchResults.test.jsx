@@ -9,7 +9,6 @@ import thunk from 'redux-thunk';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 import { Button } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
-import { useActiveSubscriptionUsers } from '../subscriptions/data/hooks';
 import StatusAlert from '../StatusAlert';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
@@ -21,15 +20,6 @@ import { renderWithRouter } from '../test/testUtils';
 import '../../../__mocks__/react-instantsearch-dom';
 
 const mockStore = configureMockStore([thunk]);
-
-jest.mock('../subscriptions/data/hooks', () => ({
-  useActiveSubscriptionUsers: jest.fn(),
-}));
-
-useActiveSubscriptionUsers.mockReturnValue([{
-  results: [],
-  count: 0,
-}, false]);
 
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
