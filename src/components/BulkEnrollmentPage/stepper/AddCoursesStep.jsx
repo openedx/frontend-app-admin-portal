@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
-import { SearchData, SearchHeader } from '@edx/frontend-enterprise';
+import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import { ADD_COURSES_TITLE } from './constants';
