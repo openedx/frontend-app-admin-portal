@@ -2557,6 +2557,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     </label>
                     <input
                       className="form-control"
+                      data-hj-suppress={true}
                       id="pgn-searchfield-input-106"
                       name="searchfield-input"
                       onBlur={[Function]}
@@ -3290,6 +3291,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     </label>
                     <input
                       className="form-control"
+                      data-hj-suppress={true}
                       id="pgn-searchfield-input-12"
                       name="searchfield-input"
                       onBlur={[Function]}
