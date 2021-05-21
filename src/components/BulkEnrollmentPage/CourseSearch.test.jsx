@@ -6,11 +6,8 @@ import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
 import { BaseCourseSearch } from './CourseSearch';
 import { renderWithRouter } from '../test/testUtils';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
-
-jest.mock('react-instantsearch-dom', () => ({
-  ...jest.requireActual('react-instantsearch-dom'),
-  InstantSearch: () => <div>INSTANTLY SEARCH</div>,
-}));
+import { ADD_COURSES_TITLE } from './stepper/constants';
+import '../../../__mocks__/react-instantsearch-dom';
 
 jest.mock('../subscriptions/data/contextHooks', () => ({
   useSubscriptionFromParams: jest.fn(),
@@ -25,18 +22,19 @@ const defaultProps = {
 
 const fakeSubscription = {
   enterpriseCatalogUuid: 'bestCatalog',
+  uuid: 'fancy-uuid',
 };
 
 describe('<BaseCourseSearch />', () => {
-  it('renders the instant search component', () => {
+  it('renders bulk enrollment stepper', () => {
     useSubscriptionFromParams.mockReturnValue([fakeSubscription, false]);
     renderWithRouter(<BaseCourseSearch {...defaultProps} />);
-    screen.getByText('INSTANTLY SEARCH');
+    expect(screen.getAllByText(ADD_COURSES_TITLE)).toHaveLength(2);
   });
   it('shows a loading screen ', () => {
     useSubscriptionFromParams.mockReturnValue([null, true]);
     renderWithRouter(<BaseCourseSearch {...defaultProps} />);
-    expect(screen.getByTestId('skelly')).toBeInTheDocument();
+    expect(screen.getByTestId('subscription-skelly')).toBeInTheDocument();
   });
   it('redirects to the subscription choosing page if there is no subscription', () => {
     useSubscriptionFromParams.mockReturnValue([null, false]);

@@ -1,18 +1,25 @@
 import React, {
   useContext,
-  useMemo, useState,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
 import {
-  DataTable, Toast, Button,
+  DataTable, Button,
 } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 
-import BulkEnrollmentModal from '../../containers/BulkEnrollmentModal';
 import StatusAlert from '../StatusAlert';
-import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
+import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
+import { BulkEnrollContext } from './BulkEnrollmentContext';
+import { convertToSelectedRowsObject } from './helpers';
+import {
+  setSelectedRowsAction,
+} from './data/actions';
+
+import BaseSelectionStatus from './table/BaseSelectionStatus';
+import { BaseSelectWithContext, BaseSelectWithContextHeader } from './table/BulkEnrollSelect';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -23,16 +30,35 @@ export const TABLE_HEADERS = {
   enroll: '',
 };
 
-export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
-  const handleClick = useMemo(() => () => {
-    setSelectedCourseRuns([row.original?.advertised_course_run?.key]);
-    setModalOpen(true);
-  }, [setSelectedCourseRuns, setModalOpen, row.original?.advertised_course_run?.key]);
+const AddCoursesSelectionStatus = (props) => {
+  const { courses: [selectedCourses, dispatch] } = useContext(BulkEnrollContext);
+
+  return <BaseSelectionStatus selectedRows={selectedCourses} dispatch={dispatch} {...props} />;
+};
+
+const SelectWithContext = (props) => <BaseSelectWithContext contextKey="courses" {...props} />;
+
+const SelectWithContextHeader = (props) => <BaseSelectWithContextHeader contextKey="courses" {...props} />;
+
+const selectColumn = {
+  id: 'selection',
+  Header: SelectWithContextHeader,
+  Cell: SelectWithContext,
+  disableSortBy: true,
+};
+
+export const EnrollButton = ({ row, goToNextStep, dispatch }) => {
+  const handleClick = () => {
+    dispatch(setSelectedRowsAction([row]));
+    goToNextStep();
+  };
+
   return (
     <Button
       className="enroll-button"
       variant="link"
       onClick={handleClick}
+      data-testid="tableEnrollButton"
     >
       {ENROLL_TEXT}
     </Button>
@@ -40,26 +66,22 @@ export const EnrollButton = ({ row, setSelectedCourseRuns, setModalOpen }) => {
 };
 
 EnrollButton.propTypes = {
-  row: PropTypes.shape({
-    original: PropTypes.shape({
-      advertised_course_run: PropTypes.shape({
-        key: PropTypes.string,
-      }),
-    }),
-  }).isRequired,
-  setSelectedCourseRuns: PropTypes.func.isRequired,
-  setModalOpen: PropTypes.func.isRequired,
+  row: PropTypes.shape({ }).isRequired,
+  goToNextStep: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export const BaseCourseSearchResults = ({
-  enterpriseId,
-  searchResults,
-  // algolia recommends this prop instead of searching
-  isSearchStalled,
-  searchState,
-  error,
-  enterpriseSlug,
-}) => {
+export const BaseCourseSearchResults = (props) => {
+  const {
+    searchResults,
+    // algolia recommends this prop instead of searching
+    isSearchStalled,
+    searchState,
+    error,
+    enterpriseSlug,
+    goToNextStep,
+  } = props;
+
   const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
     {
@@ -85,18 +107,7 @@ export const BaseCourseSearchResults = ({
     [searchState?.page, refinementsFromQueryParams],
   );
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedCourseRuns, setSelectedCourseRuns] = useState([]);
-  const [showToast, setShowToast] = useState(false);
-  const [enrolledLearners, setEnrolledLearners] = useState([]);
-
-  const handleBulkEnrollClick = useMemo(() => (selectedRows) => {
-    const courseRunKeys = selectedRows?.map(
-      (selectedRow) => selectedRow.original?.advertised_course_run?.key,
-    ) || [];
-    setSelectedCourseRuns(courseRunKeys);
-    setModalOpen(true);
-  }, [setModalOpen, setSelectedCourseRuns]);
+  const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
 
   if (isSearchStalled) {
     return (
@@ -128,34 +139,19 @@ export const BaseCourseSearchResults = ({
 
   return (
     <>
-      <BulkEnrollmentModal
-        onSuccess={() => {
-          setShowToast(true);
-          setModalOpen(false);
-        }}
-        enterpriseUuid={enterpriseId}
-        onClose={() => setModalOpen(false)}
-        open={modalOpen}
-        selectedCourseRunKeys={selectedCourseRuns}
-        setEnrolledLearners={setEnrolledLearners}
-      />
-      <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-      >
-        {enrolledLearners} learners have been enrolled.
-      </Toast>
       <DataTable
         columns={columns}
         data={searchResults?.hits || []}
         itemCount={searchResults?.nbHits}
+        manualSelectColumn={selectColumn}
+        SelectionStatusComponent={AddCoursesSelectionStatus}
         isSelectable
         pageCount={searchResults?.nbPages || 1}
         pageSize={searchResults?.hitsPerPage || 0}
-        bulkActions={[{
-          buttonText: ENROLL_TEXT,
-          handleClick: handleBulkEnrollClick,
-        }]}
+        initialState={{ selectedRowIds: convertToSelectedRowsObject(selectedCourses) }}
+        initialTableOptions={{
+          getRowId: (row) => row.key,
+        }}
         additionalColumns={[
           {
             id: 'enroll',
@@ -164,8 +160,8 @@ export const BaseCourseSearchResults = ({
             Cell: ({ row }) => (
               <EnrollButton
                 row={row}
-                setSelectedCourseRuns={setSelectedCourseRuns}
-                setModalOpen={setModalOpen}
+                dispatch={coursesDispatch}
+                goToNextStep={goToNextStep}
               />
             ),
           },
@@ -184,7 +180,6 @@ export const BaseCourseSearchResults = ({
 
 BaseCourseSearchResults.defaultProps = {
   searchResults: { nbHits: 0, hits: [] },
-  enterpriseId: '',
   error: null,
 };
 
@@ -205,8 +200,8 @@ BaseCourseSearchResults.propTypes = {
     page: PropTypes.number,
   }).isRequired,
   // from parent
-  enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string.isRequired,
+  goToNextStep: PropTypes.func.isRequired,
 };
 
 export default connectStateResults(BaseCourseSearchResults);

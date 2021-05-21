@@ -1,12 +1,45 @@
 .bulk-enrollment {
-  .bg-brand-primary {
-    background-color: $primary-700;
-    color: $white
-  }
   .alert {
     margin-top: 2rem;
   }
   .enroll-button {
     padding-left: 0;
   }
+}
+
+.be-review-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  .card {
+    @extend .mb-1;
+  }
+
+  .card-body {
+    @extend .py-2;
+    @extend .px-3
+  }
+
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .be-review-list {
+    display: flex;
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.sticky-stepper-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

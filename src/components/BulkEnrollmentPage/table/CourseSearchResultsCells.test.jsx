@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
-import { configuration } from '../../config';
+import { configuration } from '../../../config';
 
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';

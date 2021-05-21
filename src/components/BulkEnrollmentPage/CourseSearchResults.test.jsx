@@ -1,24 +1,25 @@
 import React from 'react';
-import { act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
+import userEvent from '@testing-library/user-event';
 import thunk from 'redux-thunk';
-import { SearchContext } from '@edx/frontend-enterprise';
+import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
 import { Button } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
 import StatusAlert from '../StatusAlert';
+import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
   BaseCourseSearchResults, EnrollButton, NO_DATA_MESSAGE, TABLE_HEADERS, ENROLL_TEXT,
 } from './CourseSearchResults';
+import { setSelectedRowsAction } from './data/actions';
+import { renderWithRouter } from '../test/testUtils';
+
+import '../../../__mocks__/react-instantsearch-dom';
 
 const mockStore = configureMockStore([thunk]);
-
-// Mocking this connected component so as not to have to mock the algolia Api
-jest.mock('@edx/frontend-enterprise', () => ({
-  ...jest.requireActual('@edx/frontend-enterprise'),
-  SearchPagination: () => <div>PAGINATE ME</div>,
-}));
 
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
@@ -37,6 +38,7 @@ const searchResults = {
         key: testCourseRunKey,
         start: testStartDate,
       },
+      key: 'foo',
     },
   ],
   page: 3,
@@ -52,6 +54,7 @@ const defaultProps = {
   isSearchStalled: false,
   enterpriseId: 'foo',
   enterpriseSlug: 'fancyCompany',
+  goToNextStep: jest.fn(),
 };
 
 const refinementsFromQueryParams = {};
@@ -60,36 +63,42 @@ const refinementsFromQueryParams = {};
 const CourseSearchWrapper = ({ value = { refinementsFromQueryParams }, props = defaultProps }) => (
   <Provider store={mockStore()}>
     <SearchContext.Provider value={value}>
-      <BaseCourseSearchResults
-        {...props}
-      />
+      <BulkEnrollContextProvider>
+        <BaseCourseSearchResults
+          {...props}
+        />
+      </BulkEnrollContextProvider>
     </SearchContext.Provider>
   </Provider>
 );
 
 describe('<EnrollButton />', () => {
-  const key = 'bears+101';
-  const row = { original: { advertised_course_run: { key } } };
+  const buttonProps = {
+    row: { id: 'foo' },
+    dispatch: jest.fn(),
+    goToNextStep: jest.fn(),
+  };
+  beforeEach(() => {
+    buttonProps.dispatch.mockClear();
+    buttonProps.goToNextStep.mockClear();
+  });
   it('displays a button', () => {
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={() => {}} />);
+    const wrapper = mount(<EnrollButton {...buttonProps} />);
     expect(wrapper.find(Button)).toHaveLength(1);
     expect(wrapper.text()).toContain(ENROLL_TEXT);
   });
-  it('opens the modal', () => {
-    const openSpy = jest.fn();
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={openSpy} setSelectedCourseRuns={() => {}} />);
+  it('toggles the row to be selected', () => {
+    const wrapper = mount(<EnrollButton {...buttonProps} />);
     const button = wrapper.find(Button);
     button.simulate('click');
-    expect(openSpy).toHaveBeenCalledTimes(1);
-    expect(openSpy).toHaveBeenCalledWith(true);
+    expect(buttonProps.dispatch).toHaveBeenCalledWith(setSelectedRowsAction([buttonProps.row]));
+    expect(buttonProps.goToNextStep).toHaveBeenCalledTimes(1);
   });
-  it('sets the selectedCourseRuns', () => {
-    const setCourseRunSpy = jest.fn();
-    const wrapper = mount(<EnrollButton row={row} setModalOpen={() => {}} setSelectedCourseRuns={setCourseRunSpy} />);
+  it('sends the user to the next step', () => {
+    const wrapper = mount(<EnrollButton {...buttonProps} />);
     const button = wrapper.find(Button);
     button.simulate('click');
-    expect(setCourseRunSpy).toHaveBeenCalledTimes(1);
-    expect(setCourseRunSpy).toHaveBeenCalledWith([key]);
+    expect(buttonProps.goToNextStep).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -113,31 +122,7 @@ describe('<CourseSearchResults />', () => {
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
-    expect(wrapper.text()).toContain('PAGINATE ME');
-  });
-  it('displays modal on click', () => {
-    const wrapper = mount(<CourseSearchWrapper />);
-
-    const dataTable = wrapper.find('DataTable');
-    act(() => {
-      dataTable.props().bulkActions[0].handleClick();
-    });
-    wrapper.update();
-    const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');
-    // Use the first toast found as it creates a child Toast as well
-    expect(bulkEnrollmentModal.props().open).toBe(true);
-  });
-  it('displays a toast on success', () => {
-    const wrapper = mount(<CourseSearchWrapper />);
-
-    const bulkEnrollmentModal = wrapper.find('BulkEnrollmentModal');
-    act(() => {
-      bulkEnrollmentModal.props().onSuccess();
-    });
-    wrapper.update();
-    const toast = wrapper.find('Toast');
-    // Use the first toast found as it creates a child Toast as well
-    expect(toast.at(1).prop('show')).toBe(true);
+    expect(wrapper.find(SearchPagination)).toHaveLength(1);
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';
@@ -154,5 +139,11 @@ describe('<CourseSearchResults />', () => {
     />);
     expect(wrapper.find(StatusAlert)).toHaveLength(1);
     expect(wrapper.text()).toContain(NO_DATA_MESSAGE);
+  });
+  it('sends users to the next step when enroll button in table is clicked', () => {
+    renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
+    const enrollButton = screen.getAllByTestId('tableEnrollButton')[0];
+    userEvent.click(enrollButton);
+    expect(defaultProps.goToNextStep).toHaveBeenCalledTimes(1);
   });
 });
