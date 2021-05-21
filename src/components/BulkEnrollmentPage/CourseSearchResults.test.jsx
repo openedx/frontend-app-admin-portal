@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import thunk from 'redux-thunk';
-import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
+import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 import { Button } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
 import StatusAlert from '../StatusAlert';
