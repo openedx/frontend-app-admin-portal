@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import {
   DataTable, Button,
 } from '@edx/paragon';
-import { SearchContext, SearchPagination } from '@edx/frontend-enterprise';
+import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';

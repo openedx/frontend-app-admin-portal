@@ -26,7 +26,7 @@ exports[`<Footer /> renders correct help center link from config 1`] = `
     >
       <nav>
         <ul
-          className="nav justify-content-end"
+          className="nav justify-content-end small"
         >
           <li
             className="nav-item border-right"
@@ -93,7 +93,7 @@ exports[`<Footer /> renders edX logo correctly 1`] = `
     >
       <nav>
         <ul
-          className="nav justify-content-end"
+          className="nav justify-content-end small"
         >
           <li
             className="nav-item border-right"
@@ -171,7 +171,7 @@ exports[`<Footer /> renders enterprise logo correctly 1`] = `
     >
       <nav>
         <ul
-          className="nav justify-content-end"
+          className="nav justify-content-end small"
         >
           <li
             className="nav-item border-right"

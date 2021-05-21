@@ -5,10 +5,10 @@ import { Helmet } from 'react-helmet';
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
-import EnterpriseApp from '../../containers/EnterpriseApp';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
+import AuthenticatedEnterpriseApp from '../AuthenticatedEnterpriseApp';
 import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
@@ -44,9 +44,9 @@ const AppWrapper = () => {
             path="/:enterpriseSlug/admin/register/activate"
             component={UserActivationPage}
           />
-          <AuthenticatedPageRoute
+          <PageRoute
             path="/:enterpriseSlug"
-            component={EnterpriseApp}
+            component={AuthenticatedEnterpriseApp}
             authenticatedAPIClient={apiClient}
             redirect={process.env.BASE_URL}
           />

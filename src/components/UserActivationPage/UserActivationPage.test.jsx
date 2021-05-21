@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
-import LoadingMessage from '../LoadingMessage';
+import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import { ToastsContext } from '../Toasts';
 import UserActivationPage from './index';
 
@@ -42,23 +42,22 @@ describe('<UserActivationPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
+
   it('renders loading message when not authenticated (redirect to enterprise proxy login)', () => {
-    getAuthenticatedUser.mockReturnValue({});
+    getAuthenticatedUser.mockReturnValue(null);
     // Note: this test does not assert that the redirect to the proxy login works since
     // JSdom does not implement global.location. Due to this, JSdom outputs a "Not
     // implemented: navigation" warning for this test that can safely be ignored.
     const wrapper = mount(<UserActivationPageWrapper />);
 
-    // verify that the loading message appears during redirect
-    const LoadingComponent = <LoadingMessage className="user-activation" />;
-    expect(wrapper.contains(LoadingComponent)).toBeTruthy();
+    // verify that the loading skeleton appears during redirect
+    expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
   });
 
   it('redirects to /admin/register when user is authenticated but has no JWT roles', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: [],
-      isActive: true,
     });
     const history = createMemoryHistory({
       initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
@@ -69,7 +68,17 @@ describe('<UserActivationPage />', () => {
     expect(history.location.pathname).toEqual(expectedRedirectRoute);
   });
 
-  it('displays an alert when user with unverified email is authenticated and has JWT roles', () => {
+  it('displays loading skeleton when user is authenticated, has "enterprise_admin" JWT role, and is pending user hydration', () => {
+    getAuthenticatedUser.mockReturnValue({
+      username: 'edx',
+      roles: ['enterprise_admin:*'],
+    });
+
+    const wrapper = mount(<UserActivationPageWrapper />);
+    expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy();
+  });
+
+  it('displays an alert when user with unverified email is authenticated and has "enterprise_admin" JWT role', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_admin:*'],
@@ -80,7 +89,7 @@ describe('<UserActivationPage />', () => {
     expect(wrapper.find('Alert').exists()).toBeTruthy();
   });
 
-  it('redirects to /admin/learners route when user with verified email is authenticated and has JWT roles', () => {
+  it('redirects to /admin/learners route when user with verified email is authenticated and has "enterprise_admin" JWT role', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_admin:*'],

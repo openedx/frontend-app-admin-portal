@@ -50,7 +50,7 @@ class Footer extends React.Component {
           </div>
           <div className="col-xs-12 col-md footer-links">
             <nav>
-              <ul className="nav justify-content-end">
+              <ul className="nav justify-content-end small">
                 <li className="nav-item border-right">
                   <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
                     Terms of Service
