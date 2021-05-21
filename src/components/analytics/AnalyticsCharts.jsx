@@ -52,16 +52,14 @@ export default function AnalyticsCharts(enterpriseId) {
 
   if (token && url) {
     return (
-      <>
-        <div>
-          <TableauReport
-            url={url}
-            token={token}
-            options={options}
-            filters={filters}
-          />
-        </div>
-      </>
+      <div data-hj-suppress>
+        <TableauReport
+          url={url}
+          token={token}
+          options={options}
+          filters={filters}
+        />
+      </div>
     );
   }
   return null;
