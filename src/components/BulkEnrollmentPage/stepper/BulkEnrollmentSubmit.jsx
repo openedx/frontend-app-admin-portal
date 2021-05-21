@@ -24,6 +24,8 @@ import { ToastsContext } from '../../Toasts';
 import { clearSelectionAction } from '../data/actions';
 import { configuration } from '../../../config';
 
+export const BULK_ENROLL_ERROR = 'There was an ';
+
 export const BulkEnrollmentAlertModal = ({
   isOpen, toggleClose, enterpriseSlug, error, enterpriseId,
 }) => (
@@ -53,10 +55,14 @@ export const BulkEnrollmentAlertModal = ({
   </AlertModal>
 );
 
+BulkEnrollmentAlertModal.defaultProps = {
+  error: 'Unknown error',
+};
+
 BulkEnrollmentAlertModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleClose: PropTypes.func.isRequired,
-  error: PropTypes.string.isRequired,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
@@ -66,7 +72,7 @@ export const generateSuccessMessage = numEmails => `${numEmails} learners have b
 const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialStep }) => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const handleChange = e => setChecked(e.target.checked);
 
   const {

@@ -1,6 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
+import {
+  render, screen, act, cleanup,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
 import BulkEnrollmentSubmit, {
@@ -89,6 +91,9 @@ describe('BulkEnrollmentAlertModal', () => {
   beforeEach(() => {
     defaultAlertProps.toggleClose.mockClear();
   });
+  afterEach(() => {
+    cleanup();
+  });
 
   it('renders an alert', () => {
     render(<BulkEnrollmentAlertModal {...defaultAlertProps} />);
@@ -151,7 +156,7 @@ describe('BulkEnrollmentSubmit', () => {
     expect(button).not.toBeDisabled();
   });
 
-  it('tests button is disabled when courses are not selected but emails are', () => {
+  it('tests button is disabled when courses are not selected but emails are', async () => {
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
 
@@ -163,9 +168,10 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     expect(button).toBeDisabled();
+    await act(() => mockPromiseResolve);
   });
 
-  it('tests button is disabled when emails are not selected but courses are', () => {
+  it('tests button is disabled when emails are not selected but courses are', async () => {
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
 
@@ -177,9 +183,10 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     expect(button).toBeDisabled();
+    await act(() => mockPromiseResolve);
   });
 
-  it('tests passing correct data to api call', () => {
+  it('tests passing correct data to api call', async () => {
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
 
@@ -203,9 +210,10 @@ describe('BulkEnrollmentSubmit', () => {
       expectedParams,
     );
     expect(logError).toBeCalledTimes(0);
+    await act(() => mockPromiseResolve);
   });
 
-  it('tests notify toggle disables param to api service', () => {
+  it('tests notify toggle disables param to api service', async () => {
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
 
@@ -230,6 +238,7 @@ describe('BulkEnrollmentSubmit', () => {
       expectedParams,
     );
     expect(logError).toBeCalledTimes(0);
+    await act(() => mockPromiseResolve);
   });
 
   it('test component clears selected emails and courses after successful submit', async () => {
@@ -255,6 +264,7 @@ describe('BulkEnrollmentSubmit', () => {
       clearSelectionAction(),
     );
     expect(logError).toBeCalledTimes(0);
+    await act(() => mockPromiseResolve);
   });
 
   it('tests component creates toast after successful submit', async () => {
@@ -275,10 +285,12 @@ describe('BulkEnrollmentSubmit', () => {
     expect(addToast).toHaveBeenCalledWith(
       generateSuccessMessage(userEmails.length),
     );
+    await act(() => mockPromiseResolve);
   });
 
   it('tests component logs error response on unsuccessful api call', async () => {
-    const mockPromiseReject = Promise.reject(new Error('something went wrong'));
+    // eslint-disable-next-line prefer-promise-reject-errors
+    const mockPromiseReject = Promise.reject('something went wrong');
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseReject);
 
     render(
@@ -314,7 +326,8 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('alert modal closes when user clicks OK', async () => {
-    const mockPromiseReject = Promise.reject(new Error('something went wrong'));
+    // eslint-disable-next-line prefer-promise-reject-errors
+    const mockPromiseReject = Promise.reject('something went wrong');
     LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseReject);
 
     render(
@@ -344,5 +357,6 @@ describe('BulkEnrollmentSubmit', () => {
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     await userEvent.click(button);
     expect(defaultProps.returnToInitialStep).toHaveBeenCalledTimes(1);
+    await act(() => mockPromiseResolve);
   });
 });

@@ -77,11 +77,12 @@ describe('BulkEnrollmentStepper', () => {
     expect(screen.getAllByText(ADD_LEARNERS_TITLE)).toHaveLength(1);
     expect(screen.getAllByText(REVIEW_TITLE)).toHaveLength(1);
   });
-  it('disables the next button if no courses are selected', () => {
+  it('disables the next button if no courses are selected', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByTestId(NEXT_BUTTON_TEST_ID)).toHaveAttribute('disabled');
+    await act(() => mockEmailResponse);
   });
-  it('selects all courses when clicking on the select column header', () => {
+  it('selects all courses when clicking on the select column header', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
 
     const selectAll = screen.getByTestId('selectAll');
@@ -90,8 +91,9 @@ describe('BulkEnrollmentStepper', () => {
     checkboxes.forEach((checkbox) => {
       expect(checkbox).toHaveProperty('checked', true);
     });
+    await act(() => mockEmailResponse);
   });
-  it('clicking next brings you to the Add learners step', () => {
+  it('clicking next brings you to the Add learners step', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
 
     navigateToAddLearners();
@@ -100,19 +102,22 @@ describe('BulkEnrollmentStepper', () => {
     expect(screen.getByTestId(NEXT_BUTTON_TEST_ID)).toBeInTheDocument();
     expect(screen.queryByTestId(FINAL_BUTTON_TEXT)).not.toBeInTheDocument();
     expect(screen.queryByTestId(PREV_BUTTON_TEST_ID)).toBeInTheDocument();
+    await act(() => mockEmailResponse);
   });
-  it('clicking previous from Add learners brings you back to Add courses', () => {
+  it('clicking previous from Add learners brings you back to Add courses', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     navigateToAddLearners();
     const prevButton = screen.getByTestId(PREV_BUTTON_TEST_ID);
     userEvent.click(prevButton);
     expect(screen.getAllByText(ADD_COURSES_TITLE)).toHaveLength(2);
+    await act(() => mockEmailResponse);
   });
   it('displays the user emails', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     navigateToAddLearners();
     expect(await screen.findByText(mockLearnerData[0].userEmail)).toBeInTheDocument();
     expect(await screen.findByText(mockLearnerData[1].userEmail)).toBeInTheDocument();
+    await act(() => mockEmailResponse);
   });
   it('takes users to the review step when they click next', async () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
@@ -121,14 +126,13 @@ describe('BulkEnrollmentStepper', () => {
     expect(screen.getByText(FINAL_BUTTON_TEXT)).toBeInTheDocument();
   });
   it('returns users to the add learners step when they click previous', async () => {
-    act(() => {
-      renderWithRouter(<StepperWrapper {...defaultProps} />);
-    });
+    renderWithRouter(<StepperWrapper {...defaultProps} />);
     await navigateToReview();
     const prevButton = screen.getByTestId(PREV_BUTTON_TEST_ID);
 
-    act(() => { userEvent.click(prevButton); });
+    userEvent.click(prevButton);
 
     expect(screen.getAllByText(ADD_LEARNERS_TITLE)).toHaveLength(2);
+    await act(() => mockEmailResponse);
   });
 });

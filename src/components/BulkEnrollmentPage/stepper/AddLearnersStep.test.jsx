@@ -46,6 +46,7 @@ describe('AddLearnersStep', () => {
   it('displays a title', async () => {
     act(() => { renderWithRouter(<StepperWrapper {...defaultProps} />); });
     expect(screen.getByText(ADD_LEARNERS_TITLE)).toBeInTheDocument();
+    await act(() => mockTableData);
   });
   it('displays a table', async () => {
     act(() => {
@@ -56,24 +57,27 @@ describe('AddLearnersStep', () => {
     expect(columnHeader).toBeInTheDocument();
     expect(await screen.findByText(mockResults[0].userEmail)).toBeInTheDocument();
     expect(await screen.findByText(mockResults[1].userEmail)).toBeInTheDocument();
+    await act(() => mockTableData);
   });
   it.skip('allows search by email', async () => {
     act(() => {
       renderWithRouter(<StepperWrapper {...defaultProps} />);
     });
     expect(await screen.findByText('Search Email')).toBeInTheDocument();
+    await act(() => mockTableData);
   });
   it('displays a table skeleton when loading', () => {
     LicenseManagerApiService.fetchSubscriptionUsers.mockReturnValue(new Promise(() => {}));
     act(() => { renderWithRouter(<StepperWrapper {...defaultProps} />); });
     expect(screen.getByTestId('skelly')).toBeInTheDocument();
   });
-  it('links leaners to subscription management', () => {
+  it('links leaners to subscription management', async () => {
     act(() => {
       const { history } = renderWithRouter(<StepperWrapper {...defaultProps} />);
       const link = screen.getByText(LINK_TEXT);
       userEvent.click(link);
       expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${defaultProps.subscriptionUUID}`);
     });
+    await act(() => mockTableData);
   });
 });
