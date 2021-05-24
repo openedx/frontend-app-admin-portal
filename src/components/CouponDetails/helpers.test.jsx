@@ -34,7 +34,7 @@ describe('getFirstNonDisabledOption', () => {
     [[{ value: 'foo', disabled: true }, { value: 'bar' }], 'bar'],
     [[{ value: 'foo' }, { value: 'bar', disabled: false }, { value: 'baz', disabled: true }], 'foo'],
     [[{ value: 'foo', disabled: true }, { value: 'bar', disabled: true }, { value: 'baz', disabled: false }], 'baz'],
-  ])('it returns the first non-disabled option %i', (options, expected) => {
+  ])('it returns the first non-disabled option %#', (options, expected) => {
     expect(getFirstNonDisabledOption(options)).toEqual(expected);
   });
   it('returns the first option if all are disabled', () => {
