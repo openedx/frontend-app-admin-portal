@@ -213,6 +213,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="degreedCompanyId"
               name="degreedCompanyId"
               defaultValue={config ? config.degreedCompanyId : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -231,6 +232,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="degreedBaseUrl"
               name="degreedBaseUrl"
               defaultValue={config ? config.degreedBaseUrl : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -249,6 +251,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="key"
               name="key"
               defaultValue={config ? config.key : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -267,6 +270,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="secret"
               name="secret"
               defaultValue={config ? config.secret : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -285,6 +289,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="degreedUserId"
               name="degreedUserId"
               defaultValue={config ? config.degreedUserId : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -303,6 +308,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               id="degreedUserPassword"
               name="degreedUserPassword"
               defaultValue={config ? config.degreedUserPassword : null}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>

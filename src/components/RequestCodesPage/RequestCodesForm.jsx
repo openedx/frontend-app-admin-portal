@@ -79,6 +79,7 @@ class RequestCodesForm extends React.Component {
                 )}
                 validate={[isRequired, isValidEmail]}
                 required
+                data-hj-suppress
               />
               <Field
                 name="enterpriseName"
@@ -94,6 +95,7 @@ class RequestCodesForm extends React.Component {
                 validate={[isRequired]}
                 required
                 disabled
+                data-hj-suppress
               />
               <Field
                 name="numberOfCodes"
@@ -102,6 +104,7 @@ class RequestCodesForm extends React.Component {
                 component={RenderField}
                 label="Number of Codes"
                 validate={[isValidNumber]}
+                data-hj-suppress
               />
               <Field
                 name="notes"
@@ -110,6 +113,7 @@ class RequestCodesForm extends React.Component {
                 component={RenderField}
                 label="Notes"
                 validate={[maxLength512]}
+                data-hj-suppress
               />
               <Button
                 type="submit"

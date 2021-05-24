@@ -356,7 +356,11 @@ exports[`CouponDetails container renders does not show Assign button for an unav
                     className=""
                     scope={null}
                   >
-                    test-code-1
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-1
+                    </span>
                   </td>
                   <td
                     className=""
@@ -425,7 +429,11 @@ exports[`CouponDetails container renders does not show Assign button for an unav
                     className=""
                     scope={null}
                   >
-                    test-code-2
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-2
+                    </span>
                   </td>
                   <td
                     className=""
@@ -494,7 +502,11 @@ exports[`CouponDetails container renders does not show Assign button for an unav
                     className=""
                     scope={null}
                   >
-                    test-code-3
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-3
+                    </span>
                   </td>
                   <td
                     className=""
@@ -942,7 +954,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-1
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-1
+                    </span>
                   </td>
                   <td
                     className=""
@@ -1037,7 +1053,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-2
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-2
+                    </span>
                   </td>
                   <td
                     className=""
@@ -1106,7 +1126,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-3
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-3
+                    </span>
                   </td>
                   <td
                     className=""
@@ -1567,7 +1591,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-1
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-1
+                    </span>
                   </td>
                   <td
                     className=""
@@ -1662,7 +1690,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-2
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-2
+                    </span>
                   </td>
                   <td
                     className=""
@@ -1731,7 +1763,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-3
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-3
+                    </span>
                   </td>
                   <td
                     className=""
@@ -2192,7 +2228,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-1
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-1
+                    </span>
                   </td>
                   <td
                     className=""
@@ -2287,7 +2327,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-2
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-2
+                    </span>
                   </td>
                   <td
                     className=""
@@ -2356,7 +2400,11 @@ exports[`CouponDetails container renders with assignment and reminder dates tabl
                     className=""
                     scope={null}
                   >
-                    test-code-3
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-3
+                    </span>
                   </td>
                   <td
                     className=""
@@ -3294,7 +3342,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                     className=""
                     scope={null}
                   >
-                    test-code-1
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-1
+                    </span>
                   </td>
                   <td
                     className=""
@@ -3389,7 +3441,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                     className=""
                     scope={null}
                   >
-                    test-code-2
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-2
+                    </span>
                   </td>
                   <td
                     className=""
@@ -3458,7 +3514,11 @@ exports[`CouponDetails container renders with table data 1`] = `
                     className=""
                     scope={null}
                   >
-                    test-code-3
+                    <span
+                      data-hj-suppress={true}
+                    >
+                      test-code-3
+                    </span>
                   </td>
                   <td
                     className=""

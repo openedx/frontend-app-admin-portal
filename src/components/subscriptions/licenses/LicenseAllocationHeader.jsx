@@ -23,6 +23,7 @@ const LicenseAllocationHeader = () => {
             placeholder="Search by email..."
             onSearch={searchQuery => setSearchQuery(searchQuery)}
             onClear={() => setSearchQuery(null)}
+            inputProps={{ 'data-hj-suppress': true }}
           />
         </Col>
         <Col xs={12} className="col-lg-auto">

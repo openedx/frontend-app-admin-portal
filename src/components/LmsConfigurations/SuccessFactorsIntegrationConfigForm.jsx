@@ -167,6 +167,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 id="sapsfCompanyId"
                 name="sapsfCompanyId"
                 defaultValue={config ? config.sapsfCompanyId : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -185,6 +186,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 id="key"
                 name="key"
                 defaultValue={config ? config.key : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -203,6 +205,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 id="secret"
                 name="secret"
                 defaultValue={config ? config.secret : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -221,6 +224,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 id="sapsfUserId"
                 name="sapsfUserId"
                 defaultValue={config ? config.sapsfUserId : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -262,6 +266,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 className="ml-3"
                 checked={transmitTotalHours}
                 onChange={() => this.setState(prevState => ({ transmitTotalHours: !prevState.transmitTotalHours }))}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -278,6 +283,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
                 id="additionalLocales"
                 name="additionalLocales"
                 defaultValue={config ? config.additionalLocales : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

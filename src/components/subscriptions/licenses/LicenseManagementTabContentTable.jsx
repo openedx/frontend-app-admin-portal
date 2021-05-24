@@ -94,7 +94,7 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
   }, [activeTab]);
 
   const tableData = useMemo(() => users?.results?.map(user => ({
-    emailAddress: user.userEmail,
+    emailAddress: <span data-hj-suppress>{user.userEmail}</span>,
     status: (
       <LicenseStatus
         user={{ ...user, lastRemindDate: user.lastRemindDate }}

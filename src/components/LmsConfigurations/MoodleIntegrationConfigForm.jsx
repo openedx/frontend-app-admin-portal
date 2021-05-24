@@ -166,6 +166,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="moodleBaseUrl"
                 name="moodleBaseUrl"
                 defaultValue={config ? config.moodleBaseUrl : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -184,6 +185,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="serviceShortName"
                 name="serviceShortName"
                 defaultValue={config ? config.serviceShortName : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -200,6 +202,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="categoryId"
                 name="categoryId"
                 defaultValue={config ? config.categoryId : 1}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -218,6 +221,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="username"
                 name="username"
                 defaultValue={config ? config.username : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -236,6 +240,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="password"
                 name="password"
                 defaultValue={config ? config.password : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -254,6 +259,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 id="token"
                 name="token"
                 defaultValue={config ? config.token : null}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

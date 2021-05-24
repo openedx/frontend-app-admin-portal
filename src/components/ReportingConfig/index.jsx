@@ -165,7 +165,7 @@ class ReportingConfig extends React.Component {
             ))}
             <Collapsible
               styling="basic"
-              title="Add a reporting Configuration"
+              title="Add a reporting configuration"
               className="col justify-content-center align-items-center"
               ref={this.newConfigFormRef}
             >

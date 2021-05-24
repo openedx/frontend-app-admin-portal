@@ -25,6 +25,7 @@ const EnrolledLearnersTable = () => {
 
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
+    user_email: <span data-hj-suppress>{learner.user_email}</span>,
     user_account_creation_timestamp: formatTimestamp({
       timestamp: learner.user_account_creation_timestamp,
     }),

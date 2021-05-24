@@ -112,6 +112,7 @@ class SamlProviderDataForm extends React.Component {
                 name="entityId"
                 defaultValue={pData ? pData.entityId : entityId}
                 disabled={!(pData === undefined)}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -131,6 +132,7 @@ class SamlProviderDataForm extends React.Component {
                 name="ssoUrl"
                 defaultValue={pData ? pData.ssoUrl : ''}
                 disabled={!(pData === undefined)}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>
@@ -150,6 +152,7 @@ class SamlProviderDataForm extends React.Component {
                 name="publicKey"
                 defaultValue={pData ? pData.publicKey : ''}
                 disabled={!(pData === undefined)}
+                data-hj-suppress
               />
             </ValidationFormGroup>
           </div>

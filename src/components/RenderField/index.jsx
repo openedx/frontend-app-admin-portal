@@ -12,6 +12,7 @@ const RenderField = ({
   className,
   id,
   meta: { touched, error },
+  ...props
 }) => {
   const hasError = !!(touched && error);
   return (
@@ -25,6 +26,7 @@ const RenderField = ({
         required={required}
         isValid={touched && !error}
         isInvalid={hasError}
+        {...props}
       />
       {hasError && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
       {description && <Form.Text>{description}</Form.Text>}

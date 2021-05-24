@@ -119,6 +119,7 @@ class AdminSearchForm extends React.Component {
                 value={searchQuery}
                 aria-labelledby="search-email-label"
                 className="py-0"
+                inputProps={{ 'data-hj-suppress': true }}
               />
             </div>
           </div>

@@ -185,7 +185,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                 className=""
                 scope={null}
               >
-                test_user_1@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  test_user_1@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -213,7 +217,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                 className=""
                 scope={null}
               >
-                test_user_2@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  test_user_2@example.com
+                </span>
               </td>
               <td
                 className=""
@@ -241,7 +249,11 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                 className=""
                 scope={null}
               >
-                test_user_3@example.com
+                <span
+                  data-hj-suppress={true}
+                >
+                  test_user_3@example.com
+                </span>
               </td>
               <td
                 className=""

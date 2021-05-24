@@ -56,6 +56,7 @@ exports[`CodeManagementPageWrapper renders renders empty results correctly 1`] =
             </label>
             <input
               className="form-control"
+              data-hj-suppress={true}
               id="pgn-searchfield-input-1"
               name="searchfield-input"
               onBlur={[Function]}
@@ -242,6 +243,7 @@ exports[`CodeManagementPageWrapper renders renders error state correctly 1`] = `
             </label>
             <input
               className="form-control"
+              data-hj-suppress={true}
               id="pgn-searchfield-input-15"
               name="searchfield-input"
               onBlur={[Function]}
@@ -433,6 +435,7 @@ exports[`CodeManagementPageWrapper renders renders loading state correctly 1`] =
             </label>
             <input
               className="form-control"
+              data-hj-suppress={true}
               id="pgn-searchfield-input-12"
               name="searchfield-input"
               onBlur={[Function]}
@@ -596,6 +599,7 @@ exports[`CodeManagementPageWrapper renders renders non-empty results correctly 1
             </label>
             <input
               className="form-control"
+              data-hj-suppress={true}
               id="pgn-searchfield-input-5"
               name="searchfield-input"
               onBlur={[Function]}

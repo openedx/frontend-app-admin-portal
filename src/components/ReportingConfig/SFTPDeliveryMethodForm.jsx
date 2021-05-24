@@ -22,6 +22,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               name="sftpHostname"
               defaultValue={config ? config.sftpHostname : undefined}
               onBlur={e => handleBlur(e)}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
@@ -58,6 +59,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               name="sftpUsername"
               defaultValue={config ? config.sftpUsername : undefined}
               onBlur={e => handleBlur(e)}
+              data-hj-suppress
             />
           </ValidationFormGroup>
           {config && (
@@ -85,6 +87,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               name="encryptedSftpPassword"
               onBlur={e => handleBlur(e)}
               disabled={config && !checked}
+              data-hj-suppress
             />
           </ValidationFormGroup>
           <ValidationFormGroup
@@ -100,6 +103,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               name="sftpFilePath"
               defaultValue={config ? config.sftpFilePath : undefined}
               onBlur={e => handleBlur(e)}
+              data-hj-suppress
             />
           </ValidationFormGroup>
         </div>
