@@ -15,10 +15,11 @@ import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
 
 import { features } from '../../config';
-import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import { getFilterOptions, getFirstNonDisabledOption } from './helpers';
+import { VISIBILITY_OPTIONS } from './constants';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -122,40 +123,11 @@ class CouponDetails extends React.Component {
 
   getTableFilterSelectOptions() {
     const { couponData: { usage_limitation: usageLimitation } } = this.props;
-    const shouldHidePartialRedeem = [SINGLE_USE, ONCE_PER_CUSTOMER].includes(usageLimitation);
-
-    let options = [{
-      label: 'Unassigned',
-      value: 'unassigned',
-    }, {
-      label: 'Unredeemed',
-      value: 'unredeemed',
-    }, {
-      label: 'Partially Redeemed',
-      value: 'partially-redeemed',
-    }, {
-      label: 'Redeemed',
-      value: 'redeemed',
-    }];
-
-    if (shouldHidePartialRedeem) {
-      options = options.filter(option => option.value !== 'partially-redeemed');
-    }
-
-    return options;
+    return getFilterOptions(usageLimitation);
   }
 
   getTableFilterVisibilitySelectionOptions() {
-    return [{
-      label: 'Both',
-      value: undefined,
-    }, {
-      label: 'Public',
-      value: 'public',
-    }, {
-      label: 'Private',
-      value: 'private',
-    }];
+    return VISIBILITY_OPTIONS;
   }
 
   getBulkActionSelectOptions() {
@@ -202,13 +174,7 @@ class CouponDetails extends React.Component {
 
   getBulkActionSelectValue() {
     const bulkActionSelectOptions = this.getBulkActionSelectOptions();
-    const firstNonDisabledOption = bulkActionSelectOptions.find(option => !option.disabled);
-
-    if (firstNonDisabledOption) {
-      return firstNonDisabledOption.value;
-    }
-
-    return bulkActionSelectOptions[0].value;
+    return getFirstNonDisabledOption(bulkActionSelectOptions);
   }
 
   getActionButton(code) {
