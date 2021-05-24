@@ -69,12 +69,13 @@ class ReportingConfigForm extends React.Component {
    */
   handleBlur = (e, validationFunction) => {
     // One special case for email fields
+    const field = e.target;
     this.setState((state) => ({
       invalidFields: {
         ...state.invalidFields,
-        [e.target.name]: validationFunction
+        [field.name]: validationFunction
           ? validationFunction()
-          : !e.target.value.length,
+          : !field.value.length,
       },
     }));
   };
