@@ -32,23 +32,19 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span
-                    className="btn-icons-container"
-                  >
-                    <span>
-                      Email
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        sort ascending
-                      </span>
+                  <span>
+                    Email
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort-asc"
-                      />
+                      sort ascending
                     </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort-asc"
+                    />
                   </span>
                 </button>
               </th>
@@ -62,23 +58,19 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span
-                    className="btn-icons-container"
-                  >
-                    <span>
-                      Course Title
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Course Title
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
                   </span>
                 </button>
               </th>
@@ -92,23 +84,19 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  <span
-                    className="btn-icons-container"
-                  >
-                    <span>
-                      Passed Date
-                      <span
-                        className="sr-only"
-                      >
-                         
-                        click to sort
-                      </span>
+                  <span>
+                    Passed Date
+                    <span
+                      className="sr-only"
+                    >
                        
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-sort"
-                      />
+                      click to sort
                     </span>
+                     
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-sort"
+                    />
                   </span>
                 </button>
               </th>

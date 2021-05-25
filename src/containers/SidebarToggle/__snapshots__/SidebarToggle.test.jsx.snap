@@ -9,18 +9,14 @@ exports[`<Sidebar /> renders correctly with close icon 1`] = `
   type="button"
 >
   <span
-    className="btn-icons-container"
+    aria-hidden={true}
+    className="fa fa-times"
+    id="Icon2"
+  />
+  <span
+    className="sr-only"
   >
-    <span
-      aria-hidden={true}
-      className="fa fa-times"
-      id="Icon2"
-    />
-    <span
-      className="sr-only"
-    >
-      close menu
-    </span>
+    close menu
   </span>
 </button>
 `;
@@ -34,18 +30,14 @@ exports[`<Sidebar /> renders correctly with menu icon 1`] = `
   type="button"
 >
   <span
-    className="btn-icons-container"
+    aria-hidden={true}
+    className="fa fa-bars"
+    id="Icon1"
+  />
+  <span
+    className="sr-only"
   >
-    <span
-      aria-hidden={true}
-      className="fa fa-bars"
-      id="Icon1"
-    />
-    <span
-      className="sr-only"
-    >
-      open menu
-    </span>
+    open menu
   </span>
 </button>
 `;

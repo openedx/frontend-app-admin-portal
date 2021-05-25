@@ -212,31 +212,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon26"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon26"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -309,31 +305,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon28"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon28"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -422,31 +414,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon30"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon30"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -551,31 +539,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon32"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon32"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -689,15 +673,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon34"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon34"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -793,31 +773,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon76"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon76"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -890,31 +866,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon78"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon78"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1003,31 +975,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon80"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon80"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1132,31 +1100,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon82"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon82"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1270,15 +1234,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon84"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon84"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -1374,31 +1334,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon86"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon86"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1471,31 +1427,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon88"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon88"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1584,31 +1536,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon90"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon90"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1713,31 +1661,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon92"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon92"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -1855,15 +1799,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon94"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon94"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -1959,31 +1899,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon96"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon96"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2056,31 +1992,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon98"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon98"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2169,31 +2101,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon100"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon100"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2298,31 +2226,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon102"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon102"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2422,15 +2346,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon103"
-                />
-                Download full report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon103"
+              />
+              Download full report (CSV)
             </button>
           </div>
         </div>
@@ -2693,31 +2613,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon2"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon2"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2790,31 +2706,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon4"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon4"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -2903,31 +2815,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon6"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon6"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3032,31 +2940,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon8"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon8"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3156,15 +3060,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon9"
-                />
-                Download full report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon9"
+              />
+              Download full report (CSV)
             </button>
           </div>
         </div>
@@ -3427,31 +3327,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon66"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon66"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3524,31 +3420,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon68"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon68"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3637,31 +3529,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon70"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon70"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3766,31 +3654,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon72"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon72"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -3908,15 +3792,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon74"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon74"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -4012,31 +3892,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon56"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon56"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4109,31 +3985,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon58"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon58"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4222,31 +4094,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon60"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon60"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4351,31 +4219,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon62"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon62"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4493,15 +4357,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon64"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon64"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -4597,31 +4457,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon36"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon36"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4694,31 +4550,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon38"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon38"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4807,31 +4659,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon40"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon40"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -4936,31 +4784,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon42"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon42"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5078,15 +4922,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon44"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon44"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -5182,31 +5022,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon16"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon16"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5279,31 +5115,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon18"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon18"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5392,31 +5224,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon20"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon20"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5521,31 +5349,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon22"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon22"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5659,15 +5483,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon24"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon24"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
@@ -5763,31 +5583,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon46"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon46"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5860,31 +5676,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon48"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon48"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -5973,31 +5785,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon50"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon50"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -6102,31 +5910,27 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 onKeyDown={[Function]}
                 type="button"
               >
-                <span
-                  className="btn-icons-container"
+                <div
+                  className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="d-flex justify-content-between align-items-center"
+                    className="details-btn-text"
                   >
-                    <div
-                      className="details-btn-text"
-                    >
-                      Details
-                    </div>
-                    <div>
-                      <span
-                        aria-hidden={true}
-                        className="fa fa-caret-down"
-                        id="Icon52"
-                      />
-                      <span
-                        className="sr-only"
-                      >
-                        Show details
-                      </span>
-                    </div>
+                    Details
                   </div>
-                </span>
+                  <div>
+                    <span
+                      aria-hidden={true}
+                      className="fa fa-caret-down"
+                      id="Icon52"
+                    />
+                    <span
+                      className="sr-only"
+                    >
+                      Show details
+                    </span>
+                  </div>
+                </div>
               </button>
             </div>
             <div
@@ -6244,15 +6048,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               type="button"
             >
               <span
-                className="btn-icons-container"
-              >
-                <span
-                  aria-hidden={true}
-                  className="fa mr-2 fa-download"
-                  id="Icon54"
-                />
-                Download current report (CSV)
-              </span>
+                aria-hidden={true}
+                className="fa mr-2 fa-download"
+                id="Icon54"
+              />
+              Download current report (CSV)
             </button>
           </div>
         </div>
