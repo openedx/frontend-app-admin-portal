@@ -1,4 +1,8 @@
 .bulk-enrollment {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
   .alert {
     margin-top: 2rem;
   }
@@ -38,8 +42,13 @@
   }
 }
 
-.sticky-stepper-footer {
+.sticky-footer-wrapper {
+  height: 70vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+
+  .stepper-step {
+    flex-grow: 1;
+    overflow: scroll;
+  }
 }
