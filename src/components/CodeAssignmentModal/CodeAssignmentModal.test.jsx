@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import remindEmailTemplate from './emailTemplate';
 import CodeAssignmentModal, { BaseCodeAssignmentModal } from '.';
-import { ASSIGNMENT_MODAL_FIELDS } from './constants';
+import { ASSIGNMENT_MODAL_FIELDS, NOTIFY_LEARNERS_CHECKBOX_TEST_ID } from './constants';
 import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
 
 import {
@@ -170,5 +170,9 @@ describe('CodeAssignmentModal component', () => {
   it('renders a auto-reminder checkbox', () => {
     render(<CodeAssignmentModalWrapper />);
     expect(screen.getByText(ASSIGNMENT_MODAL_FIELDS['enable-nudge-emails'].label)).toBeInTheDocument();
+  });
+  it('renders notify learners toggle checkbox', () => {
+    render(<CodeAssignmentModalWrapper />);
+    expect(screen.getByTestId(NOTIFY_LEARNERS_CHECKBOX_TEST_ID)).toBeInTheDocument();
   });
 });

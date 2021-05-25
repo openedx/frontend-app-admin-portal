@@ -22,3 +22,6 @@ export const ASSIGNMENT_MODAL_FIELDS = {
     label: 'Automate reminders',
   },
 };
+
+export const NOTIFY_LEARNERS_CHECKBOX_TEST_ID = 'notify-learners-checkbox';
+export const SUBMIT_BUTTON_TEST_ID = 'submit-button';

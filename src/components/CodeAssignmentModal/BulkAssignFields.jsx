@@ -7,7 +7,7 @@ import { normalizeFileUpload } from '../../utils';
 
 const BulkAssignFields = () => (
   <>
-    <h3 className="mb-2">Add Users</h3>
+    <h3 className="mb-2">Add learners</h3>
     <div className="pl-4 field-group">
       <Field
         name="email-addresses"

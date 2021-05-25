@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Modal,
+  Button, Icon, Modal, Form,
 } from '@edx/paragon';
 import isEmail from 'validator/lib/isEmail';
 
@@ -25,7 +25,11 @@ import {
 } from '../EmailTemplateForm/constants';
 import EmailTemplateForm from '../EmailTemplateForm';
 import {
-  EMAIL_TEMPLATE_NUDGE_EMAIL_ID, ASSIGNMENT_ERROR_TITLES, ASSIGNMENT_MODAL_FIELDS,
+  EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
+  ASSIGNMENT_ERROR_TITLES,
+  ASSIGNMENT_MODAL_FIELDS,
+  NOTIFY_LEARNERS_CHECKBOX_TEST_ID,
+  SUBMIT_BUTTON_TEST_ID,
 } from './constants';
 import { getErrors } from './validation';
 
@@ -38,9 +42,11 @@ export class BaseCodeAssignmentModal extends React.Component {
 
     this.state = {
       mode: MODAL_TYPES.assign,
+      notify: true,
     };
 
     this.setMode = this.setMode.bind(this);
+    this.setNotify = this.setNotify.bind(this);
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
@@ -97,6 +103,10 @@ export class BaseCodeAssignmentModal extends React.Component {
 
   setMode(mode) {
     this.setState({ mode });
+  }
+
+  setNotify() {
+    this.setState(prevState => ({ notify: !prevState.notify }));
   }
 
   getCleanedUsers(emails, usersResponse) {
@@ -252,6 +262,8 @@ export class BaseCodeAssignmentModal extends React.Component {
 
     this.setMode(MODAL_TYPES.assign);
 
+    const { notify } = this.state;
+
     // Validate form data
     this.validateFormData(formData);
     // Configure the options to send to the assignment API endpoint
@@ -261,6 +273,7 @@ export class BaseCodeAssignmentModal extends React.Component {
       template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
       template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
       enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
+      notify_learners: notify,
     };
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
@@ -330,8 +343,7 @@ export class BaseCodeAssignmentModal extends React.Component {
       error,
     } = this.props;
 
-    const { mode } = this.state;
-
+    const { mode, notify } = this.state;
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
 
     return (
@@ -356,11 +368,20 @@ export class BaseCodeAssignmentModal extends React.Component {
           {!isBulkAssign && <IndividualAssignFields />}
         </form>
         <div className="mt-4">
-          <EmailTemplateForm
-            emailTemplateType={MODAL_TYPES.assign}
-            fields={ASSIGNMENT_MODAL_FIELDS}
-            currentEmail={this.props.currentEmail}
-          />
+          <Form.Checkbox
+            checked={notify}
+            onChange={this.setNotify}
+            data-testid={NOTIFY_LEARNERS_CHECKBOX_TEST_ID}
+          >
+            Notify learners by email
+          </Form.Checkbox>
+          { notify && (
+            <EmailTemplateForm
+              emailTemplateType={MODAL_TYPES.assign}
+              fields={ASSIGNMENT_MODAL_FIELDS}
+              currentEmail={this.props.currentEmail}
+            />
+          )}
         </div>
 
       </>
@@ -394,7 +415,7 @@ export class BaseCodeAssignmentModal extends React.Component {
               key="assign-submit-btn"
               disabled={submitting}
               onClick={handleSubmit(this.handleModalSubmit)}
-              data-testid="submit-button"
+              data-testid={SUBMIT_BUTTON_TEST_ID}
             >
               <>
                 {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
