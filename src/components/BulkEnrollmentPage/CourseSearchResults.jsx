@@ -27,6 +27,7 @@ export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {
   courseName: 'Course name',
   courseStartDate: 'Course start date',
+  partnerName: 'Partner',
   enroll: '',
 };
 
@@ -94,6 +95,10 @@ export const BaseCourseSearchResults = (props) => {
       Header: TABLE_HEADERS.courseStartDate,
       accessor: 'advertised_course_run.start',
       Cell: FormattedDateCell,
+    },
+    {
+      Header: TABLE_HEADERS.partnerName,
+      accessor: 'partners[0].name',
     },
   ], []);
 
