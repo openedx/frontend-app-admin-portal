@@ -6,6 +6,10 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import {
+  render, screen,
+} from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import Sidebar from './index';
 
@@ -206,5 +210,43 @@ describe('<Sidebar />', () => {
       wrapper.find(Sidebar).simulate('blur');
       expect(store.getActions()).toEqual(expectedActions);
     });
+  });
+
+  it('renders correctly when subscriptionManagementScreen is false', () => {
+    // should cause both subscription management and enrollment links to not be present
+    const store = mockStore({
+      sidebar: {
+        ...initialState.sidebar,
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: false,
+      },
+    });
+
+    render(<SidebarWrapper store={store} />);
+    const subscriptionEnrollmentLink = screen.queryByRole('link', { name: 'Subscription Enrollment' });
+    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
+    expect(subscriptionEnrollmentLink).toBeNull();
+    expect(subscriptionManagementLink).toBeNull();
+  });
+
+  it('renders correctly when subscriptionManagementScreen and Bulk Enrollment is enabled', () => {
+    // should cause both subscription management and enrollment links to not be present
+    const store = mockStore({
+      sidebar: {
+        ...initialState.sidebar,
+      },
+      portalConfiguration: {
+        enableSubscriptionManagementScreen: true,
+      },
+    });
+
+    features.BULK_ENROLLMENT = true;
+
+    render(<SidebarWrapper store={store} />);
+    const subscriptionEnrollmentLink = screen.getByRole('link', { name: 'Subscription Enrollment' });
+    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
+    expect(subscriptionEnrollmentLink).toBeInTheDocument();
+    expect(subscriptionManagementLink).toBeInTheDocument();
   });
 });
