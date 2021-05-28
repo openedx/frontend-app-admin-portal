@@ -60,6 +60,7 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-textarea-autosize": "7.1.2",
+    "react-use-hotjar": "^1.1.2",
     "redux": "3.7.2",
     "redux-beacon": "2.1.0",
     "redux-devtools-extension": "2.13.8",
