@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+
+import useHotjar from 'react-use-hotjar';
 
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -18,6 +20,14 @@ import store from '../../data/store';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
+
+  if (process.env.HOTJAR_APP_ID) {
+    const { initHotjar } = useHotjar();
+    useEffect(() => {
+      initHotjar(process.env.HOTJAR_APP_ID, process.env.HOTJAR_VERSION, process.env.HOTJAR_DEBUG);
+    }, [initHotjar]);
+  }
+
   return (
     <AppProvider store={store}>
       <ToastsProvider>
