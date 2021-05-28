@@ -126,7 +126,7 @@ const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialSte
         onChange={handleChange}
         data-testid={NOTIFY_CHECKBOX_TEST_ID}
       >
-        Notify learners
+        Notify learners via Email
       </Form.Checkbox>
       <Button
         disabled={!hasSelectedCoursesAndEmails && !loading}
