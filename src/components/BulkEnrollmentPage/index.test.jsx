@@ -15,7 +15,6 @@ import { ADD_COURSES_TITLE } from './stepper/constants';
 import { renderWithRouter } from '../test/testUtils';
 import '../../../__mocks__/react-instantsearch-dom';
 
-
 jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
   default: {
