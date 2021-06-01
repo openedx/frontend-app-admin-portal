@@ -16,11 +16,24 @@ import { getSubscriptionExpiringCookieName } from '../data/utils';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
+/**
+ * This component is responsible for the business logic of determining when to render the following modals:
+ * 1. ``SubscriptionExpiredModal``: Displays a modal with messaging that a subscription plan has expired.
+ * 2. ``SubscriptionExpiringModal``: Displays a modal with messaging that a subscription plan is about to expire,
+ *  within a certain timeframe.
+ *
+ * @param {string} enterpriseId The UUID for an Enterprise Customer.
+ * @returns Component containing modals related to subscription expiration.
+ */
 const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const { subscription: { daysUntilExpiration } } = useContext(SubscriptionDetailContext);
 
   const isSubscriptionExpired = daysUntilExpiration <= 0;
 
+  /**
+   * Computes a value representing the day thresolds in which the user should
+   * see expiration modals, e.g. 30, 60, or 120 days out from the expiration date
+   */
   const subscriptionExpirationThreshold = useMemo(
     () => {
       const thresholds = [
@@ -45,14 +58,15 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
         return false;
       }
 
-      const cookies = new Cookies();
+      // if user has already seen the expiration modal for their current expiration range (as
+      // determined by the cookie), don't show them anything
       const seenCurrentExpiringModalCookieName = getSubscriptionExpiringCookieName({
         expirationThreshold: subscriptionExpirationThreshold,
         enterpriseId,
       });
+      const cookies = new Cookies();
       const seenCurrentExpirationModal = cookies.get(seenCurrentExpiringModalCookieName);
-      // if user has already seen the expiration modal for their current expiration range (as
-      // determined by the cookie), don't show them anything
+
       if (seenCurrentExpirationModal) {
         return false;
       }
@@ -65,16 +79,17 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const [isExpiredModalOpen, openExpiredModal, closeExpiredModal] = useToggle(isSubscriptionExpired);
   const [isExpiringModalOpen, openExpiringModal, closeExpiringModal] = useToggle(shouldShowSubscriptionExpiringModal);
 
-  useEffect(
-    () => {
-      if (shouldShowSubscriptionExpiringModal) {
-        openExpiringModal();
-      } else if (isSubscriptionExpired) {
-        openExpiredModal();
-      }
-    },
-    [shouldShowSubscriptionExpiringModal, isSubscriptionExpired],
-  );
+  useEffect(() => {
+    if (shouldShowSubscriptionExpiringModal) {
+      openExpiringModal();
+    }
+  }, [shouldShowSubscriptionExpiringModal]);
+
+  useEffect(() => {
+    if (isSubscriptionExpired) {
+      openExpiredModal();
+    }
+  }, [isSubscriptionExpired]);
 
   return (
     <>
