@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
@@ -6,7 +6,7 @@ import {
 import { getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
 
 import {
-  getAuthenticatedUser, hydrateAuthenticatedUser, getLogoutRedirectUrl,
+  getAuthenticatedUser, getLogoutRedirectUrl,
 } from '@edx/frontend-platform/auth';
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
@@ -83,14 +83,6 @@ const Header = ({
   hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
 }) => {
   const user = getAuthenticatedUser();
-  useEffect(() => {
-    // if there is no email, the user data has not been hydrated
-    if (user && !user.email) {
-      hydrateAuthenticatedUser();
-    }
-    // rehydrate if the username changes
-  }, [user?.username, user?.id]);
-
   return (
     <header className="container-fluid border-bottom">
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
