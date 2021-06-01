@@ -125,28 +125,6 @@ describe('<Header />', () => {
     expect(hydrateAuthenticatedUser.mock.calls.length).toBe(0);
   });
 
-  it('does not call hydrate if data is hydrated', () => {
-    getAuthenticatedUser.mockReturnValue({ email: 'bears@rus.com' });
-    store = mockStore({
-      portalConfiguration: {},
-      sidebar: {},
-    });
-
-    mount(<HeaderWrapper store={store} />);
-    expect(hydrateAuthenticatedUser.mock.calls.length).toBe(0);
-  });
-
-  it('calls hydrate if user is authenticated but does not have hydrated data', () => {
-    getAuthenticatedUser.mockReturnValue({});
-    store = mockStore({
-      portalConfiguration: {},
-      sidebar: {},
-    });
-
-    mount(<HeaderWrapper store={store} />);
-    expect(hydrateAuthenticatedUser.mock.calls.length).toBe(1);
-  });
-
   describe('renders sidebar toggle correctly', () => {
     getAuthenticatedUser.mockReturnValue({
       profileImage: {

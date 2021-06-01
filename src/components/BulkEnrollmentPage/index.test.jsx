@@ -4,13 +4,17 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
-import { renderWithRouter } from '../test/testUtils';
+import '@testing-library/jest-dom';
+
 import BulkEnrollmentPage from './index';
-import '../../../__mocks__/react-instantsearch-dom';
+
+import { SUBSCRIPTION_DAYS_REMAINING_MODERATE } from '../subscriptions/data/constants';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { ADD_COURSES_TITLE } from './stepper/constants';
-import '@testing-library/jest-dom';
+import { renderWithRouter } from '../test/testUtils';
+import '../../../__mocks__/react-instantsearch-dom';
+
 
 jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -26,8 +30,9 @@ const sub1 = {
   uuid: 'foo',
   title: 'horse subscription',
   enterpriseSlug: testSlug,
-  startDate: 1621347682,
-  expirationDate: 1721547682,
+  startDate: '01-01-2021',
+  expirationDate: '04-21-2021',
+  daysUntilExpiration: 0,
   licenses: {
     allocated: 5,
     total: 20,
@@ -35,17 +40,23 @@ const sub1 = {
   enterpriseCatalogUuid: 'blarghl2',
 };
 
+// force the expiration modal to not expire by default to avoid
+// needing to close it in unrelated tests
+const numDaysUntilExpiration = SUBSCRIPTION_DAYS_REMAINING_MODERATE + 1;
+const futureExpirationDate = new Date();
+futureExpirationDate.setDate(futureExpirationDate.getDate() + numDaysUntilExpiration);
 const sub2 = {
   uuid: 'bearz',
   title: 'bear subscription',
   enterpriseSlug: testSlug,
-  startDate: 1621347682,
-  expirationDate: 1721547682,
+  startDate: '02-01-2021',
+  expirationDate: futureExpirationDate.toLocaleString(),
   licenses: {
     allocated: 15,
     total: 40,
   },
   enterpriseCatalogUuid: 'blarghl',
+  daysUntilExpiration: numDaysUntilExpiration,
 };
 
 const mockSubscriptionCount = Promise.resolve({
@@ -119,10 +130,6 @@ describe('<BulkEnrollmentPage />', () => {
     it('renders course search page when navigating via subscription picker', async () => {
       renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}` });
       await act(() => subscriptions);
-      // The expiration modal makes the enroll learners link inaccessible, so we need to dismiss it first.
-      const modalButton = await screen.getByRole('button', { name: 'OK' });
-      userEvent.click(modalButton);
-
       const sub1Button = screen.getAllByRole('link', { name: 'Enroll learners' })[0];
       userEvent.click(sub1Button);
       expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(ADD_COURSES_TITLE);

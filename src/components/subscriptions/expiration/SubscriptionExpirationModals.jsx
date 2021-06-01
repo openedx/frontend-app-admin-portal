@@ -26,9 +26,13 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
  * @returns Component containing modals related to subscription expiration.
  */
 const SubscriptionExpirationModals = ({ enterpriseId }) => {
+  const { subscription } = useContext(SubscriptionDetailContext);
   const { subscription: { daysUntilExpiration } } = useContext(SubscriptionDetailContext);
 
   const isSubscriptionExpired = daysUntilExpiration <= 0;
+
+  console.log('subscription', subscription);
+  console.log('isSubscriptionExpired', isSubscriptionExpired);
 
   /**
    * Computes a value representing the day thresolds in which the user should
@@ -73,7 +77,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
 
       return true;
     },
-    [daysUntilExpiration],
+    [daysUntilExpiration, subscriptionExpirationThreshold, isSubscriptionExpired],
   );
 
   const [isExpiredModalOpen, openExpiredModal, closeExpiredModal] = useToggle(isSubscriptionExpired);
