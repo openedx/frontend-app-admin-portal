@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { Row, Col } from '@edx/paragon';
+import { Button, Row, Col } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import { TAB_ALL_USERS, TAB_PENDING_USERS } from './data/constants';
@@ -26,10 +26,11 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     <>
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
-          <Link to={`/${enterpriseSlug}/admin/subscriptions`} className="btn btn-outline-primary">
-            <FontAwesomeIcon icon={faAngleLeft} />
-            {' '}
-            Back to subscriptions
+          <Link to={`/${enterpriseSlug}/admin/subscriptions`}>
+            <Button variant="outline-primary">
+              <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
+              Back to subscriptions
+            </Button>
           </Link>
         </Row>
       )}

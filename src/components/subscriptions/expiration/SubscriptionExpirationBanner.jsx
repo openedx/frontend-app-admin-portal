@@ -16,7 +16,7 @@ const SubscriptionExpirationBanner = () => {
     <>
       {hasMultipleSubscriptions && daysUntilExpiration <= 0 ? (
         <>
-          This batch has expired. You are able to view the statuses of your invited learners.
+          This subscription cohort has expired. You may still view the statuses of learners who participated.
         </>
       ) : (
         <>
