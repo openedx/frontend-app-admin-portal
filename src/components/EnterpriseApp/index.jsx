@@ -137,7 +137,7 @@ class EnterpriseApp extends React.Component {
                 isMobile={!matchesMediaQ}
               />
               <div
-                className="content-wrapper"
+                className="content-wrapper full-page"
                 tabIndex="-1"
                 ref={this.contentWrapperRef}
                 style={{

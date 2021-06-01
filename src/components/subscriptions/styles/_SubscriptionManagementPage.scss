@@ -1,4 +1,8 @@
 .manage-subscription {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   .add-users-dropdown {
     .dropdown-menu {
       z-index: $zindex-fixed;

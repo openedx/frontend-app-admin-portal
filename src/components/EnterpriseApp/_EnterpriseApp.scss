@@ -1,5 +1,6 @@
 .enterprise-app {
   position: relative;
+  display: flex;
 
   .content-wrapper {
     padding: 10px;
@@ -11,5 +12,8 @@
         padding-left: 51px;
       }
     }
+  }
+  .full-page {
+    flex: 1;
   }
 }

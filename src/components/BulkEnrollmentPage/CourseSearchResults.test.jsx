@@ -23,7 +23,7 @@ const mockStore = configureMockStore([thunk]);
 
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
-const testStartDate = '2020-09-10T04:00:00Z';
+const testStartDate = '2020-09-10T10:00:00Z';
 
 const searchResults = {
   nbHits: 1,
