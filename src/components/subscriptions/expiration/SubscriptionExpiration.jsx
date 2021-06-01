@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { SubscriptionContext } from '../SubscriptionData';
 import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
-import SubscriptionExpirationModal from './SubscriptionExpirationModal';
+import SubscriptionExpirationModals from './SubscriptionExpirationModals';
 
 const SubscriptionExpiration = () => {
   const { data } = useContext(SubscriptionContext);
@@ -17,7 +17,7 @@ const SubscriptionExpiration = () => {
       {subscriptionFurthestFromExpiration.daysUntilExpiration > 0 && (
         <SubscriptionExpirationBanner />
       )}
-      <SubscriptionExpirationModal />
+      <SubscriptionExpirationModals />
     </SubscriptionDetailContextProvider>
   );
 };

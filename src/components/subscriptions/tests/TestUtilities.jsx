@@ -74,8 +74,7 @@ const subscriptionPlan = (state) => {
   });
 };
 
-const mockStore = configureMockStore([thunk]);
-const store = mockStore({
+export const DEFAULT_STORE_STATE = {
   authentication: {
     username: 'edx',
     roles: ['enterprise_admin:*'],
@@ -90,7 +89,17 @@ const store = mockStore({
     enableSubscriptionManagementScreen: true,
     enableCodeManagementScreen: true,
   },
-});
+};
+
+export const createMockStore = (state) => {
+  const mockStore = configureMockStore([thunk]);
+
+  return mockStore({
+    ...DEFAULT_STORE_STATE,
+    // override any previously set fields with ``state`` argument
+    ...state,
+  });
+};
 
 const initialHistory = createMemoryHistory({
   initialEntries: ['/'],
@@ -116,7 +125,7 @@ export const mockUseSubscriptionUsers = (state) => ({
   results: state.users,
 });
 
-export const SubscriptionManagementContext = ({ children, detailState }) => {
+export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
   jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => detailState.overview);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
@@ -161,4 +170,9 @@ SubscriptionManagementContext.propTypes = {
       lastRemindDate: PropTypes.string.isRequired,
     })).isRequired,
   }).isRequired,
+  store: PropTypes.shape(),
+};
+
+SubscriptionManagementContext.defaultProps = {
+  store: createMockStore(),
 };
