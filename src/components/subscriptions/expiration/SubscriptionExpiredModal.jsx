@@ -26,8 +26,8 @@ const SubscriptionExpiredModal = ({
       isOpen={isOpen}
       hasCloseButton={false}
     >
-      <ModalDialog.Body className="py-5">
-        <Img className="w-25 mb-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
+      <ModalDialog.Body>
+        <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
         <p>
           This subscription cohort expired on <b>{formatTimestamp({ timestamp: expirationDate })}</b>.
           {' '}

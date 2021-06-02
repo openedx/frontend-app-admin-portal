@@ -45,19 +45,21 @@ const SubscriptionExpiringModal = ({
       isOpen={isOpen}
       hasCloseButton={false}
     >
-      <p>
-        This subscription cohort is set to expire in {daysUntilExpiration} days.
-        In order to minimize course access disruptions for your learners, make sure your invoice has
-        been completed.
-      </p>
-      <p>
-        If you have questions or need help, please contact the edX Customer Success team at
-        {' '}
-        <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
-      </p>
-      <i>
-        Access expires on {formatTimestamp({ timestamp: expirationDate })}
-      </i>
+      <ModalDialog.Body>
+        <p>
+          This subscription cohort is set to expire in {daysUntilExpiration} days.
+          In order to minimize course access disruptions for your learners, make sure your invoice has
+          been completed.
+        </p>
+        <p>
+          If you have questions or need help, please contact the edX Customer Success team at
+          {' '}
+          <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+        </p>
+        <i>
+          Access expires on {formatTimestamp({ timestamp: expirationDate })}
+        </i>
+      </ModalDialog.Body>
     </ModalDialog>
   );
 };
