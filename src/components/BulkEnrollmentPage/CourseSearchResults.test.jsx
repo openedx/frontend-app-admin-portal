@@ -111,16 +111,16 @@ describe('<CourseSearchResults />', () => {
     const tableHeaderCells = wrapper.find('TableHeaderCell');
     expect(tableHeaderCells.length).toBe(5);
     expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
-    expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
-    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.partnerName);
+    expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.partnerName);
+    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
     expect(tableHeaderCells.at(4).prop('Header')).toBe('');
 
     // Three table cells, one for sorting, one title, one course run
     const tableCells = wrapper.find('TableCell');
     expect(tableCells.length).toBe(5);
     expect(tableCells.at(1).text()).toBe(testCourseName);
-    expect(tableCells.at(2).text()).toBe('Sep 10, 2020');
-    expect(tableCells.at(3).text()).toBe('edX');
+    expect(tableCells.at(2).text()).toBe('edX');
+    expect(tableCells.at(3).text()).toBe('Sep 10, 2020');
     expect(tableCells.at(4).find(EnrollButton)).toHaveLength(1);
   });
   it('displays search pagination', () => {
