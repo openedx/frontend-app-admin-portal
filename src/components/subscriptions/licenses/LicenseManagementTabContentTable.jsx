@@ -93,17 +93,18 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
     }
   }, [activeTab]);
 
-  const tableData = useMemo(() => users?.results?.map(user => ({
-    emailAddress: <span data-hj-suppress>{user.userEmail}</span>,
-    status: (
-      <LicenseStatus
-        user={{ ...user, lastRemindDate: user.lastRemindDate }}
-      />
-    ),
-    actions: (
-      <LicenseActions user={user} />
-    ),
-  })), [users]);
+  const tableData = useMemo(
+    () => users?.results?.map(user => ({
+      emailAddress: <span data-hj-suppress>{user.userEmail}</span>,
+      status: (
+        <LicenseStatus user={user} />
+      ),
+      actions: (
+        <LicenseActions user={user} />
+      ),
+    })),
+    [users],
+  );
 
   return (
     <>

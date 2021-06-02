@@ -26,17 +26,17 @@ const SubscriptionCard = ({
   return (
     <Card className="subscription-card w-100">
       <Card.Body>
-        <Card.Title>
+        <Card.Title className="mb-0">
           {title}
-          {isExpired && (
-            <div className="ml-2">
-              <Badge variant="danger">
-                Expired
-              </Badge>
-            </div>
-          )}
         </Card.Title>
-        <p className="small">
+        {isExpired && (
+          <div>
+            <Badge variant="danger">
+              Expired
+            </Badge>
+          </div>
+        )}
+        <p className="mt-2 small">
           {formattedStartDate} - {formattedExpirationDate}
         </p>
         <p className="mt-3 mb-0 small">
