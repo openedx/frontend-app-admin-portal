@@ -92,13 +92,13 @@ export const BaseCourseSearchResults = (props) => {
       Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
     },
     {
+      Header: TABLE_HEADERS.partnerName,
+      accessor: 'partners[0].name',
+    },
+    {
       Header: TABLE_HEADERS.courseStartDate,
       accessor: 'advertised_course_run.start',
       Cell: FormattedDateCell,
-    },
-    {
-      Header: TABLE_HEADERS.partnerName,
-      accessor: 'partners[0].name',
     },
   ], []);
 
