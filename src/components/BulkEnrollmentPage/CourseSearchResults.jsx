@@ -27,6 +27,7 @@ export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {
   courseName: 'Course name',
   courseStartDate: 'Course start date',
+  partnerName: 'Partner',
   enroll: '',
 };
 
@@ -89,6 +90,10 @@ export const BaseCourseSearchResults = (props) => {
       accessor: 'title',
       // eslint-disable-next-line react/prop-types
       Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
+    },
+    {
+      Header: TABLE_HEADERS.partnerName,
+      accessor: 'partners[0].name',
     },
     {
       Header: TABLE_HEADERS.courseStartDate,
