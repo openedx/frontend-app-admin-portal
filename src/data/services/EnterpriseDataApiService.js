@@ -1,13 +1,14 @@
 import qs from 'query-string';
 
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 
+const API_VERSION = features.ANALYTICS_API_V1 ? 'v1' : 'v0';
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
   static apiClient = getAuthenticatedHttpClient;
 
-  static enterpriseBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v0/enterprise/`;
+  static enterpriseBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/${API_VERSION}/enterprise/`;
 
   static fetchDashboardAnalytics(enterpriseId) {
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;

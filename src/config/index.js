@@ -1,3 +1,6 @@
+import qs from 'query-string';
+
+const FEATURE_ANALYTICS_API_V1 = 'ANALYTICS_API_V1';
 const configuration = {
   BASE_URL: process.env.BASE_URL,
   LMS_BASE_URL: process.env.LMS_BASE_URL,
@@ -30,6 +33,11 @@ const configuration = {
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
 };
 
+const hasFeatureFlagEnabled = (featureFlag) => {
+  const { features } = qs.parse(window.location.search);
+  return features && features.split(',').includes(featureFlag);
+};
+
 const features = {
   BULK_ENROLLMENT: process.env.FEATURE_BULK_ENROLLMENT,
   CODE_MANAGEMENT: process.env.FEATURE_CODE_MANAGEMENT,
@@ -39,6 +47,7 @@ const features = {
   SUPPORT: process.env.FEATURE_SUPPORT,
   CODE_VISIBILITY: process.env.FEATURE_CODE_VISIBILITY,
   EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_EXTERNAL_LMS_CONFIGURATION,
+  ANALYTICS_API_V1: process.env.FEATURE_ANALYTICS_API_V1 || hasFeatureFlagEnabled(FEATURE_ANALYTICS_API_V1),
 };
 
 export { configuration, features };
