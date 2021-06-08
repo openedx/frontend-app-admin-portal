@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import {
+  Alert, Button, Icon, Modal,
+} from '@edx/paragon';
 
 import StatusAlert from '../StatusAlert';
 import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/data/constants';
@@ -64,11 +66,14 @@ class LicenseRevokeModal extends React.Component {
       return false;
     }
 
-    const { revocations } = subscriptionPlan;
-    const revocationCapLimit = revocations.remaining * (SHOW_REVOCATION_CAP_PERCENT / 100);
+    const { isRevocationCapEnabled, revocations } = subscriptionPlan;
+    if (!isRevocationCapEnabled || !revocations) {
+      return false;
+    }
 
     // only show the revocation cap messaging if the number of applied revocations exceeds X% of
     // the number of revocations remaining for the subscription plan.
+    const revocationCapLimit = revocations.remaining * (SHOW_REVOCATION_CAP_PERCENT / 100);
     return revocations.applied > revocationCapLimit;
   }
 
@@ -84,15 +89,12 @@ class LicenseRevokeModal extends React.Component {
     return (
       <>
         {this.shouldRenderRevocationCapAlert() && (
-          <StatusAlert
-            alertType="warning"
-            message={(
-              <p className="m-0">
-                You have already revoked {revocations.applied} licenses. You
-                have {revocations.remaining} revocations left on your plan.
-              </p>
-            )}
-          />
+          <Alert variant="warning">
+            <p className="m-0">
+              You have already revoked {revocations.applied} licenses. You
+              have {revocations.remaining} revocations left on your plan.
+            </p>
+          </Alert>
         )}
         <div className="license-details">
           <>
@@ -197,10 +199,11 @@ LicenseRevokeModal.propTypes = {
   }).isRequired,
   subscriptionPlan: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    isRevocationCapEnabled: PropTypes.bool.isRequired,
     revocations: PropTypes.shape({
       applied: PropTypes.number,
       remaining: PropTypes.number,
-    }).isRequired,
+    }),
   }).isRequired,
   licenseStatus: PropTypes.string.isRequired,
 };
