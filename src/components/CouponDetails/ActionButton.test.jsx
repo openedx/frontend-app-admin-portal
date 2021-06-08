@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ActionButton from './ActionButton';
-import { BUTTON_LABELS, COUPON_FILTER_TYPES } from './constants';
-import CouponDetails from '../../containers/CouponDetails';
+import { ACTION_LABELS, COUPON_FILTER_TYPES } from './constants';
 
 const fakeCouponData = {
   id: 12,
@@ -65,8 +64,8 @@ describe('CouponDetails ActionButton', () => {
       },
     };
     render(<ActionButton {...modifiedProps} />);
-    expect(screen.queryByText(BUTTON_LABELS.remind)).not.toBeInTheDocument();
-    expect(screen.getByText(BUTTON_LABELS.revoke)).toBeInTheDocument();
+    expect(screen.queryByText(ACTION_LABELS.remind)).not.toBeInTheDocument();
+    expect(screen.getByText(ACTION_LABELS.revoke)).toBeInTheDocument();
   });
   test.each([
     [[]],
@@ -84,8 +83,8 @@ describe('CouponDetails ActionButton', () => {
       },
     };
     render(<ActionButton {...modifiedProps} />);
-    expect(screen.getByText(BUTTON_LABELS.remind)).toBeInTheDocument();
-    expect(screen.getByText(BUTTON_LABELS.revoke)).toBeInTheDocument();
+    expect(screen.getByText(ACTION_LABELS.remind)).toBeInTheDocument();
+    expect(screen.getByText(ACTION_LABELS.revoke)).toBeInTheDocument();
   });
   it('returns null for an unassigned and public code', () => {
     const modifiedProps = {
@@ -100,8 +99,8 @@ describe('CouponDetails ActionButton', () => {
   });
   it('renders an assign button', () => {
     render(<ActionButton {...props} />);
-    expect(screen.queryByText(BUTTON_LABELS.remind)).not.toBeInTheDocument();
-    expect(screen.queryByText(BUTTON_LABELS.revoke)).not.toBeInTheDocument();
-    expect(screen.getByText(BUTTON_LABELS.assign)).toBeInTheDocument();
+    expect(screen.queryByText(ACTION_LABELS.remind)).not.toBeInTheDocument();
+    expect(screen.queryByText(ACTION_LABELS.revoke)).not.toBeInTheDocument();
+    expect(screen.getByText(ACTION_LABELS.assign)).toBeInTheDocument();
   });
 });

@@ -5,7 +5,7 @@ import {
 } from '@edx/paragon';
 import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
-import { ACTION_TYPES, BUTTON_LABELS, COUPON_FILTER_TYPES } from './constants';
+import { ACTION_TYPES, ACTION_LABELS, COUPON_FILTER_TYPES } from './constants';
 
 const ActionButton = ({
   couponData: {
@@ -92,7 +92,7 @@ const ActionButton = ({
         },
       })}
     >
-      {BUTTON_LABELS.assign}
+      {ACTION_LABELS.assign}
     </Button>
   );
 };

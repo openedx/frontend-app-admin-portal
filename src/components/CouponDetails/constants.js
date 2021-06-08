@@ -7,10 +7,16 @@ export const COUPON_FILTER_TYPES = {
   redeemed: 'redeemed',
 };
 
-export const BUTTON_LABELS = {
+export const ACTION_LABELS = {
   remind: 'Remind',
   assign: 'Assign',
   revoke: 'Revoke',
+};
+
+export const ACTION_TYPES = {
+  remind: 'remind',
+  revoke: 'revoke',
+  assign: 'assign',
 };
 
 export const FILTER_OPTIONS = [{
@@ -39,18 +45,12 @@ export const VISIBILITY_OPTIONS = [{
 }];
 
 export const BULK_ACTION_SELECT_OPTIONS = [{
-  label: 'Assign',
-  value: 'assign',
+  label: ACTION_LABELS.assign,
+  value: ACTION_TYPES.assign,
 }, {
-  label: 'Remind',
-  value: 'remind',
+  label: ACTION_LABELS.remind,
+  value: ACTION_TYPES.remind,
 }, {
-  label: 'Revoke',
-  value: 'revoke',
+  label: ACTION_LABELS.revoke,
+  value: ACTION_TYPES.revoke,
 }];
-
-export const ACTION_TYPES = {
-  remind: 'remind',
-  revoke: 'revoke',
-  assign: 'assign',
-};

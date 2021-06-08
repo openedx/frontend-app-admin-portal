@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
-import { FILTER_OPTIONS } from './constants';
+import { ACTION_LABELS, COUPON_FILTER_TYPES, FILTER_OPTIONS } from './constants';
 
 export const getFilterOptions = (usageLimitation) => {
   const shouldHidePartialRedeem = [SINGLE_USE, ONCE_PER_CUSTOMER].includes(usageLimitation);
@@ -24,17 +24,17 @@ export const getFirstNonDisabledOption = (options) => {
 };
 
 export const getBulkActionSelectOptions = ({
-  hasPublicCodes, isAssignView, isRedeemedView, hasTableData, couponAvailable, numUnassignedCodes, numSelectedCodes
+  hasPublicCodes, isAssignView, isRedeemedView, hasTableData, couponAvailable, numUnassignedCodes, numSelectedCodes,
 }) => ([{
-  label: 'Assign',
+  label: ACTION_LABELS.assign,
   value: 'assign',
   disabled: hasPublicCodes || !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numUnassignedCodes === 0, // eslint-disable-line max-len
 }, {
-  label: 'Remind',
+  label: ACTION_LABELS.remind,
   value: 'remind',
   disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable,
 }, {
-  label: 'Revoke',
+  label: ACTION_LABELS.revoke,
   value: 'revoke',
   disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numSelectedCodes === 0, // eslint-disable-line max-len
 }]);
@@ -50,3 +50,20 @@ export const getMakePrivateField = (hasTableData, numSelectedCodes) => ({
   value: 'make_private',
   disabled: !hasTableData || numSelectedCodes === 0,
 });
+
+export const shouldShowSelectAllStatusAlert = ({
+  tableData, hasAllCodesSelected, selectedToggle, selectedCodes,
+}) => {
+  if (!tableData || selectedToggle !== COUPON_FILTER_TYPES.unassigned) {
+    return false;
+  }
+
+  if (hasAllCodesSelected) {
+    return true;
+  }
+
+  return (
+    selectedCodes.length === tableData.results.length
+    && selectedCodes.length !== tableData.count
+  );
+};

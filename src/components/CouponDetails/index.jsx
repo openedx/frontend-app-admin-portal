@@ -11,14 +11,12 @@ import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import StatusAlert from '../StatusAlert';
-import RemindButton from '../RemindButton';
-import RevokeButton from '../RevokeButton';
 
 import { features } from '../../config';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
-import { getFilterOptions, getFirstNonDisabledOption } from './helpers';
+import { getFilterOptions, getFirstNonDisabledOption, shouldShowSelectAllStatusAlert } from './helpers';
 import { VISIBILITY_OPTIONS } from './constants';
 import ActionButton from './ActionButton';
 
@@ -216,19 +214,9 @@ class CouponDetails extends React.Component {
   shouldShowSelectAllStatusAlert() {
     const { couponDetailsTable: { data: tableData } } = this.props;
     const { selectedToggle, selectedCodes, hasAllCodesSelected } = this.state;
-
-    if (!tableData || selectedToggle !== 'unassigned') {
-      return false;
-    }
-
-    if (hasAllCodesSelected) {
-      return true;
-    }
-
-    return (
-      selectedCodes.length === tableData.results.length
-      && selectedCodes.length !== tableData.count
-    );
+    return shouldShowSelectAllStatusAlert({
+      tableData, selectedToggle, selectedCodes, hasAllCodesSelected,
+    });
   }
 
   shouldShowVisibilityStatusAlert() {
