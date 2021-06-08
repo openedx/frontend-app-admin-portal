@@ -20,6 +20,7 @@ import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { getFilterOptions, getFirstNonDisabledOption } from './helpers';
 import { VISIBILITY_OPTIONS } from './constants';
+import ActionButton from './ActionButton';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -105,6 +106,7 @@ class CouponDetails extends React.Component {
     this.resetModals = this.resetModals.bind(this);
     this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
     this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
+    this.setModalState = this.setModalState.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -175,95 +177,6 @@ class CouponDetails extends React.Component {
   getBulkActionSelectValue() {
     const bulkActionSelectOptions = this.getBulkActionSelectOptions();
     return getFirstNonDisabledOption(bulkActionSelectOptions);
-  }
-
-  getActionButton(code) {
-    const {
-      couponData: {
-        id,
-        errors,
-        available: couponAvailable,
-        title: couponTitle,
-      },
-    } = this.props;
-    const { selectedToggle } = this.state;
-    const {
-      assigned_to: assignedTo,
-      is_public: isPublic,
-      redemptions,
-    } = code;
-
-    let remainingUses = redemptions.total - redemptions.used;
-
-    // Don't show `Assign/Remind/Revoke` buttons for an unavailable coupon
-    if (!couponAvailable) {
-      return null;
-    }
-
-    // Don't show a button if all total redemptions have been used
-    if (redemptions.used === redemptions.total) {
-      return null;
-    }
-
-    const codeHasError = errors.find(errorItem => errorItem.code === code.code);
-    if (assignedTo) {
-      return (
-        <>
-          {!codeHasError && (
-            <>
-              <RemindButton
-                couponId={id}
-                couponTitle={couponTitle}
-                data={{
-                  code: code.code,
-                  email: code.assigned_to,
-                }}
-                onSuccess={response => this.handleCodeActionSuccess('remind', response)}
-              />
-              {' | '}
-            </>
-          )}
-          <RevokeButton
-            couponId={id}
-            couponTitle={couponTitle}
-            data={{
-              assigned_to: code.assigned_to,
-              code: code.code,
-            }}
-            onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
-          />
-        </>
-      );
-    }
-
-    if (isPublic) {
-      return null;
-    }
-
-    // exclude existing assignments of code
-    if (selectedToggle === 'unassigned') {
-      remainingUses -= redemptions.num_assignments;
-    }
-
-    return (
-      <Button
-        variant="link"
-        className="assignment-btn btn-sm p-0"
-        onClick={() => this.setModalState({
-          key: 'assignment',
-          options: {
-            couponId: id,
-            title: couponTitle,
-            data: {
-              code,
-              remainingUses,
-            },
-          },
-        })}
-      >
-        Assign
-      </Button>
-    );
   }
 
   setModalState({ key, options }) {
@@ -585,7 +498,8 @@ class CouponDetails extends React.Component {
   }
 
   formatCouponData(data) {
-    const { selectedCodes } = this.state;
+    const { couponData } = this.props;
+    const { selectedCodes, selectedToggle } = this.state;
 
     return data.map(code => ({
       ...code,
@@ -601,7 +515,13 @@ class CouponDetails extends React.Component {
       assignment_date: `${code.assignment_date}`,
       last_reminder_date: `${code.last_reminder_date}`,
       is_public: code.is_public ? 'Public' : 'Private',
-      actions: this.getActionButton(code),
+      actions: <ActionButton
+        code={code}
+        couponData={couponData}
+        selectedToggle={selectedToggle}
+        handleCodeActionSuccess={this.handleCodeActionSuccess}
+        setModalState={this.setModalState}
+      />,
       select: (
         <CheckBox
           name={`select code ${code.code}`}
