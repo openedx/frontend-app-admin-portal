@@ -20,13 +20,14 @@ const LicenseAction = ({ user }) => {
     subscription,
   } = useContext(SubscriptionDetailContext);
 
-  const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
+  const isRevocationCapEnabled = subscription?.isRevocationCapEnabled;
+  const hasNoRevocationsRemaining = !!(isRevocationCapEnabled && subscription?.revocations?.remaining <= 0);
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
-  const subscriptionExpired = subscription.daysUntilExpiration <= 0;
+  const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   const licenseActions = useMemo(
     () => {
-      if (subscriptionExpired) {
+      if (isSubscriptionExpired) {
         return noActionsAvailable;
       }
       switch (user.status) {

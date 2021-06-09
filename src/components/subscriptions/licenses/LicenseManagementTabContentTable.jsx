@@ -1,11 +1,15 @@
-import React, { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Pagination, Table } from '@edx/paragon';
+import React, { useContext, useEffect, useMemo } from 'react';
+import {
+  Alert,
+  Icon,
+  Pagination,
+  Table,
+  MailtoLink,
+  useToggle,
+} from '@edx/paragon';
+import { Error, WarningFilled } from '@edx/paragon/icons';
 
 import LoadingMessage from '../../LoadingMessage';
-import StatusAlert from '../../StatusAlert';
 import { ToastsContext } from '../../Toasts';
 import RemindUsersButton from '../buttons/RemindUsersButton';
 import {
@@ -36,7 +40,7 @@ const columns = [
   },
 ];
 
-const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
+const LicenseManagementTabContentTable = () => {
   const { errors, forceRefresh, setErrors } = useContext(SubscriptionContext);
   const {
     activeTab,
@@ -60,7 +64,15 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
   const hasErrors = Object.values(errors).length > 0;
   const hasLoadedUsers = !!(users?.numPages || users?.count);
 
-  const hasNoRevocationsRemaining = subscription?.revocations.remaining <= 0;
+  const isRevocationCapEnabled = subscription?.isRevocationCapEnabled;
+  const hasNoRevocationsRemaining = !!(isRevocationCapEnabled && subscription?.revocations?.remaining <= 0);
+
+  const [isRevocationLimitAlertOpen, openRevocationLimitAlert, closeRevocationLimitAlert] = useToggle(false);
+  useEffect(() => {
+    if (hasNoRevocationsRemaining && !isRevocationLimitAlertOpen) {
+      openRevocationLimitAlert();
+    }
+  }, [hasNoRevocationsRemaining]);
 
   const activeTabData = useMemo(() => {
     switch (activeTab) {
@@ -126,14 +138,15 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
         <LoadingMessage className="loading mt-3 subscriptions" />
       )}
       {hasErrors && Object.entries(errors).map(([title, message]) => (
-        <StatusAlert
-          className="mt-3"
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title={`Unable to load data for ${title}`}
-          message={`Try refreshing your screen (${message})`}
+        <Alert
           key={title}
-        />
+          className="mt-3"
+          variant="danger"
+        >
+          <Icon src={Error} className="alert-icon" />
+          <Alert.Heading>Unable to load data for {title}</Alert.Heading>
+          <p>Try refreshing your screen ({message})</p>
+        </Alert>
       ))}
       {!hasErrors && hasLoadedUsers && (
         <>
@@ -143,21 +156,19 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
             <>
               {tableData?.length > 0 ? (
                 <>
-                  {hasNoRevocationsRemaining && (
-                    <StatusAlert
-                      alertType="warning"
-                      message={(
-                        <>
-                          You have reached your revoke access limit. For help
-                          managing your subscription licenses,
-                          {' '}
-                          <Link to={`/${enterpriseSlug}/admin/support`} className="alert-link">
-                            contact Customer Support
-                          </Link>.
-                        </>
-                      )}
-                    />
-                  )}
+                  <Alert
+                    variant="warning"
+                    show={isRevocationLimitAlertOpen}
+                    onClose={closeRevocationLimitAlert}
+                    dismissible
+                  >
+                    You have reached your revoke access limit. For help
+                    managing your subscription licenses,
+                    {' '}
+                    <MailtoLink to="customersuccess@edx.org" className="alert-link">
+                      contact Customer Support
+                    </MailtoLink>.
+                  </Alert>
                   <div className="table-responsive">
                     <Table
                       data={tableData}
@@ -177,13 +188,11 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
               ) : (
                 <>
                   <hr className="mt-0" />
-                  <StatusAlert
-                    alertType="warning"
-                    title="No results found"
-                    message={activeTabData.noResultsLabel}
-                    dismissible={false}
-                    open
-                  />
+                  <Alert variant="warning">
+                    <Icon src={WarningFilled} className="alert-icon" />
+                    <Alert.Heading>No results found</Alert.Heading>
+                    <p>{activeTabData.noResultsLabel}</p>
+                  </Alert>
                 </>
               )}
             </>
@@ -194,12 +203,4 @@ const LicenseManagementTabContentTable = ({ enterpriseSlug }) => {
   );
 };
 
-LicenseManagementTabContentTable.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(LicenseManagementTabContentTable);
+export default LicenseManagementTabContentTable;
