@@ -72,9 +72,18 @@ const AddLearnersStep = ({
 
   const fetchData = useCallback((tableInstance = {}) => {
     const pageIndex = tableInstance.pageIndex || INITIAL_PAGE_INDEX;
+    let options = { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 };
+
+    const { filters } = tableInstance;
+    if (filters.length > 0) {
+      const emailFilter = filters.filter(item => item.id === 'userEmail');
+      if (emailFilter.length > 0) {
+        options = { ...options, search: emailFilter[0].value };
+      }
+    }
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
-      { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 },
+      options,
     ).then((response) => {
       if (isMounted.current) {
         setData(camelCaseObject(response.data));
@@ -114,6 +123,8 @@ const AddLearnersStep = ({
       <h2>{ADD_LEARNERS_TITLE}</h2>
       {errors && <Alert variant="danger">There was an error retrieving email data. Please try again later.</Alert>}
       <DataTable
+        isFilterable
+        manualFilters
         columns={tableColumns}
         data={results}
         itemCount={count}
