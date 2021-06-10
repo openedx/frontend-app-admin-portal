@@ -11,12 +11,16 @@ export const ACTION_LABELS = {
   remind: 'Remind',
   assign: 'Assign',
   revoke: 'Revoke',
+  makePublic: 'Make public',
+  makePrivate: 'Make private',
 };
 
 export const ACTION_TYPES = {
   remind: 'remind',
   revoke: 'revoke',
   assign: 'assign',
+  makePublic: 'make_public',
+  makePrivate: 'make_private',
 };
 
 export const FILTER_OPTIONS = [{

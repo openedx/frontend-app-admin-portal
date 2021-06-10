@@ -16,8 +16,11 @@ import { features } from '../../config';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
-import { getFilterOptions, getFirstNonDisabledOption, shouldShowSelectAllStatusAlert } from './helpers';
-import { VISIBILITY_OPTIONS } from './constants';
+import {
+  getBASelectOptions, getFilterOptions, getFirstNonDisabledOption, getMakePrivateField, getMakePublicField,
+  shouldShowSelectAllStatusAlert,
+} from './helpers';
+import { ACTION_TYPES, COUPON_FILTER_TYPES, VISIBILITY_OPTIONS } from './constants';
 import ActionButton from './ActionButton';
 
 class CouponDetails extends React.Component {
@@ -137,36 +140,24 @@ class CouponDetails extends React.Component {
       couponDetailsTable: { data: tableData },
     } = this.props;
 
-    const isAssignView = selectedToggle === 'unassigned';
-    const isRedeemedView = selectedToggle === 'redeemed';
+    const isAssignView = selectedToggle === COUPON_FILTER_TYPES.unassigned;
+    const isRedeemedView = selectedToggle === COUPON_FILTER_TYPES.redeemed;
     const hasTableData = tableData && tableData.count;
     const hasPublicCodes = selectedCodes.filter(code => code.is_public).length > 0;
 
-    const bulkActionSelectOptions = [{
-      label: 'Assign',
-      value: 'assign',
-      disabled: hasPublicCodes || !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || unassignedCodes === 0, // eslint-disable-line max-len
-    }, {
-      label: 'Remind',
-      value: 'remind',
-      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable,
-    }, {
-      label: 'Revoke',
-      value: 'revoke',
-      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || selectedCodes.length === 0, // eslint-disable-line max-len
-    }];
+    const bulkActionSelectOptions = getBASelectOptions({
+      isAssignView,
+      isRedeemedView,
+      hasPublicCodes,
+      hasTableData,
+      couponAvailable,
+      numUnassignedCodes: unassignedCodes.length,
+      numSelectedCodes: selectedCodes.length,
+    });
 
     if (features.CODE_VISIBILITY) {
-      bulkActionSelectOptions.push({
-        label: 'Make Public',
-        value: 'make_public',
-        disabled: !hasTableData || selectedCodes.length === 0,
-      });
-      bulkActionSelectOptions.push({
-        label: 'Make Private',
-        value: 'make_private',
-        disabled: !hasTableData || selectedCodes.length === 0,
-      });
+      bulkActionSelectOptions.push(getMakePublicField(hasTableData, selectedCodes.length));
+      bulkActionSelectOptions.push(getMakePrivateField(hasTableData, selectedCodes.length));
     }
 
     return bulkActionSelectOptions;
@@ -402,16 +393,16 @@ class CouponDetails extends React.Component {
     let doesCodeActionHaveErrors;
 
     switch (action) {
-      case 'assign': {
+      case ACTION_TYPES.assign: {
         stateKey = 'isCodeAssignmentSuccessful';
         break;
       }
-      case 'revoke': {
+      case ACTION_TYPES.revoke: {
         stateKey = 'isCodeRevokeSuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
-      case 'remind': {
+      case ACTION_TYPES.remind: {
         stateKey = 'isCodeReminderSuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
@@ -428,7 +419,7 @@ class CouponDetails extends React.Component {
       }
     }
 
-    if (action === 'assign' || action === 'revoke') {
+    if (action === ACTION_TYPES.assign || action === ACTION_TYPES.revoke) {
       this.updateCouponOverviewData();
     }
 
@@ -559,7 +550,7 @@ class CouponDetails extends React.Component {
     const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
     const selectedBulkAction = ref && ref.value;
 
-    if (selectedBulkAction === 'assign') {
+    if (selectedBulkAction === ACTION_TYPES.assign) {
       this.setModalState({
         key: 'assignment',
         options: {
@@ -574,7 +565,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'revoke') {
+    } else if (selectedBulkAction === ACTION_TYPES.revoke) {
       this.setModalState({
         key: 'revoke',
         options: {
@@ -586,7 +577,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'remind') {
+    } else if (selectedBulkAction === ACTION_TYPES.remind) {
       this.setModalState({
         key: 'remind',
         options: {
@@ -599,8 +590,8 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'make_public' || selectedBulkAction === 'make_private') {
-      const isPublic = selectedBulkAction === 'make_public';
+    } else if (selectedBulkAction === ACTION_TYPES.makePublic || selectedBulkAction === ACTION_TYPES.makePrivate) {
+      const isPublic = selectedBulkAction === ACTION_TYPES.makePublic;
       const codeIds = selectedCodes.map(selectedCode => selectedCode.code);
       const options = {
         couponId: id,

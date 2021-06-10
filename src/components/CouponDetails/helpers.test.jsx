@@ -3,8 +3,8 @@
 import {
   SINGLE_USE, ONCE_PER_CUSTOMER, MULTI_USE, MULTI_USE_PER_CUSTOMER,
 } from '../../data/constants/coupons';
-import { COUPON_FILTER_TYPES, FILTER_OPTIONS } from './constants';
-import { getFilterOptions, getFirstNonDisabledOption, shouldShowSelectAllStatusAlert } from './helpers';
+import { ACTION_LABELS, ACTION_TYPES, COUPON_FILTER_TYPES, FILTER_OPTIONS } from './constants';
+import { getBASelectOptions, getFilterOptions, getFirstNonDisabledOption, shouldShowSelectAllStatusAlert } from './helpers';
 
 describe('getFilterOptions', () => {
   test.each([
@@ -78,5 +78,88 @@ describe('shouldShowSelectAllStatusAlert', () => {
   it('returns false if the code count matches the tableData count', () => {
     const options = { tableData: { results: Array(100), count: 100 }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(100) };
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(false);
+  });
+});
+
+describe('getBASelectOptions', () => {
+  describe('assign option', () => {
+    const defaultAssignOptions = {
+      hasPublicCodes: false,
+      isAssignView: true,
+      isRedeemedView: false,
+      hasTableData: true,
+      couponAvailable: true,
+      numUnassignedCodes: 3,
+      numSelectedCodes: 2,
+    };
+    it('has the correct label and value', () => {
+      const assignOption = getBASelectOptions(defaultAssignOptions)[0];
+      expect(assignOption.label).toEqual(ACTION_LABELS.assign);
+      expect(assignOption.value).toEqual(ACTION_TYPES.assign);
+    });
+    test.each([
+      [{ ...defaultAssignOptions }, false],
+      [{ ...defaultAssignOptions, hasPublicCodes: true }, true],
+      [{ ...defaultAssignOptions, isRedeemedView: true }, true],
+      [{ ...defaultAssignOptions, isAssignView: false }, true],
+      [{ ...defaultAssignOptions, hasTableData: false }, true],
+      [{ ...defaultAssignOptions, numUnassignedCodes: 0 }, true],
+    ])('has the correct disabled value %#', (options, expected) => {
+      const assignOption = getBASelectOptions(options)[0];
+      expect(assignOption.disabled).toEqual(expected);
+    });
+  });
+  describe('remind option', () => {
+    const defaultRemindOptions = {
+      hasPublicCodes: false,
+      isAssignView: false,
+      isRedeemedView: false,
+      hasTableData: true,
+      couponAvailable: true,
+      numUnssignedCodes: 3,
+      numSelectedCodes: 2,
+    };
+    it('has the correct label and value', () => {
+      const remindOption = getBASelectOptions(defaultRemindOptions)[1];
+      expect(remindOption.label).toEqual(ACTION_LABELS.remind);
+      expect(remindOption.value).toEqual(ACTION_TYPES.remind);
+    });
+    test.each([
+      [{ ...defaultRemindOptions }, false],
+      [{ ...defaultRemindOptions, isRedeemedView: true }, true],
+      [{ ...defaultRemindOptions, isAssignView: true }, true],
+      [{ ...defaultRemindOptions, hasTableData: false }, true],
+      [{ ...defaultRemindOptions, couponAvailable: false }, true],
+    ])('has the correct disabled value %#', (options, expected) => {
+      const remindOption = getBASelectOptions(options)[1];
+      expect(remindOption.disabled).toEqual(expected);
+    });
+  });
+  describe('revoke option', () => {
+    const defaultRemindOptions = {
+      hasPublicCodes: false,
+      isAssignView: false,
+      isRedeemedView: false,
+      hasTableData: true,
+      couponAvailable: true,
+      numUnssignedCodes: 3,
+      numSelectedCodes: 2,
+    };
+    it('has the correct label and value', () => {
+      const revokeOption = getBASelectOptions(defaultRemindOptions)[2];
+      expect(revokeOption.label).toEqual(ACTION_LABELS.revoke);
+      expect(revokeOption.value).toEqual(ACTION_TYPES.revoke);
+    });
+    test.each([
+      [{ ...defaultRemindOptions }, false],
+      [{ ...defaultRemindOptions, isRedeemedView: true }, true],
+      [{ ...defaultRemindOptions, isAssignView: true }, true],
+      [{ ...defaultRemindOptions, hasTableData: false }, true],
+      [{ ...defaultRemindOptions, couponAvailable: false }, true],
+      [{ ...defaultRemindOptions, numSelectedCodes: 0 }, true],
+    ])('has the correct disabled value %#', (options, expected) => {
+      const revokeOption = getBASelectOptions(options)[2];
+      expect(revokeOption.disabled).toEqual(expected);
+    });
   });
 });
