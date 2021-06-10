@@ -51,7 +51,7 @@ const tableColumns = [
 ];
 
 const INITIAL_PAGE_INDEX = 0;
-const PAGE_SIZE = 25;
+export const LEARNERS_PAGE_SIZE = 25;
 
 const useIsMounted = () => {
   const componentIsMounted = useRef(true);
@@ -72,7 +72,7 @@ const AddLearnersStep = ({
 
   const fetchData = useCallback((tableInstance = {}) => {
     const pageIndex = tableInstance.pageIndex || INITIAL_PAGE_INDEX;
-    let options = { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 };
+    let options = { active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: pageIndex + 1 };
 
     const { filters } = tableInstance;
     const emailFilter = filters.find(item => item.id === 'userEmail');
@@ -102,7 +102,7 @@ const AddLearnersStep = ({
   const selectedRowIds = useMemo(() => convertToSelectedRowsObject(selectedEmails), [selectedEmails]);
 
   const initialState = useMemo(() => ({
-    pageSize: PAGE_SIZE,
+    pageSize: LEARNERS_PAGE_SIZE,
     pageIndex: 0,
     selectedRowIds,
   }), []);

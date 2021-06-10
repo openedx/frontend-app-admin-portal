@@ -9,7 +9,7 @@ import LicenseManagerApiService from '../../../data/services/LicenseManagerAPISe
 
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
-import AddLearnersStep, { LINK_TEXT, TABLE_HEADERS } from './AddLearnersStep';
+import AddLearnersStep, { LEARNERS_PAGE_SIZE, LINK_TEXT, TABLE_HEADERS } from './AddLearnersStep';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -18,12 +18,17 @@ jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-const mockResults = [{ uuid: 'foo', userEmail: 'y@z.com' }, { uuid: 'bar', userEmail: 'a@z.com' }];
+const mockResults = [
+  { uuid: 'foo', userEmail: 'y@z.com' },
+  { uuid: 'bar', userEmail: 'a@z.com' },
+  { uuid: 'afam', userEmail: 'afam@family.com' },
+  { uuid: 'bears', userEmail: 'bears@jungle.org' },
+];
 
 const mockTableData = Promise.resolve({
   data: {
     results: mockResults,
-    count: 2,
+    count: 4,
     numPages: 6,
   },
 });
@@ -59,12 +64,24 @@ describe('AddLearnersStep', () => {
     expect(await screen.findByText(mockResults[1].userEmail)).toBeInTheDocument();
     await act(() => mockTableData);
   });
-  it.skip('allows search by email', async () => {
+  it('allows search by email', async () => {
     act(() => {
       renderWithRouter(<StepperWrapper {...defaultProps} />);
     });
     expect(await screen.findByText('Search Email')).toBeInTheDocument();
     await act(() => mockTableData);
+    userEvent.type(screen.getByPlaceholderText('Search Email'), 'beAR');
+    expect(await screen.findByText(/Filtered by userEmail/)).toBeInTheDocument();
+    expect(await screen.findByText('Clear Filters')).toBeInTheDocument();
+    const { subscriptionUUID } = defaultProps;
+    // multiple calls will occur to this function, we only test for the last one
+    // for correctness, and don't test backend filtering part here (tested in backend).
+    expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
+      subscriptionUUID,
+      {
+        active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: 1, search: 'beAR',
+      },
+    );
   });
   it('displays a table skeleton when loading', () => {
     LicenseManagerApiService.fetchSubscriptionUsers.mockReturnValue(new Promise(() => {}));
