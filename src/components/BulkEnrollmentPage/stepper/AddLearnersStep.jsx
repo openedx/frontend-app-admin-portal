@@ -75,11 +75,9 @@ const AddLearnersStep = ({
     let options = { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 };
 
     const { filters } = tableInstance;
-    if (filters.length > 0) {
-      const emailFilter = filters.filter(item => item.id === 'userEmail');
-      if (emailFilter.length > 0) {
-        options = { ...options, search: emailFilter[0].value };
-      }
+    const emailFilter = filters.find(item => item.id === 'userEmail');
+    if (emailFilter) {
+      options = { ...options, search: emailFilter.value };
     }
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
