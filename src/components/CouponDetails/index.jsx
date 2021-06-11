@@ -20,8 +20,11 @@ import {
   getBASelectOptions, getFilterOptions, getFirstNonDisabledOption, getMakePrivateField, getMakePublicField,
   shouldShowSelectAllStatusAlert,
 } from './helpers';
-import { ACTION_TYPES, COUPON_FILTER_TYPES, VISIBILITY_OPTIONS } from './constants';
+import {
+  ACTION_TYPES, COUPON_FILTER_TYPES, COUPON_VISIBILITY_OPTIONS, VISIBILITY_OPTIONS,
+} from './constants';
 import ActionButton from './ActionButton';
+import CouponFilters from './CouponFilters';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -77,7 +80,8 @@ class CouponDetails extends React.Component {
     }
 
     this.state = {
-      selectedToggle: 'unassigned',
+      selectedToggle: COUPON_FILTER_TYPES.unassigned,
+      visibilityToggle: COUPON_VISIBILITY_OPTIONS.both,
       tableColumns,
       modals: {
         assignment: null,
@@ -127,10 +131,6 @@ class CouponDetails extends React.Component {
   getTableFilterSelectOptions() {
     const { couponData: { usage_limitation: usageLimitation } } = this.props;
     return getFilterOptions(usageLimitation);
-  }
-
-  getTableFilterVisibilitySelectionOptions() {
-    return VISIBILITY_OPTIONS;
   }
 
   getBulkActionSelectOptions() {
@@ -255,50 +255,53 @@ class CouponDetails extends React.Component {
 
     const value = newValue || selectedToggle;
     const assignedToColumnLabel = value === 'unredeemed' ? 'Assigned To' : 'Redeemed By';
+    // avoid modifying a state variable without setting state
+    const newTableColumns = [...tableColumns];
 
-    const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
+    const getColumnIndexForKey = key => newTableColumns.findIndex(column => column.key === key);
+
 
     // `assigned_to, assignment_date, last_reminder_date` columns
     if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
       // Add columns if they donot already exist
-      tableColumns.splice(1, 0, {
+      newTableColumns.splice(1, 0, {
         label: assignedToColumnLabel,
         key: 'assigned_to',
       });
-      tableColumns.splice(tableColumns.length - 1, 0, {
+      newTableColumns.splice(newTableColumns.length - 1, 0, {
         label: 'Last Reminder Date',
         key: 'last_reminder_date',
       });
-      tableColumns.splice(tableColumns.length - 2, 0, {
+      newTableColumns.splice(newTableColumns.length - 2, 0, {
         label: 'Assignment Date',
         key: 'assignment_date',
       });
     } else if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
       // Update `assigned_to` column with the appropriate label
-      tableColumns[1].label = assignedToColumnLabel;
+      newTableColumns[1].label = assignedToColumnLabel;
     } else if (value === 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
       // Remove columns if they already exist
-      tableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
-      tableColumns.splice(getColumnIndexForKey('last_reminder_date'), 1);
-      tableColumns.splice(getColumnIndexForKey('assignment_date'), 1);
+      newTableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
+      newTableColumns.splice(getColumnIndexForKey('last_reminder_date'), 1);
+      newTableColumns.splice(getColumnIndexForKey('assignment_date'), 1);
     }
 
     // `assignments_remaining` column
     if (value === 'unassigned' && getColumnIndexForKey('assignments_remaining') === -1) {
       // Add `assignments_remaining` column if it doesn't already exist.
-      tableColumns.splice(3, 0, {
+      newTableColumns.splice(3, 0, {
         label: 'Assignments Remaining',
         key: 'assignments_remaining',
       });
     } else if (value !== 'unassigned' && getColumnIndexForKey('assignments_remaining') > -1) {
       // Remove `assignments_remaining` column if it already exists.
-      tableColumns.splice(getColumnIndexForKey('assignments_remaining'), 1);
+      newTableColumns.splice(getColumnIndexForKey('assignments_remaining'), 1);
     }
 
     // `is_public` column
     if (features.CODE_VISIBILITY && getColumnIndexForKey('is_public') === -1) {
       // Add `is_public` column if it doesn't already exist
-      tableColumns.splice(tableColumns.length, 0, {
+      newTableColumns.splice(newTableColumns.length, 0, {
         label: 'Visibility',
         key: 'is_public',
       });
@@ -307,13 +310,13 @@ class CouponDetails extends React.Component {
     // `actions` column
     if (value !== 'redeemed' && getColumnIndexForKey('actions') === -1) {
       // Add `actions` column if it doesn't already exist
-      tableColumns.splice(tableColumns.length, 0, {
+      newTableColumns.splice(newTableColumns.length, 0, {
         label: 'Actions',
         key: 'actions',
       });
     } else if (value === 'redeemed' && getColumnIndexForKey('actions') > -1) {
       // Remove `actions` column if it already exists
-      tableColumns.splice(getColumnIndexForKey('actions'), 1);
+      newTableColumns.splice(getColumnIndexForKey('actions'), 1);
     }
 
     this.resetCodeActionStatus();
@@ -328,16 +331,10 @@ class CouponDetails extends React.Component {
     });
   }
 
-  handleVisibilitySelect(newValue) {
-    const { tableColumns, visibilityToggle } = this.state;
-    // Paragon InputSelect will use the `label` if the value isn't defined
-    // this will intentionally keep the value set as undefined so that qs.stringify
-    // won't send along a value we didn't set to the API.
-    const value = newValue === 'Both' ? undefined : newValue || visibilityToggle;
+  handleVisibilitySelect(newState) {
     this.resetCodeActionStatus();
     this.setState({
-      tableColumns,
-      visibilityToggle: value,
+      visibilityToggle: newState,
       selectedCodes: [],
       hasAllCodesSelected: false,
     }, () => {
@@ -366,7 +363,7 @@ class CouponDetails extends React.Component {
     // get around this, we get the DOM node of the checkbox and replace the `aria-checked`
     // attribute appropriately.
     //
-    // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
+    // TODO: Paragon now has an IndeterminateCheckbox that can be used here.
     const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
     const selectAllCheckBoxDOM = (
       selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
@@ -523,7 +520,7 @@ class CouponDetails extends React.Component {
 
   isTableLoading() {
     const { couponDetailsTable } = this.props;
-    return couponDetailsTable && couponDetailsTable.loading;
+    return !!(couponDetailsTable && couponDetailsTable.loading);
   }
 
   isBulkAssignSelectDisabled() {
@@ -725,30 +722,15 @@ class CouponDetails extends React.Component {
                 </div>
               </div>
               <div className="row mb-3">
-                <div className="toggles col-12 col-md-8">
-                  <InputSelect
-                    className="mt-1"
-                    name="table-view"
-                    label="Filter by Code Status:"
-                    value={selectedToggle}
-                    options={this.getTableFilterSelectOptions()}
-                    disabled={this.isTableLoading()}
-                    onChange={this.handleToggleSelect}
-                  />
-                  {features.CODE_VISIBILITY && (
-                    <div className="d-inline pl-4">
-                      <InputSelect
-                        className="mt-1"
-                        name="table-view"
-                        label="Filter by Visibility:"
-                        value={visibilityToggle}
-                        options={this.getTableFilterVisibilitySelectionOptions()}
-                        disabled={this.isTableLoading()}
-                        onChange={this.handleVisibilitySelect}
-                      />
-                    </div>
-                  )}
-                </div>
+                <CouponFilters
+                  selectedToggle={selectedToggle}
+                  tableFilterSelectOptions={this.getTableFilterSelectOptions()}
+                  tableFilterVisibilitySelectOptions={VISIBILITY_OPTIONS}
+                  isTableLoading={this.isTableLoading()}
+                  handleToggleSelect={this.handleToggleSelect}
+                  handleVisibilitySelect={this.handleVisibilitySelect}
+                  visibilityToggle={visibilityToggle}
+                />
                 <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
                   <InputSelect
                     inputRef={this.bulkActionSelectRef}
@@ -865,11 +847,17 @@ class CouponDetails extends React.Component {
                 key={`table-${selectedToggle}-${visibilityToggle}-${refreshIndex}`}
                 id="coupon-details"
                 className="coupon-details-table"
-                fetchMethod={(enterpriseId, options) => EcommerceApiService.fetchCouponDetails(id, {
-                  ...options,
-                  code_filter: selectedToggle,
-                  visibility_filter: visibilityToggle,
-                })}
+                fetchMethod={(enterpriseId, options) => {
+                  const apiOptions = {
+                    ...options,
+                    code_filter: selectedToggle,
+                  };
+
+                  if (visibilityToggle && visibilityToggle !== 'both') {
+                    apiOptions.visibility_filter = visibilityToggle;
+                  }
+                  return EcommerceApiService.fetchCouponDetails(id, apiOptions);
+                }}
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />

@@ -113,7 +113,7 @@ ActionButton.propTypes = {
     redemptions: PropTypes.shape({
       total: PropTypes.number.isRequired,
       used: PropTypes.number.isRequired,
-      num_assignments: PropTypes.number.isRequired,
+      num_assignments: PropTypes.number,
     }),
     code: PropTypes.string.isRequired,
   }).isRequired,

@@ -7,6 +7,12 @@ export const COUPON_FILTER_TYPES = {
   redeemed: 'redeemed',
 };
 
+export const COUPON_VISIBILITY_OPTIONS = {
+  both: 'both',
+  public: 'public',
+  private: 'private',
+};
+
 export const ACTION_LABELS = {
   remind: 'Remind',
   assign: 'Assign',
@@ -39,7 +45,7 @@ export const FILTER_OPTIONS = [{
 
 export const VISIBILITY_OPTIONS = [{
   label: 'Both',
-  value: undefined,
+  value: 'both',
 }, {
   label: 'Public',
   value: 'public',
