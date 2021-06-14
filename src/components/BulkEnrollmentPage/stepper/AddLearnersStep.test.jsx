@@ -76,6 +76,7 @@ describe('AddLearnersStep', () => {
     const { subscriptionUUID } = defaultProps;
     // multiple calls will occur to this function, we only test for the last one
     // for correctness, and don't test backend filtering part here (tested in backend).
+    await screen.findByDisplayValue('beAR');
     expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
       subscriptionUUID,
       {

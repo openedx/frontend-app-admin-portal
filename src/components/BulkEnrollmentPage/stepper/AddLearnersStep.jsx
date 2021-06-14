@@ -2,6 +2,8 @@ import React, {
   useContext, useState, useMemo, useCallback, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
+
 import {
   Alert, DataTable, TextFilter,
 } from '@edx/paragon';
@@ -17,6 +19,7 @@ import { BaseSelectWithContext, BaseSelectWithContextHeader } from '../table/Bul
 import BaseSelectionStatus from '../table/BaseSelectionStatus';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
+import { DEBOUNCE_TIME_MILLIS } from '../../../algoliaUtils';
 
 export const TABLE_HEADERS = {
   email: 'Email',
@@ -99,6 +102,15 @@ const AddLearnersStep = ({
     });
   }, [subscriptionUUID, enterpriseSlug]);
 
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, DEBOUNCE_TIME_MILLIS),
+    [fetchData],
+  );
+  // Stop the invocation of the debounced function on unmount
+  useEffect(() => () => {
+    debouncedFetchData.cancel();
+  }, []);
+
   const selectedRowIds = useMemo(() => convertToSelectedRowsObject(selectedEmails), [selectedEmails]);
 
   const initialState = useMemo(() => ({
@@ -129,7 +141,7 @@ const AddLearnersStep = ({
         isPaginated
         pageCount={numPages}
         manualPagination
-        fetchData={fetchData}
+        fetchData={debouncedFetchData}
         SelectionStatusComponent={AddLearnersSelectionStatus}
         initialState={initialState}
         initialTableOptions={initialTableOptions}
