@@ -22,8 +22,6 @@ class LmsApiService {
 
   static enterpriseCustomerCatalogsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_catalogs/`
 
-  static accountsSearchEmailsUrl = `${LmsApiService.baseUrl}/api/user/v1/accounts/search_emails`;
-
   static fetchCourseOutline(courseId) {
     const options = {
       course_id: courseId,
@@ -204,10 +202,6 @@ class LmsApiService {
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
     return LmsApiService.apiClient().get(`${LmsApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
-  }
-
-  static fetchUserDetailsFromEmail(emails) {
-    return LmsApiService.apiClient().post(`${LmsApiService.accountsSearchEmailsUrl}`, emails);
   }
 }
 
