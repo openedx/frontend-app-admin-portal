@@ -2,14 +2,15 @@ import { screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-
 import { renderWithRouter } from '../../test/testUtils';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
-import AddLearnersStep, { LINK_TEXT, TABLE_HEADERS } from './AddLearnersStep';
+import AddLearnersStep, {
+  ADD_LEARNERS_ERROR_TEXT, LEARNERS_PAGE_SIZE, LINK_TEXT, TABLE_HEADERS,
+} from './AddLearnersStep';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -18,12 +19,27 @@ jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-const mockResults = [{ uuid: 'foo', userEmail: 'y@z.com' }, { uuid: 'bar', userEmail: 'a@z.com' }];
+jest.mock('lodash.debounce', () => fn => {
+  // eslint-disable-next-line no-param-reassign
+  fn.cancel = jest.fn();
+  return fn;
+});
+
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logError: jest.fn(),
+}));
+
+const mockResults = [
+  { uuid: 'foo', userEmail: 'y@z.com' },
+  { uuid: 'bar', userEmail: 'a@z.com' },
+  { uuid: 'afam', userEmail: 'afam@family.com' },
+  { uuid: 'bears', userEmail: 'bears@jungle.org' },
+];
 
 const mockTableData = Promise.resolve({
   data: {
     results: mockResults,
-    count: 2,
+    count: 4,
     numPages: 6,
   },
 });
@@ -59,12 +75,36 @@ describe('AddLearnersStep', () => {
     expect(await screen.findByText(mockResults[1].userEmail)).toBeInTheDocument();
     await act(() => mockTableData);
   });
-  it.skip('allows search by email', async () => {
+  it('allows search by email', async () => {
     act(() => {
       renderWithRouter(<StepperWrapper {...defaultProps} />);
     });
     expect(await screen.findByText('Search Email')).toBeInTheDocument();
     await act(() => mockTableData);
+    userEvent.type(screen.getByPlaceholderText('Search Email'), 'beAR');
+    expect(await screen.findByText(/Filtered by userEmail/)).toBeInTheDocument();
+    expect(await screen.findByText('Clear Filters')).toBeInTheDocument();
+    const { subscriptionUUID } = defaultProps;
+    // multiple calls will occur to this function, we only test for the last one
+    // for correctness, and don't test backend filtering part here (tested in backend).
+    // currently debouncing is mocked out since the use of jest.useFakeTimers() did not work
+    // due to an issue with lodash.debounce + jest. Perhaps a newer version of jest will do better.
+    await screen.findByDisplayValue('beAR');
+    expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
+      subscriptionUUID,
+      {
+        active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: 1, search: 'beAR',
+      },
+    );
+  });
+  it('logs Error when response fails', async () => {
+    LicenseManagerApiService.fetchSubscriptionUsers.mockImplementation(async () => {
+      throw new Error('Failed response');
+    });
+    expect(screen.queryByText(ADD_LEARNERS_ERROR_TEXT)).not.toBeInTheDocument();
+    act(() => { renderWithRouter(<StepperWrapper {...defaultProps} />); });
+    await expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenCalled();
+    expect(await screen.findByText(ADD_LEARNERS_ERROR_TEXT)).toBeInTheDocument();
   });
   it('displays a table skeleton when loading', () => {
     LicenseManagerApiService.fetchSubscriptionUsers.mockReturnValue(new Promise(() => {}));

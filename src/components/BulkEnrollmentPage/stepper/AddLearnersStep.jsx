@@ -1,7 +1,9 @@
 import React, {
-  useContext, useState, useMemo, useCallback, useEffect, useRef,
+  useContext, useState, useMemo, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
+
 import {
   Alert, DataTable, TextFilter,
 } from '@edx/paragon';
@@ -16,7 +18,9 @@ import { BaseSelectWithContext, BaseSelectWithContextHeader } from '../table/Bul
 import BaseSelectionStatus from '../table/BaseSelectionStatus';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
+import { DEBOUNCE_TIME_MILLIS } from '../../../algoliaUtils';
 
+export const ADD_LEARNERS_ERROR_TEXT = 'There was an error retrieving email data. Please try again later.';
 export const TABLE_HEADERS = {
   email: 'Email',
 };
@@ -50,7 +54,7 @@ const tableColumns = [
 ];
 
 const INITIAL_PAGE_INDEX = 0;
-const PAGE_SIZE = 25;
+export const LEARNERS_PAGE_SIZE = 25;
 
 const useIsMounted = () => {
   const componentIsMounted = useRef(true);
@@ -69,11 +73,18 @@ const AddLearnersStep = ({
   const { results, count, numPages } = data;
   const isMounted = useIsMounted();
 
-  const fetchData = useCallback((tableInstance = {}) => {
+  const fetchData = (tableInstance = {}) => {
     const pageIndex = tableInstance.pageIndex || INITIAL_PAGE_INDEX;
+    let options = { active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: pageIndex + 1 };
+
+    const { filters } = tableInstance;
+    const emailFilter = filters.find(item => item.id === 'userEmail');
+    if (emailFilter) {
+      options = { ...options, search: emailFilter.value };
+    }
     LicenseManagerApiService.fetchSubscriptionUsers(
       subscriptionUUID,
-      { active_only: 1, page_size: PAGE_SIZE, page: pageIndex + 1 },
+      options,
     ).then((response) => {
       if (isMounted.current) {
         setData(camelCaseObject(response.data));
@@ -89,7 +100,16 @@ const AddLearnersStep = ({
         setLoading(false);
       }
     });
-  }, [subscriptionUUID, enterpriseSlug]);
+  };
+
+  const debouncedFetchData = useMemo(
+    () => debounce(fetchData, DEBOUNCE_TIME_MILLIS),
+    [subscriptionUUID, enterpriseSlug],
+  );
+  // Stop the invocation of the debounced function on unmount
+  useEffect(() => () => {
+    debouncedFetchData.cancel();
+  }, []);
 
   const initialTableOptions = useMemo(() => ({
     getRowId: (row, relativeIndex, parent) => row?.uuid || (parent ? [parent.id, relativeIndex].join('.') : relativeIndex),
@@ -103,15 +123,17 @@ const AddLearnersStep = ({
         <Link to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscriptionUUID}`}>{LINK_TEXT}</Link>
       </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
-      {errors && <Alert variant="danger">There was an error retrieving email data. Please try again later.</Alert>}
+      {errors && <Alert variant="danger">{ADD_LEARNERS_ERROR_TEXT}</Alert>}
       <DataTable
+        isFilterable
+        manualFilters
         columns={tableColumns}
         data={results}
         itemCount={count}
         isPaginated
         pageCount={numPages}
         manualPagination
-        fetchData={fetchData}
+        fetchData={debouncedFetchData}
         SelectionStatusComponent={AddLearnersSelectionStatus}
         initialTableOptions={initialTableOptions}
         selectedFlatRows={selectedEmails}
