@@ -18,7 +18,7 @@ import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import './CodeAssignmentModal.scss';
 import { configuration } from '../../config';
 import {
-  displayCode, displaySelectedCodes, getUserDetails, ModalError,
+  displayCode, displaySelectedCodes, ModalError,
 } from '../CodeModal';
 import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
@@ -109,14 +109,11 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.setState(prevState => ({ notify: !prevState.notify }));
   }
 
-  getCleanedUsers(emails, usersResponse) {
+  usersEmail(emails) {
     const users = [];
     emails.forEach((email) => {
-      const user = usersResponse.find(userResponse => userResponse.email === email);
       users.push({
         email,
-        lms_user_id: user ? user.id : undefined,
-        username: user ? user.username : undefined,
       });
     });
     return users;
@@ -244,7 +241,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     return ['code', 'remainingUses'].every(key => key in data);
   }
 
-  async handleModalSubmit(formData) {
+  handleModalSubmit(formData) {
     const {
       isBulkAssign,
       couponId,
@@ -310,9 +307,7 @@ export class BaseCodeAssignmentModal extends React.Component {
       };
     }
     const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
-    let usersResponse = [];
-    usersResponse = await getUserDetails(assignmentEmails);
-    options.users = this.getCleanedUsers(assignmentEmails, usersResponse);
+    options.users = this.usersEmail(assignmentEmails);
 
     return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
       .then(() => sendCodeAssignment(couponId, options))

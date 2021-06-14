@@ -14,7 +14,7 @@ import {
   EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
 import {
-  appendUserDetails, displayCode, displayEmail, displaySelectedCodes, getUserDetails, ModalError,
+  appendUserCodeDetails, displayCode, displayEmail, displaySelectedCodes, ModalError,
 } from '../CodeModal';
 import EmailTemplateForm from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
@@ -85,7 +85,7 @@ class CodeRevokeModal extends React.Component {
     return ['code', 'assigned_to'].every(key => key in data);
   }
 
-  async handleModalSubmit(formData) {
+  handleModalSubmit(formData) {
     const {
       couponId,
       isBulkRevoke,
@@ -118,7 +118,6 @@ class CodeRevokeModal extends React.Component {
       options.template_id = formData['template-id'];
     }
 
-    let usersResponse = [];
     const assignments = [];
 
     if (isBulkRevoke) {
@@ -131,17 +130,13 @@ class CodeRevokeModal extends React.Component {
       data.selectedCodes.map(code => (
         revokeCodeEmails.push(code.assigned_to)
       ));
-
-      usersResponse = await getUserDetails(revokeCodeEmails);
-
       data.selectedCodes.forEach((code) => {
-        appendUserDetails(code.assigned_to, code.code, usersResponse, assignments);
+        appendUserCodeDetails(code.assigned_to, code.code, assignments);
       });
 
       options.assignments = assignments;
     } else {
-      usersResponse = await getUserDetails([data.assigned_to]);
-      appendUserDetails(data.assigned_to, data.code, usersResponse, assignments);
+      appendUserCodeDetails(data.assigned_to, data.code, assignments);
       options.assignments = assignments;
     }
 

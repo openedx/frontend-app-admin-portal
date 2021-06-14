@@ -12,7 +12,7 @@ import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
-import { appendUserDetails, getUserDetails } from '../CodeModal';
+import { appendUserCodeDetails } from '../CodeModal';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
   ...EMAIL_TEMPLATE_FIELDS,
@@ -98,7 +98,7 @@ export class BaseCodeReminderModal extends React.Component {
     return ['code', 'email'].every(key => key in data);
   }
 
-  async handleModalSubmit(formData) {
+  handleModalSubmit(formData) {
     const {
       couponId,
       isBulkRemind,
@@ -133,7 +133,6 @@ export class BaseCodeReminderModal extends React.Component {
     if (isBulkRemind && !data.selectedCodes.length) {
       options.code_filter = selectedToggle;
     } else {
-      let usersResponse = [];
       const assignments = [];
       if (isBulkRemind && data.selectedCodes.length) {
         const remindCodeEmails = [];
@@ -141,14 +140,12 @@ export class BaseCodeReminderModal extends React.Component {
           remindCodeEmails.push(code.assigned_to)
         ));
 
-        usersResponse = await getUserDetails(remindCodeEmails);
         data.selectedCodes.forEach((code) => {
-          appendUserDetails(code.assigned_to, code.code, usersResponse, assignments);
+          appendUserCodeDetails(code.assigned_to, code.code, assignments);
         });
         options.assignments = assignments;
       } else {
-        usersResponse = await getUserDetails([data.email]);
-        appendUserDetails(data.email, data.code, usersResponse, assignments);
+        appendUserCodeDetails(data.email, data.code, assignments);
         options.assignments = assignments;
       }
     }
