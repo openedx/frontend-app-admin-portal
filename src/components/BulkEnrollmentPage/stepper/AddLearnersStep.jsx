@@ -20,6 +20,7 @@ import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { DEBOUNCE_TIME_MILLIS } from '../../../algoliaUtils';
 
+export const ADD_LEARNERS_ERROR_TEXT = 'There was an error retrieving email data. Please try again later.';
 export const TABLE_HEADERS = {
   email: 'Email',
 };
@@ -122,7 +123,7 @@ const AddLearnersStep = ({
         <Link to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscriptionUUID}`}>{LINK_TEXT}</Link>
       </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
-      {errors && <Alert variant="danger">There was an error retrieving email data. Please try again later.</Alert>}
+      {errors && <Alert variant="danger">{ADD_LEARNERS_ERROR_TEXT}</Alert>}
       <DataTable
         isFilterable
         manualFilters

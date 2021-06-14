@@ -8,7 +8,9 @@ import LicenseManagerApiService from '../../../data/services/LicenseManagerAPISe
 
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
-import AddLearnersStep, { LEARNERS_PAGE_SIZE, LINK_TEXT, TABLE_HEADERS } from './AddLearnersStep';
+import AddLearnersStep, {
+  ADD_LEARNERS_ERROR_TEXT, LEARNERS_PAGE_SIZE, LINK_TEXT, TABLE_HEADERS,
+} from './AddLearnersStep';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -22,6 +24,10 @@ jest.mock('lodash.debounce', () => fn => {
   fn.cancel = jest.fn();
   return fn;
 });
+
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logError: jest.fn(),
+}));
 
 const mockResults = [
   { uuid: 'foo', userEmail: 'y@z.com' },
@@ -90,6 +96,15 @@ describe('AddLearnersStep', () => {
         active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: 1, search: 'beAR',
       },
     );
+  });
+  it('logs Error when response fails', async () => {
+    LicenseManagerApiService.fetchSubscriptionUsers.mockImplementation(async () => {
+      throw new Error('Failed response');
+    });
+    expect(screen.queryByText(ADD_LEARNERS_ERROR_TEXT)).not.toBeInTheDocument();
+    act(() => { renderWithRouter(<StepperWrapper {...defaultProps} />); });
+    await expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenCalled();
+    expect(await screen.findByText(ADD_LEARNERS_ERROR_TEXT)).toBeInTheDocument();
   });
   it('displays a table skeleton when loading', () => {
     LicenseManagerApiService.fetchSubscriptionUsers.mockReturnValue(new Promise(() => {}));
