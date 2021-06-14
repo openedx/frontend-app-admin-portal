@@ -21,11 +21,45 @@ import {
   shouldShowSelectAllStatusAlert,
 } from './helpers';
 import {
-  ACTION_TYPES, COUPON_FILTER_TYPES, COUPON_VISIBILITY_OPTIONS, VISIBILITY_OPTIONS,
+  ACTION_TYPES, COLUMNS, COUPON_FILTER_TYPES, COUPON_VISIBILITY_OPTIONS, VISIBILITY_OPTIONS,
 } from './constants';
 import ActionButton from './ActionButton';
 import CouponFilters from './CouponFilters';
 import CouponBulkActions from './CouponBulkActions';
+
+const COMMON_COLUMNS = [
+  COLUMNS.redemptions,
+  COLUMNS.code,
+];
+
+const REDEMTION_COLUMNS = [
+  ...COMMON_COLUMNS,
+  COLUMNS.assignmentDate,
+  COLUMNS.lastReminderDate,
+  COLUMNS.actions,
+];
+
+const DEFAULT_TABLE_COLUMNS = {
+  [COUPON_FILTER_TYPES.unassigned]: [
+    ...COMMON_COLUMNS,
+    COLUMNS.assignmentsRemaining,
+    COLUMNS.actions,
+  ],
+  [COUPON_FILTER_TYPES.unredeemed]: [
+    COLUMNS.assignedTo,
+    ...REDEMTION_COLUMNS,
+  ],
+  [COUPON_FILTER_TYPES.partiallyRedeemed]: [
+    COLUMNS.assignedTo,
+    ...REDEMTION_COLUMNS,
+  ],
+  [COUPON_FILTER_TYPES.redeemed]: [
+    COLUMNS.redeemedBy,
+    ...COMMON_COLUMNS,
+    COLUMNS.assignmentDate,
+    COLUMNS.lastReminderDate,
+  ],
+};
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -37,52 +71,16 @@ class CouponDetails extends React.Component {
     this.hasAllTableRowsSelected = false;
     this.selectedTableRows = {};
 
-    const tableColumns = [
-      {
-        label: (
-          <CheckBox
-            id="select-all-codes"
-            name="select all codes"
-            label={
-              <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
-            }
-            onChange={(checked) => {
-              this.hasAllTableRowsSelected = checked;
-              this.handleSelectAllCodes(checked);
-            }}
-            ref={this.selectAllCheckBoxRef}
-          />
-        ),
-        key: 'select',
-      },
-      {
-        label: 'Redemptions',
-        key: 'redemptions',
-      },
-      {
-        label: 'Code',
-        key: 'code',
-      },
-      {
-        label: 'Assignments Remaining',
-        key: 'assignments_remaining',
-      },
-      {
-        label: 'Actions',
-        key: 'actions',
-      },
-    ];
+    const tableColumns = this.getNewColumns(COUPON_FILTER_TYPES.unassigned);
 
     if (features.CODE_VISIBILITY) {
-      tableColumns.splice(3, 0, {
-        label: 'Visibility',
-        key: 'is_public',
-      });
+      tableColumns.splice(3, 0, COLUMNS.visibility);
     }
 
     this.state = {
       selectedToggle: COUPON_FILTER_TYPES.unassigned,
       visibilityToggle: COUPON_VISIBILITY_OPTIONS.both,
+      bulkActionToggle: ACTION_TYPES.assign,
       tableColumns,
       modals: {
         assignment: null,
@@ -108,11 +106,12 @@ class CouponDetails extends React.Component {
     this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
     this.handleVisibilitySelect = this.handleVisibilitySelect.bind(this);
-    this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
+    this.handleBulkAction = this.handleBulkAction.bind(this);
     this.resetModals = this.resetModals.bind(this);
     this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
     this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
     this.setModalState = this.setModalState.bind(this);
+    this.handleBulkActionChange = this.handleBulkActionChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -129,6 +128,52 @@ class CouponDetails extends React.Component {
     }
   }
 
+  getNewColumns(selectedToggle) {
+    const selectColumn = {
+      label: (
+        <CheckBox
+          id="select-all-codes"
+          name="select all codes"
+          label={
+            <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
+            }
+          onChange={(checked) => {
+            this.hasAllTableRowsSelected = checked;
+            this.handleSelectAllCodes(checked);
+          }}
+          ref={this.selectAllCheckBoxRef}
+        />
+      ),
+      key: 'select',
+    };
+
+    // TODO: find out what Joe wants for visibility and add it back in as appropriate
+    switch (selectedToggle) {
+      case COUPON_FILTER_TYPES.unassigned:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.unassigned],
+        ];
+      case COUPON_FILTER_TYPES.unredeemed:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.unredeemed],
+        ];
+      case COUPON_FILTER_TYPES.partiallyRedeemed:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.partiallyRedeemed],
+        ];
+      case COUPON_FILTER_TYPES.redeemed:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.redeemed],
+        ];
+      default:
+        return this.tableColumns;
+    }
+  }
+
   getTableFilterSelectOptions() {
     const { couponData: { usage_limitation: usageLimitation } } = this.props;
     return getFilterOptions(usageLimitation);
@@ -136,6 +181,7 @@ class CouponDetails extends React.Component {
 
   getBulkActionSelectOptions() {
     const { selectedToggle, selectedCodes } = this.state;
+
     const {
       couponData: { num_unassigned: unassignedCodes, available: couponAvailable },
       couponDetailsTable: { data: tableData },
@@ -164,11 +210,6 @@ class CouponDetails extends React.Component {
     return bulkActionSelectOptions;
   }
 
-  getBulkActionSelectValue() {
-    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
-    return getFirstNonDisabledOption(bulkActionSelectOptions);
-  }
-
   setModalState({ key, options }) {
     this.setState((state) => ({
       modals: {
@@ -191,6 +232,14 @@ class CouponDetails extends React.Component {
     }
     return `select code ${code}`;
   };
+
+  updateBulkActionSelectValue() {
+    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
+    const bulkActionToggle = getFirstNonDisabledOption(bulkActionSelectOptions);
+    this.setState({
+      bulkActionToggle,
+    });
+  }
 
   reset() {
     this.resetModals();
@@ -252,82 +301,20 @@ class CouponDetails extends React.Component {
   }
 
   handleToggleSelect(newValue) {
-    const { tableColumns, selectedToggle } = this.state;
+    const { selectedToggle } = this.state;
 
     const value = newValue || selectedToggle;
-    const assignedToColumnLabel = value === 'unredeemed' ? 'Assigned To' : 'Redeemed By';
-    // avoid modifying a state variable without setting state
-    const newTableColumns = [...tableColumns];
-
-    const getColumnIndexForKey = key => newTableColumns.findIndex(column => column.key === key);
-
-    // `assigned_to, assignment_date, last_reminder_date` columns
-    if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
-      // Add columns if they donot already exist
-      newTableColumns.splice(1, 0, {
-        label: assignedToColumnLabel,
-        key: 'assigned_to',
-      });
-      newTableColumns.splice(newTableColumns.length - 1, 0, {
-        label: 'Last Reminder Date',
-        key: 'last_reminder_date',
-      });
-      newTableColumns.splice(newTableColumns.length - 2, 0, {
-        label: 'Assignment Date',
-        key: 'assignment_date',
-      });
-    } else if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
-      // Update `assigned_to` column with the appropriate label
-      newTableColumns[1].label = assignedToColumnLabel;
-    } else if (value === 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
-      // Remove columns if they already exist
-      newTableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
-      newTableColumns.splice(getColumnIndexForKey('last_reminder_date'), 1);
-      newTableColumns.splice(getColumnIndexForKey('assignment_date'), 1);
-    }
-
-    // `assignments_remaining` column
-    if (value === 'unassigned' && getColumnIndexForKey('assignments_remaining') === -1) {
-      // Add `assignments_remaining` column if it doesn't already exist.
-      newTableColumns.splice(3, 0, {
-        label: 'Assignments Remaining',
-        key: 'assignments_remaining',
-      });
-    } else if (value !== 'unassigned' && getColumnIndexForKey('assignments_remaining') > -1) {
-      // Remove `assignments_remaining` column if it already exists.
-      newTableColumns.splice(getColumnIndexForKey('assignments_remaining'), 1);
-    }
-
-    // `is_public` column
-    if (features.CODE_VISIBILITY && getColumnIndexForKey('is_public') === -1) {
-      // Add `is_public` column if it doesn't already exist
-      newTableColumns.splice(newTableColumns.length, 0, {
-        label: 'Visibility',
-        key: 'is_public',
-      });
-    }
-
-    // `actions` column
-    if (value !== 'redeemed' && getColumnIndexForKey('actions') === -1) {
-      // Add `actions` column if it doesn't already exist
-      newTableColumns.splice(newTableColumns.length, 0, {
-        label: 'Actions',
-        key: 'actions',
-      });
-    } else if (value === 'redeemed' && getColumnIndexForKey('actions') > -1) {
-      // Remove `actions` column if it already exists
-      newTableColumns.splice(getColumnIndexForKey('actions'), 1);
-    }
 
     this.resetCodeActionStatus();
     updateUrl({ page: undefined });
     this.setState({
-      tableColumns,
+      tableColumns: this.getNewColumns(value),
       selectedToggle: value,
       selectedCodes: [],
       hasAllCodesSelected: false,
     }, () => {
       this.updateSelectAllCheckBox();
+      this.updateBulkActionSelectValue();
     });
   }
 
@@ -434,6 +421,12 @@ class CouponDetails extends React.Component {
     }
   }
 
+  handleBulkActionChange(newValue) {
+    this.setState({
+      bulkActionToggle: newValue,
+    });
+  }
+
   handleCodeSelection({ checked, code }) {
     let { selectedCodes, hasAllCodesSelected } = this.state;
 
@@ -529,7 +522,7 @@ class CouponDetails extends React.Component {
     return this.isTableLoading() || options.every(option => option.disabled);
   }
 
-  handleBulkActionSelect() {
+  handleBulkAction() {
     const {
       couponData: {
         id,
@@ -542,12 +535,10 @@ class CouponDetails extends React.Component {
       hasAllCodesSelected,
       selectedCodes,
       selectedToggle,
+      bulkActionToggle,
     } = this.state;
 
-    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const selectedBulkAction = ref && ref.value;
-
-    if (selectedBulkAction === ACTION_TYPES.assign) {
+    if (bulkActionToggle === ACTION_TYPES.assign) {
       this.setModalState({
         key: 'assignment',
         options: {
@@ -562,7 +553,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === ACTION_TYPES.revoke) {
+    } else if (bulkActionToggle === ACTION_TYPES.revoke) {
       this.setModalState({
         key: 'revoke',
         options: {
@@ -574,7 +565,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === ACTION_TYPES.remind) {
+    } else if (bulkActionToggle === ACTION_TYPES.remind) {
       this.setModalState({
         key: 'remind',
         options: {
@@ -587,8 +578,8 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === ACTION_TYPES.makePublic || selectedBulkAction === ACTION_TYPES.makePrivate) {
-      const isPublic = selectedBulkAction === ACTION_TYPES.makePublic;
+    } else if (bulkActionToggle === ACTION_TYPES.makePublic || bulkActionToggle === ACTION_TYPES.makePrivate) {
+      const isPublic = bulkActionToggle === ACTION_TYPES.makePublic;
       const codeIds = selectedCodes.map(selectedCode => selectedCode.code);
       const options = {
         couponId: id,
@@ -680,6 +671,7 @@ class CouponDetails extends React.Component {
       refreshIndex,
       hasAllCodesSelected,
       visibilityToggle,
+      bulkActionToggle,
     } = this.state;
 
     const {
@@ -732,11 +724,11 @@ class CouponDetails extends React.Component {
                   visibilityToggle={visibilityToggle}
                 />
                 <CouponBulkActions
-                  inputRef={this.bulkActionSelectRef}
-                  value={this.getBulkActionSelectValue()}
+                  value={bulkActionToggle}
+                  onChange={this.handleBulkActionChange}
                   options={this.getBulkActionSelectOptions()}
                   disabled={this.isBulkAssignSelectDisabled()}
-                  handleBulkActionSelect={this.handleBulkActionSelect}
+                  handleBulkAction={this.handleBulkAction}
                 />
               </div>
               {this.hasStatusAlert() && (

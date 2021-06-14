@@ -64,3 +64,42 @@ export const BULK_ACTION_SELECT_OPTIONS = [{
   label: ACTION_LABELS.revoke,
   value: ACTION_TYPES.revoke,
 }];
+
+export const COLUMNS = {
+  redemptions: {
+    label: 'Redemptions',
+    key: 'redemptions',
+  },
+  code: {
+    label: 'Code',
+    key: 'code',
+  },
+  assignmentsRemaining: {
+    label: 'Assignments remaining',
+    key: 'assignments_remaining',
+  },
+  actions: {
+    label: 'Actions',
+    key: 'actions',
+  },
+  visibility: {
+    label: 'Visibility',
+    key: 'is_public',
+  },
+  lastReminderDate: {
+    label: 'Last reminder date',
+    key: 'last_reminder_date',
+  },
+  assignmentDate: {
+    label: 'Assignment date',
+    key: 'assignment_date',
+  },
+  assignedTo: {
+    label: 'Assigned to',
+    key: 'assigned_to',
+  },
+  redeemedBy: {
+    label: 'Redeemed by',
+    key: 'assigned_to',
+  },
+};
