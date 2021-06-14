@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Button, CheckBox, Icon, InputSelect,
+  Button, CheckBox, Icon,
 } from '@edx/paragon';
 
 import TableContainer from '../../containers/TableContainer';
@@ -25,6 +25,7 @@ import {
 } from './constants';
 import ActionButton from './ActionButton';
 import CouponFilters from './CouponFilters';
+import CouponBulkActions from './CouponBulkActions';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -259,7 +260,6 @@ class CouponDetails extends React.Component {
     const newTableColumns = [...tableColumns];
 
     const getColumnIndexForKey = key => newTableColumns.findIndex(column => column.key === key);
-
 
     // `assigned_to, assignment_date, last_reminder_date` columns
     if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
@@ -731,24 +731,13 @@ class CouponDetails extends React.Component {
                   handleVisibilitySelect={this.handleVisibilitySelect}
                   visibilityToggle={visibilityToggle}
                 />
-                <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
-                  <InputSelect
-                    inputRef={this.bulkActionSelectRef}
-                    className="mt-1"
-                    name="bulk-action"
-                    label="Bulk Action:"
-                    value={this.getBulkActionSelectValue()}
-                    options={this.getBulkActionSelectOptions()}
-                    disabled={this.isBulkAssignSelectDisabled()}
-                  />
-                  <Button
-                    className="ml-2"
-                    onClick={this.handleBulkActionSelect}
-                    disabled={this.isBulkAssignSelectDisabled()}
-                  >
-                    Go
-                  </Button>
-                </div>
+                <CouponBulkActions
+                  inputRef={this.bulkActionSelectRef}
+                  value={this.getBulkActionSelectValue()}
+                  options={this.getBulkActionSelectOptions()}
+                  disabled={this.isBulkAssignSelectDisabled()}
+                  handleBulkActionSelect={this.handleBulkActionSelect}
+                />
               </div>
               {this.hasStatusAlert() && (
                 <div className="row mb-3">
