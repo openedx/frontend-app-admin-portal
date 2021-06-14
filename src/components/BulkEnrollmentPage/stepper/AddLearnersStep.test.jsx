@@ -81,6 +81,8 @@ describe('AddLearnersStep', () => {
     const { subscriptionUUID } = defaultProps;
     // multiple calls will occur to this function, we only test for the last one
     // for correctness, and don't test backend filtering part here (tested in backend).
+    // currently debouncing is mocked out since the use of jest.useFakeTimers() did not work
+    // due to an issue with lodash.debounce + jest. Perhaps a newer version of jest will do better.
     await screen.findByDisplayValue('beAR');
     expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
       subscriptionUUID,
