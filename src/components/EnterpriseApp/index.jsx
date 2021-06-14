@@ -22,6 +22,7 @@ import { features } from '../../config';
 import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
+import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -144,6 +145,7 @@ class EnterpriseApp extends React.Component {
                   paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                 }}
               >
+                <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
                 <Switch>
                   <Redirect
                     exact
