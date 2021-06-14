@@ -13,7 +13,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import { Link } from 'react-router-dom';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_TITLE } from './constants';
-import { convertToSelectedRowsObject } from '../helpers';
 import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
 import { BaseSelectWithContext, BaseSelectWithContextHeader } from '../table/BulkEnrollSelect';
 import BaseSelectionStatus from '../table/BaseSelectionStatus';
@@ -111,14 +110,6 @@ const AddLearnersStep = ({
     debouncedFetchData.cancel();
   }, []);
 
-  const selectedRowIds = useMemo(() => convertToSelectedRowsObject(selectedEmails), [selectedEmails]);
-
-  const initialState = useMemo(() => ({
-    pageSize: LEARNERS_PAGE_SIZE,
-    pageIndex: 0,
-    selectedRowIds,
-  }), []);
-
   const initialTableOptions = useMemo(() => ({
     getRowId: (row, relativeIndex, parent) => row?.uuid || (parent ? [parent.id, relativeIndex].join('.') : relativeIndex),
   }), []);
@@ -143,7 +134,6 @@ const AddLearnersStep = ({
         manualPagination
         fetchData={debouncedFetchData}
         SelectionStatusComponent={AddLearnersSelectionStatus}
-        initialState={initialState}
         initialTableOptions={initialTableOptions}
         selectedFlatRows={selectedEmails}
       >
