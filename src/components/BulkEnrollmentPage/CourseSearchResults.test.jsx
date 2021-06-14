@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
@@ -25,12 +25,14 @@ const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
 const testStartDate = '2020-09-10T10:00:00Z';
 
+const testCourseName2 = 'TestCourseName 2';
+const testCourseRunKey2 = 'edX+testcourse2';
+const testStartDate2 = '2021-10-10T10:00:00Z';
+
 const searchResults = {
-  nbHits: 1,
-  hitsPerPage: 10,
-  pageIndex: 10,
-  pageCount: 5,
-  nbPages: 6,
+  nbHits: 2,
+  hitsPerPage: 20,
+  nbPages: 1,
   hits: [
     {
       title: testCourseName,
@@ -41,8 +43,17 @@ const searchResults = {
       key: 'foo',
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
     },
+    {
+      title: testCourseName2,
+      advertised_course_run: {
+        key: testCourseRunKey2,
+        start: testStartDate2,
+      },
+      key: 'foo2',
+      partners: [{ name: 'edX' }, { name: 'another_unused' }],
+    },
   ],
-  page: 3,
+  page: 0,
 };
 
 const searchState = {
@@ -107,7 +118,7 @@ describe('<CourseSearchResults />', () => {
   it('renders search results', () => {
     const wrapper = mount(<CourseSearchWrapper />);
 
-    // Four header columns, one for sorting, one for Course Name, one for Course Run, one for the enroll column
+    // 5 header columns: selection, Course name, Partner, Course Date, and enrollment
     const tableHeaderCells = wrapper.find('TableHeaderCell');
     expect(tableHeaderCells.length).toBe(5);
     expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
@@ -115,9 +126,9 @@ describe('<CourseSearchResults />', () => {
     expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
     expect(tableHeaderCells.at(4).prop('Header')).toBe('');
 
-    // Three table cells, one for sorting, one title, one course run
+    // 5 table cells: selection, course name, partner, start date, and enrollment
     const tableCells = wrapper.find('TableCell');
-    expect(tableCells.length).toBe(5);
+    expect(tableCells.length).toBe(10); // 2 rows x 5 columns
     expect(tableCells.at(1).text()).toBe(testCourseName);
     expect(tableCells.at(2).text()).toBe('edX');
     expect(tableCells.at(3).text()).toBe('Sep 10, 2020');
@@ -135,6 +146,28 @@ describe('<CourseSearchResults />', () => {
   it('renders a loading state when loading algolia results', () => {
     const wrapper = mount(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
     expect(wrapper.find(Skeleton)).toHaveLength(1);
+  });
+  it('shows selection options when at least one course is selected', () => {
+    renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
+    const rowToSelect = screen.getByText(testCourseName2).closest('tr');
+    userEvent.click(within(rowToSelect).getByTestId('selectOne'));
+    expect(screen.getByText('1 selected')).toBeInTheDocument();
+  });
+  it('shows all selected when courses on a page are selected', () => {
+    const onePageState = { page: 0 };
+    const allSelectedProps = {
+      searchResults,
+      searchState: onePageState,
+      isSearchStalled: false,
+      enterpriseId: 'foo',
+      enterpriseSlug: 'fancyCompany',
+      goToNextStep: jest.fn(),
+    };
+    renderWithRouter(<CourseSearchWrapper props={allSelectedProps} />);
+    const selection = screen.getByTestId('selectAll');
+    userEvent.click(selection);
+
+    expect(screen.getByText('All 2 selected')).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {
     const wrapper = mount(<CourseSearchWrapper

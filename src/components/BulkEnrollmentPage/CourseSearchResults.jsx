@@ -13,7 +13,6 @@ import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalo
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
-import { convertToSelectedRowsObject } from './helpers';
 import {
   setSelectedRowsAction,
 } from './data/actions';
@@ -85,6 +84,7 @@ export const BaseCourseSearchResults = (props) => {
 
   const { refinementsFromQueryParams } = useContext(SearchContext);
   const columns = useMemo(() => [
+    selectColumn,
     {
       Header: TABLE_HEADERS.courseName,
       accessor: 'title',
@@ -148,12 +148,10 @@ export const BaseCourseSearchResults = (props) => {
         columns={columns}
         data={searchResults?.hits || []}
         itemCount={searchResults?.nbHits}
-        manualSelectColumn={selectColumn}
         SelectionStatusComponent={AddCoursesSelectionStatus}
-        isSelectable
         pageCount={searchResults?.nbPages || 1}
         pageSize={searchResults?.hitsPerPage || 0}
-        initialState={{ selectedRowIds: convertToSelectedRowsObject(selectedCourses) }}
+        selectedFlatRows={selectedCourses}
         initialTableOptions={{
           getRowId: (row) => row.key,
         }}
