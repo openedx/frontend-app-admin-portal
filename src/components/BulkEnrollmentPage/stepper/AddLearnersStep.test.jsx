@@ -2,7 +2,6 @@ import { screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-
 import { renderWithRouter } from '../../test/testUtils';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
@@ -18,7 +17,11 @@ jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-jest.useFakeTimers();
+jest.mock('lodash.debounce', () => fn => {
+  // eslint-disable-next-line no-param-reassign
+  fn.cancel = jest.fn();
+  return fn;
+});
 
 const mockResults = [
   { uuid: 'foo', userEmail: 'y@z.com' },
@@ -79,7 +82,6 @@ describe('AddLearnersStep', () => {
     // multiple calls will occur to this function, we only test for the last one
     // for correctness, and don't test backend filtering part here (tested in backend).
     await screen.findByDisplayValue('beAR');
-    jest.runAllTimers();
     expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
       subscriptionUUID,
       {
