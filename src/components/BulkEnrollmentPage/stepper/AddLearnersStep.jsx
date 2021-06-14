@@ -1,5 +1,5 @@
 import React, {
-  useContext, useState, useMemo, useCallback, useEffect, useRef,
+  useContext, useState, useMemo, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
@@ -73,7 +73,7 @@ const AddLearnersStep = ({
   const { results, count, numPages } = data;
   const isMounted = useIsMounted();
 
-  const fetchData = useCallback((tableInstance = {}) => {
+  const fetchData = (tableInstance = {}) => {
     const pageIndex = tableInstance.pageIndex || INITIAL_PAGE_INDEX;
     let options = { active_only: 1, page_size: LEARNERS_PAGE_SIZE, page: pageIndex + 1 };
 
@@ -100,11 +100,11 @@ const AddLearnersStep = ({
         setLoading(false);
       }
     });
-  }, [subscriptionUUID, enterpriseSlug]);
+  };
 
   const debouncedFetchData = useMemo(
     () => debounce(fetchData, DEBOUNCE_TIME_MILLIS),
-    [fetchData],
+    [subscriptionUUID, enterpriseSlug],
   );
   // Stop the invocation of the debounced function on unmount
   useEffect(() => () => {

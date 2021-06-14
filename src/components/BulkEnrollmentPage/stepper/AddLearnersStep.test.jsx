@@ -18,6 +18,8 @@ jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
+jest.useFakeTimers();
+
 const mockResults = [
   { uuid: 'foo', userEmail: 'y@z.com' },
   { uuid: 'bar', userEmail: 'a@z.com' },
@@ -77,6 +79,7 @@ describe('AddLearnersStep', () => {
     // multiple calls will occur to this function, we only test for the last one
     // for correctness, and don't test backend filtering part here (tested in backend).
     await screen.findByDisplayValue('beAR');
+    jest.runAllTimers();
     expect(LicenseManagerApiService.fetchSubscriptionUsers).toHaveBeenLastCalledWith(
       subscriptionUUID,
       {
