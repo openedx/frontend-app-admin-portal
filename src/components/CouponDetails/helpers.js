@@ -26,7 +26,6 @@ export const getFirstNonDisabledOption = (options) => {
 };
 
 export const getBASelectOptions = ({
-  hasPublicCodes,
   isAssignView,
   isRedeemedView,
   hasTableData,
@@ -36,7 +35,7 @@ export const getBASelectOptions = ({
 }) => ([{
   label: ACTION_LABELS.assign,
   value: ACTION_TYPES.assign,
-  disabled: hasPublicCodes || !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numUnassignedCodes === 0, // eslint-disable-line max-len
+  disabled: !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numUnassignedCodes === 0, // eslint-disable-line max-len
 }, {
   label: ACTION_LABELS.remind,
   value: ACTION_TYPES.remind,
@@ -46,18 +45,6 @@ export const getBASelectOptions = ({
   value: ACTION_TYPES.revoke,
   disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numSelectedCodes === 0, // eslint-disable-line max-len
 }]);
-
-export const getMakePublicField = (hasTableData, numSelectedCodes) => ({
-  label: ACTION_LABELS.makePublic,
-  value: ACTION_TYPES.makePublic,
-  disabled: !hasTableData || numSelectedCodes === 0,
-});
-
-export const getMakePrivateField = (hasTableData, numSelectedCodes) => ({
-  label: ACTION_LABELS.makePrivate,
-  value: ACTION_TYPES.makePrivate,
-  disabled: !hasTableData || numSelectedCodes === 0,
-});
 
 export const shouldShowSelectAllStatusAlert = ({
   tableData, hasAllCodesSelected, selectedToggle, selectedCodes,

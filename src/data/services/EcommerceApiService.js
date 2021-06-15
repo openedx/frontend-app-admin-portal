@@ -50,11 +50,6 @@ class EcommerceApiService {
     return EcommerceApiService.apiClient().post(url, options);
   }
 
-  static sendCodeVisibility(couponId, codeIds, isPublic) {
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/visibility/`;
-    return EcommerceApiService.apiClient().post(url, { code_ids: codeIds, is_public: isPublic });
-  }
-
   static fetchCodeSearchResults(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${enterpriseId}/search/`;

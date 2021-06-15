@@ -84,7 +84,6 @@ describe('shouldShowSelectAllStatusAlert', () => {
 describe('getBASelectOptions', () => {
   describe('assign option', () => {
     const defaultAssignOptions = {
-      hasPublicCodes: false,
       isAssignView: true,
       isRedeemedView: false,
       hasTableData: true,
@@ -99,7 +98,7 @@ describe('getBASelectOptions', () => {
     });
     test.each([
       [{ ...defaultAssignOptions }, false],
-      [{ ...defaultAssignOptions, hasPublicCodes: true }, true],
+
       [{ ...defaultAssignOptions, isRedeemedView: true }, true],
       [{ ...defaultAssignOptions, isAssignView: false }, true],
       [{ ...defaultAssignOptions, hasTableData: false }, true],
@@ -111,7 +110,6 @@ describe('getBASelectOptions', () => {
   });
   describe('remind option', () => {
     const defaultRemindOptions = {
-      hasPublicCodes: false,
       isAssignView: false,
       isRedeemedView: false,
       hasTableData: true,
@@ -137,7 +135,6 @@ describe('getBASelectOptions', () => {
   });
   describe('revoke option', () => {
     const defaultRemindOptions = {
-      hasPublicCodes: false,
       isAssignView: false,
       isRedeemedView: false,
       hasTableData: true,
