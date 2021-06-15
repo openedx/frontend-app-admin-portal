@@ -212,7 +212,7 @@ class NumberCard extends React.Component {
                 aria-controls={`footer-body-${id}`}
               >
                 <div className="d-flex justify-content-between align-items-center">
-                  <div className="details-btn-text">
+                  <div className="details-btn-text mr-1">
                     {detailsExpanded ? 'Detailed breakdown' : 'Details'}
                   </div>
                   <div>

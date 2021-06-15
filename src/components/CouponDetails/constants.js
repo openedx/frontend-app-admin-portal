@@ -119,3 +119,9 @@ export const DEFAULT_TABLE_COLUMNS = {
     COLUMNS.lastReminderDate,
   ],
 };
+
+export const SUCCESS_MESSAGES = {
+  assign: 'Successfully assigned code(s)',
+  remind: 'Reminder request processed.',
+  revoke: 'Successfully revoked code(s)',
+};

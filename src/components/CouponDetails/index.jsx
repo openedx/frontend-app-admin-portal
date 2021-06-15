@@ -20,7 +20,7 @@ import {
   shouldShowSelectAllStatusAlert,
 } from './helpers';
 import {
-  ACTION_TYPES, COUPON_FILTER_TYPES, DEFAULT_TABLE_COLUMNS,
+  ACTION_TYPES, COUPON_FILTER_TYPES, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
 } from './constants';
 import ActionButton from './ActionButton';
 import CouponFilters from './CouponFilters';
@@ -673,7 +673,7 @@ class CouponDetails extends React.Component {
                       ),
                     })}
                     {isCodeAssignmentSuccessful && this.renderSuccessMessage({
-                      title: 'Successfully assigned code(s)',
+                      title: SUCCESS_MESSAGES.assign,
                       message: (
                         <>
                           To view the newly assigned code(s), filter by
@@ -694,10 +694,10 @@ class CouponDetails extends React.Component {
                       ),
                     })}
                     {isCodeReminderSuccessful && this.renderSuccessMessage({
-                      message: 'Reminder request processed.',
+                      message: SUCCESS_MESSAGES.remind,
                     })}
                     {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                      message: 'Successfully revoked code(s)',
+                      message: SUCCESS_MESSAGES.revoke,
                     })}
                     {doesCodeActionHaveErrors && this.renderErrorMessage({
                       title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
