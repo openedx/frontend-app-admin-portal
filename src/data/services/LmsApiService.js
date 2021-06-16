@@ -22,6 +22,8 @@ class LmsApiService {
 
   static enterpriseCustomerCatalogsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_catalogs/`
 
+  static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`
+
   static fetchCourseOutline(courseId) {
     const options = {
       course_id: courseId,
@@ -202,6 +204,10 @@ class LmsApiService {
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
     return LmsApiService.apiClient().get(`${LmsApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
+  }
+
+  static markBannerNotificationAsRead(formData) {
+    return LmsApiService.apiClient().post(LmsApiService.notificationReadUrl, formData);
   }
 }
 
