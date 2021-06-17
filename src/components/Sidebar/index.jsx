@@ -79,6 +79,12 @@ class Sidebar extends React.Component {
         hidden: !enableSubscriptionManagementScreen,
       },
       {
+        title: 'Subscription Enrollment',
+        to: `${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`,
+        icon: faBookOpen,
+        hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
+      },
+      {
         title: 'Analytics',
         to: `${baseUrl}/admin/analytics`,
         icon: faChartBar,
@@ -89,12 +95,6 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/samlconfiguration`,
         icon: faIdCard,
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
-      },
-      {
-        title: 'Subscription Enrollment',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`,
-        icon: faBookOpen,
-        hidden: !(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen),
       },
       {
         title: 'LMS Integration Configuration',
