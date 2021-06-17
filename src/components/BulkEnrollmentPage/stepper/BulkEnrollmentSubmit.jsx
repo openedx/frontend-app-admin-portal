@@ -67,7 +67,11 @@ BulkEnrollmentAlertModal.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
-export const generateSuccessMessage = numEmails => `${numEmails} learners have been enrolled.`;
+export const generateSuccessMessage = numEmails => {
+  if (numEmails > 1) { return `${numEmails} learners have been enrolled.`; }
+  if (numEmails === 1) { return `${numEmails} learner has been enrolled.`; }
+  return 'No learners have been enrolled.';
+};
 
 const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialStep }) => {
   const [loading, setLoading] = useState(false);

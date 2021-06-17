@@ -87,6 +87,14 @@ const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, .
   </ToastsContext.Provider>
 );
 
+describe('generateSuccessMessage', () => {
+  it('renders correct message based on enrollment count', () => {
+    expect(generateSuccessMessage(0)).toBe('No learners have been enrolled.');
+    expect(generateSuccessMessage(1)).toBe('1 learner has been enrolled.');
+    expect(generateSuccessMessage(5)).toBe('5 learners have been enrolled.');
+  });
+});
+
 describe('BulkEnrollmentAlertModal', () => {
   beforeEach(() => {
     defaultAlertProps.toggleClose.mockClear();
