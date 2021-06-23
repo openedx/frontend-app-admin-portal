@@ -8,6 +8,7 @@ const ReduxFormCheckbox = (props) => {
     label,
     helptext,
     input,
+    defaultChecked,
   } = props;
 
   return (
@@ -19,6 +20,7 @@ const ReduxFormCheckbox = (props) => {
         {...input}
         id={id}
         type="checkbox"
+        defaultChecked={defaultChecked}
         checked={input.checked}
         label={label}
       />
@@ -28,6 +30,7 @@ const ReduxFormCheckbox = (props) => {
 
 ReduxFormCheckbox.defaultProps = {
   helptext: null,
+  defaultChecked: false,
 };
 
 ReduxFormCheckbox.propTypes = {
@@ -37,6 +40,7 @@ ReduxFormCheckbox.propTypes = {
     checked: PropTypes.bool,
   }).isRequired,
   helptext: PropTypes.string,
+  defaultChecked: PropTypes.bool,
 };
 
 export default ReduxFormCheckbox;

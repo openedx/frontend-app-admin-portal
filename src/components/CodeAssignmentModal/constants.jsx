@@ -20,6 +20,7 @@ export const ASSIGNMENT_MODAL_FIELDS = {
     altText: 'More information',
     tooltipText: 'edX will remind learners to redeem their code 3, 10, and 19 days after you assign it.',
     label: 'Automate reminders',
+    defaultChecked: true,
   },
 };
 
