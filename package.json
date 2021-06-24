@@ -84,7 +84,7 @@
     "webpack-merge": "5.4.0"
   },
   "devDependencies": {
-    "@edx/frontend-build": "6.0.0",
+    "@edx/frontend-build": "^6.1.0",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
     "@testing-library/jest-dom": "5.12.0",
     "@testing-library/react": "10.4.9",
