@@ -6,10 +6,10 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { ADD_LEARNERS_STEP, ADD_COURSES_STEP, REVIEW_TITLE } from './constants';
 import ReviewList from './ReviewList';
 
-const EMAILS = {
-  singular: 'email',
-  plural: 'emails',
-  title: 'Emails',
+const LEARNERS = {
+  singular: 'learner',
+  plural: 'learners',
+  title: 'Learners',
 };
 
 const COURSES = {
@@ -46,7 +46,7 @@ const ReviewStep = ({ setCurrentStep }) => {
           rows={selectedEmails}
           accessor="userEmail"
           dispatch={emailsDispatch}
-          subject={EMAILS}
+          subject={LEARNERS}
           returnToSelection={() => setCurrentStep(ADD_LEARNERS_STEP)}
         />
       </Row>
