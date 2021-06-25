@@ -5,7 +5,7 @@ import { InstantSearch, Configure } from 'react-instantsearch-dom';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
-import { ADD_COURSES_TITLE } from './constants';
+import { ADD_COURSES_TITLE, ADD_COURSE_DESCRIPTION } from './constants';
 
 import CourseSearchResults from '../CourseSearchResults';
 
@@ -18,7 +18,7 @@ const AddCoursesStep = ({
   goToNextStep, enterpriseId, enterpriseSlug, subscription,
 }) => (
   <>
-    <p>Find courses in your subscription catalog that matter most for your learners.</p>
+    <p>{ADD_COURSE_DESCRIPTION}</p>
     <h2>{ADD_COURSES_TITLE}</h2>
     <SearchData>
       <InstantSearch

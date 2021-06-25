@@ -19,3 +19,11 @@ export const ALERT_MODAL_BODY_TEXT = `We were not able to enroll your learners. 
 export const SUPPORT_HYPERLINK_TEXT = 'contact enterprise customer support.';
 export const SUPPORT_EMAIL_SUBJECT = 'An error occurred during Subscription Enrollment for enterprise ';
 export const SUPPORT_EMAIL_BODY = 'The following error occurred when attempting to enroll learners: ';
+export const ADD_COURSE_DESCRIPTION = 'By enrolling your learners in courses, you connect your'
+                                      + ' learning community with the content that matters most '
+                                      + 'to them, and take the guesswork out of getting started '
+                                      + 'on the edX platform. To begin, select a course from '
+                                      + 'your subscription catalog.';
+export const ADD_LEARNERS_DESCRIPTION = 'Select learners with an active or pending subscription '
+                                        + 'license to enroll. If you wish to enroll additional '
+                                        + 'learners not shown, please first invite them under ';

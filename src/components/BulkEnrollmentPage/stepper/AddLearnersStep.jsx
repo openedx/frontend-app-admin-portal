@@ -12,7 +12,7 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import { Link } from 'react-router-dom';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
-import { ADD_LEARNERS_TITLE } from './constants';
+import { ADD_LEARNERS_TITLE, ADD_LEARNERS_DESCRIPTION } from './constants';
 import TableLoadingSkeleton from '../../TableComponent/TableLoadingSkeleton';
 import { BaseSelectWithContext, BaseSelectWithContextHeader } from '../table/BulkEnrollSelect';
 import BaseSelectionStatus from '../table/BaseSelectionStatus';
@@ -118,8 +118,7 @@ const AddLearnersStep = ({
   return (
     <>
       <p>
-        Select learners to enroll from the list of all learners with an active or pending subscription license below.
-        If you wish to enroll additional learners not shown, please first invite them under{' '}
+        {ADD_LEARNERS_DESCRIPTION}{' '}
         <Link to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscriptionUUID}`}>{LINK_TEXT}</Link>
       </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
