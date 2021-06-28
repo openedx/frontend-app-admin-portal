@@ -23,8 +23,7 @@ import {
   ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
 } from './constants';
 import ActionButton from './ActionButton';
-import CouponFilters from './CouponFilters';
-import CouponBulkActions from './CouponBulkActions';
+import FilterBulkActionRow from './FilterBulkActionRow';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -608,7 +607,7 @@ class CouponDetails extends React.Component {
         <div className="col">
           {isExpanded && (
             <>
-              <div className="details-header row no-gutters mb-3">
+              <div className="details-header row no-gutters mb-5">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
                   <h3>Coupon Details</h3>
                 </div>
@@ -624,21 +623,21 @@ class CouponDetails extends React.Component {
                   />
                 </div>
               </div>
-              <div className="row mb-1 mt-4">
-                <CouponFilters
-                  selectedToggle={selectedToggle}
-                  tableFilterSelectOptions={this.getTableFilterSelectOptions()}
-                  isTableLoading={this.isTableLoading()}
-                  handleToggleSelect={this.handleToggleSelect}
-                />
-                <CouponBulkActions
-                  value={bulkActionToggle}
-                  onChange={this.handleBulkActionChange}
-                  options={this.getBulkActionSelectOptions()}
-                  disabled={this.isBulkAssignSelectDisabled()}
-                  handleBulkAction={this.handleBulkAction}
-                />
-              </div>
+              <FilterBulkActionRow
+                couponFilterProps={{
+                  selectedToggle,
+                  tableFilterSelectOptions: this.getTableFilterSelectOptions(),
+                  isTableLoading: this.isTableLoading(),
+                  handleToggleSelect: this.handleToggleSelect,
+                }}
+                couponBulkActionProps={{
+                  value: bulkActionToggle,
+                  onChange: this.handleBulkActionChange,
+                  options: this.getBulkActionSelectOptions(),
+                  disabled: this.isBulkAssignSelectDisabled(),
+                  handleBulkAction: this.handleBulkAction,
+                }}
+              />
               {this.hasStatusAlert() && (
                 <div className="row mb-3">
                   <div className="col">
