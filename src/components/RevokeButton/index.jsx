@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
+import { ACTIONS } from '../CouponDetails/constants';
 
 const RevokeButton = ({
   couponId,
@@ -12,7 +13,7 @@ const RevokeButton = ({
   onClose,
 }) => (
   <ActionButtonWithModal
-    buttonLabel="Revoke"
+    buttonLabel={ACTIONS.revoke.label}
     buttonClassName="revoke-btn btn-sm p-0"
     variant="link"
     renderModal={({ closeModal }) => (

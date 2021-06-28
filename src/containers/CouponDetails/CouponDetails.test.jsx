@@ -1,21 +1,28 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import renderer from 'react-test-renderer';
+import userEvent from '@testing-library/user-event';
+import { within } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+
+import '@testing-library/jest-dom/extend-expect';
 import { StatusAlert } from '@edx/paragon';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
-import CouponDetailsComponent from '../../components/CouponDetails';
 import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import CodeReminderModal from '../CodeReminderModal';
 import CodeAssignmentModal from '../../components/CodeAssignmentModal';
+import { renderWithRouter } from '../../components/test/testUtils';
+import {
+  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+} from '../../components/CouponDetails/constants';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -115,6 +122,7 @@ const sampleCodeData = {
   last_reminder_date: 'June 22, 2020 12:01',
   revocation_date: '',
   error: null,
+  is_public: false,
 };
 
 const sampleTableData = {
@@ -155,76 +163,68 @@ describe('CouponDetails container', () => {
   };
 
   describe('renders', () => {
-    it.skip('with collapsed coupon details', () => {
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+    it('does not display contents when not expanded', () => {
+      render(<CouponDetailsWrapper store={store} isExpanded={false} />);
+      expect(screen.queryByText('Coupon Details')).not.toBeInTheDocument();
     });
-
-    it.skip('with expanded coupon details', () => {
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper isExpanded />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+    it('renders an expanded page', () => {
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
+      expect(screen.getByText('Coupon Details')).toBeInTheDocument();
+      expect(screen.getByText('Download full report (CSV)')).toBeInTheDocument();
     });
-
-    it.skip('with error', () => {
-      const tree = renderer.create((
-        <CouponDetailsWrapper
-          couponData={{
-            ...initialCouponData,
-            errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
-          }}
-          isExpanded
-        />
-      ));
-      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'unredeemed' });
-      expect(tree.toJSON()).toMatchSnapshot();
-    });
-
-    it.skip('with table data', () => {
+    it('renders the unassigned table by default', () => {
       store = mockStore({
         ...initialState,
         table: {
           'coupon-details': sampleTableData,
         },
       });
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper
-            store={store}
-            isExpanded
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
+      expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
+      DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
+        expect(screen.getByText(label)).toBeInTheDocument();
+      });
     });
 
-    it.skip('with assignment and reminder dates table data', () => {
+    test.each([
+      [COUPON_FILTERS.unassigned.value],
+      [COUPON_FILTERS.unredeemed.value],
+      [COUPON_FILTERS.partiallyRedeemed.value],
+      [COUPON_FILTERS.redeemed.value],
+    ])('renders the correct table columns for each coupon filter type %s', (filterType) => {
       store = mockStore({
         ...initialState,
         table: {
           'coupon-details': sampleTableData,
         },
       });
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper
-            store={store}
-            isExpanded
-          />
-        ));
-      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'unredeemed' });
-      expect(tree.toJSON()).toMatchSnapshot();
-      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'partially-redeemed' });
-      expect(tree.toJSON()).toMatchSnapshot();
-      tree.root.findByType(CouponDetailsComponent).instance.setState({ selectedToggle: 'redeemed' });
-      expect(tree.toJSON()).toMatchSnapshot();
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
+      userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
+
+      DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
+        expect(screen.getByText(label)).toBeInTheDocument();
+      });
+    });
+
+    it('shows Assign button for an available coupon', () => {
+      store = mockStore({
+        ...initialState,
+        table: {
+          'coupon-details': sampleTableData,
+        },
+      });
+
+      renderWithRouter(<CouponDetailsWrapper
+        store={store}
+        couponData={{
+          ...initialCouponData,
+        }}
+        isExpanded
+      />);
+
+      const table = document.getElementsByTagName('table')[0];
+      // getByText will throw an error if the text is not present
+      within(table).getByText(ACTIONS.assign.label);
     });
 
     it.skip('does not show Assign button for an unavailable coupon', () => {
@@ -235,19 +235,17 @@ describe('CouponDetails container', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <CouponDetailsWrapper
-            store={store}
-            couponData={{
-              ...initialCouponData,
-              available: false,
-            }}
-            isExpanded
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      renderWithRouter(<CouponDetailsWrapper
+        store={store}
+        couponData={{
+          ...initialCouponData,
+          available: false,
+        }}
+        isExpanded
+      />);
+
+      const table = document.getElementsByTagName('table')[0];
+      expect(within(table).queryByText(ACTIONS.assign.label)).toBeNull();
     });
   });
 
@@ -345,8 +343,8 @@ describe('CouponDetails container', () => {
     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
   });
 
-  it('sets disabled to true when unassignedCodes === 0', () => {
-    wrapper = mount((
+  it('disables bulk action select when unassignedCodes === 0', () => {
+    renderWithRouter((
       <CouponDetailsWrapper
         couponData={{
           ...initialCouponData,
@@ -355,11 +353,10 @@ describe('CouponDetails container', () => {
         isExpanded
       />
     ));
-    expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
-    expect(wrapper.find('select').last().prop('disabled')).toEqual(true);
+    expect(screen.getByLabelText('Bulk action')).toBeDisabled();
   });
 
-  it('sets disabled to false when unassignedCodes !== 0', () => {
+  it('enables bulk action select when unassignedCodes !== 0', () => {
     store = mockStore({
       ...initialState,
       table: {
@@ -367,10 +364,9 @@ describe('CouponDetails container', () => {
       },
     });
 
-    wrapper = mount(<CouponDetailsWrapper store={store} isExpanded />);
+    renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
 
-    expect(wrapper.find('select').last().prop('name')).toEqual('bulk-action');
-    expect(wrapper.find('select').last().prop('disabled')).toEqual(false);
+    expect(screen.getByLabelText('Bulk action')).toBeEnabled();
   });
 
   it('removes remind button in case overview has errors', () => {
@@ -392,16 +388,15 @@ describe('CouponDetails container', () => {
   describe('modals', () => {
     let spy;
 
-    const openModalByActionButton = ({ key, label }) => {
+    const openModalByActionButton = ({ key }) => {
+      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
+      actionButton.simulate('click');
+    };
+
+    const testModalActionButton = ({ key, label }) => {
       const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
       expect(actionButton.text()).toEqual(label);
       actionButton.simulate('click');
-      // TODO: The remind/revoke buttons now manage their modal state in their
-      // own components, so we only need to worry about the `assign` action now.
-      // We might also want to move the Assign button to its own component as well.
-      if (key === 'assign') {
-        expect(wrapper.find('CouponDetails').instance().state.modals[key]).toBeTruthy();
-      }
     };
 
     beforeEach(() => {
@@ -426,28 +421,32 @@ describe('CouponDetails container', () => {
     });
 
     it('sets remind modal state on Remind button click', () => {
-      openModalByActionButton({
+      testModalActionButton({
         key: 'remind',
         label: 'Remind',
       });
     });
 
     it('sets revoke modal state on Revoke button click', () => {
-      openModalByActionButton({
+      testModalActionButton({
         key: 'revoke',
         label: 'Revoke',
       });
     });
 
     it('sets assignment modal state on Assign button click', () => {
-      openModalByActionButton({
+      testModalActionButton({
         key: 'assignment',
         label: 'Assign',
       });
+      // TODO: The remind/revoke buttons now manage their modal state in their
+      // own components, so we only need to worry about the `assign` action now.
+      // We might also want to move the Assign button to its own component as well.
+      expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
     });
 
     it('shows correct remaining uses on assignment modal', () => {
-      openModalByActionButton({
+      testModalActionButton({
         key: 'assignment',
         label: 'Assign',
       });
@@ -500,16 +499,17 @@ describe('CouponDetails container', () => {
 
       // fake successful code assignment
       wrapper.find(CodeAssignmentModal).prop('onSuccess')();
-      expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeTruthy();
-
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
-      wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click');
+      const statusAlert = wrapper.find(StatusAlert);
+      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
+      statusAlert.find('.alert-dialog .btn').simulate('click');
 
-      expect(wrapper.find('CouponDetails').instance().state.isCodeAssignmentSuccessful).toBeFalsy();
-      expect(wrapper.find('CouponDetails').instance().state.selectedToggle).toEqual('unredeemed');
+      // after alert is dismissed
+      expect(wrapper.find(StatusAlert)).toHaveLength(0);
+      expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);
@@ -524,12 +524,12 @@ describe('CouponDetails container', () => {
 
       // fake successful code assignment
       wrapper.find('CodeRevokeModal').prop('onSuccess')();
-      expect(wrapper.find('CouponDetails').instance().state.isCodeRevokeSuccessful).toBeTruthy();
-
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(StatusAlert);
+      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);
@@ -544,12 +544,12 @@ describe('CouponDetails container', () => {
 
       // fake successful code assignment
       wrapper.find(CodeReminderModal).prop('onSuccess')();
-      expect(wrapper.find('CouponDetails').instance().state.isCodeReminderSuccessful).toBeTruthy();
-
       wrapper.update();
 
       // success status alert
-      expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(StatusAlert);
+      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
 
       // does not fetch overview data for coupon
       expect(spy).toBeCalledTimes(0);

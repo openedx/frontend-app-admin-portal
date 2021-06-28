@@ -216,7 +216,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -309,7 +309,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -418,7 +418,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -543,7 +543,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -777,7 +777,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -870,7 +870,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -979,7 +979,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1104,7 +1104,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1338,7 +1338,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1431,7 +1431,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1540,7 +1540,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1665,7 +1665,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1903,7 +1903,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -1996,7 +1996,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2105,7 +2105,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2230,7 +2230,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2617,7 +2617,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2710,7 +2710,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2819,7 +2819,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -2944,7 +2944,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3331,7 +3331,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3424,7 +3424,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3533,7 +3533,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3658,7 +3658,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3896,7 +3896,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -3989,7 +3989,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4098,7 +4098,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4223,7 +4223,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4461,7 +4461,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4554,7 +4554,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4663,7 +4663,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -4788,7 +4788,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5026,7 +5026,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5119,7 +5119,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5228,7 +5228,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5353,7 +5353,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5587,7 +5587,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5680,7 +5680,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5789,7 +5789,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>
@@ -5914,7 +5914,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   className="d-flex justify-content-between align-items-center"
                 >
                   <div
-                    className="details-btn-text"
+                    className="details-btn-text mr-1"
                   >
                     Details
                   </div>

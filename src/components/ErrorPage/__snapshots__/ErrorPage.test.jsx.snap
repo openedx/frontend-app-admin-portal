@@ -69,13 +69,9 @@ exports[`<ErrorPage /> renders correctly for 403 errors 1`] = `
             For assistance, please contact the edX Customer Success team at
              
             <a
+              className="default-link standalone-link"
               href="mailto:customersuccess@edx.org"
               onClick={null}
-              style={
-                Object {
-                  "textDecoration": "underline",
-                }
-              }
               target="_self"
             >
               customersuccess@edx.org

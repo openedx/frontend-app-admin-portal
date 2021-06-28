@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Button, CheckBox, Icon, InputSelect,
+  Button, CheckBox, Icon,
 } from '@edx/paragon';
 
 import TableContainer from '../../containers/TableContainer';
@@ -11,14 +11,20 @@ import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import StatusAlert from '../StatusAlert';
-import RemindButton from '../RemindButton';
-import RevokeButton from '../RevokeButton';
 
-import { features } from '../../config';
-import { SINGLE_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import {
+  getBASelectOptions, getFilterOptions, getFirstNonDisabledOption,
+  shouldShowSelectAllStatusAlert,
+} from './helpers';
+import {
+  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+} from './constants';
+import ActionButton from './ActionButton';
+import CouponFilters from './CouponFilters';
+import CouponBulkActions from './CouponBulkActions';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -30,51 +36,11 @@ class CouponDetails extends React.Component {
     this.hasAllTableRowsSelected = false;
     this.selectedTableRows = {};
 
-    const tableColumns = [
-      {
-        label: (
-          <CheckBox
-            id="select-all-codes"
-            name="select all codes"
-            label={
-              <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
-            }
-            onChange={(checked) => {
-              this.hasAllTableRowsSelected = checked;
-              this.handleSelectAllCodes(checked);
-            }}
-            ref={this.selectAllCheckBoxRef}
-          />
-        ),
-        key: 'select',
-      },
-      {
-        label: 'Redemptions',
-        key: 'redemptions',
-      },
-      {
-        label: 'Code',
-        key: 'code',
-      },
-      {
-        label: 'Assignments Remaining',
-        key: 'assignments_remaining',
-      },
-      {
-        label: 'Actions',
-        key: 'actions',
-      },
-    ];
-
-    if (features.CODE_VISIBILITY) {
-      tableColumns.splice(3, 0, {
-        label: 'Visibility',
-        key: 'is_public',
-      });
-    }
+    const tableColumns = this.getNewColumns(COUPON_FILTERS.unassigned.value);
 
     this.state = {
-      selectedToggle: 'unassigned',
+      selectedToggle: COUPON_FILTERS.unassigned.value,
+      bulkActionToggle: ACTIONS.assign.value,
       tableColumns,
       modals: {
         assignment: null,
@@ -82,7 +48,6 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
       isCodeRevokeSuccessful: undefined,
-      isCodeVisibilitySuccessful: undefined,
       doesCodeActionHaveErrors: undefined,
       selectedCodes: [],
       hasAllCodesSelected: false,
@@ -99,11 +64,12 @@ class CouponDetails extends React.Component {
 
     this.formatCouponData = this.formatCouponData.bind(this);
     this.handleToggleSelect = this.handleToggleSelect.bind(this);
-    this.handleVisibilitySelect = this.handleVisibilitySelect.bind(this);
-    this.handleBulkActionSelect = this.handleBulkActionSelect.bind(this);
+    this.handleBulkAction = this.handleBulkAction.bind(this);
     this.resetModals = this.resetModals.bind(this);
     this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
     this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
+    this.setModalState = this.setModalState.bind(this);
+    this.handleBulkActionChange = this.handleBulkActionChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -120,184 +86,78 @@ class CouponDetails extends React.Component {
     }
   }
 
-  getTableFilterSelectOptions() {
-    const { couponData: { usage_limitation: usageLimitation } } = this.props;
-    const shouldHidePartialRedeem = [SINGLE_USE, ONCE_PER_CUSTOMER].includes(usageLimitation);
+  getNewColumns(selectedToggle) {
+    const selectColumn = {
+      label: (
+        <CheckBox
+          id="select-all-codes"
+          name="select all codes"
+          label={
+            <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
+            }
+          onChange={(checked) => {
+            this.hasAllTableRowsSelected = checked;
+            this.handleSelectAllCodes(checked);
+          }}
+          ref={this.selectAllCheckBoxRef}
+        />
+      ),
+      key: 'select',
+    };
 
-    let options = [{
-      label: 'Unassigned',
-      value: 'unassigned',
-    }, {
-      label: 'Unredeemed',
-      value: 'unredeemed',
-    }, {
-      label: 'Partially Redeemed',
-      value: 'partially-redeemed',
-    }, {
-      label: 'Redeemed',
-      value: 'redeemed',
-    }];
-
-    if (shouldHidePartialRedeem) {
-      options = options.filter(option => option.value !== 'partially-redeemed');
+    switch (selectedToggle) {
+      case COUPON_FILTERS.unassigned.value:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unassigned.value],
+        ];
+      case COUPON_FILTERS.unredeemed.value:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unredeemed.value],
+        ];
+      case COUPON_FILTERS.partiallyRedeemed.value:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.partiallyRedeemed.value],
+        ];
+      case COUPON_FILTERS.redeemed.value:
+        return [
+          selectColumn,
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.redeemed.value],
+        ];
+      default:
+        return this.tableColumns;
     }
-
-    return options;
   }
 
-  getTableFilterVisibilitySelectionOptions() {
-    return [{
-      label: 'Both',
-      value: undefined,
-    }, {
-      label: 'Public',
-      value: 'public',
-    }, {
-      label: 'Private',
-      value: 'private',
-    }];
+  getTableFilterSelectOptions() {
+    const { couponData: { usage_limitation: usageLimitation } } = this.props;
+    return getFilterOptions(usageLimitation);
   }
 
   getBulkActionSelectOptions() {
     const { selectedToggle, selectedCodes } = this.state;
+
     const {
       couponData: { num_unassigned: unassignedCodes, available: couponAvailable },
       couponDetailsTable: { data: tableData },
     } = this.props;
 
-    const isAssignView = selectedToggle === 'unassigned';
-    const isRedeemedView = selectedToggle === 'redeemed';
+    const isAssignView = selectedToggle === COUPON_FILTERS.unassigned.value;
+    const isRedeemedView = selectedToggle === COUPON_FILTERS.redeemed.value;
     const hasTableData = tableData && tableData.count;
-    const hasPublicCodes = selectedCodes.filter(code => code.is_public).length > 0;
 
-    const bulkActionSelectOptions = [{
-      label: 'Assign',
-      value: 'assign',
-      disabled: hasPublicCodes || !isAssignView || isRedeemedView || !hasTableData || !couponAvailable || unassignedCodes === 0, // eslint-disable-line max-len
-    }, {
-      label: 'Remind',
-      value: 'remind',
-      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable,
-    }, {
-      label: 'Revoke',
-      value: 'revoke',
-      disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || selectedCodes.length === 0, // eslint-disable-line max-len
-    }];
-
-    if (features.CODE_VISIBILITY) {
-      bulkActionSelectOptions.push({
-        label: 'Make Public',
-        value: 'make_public',
-        disabled: !hasTableData || selectedCodes.length === 0,
-      });
-      bulkActionSelectOptions.push({
-        label: 'Make Private',
-        value: 'make_private',
-        disabled: !hasTableData || selectedCodes.length === 0,
-      });
-    }
+    const bulkActionSelectOptions = getBASelectOptions({
+      isAssignView,
+      isRedeemedView,
+      hasTableData,
+      couponAvailable,
+      numUnassignedCodes: unassignedCodes.length,
+      numSelectedCodes: selectedCodes.length,
+    });
 
     return bulkActionSelectOptions;
-  }
-
-  getBulkActionSelectValue() {
-    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
-    const firstNonDisabledOption = bulkActionSelectOptions.find(option => !option.disabled);
-
-    if (firstNonDisabledOption) {
-      return firstNonDisabledOption.value;
-    }
-
-    return bulkActionSelectOptions[0].value;
-  }
-
-  getActionButton(code) {
-    const {
-      couponData: {
-        id,
-        errors,
-        available: couponAvailable,
-        title: couponTitle,
-      },
-    } = this.props;
-    const { selectedToggle } = this.state;
-    const {
-      assigned_to: assignedTo,
-      is_public: isPublic,
-      redemptions,
-    } = code;
-
-    let remainingUses = redemptions.total - redemptions.used;
-
-    // Don't show `Assign/Remind/Revoke` buttons for an unavailable coupon
-    if (!couponAvailable) {
-      return null;
-    }
-
-    // Don't show a button if all total redemptions have been used
-    if (redemptions.used === redemptions.total) {
-      return null;
-    }
-
-    const codeHasError = errors.find(errorItem => errorItem.code === code.code);
-    if (assignedTo) {
-      return (
-        <>
-          {!codeHasError && (
-            <>
-              <RemindButton
-                couponId={id}
-                couponTitle={couponTitle}
-                data={{
-                  code: code.code,
-                  email: code.assigned_to,
-                }}
-                onSuccess={response => this.handleCodeActionSuccess('remind', response)}
-              />
-              {' | '}
-            </>
-          )}
-          <RevokeButton
-            couponId={id}
-            couponTitle={couponTitle}
-            data={{
-              assigned_to: code.assigned_to,
-              code: code.code,
-            }}
-            onSuccess={response => this.handleCodeActionSuccess('revoke', response)}
-          />
-        </>
-      );
-    }
-
-    if (isPublic) {
-      return null;
-    }
-
-    // exclude existing assignments of code
-    if (selectedToggle === 'unassigned') {
-      remainingUses -= redemptions.num_assignments;
-    }
-
-    return (
-      <Button
-        variant="link"
-        className="assignment-btn btn-sm p-0"
-        onClick={() => this.setModalState({
-          key: 'assignment',
-          options: {
-            couponId: id,
-            title: couponTitle,
-            data: {
-              code,
-              remainingUses,
-            },
-          },
-        })}
-      >
-        Assign
-      </Button>
-    );
   }
 
   setModalState({ key, options }) {
@@ -323,6 +183,14 @@ class CouponDetails extends React.Component {
     return `select code ${code}`;
   };
 
+  updateBulkActionSelectValue() {
+    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
+    const bulkActionToggle = getFirstNonDisabledOption(bulkActionSelectOptions);
+    this.setState({
+      bulkActionToggle,
+    });
+  }
+
   reset() {
     this.resetModals();
     this.resetCodeActionStatus();
@@ -337,25 +205,9 @@ class CouponDetails extends React.Component {
   shouldShowSelectAllStatusAlert() {
     const { couponDetailsTable: { data: tableData } } = this.props;
     const { selectedToggle, selectedCodes, hasAllCodesSelected } = this.state;
-
-    if (!tableData || selectedToggle !== 'unassigned') {
-      return false;
-    }
-
-    if (hasAllCodesSelected) {
-      return true;
-    }
-
-    return (
-      selectedCodes.length === tableData.results.length
-      && selectedCodes.length !== tableData.count
-    );
-  }
-
-  shouldShowVisibilityStatusAlert() {
-    const { selectedCodes } = this.state;
-    return features.CODE_VISIBILITY && (selectedCodes.some(code => code.is_public)
-      && selectedCodes.some(code => !code.is_public));
+    return shouldShowSelectAllStatusAlert({
+      tableData, selectedToggle, selectedCodes, hasAllCodesSelected,
+    });
   }
 
   hasStatusAlert() {
@@ -373,7 +225,6 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
-      isCodeVisibilitySuccessful,
       doesCodeActionHaveErrors,
     } = this.state;
 
@@ -383,107 +234,28 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
-      isCodeVisibilitySuccessful,
       doesCodeActionHaveErrors,
       this.shouldShowSelectAllStatusAlert(),
-      this.shouldShowVisibilityStatusAlert(),
     ].some(item => item);
 
     return !this.isTableLoading() && hasStatusAlert;
   }
 
   handleToggleSelect(newValue) {
-    const { tableColumns, selectedToggle } = this.state;
+    const { selectedToggle } = this.state;
 
     const value = newValue || selectedToggle;
-    const assignedToColumnLabel = value === 'unredeemed' ? 'Assigned To' : 'Redeemed By';
-
-    const getColumnIndexForKey = key => tableColumns.findIndex(column => column.key === key);
-
-    // `assigned_to, assignment_date, last_reminder_date` columns
-    if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') === -1) {
-      // Add columns if they donot already exist
-      tableColumns.splice(1, 0, {
-        label: assignedToColumnLabel,
-        key: 'assigned_to',
-      });
-      tableColumns.splice(tableColumns.length - 1, 0, {
-        label: 'Last Reminder Date',
-        key: 'last_reminder_date',
-      });
-      tableColumns.splice(tableColumns.length - 2, 0, {
-        label: 'Assignment Date',
-        key: 'assignment_date',
-      });
-    } else if (value !== 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
-      // Update `assigned_to` column with the appropriate label
-      tableColumns[1].label = assignedToColumnLabel;
-    } else if (value === 'unassigned' && getColumnIndexForKey('assigned_to') > -1) {
-      // Remove columns if they already exist
-      tableColumns.splice(getColumnIndexForKey('assigned_to'), 1);
-      tableColumns.splice(getColumnIndexForKey('last_reminder_date'), 1);
-      tableColumns.splice(getColumnIndexForKey('assignment_date'), 1);
-    }
-
-    // `assignments_remaining` column
-    if (value === 'unassigned' && getColumnIndexForKey('assignments_remaining') === -1) {
-      // Add `assignments_remaining` column if it doesn't already exist.
-      tableColumns.splice(3, 0, {
-        label: 'Assignments Remaining',
-        key: 'assignments_remaining',
-      });
-    } else if (value !== 'unassigned' && getColumnIndexForKey('assignments_remaining') > -1) {
-      // Remove `assignments_remaining` column if it already exists.
-      tableColumns.splice(getColumnIndexForKey('assignments_remaining'), 1);
-    }
-
-    // `is_public` column
-    if (features.CODE_VISIBILITY && getColumnIndexForKey('is_public') === -1) {
-      // Add `is_public` column if it doesn't already exist
-      tableColumns.splice(tableColumns.length, 0, {
-        label: 'Visibility',
-        key: 'is_public',
-      });
-    }
-
-    // `actions` column
-    if (value !== 'redeemed' && getColumnIndexForKey('actions') === -1) {
-      // Add `actions` column if it doesn't already exist
-      tableColumns.splice(tableColumns.length, 0, {
-        label: 'Actions',
-        key: 'actions',
-      });
-    } else if (value === 'redeemed' && getColumnIndexForKey('actions') > -1) {
-      // Remove `actions` column if it already exists
-      tableColumns.splice(getColumnIndexForKey('actions'), 1);
-    }
 
     this.resetCodeActionStatus();
     updateUrl({ page: undefined });
     this.setState({
-      tableColumns,
+      tableColumns: this.getNewColumns(value),
       selectedToggle: value,
       selectedCodes: [],
       hasAllCodesSelected: false,
     }, () => {
       this.updateSelectAllCheckBox();
-    });
-  }
-
-  handleVisibilitySelect(newValue) {
-    const { tableColumns, visibilityToggle } = this.state;
-    // Paragon InputSelect will use the `label` if the value isn't defined
-    // this will intentionally keep the value set as undefined so that qs.stringify
-    // won't send along a value we didn't set to the API.
-    const value = newValue === 'Both' ? undefined : newValue || visibilityToggle;
-    this.resetCodeActionStatus();
-    this.setState({
-      tableColumns,
-      visibilityToggle: value,
-      selectedCodes: [],
-      hasAllCodesSelected: false,
-    }, () => {
-      this.updateSelectAllCheckBox();
+      this.updateBulkActionSelectValue();
     });
   }
 
@@ -508,7 +280,7 @@ class CouponDetails extends React.Component {
     // get around this, we get the DOM node of the checkbox and replace the `aria-checked`
     // attribute appropriately.
     //
-    // TODO: We may want to update Paragon `CheckBox` component to handle mixed state.
+    // TODO: Paragon now has an IndeterminateCheckbox that can be used here.
     const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
     const selectAllCheckBoxDOM = (
       selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
@@ -535,22 +307,17 @@ class CouponDetails extends React.Component {
     let doesCodeActionHaveErrors;
 
     switch (action) {
-      case 'assign': {
+      case ACTIONS.assign.value: {
         stateKey = 'isCodeAssignmentSuccessful';
         break;
       }
-      case 'revoke': {
+      case ACTIONS.revoke.value: {
         stateKey = 'isCodeRevokeSuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
-      case 'remind': {
+      case ACTIONS.remind.value: {
         stateKey = 'isCodeReminderSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
-        break;
-      }
-      case 'visibility': {
-        stateKey = 'isCodeVisibilitySuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
@@ -561,7 +328,7 @@ class CouponDetails extends React.Component {
       }
     }
 
-    if (action === 'assign' || action === 'revoke') {
+    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
       this.updateCouponOverviewData();
     }
 
@@ -577,6 +344,12 @@ class CouponDetails extends React.Component {
         this.updateSelectAllCheckBox();
       });
     }
+  }
+
+  handleBulkActionChange(newValue) {
+    this.setState({
+      bulkActionToggle: newValue,
+    });
   }
 
   handleCodeSelection({ checked, code }) {
@@ -619,7 +392,8 @@ class CouponDetails extends React.Component {
   }
 
   formatCouponData(data) {
-    const { selectedCodes } = this.state;
+    const { couponData } = this.props;
+    const { selectedCodes, selectedToggle } = this.state;
 
     return data.map(code => ({
       ...code,
@@ -634,8 +408,13 @@ class CouponDetails extends React.Component {
       assignments_remaining: `${code.redemptions.total - code.redemptions.used - code.redemptions.num_assignments}`,
       assignment_date: `${code.assignment_date}`,
       last_reminder_date: `${code.last_reminder_date}`,
-      is_public: code.is_public ? 'Public' : 'Private',
-      actions: this.getActionButton(code),
+      actions: <ActionButton
+        code={code}
+        couponData={couponData}
+        selectedToggle={selectedToggle}
+        handleCodeActionSuccess={this.handleCodeActionSuccess}
+        setModalState={this.setModalState}
+      />,
       select: (
         <CheckBox
           name={`select code ${code.code}`}
@@ -658,7 +437,7 @@ class CouponDetails extends React.Component {
 
   isTableLoading() {
     const { couponDetailsTable } = this.props;
-    return couponDetailsTable && couponDetailsTable.loading;
+    return !!(couponDetailsTable && couponDetailsTable.loading);
   }
 
   isBulkAssignSelectDisabled() {
@@ -667,7 +446,7 @@ class CouponDetails extends React.Component {
     return this.isTableLoading() || options.every(option => option.disabled);
   }
 
-  handleBulkActionSelect() {
+  handleBulkAction() {
     const {
       couponData: {
         id,
@@ -680,12 +459,10 @@ class CouponDetails extends React.Component {
       hasAllCodesSelected,
       selectedCodes,
       selectedToggle,
+      bulkActionToggle,
     } = this.state;
 
-    const ref = this.bulkActionSelectRef && this.bulkActionSelectRef.current;
-    const selectedBulkAction = ref && ref.value;
-
-    if (selectedBulkAction === 'assign') {
+    if (bulkActionToggle === ACTIONS.assign.value) {
       this.setModalState({
         key: 'assignment',
         options: {
@@ -700,7 +477,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'revoke') {
+    } else if (bulkActionToggle === ACTIONS.revoke.value) {
       this.setModalState({
         key: 'revoke',
         options: {
@@ -712,7 +489,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'remind') {
+    } else if (bulkActionToggle === ACTIONS.remind.value) {
       this.setModalState({
         key: 'remind',
         options: {
@@ -725,16 +502,6 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (selectedBulkAction === 'make_public' || selectedBulkAction === 'make_private') {
-      const isPublic = selectedBulkAction === 'make_public';
-      const codeIds = selectedCodes.map(selectedCode => selectedCode.code);
-      const options = {
-        couponId: id,
-        codeIds,
-        isPublic,
-        onSuccess: response => this.handleCodeActionSuccess('visibility', response),
-      };
-      this.props.updateCodeVisibility(options);
     }
   }
 
@@ -753,7 +520,6 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful: undefined,
       isCodeReminderSuccessful: undefined,
       isCodeRevokeSuccessful: undefined,
-      isCodeVisibilitySuccessful: undefined,
       doesCodeActionHaveErrors: undefined,
     });
   }
@@ -813,11 +579,10 @@ class CouponDetails extends React.Component {
       isCodeAssignmentSuccessful,
       isCodeReminderSuccessful,
       isCodeRevokeSuccessful,
-      isCodeVisibilitySuccessful,
       doesCodeActionHaveErrors,
       refreshIndex,
       hasAllCodesSelected,
-      visibilityToggle,
+      bulkActionToggle,
     } = this.state;
 
     const {
@@ -859,49 +624,20 @@ class CouponDetails extends React.Component {
                   />
                 </div>
               </div>
-              <div className="row mb-3">
-                <div className="toggles col-12 col-md-8">
-                  <InputSelect
-                    className="mt-1"
-                    name="table-view"
-                    label="Filter by Code Status:"
-                    value={selectedToggle}
-                    options={this.getTableFilterSelectOptions()}
-                    disabled={this.isTableLoading()}
-                    onChange={this.handleToggleSelect}
-                  />
-                  {features.CODE_VISIBILITY && (
-                    <div className="d-inline pl-4">
-                      <InputSelect
-                        className="mt-1"
-                        name="table-view"
-                        label="Filter by Visibility:"
-                        value={visibilityToggle}
-                        options={this.getTableFilterVisibilitySelectionOptions()}
-                        disabled={this.isTableLoading()}
-                        onChange={this.handleVisibilitySelect}
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0">
-                  <InputSelect
-                    inputRef={this.bulkActionSelectRef}
-                    className="mt-1"
-                    name="bulk-action"
-                    label="Bulk Action:"
-                    value={this.getBulkActionSelectValue()}
-                    options={this.getBulkActionSelectOptions()}
-                    disabled={this.isBulkAssignSelectDisabled()}
-                  />
-                  <Button
-                    className="ml-2"
-                    onClick={this.handleBulkActionSelect}
-                    disabled={this.isBulkAssignSelectDisabled()}
-                  >
-                    Go
-                  </Button>
-                </div>
+              <div className="row mb-1 mt-4">
+                <CouponFilters
+                  selectedToggle={selectedToggle}
+                  tableFilterSelectOptions={this.getTableFilterSelectOptions()}
+                  isTableLoading={this.isTableLoading()}
+                  handleToggleSelect={this.handleToggleSelect}
+                />
+                <CouponBulkActions
+                  value={bulkActionToggle}
+                  onChange={this.handleBulkActionChange}
+                  options={this.getBulkActionSelectOptions()}
+                  disabled={this.isBulkAssignSelectDisabled()}
+                  handleBulkAction={this.handleBulkAction}
+                />
               </div>
               {this.hasStatusAlert() && (
                 <div className="row mb-3">
@@ -937,7 +673,7 @@ class CouponDetails extends React.Component {
                       ),
                     })}
                     {isCodeAssignmentSuccessful && this.renderSuccessMessage({
-                      title: 'Successfully assigned code(s)',
+                      title: SUCCESS_MESSAGES.assign,
                       message: (
                         <>
                           To view the newly assigned code(s), filter by
@@ -958,20 +694,14 @@ class CouponDetails extends React.Component {
                       ),
                     })}
                     {isCodeReminderSuccessful && this.renderSuccessMessage({
-                      message: 'Reminder request processed.',
+                      message: SUCCESS_MESSAGES.remind,
                     })}
                     {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                      message: 'Successfully revoked code(s)',
-                    })}
-                    {isCodeVisibilitySuccessful && this.renderSuccessMessage({
-                      message: 'Successfully changed visibility for code(s)',
+                      message: SUCCESS_MESSAGES.revoke,
                     })}
                     {doesCodeActionHaveErrors && this.renderErrorMessage({
                       title: 'An unexpected error has occurred. Please try again or contact your Customer Success Manager.',
                       message: '',
-                    })}
-                    {this.shouldShowVisibilityStatusAlert() && this.renderInfoMessage({
-                      message: "You've selected one or more public codes. If you wish to assign codes in bulk, please select only private codes.",
                     })}
                     {this.shouldShowSelectAllStatusAlert() && this.renderInfoMessage({
                       message: (
@@ -997,14 +727,17 @@ class CouponDetails extends React.Component {
               <TableContainer
                 // Setting a key to force a new instance of the TableContainer
                 // when the selected toggle and/or the refresh index changes.
-                key={`table-${selectedToggle}-${visibilityToggle}-${refreshIndex}`}
+                key={`table-${selectedToggle}--${refreshIndex}`}
                 id="coupon-details"
                 className="coupon-details-table"
-                fetchMethod={(enterpriseId, options) => EcommerceApiService.fetchCouponDetails(id, {
-                  ...options,
-                  code_filter: selectedToggle,
-                  visibility_filter: visibilityToggle,
-                })}
+                fetchMethod={(enterpriseId, options) => {
+                  const apiOptions = {
+                    ...options,
+                    code_filter: selectedToggle,
+                  };
+
+                  return EcommerceApiService.fetchCouponDetails(id, apiOptions);
+                }}
                 columns={tableColumns}
                 formatData={this.formatCouponData}
               />
@@ -1047,7 +780,6 @@ CouponDetails.defaultProps = {
 CouponDetails.propTypes = {
   // props from container
   fetchCouponOrder: PropTypes.func.isRequired,
-  updateCodeVisibility: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({}),
     loading: PropTypes.bool,

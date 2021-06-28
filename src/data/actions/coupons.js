@@ -63,7 +63,7 @@ const fetchCouponOrders = options => (
         logError(error);
         // This endpoint returns a 404 if no data exists,
         // so we convert it to an empty response here.
-        if (error.response.status === 404) {
+        if (error?.response?.status === 404) {
           dispatch(fetchCouponOrdersSuccess({ results: [] }));
           return;
         }
