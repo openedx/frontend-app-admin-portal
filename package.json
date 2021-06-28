@@ -25,7 +25,7 @@
     "@edx/frontend-enterprise-catalog-search": "0.1.10",
     "@edx/frontend-enterprise-logistration": "0.1.11",
     "@edx/frontend-enterprise-utils": "0.1.7",
-    "@edx/frontend-platform":"1.11.0",
+    "@edx/frontend-platform": "1.11.0",
     "@edx/paragon": "14.16.2",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",

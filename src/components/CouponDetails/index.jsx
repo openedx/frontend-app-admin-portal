@@ -20,7 +20,7 @@ import {
   shouldShowSelectAllStatusAlert,
 } from './helpers';
 import {
-  ACTION_TYPES, COUPON_FILTER_TYPES, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
 } from './constants';
 import ActionButton from './ActionButton';
 import CouponFilters from './CouponFilters';
@@ -36,11 +36,11 @@ class CouponDetails extends React.Component {
     this.hasAllTableRowsSelected = false;
     this.selectedTableRows = {};
 
-    const tableColumns = this.getNewColumns(COUPON_FILTER_TYPES.unassigned);
+    const tableColumns = this.getNewColumns(COUPON_FILTERS.unassigned.value);
 
     this.state = {
-      selectedToggle: COUPON_FILTER_TYPES.unassigned,
-      bulkActionToggle: ACTION_TYPES.assign,
+      selectedToggle: COUPON_FILTERS.unassigned.value,
+      bulkActionToggle: ACTIONS.assign.value,
       tableColumns,
       modals: {
         assignment: null,
@@ -106,25 +106,25 @@ class CouponDetails extends React.Component {
     };
 
     switch (selectedToggle) {
-      case COUPON_FILTER_TYPES.unassigned:
+      case COUPON_FILTERS.unassigned.value:
         return [
           selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.unassigned],
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unassigned.value],
         ];
-      case COUPON_FILTER_TYPES.unredeemed:
+      case COUPON_FILTERS.unredeemed.value:
         return [
           selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.unredeemed],
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.unredeemed.value],
         ];
-      case COUPON_FILTER_TYPES.partiallyRedeemed:
+      case COUPON_FILTERS.partiallyRedeemed.value:
         return [
           selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.partiallyRedeemed],
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.partiallyRedeemed.value],
         ];
-      case COUPON_FILTER_TYPES.redeemed:
+      case COUPON_FILTERS.redeemed.value:
         return [
           selectColumn,
-          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTER_TYPES.redeemed],
+          ...DEFAULT_TABLE_COLUMNS[COUPON_FILTERS.redeemed.value],
         ];
       default:
         return this.tableColumns;
@@ -144,8 +144,8 @@ class CouponDetails extends React.Component {
       couponDetailsTable: { data: tableData },
     } = this.props;
 
-    const isAssignView = selectedToggle === COUPON_FILTER_TYPES.unassigned;
-    const isRedeemedView = selectedToggle === COUPON_FILTER_TYPES.redeemed;
+    const isAssignView = selectedToggle === COUPON_FILTERS.unassigned.value;
+    const isRedeemedView = selectedToggle === COUPON_FILTERS.redeemed.value;
     const hasTableData = tableData && tableData.count;
 
     const bulkActionSelectOptions = getBASelectOptions({
@@ -307,16 +307,16 @@ class CouponDetails extends React.Component {
     let doesCodeActionHaveErrors;
 
     switch (action) {
-      case ACTION_TYPES.assign: {
+      case ACTIONS.assign.value: {
         stateKey = 'isCodeAssignmentSuccessful';
         break;
       }
-      case ACTION_TYPES.revoke: {
+      case ACTIONS.revoke.value: {
         stateKey = 'isCodeRevokeSuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
       }
-      case ACTION_TYPES.remind: {
+      case ACTIONS.remind.value: {
         stateKey = 'isCodeReminderSuccessful';
         doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
         break;
@@ -328,7 +328,7 @@ class CouponDetails extends React.Component {
       }
     }
 
-    if (action === ACTION_TYPES.assign || action === ACTION_TYPES.revoke) {
+    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
       this.updateCouponOverviewData();
     }
 
@@ -462,7 +462,7 @@ class CouponDetails extends React.Component {
       bulkActionToggle,
     } = this.state;
 
-    if (bulkActionToggle === ACTION_TYPES.assign) {
+    if (bulkActionToggle === ACTIONS.assign.value) {
       this.setModalState({
         key: 'assignment',
         options: {
@@ -477,7 +477,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (bulkActionToggle === ACTION_TYPES.revoke) {
+    } else if (bulkActionToggle === ACTIONS.revoke.value) {
       this.setModalState({
         key: 'revoke',
         options: {
@@ -489,7 +489,7 @@ class CouponDetails extends React.Component {
           },
         },
       });
-    } else if (bulkActionToggle === ACTION_TYPES.remind) {
+    } else if (bulkActionToggle === ACTIONS.remind.value) {
       this.setModalState({
         key: 'remind',
         options: {

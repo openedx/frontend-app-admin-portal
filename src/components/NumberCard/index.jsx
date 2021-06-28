@@ -5,6 +5,7 @@ import { Button, Icon } from '@edx/paragon';
 import { Link, withRouter } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
+import { DETAILS_TEXT } from '../CouponDetails/constants';
 
 export const triggerKeys = {
   OPEN_DETAILS: ['ArrowDown', 'Enter'],
@@ -213,7 +214,7 @@ class NumberCard extends React.Component {
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="details-btn-text mr-1">
-                    {detailsExpanded ? 'Detailed breakdown' : 'Details'}
+                    {detailsExpanded ? DETAILS_TEXT.expanded : DETAILS_TEXT.unexpanded}
                   </div>
                   <div>
                     <Icon
@@ -224,7 +225,8 @@ class NumberCard extends React.Component {
                           'fa-close': detailsExpanded,
                         },
                       )}
-                      screenReaderText={detailsExpanded ? 'Close details' : 'Show details'}
+                      screenReaderText={detailsExpanded
+                        ? DETAILS_TEXT.expandedScreenReader : DETAILS_TEXT.unexpandedScreenReader}
                     />
                   </div>
                 </div>

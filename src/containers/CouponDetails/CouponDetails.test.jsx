@@ -21,7 +21,7 @@ import CodeReminderModal from '../CodeReminderModal';
 import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 import { renderWithRouter } from '../../components/test/testUtils';
 import {
-  ACTION_LABELS, COUPON_FILTER_OPTIONS, COUPON_FILTER_TYPES, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
 } from '../../components/CouponDetails/constants';
 
 const enterpriseId = 'test-enterprise';
@@ -180,17 +180,17 @@ describe('CouponDetails container', () => {
         },
       });
       renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
-      expect(screen.getByText(COUPON_FILTER_OPTIONS.unassigned)).toBeInTheDocument();
+      expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
       DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
         expect(screen.getByText(label)).toBeInTheDocument();
       });
     });
 
     test.each([
-      [COUPON_FILTER_TYPES.unassigned],
-      [COUPON_FILTER_TYPES.unredeemed],
-      [COUPON_FILTER_TYPES.partiallyRedeemed],
-      [COUPON_FILTER_TYPES.redeemed],
+      [COUPON_FILTERS.unassigned.value],
+      [COUPON_FILTERS.unredeemed.value],
+      [COUPON_FILTERS.partiallyRedeemed.value],
+      [COUPON_FILTERS.redeemed.value],
     ])('renders the correct table columns for each coupon filter type %s', (filterType) => {
       store = mockStore({
         ...initialState,
@@ -224,7 +224,7 @@ describe('CouponDetails container', () => {
 
       const table = document.getElementsByTagName('table')[0];
       // getByText will throw an error if the text is not present
-      within(table).getByText(ACTION_LABELS.assign);
+      within(table).getByText(ACTIONS.assign.label);
     });
 
     it.skip('does not show Assign button for an unavailable coupon', () => {
@@ -245,7 +245,7 @@ describe('CouponDetails container', () => {
       />);
 
       const table = document.getElementsByTagName('table')[0];
-      expect(within(table).queryByText(ACTION_LABELS.assign)).toBeNull();
+      expect(within(table).queryByText(ACTIONS.assign.label)).toBeNull();
     });
   });
 
@@ -509,7 +509,7 @@ describe('CouponDetails container', () => {
 
       // after alert is dismissed
       expect(wrapper.find(StatusAlert)).toHaveLength(0);
-      expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTER_OPTIONS.unredeemed);
+      expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
 
       // fetches overview data for coupon
       expect(spy).toBeCalledTimes(1);

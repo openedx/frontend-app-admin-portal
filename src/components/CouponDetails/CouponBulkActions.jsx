@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 import {
   Button, Form,
 } from '@edx/paragon';
+import { BULK_ACTION } from './constants';
 
 const CouponBulkActions = ({
   value, options, disabled, onChange, handleBulkAction,
 }) => (
   <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0 d-flex justify-content-end">
-    <Form.Group className="mt-1 flex-grow-1" controlId="bulkActions" name="bulk-actions">
+    <Form.Group className="mt-1 flex-grow-1" controlId={BULK_ACTION.controlId} name={BULK_ACTION.name}>
       <Form.Control
         className="float-right w-50"
-        floatingLabel="Bulk action"
+        floatingLabel={BULK_ACTION.label}
         as="select"
         value={value}
         onChange={(e) => onChange(e.target.value)}

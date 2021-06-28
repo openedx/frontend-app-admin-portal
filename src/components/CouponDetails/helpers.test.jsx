@@ -3,7 +3,7 @@
 import {
   SINGLE_USE, ONCE_PER_CUSTOMER, MULTI_USE, MULTI_USE_PER_CUSTOMER,
 } from '../../data/constants/coupons';
-import { ACTION_LABELS, ACTION_TYPES, COUPON_FILTER_TYPES, FILTER_OPTIONS } from './constants';
+import { ACTIONS, COUPON_FILTERS, FILTER_OPTIONS } from './constants';
 import { getBASelectOptions, getFilterOptions, getFirstNonDisabledOption, shouldShowSelectAllStatusAlert } from './helpers';
 
 describe('getFilterOptions', () => {
@@ -47,36 +47,36 @@ describe('getFirstNonDisabledOption', () => {
 
 describe('shouldShowSelectAllStatusAlert', () => {
   test.each([
-    [{ tableData: null, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: [] }],
-    [{ tableData: undefined, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: [] }],
+    [{ tableData: null, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: [] }],
+    [{ tableData: undefined, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: [] }],
   ])('returns false when there is no table data', (options) => {
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(false);
   });
   test.each([
-    [{ tableData: true, selectedToggle: COUPON_FILTER_TYPES.partiallyRedeemed, hasAllCodesSelected: false, selectedCodes: [] }],
-    [{ tableData: true, selectedToggle: COUPON_FILTER_TYPES.redeemed, hasAllCodesSelected: false, selectedCodes: [] }],
-    [{ tableData: true, selectedToggle: COUPON_FILTER_TYPES.unredeemed, hasAllCodesSelected: false, selectedCodes: [] }],
+    [{ tableData: true, selectedToggle: COUPON_FILTERS.partiallyRedeemed.value, hasAllCodesSelected: false, selectedCodes: [] }],
+    [{ tableData: true, selectedToggle: COUPON_FILTERS.redeemed.value, hasAllCodesSelected: false, selectedCodes: [] }],
+    [{ tableData: true, selectedToggle: COUPON_FILTERS.unredeemed.value, hasAllCodesSelected: false, selectedCodes: [] }],
   ])('returns false when the selected toggle is not unassigned', (options) => {
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(false);
   });
   it('returns true if all codes are selected', () => {
-    const options = { tableData: true, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: true, selectedCodes: [] };
+    const options = { tableData: true, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: true, selectedCodes: [] };
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(true);
   });
   test.each([
-    [{ tableData: { results: Array(3) }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(2) }],
-    [{ tableData: { results: Array(100) }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(25) }],
+    [{ tableData: { results: Array(3) }, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: Array(2) }],
+    [{ tableData: { results: Array(100) }, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: Array(25) }],
   ])('returns false if selected codes do not have the same length as the table data results', (options) => {
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(false);
   });
   test.each([
-    [{ tableData: { results: Array(2), count: 4 }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(2) }],
-    [{ tableData: { results: Array(100), count: 200 }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(100) }],
+    [{ tableData: { results: Array(2), count: 4 }, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: Array(2) }],
+    [{ tableData: { results: Array(100), count: 200 }, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: Array(100) }],
   ])('returns true if the selected codes does not equal the tableData count', (options) => {
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(true);
   });
   it('returns false if the code count matches the tableData count', () => {
-    const options = { tableData: { results: Array(100), count: 100 }, selectedToggle: COUPON_FILTER_TYPES.unassigned, hasAllCodesSelected: false, selectedCodes: Array(100) };
+    const options = { tableData: { results: Array(100), count: 100 }, selectedToggle: COUPON_FILTERS.unassigned.value, hasAllCodesSelected: false, selectedCodes: Array(100) };
     expect(shouldShowSelectAllStatusAlert(options)).toEqual(false);
   });
 });
@@ -93,8 +93,8 @@ describe('getBASelectOptions', () => {
     };
     it('has the correct label and value', () => {
       const assignOption = getBASelectOptions(defaultAssignOptions)[0];
-      expect(assignOption.label).toEqual(ACTION_LABELS.assign);
-      expect(assignOption.value).toEqual(ACTION_TYPES.assign);
+      expect(assignOption.label).toEqual(ACTIONS.assign.label);
+      expect(assignOption.value).toEqual(ACTIONS.assign.value);
     });
     test.each([
       [{ ...defaultAssignOptions }, false],
@@ -119,8 +119,8 @@ describe('getBASelectOptions', () => {
     };
     it('has the correct label and value', () => {
       const remindOption = getBASelectOptions(defaultRemindOptions)[1];
-      expect(remindOption.label).toEqual(ACTION_LABELS.remind);
-      expect(remindOption.value).toEqual(ACTION_TYPES.remind);
+      expect(remindOption.label).toEqual(ACTIONS.remind.label);
+      expect(remindOption.value).toEqual(ACTIONS.remind.value);
     });
     test.each([
       [{ ...defaultRemindOptions }, false],
@@ -144,8 +144,8 @@ describe('getBASelectOptions', () => {
     };
     it('has the correct label and value', () => {
       const revokeOption = getBASelectOptions(defaultRemindOptions)[2];
-      expect(revokeOption.label).toEqual(ACTION_LABELS.revoke);
-      expect(revokeOption.value).toEqual(ACTION_TYPES.revoke);
+      expect(revokeOption.label).toEqual(ACTIONS.revoke.label);
+      expect(revokeOption.value).toEqual(ACTIONS.revoke.value);
     });
     test.each([
       [{ ...defaultRemindOptions }, false],

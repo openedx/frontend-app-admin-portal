@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ActionButton from './ActionButton';
-import { ACTION_LABELS, COUPON_FILTER_TYPES } from './constants';
+import { ACTIONS, COUPON_FILTERS } from './constants';
 
 const fakeCouponData = {
   id: 12,
@@ -18,7 +18,7 @@ const fakeRedemptions = {
 };
 const props = {
   couponData: fakeCouponData,
-  selectedToggle: COUPON_FILTER_TYPES.unassigned,
+  selectedToggle: COUPON_FILTERS.unassigned.value,
   code: {
     code: 'itsACode',
     redemptions: fakeRedemptions,
@@ -64,8 +64,8 @@ describe('CouponDetails ActionButton', () => {
       },
     };
     render(<ActionButton {...modifiedProps} />);
-    expect(screen.queryByText(ACTION_LABELS.remind)).not.toBeInTheDocument();
-    expect(screen.getByText(ACTION_LABELS.revoke)).toBeInTheDocument();
+    expect(screen.queryByText(ACTIONS.remind.label)).not.toBeInTheDocument();
+    expect(screen.getByText(ACTIONS.revoke.label)).toBeInTheDocument();
   });
   test.each([
     [[]],
@@ -83,8 +83,8 @@ describe('CouponDetails ActionButton', () => {
       },
     };
     render(<ActionButton {...modifiedProps} />);
-    expect(screen.getByText(ACTION_LABELS.remind)).toBeInTheDocument();
-    expect(screen.getByText(ACTION_LABELS.revoke)).toBeInTheDocument();
+    expect(screen.getByText(ACTIONS.remind.label)).toBeInTheDocument();
+    expect(screen.getByText(ACTIONS.revoke.label)).toBeInTheDocument();
   });
   it('returns null for an unassigned and public code', () => {
     const modifiedProps = {
@@ -99,8 +99,8 @@ describe('CouponDetails ActionButton', () => {
   });
   it('renders an assign button', () => {
     render(<ActionButton {...props} />);
-    expect(screen.queryByText(ACTION_LABELS.remind)).not.toBeInTheDocument();
-    expect(screen.queryByText(ACTION_LABELS.revoke)).not.toBeInTheDocument();
-    expect(screen.getByText(ACTION_LABELS.assign)).toBeInTheDocument();
+    expect(screen.queryByText(ACTIONS.remind.label)).not.toBeInTheDocument();
+    expect(screen.queryByText(ACTIONS.revoke.label)).not.toBeInTheDocument();
+    expect(screen.getByText(ACTIONS.assign.label)).toBeInTheDocument();
   });
 });

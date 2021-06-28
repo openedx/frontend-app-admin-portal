@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
-import { ACTION_LABELS } from '../CouponDetails/constants';
+import { ACTIONS } from '../CouponDetails/constants';
 
 const RemindButton = ({
   couponId,
@@ -13,7 +13,7 @@ const RemindButton = ({
   onClose,
 }) => (
   <ActionButtonWithModal
-    buttonLabel={ACTION_LABELS.remind}
+    buttonLabel={ACTIONS.remind.label}
     buttonClassName="remind-btn btn-sm p-0"
     variant="link"
     renderModal={({ closeModal }) => (

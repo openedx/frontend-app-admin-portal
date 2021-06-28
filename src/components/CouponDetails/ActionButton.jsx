@@ -5,7 +5,7 @@ import {
 } from '@edx/paragon';
 import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
-import { ACTION_TYPES, ACTION_LABELS, COUPON_FILTER_TYPES } from './constants';
+import { ACTIONS, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';
 
 const ActionButton = ({
   couponData: {
@@ -36,6 +36,10 @@ const ActionButton = ({
     return null;
   }
 
+  if (isPublic) {
+    return null;
+  }
+
   const codeHasError = errors.find(errorItem => errorItem.code === code.code);
   if (assignedTo) {
     return (
@@ -49,7 +53,7 @@ const ActionButton = ({
                 code: code.code,
                 email: code.assigned_to,
               }}
-              onSuccess={response => handleCodeActionSuccess(ACTION_TYPES.remind, response)}
+              onSuccess={response => handleCodeActionSuccess(ACTIONS.remind.value, response)}
             />
             {' | '}
           </>
@@ -61,18 +65,14 @@ const ActionButton = ({
             assigned_to: code.assigned_to,
             code: code.code,
           }}
-          onSuccess={response => handleCodeActionSuccess(ACTION_TYPES.revoke, response)}
+          onSuccess={response => handleCodeActionSuccess(ACTIONS.revoke.value, response)}
         />
       </>
     );
   }
 
-  if (isPublic) {
-    return null;
-  }
-
   // exclude existing assignments of code
-  if (selectedToggle === COUPON_FILTER_TYPES.unassigned) {
+  if (selectedToggle === COUPON_FILTERS.unassigned.value) {
     remainingUses -= redemptions.num_assignments;
   }
 
@@ -92,7 +92,7 @@ const ActionButton = ({
         },
       })}
     >
-      {ACTION_LABELS.assign}
+      {ACTIONS.assign.label}
     </Button>
   );
 };

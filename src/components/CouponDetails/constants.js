@@ -7,49 +7,77 @@ export const COUPON_FILTER_TYPES = {
   redeemed: 'redeemed',
 };
 
-export const COUPON_FILTER_OPTIONS = {
-  unassigned: 'Unassigned',
-  unredeemed: 'Unredeemed',
-  partiallyRedeemed: 'Partially redeemed',
-  redeemed: 'Redeemed',
+export const COUPON_FILTERS = {
+  unassigned: {
+    label: 'Unassigned',
+    value: COUPON_FILTER_TYPES.unassigned,
+  },
+  unredeemed: {
+    label: 'Unredeemed',
+    value: COUPON_FILTER_TYPES.unredeemed,
+  },
+  partiallyRedeemed: {
+    label: 'Partially redeemed',
+    value: COUPON_FILTER_TYPES.partiallyRedeemed,
+  },
+  redeemed: {
+    label: 'Redeemed',
+    value: COUPON_FILTER_TYPES.redeemed,
+  },
 };
 
-export const ACTION_LABELS = {
-  remind: 'Remind',
-  assign: 'Assign',
-  revoke: 'Revoke',
-};
-
-export const ACTION_TYPES = {
-  remind: 'remind',
-  revoke: 'revoke',
-  assign: 'assign',
+export const ACTIONS = {
+  remind: {
+    label: 'Remind',
+    value: 'remind',
+  },
+  assign: {
+    label: 'Assign',
+    value: 'assign',
+  },
+  revoke: {
+    label: 'Revoke',
+    value: 'revoke',
+  },
 };
 
 export const FILTER_OPTIONS = [{
-  label: COUPON_FILTER_OPTIONS.unassigned,
-  value: COUPON_FILTER_TYPES.unassigned,
+  label: COUPON_FILTERS.unassigned.label,
+  value: COUPON_FILTERS.unassigned.value,
 }, {
-  label: COUPON_FILTER_OPTIONS.unredeemed,
-  value: COUPON_FILTER_TYPES.unredeemed,
+  label: COUPON_FILTERS.unredeemed.label,
+  value: COUPON_FILTERS.unredeemed.value,
 }, {
-  label: COUPON_FILTER_OPTIONS.partiallyRedeemed,
-  value: COUPON_FILTER_TYPES.partiallyRedeemed,
+  label: COUPON_FILTERS.partiallyRedeemed.label,
+  value: COUPON_FILTERS.partiallyRedeemed.value,
 }, {
-  label: COUPON_FILTER_OPTIONS.redeemed,
-  value: COUPON_FILTER_TYPES.redeemed,
+  label: COUPON_FILTERS.redeemed.label,
+  value: COUPON_FILTERS.redeemed.value,
 }];
 
 export const BULK_ACTION_SELECT_OPTIONS = [{
-  label: ACTION_LABELS.assign,
-  value: ACTION_TYPES.assign,
+  label: ACTIONS.assign.label,
+  value: ACTIONS.assign.value,
 }, {
-  label: ACTION_LABELS.remind,
-  value: ACTION_TYPES.remind,
+  label: ACTIONS.remind.label,
+  value: ACTIONS.remind.value,
 }, {
-  label: ACTION_LABELS.revoke,
-  value: ACTION_TYPES.revoke,
+  label: ACTIONS.revoke.label,
+  value: ACTIONS.revoke.value,
 }];
+
+export const BULK_ACTION = {
+  label: 'Bulk action',
+  name: 'bulk-actions',
+  controlId: 'bulkActions',
+};
+
+export const DETAILS_TEXT = {
+  expanded: 'Detailed breakdown',
+  unexpanded: 'Details',
+  expandedScreenReader: 'Close details',
+  unexpandedScreenReader: 'Show details',
+};
 
 export const COLUMNS = {
   redemptions: {
@@ -99,20 +127,20 @@ const REDEMTION_COLUMNS = [
 ];
 
 export const DEFAULT_TABLE_COLUMNS = {
-  [COUPON_FILTER_TYPES.unassigned]: [
+  [COUPON_FILTERS.unassigned.value]: [
     ...COMMON_COLUMNS,
     COLUMNS.assignmentsRemaining,
     COLUMNS.actions,
   ],
-  [COUPON_FILTER_TYPES.unredeemed]: [
+  [COUPON_FILTERS.unredeemed.value]: [
     COLUMNS.assignedTo,
     ...REDEMTION_COLUMNS,
   ],
-  [COUPON_FILTER_TYPES.partiallyRedeemed]: [
+  [COUPON_FILTERS.partiallyRedeemed.value]: [
     COLUMNS.assignedTo,
     ...REDEMTION_COLUMNS,
   ],
-  [COUPON_FILTER_TYPES.redeemed]: [
+  [COUPON_FILTERS.redeemed.value]: [
     COLUMNS.redeemedBy,
     ...COMMON_COLUMNS,
     COLUMNS.assignmentDate,

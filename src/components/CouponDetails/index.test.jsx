@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from '../test/testUtils';
 import CouponDetails from './index';
-import { COUPON_FILTER_OPTIONS, DEFAULT_TABLE_COLUMNS } from './constants';
+import { COUPON_FILTERS, DEFAULT_TABLE_COLUMNS } from './constants';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import { MULTI_USE } from '../../data/constants/coupons';
 
@@ -153,7 +153,7 @@ describe('CouponDetails component', () => {
   });
   it('renders the unassigned table by default', () => {
     renderWithRouter(<CouponDetailsWrapper {...defaultProps} />);
-    expect(screen.getByText(COUPON_FILTER_OPTIONS.unassigned)).toBeInTheDocument();
+    expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
     DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
       expect(screen.getByText(label)).toBeInTheDocument();
     });
@@ -166,7 +166,7 @@ describe('CouponDetails component', () => {
         errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
       }}
     />);
-    userEvent.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTER_OPTIONS.unredeemed);
+    userEvent.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label);
     expect(screen.getByText('An error has occurred:', { exact: false })).toBeInTheDocument();
   });
 });
