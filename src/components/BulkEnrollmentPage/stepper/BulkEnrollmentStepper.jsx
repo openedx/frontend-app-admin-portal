@@ -36,7 +36,6 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
               enterpriseId={enterpriseId}
               enterpriseSlug={enterpriseSlug}
               subscription={subscription}
-              goToNextStep={() => setCurrentStep(ADD_LEARNERS_STEP)}
             />
           </Stepper.Step>
 

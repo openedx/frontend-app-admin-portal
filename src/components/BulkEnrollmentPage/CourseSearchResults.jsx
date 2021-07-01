@@ -5,17 +5,12 @@ import React, {
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
 import Skeleton from 'react-loading-skeleton';
-import {
-  DataTable, Button,
-} from '@edx/paragon';
+import { DataTable } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
 import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
-import {
-  setSelectedRowsAction,
-} from './data/actions';
 
 import BaseSelectionStatus from './table/BaseSelectionStatus';
 import { BaseSelectWithContext, BaseSelectWithContextHeader } from './table/BulkEnrollSelect';
@@ -47,30 +42,6 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-export const EnrollButton = ({ row, goToNextStep, dispatch }) => {
-  const handleClick = () => {
-    dispatch(setSelectedRowsAction([row]));
-    goToNextStep();
-  };
-
-  return (
-    <Button
-      className="enroll-button"
-      variant="link"
-      onClick={handleClick}
-      data-testid="tableEnrollButton"
-    >
-      {ENROLL_TEXT}
-    </Button>
-  );
-};
-
-EnrollButton.propTypes = {
-  row: PropTypes.shape({ }).isRequired,
-  goToNextStep: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired,
-};
-
 export const BaseCourseSearchResults = (props) => {
   const {
     searchResults,
@@ -79,7 +50,6 @@ export const BaseCourseSearchResults = (props) => {
     searchState,
     error,
     enterpriseSlug,
-    goToNextStep,
   } = props;
 
   const { refinementsFromQueryParams } = useContext(SearchContext);
@@ -112,7 +82,7 @@ export const BaseCourseSearchResults = (props) => {
     [searchState?.page, refinementsFromQueryParams],
   );
 
-  const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
+  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
 
   if (isSearchStalled) {
     return (
@@ -155,20 +125,6 @@ export const BaseCourseSearchResults = (props) => {
         initialTableOptions={{
           getRowId: (row) => row.key,
         }}
-        additionalColumns={[
-          {
-            id: 'enroll',
-            Header: TABLE_HEADERS.enroll,
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ row }) => (
-              <EnrollButton
-                row={row}
-                dispatch={coursesDispatch}
-                goToNextStep={goToNextStep}
-              />
-            ),
-          },
-        ]}
       >
         <DataTable.TableControlBar />
         <DataTable.Table />
@@ -204,7 +160,6 @@ BaseCourseSearchResults.propTypes = {
   }).isRequired,
   // from parent
   enterpriseSlug: PropTypes.string.isRequired,
-  goToNextStep: PropTypes.func.isRequired,
 };
 
 export default connectStateResults(BaseCourseSearchResults);

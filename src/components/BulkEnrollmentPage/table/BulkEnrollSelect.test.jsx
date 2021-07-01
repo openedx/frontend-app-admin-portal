@@ -112,6 +112,7 @@ describe('BaseSelectWithContextHeader', () => {
     );
     const checkbox = screen.getByTestId(SELECT_ALL_TEST_ID);
     expect(checkbox).toBeInTheDocument();
+    screen.debug();
     expect(checkbox).toHaveProperty('indeterminate', true);
   });
   it('deselects the row when selected checkbox is checked', () => {

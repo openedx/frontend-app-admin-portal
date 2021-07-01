@@ -15,7 +15,7 @@ const searchClient = algoliasearch(
 );
 
 const AddCoursesStep = ({
-  goToNextStep, enterpriseId, enterpriseSlug, subscription,
+  enterpriseId, enterpriseSlug, subscription,
 }) => (
   <>
     <p>{ADD_COURSE_DESCRIPTION}</p>
@@ -34,7 +34,6 @@ const AddCoursesStep = ({
           enterpriseId={enterpriseId}
           enterpriseSlug={enterpriseSlug}
           subscriptionUUID={subscription.uuid}
-          goToNextStep={goToNextStep}
         />
       </InstantSearch>
     </SearchData>
@@ -42,7 +41,6 @@ const AddCoursesStep = ({
 );
 
 AddCoursesStep.propTypes = {
-  goToNextStep: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   subscription: PropTypes.shape({
