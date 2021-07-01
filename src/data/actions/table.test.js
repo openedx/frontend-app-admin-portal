@@ -217,7 +217,7 @@ describe('actions', () => {
         search: 'test3@edx.org',
       };
       const params = `?${qs.stringify(defaultOptions)}`;
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/${params}`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/${params}`)
         .replyOnce(200, JSON.stringify(responseData));
 
       Object.defineProperty(window, 'location', {
@@ -260,7 +260,7 @@ describe('actions', () => {
         search: 'test3@edx.org',
       };
       const params = `?${qs.stringify(defaultOptions)}`;
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/${params}`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/${params}`)
         .networkError();
 
       Object.defineProperty(window, 'location', {
