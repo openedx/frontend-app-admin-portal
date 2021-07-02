@@ -16,8 +16,7 @@ import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import {
-  getBASelectOptions, getFilterOptions, getFirstNonDisabledOption,
-  shouldShowSelectAllStatusAlert,
+  getFilterOptions, shouldShowSelectAllStatusAlert,
 } from './helpers';
 import {
   ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
@@ -39,7 +38,6 @@ class CouponDetails extends React.Component {
 
     this.state = {
       selectedToggle: COUPON_FILTERS.unassigned.value,
-      bulkActionToggle: ACTIONS.assign.value,
       tableColumns,
       modals: {
         assignment: null,
@@ -68,7 +66,6 @@ class CouponDetails extends React.Component {
     this.handleCodeActionSuccess = this.handleCodeActionSuccess.bind(this);
     this.resetCodeActionStatus = this.resetCodeActionStatus.bind(this);
     this.setModalState = this.setModalState.bind(this);
-    this.handleBulkActionChange = this.handleBulkActionChange.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -135,30 +132,6 @@ class CouponDetails extends React.Component {
     return getFilterOptions(usageLimitation);
   }
 
-  getBulkActionSelectOptions() {
-    const { selectedToggle, selectedCodes } = this.state;
-
-    const {
-      couponData: { num_unassigned: unassignedCodes, available: couponAvailable },
-      couponDetailsTable: { data: tableData },
-    } = this.props;
-
-    const isAssignView = selectedToggle === COUPON_FILTERS.unassigned.value;
-    const isRedeemedView = selectedToggle === COUPON_FILTERS.redeemed.value;
-    const hasTableData = tableData && tableData.count;
-
-    const bulkActionSelectOptions = getBASelectOptions({
-      isAssignView,
-      isRedeemedView,
-      hasTableData,
-      couponAvailable,
-      numUnassignedCodes: unassignedCodes.length,
-      numSelectedCodes: selectedCodes.length,
-    });
-
-    return bulkActionSelectOptions;
-  }
-
   setModalState({ key, options }) {
     this.setState((state) => ({
       modals: {
@@ -181,14 +154,6 @@ class CouponDetails extends React.Component {
     }
     return `select code ${code}`;
   };
-
-  updateBulkActionSelectValue() {
-    const bulkActionSelectOptions = this.getBulkActionSelectOptions();
-    const bulkActionToggle = getFirstNonDisabledOption(bulkActionSelectOptions);
-    this.setState({
-      bulkActionToggle,
-    });
-  }
 
   reset() {
     this.resetModals();
@@ -254,7 +219,6 @@ class CouponDetails extends React.Component {
       hasAllCodesSelected: false,
     }, () => {
       this.updateSelectAllCheckBox();
-      this.updateBulkActionSelectValue();
     });
   }
 
@@ -345,12 +309,6 @@ class CouponDetails extends React.Component {
     }
   }
 
-  handleBulkActionChange(newValue) {
-    this.setState({
-      bulkActionToggle: newValue,
-    });
-  }
-
   handleCodeSelection({ checked, code }) {
     let { selectedCodes, hasAllCodesSelected } = this.state;
 
@@ -439,13 +397,7 @@ class CouponDetails extends React.Component {
     return !!(couponDetailsTable && couponDetailsTable.loading);
   }
 
-  isBulkAssignSelectDisabled() {
-    const options = this.getBulkActionSelectOptions();
-
-    return this.isTableLoading() || options.every(option => option.disabled);
-  }
-
-  handleBulkAction() {
+  handleBulkAction(bulkActionToggle) {
     const {
       couponData: {
         id,
@@ -458,7 +410,6 @@ class CouponDetails extends React.Component {
       hasAllCodesSelected,
       selectedCodes,
       selectedToggle,
-      bulkActionToggle,
     } = this.state;
 
     if (bulkActionToggle === ACTIONS.assign.value) {
@@ -581,11 +532,12 @@ class CouponDetails extends React.Component {
       doesCodeActionHaveErrors,
       refreshIndex,
       hasAllCodesSelected,
-      bulkActionToggle,
     } = this.state;
 
     const {
-      couponData: { id, errors },
+      couponData: {
+        id, errors, num_unassigned: numUnassignedCodes, available: couponAvailable,
+      },
       couponDetailsTable: { data: tableData },
       couponOverviewLoading,
       couponOverviewError,
@@ -593,6 +545,8 @@ class CouponDetails extends React.Component {
     } = this.props;
 
     const shouldDisplayErrors = selectedToggle === 'unredeemed' && errors.length > 0;
+    const isTableLoading = this.isTableLoading();
+    const hasTableData = !!(tableData && tableData.count);
 
     return (
       <div
@@ -619,23 +573,23 @@ class CouponDetails extends React.Component {
                       { code_filter: selectedToggle },
                       { csv: true },
                     )}
-                    disabled={this.isTableLoading()}
+                    disabled={isTableLoading}
                   />
                 </div>
               </div>
               <FilterBulkActionRow
+                selectedToggle={selectedToggle}
+                isTableLoading={isTableLoading}
                 couponFilterProps={{
-                  selectedToggle,
                   tableFilterSelectOptions: this.getTableFilterSelectOptions(),
-                  isTableLoading: this.isTableLoading(),
                   handleToggleSelect: this.handleToggleSelect,
                 }}
                 couponBulkActionProps={{
-                  value: bulkActionToggle,
-                  onChange: this.handleBulkActionChange,
-                  options: this.getBulkActionSelectOptions(),
-                  disabled: this.isBulkAssignSelectDisabled(),
                   handleBulkAction: this.handleBulkAction,
+                  numUnassignedCodes,
+                  couponAvailable,
+                  hasTableData,
+                  numSelectedCodes: selectedCodes?.length || 0,
                 }}
               />
               {this.hasStatusAlert() && (
