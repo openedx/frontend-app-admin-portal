@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { IndeterminateCheckbox } from '@edx/paragon';
+import { CheckboxControl } from '@edx/paragon';
 import { checkForSelectedRows } from './helpers';
 
 import {
@@ -24,12 +24,12 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
   return (
     <div>
       {/* eslint-disable-next-line react/prop-types */}
-      <IndeterminateCheckbox
+      <CheckboxControl
         style={{ cursor: 'pointer' }}
         title="Toggle row selected"
         checked={isSelected}
         onChange={toggleSelected}
-        indeterminate={false}
+        isIndeterminate={false}
         data-testid={SELECT_ONE_TEST_ID}
       />
     </div>
@@ -58,12 +58,12 @@ export const BaseSelectWithContextHeader = ({
 
   return (
     <div>
-      <IndeterminateCheckbox
+      <CheckboxControl
         style={{ cursor: 'pointer' }}
         title="Toggle all rows selected"
         checked={isAllRowsSelected}
         onChange={toggleAllRowsSelectedBulkEn}
-        indeterminate={anyRowsSelected && !isAllRowsSelected}
+        isIndeterminate={anyRowsSelected && !isAllRowsSelected}
         data-testid={SELECT_ALL_TEST_ID}
       />
     </div>

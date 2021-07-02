@@ -9,10 +9,10 @@ import { BULK_ACTION } from './constants';
 const CouponBulkActions = ({
   value, options, disabled, onChange, handleBulkAction,
 }) => (
-  <div className="bulk-actions col-12 col-md-4 text-md-right mt-3 m-md-0 d-flex justify-content-end">
-    <Form.Group className="mt-1 flex-grow-1" controlId={BULK_ACTION.controlId} name={BULK_ACTION.name}>
+  <>
+    <Form.Group className="flex-grow-1" controlId={BULK_ACTION.controlId} name={BULK_ACTION.name}>
       <Form.Control
-        className="float-right w-50"
+        className="float-right"
         floatingLabel={BULK_ACTION.label}
         as="select"
         value={value}
@@ -33,13 +33,13 @@ const CouponBulkActions = ({
       </Form.Control>
     </Form.Group>
     <Button
-      className="ml-2 mt-1 mb-3"
+      className="ml-2 mb-3"
       onClick={handleBulkAction}
       disabled={disabled}
     >
       Go
     </Button>
-  </div>
+  </>
 );
 
 CouponBulkActions.propTypes = {
