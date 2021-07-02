@@ -30,7 +30,6 @@ FilterBulkActionRow.propTypes = {
   couponBulkActionProps: PropTypes.shape().isRequired,
   isTableLoading: PropTypes.bool.isRequired,
   selectedToggle: PropTypes.oneOf(Object.values(COUPON_FILTER_TYPES)).isRequired,
-
 };
 
 export default FilterBulkActionRow;

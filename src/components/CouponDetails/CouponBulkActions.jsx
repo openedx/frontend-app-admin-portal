@@ -25,7 +25,7 @@ const CouponBulkActions = ({
   const [value, setValue] = useState(getFirstNonDisabledOption(options));
   useEffect(() => {
     setValue(getFirstNonDisabledOption(options));
-  }, [numUnassignedCodes, numSelectedCodes, selectedToggle, hasTableData, couponAvailable]);
+  }, [options]);
   const noActionsAvailable = options.every(option => option.disabled);
 
   return (
