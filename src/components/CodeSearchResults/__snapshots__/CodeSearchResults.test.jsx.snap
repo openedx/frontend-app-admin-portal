@@ -46,15 +46,11 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             type="button"
           >
             <span
-              className="btn-icons-container"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-times mr-2"
-                id="Icon10"
-              />
-              Close search results
-            </span>
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon10"
+            />
+            Close search results
           </button>
         </div>
       </div>
@@ -137,15 +133,11 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             type="button"
           >
             <span
-              className="btn-icons-container"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-times mr-2"
-                id="Icon12"
-              />
-              Close search results
-            </span>
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon12"
+            />
+            Close search results
           </button>
         </div>
       </div>
@@ -233,15 +225,11 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
             type="button"
           >
             <span
-              className="btn-icons-container"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-times mr-2"
-                id="Icon1"
-              />
-              Close search results
-            </span>
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon1"
+            />
+            Close search results
           </button>
         </div>
       </div>
@@ -566,15 +554,11 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
             type="button"
           >
             <span
-              className="btn-icons-container"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-times mr-2"
-                id="Icon2"
-              />
-              Close search results
-            </span>
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon2"
+            />
+            Close search results
           </button>
         </div>
       </div>
@@ -945,15 +929,11 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
             type="button"
           >
             <span
-              className="btn-icons-container"
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-times mr-2"
-                id="Icon7"
-              />
-              Close search results
-            </span>
+              aria-hidden={true}
+              className="fa fa-times mr-2"
+              id="Icon7"
+            />
+            Close search results
           </button>
         </div>
       </div>
@@ -1074,11 +1054,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                         onClick={[Function]}
                         type="button"
                       >
-                        <span
-                          className="btn-icons-container"
-                        >
-                          Remind
-                        </span>
+                        Remind
                       </button>
                        | 
                       <button
@@ -1087,11 +1063,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                         onClick={[Function]}
                         type="button"
                       >
-                        <span
-                          className="btn-icons-container"
-                        >
-                          Revoke
-                        </span>
+                        Revoke
                       </button>
                     </td>
                   </tr>
