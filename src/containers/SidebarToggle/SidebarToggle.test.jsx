@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import SidebarToggle from './index';
+import { Close, Menu } from '@edx/paragon/icons';
 
+import SidebarToggle from './index';
 import {
   EXPAND_SIDEBAR,
   COLLAPSE_SIDEBAR,
@@ -41,12 +41,8 @@ SidebarToggleWrapper.propTypes = {
 
 describe('<Sidebar />', () => {
   it('renders correctly with menu icon', () => {
-    const tree = renderer
-      .create((
-        <SidebarToggleWrapper />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const wrapper = mount(<SidebarToggleWrapper />);
+    expect(wrapper.find(Menu)).toHaveLength(1);
   });
 
   it('renders correctly with close icon', () => {
@@ -56,13 +52,8 @@ describe('<Sidebar />', () => {
         isExpandedByToggle: true,
       },
     });
-
-    const tree = renderer
-      .create((
-        <SidebarToggleWrapper store={store} />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const wrapper = mount(<SidebarToggleWrapper store={store} />);
+    expect(wrapper.find(Close)).toHaveLength(1);
   });
 
   it('dispatches expandSidebar action', () => {

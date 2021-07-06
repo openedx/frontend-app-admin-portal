@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@edx/paragon';
-import classNames from 'classnames';
+import { Button } from '@edx/paragon';
+import { Close, Menu } from '@edx/paragon/icons';
 
 import './SidebarToggle.scss';
 
@@ -12,7 +12,7 @@ const SidebarToggle = (props) => {
     collapseSidebar,
   } = props;
 
-  const iconClass = isExpandedByToggle ? 'fa-times' : 'fa-bars';
+  const Icon = isExpandedByToggle ? Close : Menu;
 
   return (
     <Button
@@ -20,13 +20,11 @@ const SidebarToggle = (props) => {
       className="sidebar-toggle-btn px-1 mr-2 text-dark"
       onClick={isExpandedByToggle ? collapseSidebar : expandSidebar}
       aria-controls="sidebar"
+      iconBefore={Icon}
     >
-      <>
-        <Icon className={classNames('fa', iconClass)} />
-        <span className="sr-only">
-          {isExpandedByToggle ? 'close menu' : 'open menu'}
-        </span>
-      </>
+      <span className="sr-only">
+        {isExpandedByToggle ? 'close menu' : 'open menu'}
+      </span>
     </Button>
   );
 };
