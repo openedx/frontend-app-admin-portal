@@ -21,12 +21,12 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
-    "@edx/brand": "npm:@edx/brand-edx.org@^2.0.3",
+    "@edx/brand": "npm:@edx/brand-openedx@1.1.0",
     "@edx/frontend-enterprise-catalog-search": "0.1.10",
     "@edx/frontend-enterprise-logistration": "0.1.11",
     "@edx/frontend-enterprise-utils": "0.1.7",
     "@edx/frontend-platform": "1.11.0",
-    "@edx/paragon": "^15.2.2",
+    "@edx/paragon": "16.0.1",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
@@ -83,7 +83,7 @@
     "webpack-merge": "5.4.0"
   },
   "devDependencies": {
-    "@edx/frontend-build": "^6.1.0",
+    "@edx/frontend-build": "6.1.1",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
     "@testing-library/jest-dom": "5.12.0",
     "@testing-library/react": "10.4.9",
