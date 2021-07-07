@@ -131,7 +131,7 @@ describe('<CourseSearchResults />', () => {
     const selection = screen.getByTestId('selectAll');
     userEvent.click(selection);
 
-    expect(screen.getByText('All 2 selected')).toBeInTheDocument();
+    expect(screen.getByText('2 selected')).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {
     const wrapper = mount(<CourseSearchWrapper
