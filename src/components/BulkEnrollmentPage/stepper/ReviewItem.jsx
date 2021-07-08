@@ -7,7 +7,9 @@ import PropTypes from 'prop-types';
 
 import { deleteSelectedRowAction } from '../data/actions';
 
-const ReviewItem = ({ row, accessor, dispatch }) => {
+const ReviewItem = ({
+  row, accessor, dispatch, altText,
+}) => {
   const onClick = () => {
     dispatch(deleteSelectedRowAction(row.id));
   };
@@ -23,8 +25,9 @@ const ReviewItem = ({ row, accessor, dispatch }) => {
               iconAs={Icon}
               style={{ cursor: 'pointer' }}
               data-testid="delete-button"
-              alt="Remove selection"
+              alt={altText}
               onClick={onClick}
+              title={altText}
             />
           </Card.Text>
         </Card.Body>
@@ -43,6 +46,8 @@ ReviewItem.propTypes = {
   accessor: PropTypes.string.isRequired,
   /* For dispatching actions on the rows. Will dispatch the deleteSelectedRowAction */
   dispatch: PropTypes.func.isRequired,
+  /* Is used as label text on hover as well as Aria label for screenreaders for the remove button. */
+  altText: PropTypes.string.isRequired,
 };
 
 export default ReviewItem;
