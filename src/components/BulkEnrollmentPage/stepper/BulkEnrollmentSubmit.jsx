@@ -24,8 +24,6 @@ import { ToastsContext } from '../../Toasts';
 import { clearSelectionAction } from '../data/actions';
 import { configuration } from '../../../config';
 
-export const BULK_ENROLL_ERROR = 'There was an ';
-
 export const BulkEnrollmentAlertModal = ({
   isOpen, toggleClose, enterpriseSlug, error, enterpriseId,
 }) => (
