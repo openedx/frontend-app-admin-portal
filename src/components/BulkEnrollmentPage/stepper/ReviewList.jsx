@@ -62,7 +62,9 @@ const ReviewList = ({
             </Button>
           </Alert>
         )}
-        {displayRows.map((row) => <ReviewItem key={row.id} row={row} accessor={accessor} dispatch={dispatch} />)}
+        {displayRows.map((row) => (
+          <ReviewItem key={row.id} row={row} accessor={accessor} dispatch={dispatch} altText={subject.removal} />
+        ))}
       </ul>
       <ShowHideButton
         data-testid="show-hide"
@@ -88,6 +90,7 @@ ReviewList.propTypes = {
     singular: PropTypes.string.isRequired,
     plural: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    removal: PropTypes.string.isRequired,
   }).isRequired,
   /* Function to return the user to the table where these rows were selected */
   returnToSelection: PropTypes.func.isRequired,

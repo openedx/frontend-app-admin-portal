@@ -27,6 +27,7 @@ const defaultProps = {
     singular: 'wug',
     plural: 'wugs',
     title: 'Wugs',
+    removal: 'Remove Wugs. Return to egg.',
   },
   returnToSelection: jest.fn(),
 };
@@ -52,6 +53,10 @@ describe('ReviewList', () => {
   it('displays a title', () => {
     render(<ReviewList {...defaultProps} />);
     expect(screen.getByText(defaultProps.subject.title)).toBeInTheDocument();
+  });
+  it('renders delete button hover title', () => {
+    render(<ReviewList {...defaultProps} />);
+    expect(screen.getAllByTitle(defaultProps.subject.removal)[0]).toBeInTheDocument();
   });
   it('displays the number of rows selected', () => {
     render(<ReviewList {...defaultProps} />);

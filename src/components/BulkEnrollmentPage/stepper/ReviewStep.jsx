@@ -10,12 +10,14 @@ const LEARNERS = {
   singular: 'learner',
   plural: 'learners',
   title: 'Learners',
+  removal: 'Remove learner',
 };
 
 const COURSES = {
   singular: 'course',
   plural: 'courses',
   title: 'Courses',
+  removal: 'Remove course',
 };
 
 const ReviewStep = ({ setCurrentStep }) => {
