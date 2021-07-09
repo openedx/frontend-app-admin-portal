@@ -82,6 +82,6 @@ describe('BaseSelectionStatus', () => {
       {...defaultProps}
       selectedRows={defaultDataTableInfo.rows}
     />);
-    expect(screen.getByText(`All ${defaultDataTableInfo.rows.length} selected`)).toBeInTheDocument();
+    expect(screen.getByText(`${defaultDataTableInfo.rows.length} selected`)).toBeInTheDocument();
   });
 });

@@ -14,10 +14,7 @@ const BaseSelectionStatus = ({
   selectedRows,
   dispatch,
 }) => {
-  const {
-    itemCount, rows,
-  } = useContext(DataTableContext);
-  const isAllRowsSelected = selectedRows.length === itemCount;
+  const { rows } = useContext(DataTableContext);
   const selectedRowIds = selectedRows.map((row) => row.id);
   const areAllDisplayedRowsSelected = checkForSelectedRows(selectedRowIds, rows);
 
@@ -25,7 +22,7 @@ const BaseSelectionStatus = ({
 
   return (
     <div className={className}>
-      <span>{isAllRowsSelected && 'All '}{numSelectedRows} selected </span>
+      <span>{numSelectedRows} selected </span>
       {!areAllDisplayedRowsSelected && (
         <Button
           variant="link"

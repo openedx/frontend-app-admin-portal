@@ -110,7 +110,7 @@ describe('BulkEnrollmentStepper', () => {
     const prevButton = screen.getByTestId(PREV_BUTTON_TEST_ID);
     userEvent.click(prevButton);
     expect(screen.getAllByText(ADD_COURSES_TITLE)).toHaveLength(2);
-    expect(screen.getByText('All 2 selected')).toBeInTheDocument();
+    expect(screen.getByText('2 selected')).toBeInTheDocument();
     await act(() => mockEmailResponse);
   });
   it('displays the user emails', async () => {
