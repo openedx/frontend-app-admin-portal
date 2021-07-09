@@ -3,6 +3,7 @@ import { Row, Col } from '@edx/paragon';
 import SearchBar from '../../SearchBar';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import DownloadCsvButton from '../buttons/DownloadCsvButton';
+import LicenseAllocationBanner from './LicenseAllocationBanner';
 
 const LicenseAllocationHeader = () => {
   const {
@@ -17,6 +18,7 @@ const LicenseAllocationHeader = () => {
         {' of '}
         {subscription.licenses?.total} licenses allocated
       </p>
+      <LicenseAllocationBanner />
       <Row className="justify-content-between">
         <Col lg={6} xs={12} className="mb-2">
           <SearchBar
