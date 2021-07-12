@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-import StatusAlert from '../StatusAlert';
+import { Alert } from '@edx/paragon';
+import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 import NotFoundPage from '../NotFoundPage';
 import ForbiddenPage from '../ForbiddenPage';
 
@@ -23,11 +24,13 @@ function renderErrorComponent(status, message) {
       </Helmet>
       <div className="row mt-4">
         <div className="col">
-          <h1>Error</h1>
-          <StatusAlert
-            alertType="danger"
-            message={errorMessage}
-          />
+          <Alert
+            variant="danger"
+            icon={ErrorIcon}
+          >
+            <Alert.Heading>Error</Alert.Heading>
+            {errorMessage}
+          </Alert>
         </div>
       </div>
     </>

@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import { MailtoLink } from '@edx/paragon';
+import React, { useContext, useState } from 'react';
+import { MailtoLink, Alert } from '@edx/paragon';
 
-import StatusAlert from '../../StatusAlert';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -11,6 +10,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 
 const SubscriptionExpirationBanner = () => {
   const { subscription: { daysUntilExpiration }, hasMultipleSubscriptions } = useContext(SubscriptionDetailContext);
+  const [showBanner, setShowBanner] = useState(true);
 
   const renderMessage = () => (
     <>
@@ -46,12 +46,15 @@ const SubscriptionExpirationBanner = () => {
   }
 
   return (
-    <StatusAlert
+    <Alert
       className="expiration-alert mt-1"
-      alertType={alertType}
-      message={renderMessage(daysUntilExpiration)}
+      variant={alertType}
       dismissible={dismissible}
-    />
+      show={showBanner}
+      onClose={() => setShowBanner(false)}
+    >
+      {renderMessage(daysUntilExpiration)}
+    </Alert>
   );
 };
 
