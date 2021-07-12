@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import SubscriptionExpirationModals from './expiration/SubscriptionExpirationModals';
 import SubscriptionDetails from './SubscriptionDetails';
 import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
@@ -29,7 +28,6 @@ const SubscriptionDetailPage = ({ match }) => {
   }
   return (
     <SubscriptionDetailContextProvider subscription={subscription}>
-      <SubscriptionExpirationBanner />
       <SubscriptionExpirationModals />
       <SubscriptionDetails />
       <LicenseAllocationDetails />

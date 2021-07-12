@@ -12,6 +12,7 @@ import { TAB_ALL_USERS, TAB_PENDING_USERS } from './data/constants';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
+import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
@@ -34,6 +35,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           </Link>
         </Row>
       )}
+      <SubscriptionExpirationBanner />
       <Row className="mb-5">
         <Col className="mb-3 mb-lg-0">
           <Row className="m-0 justify-content-between">

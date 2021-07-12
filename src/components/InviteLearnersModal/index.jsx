@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import {
+  Button, Icon, Modal, Alert,
+} from '@edx/paragon';
+import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';
 import TextAreaAutoSize from '../TextAreaAutoSize';
-import StatusAlert from '../StatusAlert';
 import FileInput from '../FileInput';
 import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
 import { normalizeFileUpload } from '../../utils';
@@ -152,18 +154,19 @@ class InviteLearnersModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title="Unable to subscribe users"
-          message={error.length > 1 ? (
+        <Alert
+          variant="danger"
+          icon={ErrorIcon}
+        >
+          <Alert.Heading>Unable to subscribe users</Alert.Heading>
+          {error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
             error[0]
           )}
-        />
+        </Alert>
       </div>
     );
   }
