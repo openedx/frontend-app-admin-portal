@@ -52,3 +52,17 @@
     overflow: scroll;
   }
 }
+
+.cell-max-width-override {
+  max-width: unset !important;
+}
+
+.data-table-selector-column-wrapper {
+  table {
+    thead {
+      th:first-of-type {
+        width: 50px;
+      }
+    }
+  }
+}
