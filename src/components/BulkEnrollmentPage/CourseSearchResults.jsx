@@ -114,25 +114,27 @@ export const BaseCourseSearchResults = (props) => {
 
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={searchResults?.hits || []}
-        itemCount={searchResults?.nbHits}
-        SelectionStatusComponent={AddCoursesSelectionStatus}
-        pageCount={searchResults?.nbPages || 1}
-        pageSize={searchResults?.hitsPerPage || 0}
-        selectedFlatRows={selectedCourses}
-        initialTableOptions={{
-          getRowId: (row) => row.key,
-        }}
-      >
-        <DataTable.TableControlBar />
-        <DataTable.Table />
-        <DataTable.TableFooter>
-          <DataTable.RowStatus />
-          <SearchPagination defaultRefinement={page} />
-        </DataTable.TableFooter>
-      </DataTable>
+      <div className="data-table-selector-column-wrapper">
+        <DataTable
+          columns={columns}
+          data={searchResults?.hits || []}
+          itemCount={searchResults?.nbHits}
+          SelectionStatusComponent={AddCoursesSelectionStatus}
+          pageCount={searchResults?.nbPages || 1}
+          pageSize={searchResults?.hitsPerPage || 0}
+          selectedFlatRows={selectedCourses}
+          initialTableOptions={{
+            getRowId: (row) => row.key,
+          }}
+        >
+          <DataTable.TableControlBar />
+          <DataTable.Table />
+          <DataTable.TableFooter>
+            <DataTable.RowStatus />
+            <SearchPagination defaultRefinement={page} />
+          </DataTable.TableFooter>
+        </DataTable>
+      </div>
     </>
   );
 };

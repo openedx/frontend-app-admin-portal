@@ -50,6 +50,7 @@ const tableColumns = [
     Header: TABLE_HEADERS.email,
     accessor: 'userEmail',
     Filter: TextFilter,
+    cellClassName: 'cell-max-width-override',
   },
 ];
 
@@ -123,30 +124,32 @@ const AddLearnersStep = ({
       </p>
       <h2>{ADD_LEARNERS_TITLE}</h2>
       {errors && <Alert variant="danger">{ADD_LEARNERS_ERROR_TEXT}</Alert>}
-      <DataTable
-        isFilterable
-        manualFilters
-        columns={tableColumns}
-        data={results}
-        itemCount={count}
-        isPaginated
-        pageCount={numPages}
-        manualPagination
-        fetchData={debouncedFetchData}
-        SelectionStatusComponent={AddLearnersSelectionStatus}
-        initialTableOptions={initialTableOptions}
-        selectedFlatRows={selectedEmails}
-      >
-        {loading && <TableLoadingSkeleton data-testid="skelly" />}
-        {!loading
-          && (
-          <>
-            <DataTable.TableControlBar />
-            <DataTable.Table />
-            <DataTable.TableFooter />
-          </>
-          )}
-      </DataTable>
+      <div className="data-table-selector-column-wrapper">
+        <DataTable
+          isFilterable
+          manualFilters
+          columns={tableColumns}
+          data={results}
+          itemCount={count}
+          isPaginated
+          pageCount={numPages}
+          manualPagination
+          fetchData={debouncedFetchData}
+          SelectionStatusComponent={AddLearnersSelectionStatus}
+          initialTableOptions={initialTableOptions}
+          selectedFlatRows={selectedEmails}
+        >
+          {loading && <TableLoadingSkeleton data-testid="skelly" />}
+          {!loading
+            && (
+            <>
+              <DataTable.TableControlBar />
+              <DataTable.Table />
+              <DataTable.TableFooter />
+            </>
+            )}
+        </DataTable>
+      </div>
     </>
   );
 };
