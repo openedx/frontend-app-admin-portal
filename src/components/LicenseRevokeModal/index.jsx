@@ -4,8 +4,8 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import {
   Alert, Button, Icon, Modal,
 } from '@edx/paragon';
+import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 
-import StatusAlert from '../StatusAlert';
 import { ACTIVATED, SHOW_REVOCATION_CAP_PERCENT } from '../subscriptions/data/constants';
 import './LicenseRevokeModal.scss';
 
@@ -126,16 +126,17 @@ class LicenseRevokeModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
+        <Alert
+          variant="danger"
+          icon={ErrorIcon}
           title={modalErrors.revoke}
-          message={error.length > 1 ? (
+        >
+          {error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : error[0]}
-        />
+        </Alert>
       </div>
     );
   }

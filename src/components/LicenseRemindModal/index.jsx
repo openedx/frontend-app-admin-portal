@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import {
+  Button, Icon, Modal, Alert,
+} from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
+import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 
 import TextAreaAutoSize from '../TextAreaAutoSize';
-import StatusAlert from '../StatusAlert';
 
 import { validateEmailTemplateForm } from '../../data/validation/email';
 import emailTemplate from './emailTemplate';
@@ -142,18 +144,19 @@ class LicenseRemindModal extends React.Component {
         ref={this.errorMessageRef}
         tabIndex="-1"
       >
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title="Unable to send reminder email"
-          message={error.length > 1 ? (
+        <Alert
+          variant="danger"
+          icon={ErrorIcon}
+        >
+          <Alert.Heading>Unable to send reminder email</Alert.Heading>
+          {error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
             </ul>
           ) : (
             error[0]
           )}
-        />
+        </Alert>
       </div>
     );
   }

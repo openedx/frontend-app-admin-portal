@@ -1,5 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import {
+  screen, render, fireEvent, waitForElementToBeRemoved,
+} from '@testing-library/react';
 
 import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
@@ -22,23 +24,38 @@ const ExpirationBannerWithContext = ({ detailState }) => (
 
 describe('<SubscriptionExpirationBanner />', () => {
   test('does not render an alert before the "moderate" days until expiration threshold', () => {
-    const wrapper = mount(<ExpirationBannerWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
-    expect(wrapper.exists('.expiration-alert')).toEqual(false);
+    render(<ExpirationBannerWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 
-  test('renders an alert after any expiration threshold has passed', () => {
-    const thresholds = [
-      SUBSCRIPTION_DAYS_REMAINING_MODERATE,
-      SUBSCRIPTION_DAYS_REMAINING_SEVERE,
-      SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-    ];
-    Object.values(thresholds).forEach(threshold => {
-      const detailStateCopy = {
-        ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: threshold,
-      };
-      const wrapper = mount(<ExpirationBannerWithContext detailState={detailStateCopy} />);
-      expect(wrapper.exists('.expiration-alert')).toEqual(true);
-    });
+  test.each([
+    SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+    SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+    SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+  ])('renders an alert after expiration threshold of %i', (threshold) => {
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      daysUntilExpiration: threshold,
+    };
+    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    expect(screen.queryByRole('alert')).not.toBeNull();
+  });
+
+  test.each([
+    SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+    SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+  ])('expiration threshold %i is dismissible', async (threshold) => {
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      daysUntilExpiration: threshold,
+    };
+    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    expect(screen.queryByRole('alert')).not.toBeNull();
+    fireEvent(
+      screen.getByText('Close alert'),
+      new MouseEvent('click', { bubbles: true, cancelable: true }),
+    );
+    await waitForElementToBeRemoved(screen.queryByRole('alert'));
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 });

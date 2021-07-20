@@ -1,8 +1,8 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { Alert } from '@edx/paragon';
 
 import { useSubscriptionData } from './data/hooks';
-import StatusAlert from '../StatusAlert';
 
 export const SubscriptionContext = createContext({});
 
@@ -33,13 +33,13 @@ export default function SubscriptionData({ children, enterpriseId }) {
   }
 
   return (
-    <StatusAlert
-      className="mt-3"
-      alertType={!hasSubscription ? 'danger' : ''}
-      message={!hasSubscription ? `Your organization does not have any active subscriptions to manage.
+    <Alert
+      variant={!hasSubscription ? 'danger' : ''}
+    >
+      {!hasSubscription ? `Your organization does not have any active subscriptions to manage.
       If you believe you are seeing this message in error,
       please reach out to the edX Customer Success team at customersuccess@edx.org.` : ''}
-    />
+    </Alert>
   );
 }
 
