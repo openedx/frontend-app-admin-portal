@@ -33,6 +33,8 @@ const AddLearnersSelectionStatus = (props) => {
   return <BaseSelectionStatus selectedRows={selectedEmails} dispatch={dispatch} {...props} />;
 };
 
+const FilterStatus = () => <DataTable.FilterStatus showFilteredFields={false} />;
+
 const SelectWithContext = (props) => <BaseSelectWithContext contextKey="emails" {...props} />;
 
 const SelectWithContextHeader = (props) => <BaseSelectWithContextHeader contextKey="emails" {...props} />;
@@ -116,8 +118,6 @@ const AddLearnersStep = ({
     getRowId: (row, relativeIndex, parent) => row?.uuid || (parent ? [parent.id, relativeIndex].join('.') : relativeIndex),
   }), []);
 
-  const filterStatusComponent = () => <DataTable.FilterStatus showFilteredFields={false} />;
-
   return (
     <>
       <p>
@@ -140,7 +140,7 @@ const AddLearnersStep = ({
           SelectionStatusComponent={AddLearnersSelectionStatus}
           initialTableOptions={initialTableOptions}
           selectedFlatRows={selectedEmails}
-          FilterStatusComponent={filterStatusComponent}
+          FilterStatusComponent={FilterStatus}
         >
           {loading && <TableLoadingSkeleton data-testid="skelly" />}
           {!loading
