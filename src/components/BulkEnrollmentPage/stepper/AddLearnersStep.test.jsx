@@ -81,6 +81,8 @@ describe('AddLearnersStep', () => {
     });
     expect(await screen.findByText('Search Email')).toBeInTheDocument();
     await act(() => mockTableData);
+    const oldFilterMessage = screen.queryByText(/Filtered by userEmail/);
+    expect(oldFilterMessage).toBeNull();
     userEvent.type(screen.getByPlaceholderText('Search Email'), 'beAR');
     const { subscriptionUUID } = defaultProps;
     // multiple calls will occur to this function, we only test for the last one
