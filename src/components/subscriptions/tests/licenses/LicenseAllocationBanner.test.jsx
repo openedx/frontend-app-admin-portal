@@ -14,7 +14,7 @@ describe('<LicenseAllocationBanner />', () => {
     render(<LicenseAllocationBanner />);
     expect(screen.queryByText(ALLOCATION_BANNER_TEXT)).toBeTruthy();
     fireEvent(
-      screen.getByText('Close alert'),
+      screen.getByText('Dismiss'),
       new MouseEvent('click', { bubbles: true, cancelable: true }),
     );
     expect(screen.queryByText(ALLOCATION_BANNER_TEXT)).toBeFalsy();

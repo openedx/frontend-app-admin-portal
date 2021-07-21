@@ -70,7 +70,7 @@ describe('<FeatureAnnouncementBanner />', () => {
     });
     expect(container.textContent).toContain('This is a test notification.');
 
-    const closeButton = document.getElementsByClassName('close')[0];
+    const closeButton = document.getElementsByClassName('btn btn-tertiary btn-sm')[0];
     closeButton.click();
     expect(LmsApiService.markBannerNotificationAsRead.mock.calls).toHaveLength(1);
   });

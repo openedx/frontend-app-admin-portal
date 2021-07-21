@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { MailtoLink, Alert } from '@edx/paragon';
+import { Alert } from '@edx/paragon';
+import PropTypes from 'prop-types';
 
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -7,29 +8,63 @@ import {
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
 } from '../data/constants';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import { formatTimestamp } from '../../../utils';
+import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButton';
 
-const SubscriptionExpirationBanner = () => {
-  const { subscription: { daysUntilExpiration }, hasMultipleSubscriptions } = useContext(SubscriptionDetailContext);
+const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
+  const {
+    subscription: { daysUntilExpiration, expirationDate },
+  } = useContext(SubscriptionDetailContext);
   const [showBanner, setShowBanner] = useState(true);
 
-  const renderMessage = () => (
-    <>
-      {hasMultipleSubscriptions && daysUntilExpiration <= 0 ? (
+  const renderMessage = () => {
+    const subscriptionExpired = daysUntilExpiration <= 0;
+    // use subscription detail view messaging
+    if (isSubscriptionPlanDetails) {
+      return (
         <>
-          This subscription cohort has expired. You may still view the statuses of learners who participated.
+          {subscriptionExpired ? (
+            <>
+              <Alert.Heading>
+                This subscription plan&apos;s end date has passed
+              </Alert.Heading>
+              Administrative actions are no longer available as of the plan end date of
+              {formatTimestamp({ timestamp: expirationDate })}. You may still view the
+              statuses of your invited learners.
+            </>
+          ) : (
+            <>
+              <Alert.Heading>
+                This subscription plan&apos;s end date is approaching
+              </Alert.Heading>
+              Administrative actions will no longer be available following the
+              plan end date of {formatTimestamp({ timestamp: expirationDate })}.
+            </>
+          )}
         </>
-      ) : (
-        <>
-          Your subscription is {daysUntilExpiration} days from expiration.
-          Contact the edX Customer Success team at
-          {' '}
-          <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
-          {' '}
-          to extend your contract.
-        </>
-      )}
-    </>
-  );
+      );
+    }
+    return (
+      <>
+        {subscriptionExpired ? (
+          <>
+            <Alert.Heading>
+              Your subscription contract has expired
+            </Alert.Heading>
+            Renew your subscription today to reconnect your learning community.
+          </>
+        ) : (
+          <>
+            <Alert.Heading>
+              Your subscription contract is expiring soon
+            </Alert.Heading>
+            Your current subscription contract will expire in {daysUntilExpiration} days.
+            Renew your subscription today to minimize access disruption for your learners.
+          </>
+        )}
+      </>
+    );
+  };
 
   if (daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {
     return null;
@@ -45,6 +80,11 @@ const SubscriptionExpirationBanner = () => {
     alertType = 'danger';
   }
 
+  const actions = [];
+  if (!isSubscriptionPlanDetails || daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
+    actions.push(<ContactCustomerSupportButton />);
+  }
+
   return (
     <Alert
       className="expiration-alert mt-1"
@@ -52,10 +92,19 @@ const SubscriptionExpirationBanner = () => {
       dismissible={dismissible}
       show={showBanner}
       onClose={() => setShowBanner(false)}
+      actions={actions}
     >
       {renderMessage(daysUntilExpiration)}
     </Alert>
   );
+};
+
+SubscriptionExpirationBanner.propTypes = {
+  isSubscriptionPlanDetails: PropTypes.bool,
+};
+
+SubscriptionExpirationBanner.defaultProps = {
+  isSubscriptionPlanDetails: false,
 };
 
 export default SubscriptionExpirationBanner;

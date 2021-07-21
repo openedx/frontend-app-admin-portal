@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  screen, render, fireEvent, waitForElementToBeRemoved,
+  screen, render, waitForElementToBeRemoved,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
@@ -51,10 +52,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
-    fireEvent(
-      screen.getByText('Close alert'),
-      new MouseEvent('click', { bubbles: true, cancelable: true }),
-    );
+    userEvent.click(screen.getByText('Dismiss'));
     await waitForElementToBeRemoved(screen.queryByRole('alert'));
     expect(screen.queryByRole('alert')).toBeNull();
   });
