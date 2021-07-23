@@ -51,8 +51,9 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
+    const elem = await screen.findByText('Dismiss');
     fireEvent(
-      screen.getByText('Close alert'),
+      elem,
       new MouseEvent('click', { bubbles: true, cancelable: true }),
     );
     await waitForElementToBeRemoved(screen.queryByRole('alert'));

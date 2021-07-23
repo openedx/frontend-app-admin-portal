@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from '@testing-library/react';
+import {
+  render, fireEvent, screen, act,
+} from '@testing-library/react';
 
 import FeatureAnnouncementBanner from './index';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -18,13 +19,6 @@ beforeEach(() => {
   document.body.appendChild(container);
 });
 
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
 describe('<FeatureAnnouncementBanner />', () => {
   it('renders correctly', async () => {
     const flushPromises = () => new Promise(setImmediate);
@@ -38,7 +32,7 @@ describe('<FeatureAnnouncementBanner />', () => {
       await flushPromises();
     });
 
-    expect(container.textContent).toContain('This is a test notification.');
+    await screen.findByText('This is a test notification.');
   });
 
   it('does not render if data is not available', async () => {
@@ -68,10 +62,12 @@ describe('<FeatureAnnouncementBanner />', () => {
       render(<FeatureAnnouncementBanner enterpriseSlug="test-enterprise" />, container);
       await flushPromises();
     });
-    expect(container.textContent).toContain('This is a test notification.');
-
-    const closeButton = document.getElementsByClassName('close')[0];
-    closeButton.click();
+    await screen.findByText('This is a test notification.');
+    const closeBtn = await screen.findByText('Dismiss');
+    fireEvent(
+      closeBtn,
+      new MouseEvent('click', { bubbles: true, cancelable: true }),
+    );
     expect(LmsApiService.markBannerNotificationAsRead.mock.calls).toHaveLength(1);
   });
 });
