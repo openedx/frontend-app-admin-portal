@@ -14,7 +14,7 @@ exports[`<ErrorPage /> renders correctly 1`] = `
         className="col"
       >
         <div
-          className="fade alert-content undefined alert alert-danger show"
+          className="fade alert-content alert alert-danger show"
           role="alert"
         >
           <span
@@ -37,13 +37,19 @@ exports[`<ErrorPage /> renders correctly 1`] = `
               />
             </svg>
           </span>
-          <div>
+          <div
+            className="pgn__alert-message-wrapper"
+          >
             <div
-              className="alert-heading h4"
+              className="alert-message-content"
             >
-              Error
+              <div
+                className="alert-heading h4"
+              >
+                Error
+              </div>
+              Something went terribly wrong
             </div>
-            Something went terribly wrong
           </div>
         </div>
       </div>
