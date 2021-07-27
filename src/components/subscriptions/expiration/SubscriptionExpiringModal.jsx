@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
-import { ModalDialog, MailtoLink } from '@edx/paragon';
+import { ActionRow, ModalDialog } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { getSubscriptionExpiringCookieName } from '../data/utils';
-
+import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
 
 export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';
@@ -45,21 +45,30 @@ const SubscriptionExpiringModal = ({
       isOpen={isOpen}
       hasCloseButton={false}
     >
+      <ModalDialog.Header>
+        <ModalDialog.Title>
+          Your subscription contract expires in {daysUntilExpiration} days
+        </ModalDialog.Title>
+      </ModalDialog.Header>
+
       <ModalDialog.Body>
         <p>
-          This subscription cohort is set to expire in {daysUntilExpiration} days.
-          In order to minimize course access disruptions for your learners, make sure your invoice has
-          been completed.
-        </p>
-        <p>
-          If you have questions or need help, please contact the edX Customer Success team at
-          {' '}
-          <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>.
+          It&apos;s time to renew your subscription contact with edX!
+          The edX customer support team is here to help.
+          Get in touch today to minimize access disruptions for your learners.
         </p>
         <i>
           Access expires on {formatTimestamp({ timestamp: expirationDate })}
         </i>
       </ModalDialog.Body>
+      <ModalDialog.Footer>
+        <ActionRow>
+          <ModalDialog.CloseButton variant="tertiary">
+            Dismiss
+          </ModalDialog.CloseButton>
+          <ContactCustomerSupportButton />
+        </ActionRow>
+      </ModalDialog.Footer>
     </ModalDialog>
   );
 };

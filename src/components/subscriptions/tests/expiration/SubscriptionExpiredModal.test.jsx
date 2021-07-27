@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { screen, render } from '@testing-library/react';
+import {
+  screen, render,
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import SubscriptionExpiredModal from '../../expiration/SubscriptionExpiredModal';
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
-  createMockStore,
-  DEFAULT_STORE_STATE,
 } from '../TestUtilities';
 
 const ExpiredModalWithContext = ({
@@ -32,28 +32,19 @@ ExpiredModalWithContext.defaultProps = {
   isOpen: true,
 };
 
+const detailStateCopy = (daysUntilExpiration) => ({
+  ...SUBSCRIPTION_PLAN_ZERO_STATE,
+  daysUntilExpiration,
+});
+
 describe('<SubscriptionExpiredModal />', () => {
-  test('includes a link to the code mgmt page if the enterprise has the page enabled and the subscription is expired', () => {
-    const detailStateCopy = {
-      ...SUBSCRIPTION_PLAN_ZERO_STATE,
-      daysUntilExpiration: 0,
-    };
-    render(<ExpiredModalWithContext detailState={detailStateCopy} />);
-    expect(screen.queryByText('code management page')).toBeTruthy();
+  test('make sure component renders', () => {
+    render(<ExpiredModalWithContext detailState={detailStateCopy(0)} />);
+    expect(screen.queryByRole('dialog')).toBeTruthy();
   });
 
-  test('does NOT include a link to the code mgmt page if the enterprise has the page disabled and the subscription is expired', () => {
-    const store = createMockStore({
-      portalConfiguration: {
-        ...DEFAULT_STORE_STATE.portalConfiguration,
-        enableCodeManagementScreen: false,
-      },
-    });
-    const detailStateCopy = {
-      ...SUBSCRIPTION_PLAN_ZERO_STATE,
-      daysUntilExpiration: 0,
-    };
-    render(<ExpiredModalWithContext detailState={detailStateCopy} store={store} />);
-    expect(screen.queryByText('code management page')).toBeFalsy();
+  test('support button is rendered', async () => {
+    render(<ExpiredModalWithContext detailState={detailStateCopy(0)} />);
+    expect(screen.queryByText('Contact customer support')).toBeTruthy();
   });
 });

@@ -1,6 +1,9 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import {
+  screen, render,
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
 import { EXPIRED_MODAL_TITLE } from '../../expiration/SubscriptionExpiredModal';
@@ -42,25 +45,47 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
+
+    test('expired modal is dismissible', () => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: 0,
+      };
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
+      userEvent.click(screen.getByText('Dismiss'));
+      expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
+    });
   });
 
   describe('expiring', () => {
-    const thresholds = [
+    test.each([
       SUBSCRIPTION_DAYS_REMAINING_MODERATE,
       SUBSCRIPTION_DAYS_REMAINING_SEVERE,
       SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
-    ];
+    ])('render expiring modal for expiration threshold (%i days)', (threshold) => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: threshold,
+      };
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
+      expect(screen.queryByText(`${threshold} days`, { exact: false })).toBeTruthy();
+    });
 
-    thresholds.forEach((threshold) => {
-      test(`render expiring modal for expiration threshold (${threshold} days)`, () => {
-        const detailStateCopy = {
-          ...SUBSCRIPTION_PLAN_ZERO_STATE,
-          daysUntilExpiration: threshold,
-        };
-        render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-        expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
-        expect(screen.queryByText(`${threshold} days`, { exact: false })).toBeTruthy();
-      });
+    test.each([
+      SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+      SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+      SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+    ])('close expiring modal for expiration threshold (%i days)', async (threshold) => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: threshold,
+      };
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
+      userEvent.click(screen.getByText('Dismiss'));
+      expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
   });
 });

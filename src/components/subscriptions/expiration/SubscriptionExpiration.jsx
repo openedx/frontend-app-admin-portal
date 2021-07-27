@@ -14,9 +14,7 @@ const SubscriptionExpiration = () => {
 
   return (
     <SubscriptionDetailContextProvider subscription={subscriptionFurthestFromExpiration}>
-      {subscriptionFurthestFromExpiration.daysUntilExpiration > 0 && (
-        <SubscriptionExpirationBanner />
-      )}
+      <SubscriptionExpirationBanner />
       <SubscriptionExpirationModals />
     </SubscriptionDetailContextProvider>
   );

@@ -1,21 +1,18 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { ModalDialog, MailtoLink } from '@edx/paragon';
+import { ModalDialog, ActionRow } from '@edx/paragon';
 
 import { configuration } from '../../../config';
 import Img from '../../Img';
 import { formatTimestamp } from '../../../utils';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
+import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButton';
 
 export const EXPIRED_MODAL_TITLE = 'This subscription cohort is expired';
 
 const SubscriptionExpiredModal = ({
   onClose,
   isOpen,
-  enableCodeManagementScreen,
-  enterpriseSlug,
 }) => {
   const { subscription: { expirationDate } } = useContext(SubscriptionDetailContext);
 
@@ -29,31 +26,24 @@ const SubscriptionExpiredModal = ({
       <ModalDialog.Body>
         <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
         <p>
-          This subscription cohort expired on <b>{formatTimestamp({ timestamp: expirationDate })}</b>.
-          {' '}
-          To make changes to this cohort, contact edX to reactivate your subscription.
+          Your subscription contract expired on <b>{formatTimestamp({ timestamp: expirationDate })}</b>.
+          The edX customer support team is here to help! Get in touch today to renew your subscription
+          and access your subscription management details.
         </p>
-        <p>What to do next?</p>
-        <ul>
-          <li>
-            To reactivate your subscription, please contact the edX Customer Success team at
-            {' '}
-            <MailtoLink to="customersuccess@edx.org">customersuccess@edx.org</MailtoLink>
-          </li>
-          {enableCodeManagementScreen && (
-            <li>
-              Manage your codes in the <Link to={`/${enterpriseSlug}/admin/coupons`}>code management page</Link>
-            </li>
-          )}
-        </ul>
       </ModalDialog.Body>
+      <ModalDialog.Footer>
+        <ActionRow>
+          <ModalDialog.CloseButton variant="tertiary">
+            Dismiss
+          </ModalDialog.CloseButton>
+          <ContactCustomerSupportButton />
+        </ActionRow>
+      </ModalDialog.Footer>
     </ModalDialog>
   );
 };
 
 SubscriptionExpiredModal.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-  enableCodeManagementScreen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
 };
@@ -62,9 +52,4 @@ SubscriptionExpiredModal.defaultProps = {
   isOpen: false,
 };
 
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
-});
-
-export default connect(mapStateToProps)(SubscriptionExpiredModal);
+export default SubscriptionExpiredModal;
