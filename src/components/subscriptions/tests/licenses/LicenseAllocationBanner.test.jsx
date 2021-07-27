@@ -10,11 +10,12 @@ describe('<LicenseAllocationBanner />', () => {
     expect(screen.queryByText(ALLOCATION_BANNER_TEXT)).toBeTruthy();
   });
 
-  test('component closes', () => {
+  test('component closes', async () => {
     render(<LicenseAllocationBanner />);
     expect(screen.queryByText(ALLOCATION_BANNER_TEXT)).toBeTruthy();
+    const closeBtn = await screen.findByText('Dismiss');
     fireEvent(
-      screen.getByText('Dismiss'),
+      closeBtn,
       new MouseEvent('click', { bubbles: true, cancelable: true }),
     );
     expect(screen.queryByText(ALLOCATION_BANNER_TEXT)).toBeFalsy();

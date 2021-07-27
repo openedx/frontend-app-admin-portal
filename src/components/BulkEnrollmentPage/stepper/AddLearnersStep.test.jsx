@@ -81,9 +81,9 @@ describe('AddLearnersStep', () => {
     });
     expect(await screen.findByText('Search Email')).toBeInTheDocument();
     await act(() => mockTableData);
+    const oldFilterMessage = screen.queryByText(/Filtered by userEmail/);
+    expect(oldFilterMessage).toBeNull();
     userEvent.type(screen.getByPlaceholderText('Search Email'), 'beAR');
-    expect(await screen.findByText(/Filtered by userEmail/)).toBeInTheDocument();
-    expect(await screen.findByText('Clear Filters')).toBeInTheDocument();
     const { subscriptionUUID } = defaultProps;
     // multiple calls will occur to this function, we only test for the last one
     // for correctness, and don't test backend filtering part here (tested in backend).
