@@ -13,6 +13,7 @@ export const EXPIRED_MODAL_TITLE = 'This subscription cohort is expired';
 const SubscriptionExpiredModal = ({
   onClose,
   isOpen,
+  onAction,
 }) => {
   const { subscription: { expirationDate } } = useContext(SubscriptionDetailContext);
 
@@ -36,7 +37,7 @@ const SubscriptionExpiredModal = ({
           <ModalDialog.CloseButton variant="tertiary">
             Dismiss
           </ModalDialog.CloseButton>
-          <ContactCustomerSupportButton />
+          <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>
       </ModalDialog.Footer>
     </ModalDialog>
@@ -45,6 +46,7 @@ const SubscriptionExpiredModal = ({
 
 SubscriptionExpiredModal.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onAction: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
 };
 

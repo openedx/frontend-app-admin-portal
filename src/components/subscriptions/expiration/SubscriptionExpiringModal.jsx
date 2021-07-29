@@ -15,6 +15,7 @@ const SubscriptionExpiringModal = ({
   isOpen,
   expirationThreshold,
   enterpriseId,
+  onAction,
 }) => {
   const { subscription: { daysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
 
@@ -66,7 +67,7 @@ const SubscriptionExpiringModal = ({
           <ModalDialog.CloseButton variant="tertiary">
             Dismiss
           </ModalDialog.CloseButton>
-          <ContactCustomerSupportButton />
+          <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>
       </ModalDialog.Footer>
     </ModalDialog>
@@ -76,6 +77,7 @@ const SubscriptionExpiringModal = ({
 SubscriptionExpiringModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  onAction: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
   expirationThreshold: PropTypes.number,
 };
