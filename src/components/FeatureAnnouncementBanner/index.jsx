@@ -7,6 +7,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 
 const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
   const [enterpriseNotificationBanner, setEnterpriseNotificationBanner] = useState({
+    title: null,
     text: null,
     notificationId: null,
   });
@@ -25,6 +26,7 @@ const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
       .then((response) => {
         if (response.data && response.data.enterprise_notification_banner) {
           setEnterpriseNotificationBanner({
+            title: response.data.enterprise_notification_banner.title,
             text: response.data.enterprise_notification_banner.text,
             notificationId: response.data.enterprise_notification_banner.id,
           });
@@ -37,10 +39,10 @@ const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
   }, [enterpriseSlug]);
 
   return (
-    isRead || !enterpriseNotificationBanner.text ? null : (
+    isRead || !enterpriseNotificationBanner.text || !enterpriseNotificationBanner.title ? null : (
       <div>
         <Alert variant="info" dismissible onClose={markAsRead}>
-          <Alert.Heading>We have a new feature for you!</Alert.Heading>
+          <Alert.Heading>{enterpriseNotificationBanner.title}</Alert.Heading>
           <p>
             {enterpriseNotificationBanner.text}
           </p>
