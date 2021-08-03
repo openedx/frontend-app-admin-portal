@@ -6,6 +6,12 @@
 ## Overview
 frontend-app-admin-portal is a frontend that provides branded learning experiences as well as a dashboard for enterprise learning administrators.
 
+#### Features
+
+##### Subscription Enrollment:
+Also called Bulk enrollment, accessible via 'Subscription enrollment' at /admin/enrollment
+
+
 ## Setting up a dev environment
 
 ### The Short Story
