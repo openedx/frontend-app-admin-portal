@@ -15,6 +15,10 @@ import {
   SubscriptionManagementContext,
 } from '../TestUtilities';
 
+jest.mock('@edx/frontend-platform/analytics', () => ({
+  sendTrackEvent: jest.fn(),
+}));
+
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types
 const ExpirationBannerWithContext = ({ detailState }) => (

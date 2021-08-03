@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -70,20 +71,42 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     return null;
   }
 
+  let subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_MODERATE;
   let dismissible = true;
   let alertType = 'info';
   if (daysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
+    subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_SEVERE;
     alertType = 'warning';
   }
   if (daysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL) {
+    subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL;
     dismissible = false;
     alertType = 'danger';
   }
 
+  const emitAlertActionEvent = () => {
+    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked', {
+      expiration_threshold: subscriptionExpirationThreshold,
+      days_until_expiration: daysUntilExpiration,
+    });
+  };
+
+  const emitAlertDismissedEvent = () => {
+    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.dismissed', {
+      expiration_threshold: subscriptionExpirationThreshold,
+      days_until_expiration: daysUntilExpiration,
+    });
+  };
+
   const actions = [];
   if (!isSubscriptionPlanDetails || daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
-    actions.push(<ContactCustomerSupportButton />);
+    actions.push(<ContactCustomerSupportButton onClick={() => emitAlertActionEvent()} />);
   }
+
+  const dismissBanner = () => {
+    setShowBanner(false);
+    emitAlertDismissedEvent();
+  };
 
   return (
     <Alert
@@ -91,7 +114,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       variant={alertType}
       dismissible={dismissible}
       show={showBanner}
-      onClose={() => setShowBanner(false)}
+      onClose={dismissBanner}
       actions={actions}
     >
       {renderMessage(daysUntilExpiration)}

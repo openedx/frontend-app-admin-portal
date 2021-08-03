@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
 import { useToggle } from '@edx/paragon';
+import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 
 import SubscriptionExpiredModal from './SubscriptionExpiredModal';
 import SubscriptionExpiringModal from './SubscriptionExpiringModal';
@@ -90,17 +91,38 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
     }
   }, [isSubscriptionExpired]);
 
+  const emitAlertActionEvent = () => {
+    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked', {
+      expiration_threshold: subscriptionExpirationThreshold,
+      days_until_expiration: daysUntilExpiration,
+    });
+  };
+
+  const emitAlertDismissedEvent = () => {
+    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.dismissed', {
+      expiration_threshold: subscriptionExpirationThreshold,
+      days_until_expiration: daysUntilExpiration,
+    });
+  };
+
+  const handleCloseModal = (closeModal) => {
+    emitAlertDismissedEvent();
+    closeModal();
+  };
+
   return (
     <>
       <SubscriptionExpiringModal
         isOpen={isExpiringModalOpen}
-        onClose={closeExpiringModal}
+        onClose={() => handleCloseModal(closeExpiringModal)}
+        onAction={() => emitAlertActionEvent(false)}
         expirationThreshold={subscriptionExpirationThreshold}
         enterpriseId={enterpriseId}
       />
       <SubscriptionExpiredModal
         isOpen={isExpiredModalOpen}
-        onClose={closeExpiredModal}
+        onClose={() => handleCloseModal(closeExpiredModal)}
+        onAction={() => emitAlertActionEvent(false)}
       />
     </>
   );
