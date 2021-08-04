@@ -9,7 +9,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 jest.mock('../../data/services/LmsApiService');
 
 const mockEnterpriseCustomer = {
-  enterprise_notification_banner: { text: 'This is a test notification.', id: 1 },
+  enterprise_notification_banner: { title: 'This is a test title.', text: 'This is a test notification.', id: 1 },
 };
 
 let container = null;
@@ -32,6 +32,7 @@ describe('<FeatureAnnouncementBanner />', () => {
       await flushPromises();
     });
 
+    await screen.findByText('This is a test title.');
     await screen.findByText('This is a test notification.');
   });
 
@@ -47,6 +48,7 @@ describe('<FeatureAnnouncementBanner />', () => {
       await flushPromises();
     });
 
+    expect(container.textContent).not.toContain('This is a test title.');
     expect(container.textContent).not.toContain('This is a test notification.');
   });
 
@@ -62,6 +64,7 @@ describe('<FeatureAnnouncementBanner />', () => {
       render(<FeatureAnnouncementBanner enterpriseSlug="test-enterprise" />, container);
       await flushPromises();
     });
+    await screen.findByText('This is a test title.');
     await screen.findByText('This is a test notification.');
     const closeBtn = await screen.findByText('Dismiss');
     fireEvent(
