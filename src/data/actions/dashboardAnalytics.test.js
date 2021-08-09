@@ -39,7 +39,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/overview/`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/overview/`)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(fetchDashboardAnalytics(enterpriseId)).then(() => {
@@ -54,7 +54,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/overview/`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/overview/`)
         .replyOnce(500, JSON.stringify({}));
 
       return store.dispatch(fetchDashboardAnalytics(enterpriseId)).then(() => {
@@ -78,7 +78,7 @@ describe('actions', () => {
       ];
       const store = mockStore();
 
-      axiosMock.onGet(`http://localhost:8000/enterprise/api/v0/enterprise/${enterpriseId}/enrollments/overview/`)
+      axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/overview/`)
         .replyOnce(404, JSON.stringify({}));
 
       return store.dispatch(fetchDashboardAnalytics(enterpriseId)).then(() => {
