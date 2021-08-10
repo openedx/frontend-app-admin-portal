@@ -11,17 +11,18 @@ import {
   SUBSCRIPTIONS,
 } from './constants';
 
+const subscriptionInitState = {
+  results: [],
+  count: 0,
+  next: null,
+  previous: null,
+};
 /*
  * This hook provides all customer agreement and subscription data
  * for the authenticated user and given enterprise customer UUID.
  */
 export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
-  const [subscriptions, setSubscriptions] = useState({
-    results: [],
-    count: 0,
-    next: null,
-    previous: null,
-  });
+  const [subscriptions, setSubscriptions] = useState({ ...subscriptionInitState });
 
   const forceRefresh = () => {
     setSubscriptions({ ...subscriptions });
@@ -34,12 +35,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
       .then((response) => {
         const { data: customerAgreementData } = camelCaseObject(response);
 
-        const subscriptionsData = {
-          results: [],
-          count: 0,
-          next: null,
-          previous: null,
-        };
+        const subscriptionsData = { ...subscriptionInitState };
         // Reshape the Customer Agreement API response into the flatter format for the app to use:
         if (customerAgreementData.results && customerAgreementData.count) {
           // Only look at customer agreements with subs:
@@ -50,7 +46,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
               // that subcription.
               const flattenedSubscriptionResults = customerAgreement.subscriptions.map(subscription => ({
                 ...subscription,
-                disableExpirationNotifications: (customerAgreement.disableExpirationNotifications || false),
+                showExpirationNotifications: !(customerAgreement.disableExpirationNotifications || false),
               }));
 
               subscriptionsData.results = subscriptionsData.results.concat(flattenedSubscriptionResults);
@@ -134,12 +130,7 @@ export const useSubscriptionUsers = ({
   errors,
   setErrors,
 }) => {
-  const [subscriptionUsers, setSubscriptionUsers] = useState({
-    results: [],
-    count: 0,
-    next: null,
-    previous: null,
-  });
+  const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
 
   useEffect(() => {
     if (!subscriptionUUID) {

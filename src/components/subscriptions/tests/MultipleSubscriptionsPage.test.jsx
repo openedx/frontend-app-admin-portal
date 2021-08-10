@@ -42,6 +42,7 @@ const defaultSubscriptions = {
           allocated: 10,
           total: 20,
         },
+        showExpirationNotifications: true,
       },
       {
         uuid: 'anotherid',
@@ -52,6 +53,7 @@ const defaultSubscriptions = {
           allocated: 11,
           total: 30,
         },
+        showExpirationNotifications: true,
       },
     ],
   },

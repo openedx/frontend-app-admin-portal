@@ -14,7 +14,7 @@ import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButto
 
 const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const {
-    subscription: { daysUntilExpiration, expirationDate },
+    subscription: { daysUntilExpiration, expirationDate, showExpirationNotifications },
   } = useContext(SubscriptionDetailContext);
   const [showBanner, setShowBanner] = useState(true);
 
@@ -108,7 +108,8 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     emitAlertDismissedEvent();
   };
 
-  return (
+  return (showExpirationNotifications
+    && (
     <Alert
       className="expiration-alert mt-1"
       variant={alertType}
@@ -119,6 +120,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     >
       {renderMessage(daysUntilExpiration)}
     </Alert>
+    )
   );
 };
 
