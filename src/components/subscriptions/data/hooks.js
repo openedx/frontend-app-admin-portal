@@ -12,7 +12,8 @@ import {
 } from './constants';
 
 /*
- * This hook provides all subscription data for the authenticated user and given enterprise customer UUID.
+ * This hook provides all customer agreement and subscription data
+ * for the authenticated user and given enterprise customer UUID.
  */
 export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({
@@ -29,9 +30,34 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect((page = 1) => {
-    LicenseManagerApiService.fetchSubscriptions({ enterprise_customer_uuid: enterpriseId, page })
+    LicenseManagerApiService.fetchCustomerAgreementData({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
-        const { data: subscriptionsData } = camelCaseObject(response);
+        const { data: customerAgreementData } = camelCaseObject(response);
+
+        const subscriptionsData = {
+          results: [],
+          count: 0,
+          next: null,
+          previous: null,
+        };
+        // Reshape the Customer Agreement API response into the flatter format for the app to use:
+        if (customerAgreementData.results && customerAgreementData.count) {
+          // Only look at customer agreements with subs:
+          customerAgreementData.results.filter(result => (result.subscriptions && result.subscriptions.length))
+            .forEach(customerAgreement => {
+              // Push information about whether a particular subscription
+              // should have expiration notices displayed for it down into
+              // that subcription.
+              const flattenedSubscriptionResults = customerAgreement.subscriptions.map(subscription => ({
+                ...subscription,
+                disableExpirationNotifications: (customerAgreement.disableExpirationNotifications || false),
+              }));
+
+              subscriptionsData.results = subscriptionsData.results.concat(flattenedSubscriptionResults);
+            });
+          subscriptionsData.count = subscriptionsData.results.length;
+        }
+
         setSubscriptions(subscriptionsData);
       })
       .catch((err) => {
@@ -141,7 +167,7 @@ export const useSubscriptionUsers = ({
 };
 
 /*
- * This hook provides top level subscription data for the given enterprise customer UUID.
+ * This hook provides top level subscription data and customer agreement data for the given enterprise customer UUID.
  * It also provides an error state to be used by all subscription and license components.
 */
 export const useSubscriptionData = ({ enterpriseId }) => {
