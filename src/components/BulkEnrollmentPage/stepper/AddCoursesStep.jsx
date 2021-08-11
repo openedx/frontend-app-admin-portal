@@ -20,23 +20,25 @@ const AddCoursesStep = ({
   <>
     <p>{ADD_COURSE_DESCRIPTION}</p>
     <h2>{ADD_COURSES_TITLE}</h2>
-    <SearchData>
-      <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
-        searchClient={searchClient}
-      >
-        <Configure
-          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid}`}
-          hitsPerPage={25}
-        />
-        <SearchHeader variant="default" />
-        <CourseSearchResults
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-          subscriptionUUID={subscription.uuid}
-        />
-      </InstantSearch>
-    </SearchData>
+    <div className="add-courses-search-data">
+      <SearchData>
+        <InstantSearch
+          indexName={configuration.ALGOLIA.INDEX_NAME}
+          searchClient={searchClient}
+        >
+          <Configure
+            filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid}`}
+            hitsPerPage={25}
+          />
+          <SearchHeader variant="default" />
+          <CourseSearchResults
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            subscriptionUUID={subscription.uuid}
+          />
+        </InstantSearch>
+      </SearchData>
+    </div>
   </>
 );
 
