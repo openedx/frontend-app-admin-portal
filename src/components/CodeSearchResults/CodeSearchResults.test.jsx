@@ -22,6 +22,7 @@ const sampleEmailTemplate = {
   'email-template-greeting': 'Sample email greeting.. ',
   'email-template-body': 'Sample email body template.. ',
   'email-template-closing': 'Sample email closing template.. ',
+  'email-template-files': [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
 };
 
 const emailDefaults = {

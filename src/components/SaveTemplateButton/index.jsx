@@ -6,13 +6,13 @@ import { SubmissionError } from 'redux-form';
 import { validateEmailTemplateFields } from '../../data/validation/email';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL, EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
+import { features } from '../../config';
 
 export const SAVE_TEMPLATE_MODE = 'save';
 
 class SaveTemplateButton extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       submitState: SUBMIT_STATES.DEFAULT,
     };
@@ -78,13 +78,16 @@ class SaveTemplateButton extends React.Component {
       email_greeting: formData['email-template-greeting'],
       email_closing: formData['email-template-closing'],
       name: formData['template-name'] || formData['template-name-select'],
+      ...(features.FILE_ATTACHMENT === 'true' && {
+        email_files: formData['email-template-files'],
+      }),
     };
+
     if (!newTemplateSource) {
       options.id = emailTemplates[templateType]['template-id'];
     }
 
     this.setState({ submitState: SUBMIT_STATES.PENDING });
-
     return saveTemplate(options)
       .then(() => {
         this.setState({ submitState: SUBMIT_STATES.COMPLETE });
@@ -95,6 +98,9 @@ class SaveTemplateButton extends React.Component {
           email_subject: 'email-template-subject',
           email_greeting: 'email-template-greeting',
           email_closing: 'email-template-closing',
+          ...(features.FILE_ATTACHMENT === 'true' && {
+            email_files: 'email-template-files',
+          }),
         };
         const { response, message } = error;
         const errors = {

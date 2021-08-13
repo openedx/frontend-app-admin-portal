@@ -10,7 +10,7 @@ import {
   CURRENT_FROM_TEMPLATE,
   SET_EMAIL_ADDRESS,
 } from '../constants/emailTemplate';
-
+import { features } from '../../config';
 import { transformTemplate, updateAllTemplates, updateTemplateEmailAddress } from '../../utils';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
@@ -29,6 +29,7 @@ export const initialState = {
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
       'email-template-closing': assignEmailTemplate.closing,
+      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
     },
     remind: {
       'email-template-subject': remindEmailTemplate.subject,
@@ -51,6 +52,7 @@ export const initialState = {
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
     'email-template-closing': assignEmailTemplate.closing,
+    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
   },
   remind: {
     'template-id': 0,
@@ -73,6 +75,7 @@ export const initialState = {
     'email-template-greeting': subscribeEmailTemplate.greeting,
     'email-template-body': subscribeEmailTemplate.body,
     'email-template-closing': subscribeEmailTemplate.closing,
+    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
   },
 };
 
