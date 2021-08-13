@@ -50,6 +50,17 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
 
+    test('do not render expired modal when expiration notifications are disabled', () => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: 0,
+        showExpirationNotifications: false,
+      };
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
+      expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
+    });
+
     test('expired modal is dismissible', () => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -75,6 +86,17 @@ describe('<SubscriptionExpirationModals />', () => {
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
       expect(screen.queryByText(`${threshold} days`, { exact: false })).toBeTruthy();
+    });
+
+    test('do not render expiring modal when expiration notifications are disabled', () => {
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        daysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+        showExpirationNotifications: false,
+      };
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
+      expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
 
     test.each([

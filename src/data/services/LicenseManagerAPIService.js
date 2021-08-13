@@ -147,6 +147,14 @@ class LicenseManagerApiService {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?enterprise_customer_uuid=${enterpriseUuid}`;
     return LicenseManagerApiService.apiClient().post(url, options);
   }
+
+  static fetchCustomerAgreementData(options) {
+    const queryParams = {
+      ...options,
+    };
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/customer-agreement/?${qs.stringify(queryParams)}`;
+    return LicenseManagerApiService.apiClient().get(url);
+  }
 }
 
 export default LicenseManagerApiService;

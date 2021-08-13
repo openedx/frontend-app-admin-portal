@@ -60,4 +60,14 @@ describe('<SubscriptionExpirationBanner />', () => {
     await waitForElementToBeRemoved(screen.queryByRole('alert'));
     expect(screen.queryByRole('alert')).toBeNull();
   });
+
+  test('does not render an alert when subscription expiration notifications are disabled', () => {
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      daysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+      showExpirationNotifications: false,
+    };
+    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
 });

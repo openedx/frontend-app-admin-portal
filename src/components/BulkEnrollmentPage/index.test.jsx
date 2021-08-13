@@ -20,6 +20,7 @@ jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   default: {
     fetchSubscriptions: jest.fn(),
     fetchSubscriptionUsersOverview: jest.fn(),
+    fetchCustomerAgreementData: jest.fn(),
   },
 }));
 
@@ -74,6 +75,45 @@ const subscriptions = Promise.resolve({
     count: 2,
   },
 });
+
+const mockCustomerAgreementDataMultiSubscriptions = Promise.resolve({
+  data: {
+
+    results: [{
+      uuid: '8ed1e80c-45fd-4b97-927a-5368b6aba6ea',
+      enterpriseId: 'foo',
+      enterpriseSlug: testSlug,
+      defaultEnterpriseCatalogUuid: 'blarghl',
+      subscriptions: [sub1, sub2],
+      disableExpirationNotifications: false,
+    }],
+    errors: null,
+    setErrors: jest.fn(),
+    forceRefresh: jest.fn(),
+    loading: false,
+    count: 1,
+  },
+});
+
+const mockCustomerAgreementDataSingleSubscription = Promise.resolve({
+  data: {
+
+    results: [{
+      uuid: '8ed1e80c-45fd-4b97-927a-5368b6aba6ea',
+      enterpriseId: 'foo',
+      enterpriseSlug: testSlug,
+      defaultEnterpriseCatalogUuid: 'blarghl',
+      subscriptions: [sub1],
+      disableExpirationNotifications: false,
+    }],
+    errors: null,
+    setErrors: jest.fn(),
+    forceRefresh: jest.fn(),
+    loading: false,
+    count: 1,
+  },
+});
+
 const singleSubscription = Promise.resolve({
   data: {
     results: [sub1],
@@ -105,6 +145,9 @@ const BulkEnrollmentWrapper = () => (
   </Provider>
 );
 
+LicenseManagerApiService.fetchCustomerAgreementData.mockImplementation(
+  () => mockCustomerAgreementDataMultiSubscriptions,
+);
 LicenseManagerApiService.fetchSubscriptions.mockImplementation(() => subscriptions);
 LicenseManagerApiService.fetchSubscriptionUsersOverview.mockImplementation(() => mockSubscriptionCount);
 
@@ -136,6 +179,9 @@ describe('<BulkEnrollmentPage />', () => {
   });
   describe('single subscription', () => {
     it('with one subscription, directly renders the course search page', async () => {
+      LicenseManagerApiService.fetchCustomerAgreementData.mockImplementation(
+        () => mockCustomerAgreementDataSingleSubscription,
+      );
       LicenseManagerApiService.fetchSubscriptions.mockImplementation(() => singleSubscription);
       LicenseManagerApiService.fetchSubscriptionUsersOverview.mockImplementation(() => mockSingleSubscriptionCount);
       renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}` });

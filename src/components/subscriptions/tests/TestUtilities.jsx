@@ -31,6 +31,7 @@ export const SUBSCRIPTION_PLAN_ZERO_STATE = {
     unassigned: 10,
   },
   users: [],
+  showExpirationNotifications: true,
 };
 export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   daysUntilExpiration: 240,
@@ -54,9 +55,10 @@ export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
       lastRemindDate: '2020-12-08',
     },
   ],
+  showExpirationNotifications: true,
 };
 const subscriptionPlan = (state) => {
-  const { daysUntilExpiration, licenses } = state;
+  const { daysUntilExpiration, licenses, showExpirationNotifications } = state;
   return ({
     title: TEST_SUBSCRIPTION_PLAN_TITLE,
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
@@ -71,6 +73,7 @@ const subscriptionPlan = (state) => {
       remaining: 1,
     },
     daysUntilExpiration,
+    showExpirationNotifications,
   });
 };
 
@@ -155,6 +158,7 @@ SubscriptionManagementContext.propTypes = {
       total: PropTypes.number.isRequired,
       allocated: PropTypes.number.isRequired,
     }).isRequired,
+    showExpirationNotifications: PropTypes.bool.isRequired,
     overview: PropTypes.shape({
       activated: PropTypes.number.isRequired,
       all: PropTypes.number.isRequired,

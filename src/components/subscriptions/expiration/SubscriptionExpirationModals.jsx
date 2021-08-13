@@ -27,7 +27,11 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
  * @returns Component containing modals related to subscription expiration.
  */
 const SubscriptionExpirationModals = ({ enterpriseId }) => {
-  const { subscription: { daysUntilExpiration } } = useContext(SubscriptionDetailContext);
+  const {
+    subscription: {
+      daysUntilExpiration, showExpirationNotifications,
+    },
+  } = useContext(SubscriptionDetailContext);
   const isSubscriptionExpired = daysUntilExpiration <= 0;
 
   /**
@@ -110,7 +114,8 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
     closeModal();
   };
 
-  return (
+  return (showExpirationNotifications
+    && (
     <>
       <SubscriptionExpiringModal
         isOpen={isExpiringModalOpen}
@@ -125,6 +130,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
         onAction={() => emitAlertActionEvent(false)}
       />
     </>
+    )
   );
 };
 
