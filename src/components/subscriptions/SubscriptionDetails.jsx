@@ -21,8 +21,16 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     setActiveTab,
     hasMultipleSubscriptions,
     subscription,
+    forceRefresh: forceDetailRefresh,
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
+
+  const isNonEmptyState = () => (
+    subscription.licenses?.allocated > 0
+    || subscription.licenses?.revoked > 0
+    || activeTab !== TAB_ALL_USERS
+  );
+
   return (
     <>
       {hasMultipleSubscriptions && (
@@ -40,11 +48,12 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         <Col className="mb-3 mb-lg-0">
           <Row className="m-0 justify-content-between">
             <h2>{subscription?.title}</h2>
-            {(subscription.licenses?.allocated > 0 || activeTab !== TAB_ALL_USERS) && (
+            {isNonEmptyState() && (
               <div className="text-md-right">
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
+                    forceDetailRefresh();
                     addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
                     setActiveTab(TAB_PENDING_USERS);
                   }}

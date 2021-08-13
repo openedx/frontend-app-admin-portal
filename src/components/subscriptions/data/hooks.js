@@ -92,6 +92,10 @@ export const useSubscriptionUsersOverview = ({
   };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
+  const forceRefresh = () => {
+    setSubscriptionUsersOverview({ ...subscriptionUsersOverview });
+  };
+
   useEffect(() => {
     if (subscriptionUUID) {
       LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
@@ -115,7 +119,7 @@ export const useSubscriptionUsersOverview = ({
     }
   }, [subscriptionUUID, search]);
 
-  return subscriptionUsersOverview;
+  return [subscriptionUsersOverview, forceRefresh];
 };
 
 /*

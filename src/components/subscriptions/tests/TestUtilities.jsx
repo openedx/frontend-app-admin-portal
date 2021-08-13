@@ -130,7 +130,7 @@ export const mockUseSubscriptionUsers = (state) => ({
 
 export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
-  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => detailState.overview);
+  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => {}]);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
   return (
     <Router history={initialHistory}>
