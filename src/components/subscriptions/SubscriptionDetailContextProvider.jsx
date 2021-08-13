@@ -15,7 +15,7 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
   const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
-  const overview = useSubscriptionUsersOverview({
+  const [overview, forceRefresh] = useSubscriptionUsersOverview({
     subscriptionUUID: subscription.uuid,
     search: searchQuery,
     errors,
@@ -25,6 +25,7 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
     activeTab,
     currentPage,
     hasMultipleSubscriptions,
+    forceRefresh,
     overview,
     searchQuery,
     setActiveTab,
