@@ -31,7 +31,7 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
       <Stepper.Header className="my-3" />
       <div className="sticky-footer-wrapper">
         <Scrollable>
-          <Container size="xl" className="stepper-step">
+          <Container size="xl">
             <Stepper.Step eventKey={ADD_COURSES_STEP} title={ADD_COURSES_TITLE}>
               <AddCoursesStep
                 enterpriseId={enterpriseId}
