@@ -8,10 +8,6 @@ import {
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
 
-import * as FullStory from '@fullstory/browser';
-
-import { configuration } from './config';
-
 import App from './components/App';
 
 import './index.scss';
@@ -38,10 +34,3 @@ initialize({
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });
-
-if (configuration.FULLSTORY_ORG_ID) {
-  FullStory.init({
-    orgId: configuration.FULLSTORY_ORG_ID,
-    devMode: !configuration.FULLSTORY_ENABLED,
-  });
-}
