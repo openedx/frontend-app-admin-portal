@@ -29,10 +29,10 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const {
     subscription: {
-      daysUntilExpiration, showExpirationNotifications,
+      agreementNetDaysUntilExpiration, showExpirationNotifications,
     },
   } = useContext(SubscriptionDetailContext);
-  const isSubscriptionExpired = daysUntilExpiration <= 0;
+  const isSubscriptionExpired = agreementNetDaysUntilExpiration <= 0;
 
   /**
    * Computes a value representing the day thresolds in which the user should
@@ -46,15 +46,15 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
         SUBSCRIPTION_DAYS_REMAINING_MODERATE,
       ];
       // Finds the first expiration threshold (from most severe to least) that the current
-      // `daysUntilExpiration` falls into
-      return thresholds.find(threshold => threshold >= daysUntilExpiration);
+      // `agreementNetDaysUntilExpiration` falls into
+      return thresholds.find(threshold => threshold >= agreementNetDaysUntilExpiration);
     },
-    [daysUntilExpiration],
+    [agreementNetDaysUntilExpiration],
   );
 
   const shouldShowSubscriptionExpiringModal = useMemo(
     () => {
-      const isSubscriptionExpiring = daysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_MODERATE;
+      const isSubscriptionExpiring = agreementNetDaysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_MODERATE;
 
       // expiring subscription modal should not be opened if the subscription is already expired, is not pending
       // expiration or a valid expiration threshold couldn't be found.
@@ -77,7 +77,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
 
       return true;
     },
-    [daysUntilExpiration, subscriptionExpirationThreshold, isSubscriptionExpired],
+    [agreementNetDaysUntilExpiration, subscriptionExpirationThreshold, isSubscriptionExpired],
   );
 
   const [isExpiredModalOpen, openExpiredModal, closeExpiredModal] = useToggle(isSubscriptionExpired);
@@ -98,14 +98,14 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const emitAlertActionEvent = () => {
     sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked', {
       expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
+      days_until_expiration: agreementNetDaysUntilExpiration,
     });
   };
 
   const emitAlertDismissedEvent = () => {
     sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.dismissed', {
       expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
+      days_until_expiration: agreementNetDaysUntilExpiration,
     });
   };
 

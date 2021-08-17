@@ -47,6 +47,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
               const flattenedSubscriptionResults = customerAgreement.subscriptions.map(subscription => ({
                 ...subscription,
                 showExpirationNotifications: !(customerAgreement.disableExpirationNotifications || false),
+                agreementNetDaysUntilExpiration: customerAgreement.netDaysUntilExpiration,
               }));
 
               subscriptionsData.results = subscriptionsData.results.concat(flattenedSubscriptionResults);

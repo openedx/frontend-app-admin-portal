@@ -14,12 +14,12 @@ import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButto
 
 const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const {
-    subscription: { daysUntilExpiration, expirationDate, showExpirationNotifications },
+    subscription: { agreementNetDaysUntilExpiration, expirationDate, showExpirationNotifications },
   } = useContext(SubscriptionDetailContext);
   const [showBanner, setShowBanner] = useState(true);
 
   const renderMessage = () => {
-    const subscriptionExpired = daysUntilExpiration <= 0;
+    const subscriptionExpired = agreementNetDaysUntilExpiration <= 0;
     // use subscription detail view messaging
     if (isSubscriptionPlanDetails) {
       return (
@@ -59,7 +59,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
             <Alert.Heading>
               Your subscription contract is expiring soon
             </Alert.Heading>
-            Your current subscription contract will expire in {daysUntilExpiration} days.
+            Your current subscription contract will expire in {agreementNetDaysUntilExpiration} days.
             Renew your subscription today to minimize access disruption for your learners.
           </>
         )}
@@ -67,18 +67,18 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     );
   };
 
-  if (daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {
+  if (agreementNetDaysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_MODERATE) {
     return null;
   }
 
   let subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_MODERATE;
   let dismissible = true;
   let alertType = 'info';
-  if (daysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
+  if (agreementNetDaysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
     subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_SEVERE;
     alertType = 'warning';
   }
-  if (daysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL) {
+  if (agreementNetDaysUntilExpiration <= SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL) {
     subscriptionExpirationThreshold = SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL;
     dismissible = false;
     alertType = 'danger';
@@ -87,19 +87,19 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const emitAlertActionEvent = () => {
     sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked', {
       expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
+      days_until_expiration: agreementNetDaysUntilExpiration,
     });
   };
 
   const emitAlertDismissedEvent = () => {
     sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.dismissed', {
       expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
+      days_until_expiration: agreementNetDaysUntilExpiration,
     });
   };
 
   const actions = [];
-  if (!isSubscriptionPlanDetails || daysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
+  if (!isSubscriptionPlanDetails || agreementNetDaysUntilExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
     actions.push(<ContactCustomerSupportButton onClick={() => emitAlertActionEvent()} />);
   }
 
@@ -118,7 +118,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       onClose={dismissBanner}
       actions={actions}
     >
-      {renderMessage(daysUntilExpiration)}
+      {renderMessage()}
     </Alert>
     )
   );

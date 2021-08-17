@@ -17,7 +17,7 @@ const SubscriptionExpiringModal = ({
   enterpriseId,
   onAction,
 }) => {
-  const { subscription: { daysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
+  const { subscription: { agreementNetDaysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
 
   const handleClose = () => {
     if (expirationThreshold) {
@@ -48,7 +48,7 @@ const SubscriptionExpiringModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Your subscription contract expires in {daysUntilExpiration} days
+          Your subscription contract expires in {agreementNetDaysUntilExpiration} days
         </ModalDialog.Title>
       </ModalDialog.Header>
 

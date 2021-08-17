@@ -43,7 +43,7 @@ describe('<SubscriptionExpirationModals />', () => {
     test('render expired modal', () => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: 0,
+        agreementNetDaysUntilExpiration: 0,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
@@ -53,7 +53,7 @@ describe('<SubscriptionExpirationModals />', () => {
     test('do not render expired modal when expiration notifications are disabled', () => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: 0,
+        agreementNetDaysUntilExpiration: 0,
         showExpirationNotifications: false,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
@@ -64,7 +64,7 @@ describe('<SubscriptionExpirationModals />', () => {
     test('expired modal is dismissible', () => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: 0,
+        agreementNetDaysUntilExpiration: 0,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
@@ -81,7 +81,7 @@ describe('<SubscriptionExpirationModals />', () => {
     ])('render expiring modal for expiration threshold (%i days)', (threshold) => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: threshold,
+        agreementNetDaysUntilExpiration: threshold,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
@@ -91,7 +91,7 @@ describe('<SubscriptionExpirationModals />', () => {
     test('do not render expiring modal when expiration notifications are disabled', () => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_SEVERE,
+        agreementNetDaysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_SEVERE,
         showExpirationNotifications: false,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
@@ -106,7 +106,7 @@ describe('<SubscriptionExpirationModals />', () => {
     ])('close expiring modal for expiration threshold (%i days)', async (threshold) => {
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: threshold,
+        agreementNetDaysUntilExpiration: threshold,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();

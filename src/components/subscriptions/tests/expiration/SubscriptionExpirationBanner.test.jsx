@@ -29,7 +29,11 @@ const ExpirationBannerWithContext = ({ detailState }) => (
 
 describe('<SubscriptionExpirationBanner />', () => {
   test('does not render an alert before the "moderate" days until expiration threshold', () => {
-    render(<ExpirationBannerWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      agreementNetDaysUntilExpiration: 240,
+    };
+    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
@@ -40,7 +44,7 @@ describe('<SubscriptionExpirationBanner />', () => {
   ])('renders an alert after expiration threshold of %i', (threshold) => {
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
-      daysUntilExpiration: threshold,
+      agreementNetDaysUntilExpiration: threshold,
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
@@ -52,7 +56,7 @@ describe('<SubscriptionExpirationBanner />', () => {
   ])('expiration threshold %i is dismissible', async (threshold) => {
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
-      daysUntilExpiration: threshold,
+      agreementNetDaysUntilExpiration: threshold,
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
@@ -64,7 +68,7 @@ describe('<SubscriptionExpirationBanner />', () => {
   test('does not render an alert when subscription expiration notifications are disabled', () => {
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
-      daysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_MODERATE,
+      agreementNetDaysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_MODERATE,
       showExpirationNotifications: false,
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);

@@ -17,8 +17,10 @@ const TEST_ENTERPRISE_CUSTOMER_UUID = 'b5f07fee-1b34-458f-b672-19b55fc1bd10';
 const TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID = 'ff7acb5e-584a-4e5f-bacc-33a9995794f9';
 const TEST_SUBSCRIPTION_PLAN_TITLE = 'Test Subscription Plan';
 const TEST_SUBSCRIPTION_PLAN_UUID = '28d4dcdc-c026-4c02-a263-82dd9c0d8b43';
+
 export const SUBSCRIPTION_PLAN_ZERO_STATE = {
   daysUntilExpiration: 240,
+  agreementNetDaysUntilExpiration: 240,
   licenses: {
     total: 10,
     allocated: 0,
@@ -58,7 +60,9 @@ export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   showExpirationNotifications: true,
 };
 const subscriptionPlan = (state) => {
-  const { daysUntilExpiration, licenses, showExpirationNotifications } = state;
+  const {
+    daysUntilExpiration, licenses, showExpirationNotifications, agreementNetDaysUntilExpiration,
+  } = state;
   return ({
     title: TEST_SUBSCRIPTION_PLAN_TITLE,
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
@@ -74,6 +78,7 @@ const subscriptionPlan = (state) => {
     },
     daysUntilExpiration,
     showExpirationNotifications,
+    agreementNetDaysUntilExpiration,
   });
 };
 
