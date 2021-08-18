@@ -43,14 +43,9 @@
 }
 
 .sticky-footer-wrapper {
-  height: 70vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
-
-  .stepper-step {
-    flex-grow: 1;
-    overflow: scroll;
-  }
 }
 
 .cell-max-width-override {

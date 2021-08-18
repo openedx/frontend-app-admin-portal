@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Stepper, Button, Container,
+  Stepper, Button, Container, Scrollable,
 } from '@edx/paragon';
 import AddCoursesStep from './AddCoursesStep';
 import AddLearnersStep from './AddLearnersStep';
@@ -30,26 +30,28 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
     <Stepper activeKey={currentStep}>
       <Stepper.Header className="my-3" />
       <div className="sticky-footer-wrapper">
-        <Container size="xl" className="stepper-step">
-          <Stepper.Step eventKey={ADD_COURSES_STEP} title={ADD_COURSES_TITLE}>
-            <AddCoursesStep
-              enterpriseId={enterpriseId}
-              enterpriseSlug={enterpriseSlug}
-              subscription={subscription}
-            />
-          </Stepper.Step>
+        <Scrollable>
+          <Container size="xl">
+            <Stepper.Step eventKey={ADD_COURSES_STEP} title={ADD_COURSES_TITLE}>
+              <AddCoursesStep
+                enterpriseId={enterpriseId}
+                enterpriseSlug={enterpriseSlug}
+                subscription={subscription}
+              />
+            </Stepper.Step>
 
-          <Stepper.Step eventKey={ADD_LEARNERS_STEP} title={ADD_LEARNERS_TITLE}>
-            <AddLearnersStep
-              subscriptionUUID={subscription.uuid}
-              enterpriseSlug={enterpriseSlug}
-            />
-          </Stepper.Step>
+            <Stepper.Step eventKey={ADD_LEARNERS_STEP} title={ADD_LEARNERS_TITLE}>
+              <AddLearnersStep
+                subscriptionUUID={subscription.uuid}
+                enterpriseSlug={enterpriseSlug}
+              />
+            </Stepper.Step>
 
-          <Stepper.Step eventKey={REVIEW_STEP} title={REVIEW_TITLE}>
-            <ReviewStep setCurrentStep={setCurrentStep} />
-          </Stepper.Step>
-        </Container>
+            <Stepper.Step eventKey={REVIEW_STEP} title={REVIEW_TITLE}>
+              <ReviewStep setCurrentStep={setCurrentStep} />
+            </Stepper.Step>
+          </Container>
+        </Scrollable>
         <Container size="xl" className="pb-3 pt-5">
           <Stepper.ActionRow eventKey={ADD_COURSES_STEP}>
             <Stepper.ActionRow.Spacer />
