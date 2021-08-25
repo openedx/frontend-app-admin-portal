@@ -50,6 +50,7 @@ const initialState = {
         'email-template-greeting': assignEmailTemplate.greeting,
         'email-template-body': assignEmailTemplate.body,
         'email-template-closing': assignEmailTemplate.closing,
+        'email-template-files': assignEmailTemplate.files,
       },
     },
     assign: {
@@ -58,6 +59,7 @@ const initialState = {
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
       'email-template-closing': assignEmailTemplate.closing,
+      'email-template-files': assignEmailTemplate.files,
     },
   },
 };

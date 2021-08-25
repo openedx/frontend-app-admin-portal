@@ -31,6 +31,7 @@ const initialState = {
       'email-template-subject': 'email-template-subject',
       'email-template-greeting': 'email-template-greeting',
       'email-template-body': 'email-template-body',
+      'email-template-files': 'email-template-files',
     },
   },
 };
@@ -42,6 +43,7 @@ const formData = {
   'email-template-subject': 'Subject',
   'email-template-greeting': 'Greeting',
   'email-template-closing': 'Closing',
+  'email-template-files': [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
 };
 const saveTemplateData = {
   id: 1,
@@ -50,6 +52,7 @@ const saveTemplateData = {
   email_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
   email_greeting: formData['email-template-greeting'],
   email_closing: formData['email-template-closing'],
+  email_files: formData['email-template-files'],
 };
 const templateType = saveTemplateData.email_type;
 const saveTemplateSpy = jest.spyOn(EcommerceApiService, 'saveTemplate');
@@ -112,6 +115,7 @@ describe('<SaveTemplateButton />', () => {
       email_greeting: saveTemplateData.email_greeting,
       email_body: 'email body',
       email_closing: saveTemplateData.email_closing,
+      email_files: saveTemplateData.email_files,
     };
     EcommerceApiService.saveTemplate.mockImplementation(() => Promise.resolve({
       data: successResponse,
@@ -122,6 +126,7 @@ describe('<SaveTemplateButton />', () => {
 
     wrapper.find('button').find('.save-template-btn').simulate('click');
     expect(store.getActions()).toEqual(expectedActions);
+
     expect(saveTemplateSpy).toHaveBeenCalledWith(saveTemplateData);
   });
 

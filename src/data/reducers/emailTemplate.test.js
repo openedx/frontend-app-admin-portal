@@ -16,6 +16,7 @@ const saveTemplateSuccessResponse = {
   email_closing: 'I am email closing',
   name: 'template-1',
   email_address: '',
+  email_files: [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
   id: 4,
 };
 const saveTemplateErrorResponse = {
@@ -67,6 +68,7 @@ describe('emailTemplate reducer', () => {
       email_closing: 'I am email closing updated',
       name: 'template-1 updated',
       email_address: 'test@edx.org',
+      email_files: [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
       id: 4,
     };
 
@@ -80,6 +82,7 @@ describe('emailTemplate reducer', () => {
           'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
           'email-template-body': saveTemplateSuccessResponse.email_body,
           'email-template-closing': saveTemplateSuccessResponse.email_closing,
+          'email-template-files': saveTemplateSuccessResponse.email_files,
           'template-name-select': saveTemplateSuccessResponse.name,
           'email-address': saveTemplateSuccessResponse.email_address,
           'template-id': saveTemplateSuccessResponse.id,
@@ -97,6 +100,7 @@ describe('emailTemplate reducer', () => {
           'email-template-greeting': saveTemplateSuccessUpdatedResponse.email_greeting,
           'email-template-body': saveTemplateSuccessUpdatedResponse.email_body,
           'email-template-closing': saveTemplateSuccessUpdatedResponse.email_closing,
+          'email-template-files': saveTemplateSuccessResponse.email_files,
           'template-name-select': saveTemplateSuccessUpdatedResponse.name,
           'email-address': saveTemplateSuccessUpdatedResponse.email_address,
           'template-id': saveTemplateSuccessUpdatedResponse.id,
@@ -120,6 +124,7 @@ describe('emailTemplate reducer', () => {
       email_greeting: 'I am email greeting updated',
       email_body: 'I am email body updated',
       email_closing: 'I am email closing updated',
+      email_files: [{ name: 'file1.png', size: 123, contents: '' }, { name: 'file2.png', size: 456, contents: '' }],
       name: 'template-1 updated',
       id: 4,
     };
@@ -178,6 +183,7 @@ describe('emailTemplate reducer', () => {
             'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
             'email-template-body': saveTemplateSuccessResponse.email_body,
             'email-template-closing': saveTemplateSuccessResponse.email_closing,
+            'email-template-files': saveTemplateSuccessResponse.email_files,
             'template-name-select': saveTemplateSuccessResponse.name,
             'email-address': '',
             'template-id': saveTemplateSuccessResponse.id,
@@ -197,6 +203,7 @@ describe('emailTemplate reducer', () => {
             'email-template-greeting': saveTemplateSuccessResponse.email_greeting,
             'email-template-body': saveTemplateSuccessResponse.email_body,
             'email-template-closing': saveTemplateSuccessResponse.email_closing,
+            'email-template-files': saveTemplateSuccessResponse.email_files,
             'template-name-select': saveTemplateSuccessResponse.name,
             'email-address': saveTemplateSuccessUpdatedResponse.email_address,
             'template-id': saveTemplateSuccessResponse.id,

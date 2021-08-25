@@ -4,8 +4,15 @@ import { Field } from 'redux-form';
 import TemplateSourceFields from '../../containers/TemplateSourceFields';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import RenderField from '../RenderField';
+import MultipleFileInputField from '../MultipleFileInputField/MultipleFileInputField';
+import { features } from '../../config';
 import {
-  MODAL_TYPES, EMAIL_TEMPLATE_GREETING_ID, EMAIL_TEMPLATE_SUBJECT_ID, EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID,
+  MODAL_TYPES,
+  EMAIL_TEMPLATE_GREETING_ID,
+  EMAIL_TEMPLATE_SUBJECT_ID,
+  EMAIL_TEMPLATE_BODY_ID,
+  EMAIL_TEMPLATE_CLOSING_ID,
+  EMAIL_TEMPLATE_FILES_ID,
 } from './constants';
 import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../../data/constants/emailTemplate';
 
@@ -40,6 +47,16 @@ export const EMAIL_TEMPLATE_FIELDS = {
     limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
     'data-hj-suppress': true,
   },
+  ...(features.FILE_ATTACHMENT === 'true' && {
+    [EMAIL_TEMPLATE_FILES_ID]: {
+      name: EMAIL_TEMPLATE_FILES_ID,
+      component: MultipleFileInputField,
+      type: 'file',
+      label: 'add files',
+      value: [],
+      description: "Max files size shouldn't exceed 2mb.",
+    },
+  }),
 };
 
 const EmailTemplateForm = ({

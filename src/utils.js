@@ -8,6 +8,7 @@ import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
 import { history } from '@edx/frontend-platform/initialize';
+import { features } from './config';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
@@ -132,6 +133,7 @@ const transformTemplate = (emailType, template) => ({
     'email-template-greeting': template.email_greeting,
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
+    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': template.email_files }),
     'template-name-select': template.name,
     'email-address': template.email_address,
     'template-id': template.id,
