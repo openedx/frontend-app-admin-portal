@@ -7,6 +7,7 @@ const ActionButtonWithModal = ({
   buttonLabel,
   renderModal,
   variant,
+  disabled,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
@@ -15,6 +16,7 @@ const ActionButtonWithModal = ({
         variant={variant}
         className={buttonClassName}
         onClick={() => setIsModalOpen(true)}
+        disabled={disabled}
       >
         {buttonLabel}
       </Button>
@@ -30,10 +32,12 @@ ActionButtonWithModal.propTypes = {
   variant: PropTypes.string.isRequired,
   buttonClassName: PropTypes.string,
   renderModal: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 ActionButtonWithModal.defaultProps = {
   buttonClassName: null,
+  disabled: false,
 };
 
 export default ActionButtonWithModal;

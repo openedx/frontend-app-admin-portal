@@ -9,7 +9,9 @@ import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 const SubscriptionZeroStateMessage = () => {
   const { addToast } = useContext(ToastsContext);
   const { forceRefresh } = useContext(SubscriptionContext);
-  const { setActiveTab } = useContext(SubscriptionDetailContext);
+  const { setActiveTab, subscription } = useContext(SubscriptionDetailContext);
+  const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
+
   return (
     <Card className="text-center">
       <Card.Body>
@@ -23,6 +25,7 @@ const SubscriptionZeroStateMessage = () => {
             addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);
             setActiveTab(TAB_PENDING_USERS);
           }}
+          disabled={isSubscriptionExpired}
         />
       </Card.Body>
     </Card>

@@ -25,11 +25,9 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
-  const isNonEmptyState = () => (
-    subscription.licenses?.allocated > 0
+  const shouldShowInviteLearnersButton = (subscription.licenses?.allocated > 0
     || subscription.licenses?.revoked > 0
-    || activeTab !== TAB_ALL_USERS
-  );
+    || activeTab !== TAB_ALL_USERS) && subscription.daysUntilExpiration > 0;
 
   return (
     <>
@@ -47,8 +45,8 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
       <Row className="mb-5">
         <Col className="mb-3 mb-lg-0">
           <Row className="m-0 justify-content-between">
-            <h2>{subscription?.title}</h2>
-            {isNonEmptyState() && (
+            <h2>{subscription.title}</h2>
+            {shouldShowInviteLearnersButton && (
               <div className="text-md-right">
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
@@ -67,7 +65,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>Start Date</small>
               </div>
               <div className="lead">
-                {moment(subscription?.startDate).format('MMMM D, YYYY')}
+                {moment(subscription.startDate).format('MMMM D, YYYY')}
               </div>
             </div>
             <div>
@@ -75,7 +73,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>End Date</small>
               </div>
               <div className="lead">
-                {moment(subscription?.expirationDate).format('MMMM D, YYYY')}
+                {moment(subscription.expirationDate).format('MMMM D, YYYY')}
               </div>
             </div>
           </div>
