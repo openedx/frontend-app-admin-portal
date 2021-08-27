@@ -30,7 +30,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
                 This subscription plan&apos;s end date has passed
               </Alert.Heading>
               Administrative actions are no longer available as of the plan end date of
-              {formatTimestamp({ timestamp: expirationDate })}. You may still view the
+              {' '}{formatTimestamp({ timestamp: expirationDate })}. You may still view the
               statuses of your invited learners.
             </>
           ) : (

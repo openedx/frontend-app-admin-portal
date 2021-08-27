@@ -5,7 +5,7 @@ import InviteLearnersModal from '../../../containers/InviteLearnersModal';
 import ActionButtonWithModal from '../../ActionButtonWithModal';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 
-const InviteLearnersButton = ({ onSuccess, onClose }) => {
+const InviteLearnersButton = ({ onSuccess, onClose, disabled }) => {
   const { overview, subscription } = useContext(SubscriptionDetailContext);
   return (
     <ActionButtonWithModal
@@ -25,6 +25,7 @@ const InviteLearnersButton = ({ onSuccess, onClose }) => {
           }}
         />
       )}
+      disabled={disabled}
     />
   );
 };
@@ -32,10 +33,12 @@ const InviteLearnersButton = ({ onSuccess, onClose }) => {
 InviteLearnersButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 InviteLearnersButton.defaultProps = {
   onClose: null,
+  disabled: false,
 };
 
 export default InviteLearnersButton;
