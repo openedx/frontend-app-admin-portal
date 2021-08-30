@@ -34,6 +34,7 @@ export const SUBSCRIPTION_PLAN_ZERO_STATE = {
   },
   users: [],
   showExpirationNotifications: true,
+  priorRenewals: [],
 };
 export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   daysUntilExpiration: 240,
@@ -58,11 +59,14 @@ export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
     },
   ],
   showExpirationNotifications: true,
+  priorRenewals: [],
 };
+
 const subscriptionPlan = (state) => {
   const {
-    daysUntilExpiration, licenses, showExpirationNotifications, agreementNetDaysUntilExpiration,
+    priorRenewals, daysUntilExpiration, licenses, showExpirationNotifications, agreementNetDaysUntilExpiration,
   } = state;
+
   return ({
     title: TEST_SUBSCRIPTION_PLAN_TITLE,
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
@@ -79,6 +83,7 @@ const subscriptionPlan = (state) => {
     daysUntilExpiration,
     showExpirationNotifications,
     agreementNetDaysUntilExpiration,
+    priorRenewals,
   });
 };
 
@@ -178,6 +183,14 @@ SubscriptionManagementContext.propTypes = {
       activationDate: PropTypes.string.isRequired,
       lastRemindDate: PropTypes.string.isRequired,
     })).isRequired,
+    priorRenewals: PropTypes.arrayOf(
+      PropTypes.shape({
+        priorSubscriptionPlanStartDate: PropTypes.string.isRequired,
+        priorSubscriptionPlanId: PropTypes.string.isRequired,
+        renewedSubscriptionPlanId: PropTypes.string.isRequired,
+        renewedSubscriptionPlanStartDate: PropTypes.string.isRequired,
+      }),
+    ),
   }).isRequired,
   store: PropTypes.shape(),
 };

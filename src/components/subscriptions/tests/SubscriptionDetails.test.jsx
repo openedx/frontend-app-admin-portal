@@ -22,6 +22,7 @@ const defaultProps = {
 };
 
 const INVITE_LEARNERS_BUTTON_TEXT = 'Invite learners';
+const PURCHASE_DATE = 'Purchase Date';
 
 describe('SubscriptionDetails', () => {
   afterEach(() => {
@@ -104,6 +105,41 @@ describe('SubscriptionDetails', () => {
         </SubscriptionManagementContext>,
       );
       expect(screen.queryByText(INVITE_LEARNERS_BUTTON_TEXT)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('purchase date', () => {
+    it('should not show purchase date if there are no prior renewals', () => {
+      render(
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+          prior_renewals: [],
+        }}
+        >
+          <SubscriptionDetails {...defaultProps} />
+        </SubscriptionManagementContext>,
+      );
+      expect(screen.queryByText(PURCHASE_DATE)).not.toBeInTheDocument();
+    });
+
+    it('should show purchase date if there are prior renewals', () => {
+      render(
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+          priorRenewals: [
+            {
+              priorSubscriptionPlanStartDate: '2021-08-25',
+              priorSubscriptionPlanId: '1',
+              renewedSubscriptionPlanId: '2',
+              renewedSubscriptionPlanStartDate: '2021-08-26',
+            },
+          ],
+        }}
+        >
+          <SubscriptionDetails {...defaultProps} />
+        </SubscriptionManagementContext>,
+      );
+      expect(screen.queryByText(PURCHASE_DATE)).toBeInTheDocument();
     });
   });
 });
