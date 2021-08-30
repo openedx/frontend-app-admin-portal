@@ -60,6 +60,17 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             )}
           </Row>
           <div className="mt-3 d-flex align-items-center">
+            {subscription.priorRenewals[0]?.priorSubscriptionPlanStartDate
+            && (
+            <div className="mr-5">
+              <div className="text-uppercase text-muted">
+                <small>Purchase Date</small>
+              </div>
+              <div className="lead">
+                {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
+              </div>
+            </div>
+            )}
             <div className="mr-5">
               <div className="text-uppercase text-muted">
                 <small>Start Date</small>
