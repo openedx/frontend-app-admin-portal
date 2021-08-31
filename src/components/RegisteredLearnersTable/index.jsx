@@ -14,16 +14,16 @@ const RegisteredLearnersTable = () => {
     },
     {
       label: 'Account Created',
-      key: 'user_account_creation_timestamp',
+      key: 'lms_user_created',
       columnSortable: true,
     },
   ];
 
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
-    user_email: <span data-hj-suppress>{learners.user_email}</span>,
-    user_account_creation_timestamp: formatTimestamp({
-      timestamp: learner.user_account_creation_timestamp,
+    user_email: <span data-hj-suppress>{learner.user_email}</span>,
+    lms_user_created: formatTimestamp({
+      timestamp: learner.lms_user_created,
     }),
   }));
 

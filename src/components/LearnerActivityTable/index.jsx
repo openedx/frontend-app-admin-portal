@@ -21,22 +21,22 @@ class LearnerActivityTable extends React.Component {
       },
       {
         label: 'Course Price',
-        key: 'course_price',
+        key: 'course_list_price',
         columnSortable: true,
       },
       {
         label: 'Start Date',
-        key: 'course_start',
+        key: 'course_start_date',
         columnSortable: true,
       },
       {
         label: 'End Date',
-        key: 'course_end',
+        key: 'course_end_date',
         columnSortable: true,
       },
       {
         label: 'Passed Date',
-        key: 'passed_timestamp',
+        key: 'passed_date',
         columnSortable: true,
       },
       {
@@ -57,7 +57,7 @@ class LearnerActivityTable extends React.Component {
     ];
 
     if (activity !== 'active_past_week') {
-      return tableColumns.filter(column => column.key !== 'passed_timestamp');
+      return tableColumns.filter(column => column.key !== 'passed_date');
     }
     return tableColumns;
   }
@@ -66,17 +66,17 @@ class LearnerActivityTable extends React.Component {
     ...enrollment,
     user_email: <span data-hj-suppress>{enrollment.user_email}</span>,
     last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
-    course_start: formatTimestamp({ timestamp: enrollment.course_start }),
-    course_end: formatTimestamp({ timestamp: enrollment.course_end }),
-    enrollment_created_timestamp: formatTimestamp({
-      timestamp: enrollment.enrollment_created_timestamp,
+    course_start_date: formatTimestamp({ timestamp: enrollment.course_start_date }),
+    course_end_date: formatTimestamp({ timestamp: enrollment.course_end_date }),
+    enrollment_date: formatTimestamp({
+      timestamp: enrollment.enrollment_date,
     }),
-    passed_timestamp: formatPassedTimestamp(enrollment.passed_timestamp),
-    user_account_creation_timestamp: formatTimestamp({
-      timestamp: enrollment.user_account_creation_timestamp,
+    passed_date: formatPassedTimestamp(enrollment.passed_date),
+    user_account_creation_date: formatTimestamp({
+      timestamp: enrollment.user_account_creation_date,
     }),
     progress_status: enrollment.progress_status,
-    course_price: enrollment.course_price ? `$${enrollment.course_price}` : '',
+    course_list_price: enrollment.course_list_price ? `$${enrollment.course_list_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),
   }));
 
