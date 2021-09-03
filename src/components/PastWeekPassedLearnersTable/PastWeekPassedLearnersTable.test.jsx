@@ -23,14 +23,14 @@ const store = mockStore({
         results: [
           {
             id: 1,
-            passed_timestamp: '2018-09-23T16:27:34.690065Z',
+            passed_date: '2018-09-23T16:27:34.690065Z',
             course_title: 'Dive into ReactJS',
             course_key: 'edX/ReactJS',
             user_email: 'awesome.me@example.com',
           },
           {
             id: 5,
-            passed_timestamp: '2018-09-22T16:27:34.690065Z',
+            passed_date: '2018-09-22T16:27:34.690065Z',
             course_title: 'Redux with ReactJS',
             course_key: 'edX/Redux_ReactJS',
             user_email: 'new@example.com',
