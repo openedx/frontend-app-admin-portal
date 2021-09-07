@@ -23,16 +23,15 @@ const LicenseAction = ({ user }) => {
   const isRevocationCapEnabled = subscription?.isRevocationCapEnabled;
   const hasNoRevocationsRemaining = !!(isRevocationCapEnabled && subscription?.revocations?.remaining <= 0);
   const noActionsAvailable = [{ key: 'no-actions-here', text: '-' }];
-  const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   const licenseActions = useMemo(
     () => {
-      if (isSubscriptionExpired) {
+      if (subscription.daysUntilExpiration <= 0) {
         return noActionsAvailable;
       }
       switch (user.status) {
         case ACTIVATED:
-          if (hasNoRevocationsRemaining) {
+          if (hasNoRevocationsRemaining || subscription.isLockedForRenewalProcessing) {
             return noActionsAvailable;
           }
 
@@ -53,8 +52,8 @@ const LicenseAction = ({ user }) => {
               />
             ),
           }];
-        case ASSIGNED:
-          return [{
+        case ASSIGNED: {
+          const assignedActions = [{
             key: 'remind-btn',
             text: 'Remind',
             handleClick: closeModal => (
@@ -70,23 +69,28 @@ const LicenseAction = ({ user }) => {
                 onClose={() => closeModal()}
               />
             ),
-          }, {
-            key: 'revoke-btn',
-            text: 'Revoke',
-            handleClick: closeModal => (
-              <LicenseRevokeModal
-                user={user}
-                onSuccess={() => {
-                  addToast('License successfully revoked');
-                  setActiveTab(TAB_REVOKED_USERS);
-                  forceRefresh();
-                }}
-                onClose={() => closeModal()}
-                subscriptionPlan={subscription}
-                licenseStatus={user.status}
-              />
-            ),
           }];
+          if (!subscription.isLockedForRenewalProcessing) {
+            assignedActions.push({
+              key: 'revoke-btn',
+              text: 'Revoke',
+              handleClick: closeModal => (
+                <LicenseRevokeModal
+                  user={user}
+                  onSuccess={() => {
+                    addToast('License successfully revoked');
+                    setActiveTab(TAB_REVOKED_USERS);
+                    forceRefresh();
+                  }}
+                  onClose={() => closeModal()}
+                  subscriptionPlan={subscription}
+                  licenseStatus={user.status}
+                />
+              ),
+            });
+          }
+          return assignedActions;
+        }
         default:
           return noActionsAvailable;
       }
