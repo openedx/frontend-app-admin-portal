@@ -25,9 +25,10 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
-  const shouldShowInviteLearnersButton = (subscription.licenses?.allocated > 0
-    || subscription.licenses?.revoked > 0
-    || activeTab !== TAB_ALL_USERS) && subscription.daysUntilExpiration > 0;
+  const hasLicensesAllocatedOrRevoked = subscription.licenses?.allocated > 0 || subscription.licenses?.revoked > 0;
+  const shouldShowInviteLearnersButton = (
+    (hasLicensesAllocatedOrRevoked || activeTab !== TAB_ALL_USERS) && subscription.daysUntilExpiration > 0
+  );
 
   return (
     <>
@@ -55,6 +56,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                     addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
                     setActiveTab(TAB_PENDING_USERS);
                   }}
+                  disabled={subscription.isLockedForRenewalProcessing}
                 />
               </div>
             )}

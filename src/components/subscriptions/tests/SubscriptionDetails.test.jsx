@@ -106,6 +106,28 @@ describe('SubscriptionDetails', () => {
       );
       expect(screen.queryByText(INVITE_LEARNERS_BUTTON_TEXT)).not.toBeInTheDocument();
     });
+
+    it('should not be disabled if the subscription is not locked for renewal processing', () => {
+      render(
+        <SubscriptionManagementContext detailState={SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE}>
+          <SubscriptionDetails {...defaultProps} />
+        </SubscriptionManagementContext>,
+      );
+      expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).not.toBeDisabled();
+    });
+
+    it('should be disabled if the subscription is locked for renewal processing', () => {
+      render(
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+          isLockedForRenewalProcessing: true,
+        }}
+        >
+          <SubscriptionDetails {...defaultProps} />
+        </SubscriptionManagementContext>,
+      );
+      expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toBeDisabled();
+    });
   });
 
   describe('purchase date', () => {

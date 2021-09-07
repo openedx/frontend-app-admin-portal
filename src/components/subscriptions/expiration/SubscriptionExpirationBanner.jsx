@@ -7,6 +7,7 @@ import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+  SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,
 } from '../data/constants';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { formatTimestamp } from '../../../utils';
@@ -38,8 +39,8 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
               <Alert.Heading>
                 This subscription plan&apos;s end date is approaching
               </Alert.Heading>
-              Administrative actions will no longer be available following the
-              plan end date of {formatTimestamp({ timestamp: expirationDate })}.
+              Administrative actions will no longer be available beginning {SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS}
+              {' '}hours prior to the plan end date of {formatTimestamp({ timestamp: expirationDate })}.
             </>
           )}
         </>

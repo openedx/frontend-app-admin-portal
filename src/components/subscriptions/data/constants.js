@@ -33,6 +33,8 @@ export const SHOW_REVOCATION_CAP_PERCENT = 80;
 export const SUBSCRIPTION_DAYS_REMAINING_MODERATE = 120;
 export const SUBSCRIPTION_DAYS_REMAINING_SEVERE = 60;
 export const SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL = 30;
+export const SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS = 12;
+
 // Prefix for cookies that determine if the user has seen the modal for that range of expiration
 export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration-modal-';
 
