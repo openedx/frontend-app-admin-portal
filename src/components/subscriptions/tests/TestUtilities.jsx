@@ -35,9 +35,11 @@ export const SUBSCRIPTION_PLAN_ZERO_STATE = {
   users: [],
   showExpirationNotifications: true,
   priorRenewals: [],
+  isLockedForRenewalProcessing: false,
 };
 export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   daysUntilExpiration: 240,
+  agreementNetDaysUntilExpiration: 240,
   licenses: {
     total: 10,
     allocated: 1,
@@ -60,11 +62,17 @@ export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   ],
   showExpirationNotifications: true,
   priorRenewals: [],
+  isLockedForRenewalProcessing: false,
 };
 
 const subscriptionPlan = (state) => {
   const {
-    priorRenewals, daysUntilExpiration, licenses, showExpirationNotifications, agreementNetDaysUntilExpiration,
+    priorRenewals,
+    daysUntilExpiration,
+    licenses,
+    showExpirationNotifications,
+    agreementNetDaysUntilExpiration,
+    isLockedForRenewalProcessing,
   } = state;
 
   return ({
@@ -84,6 +92,7 @@ const subscriptionPlan = (state) => {
     showExpirationNotifications,
     agreementNetDaysUntilExpiration,
     priorRenewals,
+    isLockedForRenewalProcessing,
   });
 };
 
