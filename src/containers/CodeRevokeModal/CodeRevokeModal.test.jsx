@@ -28,6 +28,7 @@ const initialState = {
         'email-template-greeting': revokeEmailTemplate.greeting || '',
         'email-template-body': revokeEmailTemplate.body,
         'email-template-closing': revokeEmailTemplate.closing,
+        'email-template-files': revokeEmailTemplate.files,
       },
     },
     revoke: {
@@ -35,6 +36,7 @@ const initialState = {
       'email-template-greeting': revokeEmailTemplate.greeting || '',
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
+      'email-template-files': revokeEmailTemplate.files,
     },
   },
 };
@@ -59,6 +61,7 @@ const codeRevokeRequestData = (numCodes) => {
     template_subject: revokeEmailTemplate.subject,
     template_greeting: revokeEmailTemplate.greeting || '',
     template_closing: revokeEmailTemplate.closing,
+    template_files: revokeEmailTemplate.files,
   };
 };
 

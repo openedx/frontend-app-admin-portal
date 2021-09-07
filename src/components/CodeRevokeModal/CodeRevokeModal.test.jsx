@@ -103,6 +103,7 @@ const initialState = {
         'email-template-greeting': remindEmailTemplate.greeting,
         'email-template-body': remindEmailTemplate.body,
         'email-template-closing': remindEmailTemplate.closing,
+        'email-template-files': remindEmailTemplate.files,
       },
     },
     assign: {
@@ -110,6 +111,7 @@ const initialState = {
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
+      'email-template-files': remindEmailTemplate.files,
     },
   },
 };

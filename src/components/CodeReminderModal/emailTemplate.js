@@ -12,6 +12,7 @@ Code Expiration Date: {EXPIRATION_DATE}
   If your organization does not have a branded learner portal, you can insert the access code at checkout under "coupon code" for applicable courses.
 
 For any questions, please reach out to your Learning Manager.`,
+  files: [],
 };
 
 export default emailTemplate;
