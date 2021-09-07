@@ -7,11 +7,11 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import { validateEmailTemplateForm } from '../../data/validation/email';
 import ModalError from '../CodeModal/ModalError';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
 import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
-import { MODAL_TYPES } from '../EmailTemplateForm/constants';
+import { EMAIL_TEMPLATE_FILES_ID, MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { appendUserCodeDetails } from '../CodeModal';
 
 const REMINDER_EMAIL_TEMPLATE_FIELDS = {
@@ -120,6 +120,9 @@ export class BaseCodeReminderModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
+      ...(features.FILE_ATTACHMENT === 'true' && {
+        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
+      }),
     };
     // If the enterprise has a learner portal, we should direct users to it in our assignment email
     if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {

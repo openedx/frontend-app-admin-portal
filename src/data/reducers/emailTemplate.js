@@ -36,12 +36,14 @@ export const initialState = {
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
+      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': remindEmailTemplate.files }),
     },
     revoke: {
       'email-template-subject': revokeEmailTemplate.subject,
       'email-template-greeting': revokeEmailTemplate.greeting,
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
+      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': revokeEmailTemplate.files }),
     },
   },
   assign: {
@@ -61,6 +63,7 @@ export const initialState = {
     'email-template-greeting': remindEmailTemplate.greeting,
     'email-template-body': remindEmailTemplate.body,
     'email-template-closing': remindEmailTemplate.closing,
+    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': remindEmailTemplate.files }),
   },
   revoke: {
     'template-id': 0,
@@ -69,6 +72,7 @@ export const initialState = {
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,
+    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': revokeEmailTemplate.files }),
   },
   allTemplates: [],
   subscribe: {

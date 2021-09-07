@@ -16,12 +16,12 @@ import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../..
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 
 import './CodeAssignmentModal.scss';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 import {
   displayCode, displaySelectedCodes, ModalError,
 } from '../CodeModal';
 import {
-  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
+  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, EMAIL_TEMPLATE_FILES_ID, MODAL_TYPES,
 } from '../EmailTemplateForm/constants';
 import EmailTemplateForm from '../EmailTemplateForm';
 import {
@@ -269,6 +269,9 @@ export class BaseCodeAssignmentModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
       template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      ...(features.FILE_ATTACHMENT === 'true' && {
+        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
+      }),
       enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
       notify_learners: notify,
     };

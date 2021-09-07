@@ -68,6 +68,7 @@ const initialState = {
         'email-template-greeting': remindEmailTemplate.greeting,
         'email-template-body': remindEmailTemplate.body,
         'email-template-closing': remindEmailTemplate.closing,
+        'email-template-files': remindEmailTemplate.files,
       },
     },
     remind: {
@@ -75,6 +76,7 @@ const initialState = {
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
+      'email-template-files': remindEmailTemplate.files,
     },
   },
   portalConfiguration: {
@@ -102,6 +104,7 @@ const codeReminderRequestData = (numCodes, selectedToggle) => {
     template_subject: remindEmailTemplate.subject,
     template_greeting: remindEmailTemplate.greeting,
     template_closing: remindEmailTemplate.closing,
+    template_files: remindEmailTemplate.files,
     base_enterprise_url: data.base_enterprise_url,
   };
   if (numCodes === 0) {

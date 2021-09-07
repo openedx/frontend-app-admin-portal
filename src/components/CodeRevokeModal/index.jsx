@@ -11,13 +11,14 @@ import SaveTemplateButton from '../../containers/SaveTemplateButton';
 import { validateEmailTemplateForm } from '../../data/validation/email';
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
 import {
-  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES,
+  EMAIL_TEMPLATE_BODY_ID, EMAIL_TEMPLATE_CLOSING_ID, EMAIL_TEMPLATE_GREETING_ID, MODAL_TYPES, EMAIL_TEMPLATE_FILES_ID,
 } from '../EmailTemplateForm/constants';
 import {
   appendUserCodeDetails, displayCode, displayEmail, displaySelectedCodes, ModalError,
 } from '../CodeModal';
 import EmailTemplateForm from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
+import { features } from '../../config';
 
 const ERROR_MESSAGE_TITLES = {
   [MODAL_TYPES.revoke]: 'Unable to revoke code(s)',
@@ -111,6 +112,9 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
       template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      ...(features.FILE_ATTACHMENT === 'true' && {
+        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
+      }),
       do_not_email: doNotEmail,
     };
 
