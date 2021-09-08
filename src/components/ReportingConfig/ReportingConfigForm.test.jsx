@@ -15,7 +15,7 @@ const config = {
   sftpPort: null,
   sftpUsername: '',
   sftpFilePath: '',
-  dataType: 'progress_v2',
+  dataType: 'progress_v3',
   reportType: 'csv',
   pgpEncryptionKey: '',
   uuid: 'test-config-uuid',
@@ -136,6 +136,22 @@ describe('<ReportingConfigForm />', () => {
       },
     });
     expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
+  });
+  it('Does not let you select a new value for data type if it uses the old progress_v2', () => {
+    const configWithOldDataType = {
+      ...config,
+      dataType: 'progress_v2',
+    };
+
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={configWithOldDataType}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+      />
+    ));
+    expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
   });
   it('Pre-selects enterprise customer catalogs from the reporting config.', () => {
     const wrapper = mount((
