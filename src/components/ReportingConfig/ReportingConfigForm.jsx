@@ -177,10 +177,11 @@ class ReportingConfigForm extends React.Component {
                 type="select"
                 id="dataType"
                 name="dataType"
-                defaultValue={config ? config.dataType : 'progress_v2'}
-                disabled={config && config.dataType === 'progress'}
+                defaultValue={config ? config.dataType : 'progress_v3'}
+                disabled={config && ['progress', 'progress_v2'].includes(config.dataType)}
                 options={[
-                  { value: 'progress_v2', label: 'progress' },
+                  { value: 'progress_v3', label: 'progress' },
+                  { value: 'progress_v2', label: 'progress', hidden: true },
                   { value: 'catalog', label: 'catalog' },
                   { value: 'progress', label: 'progress', hidden: true },
                 ]}
