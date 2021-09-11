@@ -26,7 +26,7 @@
     "@edx/frontend-enterprise-logistration": "0.1.11",
     "@edx/frontend-enterprise-utils": "0.1.7",
     "@edx/frontend-platform": "1.11.0",
-    "@edx/paragon": "^16.8.0",
+    "@edx/paragon": "^16.13.1",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
