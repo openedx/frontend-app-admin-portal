@@ -3,7 +3,7 @@ export const TAB_LICENSED_USERS = 'TAB_LICENSED_USERS';
 export const TAB_PENDING_USERS = 'TAB_PENDING_USERS';
 export const TAB_REVOKED_USERS = 'TAB_REVOKED_USERS';
 
-export const PAGE_SIZE = 20;
+export const PAGE_SIZE = 5;
 
 // Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';
@@ -40,3 +40,11 @@ export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration
 
 // Multiple subscription picker
 export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+
+// user status badge mapping, takes user status as key returns label and badge style defined by ux
+export const USER_BADGE_MAP = {
+  [ACTIVATED]:{ label:"Active", variant:"success" },
+  [ASSIGNED]:{ label:"Pending", variant:"warning" },
+  [REVOKED]:{ label:"Revoked", variant:"light" },
+  "UNDEFINED":{ label:"Revoked", variant:"light" },
+}

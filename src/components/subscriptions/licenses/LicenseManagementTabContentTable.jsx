@@ -25,6 +25,7 @@ import { useSubscriptionUsers } from '../data/hooks';
 import { SubscriptionContext } from '../SubscriptionData';
 import SubscriptionZeroStateMessage from '../SubscriptionZeroStateMessage';
 
+
 const columns = [
   {
     label: 'Email address',
@@ -52,7 +53,7 @@ const LicenseManagementTabContentTable = () => {
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
-  const users = useSubscriptionUsers({
+  const [users ] = useSubscriptionUsers({
     activeTab,
     currentPage,
     searchQuery,

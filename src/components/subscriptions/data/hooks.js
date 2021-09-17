@@ -90,14 +90,15 @@ export const useSubscriptionUsersOverview = ({
     activated: 0,
     assigned: 0,
     revoked: 0,
-  };
+  };  
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
   const forceRefresh = () => {
-    setSubscriptionUsersOverview({ ...subscriptionUsersOverview });
+    console.log("FORCE");
+    loadSubscriptionUsersOverview();
   };
 
-  useEffect(() => {
+  const loadSubscriptionUsersOverview = () =>{
     if (subscriptionUUID) {
       LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
         .then((response) => {
@@ -118,7 +119,8 @@ export const useSubscriptionUsersOverview = ({
           });
         });
     }
-  }, [subscriptionUUID, search]);
+  }
+  useEffect(loadSubscriptionUsersOverview, [subscriptionUUID, search]);
 
   return [subscriptionUsersOverview, forceRefresh];
 };
@@ -126,6 +128,8 @@ export const useSubscriptionUsersOverview = ({
 /*
  * This hook provides a list of users for a given subscription UUID.
  * It is also dependent on state from SubscriptionDetailContext.
+ * 
+ * userStatusFilter can be used to override activeTab parameter
  */
 export const useSubscriptionUsers = ({
   activeTab,
@@ -134,15 +138,20 @@ export const useSubscriptionUsers = ({
   subscriptionUUID,
   errors,
   setErrors,
+  userStatusFilter,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
-
-  useEffect(() => {
+  
+  const forceRefresh = () => {
+    loadSubscriptionUsers();
+  };
+  
+  const loadSubscriptionUsers = () =>{
     if (!subscriptionUUID) {
       return;
     }
     const options = {
-      status: licenseStatusByTab[activeTab],
+      status: userStatusFilter ? userStatusFilter : licenseStatusByTab[activeTab],
       search: searchQuery,
       page: currentPage,
     };
@@ -157,9 +166,11 @@ export const useSubscriptionUsers = ({
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
         });
       });
-  }, [activeTab, currentPage, searchQuery, subscriptionUUID]);
+  }
 
-  return subscriptionUsers;
+  useEffect(loadSubscriptionUsers, [activeTab, currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
+
+  return [subscriptionUsers, forceRefresh];
 };
 
 /*

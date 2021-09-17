@@ -2,6 +2,7 @@ import React from 'react';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import LicenseManagementTabContentTable from './LicenseManagementTabContentTable';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
+import LicenseManagementTable from './LicenseManagementTable';
 
 const LicenseAllocationDetails = () => (
   <>
@@ -18,6 +19,7 @@ const LicenseAllocationDetails = () => (
             <LicenseManagementTabContentTable />
           </div>
         </div>
+        <LicenseManagementTable/>
       </div>
     </div>
   </>
