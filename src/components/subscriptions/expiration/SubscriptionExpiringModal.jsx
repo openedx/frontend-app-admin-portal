@@ -54,7 +54,7 @@ const SubscriptionExpiringModal = ({
 
       <ModalDialog.Body>
         <p>
-          It&apos;s time to renew your subscription contact with edX!
+          It&apos;s time to renew your subscription contract with edX!
           The edX customer support team is here to help.
           Get in touch today to minimize access disruptions for your learners.
         </p>

@@ -21,9 +21,9 @@ jest.mock('@edx/frontend-platform/analytics', () => ({
 
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types
-const ExpirationBannerWithContext = ({ detailState }) => (
+const ExpirationBannerWithContext = ({ detailState, isSubscriptionPlanDetails = false }) => (
   <SubscriptionManagementContext detailState={detailState}>
-    <SubscriptionExpirationBanner />
+    <SubscriptionExpirationBanner isSubscriptionPlanDetails={isSubscriptionPlanDetails} />
   </SubscriptionManagementContext>
 );
 
@@ -73,5 +73,28 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  test.each([
+    true,
+    false,
+  ])('renders the correct message when isSubscriptionPlanDetails = %s', (isSubscriptionPlanDetails) => {
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      agreementNetDaysUntilExpiration: 0,
+      daysUntilExpiration: 0,
+    };
+    render(<ExpirationBannerWithContext
+      detailState={detailStateCopy}
+      isSubscriptionPlanDetails={isSubscriptionPlanDetails}
+    />);
+
+    if (isSubscriptionPlanDetails) {
+      expect(screen.getByText("This subscription plan's end date has passed"));
+      expect(screen.queryByText('Your subscription contract has expired')).toBeNull();
+    } else {
+      expect(screen.getByText('Your subscription contract has expired'));
+      expect(screen.queryByText("This subscription plan's end date has passed")).toBeNull();
+    }
   });
 });
