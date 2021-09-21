@@ -20,10 +20,8 @@ jobs:
       run: npm run lint
     - name: Test
       run: npm run test
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Coverage
+      uses: codecov/codecov-action@v2
     - name: Build
       run: npm run build
     - name: Verify is ES5
