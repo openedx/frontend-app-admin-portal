@@ -120,7 +120,7 @@ export class BaseCodeReminderModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData['email-template-greeting'],
       template_closing: formData['email-template-closing'],
-      ...(features.FILE_ATTACHMENT === 'true' && {
+      ...(features.FILE_ATTACHMENT && {
         template_files: formData[EMAIL_TEMPLATE_FILES_ID],
       }),
     };
