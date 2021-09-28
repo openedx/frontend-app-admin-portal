@@ -114,7 +114,7 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
       template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
-      ...(features.FILE_ATTACHMENT === 'true' && {
+      ...(features.FILE_ATTACHMENT && {
         template_files: formData[EMAIL_TEMPLATE_FILES_ID],
       }),
       do_not_email: doNotEmail,

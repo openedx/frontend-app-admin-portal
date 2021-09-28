@@ -133,7 +133,7 @@ const transformTemplate = (emailType, template) => ({
     'email-template-greeting': template.email_greeting,
     'email-template-body': template.email_body,
     'email-template-closing': template.email_closing,
-    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': template.email_files }),
+    ...(features.FILE_ATTACHMENT && { 'email-template-files': template.email_files }),
     'template-name-select': template.name,
     'email-address': template.email_address,
     'template-id': template.id,

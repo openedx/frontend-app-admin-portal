@@ -47,7 +47,7 @@ export const EMAIL_TEMPLATE_FIELDS = {
     limit: EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
     'data-hj-suppress': true,
   },
-  ...(features.FILE_ATTACHMENT === 'true' && {
+  ...(features.FILE_ATTACHMENT && {
     [EMAIL_TEMPLATE_FILES_ID]: {
       name: EMAIL_TEMPLATE_FILES_ID,
       component: MultipleFileInputField,

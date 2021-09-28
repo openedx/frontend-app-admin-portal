@@ -78,7 +78,7 @@ class SaveTemplateButton extends React.Component {
       email_greeting: formData['email-template-greeting'],
       email_closing: formData['email-template-closing'],
       name: formData['template-name'] || formData['template-name-select'],
-      ...(features.FILE_ATTACHMENT === 'true' && {
+      ...(features.FILE_ATTACHMENT && {
         email_files: formData['email-template-files'],
       }),
     };
@@ -98,7 +98,7 @@ class SaveTemplateButton extends React.Component {
           email_subject: 'email-template-subject',
           email_greeting: 'email-template-greeting',
           email_closing: 'email-template-closing',
-          ...(features.FILE_ATTACHMENT === 'true' && {
+          ...(features.FILE_ATTACHMENT && {
             email_files: 'email-template-files',
           }),
         };

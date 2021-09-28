@@ -29,21 +29,21 @@ export const initialState = {
       'email-template-greeting': assignEmailTemplate.greeting,
       'email-template-body': assignEmailTemplate.body,
       'email-template-closing': assignEmailTemplate.closing,
-      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
+      ...(features.FILE_ATTACHMENT && { 'email-template-files': assignEmailTemplate.files }),
     },
     remind: {
       'email-template-subject': remindEmailTemplate.subject,
       'email-template-greeting': remindEmailTemplate.greeting,
       'email-template-body': remindEmailTemplate.body,
       'email-template-closing': remindEmailTemplate.closing,
-      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': remindEmailTemplate.files }),
+      ...(features.FILE_ATTACHMENT && { 'email-template-files': remindEmailTemplate.files }),
     },
     revoke: {
       'email-template-subject': revokeEmailTemplate.subject,
       'email-template-greeting': revokeEmailTemplate.greeting,
       'email-template-body': revokeEmailTemplate.body,
       'email-template-closing': revokeEmailTemplate.closing,
-      ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': revokeEmailTemplate.files }),
+      ...(features.FILE_ATTACHMENT && { 'email-template-files': revokeEmailTemplate.files }),
     },
   },
   assign: {
@@ -54,7 +54,7 @@ export const initialState = {
     'email-template-greeting': assignEmailTemplate.greeting,
     'email-template-body': assignEmailTemplate.body,
     'email-template-closing': assignEmailTemplate.closing,
-    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
+    ...(features.FILE_ATTACHMENT && { 'email-template-files': assignEmailTemplate.files }),
   },
   remind: {
     'template-id': 0,
@@ -63,7 +63,7 @@ export const initialState = {
     'email-template-greeting': remindEmailTemplate.greeting,
     'email-template-body': remindEmailTemplate.body,
     'email-template-closing': remindEmailTemplate.closing,
-    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': remindEmailTemplate.files }),
+    ...(features.FILE_ATTACHMENT && { 'email-template-files': remindEmailTemplate.files }),
   },
   revoke: {
     'template-id': 0,
@@ -72,14 +72,14 @@ export const initialState = {
     'email-template-greeting': revokeEmailTemplate.greeting,
     'email-template-body': revokeEmailTemplate.body,
     'email-template-closing': revokeEmailTemplate.closing,
-    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': revokeEmailTemplate.files }),
+    ...(features.FILE_ATTACHMENT && { 'email-template-files': revokeEmailTemplate.files }),
   },
   allTemplates: [],
   subscribe: {
     'email-template-greeting': subscribeEmailTemplate.greeting,
     'email-template-body': subscribeEmailTemplate.body,
     'email-template-closing': subscribeEmailTemplate.closing,
-    ...(features.FILE_ATTACHMENT === 'true' && { 'email-template-files': assignEmailTemplate.files }),
+    ...(features.FILE_ATTACHMENT && { 'email-template-files': assignEmailTemplate.files }),
   },
 };
 
