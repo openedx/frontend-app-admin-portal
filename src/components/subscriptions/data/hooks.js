@@ -141,7 +141,7 @@ export const useSubscriptionUsers = ({
   userStatusFilter,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
-  
+
   const forceRefresh = () => {
     loadSubscriptionUsers();
   };

@@ -8,23 +8,29 @@ import {
   RemoveCircle 
 } from '@edx/paragon/icons';
 
-const LicenseManagementTableBulkActions = ({selectedUsers, canRemindLicense, canRevokeLicense}) =>{
+import {canRemindLicense, canRevokeLicense} from './LicenseManagementTable';
+
+const LicenseManagementTableBulkActions = ({
+  selectedUsers,
+  bulkRemindOnClick,
+  bulkRevokeOnClick,
+}) =>{
   
-  const [numberCanRemind, numberCanRevoke] = useMemo(()=>{
-    let remindCount = 0;
-    let revokeCount = 0;
-    console.log('counting');
+  // Divides selectedUsers users into two arrays
+  const [usersToRemind, usersToRevoke ] = useMemo(()=>{
+    let tempRemind = [];
+    let tempRevoke = [];
     
     selectedUsers.forEach(user =>{
-      const userStatus = user.original.status;
+      const userStatus = user.status;
       if (canRemindLicense(userStatus)){
-        remindCount++;
+        tempRemind.push(user);
       }
       if(canRevokeLicense(userStatus)){
-        revokeCount++;
+        tempRevoke.push(user);
       }
     });
-    return [remindCount, revokeCount];
+    return [tempRemind, tempRevoke];
   },[selectedUsers]);
 
   return (
@@ -32,18 +38,31 @@ const LicenseManagementTableBulkActions = ({selectedUsers, canRemindLicense, can
       <Button 
         variant="outline-primary" 
         iconBefore={Email}
+        onClick={()=>bulkRemindOnClick(usersToRemind)}
+        disabled={!usersToRemind.length}
       >
-        Remind({numberCanRemind})
+        Remind({usersToRemind.length})
       </Button>
       <Button 
         variant="outline-danger" 
         iconBefore={RemoveCircle}
+        onClick={()=>bulkRevokeOnClick(usersToRevoke)}
+        disabled={!usersToRevoke.length}
       >
-        Revoke({numberCanRevoke})
+        Revoke({usersToRevoke.length})
       </Button>
-
     </ActionRow>
   )
+}
+
+LicenseManagementTableBulkActions.propTypes = {
+  selectedUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      status: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+  bulkRemindOnClick: PropTypes.func.isRequired,
+  bulkRevokeOnClick: PropTypes.func.isRequired,
 }
 
 export default LicenseManagementTableBulkActions;

@@ -4,19 +4,9 @@ import {
   TextFilter,
   CheckboxFilter,
   Badge,
-  useToggle,
-  IconButton,
-  Icon,
-  Tooltip,
-  OverlayTrigger,
   useWindowSize,
   breakpoints,
-  DataTableContext
 } from '@edx/paragon';
-import { 
-  Email,
-  RemoveCircle 
-} from '@edx/paragon/icons';
 import debounce from 'lodash.debounce';
 
 import { SubscriptionContext } from '../../SubscriptionData';
@@ -24,12 +14,13 @@ import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvid
 import { useSubscriptionUsers } from '../../data/hooks';
 import { USER_BADGE_MAP, PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED } from '../../data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
-import LicenseRevokeModal from '../../../../containers/LicenseRevokeModal';
 import LicenseRemindModal from '../../../../containers/LicenseRemindModal';
 import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
+import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import LicenseManagementRevokeModal from './LicenseManagementTableRevokeModal';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
+import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 
 const statusBadge = (userStatus) =>{
   const badgeLabel =  USER_BADGE_MAP[userStatus] 
@@ -52,6 +43,14 @@ const userRecentAction = (user) =>{
   }
 }
 
+export const canRevokeLicense = (licenseStatus) => {
+  return licenseStatus === ASSIGNED || licenseStatus === ACTIVATED;
+}
+
+export const canRemindLicense = (licenseStatus) => {
+  return licenseStatus === ASSIGNED;
+}
+
 const selectColumn = {
   id: 'selection',
   Header: DataTable.ControlledSelectHeader,
@@ -62,6 +61,7 @@ const selectColumn = {
 const modalZeroState = {
   open: false,
   user: null,
+  users:[],
 }
 
 const LicenseManagementTable = () => {
@@ -77,8 +77,7 @@ const LicenseManagementTable = () => {
     return width > breakpoints.medium.maxWidth;
   }, [width]);
 
-  const dtContext = useContext(DataTableContext);
-  console.log("dtContext: ",dtContext)
+
   const { 
     errors,
     forceRefresh: forceRefreshSubscription, 
@@ -95,9 +94,10 @@ const LicenseManagementTable = () => {
     setCurrentPage,
     subscription,
   } = useContext(SubscriptionDetailContext);
+  console.log('subscription',subscription);
 
-  
   // Users 
+  console.log('userStatusFilter',userStatusFilter);
   const [users, forceRefreshUsers] = useSubscriptionUsers({
     activeTab,
     currentPage,
@@ -108,17 +108,19 @@ const LicenseManagementTable = () => {
     userStatusFilter,
   });
   const hasLoadedUsers = users?.numPages || users?.count;
-  console.log("overview",overview);
+  console.log('users',users)
 
   // Filtering 
   const updateFilters = (filters) =>{
+    console.log('filters',filters,'length', filters.length);
+
     if(filters.length < 1){
       setSearchQuery(null);
       setUserStatusFilter(null);
     }else{
       filters.forEach((filter)=>{
         switch(filter.id){
-          case "status":
+          case "statusBadge":
             setUserStatusFilter(filter.value.join(','));
             break;
           case "email":
@@ -150,254 +152,144 @@ const LicenseManagementTable = () => {
   const data = useMemo(
     () => users?.results?.map(user => ({
       id: user.uuid,
-      email: <span data-hj-suppress>{user.userEmail}</span>,
+      email: user.userEmail,
+      emailLabel:<span data-hj-suppress>{user.userEmail}</span>,
       status: user.status,
       statusBadge: statusBadge(user.status),
       recent: userRecentAction(user)
     })),
     [users],
   );
-
-  console.log("users: ",users);
-
-  const remindActionColumn = () => {
-    const altText= 'Remind learner';
-    return {
-      id: 'remind',
-      Header: 'Remind',
-      Cell: ({ row }) => {
-        const selectedUser = users?.results[row.index];
-        if(selectedUser.status === 'revoked' || selectedUser.status === 'activated'){
-          return null;
-        }
-        return <OverlayTrigger
-            placement={"top"}
-            overlay={
-              <Tooltip id={'tooltip-remind'}>
-                {altText}
-              </Tooltip>
-            }
-          >
-            <IconButton 
-              alt={altText}
-              title={altText}
-              src={Email} 
-              iconAs={Icon} 
-              variant="secondary" 
-              onClick={() => 
-                setRemindModal({
-                  open:true, 
-                  user: users?.results[row.index]
-                })
-              } 
-            />
-          </OverlayTrigger>
-      },
-    }
-  }
-
-  const revokeActionColumn = () => {
-    const altText= 'Revoke license';
-
-    return {
-      id: 'revoke',
-      Header: 'Revoke',
-      Cell: ({row}) => {
-        const selectedUser = users?.results[row.index];
-        if(selectedUser.status === 'revoked'){
-          return null;
-        }
-        return <OverlayTrigger
-            placement={"top"}
-            overlay={
-              <Tooltip id={'tooltip-revoke'}>
-                {altText}
-              </Tooltip>
-            }
-          >
-            <IconButton
-              alt={altText}
-              title={altText}
-              src={RemoveCircle} 
-              iconAs={Icon} 
-              variant="danger" 
-              onClick={() => 
-                setRevokeModal({
-                  open:true, 
-                  user: selectedUser
-                })
-              }
-            />
-          </OverlayTrigger>
-      },
-    }
-  }
-  const canRevokeLicense = (licenseStatus) => {
-    return licenseStatus === ASSIGNED || licenseStatus === ACTIVATED;
-  }
-  const canRemindLicense = (licenseStatus) => {
-    return licenseStatus === ASSIGNED;
-  }
   
-  const actionColumn = () =>{
-    const revokeText= 'Revoke license';
-    const remindText= 'Remind learner';
-    return {
-      id: 'action',
-      Header: '',
-      Cell: ({row}) => {
-        const selectedUser = users?.results[row.index];
-        const displayRevoked = canRevokeLicense(selectedUser.status);
-        const displayRemind = canRemindLicense(selectedUser.status);
-        return <>
-          
-          {displayRemind && 
-            <OverlayTrigger
-              placement={"top"}
-              overlay={
-                <Tooltip id={'tooltip-remind'}>
-                  {remindText}
-                </Tooltip>
-              }
-            >
-              <IconButton
-                alt={remindText}
-                title={remindText}
-                src={Email} 
-                iconAs={Icon} 
-                variant="secondary"
-                onClick={() => 
-                  setRemindModal({
-                    open:true, 
-                    user: users?.results[row.index]
-                  })
-                } 
-              />
-            </OverlayTrigger>
-          }
-          { displayRevoked &&
-            <OverlayTrigger
-              style={{margin: '22'}} 
-              placement={"top"}
-              overlay={
-                <Tooltip id={'tooltip-revoke'}>
-                  {revokeText}
-                </Tooltip>
-              }
-            >
-              <IconButton
-                alt={revokeText}
-                title={revokeText}
-                src={RemoveCircle} 
-                style={{marginLeft: displayRemind ? 0 : 44}} 
-
-                iconAs={Icon} 
-                variant="danger" 
-                onClick={() => 
-                  setRevokeModal({
-                    open:true, 
-                    user: selectedUser
-                  })
-                }
-              />
-            </OverlayTrigger>
-          }
-        
-        </>
-      },
-    }
+  const rowRemindOnClick = (remindUser) =>{
+    setRemindModal({
+      open: true,
+      users: [remindUser]
+    });
   }
-  
+  const rowRevokeOnClick = (revokeUser) =>{
+    setRevokeModal({
+      open: true,
+      users: [revokeUser]
+    });
+  }
+
+  const onRevokeSuccess = () =>{
+    addToast('License successfully revoked');
+    // refresh subscription and user data to get updated revoke count and revoked user list
+    forceRefreshSubscription();
+    forceRefreshUsers();
+    forceRefreshOverview();
+    setRevokeModal(modalZeroState)
+  }
+
+  const bulkRemindOnClick = () =>{
+
+  }
+
+  const bulkRevokeOnClick = (usersToRevoke) =>{
+    setRevokeModal({
+      open: true,
+      users: usersToRevoke
+    });
+  }
+
   return(
     <>
-      <DataTable
-        showFiltersInSidebar={showFiltersInSidebar}
-        isFilterable
-        manualFilters
-        isSelectable
-        manualSelectColumn={selectColumn}
-        SelectionStatusComponent={DataTable.ControlledSelectionStatus}
-        defaultColumnValues={{ Filter: TextFilter }}
-        isPaginated
-        manualPagination
-        itemCount={users.count}
-        pageCount={users.numPages || 1}
-        tableActions={[
-          {
-            buttonText: 'Download CSV',
-            handleClick: (data) => console.log('Table Action', data),
-          },
-        ]}
-        initialState={{
-          pageSize: PAGE_SIZE,
-          pageIndex: DEFAULT_PAGE - 1,
-        }}
-        initialTableOptions={{
-          getRowId: row => row.id,
-        }}
-        fetchData={fetchData}
-        data={data}
-        columns={[
-          {
-            Header: 'Email address',
-            accessor: 'email',
-          },
-          {
-            Header: 'Status',
-            accessor: 'statusBadge',
-            Filter: CheckboxFilter,
-            filter: 'includesValue',
-            filterChoices: [{
-              name: 'Active',
-              number: overview.activated,
-              value: ACTIVATED,
-            },
+      {users.count < 1 && userStatusFilter === null ? <SubscriptionZeroStateMessage/> :
+        <DataTable
+          showFiltersInSidebar={showFiltersInSidebar}
+          isFilterable
+          manualFilters
+          isSelectable
+          manualSelectColumn={selectColumn}
+          SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+          defaultColumnValues={{ Filter: TextFilter }}
+          isPaginated
+          manualPagination
+          itemCount={users.count}
+          pageCount={users.numPages || 1}
+          tableActions={[
             {
-              name: 'Pending',
-              number: overview.assigned,
-              value: REVOKED,
+              buttonText: 'Download CSV',
+              handleClick: (data) => console.log('Table Action', data),
             },
-            {
-              name: 'Revoked',
-              number: overview.revoked,
-              value: ASSIGNED,
-            }]
-          },
-          {
-            Header: 'Recent action',
-            accessor: 'recent',
-            disableFilters: true
-          },
-        ]}
-        additionalColumns={[
-          // remindActionColumn(),
-          // revokeActionColumn(),
-   
-          actionColumn()
-        ]}
-        bulkActions={(selectedUsers)=>
-          <LicenseManagementTableBulkActions 
-            selectedUsers ={selectedUsers}
-            canRevokeLicense={canRevokeLicense}
-            canRemindLicense={canRemindLicense}
-          /> 
-        }
-      />
-      {revokeModal.open && 
-        <LicenseRevokeModal
-          user={revokeModal.user}
-          onSuccess={() => {
-            addToast('License successfully revoked');
-            // refresh subscription and user data to get updated revoke count and revoked user list
-            forceRefreshSubscription();
-            forceRefreshUsers();
-            forceRefreshOverview();
+          ]}
+          initialState={{
+            pageSize: PAGE_SIZE,
+            pageIndex: DEFAULT_PAGE - 1,
           }}
-          onClose={() => setRevokeModal(modalZeroState)}
-          subscriptionPlan={subscription}
-          licenseStatus={revokeModal.user?.status}
+          initialTableOptions={{
+            getRowId: row => row.id,
+          }}
+          fetchData={fetchData}
+          data={data}
+          columns={[
+            {
+              Header: 'Email address',
+              accessor: 'emailLabel',
+            },
+            {
+              Header: 'Status',
+              accessor: 'statusBadge',
+              Filter: CheckboxFilter,
+              filter: 'includesValue',
+              filterChoices: [{
+                name: 'Active',
+                number: overview.activated,
+                value: ACTIVATED,
+              },
+              {
+                name: 'Pending',
+                number: overview.assigned,
+                value: ASSIGNED,
+              },
+              {
+                name: 'Revoked',
+                number: overview.revoked,
+                value: REVOKED,
+              }]
+            },
+            {
+              Header: 'Recent action',
+              accessor: 'recent',
+              disableFilters: true
+            },
+          ]}
+          additionalColumns={[
+          {
+            id: 'action',
+            Header: '',
+            Cell: ({row}) => {
+              return (
+                <LicenseManagementTableActionColumn
+                  user={row.original}
+                  rowRemindOnClick={rowRemindOnClick}
+                  rowRevokeOnClick={rowRevokeOnClick}
+                />
+              )
+            },
+          }
+          ]}
+          bulkActions={(selectedRows)=>{
+            const selectedUsers = selectedRows.map((selectedRow)=>{
+              return selectedRow.original;
+            });
+            return <LicenseManagementTableBulkActions 
+              selectedUsers ={selectedUsers}
+              bulkRemindOnClick={bulkRemindOnClick}
+              bulkRevokeOnClick={bulkRevokeOnClick}
+            /> 
+          }}
         />
       }
+      <LicenseManagementRevokeModal
+        isOpen={revokeModal.open}
+        usersToRevoke={revokeModal.users}
+        subscription={subscription}
+        onClose={() => setRevokeModal(modalZeroState)}
+        onSuccess={onRevokeSuccess}
+      />
       {remindModal.open && 
         <LicenseRemindModal
           title="Remind User"
