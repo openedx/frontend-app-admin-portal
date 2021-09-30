@@ -2,7 +2,7 @@ import React from 'react';
 import LicenseAllocationNavigation from './LicenseAllocationNavigation';
 import LicenseManagementTabContentTable from './LicenseManagementTabContentTable';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
-import LicenseManagementTable from './LicenseManagementTable';
+import LicenseManagementTable from './LicenseManagementTable/LicenseManagementTable';
 
 const LicenseAllocationDetails = () => (
   <>

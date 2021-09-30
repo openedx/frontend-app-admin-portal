@@ -10,7 +10,8 @@ import {
   Tooltip,
   OverlayTrigger,
   useWindowSize,
-  breakpoints
+  breakpoints,
+  DataTableContext
 } from '@edx/paragon';
 import { 
   Email,
@@ -18,21 +19,37 @@ import {
 } from '@edx/paragon/icons';
 import debounce from 'lodash.debounce';
 
-import { SubscriptionContext } from '../SubscriptionData';
-import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
-import { useSubscriptionUsers } from '../data/hooks';
-import { USER_BADGE_MAP, PAGE_SIZE, DEFAULT_PAGE, tabByLicenseStatus } from '../data/constants';
-import { DEBOUNCE_TIME_MILLIS } from '../../../algoliaUtils';
-import LicenseRevokeModal from '../../../containers/LicenseRevokeModal';
-import LicenseRemindModal from '../../../containers/LicenseRemindModal';
-import { ToastsContext } from '../../Toasts';
+import { SubscriptionContext } from '../../SubscriptionData';
+import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
+import { useSubscriptionUsers } from '../../data/hooks';
+import { USER_BADGE_MAP, PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED } from '../../data/constants';
+import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
+import LicenseRevokeModal from '../../../../containers/LicenseRevokeModal';
+import LicenseRemindModal from '../../../../containers/LicenseRemindModal';
+import { ToastsContext } from '../../../Toasts';
+import { formatTimestamp } from '../../../../utils';
+import LicenseManagementRevokeModal from './LicenseManagementTableRevokeModal';
+import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 
-
-const userBadge = (userStatus) =>{
+const statusBadge = (userStatus) =>{
   const badgeLabel =  USER_BADGE_MAP[userStatus] 
     ? USER_BADGE_MAP[userStatus] 
     : USER_BADGE_MAP["UNDEFINED"]
   return <Badge variant={badgeLabel.variant}>{badgeLabel.label}</Badge>
+}
+
+const userRecentAction = (user) =>{
+  switch(user.status){
+    case ACTIVATED: {
+      return `Activated: ${formatTimestamp({timestamp: user.activationDate})}`
+    }
+    case REVOKED :{
+      return `Revoked: ${formatTimestamp({timestamp: user.revokedDate})}`
+    }
+    case ASSIGNED :{
+      return `Invited: ${formatTimestamp({timestamp: user.lastRemindDate})}`
+    }
+  }
 }
 
 const selectColumn = {
@@ -60,6 +77,8 @@ const LicenseManagementTable = () => {
     return width > breakpoints.medium.maxWidth;
   }, [width]);
 
+  const dtContext = useContext(DataTableContext);
+  console.log("dtContext: ",dtContext)
   const { 
     errors,
     forceRefresh: forceRefreshSubscription, 
@@ -132,7 +151,9 @@ const LicenseManagementTable = () => {
     () => users?.results?.map(user => ({
       id: user.uuid,
       email: <span data-hj-suppress>{user.userEmail}</span>,
-      status: userBadge(user.status),
+      status: user.status,
+      statusBadge: statusBadge(user.status),
+      recent: userRecentAction(user)
     })),
     [users],
   );
@@ -211,7 +232,13 @@ const LicenseManagementTable = () => {
       },
     }
   }
-
+  const canRevokeLicense = (licenseStatus) => {
+    return licenseStatus === ASSIGNED || licenseStatus === ACTIVATED;
+  }
+  const canRemindLicense = (licenseStatus) => {
+    return licenseStatus === ASSIGNED;
+  }
+  
   const actionColumn = () =>{
     const revokeText= 'Revoke license';
     const remindText= 'Remind learner';
@@ -220,8 +247,8 @@ const LicenseManagementTable = () => {
       Header: '',
       Cell: ({row}) => {
         const selectedUser = users?.results[row.index];
-        const displayRevoked = selectedUser.status === 'assigned' || selectedUser.status === 'activated';
-        const displayRemind = selectedUser.status === 'assigned'; 
+        const displayRevoked = canRevokeLicense(selectedUser.status);
+        const displayRemind = canRemindLicense(selectedUser.status);
         return <>
           
           {displayRemind && 
@@ -317,46 +344,44 @@ const LicenseManagementTable = () => {
           },
           {
             Header: 'Status',
-            accessor: 'status',
+            accessor: 'statusBadge',
             Filter: CheckboxFilter,
             filter: 'includesValue',
             filterChoices: [{
               name: 'Active',
               number: overview.activated,
-              value: 'activated',
+              value: ACTIVATED,
             },
             {
               name: 'Pending',
               number: overview.assigned,
-              value: 'assigned',
+              value: REVOKED,
             },
             {
               name: 'Revoked',
               number: overview.revoked,
-              value: 'revoked',
+              value: ASSIGNED,
             }]
           },
-          // TODO: 
-          // {
-          //   Header: 'Recent Action',
-          //   accessor: 'recent',
-          // },
+          {
+            Header: 'Recent action',
+            accessor: 'recent',
+            disableFilters: true
+          },
         ]}
         additionalColumns={[
           // remindActionColumn(),
           // revokeActionColumn(),
+   
           actionColumn()
         ]}
-        bulkActions={[
-          {
-            buttonText: 'Revoke',
-            handleClick: (data) => console.log('Download CSV', data),
-          },
-          {
-            buttonText: 'Remind',
-            handleClick: (data) => console.log('Download CSV', data),
-          },
-        ]}
+        bulkActions={(selectedUsers)=>
+          <LicenseManagementTableBulkActions 
+            selectedUsers ={selectedUsers}
+            canRevokeLicense={canRevokeLicense}
+            canRemindLicense={canRemindLicense}
+          /> 
+        }
       />
       {revokeModal.open && 
         <LicenseRevokeModal
