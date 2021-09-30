@@ -18,7 +18,7 @@ import {
 } from '../CodeModal';
 import EmailTemplateForm from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
-import { features } from '../../config';
+import { configuration, features } from '../../config';
 
 const ERROR_MESSAGE_TITLES = {
   [MODAL_TYPES.revoke]: 'Unable to revoke code(s)',
@@ -92,6 +92,8 @@ class CodeRevokeModal extends React.Component {
       isBulkRevoke,
       data,
       sendCodeRevoke,
+      enterpriseSlug,
+      enableLearnerPortal,
     } = this.props;
 
     const { doNotEmail } = this.state;
@@ -112,11 +114,16 @@ class CodeRevokeModal extends React.Component {
       template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
       template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
       template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
-      ...(features.FILE_ATTACHMENT === 'true' && {
+      ...(features.FILE_ATTACHMENT && {
         template_files: formData[EMAIL_TEMPLATE_FILES_ID],
       }),
       do_not_email: doNotEmail,
     };
+
+    // If the enterprise has a learner portal, we should direct users to it in our revoke email
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
+    }
 
     if (formData['template-id']) {
       options.template_id = formData['template-id'];
@@ -266,6 +273,9 @@ CodeRevokeModal.defaultProps = {
 };
 
 CodeRevokeModal.propTypes = {
+  // props from redux
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   // props From redux-form
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,

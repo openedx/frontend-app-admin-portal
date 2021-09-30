@@ -44,7 +44,8 @@ class LicenseRevokeModal extends React.Component {
       sendLicenseRevoke,
       subscriptionPlan,
     } = this.props;
-    const options = { user_email: user.userEmail };
+
+    const options = { user_emails: [user.userEmail] };
 
     return sendLicenseRevoke(subscriptionPlan.uuid, options)
       .then(response => this.props.onSuccess(response))

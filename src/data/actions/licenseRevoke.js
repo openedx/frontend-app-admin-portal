@@ -33,10 +33,10 @@ const sendLicenseRevoke = ({
 }) => (
   (dispatch) => {
     dispatch(sendLicenseRevokeRequest());
-    return LicenseManagerApiService.licenseRevoke(subscriptionUUID, options)
+    return LicenseManagerApiService.licenseBulkRevoke(subscriptionUUID, options)
       .then((response) => {
         dispatch(sendLicenseRevokeSuccess(response));
-        onSuccess(response);
+        onSuccess();
       })
       .catch((error) => {
         logError(error);

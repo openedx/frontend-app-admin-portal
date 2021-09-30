@@ -15,8 +15,10 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
 } from '../../data/constants/emailTemplate';
+import { configuration } from '../../config';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseSlug = 'bearsRus';
 const initialState = {
   emailTemplate: {
     loading: false,
@@ -39,6 +41,10 @@ const initialState = {
       'email-template-files': revokeEmailTemplate.files,
     },
   },
+  portalConfiguration: {
+    enterpriseSlug,
+    enableLearnerPortal: true,
+  },
 };
 
 const couponId = 1;
@@ -46,6 +52,7 @@ const couponTitle = 'AABBCC';
 const data = {
   code: 'ABC101',
   assigned_to: 'edx@example.com',
+  base_enterprise_url: `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`,
 };
 const codeRevokeRequestData = (numCodes) => {
   const assignment = {
@@ -62,6 +69,7 @@ const codeRevokeRequestData = (numCodes) => {
     template_greeting: revokeEmailTemplate.greeting || '',
     template_closing: revokeEmailTemplate.closing,
     template_files: revokeEmailTemplate.files,
+    base_enterprise_url: data.base_enterprise_url,
   };
 };
 
@@ -122,6 +130,24 @@ describe('CodeRevokeModalWrapper', () => {
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
     wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
+  });
+
+  it('returns the correct data if learner portal is not enabled', async () => {
+    spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
+    const codeRevokeData = [data, data];
+    const wrapper = mount(<CodeRevokeModalWrapper
+      data={{ ...codeRevokeData, selectedCodes: codeRevokeData }}
+      isBulkRevoke
+      store={mockStore({
+        ...initialState,
+        portalConfiguration: { ...initialState.portalConfiguration, enableLearnerPortal: false },
+      })}
+    />);
+
+    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    const expectedData = codeRevokeRequestData(2);
+    delete expectedData.base_enterprise_url;
+    expect(spy).toHaveBeenCalledWith(couponId, expectedData);
   });
 
   it('throws error if no code is selected for bulk revoke', () => {

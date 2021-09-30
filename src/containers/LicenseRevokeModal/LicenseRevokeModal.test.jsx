@@ -63,7 +63,7 @@ describe('LicenseRevokeModalWrapper', () => {
   });
 
   it('renders license revoke modal', () => {
-    spy = jest.spyOn(LicenseManagerApiService, 'licenseRevoke');
+    spy = jest.spyOn(LicenseManagerApiService, 'licenseBulkRevoke');
 
     const wrapper = mount(<LicenseRevokeModalWrapper user={user} />);
     expect(wrapper.find('.modal-title').text()).toEqual('Are you sure you want to revoke this license?');

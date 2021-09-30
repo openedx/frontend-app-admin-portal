@@ -12,6 +12,8 @@ const mapStateToProps = (state) => {
   return {
     initialValues,
     enableReinitialize: true,
+    enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+    enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   };
 };
 
