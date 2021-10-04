@@ -64,6 +64,7 @@ class LicenseRemindModal extends React.Component {
       sendLicenseReminder,
     } = this.props;
     // Validate form data
+    console.log('formData',formData);
     validateEmailTemplateForm(formData, 'email-template-body', false);
     // Configure the options to send to the assignment reminder API endpoint
     const options = {

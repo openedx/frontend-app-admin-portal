@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   IconButton,
   Icon,
@@ -65,6 +66,14 @@ const LicenseManagementTableActionColumn = ({
     }
   
   </>
+}
+
+LicenseManagementTableActionColumn.propTypes = {
+  user: PropTypes.shape({
+    status: PropTypes.string.isRequired,
+  }).isRequired,
+  rowRemindOnClick: PropTypes.func.isRequired,
+  rowRevokeOnClick: PropTypes.func.isRequired,
 }
 
 export default LicenseManagementTableActionColumn;

@@ -19,6 +19,7 @@ import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import LicenseManagementRevokeModal from './LicenseManagementTableRevokeModal';
+import LicenseManagementRemindModal from './LicenseManagementRemindModal';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 
@@ -148,7 +149,8 @@ const LicenseManagementTable = () => {
     },
     [currentPage],
   );
- 
+  
+  // Maps user to rows
   const data = useMemo(
     () => users?.results?.map(user => ({
       id: user.uuid,
@@ -161,6 +163,7 @@ const LicenseManagementTable = () => {
     [users],
   );
   
+  // Row action button functions
   const rowRemindOnClick = (remindUser) =>{
     setRemindModal({
       open: true,
@@ -174,19 +177,28 @@ const LicenseManagementTable = () => {
     });
   }
 
+  // Successful action modal callback
+  const onRemindSuccess = () => {
+    forceRefreshUsers();
+    setRemindModal(modalZeroState);
+    addToast(`User${revokeModal.users.length > 1 ? 's':''} successfully reminded`);
+  }
   const onRevokeSuccess = () =>{
-    addToast('License successfully revoked');
     // refresh subscription and user data to get updated revoke count and revoked user list
     forceRefreshSubscription();
     forceRefreshUsers();
     forceRefreshOverview();
     setRevokeModal(modalZeroState)
+    addToast(`License${revokeModal.users.length > 1 ? 's':''} successfully revoked`);
   }
 
-  const bulkRemindOnClick = () =>{
-
+  // Bulk Action buttons
+  const bulkRemindOnClick = (usersToRemind) =>{
+    setRemindModal({
+      open: true,
+      users: usersToRemind
+    });
   }
-
   const bulkRevokeOnClick = (usersToRevoke) =>{
     setRevokeModal({
       open: true,
@@ -290,18 +302,13 @@ const LicenseManagementTable = () => {
         onClose={() => setRevokeModal(modalZeroState)}
         onSuccess={onRevokeSuccess}
       />
-      {remindModal.open && 
-        <LicenseRemindModal
-          title="Remind User"
-          user={remindModal.user}
-          onSuccess={() => {
-            addToast('Reminder successfully sent');
-            forceRefreshUsers();
-          }}
-          subscriptionUUID={subscription.uuid}
-          onClose={() => setRemindModal(modalZeroState)}
-        />
-      }
+      <LicenseManagementRemindModal
+        isOpen={remindModal.open}
+        usersToRemind={remindModal.users}
+        subscription={subscription}
+        onClose={() => setRemindModal(modalZeroState)}
+        onSuccess={onRemindSuccess}
+      />
     </>
   )
 }

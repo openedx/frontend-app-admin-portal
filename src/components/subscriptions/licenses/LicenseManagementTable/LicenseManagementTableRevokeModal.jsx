@@ -11,7 +11,6 @@ import {
 } from '@edx/paragon';
 import { 
   RemoveCircle,
-  
 } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -50,7 +49,7 @@ const LicenseManagementRevokeModal = ({
   const [requestState, setRequestState]= useState(initialRequestState);
 
   const numberToRevoke=usersToRevoke.length;
-  const title = `Revoke License${numberToRevoke > 1 ? '':'s'}`;
+  const title = `Revoke License${numberToRevoke > 1 ? 's':''}`;
   
   const handleSubmit = () =>{
     setRequestState({...initialRequestState, loading: true});
@@ -95,7 +94,7 @@ const LicenseManagementRevokeModal = ({
     >
         <ModalDialog.Header>
           <ModalDialog.Title>
-            Revoke Licenses
+            {title}
           </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
@@ -127,7 +126,6 @@ const LicenseManagementRevokeModal = ({
             <StatefulButton
               state={getRevokeButtonState()}
               variant="danger"
-              // iconBefore={RemoveCircle}
               onClick={handleSubmit}
               {...{
                 labels: {
