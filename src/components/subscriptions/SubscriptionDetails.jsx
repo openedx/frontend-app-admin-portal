@@ -8,7 +8,6 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { Button, Row, Col } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
-import { TAB_ALL_USERS, TAB_PENDING_USERS } from './data/constants';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
@@ -17,8 +16,6 @@ import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBan
 const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
-    activeTab,
-    setActiveTab,
     hasMultipleSubscriptions,
     subscription,
     forceRefresh: forceDetailRefresh,
@@ -27,7 +24,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
 
   const hasLicensesAllocatedOrRevoked = subscription.licenses?.allocated > 0 || subscription.licenses?.revoked > 0;
   const shouldShowInviteLearnersButton = (
-    (hasLicensesAllocatedOrRevoked || activeTab !== TAB_ALL_USERS) && subscription.daysUntilExpiration > 0
+    (hasLicensesAllocatedOrRevoked) && subscription.daysUntilExpiration > 0
   );
 
   return (
@@ -54,7 +51,6 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                     forceRefresh();
                     forceDetailRefresh();
                     addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
-                    setActiveTab(TAB_PENDING_USERS);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}
                 />

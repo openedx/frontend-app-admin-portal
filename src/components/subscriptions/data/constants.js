@@ -43,8 +43,8 @@ export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course cat
 
 // user status badge mapping, takes user status as key returns label and badge style defined by ux
 export const USER_BADGE_MAP = {
-  [ACTIVATED]:{ label:"Active", variant:"success" },
-  [ASSIGNED]:{ label:"Pending", variant:"warning" },
-  [REVOKED]:{ label:"Revoked", variant:"light" },
-  "UNDEFINED":{ label:"Revoked", variant:"light" },
-}
+  [ACTIVATED]: { label: 'Active', variant: 'success' },
+  [ASSIGNED]: { label: 'Pending', variant: 'warning' },
+  [REVOKED]: { label: 'Revoked', variant: 'light' },
+  UNDEFINED: { label: 'Revoked', variant: 'light' },
+};

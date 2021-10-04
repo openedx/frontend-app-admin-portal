@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Card } from '@edx/paragon';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
-import { TAB_PENDING_USERS } from './data/constants';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
@@ -9,7 +8,7 @@ import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 const SubscriptionZeroStateMessage = () => {
   const { addToast } = useContext(ToastsContext);
   const { forceRefresh } = useContext(SubscriptionContext);
-  const { setActiveTab, subscription } = useContext(SubscriptionDetailContext);
+  const { subscription } = useContext(SubscriptionDetailContext);
   const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   return (
@@ -23,7 +22,6 @@ const SubscriptionZeroStateMessage = () => {
           onSuccess={({ numSuccessfulAssignments }) => {
             forceRefresh();
             addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);
-            setActiveTab(TAB_PENDING_USERS);
           }}
           disabled={isSubscriptionExpired}
         />

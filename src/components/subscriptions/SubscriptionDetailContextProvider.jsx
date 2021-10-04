@@ -2,7 +2,7 @@ import React, {
   createContext, useContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { DEFAULT_PAGE, TAB_ALL_USERS } from './data/constants';
+import { DEFAULT_PAGE } from './data/constants';
 import { useSubscriptionUsersOverview } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 
@@ -12,7 +12,6 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
   // Initialize state needed for the subscription detail view and provide in SubscriptionDetailContext
   const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
   const hasMultipleSubscriptions = subscriptions.count > 1;
-  const [activeTab, setActiveTab] = useState(TAB_ALL_USERS);
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
   const [overview, forceRefresh] = useSubscriptionUsersOverview({
@@ -22,17 +21,15 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
     setErrors,
   });
   const context = useMemo(() => ({
-    activeTab,
     currentPage,
     hasMultipleSubscriptions,
     forceRefresh,
     overview,
     searchQuery,
-    setActiveTab,
     setCurrentPage,
     setSearchQuery,
     subscription,
-  }), [activeTab, currentPage, hasMultipleSubscriptions, overview, searchQuery, subscription]);
+  }), [currentPage, hasMultipleSubscriptions, overview, searchQuery, subscription]);
   return (
     <SubscriptionDetailContext.Provider value={context}>
       {children}

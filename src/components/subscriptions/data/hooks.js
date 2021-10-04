@@ -4,7 +4,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
-  licenseStatusByTab,
   NETWORK_ERROR_MESSAGE,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
@@ -90,15 +89,10 @@ export const useSubscriptionUsersOverview = ({
     activated: 0,
     assigned: 0,
     revoked: 0,
-  };  
+  };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
-  const forceRefresh = () => {
-    console.log("FORCE");
-    loadSubscriptionUsersOverview();
-  };
-
-  const loadSubscriptionUsersOverview = () =>{
+  const loadSubscriptionUsersOverview = () => {
     if (subscriptionUUID) {
       LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
         .then((response) => {
@@ -119,20 +113,22 @@ export const useSubscriptionUsersOverview = ({
           });
         });
     }
-  }
+  };
+
+  const forceRefresh = () => {
+    loadSubscriptionUsersOverview();
+  };
+
   useEffect(loadSubscriptionUsersOverview, [subscriptionUUID, search]);
 
   return [subscriptionUsersOverview, forceRefresh];
 };
 
-/*
+/**
  * This hook provides a list of users for a given subscription UUID.
  * It is also dependent on state from SubscriptionDetailContext.
- * 
- * userStatusFilter can be used to override activeTab parameter
  */
 export const useSubscriptionUsers = ({
-  activeTab,
   currentPage,
   searchQuery,
   subscriptionUUID,
@@ -142,16 +138,12 @@ export const useSubscriptionUsers = ({
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
 
-  const forceRefresh = () => {
-    loadSubscriptionUsers();
-  };
-  
-  const loadSubscriptionUsers = () =>{
+  const loadSubscriptionUsers = () => {
     if (!subscriptionUUID) {
       return;
     }
     const options = {
-      status: userStatusFilter ? userStatusFilter : licenseStatusByTab[activeTab],
+      status: userStatusFilter,
       search: searchQuery,
       page: currentPage,
     };
@@ -166,9 +158,13 @@ export const useSubscriptionUsers = ({
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
         });
       });
-  }
+  };
 
-  useEffect(loadSubscriptionUsers, [activeTab, currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
+  const forceRefresh = () => {
+    loadSubscriptionUsers();
+  };
+
+  useEffect(loadSubscriptionUsers, [currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
 
   return [subscriptionUsers, forceRefresh];
 };

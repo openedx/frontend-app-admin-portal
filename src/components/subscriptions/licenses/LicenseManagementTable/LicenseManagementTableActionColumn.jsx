@@ -4,69 +4,73 @@ import {
   IconButton,
   Icon,
   Tooltip,
-  OverlayTrigger
+  OverlayTrigger,
 } from '@edx/paragon';
-import { 
+import {
   Email,
-  RemoveCircle 
+  RemoveCircle,
 } from '@edx/paragon/icons';
 
-import {canRemindLicense, canRevokeLicense} from './LicenseManagementTable';
+import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 
-const revokeText= 'Revoke license';
-const remindText= 'Remind learner';
+const revokeText = 'Revoke license';
+const remindText = 'Remind learner';
 
 const LicenseManagementTableActionColumn = ({
   user,
   rowRemindOnClick,
   rowRevokeOnClick,
-}) =>{
+}) => {
   const displayRemind = canRemindLicense(user.status);
   const displayRevoked = canRevokeLicense(user.status);
 
-  return <>
-    {displayRemind && 
+  return (
+    <>
+      {displayRemind
+      && (
       <OverlayTrigger
         placement="top"
-        overlay={
+        overlay={(
           <Tooltip id="tooltip-remind">
             {remindText}
           </Tooltip>
-        }
+        )}
       >
         <IconButton
           alt={remindText}
           title={remindText}
-          src={Email} 
-          iconAs={Icon} 
+          src={Email}
+          iconAs={Icon}
           variant="secondary"
-          onClick={() => rowRemindOnClick(user)} 
+          onClick={() => rowRemindOnClick(user)}
         />
       </OverlayTrigger>
-    }
-    { displayRevoked &&
+      )}
+      { displayRevoked
+      && (
       <OverlayTrigger
         placement="top"
-        overlay={
+        overlay={(
           <Tooltip id="tooltip-revoke">
             {revokeText}
           </Tooltip>
-        }
+        )}
       >
         <IconButton
           alt={revokeText}
           title={revokeText}
-          src={RemoveCircle} 
-          style={{marginLeft: displayRemind ? 0 : 44}} 
-          iconAs={Icon} 
-          variant="danger" 
+          src={RemoveCircle}
+          style={{ marginLeft: displayRemind ? 0 : 44 }}
+          iconAs={Icon}
+          variant="danger"
           onClick={() => rowRevokeOnClick(user)}
         />
       </OverlayTrigger>
-    }
-  
-  </>
-}
+      )}
+
+    </>
+  );
+};
 
 LicenseManagementTableActionColumn.propTypes = {
   user: PropTypes.shape({
@@ -74,6 +78,6 @@ LicenseManagementTableActionColumn.propTypes = {
   }).isRequired,
   rowRemindOnClick: PropTypes.func.isRequired,
   rowRevokeOnClick: PropTypes.func.isRequired,
-}
+};
 
 export default LicenseManagementTableActionColumn;
