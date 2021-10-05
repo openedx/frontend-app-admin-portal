@@ -7,11 +7,13 @@ import {
   ActionRow,
   Spinner,
   Form,
+  Hyperlink,
 } from '@edx/paragon';
-
 import { logError } from '@edx/frontend-platform/logging';
+
 import { validateEmailTemplateForm } from '../../../../data/validation/email';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
+import { configuration } from '../../../../config';
 
 const defaultEmailTemplate = {
   greeting: 'We noticed you haven’t had a chance to start learning on edX!  It’s easy to get started and browse the course catalog.',
@@ -103,7 +105,13 @@ const LicenseManagementRemindModal = ({
         {requestState.error
             && (
             <Alert variant="danger">
-              There was an error with your request. Try again or contact customer support.
+              <p>There was an error with your request. Please try again.</p>
+              <p>
+                If the error persists,&nbsp;
+                <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
+                  contact customer support.
+                </Hyperlink>
+              </p>
             </Alert>
             )}
         <h3>Email Template</h3>
