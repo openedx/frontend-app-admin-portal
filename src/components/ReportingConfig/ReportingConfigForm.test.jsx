@@ -25,6 +25,86 @@ const config = {
   }],
 };
 
+const reportingConfigTypes = {
+  deliveryMethod: [
+    [
+      'email',
+      'email',
+    ],
+    [
+      'sftp',
+      'sftp',
+    ],
+  ],
+  dataType: [
+    [
+      'catalog',
+      'catalog',
+    ],
+    [
+      'engagement',
+      'engagement',
+    ],
+    [
+      'progress_v3',
+      'progress',
+    ],
+  ],
+  reportType: [
+    [
+      'csv',
+      'csv',
+    ],
+    [
+      'json',
+      'json',
+    ],
+  ],
+  frequency: [
+    [
+      'daily',
+      'daily',
+    ],
+    [
+      'monthly',
+      'monthly',
+    ],
+    [
+      'weekly',
+      'weekly',
+    ],
+  ],
+  dayOfWeek: [
+    [
+      0,
+      'Monday',
+    ],
+    [
+      1,
+      'Tuesday',
+    ],
+    [
+      2,
+      'Wednesday',
+    ],
+    [
+      3,
+      'Thursday',
+    ],
+    [
+      4,
+      'Friday',
+    ],
+    [
+      5,
+      'Saturday',
+    ],
+    [
+      6,
+      'Sunday',
+    ],
+  ],
+};
 const availableCatalogs = [{
   uuid: 'test-enterprise-customer-catalog',
   title: 'All Content',
@@ -41,6 +121,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     expect(wrapper.exists('#email')).toEqual(true);
@@ -59,6 +140,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     // test empty email field
@@ -79,6 +161,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     wrapper.find('input#hourOfDay').simulate('blur');
@@ -94,6 +177,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
@@ -115,6 +199,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
@@ -126,6 +211,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
@@ -149,6 +235,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
@@ -160,6 +247,7 @@ describe('<ReportingConfigForm />', () => {
         createConfig={createConfig}
         updateConfig={updateConfig}
         availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
       />
     ));
     expect(
