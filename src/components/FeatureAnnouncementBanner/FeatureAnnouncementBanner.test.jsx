@@ -33,7 +33,6 @@ describe('<FeatureAnnouncementBanner />', () => {
     });
 
     await screen.findByText('This is a test title.');
-    await screen.findByText('This is a test notification.');
   });
 
   it('does not render if data is not available', async () => {
@@ -49,7 +48,6 @@ describe('<FeatureAnnouncementBanner />', () => {
     });
 
     expect(container.textContent).not.toContain('This is a test title.');
-    expect(container.textContent).not.toContain('This is a test notification.');
   });
 
   it('calls markBannerNotificationAsRead on alert dismissal.', async () => {
@@ -65,7 +63,6 @@ describe('<FeatureAnnouncementBanner />', () => {
       await flushPromises();
     });
     await screen.findByText('This is a test title.');
-    await screen.findByText('This is a test notification.');
     const closeBtn = await screen.findByText('Dismiss');
     fireEvent(
       closeBtn,
