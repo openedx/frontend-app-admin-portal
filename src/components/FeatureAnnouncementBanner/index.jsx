@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
 import { Alert } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -46,7 +45,6 @@ const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
       <div>
         <Alert variant="info" dismissible onClose={markAsRead}>
           <Alert.Heading>{enterpriseNotificationBanner.title}</Alert.Heading>
-          <ReactMarkdown linkTarget="_blank">{enterpriseNotificationBanner.text}</ReactMarkdown>
         </Alert>
       </div>
     )
