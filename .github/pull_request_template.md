@@ -4,5 +4,5 @@
 
 # Only if submitting a visual change
 
--[ ] Ensure to attach screenshots
--[ ] Ensure to have UX team confirm screenshots
+- [ ] Ensure to attach screenshots
+- [ ] Ensure to have UX team confirm screenshots
