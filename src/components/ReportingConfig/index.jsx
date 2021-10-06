@@ -15,6 +15,7 @@ class ReportingConfig extends React.Component {
   state = {
     loading: true,
     reportingConfigs: [],
+    reportingConfigTypes: [],
     error: undefined,
     availableCatalogs: [],
   };
@@ -26,11 +27,13 @@ class ReportingConfig extends React.Component {
     Promise.allSettled([
       LMSApiService.fetchReportingConfigs(this.props.enterpriseId),
       LMSApiService.fetchEnterpriseCustomerCatalogs(this.props.enterpriseId),
+      LMSApiService.fetchReportingConfigTypes(this.props.enterpriseId),
     ])
       .then((responses) => {
         this.setState({
           reportingConfigs: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined,
           availableCatalogs: responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined,
+          reportingConfigTypes: responses[2].status === STATUS_FULFILLED ? responses[2].value.data : undefined,
           loading: false,
         });
       })
@@ -108,6 +111,7 @@ class ReportingConfig extends React.Component {
       loading,
       error,
       availableCatalogs,
+      reportingConfigTypes,
     } = this.state;
 
     if (loading) {
@@ -159,6 +163,7 @@ class ReportingConfig extends React.Component {
                     createConfig={this.createConfig}
                     deleteConfig={this.deleteConfig}
                     availableCatalogs={camelCaseObject(availableCatalogs)}
+                    reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
                   />
                 </Collapsible>
               </div>
@@ -173,6 +178,7 @@ class ReportingConfig extends React.Component {
                 <ReportingConfigForm
                   createConfig={this.createConfig}
                   availableCatalogs={camelCaseObject(availableCatalogs)}
+                  reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
                 />
               </div>
             </Collapsible>
