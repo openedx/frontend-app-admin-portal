@@ -21,8 +21,8 @@ import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import DownloadCsvButton from '../../buttons/DownloadCsvButton';
-import LicenseManagementRevokeModal from './LicenseManagementRevokeModal';
-import LicenseManagementRemindModal from './LicenseManagementRemindModal';
+import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
+import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
@@ -53,8 +53,8 @@ const selectColumn = {
 
 const modalZeroState = {
   open: false,
-  user: null,
   users: [],
+  allUsersSelected: false,
 };
 
 const LicenseManagementTable = () => {
@@ -134,7 +134,7 @@ const LicenseManagementTable = () => {
   );
 
   // Maps user to rows
-  const data = useMemo(
+  const rows = useMemo(
     () => users?.results?.map(user => ({
       id: user.uuid,
       email: user.userEmail,
@@ -176,16 +176,18 @@ const LicenseManagementTable = () => {
   };
 
   // Bulk Action buttons
-  const bulkRemindOnClick = (usersToRemind) => {
+  const bulkRemindOnClick = (usersToRemind, allUsersSelected) => {
     setRemindModal({
       open: true,
       users: usersToRemind,
+      allUsersSelected,
     });
   };
-  const bulkRevokeOnClick = (usersToRevoke) => {
+  const bulkRevokeOnClick = (usersToRevoke, allUsersSelected) => {
     setRevokeModal({
       open: true,
       users: usersToRevoke,
+      allUsersSelected,
     });
   };
 
@@ -215,7 +217,7 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         fetchData={fetchData}
-        data={data}
+        data={rows}
         columns={[
           {
             Header: 'Email address',
@@ -263,13 +265,16 @@ const LicenseManagementTable = () => {
             ),
           },
         ]}
-        bulkActions={(selectedRows) => {
-          const selectedUsers = selectedRows.map((selectedRow) => selectedRow.original);
+        bulkActions={(data) => {
+          const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
           return (
             <LicenseManagementTableBulkActions
               selectedUsers={selectedUsers}
               bulkRemindOnClick={bulkRemindOnClick}
               bulkRevokeOnClick={bulkRevokeOnClick}
+              activatedUsers={overview.activated}
+              assignedUsers={overview.assigned}
+              allUsersSelected={data.isEntireTableSelected}
             />
           );
         }}
@@ -281,6 +286,8 @@ const LicenseManagementTable = () => {
         subscription={subscription}
         onClose={() => setRevokeModal(modalZeroState)}
         onSuccess={onRevokeSuccess}
+        revokeAllUsers={revokeModal.allUsersSelected}
+        totalToRevoke={overview.activated + overview.assigned}
       />
       <LicenseManagementRemindModal
         isOpen={remindModal.open}
@@ -288,6 +295,8 @@ const LicenseManagementTable = () => {
         subscription={subscription}
         onClose={() => setRemindModal(modalZeroState)}
         onSuccess={onRemindSuccess}
+        remindAllUsers={remindModal.allUsersSelected}
+        totalToRemind={overview.assigned}
       />
     </>
   );

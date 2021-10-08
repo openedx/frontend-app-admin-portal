@@ -3,7 +3,7 @@ export const TAB_LICENSED_USERS = 'TAB_LICENSED_USERS';
 export const TAB_PENDING_USERS = 'TAB_PENDING_USERS';
 export const TAB_REVOKED_USERS = 'TAB_REVOKED_USERS';
 
-export const PAGE_SIZE = 5;
+export const PAGE_SIZE = 2;
 
 // Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';

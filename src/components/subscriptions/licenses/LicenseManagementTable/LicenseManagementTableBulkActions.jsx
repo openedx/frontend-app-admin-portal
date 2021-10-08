@@ -14,9 +14,16 @@ const LicenseManagementTableBulkActions = ({
   selectedUsers,
   bulkRemindOnClick,
   bulkRevokeOnClick,
+  allUsersSelected,
+  activatedUsers,
+  assignedUsers,
 }) => {
   // Divides selectedUsers users into two arrays
   const [usersToRemind, usersToRevoke] = useMemo(() => {
+    if (allUsersSelected) {
+      return [[], []];
+    }
+
     const tempRemind = [];
     const tempRevoke = [];
 
@@ -30,25 +37,25 @@ const LicenseManagementTableBulkActions = ({
       }
     });
     return [tempRemind, tempRevoke];
-  }, [selectedUsers]);
+  }, [selectedUsers, allUsersSelected]);
 
   return (
     <ActionRow>
       <Button
         variant="outline-primary"
         iconBefore={Email}
-        onClick={() => bulkRemindOnClick(usersToRemind)}
-        disabled={!usersToRemind.length}
+        onClick={() => bulkRemindOnClick(usersToRemind, allUsersSelected)}
+        disabled={!usersToRemind.length && !allUsersSelected}
       >
-        Remind({usersToRemind.length})
+        Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
       <Button
         variant="outline-danger"
         iconBefore={RemoveCircle}
-        onClick={() => bulkRevokeOnClick(usersToRevoke)}
-        disabled={!usersToRevoke.length}
+        onClick={() => bulkRevokeOnClick(usersToRevoke, allUsersSelected)}
+        disabled={!usersToRevoke.length && !allUsersSelected}
       >
-        Revoke({usersToRevoke.length})
+        Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})
       </Button>
     </ActionRow>
   );
@@ -62,6 +69,9 @@ LicenseManagementTableBulkActions.propTypes = {
   ).isRequired,
   bulkRemindOnClick: PropTypes.func.isRequired,
   bulkRevokeOnClick: PropTypes.func.isRequired,
+  allUsersSelected: PropTypes.bool.isRequired,
+  activatedUsers: PropTypes.number.isRequired,
+  assignedUsers: PropTypes.number.isRequired,
 };
 
 export default LicenseManagementTableBulkActions;

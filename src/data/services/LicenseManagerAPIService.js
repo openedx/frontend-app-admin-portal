@@ -143,6 +143,11 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().post(url, options);
   }
 
+  static licenseRevokeAll(subscriptionUUID) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/revoke-all/`;
+    return LicenseManagerApiService.apiClient().post(url);
+  }
+
   static licenseBulkEnroll(enterpriseUuid, options) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?enterprise_customer_uuid=${enterpriseUuid}`;
     return LicenseManagerApiService.apiClient().post(url, options);

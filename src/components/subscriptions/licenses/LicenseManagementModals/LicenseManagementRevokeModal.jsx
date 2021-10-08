@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -13,6 +13,7 @@ import {
   RemoveCircle,
 } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import moment from 'moment';
 
 import { configuration } from '../../../../config';
 import { SHOW_REVOCATION_CAP_PERCENT } from '../../data/constants';
@@ -34,9 +35,36 @@ const showRevocationCapAlert = (revocationCapEnabled, revocations) => {
   return revocations.applied > revocationCapLimit;
 };
 
+/**
+ * Returns StatefulButton labels
+ * @param {boolean} revokeAllUsers
+ * @param {number} userCount
+ * @param {number} totalToRevoke
+ * @returns {Object}
+ */
+const generateRevokeModalSubmitLabel = (revokeAllUsers, userCount, totalToRevoke) => {
+  // If we are not revoking all users, use users.length
+  // Else if totalToRevoke is passed use that
+  // Else use 'All'
+  let buttonNumberLabel = 'All';
+  if (!revokeAllUsers) {
+    buttonNumberLabel = userCount;
+  } else if (totalToRevoke > 0) {
+    buttonNumberLabel = totalToRevoke;
+  }
+
+  return {
+    default: `Revoke (${buttonNumberLabel})`,
+    pending: `Revoking (${buttonNumberLabel})`,
+    complete: 'Done',
+    error: `Retry revoke (${buttonNumberLabel})`,
+  };
+};
+
 const initialRequestState = {
   error: undefined,
   loading: false,
+  success: false,
 };
 
 const LicenseManagementRevokeModal = ({
@@ -45,20 +73,39 @@ const LicenseManagementRevokeModal = ({
   onSuccess,
   subscription,
   usersToRevoke,
+  revokeAllUsers,
+  totalToRevoke,
 }) => {
   const [requestState, setRequestState] = useState(initialRequestState);
 
-  const numberToRevoke = usersToRevoke.length;
-  const title = `Revoke License${numberToRevoke > 1 ? 's' : ''}`;
+  useEffect(() => {
+    setRequestState(initialRequestState);
+  }, [isOpen]);
+
+  const buttonLabels = generateRevokeModalSubmitLabel(
+    revokeAllUsers,
+    usersToRevoke.length,
+    totalToRevoke,
+  );
+
+  const title = `Revoke License${revokeAllUsers || usersToRevoke.length > 1 ? 's' : ''}`;
+
+  const isExpired = moment().isAfter(subscription.expirationDate);
 
   const handleSubmit = () => {
     setRequestState({ ...initialRequestState, loading: true });
+    const makeRequest = () => {
+      if (revokeAllUsers) {
+        return LicenseManagerApiService.licenseRevokeAll(subscription.uuid);
+      }
+      const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
+      const options = { user_emails: userEmailsToRevoke };
+      return LicenseManagerApiService.licenseBulkRevoke(subscription.uuid, options);
+    };
 
-    const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
-    const options = { user_emails: userEmailsToRevoke };
-    LicenseManagerApiService.licenseBulkRevoke(subscription.uuid, options)
+    makeRequest()
       .then((response) => {
-        setRequestState(initialRequestState);
+        setRequestState({ ...initialRequestState, success: true });
         onSuccess(response);
       })
       .catch((error) => {
@@ -79,6 +126,9 @@ const LicenseManagementRevokeModal = ({
     }
     if (requestState.loading) {
       return 'pending';
+    }
+    if (requestState.success) {
+      return 'complete';
     }
     return 'default';
   };
@@ -101,7 +151,7 @@ const LicenseManagementRevokeModal = ({
             <Alert variant="danger">
               <p>There was an error with your request. Please try again.</p>
               <p>
-                If the error persists,&nbsp;
+                If the error persists,{' '};
                 <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
                   contact customer support.
                 </Hyperlink>
@@ -134,13 +184,9 @@ const LicenseManagementRevokeModal = ({
             state={getRevokeButtonState()}
             variant="danger"
             onClick={handleSubmit}
+            disabled={(!revokeAllUsers && usersToRevoke.length < 1) || isExpired}
             {...{
-              labels: {
-                default: `Revoke (${numberToRevoke})`,
-                pending: `Revoking (${numberToRevoke})`,
-                complete: 'Done',
-                error: `Retry Revoke (${numberToRevoke})`,
-              },
+              labels: buttonLabels,
               icons: {
                 default: <Icon src={RemoveCircle} />,
                 pending: <Spinner animation="border" variant="light" size="sm" />,
@@ -154,12 +200,18 @@ const LicenseManagementRevokeModal = ({
   );
 };
 
+LicenseManagementRevokeModal.defaultProps = {
+  revokeAllUsers: false,
+  totalToRevoke: -1,
+};
+
 LicenseManagementRevokeModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   subscription: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    expirationDate: PropTypes.string.isRequired,
     isRevocationCapEnabled: PropTypes.bool.isRequired,
     revocations: PropTypes.shape({
       applied: PropTypes.number.isRequired,
@@ -171,6 +223,8 @@ LicenseManagementRevokeModal.propTypes = {
       email: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  revokeAllUsers: PropTypes.bool,
+  totalToRevoke: PropTypes.number,
 };
 
 export default LicenseManagementRevokeModal;
