@@ -298,7 +298,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     }
 
     let pendingEnterpriseUserData;
-    if (hasTextAreaEmails) {
+    if (validEmails) {
       pendingEnterpriseUserData = validEmails.map((email) => ({
         user_email: email,
         enterprise_customer: enterpriseUuid,
