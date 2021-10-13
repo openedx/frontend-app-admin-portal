@@ -11,8 +11,7 @@ import {
 import debounce from 'lodash.debounce';
 
 import { SubscriptionContext } from '../../SubscriptionData';
-import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
-import { useSubscriptionUsers } from '../../data/hooks';
+import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
 import {
   PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
 } from '../../data/constants';
@@ -44,8 +43,6 @@ const userRecentAction = (user) => {
   }
 };
 
-const defaultStatusFilter = [ASSIGNED, ACTIVATED, REVOKED].join();
-
 const selectColumn = {
   id: 'selection',
   Header: DataTable.ControlledSelectHeader,
@@ -60,7 +57,6 @@ const modalZeroState = {
 };
 
 const LicenseManagementTable = () => {
-  const [userStatusFilter, setUserStatusFilter] = useState(defaultStatusFilter);
   const [remindModal, setRemindModal] = useState(modalZeroState);
   const [revokeModal, setRevokeModal] = useState(modalZeroState);
 
@@ -70,29 +66,21 @@ const LicenseManagementTable = () => {
   const showFiltersInSidebar = useMemo(() => width > breakpoints.medium.maxWidth, [width]);
 
   const {
-    errors,
     forceRefresh: forceRefreshSubscription,
-    setErrors,
   } = useContext(SubscriptionContext);
 
   const {
     currentPage,
     overview,
     forceRefresh: forceRefreshOverview,
-    searchQuery,
     setSearchQuery,
     setCurrentPage,
     subscription,
+    users,
+    forceRefreshUsers,
+    loadingUsers,
+    setUserStatusFilter,
   } = useContext(SubscriptionDetailContext);
-
-  const [users, forceRefreshUsers, loadingUsers] = useSubscriptionUsers({
-    currentPage,
-    searchQuery,
-    subscriptionUUID: subscription.uuid,
-    errors,
-    setErrors,
-    userStatusFilter,
-  });
 
   // Filtering and pagination
   const updateFilters = (filters) => {
@@ -211,7 +199,12 @@ const LicenseManagementTable = () => {
         itemCount={users.count}
         pageCount={users.numPages || 1}
         // eslint-disable-next-line no-unused-vars
-        tableActions={(i) => <DownloadCsvButton />}
+        tableActions={(i) => {
+          if (!showSubscriptionZeroStateMessage) {
+            return <DownloadCsvButton />;
+          }
+          return <></>;
+        }}
         initialState={{
           pageSize: PAGE_SIZE,
           pageIndex: DEFAULT_PAGE - 1,

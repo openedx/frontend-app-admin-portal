@@ -12,7 +12,7 @@ const SubscriptionZeroStateMessage = () => {
   const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   return (
-    <Card className="text-center">
+    <Card className="text-center mb-4">
       <Card.Body>
         <h2>Get Started</h2>
         <p className="py-2 lead">
