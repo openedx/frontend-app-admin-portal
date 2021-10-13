@@ -142,7 +142,7 @@ const LicenseManagementRevokeModal = ({
             <Alert variant="danger">
               <p>There was an error with your request. Please try again.</p>
               <p>
-                If the error persists,{' '};
+                If the error persists,{' '}
                 <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
                   contact customer support.
                 </Hyperlink>
