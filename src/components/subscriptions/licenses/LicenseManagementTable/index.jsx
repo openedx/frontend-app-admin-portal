@@ -213,7 +213,7 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         EmptyTableComponent={
-          () => <DataTable.EmptyTable content={loadingUsers ? 'Loading...' : 'No results found...'} />
+          () => <DataTable.EmptyTable content={loadingUsers ? 'Loading...' : 'No results found'} />
         }
         fetchData={fetchData}
         data={rows}

@@ -159,10 +159,10 @@ export const useSubscriptionUsers = ({
         setErrors({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-        })
-          .finally(() => {
-            setLoadingUsers(false);
-          });
+        });
+      })
+      .finally(() => {
+        setLoadingUsers(false);
       });
   };
 

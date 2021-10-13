@@ -20,6 +20,7 @@ jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   default: {
     fetchSubscriptions: jest.fn(),
     fetchSubscriptionUsersOverview: jest.fn(),
+    fetchSubscriptionUsers: jest.fn(),
     fetchCustomerAgreementData: jest.fn(),
   },
 }));
@@ -64,6 +65,13 @@ const mockSubscriptionCount = Promise.resolve({
     { status: 'unassigned', count: 0 },
     { status: 'assigned', count: 0 },
     { status: 'activated', count: 2 }],
+});
+const mockFetchSubscriptionUsers = Promise.resolve({
+  count: 0,
+  next: null,
+  previous: null,
+  numPages: 1,
+  results: [],
 });
 const subscriptions = Promise.resolve({
   data: {
@@ -150,6 +158,7 @@ LicenseManagerApiService.fetchCustomerAgreementData.mockImplementation(
 );
 LicenseManagerApiService.fetchSubscriptions.mockImplementation(() => subscriptions);
 LicenseManagerApiService.fetchSubscriptionUsersOverview.mockImplementation(() => mockSubscriptionCount);
+LicenseManagerApiService.fetchSubscriptionUsers.mockImplementation(() => mockFetchSubscriptionUsers);
 
 describe('<BulkEnrollmentPage />', () => {
   describe('multiple subscriptions', () => {
