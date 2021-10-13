@@ -6,16 +6,10 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import React from 'react';
-import { Provider } from 'react-redux';
 import SubscriptionDetails from '../SubscriptionDetails';
-import { TAB_PENDING_USERS } from '../data/constants';
 import {
-  createMockStore, SubscriptionManagementContext, SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+  SubscriptionManagementContext, SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
 } from './TestUtilities';
-
-import { SubscriptionContext } from '../SubscriptionData';
-import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
-import { ToastsContext } from '../../Toasts/ToastsProvider';
 
 const defaultProps = {
   enterpriseSlug: 'sluggy',
@@ -61,36 +55,6 @@ describe('SubscriptionDetails', () => {
         </SubscriptionManagementContext>,
       );
 
-      expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT));
-    });
-
-    it('should be rendered if the active tab is not on All Users', () => {
-      render(
-        <Provider store={createMockStore()}>
-          <SubscriptionContext.Provider value={{ forceRefresh: jest.fn() }}>
-            <SubscriptionDetailContext.Provider value={
-                {
-                  subscription: {
-                    ...SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
-                    licenses: {
-                      allocated: 0,
-                      total: 0,
-                    },
-                  },
-                  activeTab: TAB_PENDING_USERS,
-                }
-              }
-            >
-              <ToastsContext.Provider value={{
-                addToast: jest.fn(),
-              }}
-              >
-                <SubscriptionDetails {...defaultProps} />
-              </ToastsContext.Provider>
-            </SubscriptionDetailContext.Provider>
-          </SubscriptionContext.Provider>
-        </Provider>,
-      );
       expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT));
     });
 

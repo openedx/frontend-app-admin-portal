@@ -12,10 +12,10 @@ exports[`<SaveTemplateButton /> renders correctly in disabled state 1`] = `
   <span
     className="d-flex align-items-center justify-content-center"
   >
-    <span
-      className=""
-    >
+    <span>
+       
       Save Template
+       
     </span>
   </span>
 </button>
@@ -33,10 +33,10 @@ exports[`<SaveTemplateButton /> renders correctly in enabled state 1`] = `
   <span
     className="d-flex align-items-center justify-content-center"
   >
-    <span
-      className=""
-    >
+    <span>
+       
       Save Template
+       
     </span>
   </span>
 </button>
@@ -54,10 +54,10 @@ exports[`<SaveTemplateButton /> renders correctly while saving a template 1`] = 
   <span
     className="d-flex align-items-center justify-content-center"
   >
-    <span
-      className=""
-    >
+    <span>
+       
       Save Template
+       
     </span>
   </span>
 </button>
