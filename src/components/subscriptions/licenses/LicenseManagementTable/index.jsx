@@ -39,10 +39,12 @@ const userRecentAction = (user) => {
       return `Invited: ${formatTimestamp({ timestamp: user.lastRemindDate })}`;
     }
     default: {
-      return 'No Data';
+      return null;
     }
   }
 };
+
+const defaultStatusFilter = [ASSIGNED, ACTIVATED, REVOKED].join();
 
 const selectColumn = {
   id: 'selection',
@@ -58,7 +60,7 @@ const modalZeroState = {
 };
 
 const LicenseManagementTable = () => {
-  const [userStatusFilter, setUserStatusFilter] = useState(null);
+  const [userStatusFilter, setUserStatusFilter] = useState(defaultStatusFilter);
   const [remindModal, setRemindModal] = useState(modalZeroState);
   const [revokeModal, setRevokeModal] = useState(modalZeroState);
 
@@ -83,7 +85,7 @@ const LicenseManagementTable = () => {
     subscription,
   } = useContext(SubscriptionDetailContext);
 
-  const [users, forceRefreshUsers] = useSubscriptionUsers({
+  const [users, forceRefreshUsers, loadingUsers] = useSubscriptionUsers({
     currentPage,
     searchQuery,
     subscriptionUUID: subscription.uuid,
@@ -96,14 +98,14 @@ const LicenseManagementTable = () => {
   const updateFilters = (filters) => {
     if (filters.length < 1) {
       setSearchQuery(null);
-      setUserStatusFilter(null);
+      setUserStatusFilter(defaultStatusFilter);
     } else {
       filters.forEach((filter) => {
         switch (filter.id) {
           case 'statusBadge':
-            setUserStatusFilter(filter.value.join(','));
+            setUserStatusFilter(filter.value.join());
             break;
-          case 'email':
+          case 'emailLabel':
             setSearchQuery(filter.value);
             break;
           default: break;
@@ -124,7 +126,7 @@ const LicenseManagementTable = () => {
   // Call back function, handles filters and page changes
   const fetchData = useCallback(
     (args) => {
-      // pages index from 1 in backend, Datable component index from 0
+      // pages index from 1 in backend, DataTable component index from 0
       if (args.pageIndex !== currentPage - 1) {
         debouncedSetCurrentPage(args.pageIndex + 1);
       }
@@ -141,7 +143,7 @@ const LicenseManagementTable = () => {
       emailLabel: <span data-hj-suppress>{user.userEmail}</span>,
       status: user.status,
       statusBadge: <LicenseManagementUserBadge userStatus={user.status} />,
-      recent: userRecentAction(user),
+      recentAction: userRecentAction(user),
     })),
     [users],
   );
@@ -191,9 +193,10 @@ const LicenseManagementTable = () => {
     });
   };
 
+  const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
   return (
     <>
-      {(users.count < 1 && userStatusFilter === null) && <SubscriptionZeroStateMessage /> }
+      {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
 
       <DataTable
         showFiltersInSidebar={showFiltersInSidebar}
@@ -216,6 +219,9 @@ const LicenseManagementTable = () => {
         initialTableOptions={{
           getRowId: row => row.id,
         }}
+        EmptyTableComponent={
+          () => <DataTable.EmptyTable content={loadingUsers ? 'Loading...' : 'No results found...'} />
+        }
         fetchData={fetchData}
         data={rows}
         columns={[
@@ -246,7 +252,7 @@ const LicenseManagementTable = () => {
           },
           {
             Header: 'Recent action',
-            accessor: 'recent',
+            accessor: 'recentAction',
             disableFilters: true,
           },
         ]}

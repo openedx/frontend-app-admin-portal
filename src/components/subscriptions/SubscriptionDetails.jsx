@@ -24,7 +24,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
 
   const hasLicensesAllocatedOrRevoked = subscription.licenses?.allocated > 0 || subscription.licenses?.revoked > 0;
   const shouldShowInviteLearnersButton = (
-    (hasLicensesAllocatedOrRevoked) && subscription.daysUntilExpiration > 0
+    hasLicensesAllocatedOrRevoked && subscription.daysUntilExpiration > 0
   );
 
   return (

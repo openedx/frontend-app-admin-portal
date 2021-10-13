@@ -137,11 +137,13 @@ export const useSubscriptionUsers = ({
   userStatusFilter,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
+  const [loadingUsers, setLoadingUsers] = useState(true);
 
   const loadSubscriptionUsers = () => {
     if (!subscriptionUUID) {
       return;
     }
+    setLoadingUsers(true);
     const options = {
       status: userStatusFilter,
       search: searchQuery,
@@ -150,13 +152,17 @@ export const useSubscriptionUsers = ({
     LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options)
       .then((response) => {
         setSubscriptionUsers(camelCaseObject(response.data));
+        setLoadingUsers(false);
       })
       .catch((err) => {
         logError(err);
         setErrors({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-        });
+        })
+          .finally(() => {
+            setLoadingUsers(false);
+          });
       });
   };
 
@@ -166,7 +172,7 @@ export const useSubscriptionUsers = ({
 
   useEffect(loadSubscriptionUsers, [currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
 
-  return [subscriptionUsers, forceRefresh];
+  return [subscriptionUsers, forceRefresh, loadingUsers];
 };
 
 /*

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -13,6 +13,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
+import { useRequestState } from './LicenseManagementModalHook';
 import { validateEmailTemplateForm } from '../../../../data/validation/email';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import { configuration } from '../../../../config';
@@ -53,11 +54,6 @@ const generateRemindModalSubmitLabel = (remindAllUsers, userCount, totalToRemind
     error: `Retry remind (${buttonNumberLabel})`,
   };
 };
-const initialRequestState = {
-  error: undefined,
-  loading: false,
-  success: false,
-};
 
 const LicenseManagementRemindModal = ({
   isOpen,
@@ -69,11 +65,7 @@ const LicenseManagementRemindModal = ({
   totalToRemind,
   contactEmail,
 }) => {
-  const [requestState, setRequestState] = useState(initialRequestState);
-
-  useEffect(() => {
-    setRequestState(initialRequestState);
-  }, [isOpen]);
+  const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail));
   const isExpired = moment().isAfter(subscription.expirationDate);

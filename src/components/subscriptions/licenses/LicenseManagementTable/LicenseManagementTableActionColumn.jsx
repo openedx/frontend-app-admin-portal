@@ -46,7 +46,7 @@ const LicenseManagementTableActionColumn = ({
         />
       </OverlayTrigger>
       )}
-      { displayRevoked
+      {displayRevoked
       && (
       <OverlayTrigger
         placement="top"
@@ -60,7 +60,7 @@ const LicenseManagementTableActionColumn = ({
           alt={revokeText}
           title={revokeText}
           src={RemoveCircle}
-          style={{ marginLeft: displayRemind ? 0 : 44 }}
+          iconClassNames={displayRemind ? '' : '.ml-5'}
           iconAs={Icon}
           variant="danger"
           onClick={() => rowRevokeOnClick(user)}

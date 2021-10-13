@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -15,6 +15,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import moment from 'moment';
 
+import { useRequestState } from './LicenseManagementModalHook';
 import { configuration } from '../../../../config';
 import { SHOW_REVOCATION_CAP_PERCENT } from '../../data/constants';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
@@ -61,12 +62,6 @@ const generateRevokeModalSubmitLabel = (revokeAllUsers, userCount, totalToRevoke
   };
 };
 
-const initialRequestState = {
-  error: undefined,
-  loading: false,
-  success: false,
-};
-
 const LicenseManagementRevokeModal = ({
   isOpen,
   onClose,
@@ -76,11 +71,7 @@ const LicenseManagementRevokeModal = ({
   revokeAllUsers,
   totalToRevoke,
 }) => {
-  const [requestState, setRequestState] = useState(initialRequestState);
-
-  useEffect(() => {
-    setRequestState(initialRequestState);
-  }, [isOpen]);
+  const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const buttonLabels = generateRevokeModalSubmitLabel(
     revokeAllUsers,

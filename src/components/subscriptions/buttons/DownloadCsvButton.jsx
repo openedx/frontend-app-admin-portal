@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { StatefulButton } from '@edx/paragon';
-import { faCheck, faDownload, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { StatefulButton, Icon, Spinner } from '@edx/paragon';
+import { Download, Check } from '@edx/paragon/icons';
+
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
@@ -43,14 +43,14 @@ const DownloadCsvButton = () => {
       state={buttonState}
       variant="outline-primary"
       labels={{
-        default: 'Download CSV',
+        default: 'Download all',
         pending: 'Downloading',
         complete: 'Downloaded',
       }}
       icons={{
-        default: <FontAwesomeIcon icon={faDownload} />,
-        pending: <FontAwesomeIcon icon={faSpinner} />,
-        complete: <FontAwesomeIcon icon={faCheck} />,
+        default: <Icon src={Download} />,
+        pending: <Spinner animation="border" variant="light" size="sm" />,
+        complete: <Icon icon={Check} />,
       }}
       disabledStates={['pending']}
       onClick={handleClick}
