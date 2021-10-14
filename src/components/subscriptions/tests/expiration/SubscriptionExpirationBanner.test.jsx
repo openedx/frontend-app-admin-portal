@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
 import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -13,10 +14,11 @@ import {
 import {
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
+  TEST_ENTERPRISE_CUSTOMER_UUID,
 } from '../TestUtilities';
 
-jest.mock('@edx/frontend-platform/analytics', () => ({
-  sendTrackEvent: jest.fn(),
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  sendEnterpriseTrackEvent: jest.fn(),
 }));
 
 // PropType validation for state is done by SubscriptionManagementContext
@@ -28,6 +30,8 @@ const ExpirationBannerWithContext = ({ detailState, isSubscriptionPlanDetails = 
 );
 
 describe('<SubscriptionExpirationBanner />', () => {
+  afterEach(() => jest.clearAllMocks());
+
   test('does not render an alert before the "moderate" days until expiration threshold', () => {
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -63,6 +67,14 @@ describe('<SubscriptionExpirationBanner />', () => {
     userEvent.click(screen.getByText('Dismiss'));
     await waitForElementToBeRemoved(screen.queryByRole('alert'));
     expect(screen.queryByRole('alert')).toBeNull();
+    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      'edx.ui.admin_portal.subscriptions.expiration.alert.dismissed',
+      {
+        expiration_threshold: threshold,
+        days_until_expiration: threshold,
+      },
+    );
   });
 
   test('does not render an alert when subscription expiration notifications are disabled', () => {
@@ -96,5 +108,24 @@ describe('<SubscriptionExpirationBanner />', () => {
       expect(screen.getByText('Your subscription contract has expired'));
       expect(screen.queryByText("This subscription plan's end date has passed")).toBeNull();
     }
+  });
+
+  test('handles customer support button click', () => {
+    const agreementNetDaysUntilExpiration = 0;
+    const detailStateCopy = {
+      ...SUBSCRIPTION_PLAN_ZERO_STATE,
+      agreementNetDaysUntilExpiration,
+    };
+
+    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    userEvent.click(screen.getByText('Contact customer support'));
+    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      'edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked',
+      {
+        expiration_threshold: SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+        days_until_expiration: agreementNetDaysUntilExpiration,
+      },
+    );
   });
 });

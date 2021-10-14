@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
 import { useToggle } from '@edx/paragon';
-import { sendTrackEvent } from '@edx/frontend-platform/analytics';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import SubscriptionExpiredModal from './SubscriptionExpiredModal';
 import SubscriptionExpiringModal from './SubscriptionExpiringModal';
@@ -30,6 +30,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const {
     subscription: {
       agreementNetDaysUntilExpiration, showExpirationNotifications,
+      enterpriseCustomerUuid,
     },
   } = useContext(SubscriptionDetailContext);
   const isSubscriptionExpired = agreementNetDaysUntilExpiration <= 0;
@@ -96,17 +97,25 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
   }, [isSubscriptionExpired]);
 
   const emitAlertActionEvent = () => {
-    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked', {
-      expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: agreementNetDaysUntilExpiration,
-    });
+    sendEnterpriseTrackEvent(
+      enterpriseCustomerUuid,
+      'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
+      {
+        expiration_threshold: subscriptionExpirationThreshold,
+        days_until_expiration: agreementNetDaysUntilExpiration,
+      },
+    );
   };
 
   const emitAlertDismissedEvent = () => {
-    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.modal.dismissed', {
-      expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: agreementNetDaysUntilExpiration,
-    });
+    sendEnterpriseTrackEvent(
+      enterpriseCustomerUuid,
+      'edx.ui.admin_portal.subscriptions.expiration.modal.dismissed',
+      {
+        expiration_threshold: subscriptionExpirationThreshold,
+        days_until_expiration: agreementNetDaysUntilExpiration,
+      },
+    );
   };
 
   const handleCloseModal = (closeModal) => {
