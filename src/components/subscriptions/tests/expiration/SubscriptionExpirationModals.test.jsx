@@ -5,6 +5,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
+import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
 import { EXPIRED_MODAL_TITLE } from '../../expiration/SubscriptionExpiredModal';
 import { EXPIRING_MODAL_TITLE } from '../../expiration/SubscriptionExpiringModal';
@@ -14,12 +15,13 @@ import {
   SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
 } from '../../data/constants';
 import {
+  TEST_ENTERPRISE_CUSTOMER_UUID,
   SUBSCRIPTION_PLAN_ZERO_STATE,
   SubscriptionManagementContext,
 } from '../TestUtilities';
 
-jest.mock('@edx/frontend-platform/analytics', () => ({
-  sendTrackEvent: jest.fn(),
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  sendEnterpriseTrackEvent: jest.fn(),
 }));
 
 // PropType validation for state is done by SubscriptionManagementContext
@@ -31,6 +33,8 @@ const ExpirationModalsWithContext = ({ detailState }) => (
 );
 
 describe('<SubscriptionExpirationModals />', () => {
+  afterEach(() => jest.clearAllMocks());
+
   describe('non-expired and non-expiring', () => {
     test('does not render any expiration modals', () => {
       render(<ExpirationModalsWithContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE} />);
@@ -62,14 +66,42 @@ describe('<SubscriptionExpirationModals />', () => {
     });
 
     test('expired modal is dismissible', () => {
+      const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        agreementNetDaysUntilExpiration: 0,
+        agreementNetDaysUntilExpiration,
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
       userEvent.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
+      expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_CUSTOMER_UUID,
+        'edx.ui.admin_portal.subscriptions.expiration.modal.dismissed',
+        {
+          expiration_threshold: SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+          days_until_expiration: agreementNetDaysUntilExpiration,
+        },
+      );
+    });
+
+    test('handles customer support button click', () => {
+      const agreementNetDaysUntilExpiration = 0;
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        agreementNetDaysUntilExpiration,
+      };
+
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      userEvent.click(screen.getByText('Contact customer support'));
+      expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_CUSTOMER_UUID,
+        'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
+        {
+          expiration_threshold: SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+          days_until_expiration: agreementNetDaysUntilExpiration,
+        },
+      );
     });
   });
 
@@ -112,6 +144,33 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
       userEvent.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
+      expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_CUSTOMER_UUID,
+        'edx.ui.admin_portal.subscriptions.expiration.modal.dismissed',
+        {
+          expiration_threshold: threshold,
+          days_until_expiration: threshold,
+        },
+      );
+    });
+
+    test('handles customer support button click', () => {
+      const agreementNetDaysUntilExpiration = 0;
+      const detailStateCopy = {
+        ...SUBSCRIPTION_PLAN_ZERO_STATE,
+        agreementNetDaysUntilExpiration,
+      };
+
+      render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
+      userEvent.click(screen.getByText('Contact customer support'));
+      expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_CUSTOMER_UUID,
+        'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
+        {
+          expiration_threshold: SUBSCRIPTION_DAYS_REMAINING_EXCEPTIONAL,
+          days_until_expiration: agreementNetDaysUntilExpiration,
+        },
+      );
     });
   });
 });
