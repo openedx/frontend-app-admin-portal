@@ -4,7 +4,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
-  licenseStatusByTab,
   NETWORK_ERROR_MESSAGE,
   SUBSCRIPTION_USERS,
   SUBSCRIPTION_USERS_OVERVIEW,
@@ -93,11 +92,7 @@ export const useSubscriptionUsersOverview = ({
   };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
-  const forceRefresh = () => {
-    setSubscriptionUsersOverview({ ...subscriptionUsersOverview });
-  };
-
-  useEffect(() => {
+  const loadSubscriptionUsersOverview = () => {
     if (subscriptionUUID) {
       LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
         .then((response) => {
@@ -118,37 +113,46 @@ export const useSubscriptionUsersOverview = ({
           });
         });
     }
-  }, [subscriptionUUID, search]);
+  };
+
+  const forceRefresh = () => {
+    loadSubscriptionUsersOverview();
+  };
+
+  useEffect(loadSubscriptionUsersOverview, [subscriptionUUID, search]);
 
   return [subscriptionUsersOverview, forceRefresh];
 };
 
-/*
+/**
  * This hook provides a list of users for a given subscription UUID.
  * It is also dependent on state from SubscriptionDetailContext.
  */
 export const useSubscriptionUsers = ({
-  activeTab,
   currentPage,
   searchQuery,
   subscriptionUUID,
   errors,
   setErrors,
+  userStatusFilter,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
+  const [loadingUsers, setLoadingUsers] = useState(true);
 
-  useEffect(() => {
+  const loadSubscriptionUsers = () => {
     if (!subscriptionUUID) {
       return;
     }
+    setLoadingUsers(true);
     const options = {
-      status: licenseStatusByTab[activeTab],
+      status: userStatusFilter,
       search: searchQuery,
       page: currentPage,
     };
     LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options)
       .then((response) => {
         setSubscriptionUsers(camelCaseObject(response.data));
+        setLoadingUsers(false);
       })
       .catch((err) => {
         logError(err);
@@ -156,10 +160,19 @@ export const useSubscriptionUsers = ({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
         });
+      })
+      .finally(() => {
+        setLoadingUsers(false);
       });
-  }, [activeTab, currentPage, searchQuery, subscriptionUUID]);
+  };
 
-  return subscriptionUsers;
+  const forceRefresh = () => {
+    loadSubscriptionUsers();
+  };
+
+  useEffect(loadSubscriptionUsers, [currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
+
+  return [subscriptionUsers, forceRefresh, loadingUsers];
 };
 
 /*

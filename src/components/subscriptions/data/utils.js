@@ -1,4 +1,8 @@
-import { SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX } from './constants';
+import {
+  SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
+  ASSIGNED,
+  ACTIVATED,
+} from './constants';
 
 // eslint-disable-next-line import/prefer-default-export
 export const getSubscriptionExpiringCookieName = ({
@@ -7,3 +11,7 @@ export const getSubscriptionExpiringCookieName = ({
   const cookieName = `${SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX}${expirationThreshold}-${enterpriseId}`;
   return cookieName;
 };
+
+export const canRevokeLicense = (licenseStatus) => licenseStatus === ASSIGNED || licenseStatus === ACTIVATED;
+
+export const canRemindLicense = (licenseStatus) => licenseStatus === ASSIGNED;

@@ -139,13 +139,17 @@ export const mockUseSubscriptionData = (state) => ({
   forceRefresh: () => {},
 });
 
-export const mockUseSubscriptionUsers = (state) => ({
-  count: state.users.length,
-  next: null,
-  previous: null,
-  numPages: 1,
-  results: state.users,
-});
+export const mockUseSubscriptionUsers = (state) => [
+  {
+    count: state.users.length,
+    next: null,
+    previous: null,
+    numPages: 1,
+    results: state.users,
+  },
+  () => {},
+  false,
+];
 
 export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));

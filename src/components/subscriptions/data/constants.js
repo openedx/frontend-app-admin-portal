@@ -9,14 +9,6 @@ export const PAGE_SIZE = 20;
 export const ACTIVATED = 'activated';
 export const ASSIGNED = 'assigned';
 export const REVOKED = 'revoked';
-export const ALL_USERS = 'assigned,activated,revoked';
-
-export const licenseStatusByTab = {
-  [TAB_ALL_USERS]: ALL_USERS,
-  [TAB_LICENSED_USERS]: ACTIVATED,
-  [TAB_PENDING_USERS]: ASSIGNED,
-  [TAB_REVOKED_USERS]: REVOKED,
-};
 
 export const SUBSCRIPTIONS = 'Subscriptions';
 export const SUBSCRIPTION_USERS = 'Subscription Users';
@@ -40,3 +32,10 @@ export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration
 
 // Multiple subscription picker
 export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+
+// user status badge mapping, takes user status as key returns label and badge style defined by ux
+export const USER_STATUS_BADGE_MAP = {
+  [ACTIVATED]: { label: 'Active', variant: 'success' },
+  [ASSIGNED]: { label: 'Pending', variant: 'warning' },
+  [REVOKED]: { label: 'Revoked', variant: 'light' },
+};
