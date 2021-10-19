@@ -153,7 +153,7 @@ const LicenseManagementRemindModal = ({
               </p>
             </Alert>
             )}
-        <h3>Email Template</h3>
+        <h3 className="h4">Email Template</h3>
         <Form>
           <Form.Group controlId="email-template-greeting">
             <Form.Label>Customize Greeting</Form.Label>
@@ -198,14 +198,11 @@ const LicenseManagementRemindModal = ({
             variant="primary"
             onClick={handleSubmit}
             disabled={(!remindAllUsers && usersToRemind.length < 1) || isExpired}
-
-            {...{
-              labels: buttonLabels,
-              icons: {
-                pending: <Spinner animation="border" variant="light" size="sm" />,
-              },
-              disabledStates: ['pending', 'complete'],
+            labels={buttonLabels}
+            icons={{
+              pending: <Spinner animation="border" variant="light" size="sm" />,
             }}
+            disabledStates={['pending', 'complete']}
           />
         </ActionRow>
       </ModalDialog.Footer>

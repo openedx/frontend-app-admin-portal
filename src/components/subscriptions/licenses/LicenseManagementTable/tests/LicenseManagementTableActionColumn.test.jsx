@@ -9,19 +9,19 @@ import LicenseManagementTableActionColumn from '../LicenseManagementTableActionC
 import {
   ASSIGNED,
   ACTIVATED,
-  REVOKED
+  REVOKED,
 } from '../../../data/constants';
 
-const assignedTestUser = {status: ASSIGNED}
-const activatedTestUser = {status: ACTIVATED}
-const revokedTestUser = {status: REVOKED}
-const fooTestUser = {status: 'foo'}
+const assignedTestUser = { status: ASSIGNED };
+const activatedTestUser = { status: ACTIVATED };
+const revokedTestUser = { status: REVOKED };
+const fooTestUser = { status: 'foo' };
 
 const basicProps = {
   user: assignedTestUser,
-  rowRemindOnClick: ()=>{},
-  rowRevokeOnClick: ()=>{},
-}
+  rowRemindOnClick: () => {},
+  rowRevokeOnClick: () => {},
+};
 
 describe('<LicenseManagementTableActionColumn />', () => {
   afterEach(() => {
@@ -30,31 +30,31 @@ describe('<LicenseManagementTableActionColumn />', () => {
   });
 
   it(`renders both buttons when user status ${ASSIGNED}`, () => {
-    render(<LicenseManagementTableActionColumn {...basicProps}/>);
+    render(<LicenseManagementTableActionColumn {...basicProps} />);
     expect(screen.getAllByRole('button').length).toBe(2);
     expect(screen.getByTitle('Remind learner')).toBeTruthy();
     expect(screen.getByTitle('Revoke license')).toBeTruthy();
   });
-  
+
   it(`renders both buttons when user status ${ACTIVATED}`, () => {
-    const props = {...basicProps, user: activatedTestUser}
-    render(<LicenseManagementTableActionColumn {...props}/>);
+    const props = { ...basicProps, user: activatedTestUser };
+    render(<LicenseManagementTableActionColumn {...props} />);
     expect(screen.getAllByRole('button').length).toBe(1);
     expect(screen.queryByTitle('Remind learner')).toBeFalsy();
     expect(screen.queryByTitle('Revoke license')).toBeTruthy();
   });
 
   it(`renders both buttons when user status ${REVOKED}`, () => {
-    const props = {...basicProps, user: revokedTestUser}
-    render(<LicenseManagementTableActionColumn {...props}/>);
+    const props = { ...basicProps, user: revokedTestUser };
+    render(<LicenseManagementTableActionColumn {...props} />);
     expect(screen.queryAllByRole('button').length).toBe(0);
     expect(screen.queryByTitle('Remind learner')).toBeFalsy();
     expect(screen.queryByTitle('Revoke license')).toBeFalsy();
   });
 
-  it(`renders both buttons when user status undefined`, () => {
-    const props = {...basicProps, user: fooTestUser}
-    render(<LicenseManagementTableActionColumn {...props}/>);
+  it('renders both buttons when user status undefined', () => {
+    const props = { ...basicProps, user: fooTestUser };
+    render(<LicenseManagementTableActionColumn {...props} />);
     expect(screen.queryAllByRole('button').length).toBe(0);
     expect(screen.queryByTitle('Remind learner')).toBeFalsy();
     expect(screen.queryByTitle('Revoke license')).toBeFalsy();

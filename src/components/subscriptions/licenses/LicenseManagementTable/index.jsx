@@ -9,6 +9,7 @@ import {
   breakpoints,
 } from '@edx/paragon';
 import debounce from 'lodash.debounce';
+import moment from 'moment';
 
 import { SubscriptionContext } from '../../SubscriptionData';
 import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
@@ -81,6 +82,8 @@ const LicenseManagementTable = () => {
     loadingUsers,
     setUserStatusFilter,
   } = useContext(SubscriptionDetailContext);
+
+  const isExpired = moment().isAfter(subscription.expirationDate);
 
   // Filtering and pagination
   const updateFilters = (filters) => {
@@ -203,7 +206,7 @@ const LicenseManagementTable = () => {
           if (!showSubscriptionZeroStateMessage) {
             return <DownloadCsvButton />;
           }
-          return <></>;
+          return null;
         }}
         initialState={{
           pageSize: PAGE_SIZE,
@@ -259,6 +262,7 @@ const LicenseManagementTable = () => {
                 user={row.original}
                 rowRemindOnClick={rowRemindOnClick}
                 rowRevokeOnClick={rowRevokeOnClick}
+                disabled={isExpired}
               />
               /* eslint-enable */
             ),
@@ -274,6 +278,7 @@ const LicenseManagementTable = () => {
               activatedUsers={overview.activated}
               assignedUsers={overview.assigned}
               allUsersSelected={data.isEntireTableSelected}
+              disabled={isExpired}
             />
           );
         }}

@@ -156,7 +156,7 @@ const LicenseManagementRevokeModal = ({
               have {subscription.revocations.remaining} revocations left on your plan.
             </Alert>
             )}
-        <p>This action cannot be undone. Learners with revoked licenses must be reinvited. </p>
+        <p>This action cannot be undone. Learners with revoked licenses must be reinvited.</p>
         <p>
           <Hyperlink
             variant="muted"
@@ -176,14 +176,12 @@ const LicenseManagementRevokeModal = ({
             variant="danger"
             onClick={handleSubmit}
             disabled={(!revokeAllUsers && usersToRevoke.length < 1) || isExpired}
-            {...{
-              labels: buttonLabels,
-              icons: {
-                default: <Icon src={RemoveCircle} />,
-                pending: <Spinner animation="border" variant="light" size="sm" />,
-              },
-              disabledStates: ['pending', 'complete'],
+            labels={buttonLabels}
+            icons={{
+              default: <Icon src={RemoveCircle} />,
+              pending: <Spinner animation="border" variant="light" size="sm" />,
             }}
+            disabledStates={['pending', 'complete']}
           />
         </ActionRow>
       </ModalDialog.Footer>

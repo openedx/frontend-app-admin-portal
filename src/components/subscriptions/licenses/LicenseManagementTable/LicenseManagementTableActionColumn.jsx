@@ -20,6 +20,7 @@ const LicenseManagementTableActionColumn = ({
   user,
   rowRemindOnClick,
   rowRevokeOnClick,
+  disabled,
 }) => {
   const displayRemind = canRemindLicense(user.status);
   const displayRevoked = canRevokeLicense(user.status);
@@ -43,6 +44,7 @@ const LicenseManagementTableActionColumn = ({
           iconAs={Icon}
           variant="secondary"
           onClick={() => rowRemindOnClick(user)}
+          disabled={disabled}
         />
       </OverlayTrigger>
       )}
@@ -60,10 +62,11 @@ const LicenseManagementTableActionColumn = ({
           alt={revokeText}
           title={revokeText}
           src={RemoveCircle}
-          iconClassNames={displayRemind ? '' : '.ml-5'}
+          style={{ marginLeft: displayRemind ? 0 : 44 }}
           iconAs={Icon}
           variant="danger"
           onClick={() => rowRevokeOnClick(user)}
+          disabled={disabled}
         />
       </OverlayTrigger>
       )}
@@ -72,12 +75,17 @@ const LicenseManagementTableActionColumn = ({
   );
 };
 
+LicenseManagementTableActionColumn.defaultProps = {
+  disabled: false,
+};
+
 LicenseManagementTableActionColumn.propTypes = {
   user: PropTypes.shape({
     status: PropTypes.string.isRequired,
   }).isRequired,
   rowRemindOnClick: PropTypes.func.isRequired,
   rowRevokeOnClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default LicenseManagementTableActionColumn;

@@ -17,6 +17,7 @@ const LicenseManagementTableBulkActions = ({
   allUsersSelected,
   activatedUsers,
   assignedUsers,
+  disabled,
 }) => {
   // Divides selectedUsers users into two arrays
   const [usersToRemind, usersToRevoke] = useMemo(() => {
@@ -45,7 +46,7 @@ const LicenseManagementTableBulkActions = ({
         variant="outline-primary"
         iconBefore={Email}
         onClick={() => bulkRemindOnClick(usersToRemind, allUsersSelected)}
-        disabled={!usersToRemind.length && !allUsersSelected}
+        disabled={(!usersToRemind.length && !allUsersSelected) || disabled}
       >
         Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
@@ -53,12 +54,16 @@ const LicenseManagementTableBulkActions = ({
         variant="outline-danger"
         iconBefore={RemoveCircle}
         onClick={() => bulkRevokeOnClick(usersToRevoke, allUsersSelected)}
-        disabled={!usersToRevoke.length && !allUsersSelected}
+        disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
       >
         Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})
       </Button>
     </ActionRow>
   );
+};
+
+LicenseManagementTableBulkActions.defaultProps = {
+  disabled: false,
 };
 
 LicenseManagementTableBulkActions.propTypes = {
@@ -72,6 +77,7 @@ LicenseManagementTableBulkActions.propTypes = {
   allUsersSelected: PropTypes.bool.isRequired,
   activatedUsers: PropTypes.number.isRequired,
   assignedUsers: PropTypes.number.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default LicenseManagementTableBulkActions;
