@@ -12,6 +12,14 @@ const mockEnterpriseCustomer = {
   enterprise_notification_banner: { title: 'This is a test title.', text: 'This is a test notification.', id: 1 },
 };
 
+const mockEnterpriseCustomerWithMarkdown = {
+  enterprise_notification_banner: {
+    title: 'This is a test title.',
+    text: 'Message with a [link](http://edx.org)',
+    id: 1,
+  },
+};
+
 let container = null;
 beforeEach(() => {
   // setup a DOM element as a render target
@@ -34,6 +42,24 @@ describe('<FeatureAnnouncementBanner />', () => {
 
     await screen.findByText('This is a test title.');
     await screen.findByText('This is a test notification.');
+  });
+
+  it('renders markdown correctly', async () => {
+    const flushPromises = () => new Promise(setImmediate);
+
+    LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
+      data: mockEnterpriseCustomerWithMarkdown,
+    }));
+
+    await act(async () => {
+      render(<FeatureAnnouncementBanner enterpriseSlug="test-enterprise" />, container);
+      await flushPromises();
+    });
+
+    await screen.findByText('This is a test title.');
+    const selector = (content, element) => content.startsWith('Message') && element.tagName.toLowerCase() === 'p';
+    const marked = screen.getByText(selector);
+    expect(marked.innerHTML).toEqual('Message with a <a href="http://edx.org" target="_blank">link</a>');
   });
 
   it('does not render if data is not available', async () => {

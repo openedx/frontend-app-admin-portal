@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import { sendTrackEvent } from '@edx/frontend-platform/analytics';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -20,6 +20,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       daysUntilExpiration: daysUntilPlanExpiration,
       expirationDate,
       showExpirationNotifications,
+      enterpriseCustomerUuid,
     },
   } = useContext(SubscriptionDetailContext);
   const [showBanner, setShowBanner] = useState(true);
@@ -82,17 +83,25 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   }
 
   const emitAlertActionEvent = () => {
-    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked', {
-      expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
-    });
+    sendEnterpriseTrackEvent(
+      enterpriseCustomerUuid,
+      'edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked',
+      {
+        expiration_threshold: subscriptionExpirationThreshold,
+        days_until_expiration: daysUntilExpiration,
+      },
+    );
   };
 
   const emitAlertDismissedEvent = () => {
-    sendTrackEvent('edx.ui.admin_portal.subscriptions.expiration.alert.dismissed', {
-      expiration_threshold: subscriptionExpirationThreshold,
-      days_until_expiration: daysUntilExpiration,
-    });
+    sendEnterpriseTrackEvent(
+      enterpriseCustomerUuid,
+      'edx.ui.admin_portal.subscriptions.expiration.alert.dismissed',
+      {
+        expiration_threshold: subscriptionExpirationThreshold,
+        days_until_expiration: daysUntilExpiration,
+      },
+    );
   };
 
   const actions = [];

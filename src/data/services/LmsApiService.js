@@ -10,6 +10,8 @@ class LmsApiService {
 
   static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
 
+  static reportingConfigTypesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_report_types/`
+
   static enterpriseCustomerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/`;
 
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
@@ -72,6 +74,10 @@ class LmsApiService {
 
   static fetchReportingConfigs(uuid) {
     return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+  }
+
+  static fetchReportingConfigTypes(uuid) {
+    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigTypesUrl}${uuid}`);
   }
 
   static postNewReportingConfig(formData) {

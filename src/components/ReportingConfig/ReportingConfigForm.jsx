@@ -132,7 +132,7 @@ class ReportingConfigForm extends React.Component {
   }
 
   render() {
-    const { config, availableCatalogs } = this.props;
+    const { config, availableCatalogs, reportingConfigTypes } = this.props;
     const {
       frequency,
       invalidFields,
@@ -141,7 +141,9 @@ class ReportingConfigForm extends React.Component {
       submitState,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
-
+    const dataTypesOptions = reportingConfigTypes.dataType.map(item => ({ label: item[1], value: item[0] }));
+    const dataTypesOptionsValues = dataTypesOptions.map(item => item.value);
+    const selectedDataTypesOption = config ? [{ label: config.dataType, value: config.dataType, hidden: true }] : [];
     return (
       <form
         onSubmit={(e) => {
@@ -177,14 +179,9 @@ class ReportingConfigForm extends React.Component {
                 type="select"
                 id="dataType"
                 name="dataType"
-                defaultValue={config ? config.dataType : 'progress_v3'}
-                disabled={config && ['progress', 'progress_v2'].includes(config.dataType)}
-                options={[
-                  { value: 'progress_v3', label: 'progress' },
-                  { value: 'progress_v2', label: 'progress', hidden: true },
-                  { value: 'catalog', label: 'catalog' },
-                  { value: 'progress', label: 'progress', hidden: true },
-                ]}
+                defaultValue={config ? config.dataType : reportingConfigTypes.dataType[0][0]}
+                disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
+                options={[...dataTypesOptions, ...selectedDataTypesOption]}
               />
             </ValidationFormGroup>
             <ValidationFormGroup
@@ -196,11 +193,8 @@ class ReportingConfigForm extends React.Component {
                 type="select"
                 id="reportType"
                 name="reportType"
-                defaultValue={config ? config.reportType : 'csv'}
-                options={[
-                  { value: 'csv', label: 'CSV' },
-                  { value: 'json', label: 'JSON' },
-                ]}
+                defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
+                options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
               />
             </ValidationFormGroup>
           </div>
@@ -214,11 +208,8 @@ class ReportingConfigForm extends React.Component {
                 type="select"
                 id="deliveryMethod"
                 name="deliveryMethod"
-                defaultValue={config ? config.deliveryMethod : 'email'}
-                options={[
-                  { value: 'email', label: 'email' },
-                  { value: 'sftp', label: 'sftp' },
-                ]}
+                defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
+                options={reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] }))}
                 onChange={e => this.setState({ deliveryMethod: e.target.value })}
               />
             </ValidationFormGroup>
@@ -232,11 +223,7 @@ class ReportingConfigForm extends React.Component {
                 id="frequency"
                 name="frequency"
                 defaultValue={frequency}
-                options={[
-                  { value: 'daily', label: 'Daily' },
-                  { value: 'weekly', label: 'Weekly' },
-                  { value: 'monthly', label: 'Monthly' },
-                ]}
+                options={reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] }))}
                 onChange={e => this.setState({ frequency: e.target.value })}
               />
             </ValidationFormGroup>
@@ -273,15 +260,7 @@ class ReportingConfigForm extends React.Component {
                 id="dayOfWeek"
                 name="dayOfWeek"
                 disabled={!(frequency === 'weekly')}
-                options={[
-                  { value: 0, label: 'Monday' },
-                  { value: 1, label: 'Tuesday' },
-                  { value: 2, label: 'Wednesday' },
-                  { value: 3, label: 'Thursday' },
-                  { value: 4, label: 'Friday' },
-                  { value: 5, label: 'Saturday' },
-                  { value: 6, label: 'Sunday' },
-                ]}
+                options={reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] }))}
                 defaultValue={config ? config.dayOfWeek : undefined}
               />
             </ValidationFormGroup>
@@ -425,6 +404,7 @@ ReportingConfigForm.propTypes = {
     uuid: PropTypes.string,
     title: PropTypes.string,
   })).isRequired,
+  reportingConfigTypes: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   createConfig: PropTypes.func.isRequired,
   updateConfig: PropTypes.func,
   deleteConfig: PropTypes.func,

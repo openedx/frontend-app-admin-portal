@@ -13,10 +13,10 @@ import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvi
 import * as hooks from '../data/hooks';
 
 export const TEST_ENTERPRISE_CUSTOMER_SLUG = 'test-enterprise';
-const TEST_ENTERPRISE_CUSTOMER_UUID = 'b5f07fee-1b34-458f-b672-19b55fc1bd10';
-const TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID = 'ff7acb5e-584a-4e5f-bacc-33a9995794f9';
-const TEST_SUBSCRIPTION_PLAN_TITLE = 'Test Subscription Plan';
-const TEST_SUBSCRIPTION_PLAN_UUID = '28d4dcdc-c026-4c02-a263-82dd9c0d8b43';
+export const TEST_ENTERPRISE_CUSTOMER_UUID = 'b5f07fee-1b34-458f-b672-19b55fc1bd10';
+export const TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID = 'ff7acb5e-584a-4e5f-bacc-33a9995794f9';
+export const TEST_SUBSCRIPTION_PLAN_TITLE = 'Test Subscription Plan';
+export const TEST_SUBSCRIPTION_PLAN_UUID = '28d4dcdc-c026-4c02-a263-82dd9c0d8b43';
 
 export const SUBSCRIPTION_PLAN_ZERO_STATE = {
   daysUntilExpiration: 240,
