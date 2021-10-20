@@ -93,6 +93,7 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
             <BulkEnrollmentSubmit
               enterpriseId={enterpriseId}
               enterpriseSlug={enterpriseSlug}
+              subscription={subscription}
               returnToInitialStep={() => setCurrentStep(ADD_COURSES_STEP)}
             />
           </Stepper.ActionRow>

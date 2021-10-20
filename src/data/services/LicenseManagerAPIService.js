@@ -148,8 +148,8 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().post(url);
   }
 
-  static licenseBulkEnroll(enterpriseUuid, options) {
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?enterprise_customer_uuid=${enterpriseUuid}`;
+  static licenseBulkEnroll(enterpriseUuid, subscriptionUUID, options) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?enterprise_customer_uuid=${enterpriseUuid}&subscription_uuid=${subscriptionUUID}`;
     return LicenseManagerApiService.apiClient().post(url, options);
   }
 
