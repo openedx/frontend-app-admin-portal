@@ -71,7 +71,9 @@ export const generateSuccessMessage = numEmails => {
   return 'No learners have been enrolled.';
 };
 
-const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialStep }) => {
+const BulkEnrollmentSubmit = ({
+  enterpriseId, enterpriseSlug, subscription, returnToInitialStep,
+}) => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(true);
   const [error, setError] = useState('');
@@ -100,6 +102,7 @@ const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialSte
 
     return LicenseManagerApiService.licenseBulkEnroll(
       enterpriseId,
+      subscription.uuid,
       options,
     ).then(() => {
       coursesDispatch(clearSelectionAction());
@@ -144,6 +147,10 @@ const BulkEnrollmentSubmit = ({ enterpriseId, enterpriseSlug, returnToInitialSte
 BulkEnrollmentSubmit.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  subscription: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    enterpriseCatalogUuid: PropTypes.string.isRequired,
+  }).isRequired,
   returnToInitialStep: PropTypes.func.isRequired,
 };
 

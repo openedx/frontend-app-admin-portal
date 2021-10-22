@@ -37,6 +37,7 @@ const testEntId = 'abc1234z-53c9-4071-b698-b8d436eb0295';
 const defaultProps = {
   enterpriseId: testEntId,
   enterpriseSlug: testSlug,
+  subscription: { uuid: 'foo', enterpriseCatalogUuid: 'bar' },
   returnToInitialStep: jest.fn(),
 };
 const defaultAlertProps = {
@@ -215,6 +216,7 @@ describe('BulkEnrollmentSubmit', () => {
 
     expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
       defaultProps.enterpriseId,
+      defaultProps.subscription.uuid,
       expectedParams,
     );
     expect(logError).toBeCalledTimes(0);
@@ -243,6 +245,7 @@ describe('BulkEnrollmentSubmit', () => {
     };
     expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
       defaultProps.enterpriseId,
+      defaultProps.subscription.uuid,
       expectedParams,
     );
     expect(logError).toBeCalledTimes(0);

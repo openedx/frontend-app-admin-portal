@@ -26,13 +26,14 @@ const sendBulkEnrollmentFailure = error => ({
 
 const sendBulkEnrollment = ({
   enterpriseUuid,
+  subscriptionUuid,
   options,
   onSuccess = () => {},
   onError = () => {},
 }) => (
   (dispatch) => {
     dispatch(sendBulkEnrollmentRequest());
-    return LicenseManagerAPIService.licenseBulkEnroll(enterpriseUuid, options)
+    return LicenseManagerAPIService.licenseBulkEnroll(enterpriseUuid, subscriptionUuid, options)
       .then((response) => {
         dispatch(sendBulkEnrollmentSuccess(response.data));
         onSuccess(response.data);
