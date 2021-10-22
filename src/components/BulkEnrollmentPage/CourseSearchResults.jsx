@@ -20,7 +20,7 @@ export const NO_DATA_MESSAGE = 'There are no course results';
 export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {
   courseName: 'Course name',
-  courseStartDate: 'Course start date',
+  courseAvailability: 'Course availability',
   partnerName: 'Partner',
   enroll: '',
 };
@@ -53,6 +53,7 @@ export const BaseCourseSearchResults = (props) => {
   } = props;
 
   const { refinementsFromQueryParams } = useContext(SearchContext);
+
   const columns = useMemo(() => [
     selectColumn,
     {
@@ -66,9 +67,10 @@ export const BaseCourseSearchResults = (props) => {
       accessor: 'partners[0].name',
     },
     {
-      Header: TABLE_HEADERS.courseStartDate,
-      accessor: 'advertised_course_run.start',
-      Cell: FormattedDateCell,
+      Header: TABLE_HEADERS.courseAvailability,
+      accessor: 'advertised_course_run',
+      // eslint-disable-next-line react/prop-types
+      Cell: ({ value }) => <FormattedDateCell startValue={value.start} endValue={value.end} />,
     },
   ], []);
 

@@ -25,8 +25,13 @@ CourseNameCell.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
-export const FormattedDateCell = ({ value }) => <span>{moment(value).format('MMM D, YYYY')}</span>;
+export const FormattedDateCell = ({ startValue, endValue }) => (
+  <span>
+    {moment(startValue).format('MMM D, YYYY')} - {moment(endValue).format('MMM D, YYYY')}
+  </span>
+);
 
 FormattedDateCell.propTypes = {
-  value: PropTypes.string.isRequired,
+  startValue: PropTypes.string.isRequired,
+  endValue: PropTypes.string.isRequired,
 };

@@ -6,6 +6,7 @@ import { configuration } from '../../../config';
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
 const testStartDate = '2020-09-10T10:00:00Z';
+const testEndDate = '2030-09-10T10:00:00Z';
 
 describe('CourseNameCell', () => {
   const row = {
@@ -25,7 +26,7 @@ describe('CourseNameCell', () => {
 
 describe('<FormattedDateCell />', () => {
   it('renders a formatted date', () => {
-    const wrapper = mount(<FormattedDateCell value={testStartDate} />);
-    expect(wrapper.text()).toEqual('Sep 10, 2020');
+    const wrapper = mount(<FormattedDateCell startValue={testStartDate} endValue={testEndDate} />);
+    expect(wrapper.text()).toEqual('Sep 10, 2020 - Sep 10, 2030');
   });
 });
