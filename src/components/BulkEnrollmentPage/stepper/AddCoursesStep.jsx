@@ -9,6 +9,8 @@ import { ADD_COURSES_TITLE, ADD_COURSE_DESCRIPTION } from './constants';
 
 import CourseSearchResults from '../CourseSearchResults';
 
+const currentEpoch = Math.round((new Date()).getTime() / 1000);
+
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
   configuration.ALGOLIA.SEARCH_API_KEY,
@@ -26,7 +28,7 @@ const AddCoursesStep = ({
         searchClient={searchClient}
       >
         <Configure
-          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid}`}
+          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
           hitsPerPage={25}
         />
         <SearchHeader variant="default" />
