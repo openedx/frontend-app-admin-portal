@@ -31,6 +31,6 @@ describe('AddCoursesStep', () => {
   it('displays a table', () => {
     renderWithRouter(<StepperWrapper {...defaultProps} />);
     expect(screen.getByText(TABLE_HEADERS.courseName)).toBeInTheDocument();
-    expect(screen.getByText(TABLE_HEADERS.courseStartDate)).toBeInTheDocument();
+    expect(screen.getByText(TABLE_HEADERS.courseAvailability)).toBeInTheDocument();
   });
 });

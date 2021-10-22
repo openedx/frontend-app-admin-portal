@@ -22,10 +22,12 @@ const mockStore = configureMockStore([thunk]);
 const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
 const testStartDate = '2020-09-10T10:00:00Z';
+const testEndDate = '2030-09-10T10:00:00Z';
 
 const testCourseName2 = 'TestCourseName 2';
 const testCourseRunKey2 = 'edX+testcourse2';
 const testStartDate2 = '2021-10-10T10:00:00Z';
+const testEndDate2 = '2030-09-10T10:00:00Z';
 
 const searchResults = {
   nbHits: 2,
@@ -37,6 +39,7 @@ const searchResults = {
       advertised_course_run: {
         key: testCourseRunKey,
         start: testStartDate,
+        end: testEndDate,
       },
       key: 'foo',
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
@@ -46,6 +49,7 @@ const searchResults = {
       advertised_course_run: {
         key: testCourseRunKey2,
         start: testStartDate2,
+        end: testEndDate2,
       },
       key: 'foo2',
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
@@ -90,14 +94,14 @@ describe('<CourseSearchResults />', () => {
     expect(tableHeaderCells.length).toBe(4);
     expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
     expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.partnerName);
-    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.courseStartDate);
+    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.courseAvailability);
 
     // 5 table cells: selection, course name, partner, start date, and enrollment
     const tableCells = wrapper.find('TableCell');
     expect(tableCells.length).toBe(8); // 2 rows x 4 columns
     expect(tableCells.at(1).text()).toBe(testCourseName);
     expect(tableCells.at(2).text()).toBe('edX');
-    expect(tableCells.at(3).text()).toBe('Sep 10, 2020');
+    expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
