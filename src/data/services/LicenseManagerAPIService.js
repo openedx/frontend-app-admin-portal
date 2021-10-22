@@ -117,6 +117,7 @@ class LicenseManagerApiService {
   static fetchSubscriptionUsers(subscriptionUUID, options) {
     const queryParams = {
       page_size: PAGE_SIZE,
+      ignore_null_emails: 1,
       ...options,
     };
 
@@ -126,6 +127,7 @@ class LicenseManagerApiService {
 
   static fetchSubscriptionUsersOverview(subscriptionUUID, options) {
     const queryParams = {
+      ignore_null_emails: 1,
       ...options,
     };
 
