@@ -39,3 +39,14 @@ export const USER_STATUS_BADGE_MAP = {
   [ASSIGNED]: { label: 'Pending', variant: 'warning' },
   [REVOKED]: { label: 'Revoked', variant: 'light' },
 };
+
+// Subscription statuses
+export const ACTIVE = 'Active';
+export const ENDED = 'Ended';
+export const SCHEDULED = 'Scheduled';
+
+export const SUBSCRIPTION_STATUS_BADGE_MAP = {
+  [ACTIVE]: { variant: 'primary' },
+  [SCHEDULED]: { variant: 'secondary' },
+  [ENDED]: { variant: 'light' },
+};
