@@ -169,9 +169,19 @@ describe('<BulkEnrollmentPage />', () => {
     });
     it('renders the subscription picker', async () => {
       renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}` });
-      expect(await screen.findByText('Cohorts')).toBeInTheDocument();
+      expect(await screen.findByText('Plans')).toBeInTheDocument();
       expect(await screen.findByText(sub1.title)).toBeInTheDocument();
       expect(await screen.findByText(sub2.title)).toBeInTheDocument();
+    });
+    it('renders enroll learner button if the plan is not expired', async () => {
+      renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}` });
+      expect((await screen.findAllByText('Enroll learners')).length).toEqual(1);
+    });
+    it('does not render enroll learner button if the plan is expired', async () => {
+      LicenseManagerApiService.fetchSubscriptions.mockImplementation(() => singleSubscription);
+
+      renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}` });
+      expect((await screen.queryAllByText('Enroll learners')).length).toEqual(0);
     });
     it('renders the course search page', async () => {
       renderWithRouter(<BulkEnrollmentWrapper />, { route: `/${testSlug}/admin/${ROUTE_NAMES.bulkEnrollment}/${sub1.uuid}` });

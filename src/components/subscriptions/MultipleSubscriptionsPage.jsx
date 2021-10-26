@@ -6,11 +6,14 @@ import { SubscriptionContext } from './SubscriptionData';
 
 import SubscriptionExpiration from './expiration/SubscriptionExpiration';
 import MultipleSubscriptionsPicker from './MultipleSubscriptionPicker';
-import { DEFAULT_LEAD_TEXT } from './data/constants';
+import {
+  DEFAULT_LEAD_TEXT,
+} from './data/constants';
+import { sortSubscriptionsByStatus } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const MultipleSubscriptionsPage = ({
-  match, redirectPage, leadText, buttonText,
+  match, redirectPage, leadText, createActions,
 }) => {
   const { params: { enterpriseSlug } } = match;
   const { data } = useContext(SubscriptionContext);
@@ -26,15 +29,17 @@ const MultipleSubscriptionsPage = ({
     );
   }
 
+  const sortedSubscriptions = sortSubscriptionsByStatus(subscriptions);
+
   return (
     <>
       <SubscriptionExpiration />
       <MultipleSubscriptionsPicker
         enterpriseSlug={enterpriseSlug}
         leadText={leadText}
-        buttonText={buttonText}
-        subscriptions={subscriptions}
+        subscriptions={sortedSubscriptions}
         redirectPage={redirectPage}
+        createActions={createActions}
       />
     </>
   );
@@ -43,7 +48,7 @@ const MultipleSubscriptionsPage = ({
 MultipleSubscriptionsPage.defaultProps = {
   redirectPage: ROUTE_NAMES.subscriptionManagement,
   leadText: DEFAULT_LEAD_TEXT,
-  buttonText: null,
+  createActions: null,
 };
 
 MultipleSubscriptionsPage.propTypes = {
@@ -54,7 +59,7 @@ MultipleSubscriptionsPage.propTypes = {
     }).isRequired,
   }).isRequired,
   leadText: PropTypes.string,
-  buttonText: PropTypes.string,
+  createActions: PropTypes.func,
 };
 
 export default MultipleSubscriptionsPage;

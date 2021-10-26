@@ -1,12 +1,10 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from '../../test/testUtils';
 import { DEFAULT_LEAD_TEXT } from '../data/constants';
 
 import MultipleSubscriptionsPicker from '../MultipleSubscriptionPicker';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 const firstCatalogUuid = 'catalogID1';
 const firstEnterpriseUuid = 'ided';
@@ -41,7 +39,7 @@ const defaultProps = {
 describe('MultipleSubscriptionsPicker', () => {
   it('displays a title', () => {
     renderWithRouter(<MultipleSubscriptionsPicker {...defaultProps} />);
-    expect(screen.getByText('Cohorts')).toBeInTheDocument();
+    expect(screen.getByText('Plans')).toBeInTheDocument();
   });
   it('displays default lead text by default', () => {
     renderWithRouter(<MultipleSubscriptionsPicker {...defaultProps} />);
@@ -57,14 +55,5 @@ describe('MultipleSubscriptionsPicker', () => {
     defaultProps.subscriptions.forEach((subscription) => {
       expect(screen.getByText(subscription.title)).toBeInTheDocument();
     });
-  });
-  it('sets the correct url on the button link', () => {
-    const buttonText = 'Click me!';
-    const { history } = renderWithRouter(
-      <MultipleSubscriptionsPicker {...defaultProps} buttonText={buttonText} />,
-    );
-    const button = screen.queryAllByText(buttonText)[0];
-    userEvent.click(button);
-    expect(history.location.pathname).toEqual(`/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${firstEnterpriseUuid}`);
   });
 });
