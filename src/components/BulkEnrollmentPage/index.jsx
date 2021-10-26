@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Container } from '@edx/paragon';
 
 import { Switch, Route } from 'react-router-dom';
+import moment from 'moment';
 import Hero from '../Hero';
 import { MultipleSubscriptionsPage, SubscriptionData } from '../subscriptions';
 import CourseSearch from './CourseSearch';
@@ -25,7 +26,21 @@ function BulkEnrollmentPage({ enterpriseId }) {
                     redirectPage={ROUTE_NAMES.bulkEnrollment}
                     useCatalog
                     leadText="Choose a subscription to enroll your learners in courses"
-                    buttonText="Enroll learners"
+                    createActions={(subscription) => {
+                      const { params: { enterpriseSlug } } = routeProps.match;
+                      const isExpired = moment().isAfter(subscription.expirationDate);
+                      const actions = [];
+
+                      if (!isExpired) {
+                        actions.push({
+                          variant: 'primary',
+                          to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.bulkEnrollment}/${subscription.uuid}`,
+                          buttonText: 'Enroll learners',
+                        });
+                      }
+
+                      return actions;
+                    }}
                   />
                 </Container>
               )}

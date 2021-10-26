@@ -1,57 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  CardGrid,
   Row,
   Col,
 } from '@edx/paragon';
 
 import SubscriptionCard from './SubscriptionCard';
 import { DEFAULT_LEAD_TEXT } from './data/constants';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const MultipleSubscriptionsPicker = ({
-  enterpriseSlug, leadText, buttonText, redirectPage, subscriptions,
+  leadText, subscriptions, createActions,
 }) => (
   <>
     <Row>
-      <Col>
-        <h2>Cohorts</h2>
+      <Col xs="12">
+        <h2>Plans</h2>
         <p className="lead">
           {leadText}
         </p>
       </Col>
+      <Col lg="10">
+        {subscriptions.map(subscription => (
+          <SubscriptionCard
+            key={subscription.uuid}
+            subscription={subscription}
+            createActions={createActions}
+          />
+        ))}
+      </Col>
     </Row>
-    <CardGrid>
-      {subscriptions.map(subscription => (
-        <SubscriptionCard
-          key={subscription?.uuid}
-          uuid={subscription?.uuid}
-          title={subscription?.title}
-          enterpriseSlug={enterpriseSlug}
-          startDate={subscription?.startDate}
-          expirationDate={subscription?.expirationDate}
-          licenses={subscription?.licenses || {}}
-          redirectPage={redirectPage}
-          buttonText={buttonText}
-        />
-      ))}
-    </CardGrid>
   </>
 );
 
 MultipleSubscriptionsPicker.defaultProps = {
-  redirectPage: ROUTE_NAMES.subscriptionManagement,
   leadText: DEFAULT_LEAD_TEXT,
-  buttonText: null,
+  createActions: null,
 };
 
 MultipleSubscriptionsPicker.propTypes = {
-  buttonText: PropTypes.string,
-  enterpriseSlug: PropTypes.string.isRequired,
   leadText: PropTypes.string,
-  redirectPage: PropTypes.string,
   subscriptions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  createActions: PropTypes.func,
 };
 
 export default MultipleSubscriptionsPicker;
