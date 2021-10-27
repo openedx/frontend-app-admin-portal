@@ -84,6 +84,9 @@ const LicenseManagementTable = () => {
   } = useContext(SubscriptionDetailContext);
 
   const isExpired = moment().isAfter(subscription.expirationDate);
+  // this is not the cleanest way of getting this, but this will be removed when the
+  // enrollment modal is implemented
+  const enrollmentLink = (window.location.href).replace('subscriptions', 'enrollment');
 
   // Filtering and pagination
   const updateFilters = (filters) => {
@@ -272,6 +275,7 @@ const LicenseManagementTable = () => {
           const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
           return (
             <LicenseManagementTableBulkActions
+              enrollmentLink={enrollmentLink}
               selectedUsers={selectedUsers}
               bulkRemindOnClick={bulkRemindOnClick}
               bulkRevokeOnClick={bulkRevokeOnClick}

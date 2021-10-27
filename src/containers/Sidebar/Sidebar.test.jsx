@@ -224,9 +224,7 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionEnrollmentLink = screen.queryByRole('link', { name: 'Subscription Enrollment' });
     const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
-    expect(subscriptionEnrollmentLink).toBeNull();
     expect(subscriptionManagementLink).toBeNull();
   });
 
@@ -244,9 +242,7 @@ describe('<Sidebar />', () => {
     features.BULK_ENROLLMENT = true;
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionEnrollmentLink = screen.getByRole('link', { name: 'Subscription Enrollment' });
     const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
-    expect(subscriptionEnrollmentLink).toBeInTheDocument();
     expect(subscriptionManagementLink).toBeInTheDocument();
   });
 });

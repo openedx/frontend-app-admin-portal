@@ -1,9 +1,11 @@
 import React from 'react';
 import {
+  act,
   screen,
   render,
   cleanup,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
 import {
@@ -34,41 +36,65 @@ describe('<LicenseManagementTableBulkActions />', () => {
 
   it('renders correct empty state', () => {
     render(<LicenseManagementTableBulkActions {...basicProps} />);
-    expect(screen.getAllByRole('button').length).toBe(2);
-    expect(screen.getByText('Revoke (0)')).toBeTruthy();
+    expect(screen.getAllByRole('button').length).toBe(3);
+    expect(screen.getByText('Enroll')).toBeTruthy();
     expect(screen.getByText('Remind (0)')).toBeTruthy();
+    expect(screen.getByTestId('revokeToggle')).toBeTruthy();
   });
 
   describe('renders correct label when not all users are selected ', () => {
     it('selected only revoked users', () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testRevokedUser] };
       render(<LicenseManagementTableBulkActions {...props} />);
-      expect(screen.getByText('Revoke (0)')).toBeTruthy();
+      expect(screen.getByText('Enroll')).toBeTruthy();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      act(() => {
+        userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (0)')).toBeTruthy();
     });
     it('selected only activated users', () => {
       const props = { ...basicProps, selectedUsers: [testActivatedUser] };
       render(<LicenseManagementTableBulkActions {...props} />);
-      expect(screen.getByText('Revoke (1)')).toBeTruthy();
+      expect(screen.getByText('Enroll')).toBeTruthy();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      act(() => {
+        userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (1)')).toBeTruthy();
     });
     it('selected only assigned users', () => {
       const props = { ...basicProps, selectedUsers: [testAssignedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActions {...props} />);
-      expect(screen.getByText('Revoke (2)')).toBeTruthy();
+      expect(screen.getByText('Enroll')).toBeTruthy();
       expect(screen.getByText('Remind (2)')).toBeTruthy();
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      act(() => {
+        userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (2)')).toBeTruthy();
     });
     it('selected mix users', () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testActivatedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActions {...props} />);
-      expect(screen.getByText('Revoke (2)')).toBeTruthy();
+      expect(screen.getByText('Enroll')).toBeTruthy();
       expect(screen.getByText('Remind (1)')).toBeTruthy();
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      act(() => {
+        userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (2)')).toBeTruthy();
     });
     it('selected undefined users', () => {
       const props = { ...basicProps, selectedUsers: [testUndefinedUser] };
       render(<LicenseManagementTableBulkActions {...props} />);
-      expect(screen.getByText('Revoke (0)')).toBeTruthy();
+      expect(screen.getByText('Enroll')).toBeTruthy();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      userEvent.click(revokeMenu);
+      expect(screen.getByText('Revoke (0)')).toBeTruthy();
     });
   });
   it('renders correct label when all users are selected', () => {
@@ -79,7 +105,12 @@ describe('<LicenseManagementTableBulkActions />', () => {
       assignedUsers: 1,
     };
     render(<LicenseManagementTableBulkActions {...props} />);
-    expect(screen.getByText('Revoke (2)')).toBeTruthy();
+    expect(screen.getByText('Enroll')).toBeTruthy();
     expect(screen.getByText('Remind (1)')).toBeTruthy();
+    const revokeMenu = screen.getByTestId('revokeToggle');
+    act(() => {
+      userEvent.click(revokeMenu);
+    });
+    expect(screen.getByText('Revoke (2)')).toBeTruthy();
   });
 });
