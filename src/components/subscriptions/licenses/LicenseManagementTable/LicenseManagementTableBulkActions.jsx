@@ -1,16 +1,20 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Button,
+  ActionRow, Button, Icon, ModalPopup, useToggle,
 } from '@edx/paragon';
+
 import {
+  BookOpen,
   Email,
   RemoveCircle,
+  MoreVert,
 } from '@edx/paragon/icons';
 
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 
 const LicenseManagementTableBulkActions = ({
+  enrollmentLink,
   selectedUsers,
   bulkRemindOnClick,
   bulkRevokeOnClick,
@@ -19,6 +23,8 @@ const LicenseManagementTableBulkActions = ({
   assignedUsers,
   disabled,
 }) => {
+  const [isOpen, open, close] = useToggle(false);
+  const target = React.useRef(null);
   // Divides selectedUsers users into two arrays
   const [usersToRemind, usersToRevoke] = useMemo(() => {
     if (allUsersSelected) {
@@ -43,6 +49,26 @@ const LicenseManagementTableBulkActions = ({
   return (
     <ActionRow>
       <Button
+        ref={target}
+        variant="tertiary"
+        onClick={open}
+        data-testid="revokeToggle"
+      >
+        <Icon src={MoreVert} />
+      </Button>
+      <ModalPopup positionRef={target} isOpen={isOpen} onClose={close}>
+        <div className="bg-white p-3 rounded shadow">
+          <Button
+            variant="outline-danger"
+            iconBefore={RemoveCircle}
+            onClick={() => bulkRevokeOnClick(usersToRevoke, allUsersSelected)}
+            disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
+          >
+            Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})
+          </Button>
+        </div>
+      </ModalPopup>
+      <Button
         variant="outline-primary"
         iconBefore={Email}
         onClick={() => bulkRemindOnClick(usersToRemind, allUsersSelected)}
@@ -51,12 +77,11 @@ const LicenseManagementTableBulkActions = ({
         Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
       <Button
-        variant="outline-danger"
-        iconBefore={RemoveCircle}
-        onClick={() => bulkRevokeOnClick(usersToRevoke, allUsersSelected)}
-        disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
+        variant="primary"
+        href={enrollmentLink}
+        iconBefore={BookOpen}
       >
-        Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})
+        Enroll
       </Button>
     </ActionRow>
   );
@@ -67,6 +92,7 @@ LicenseManagementTableBulkActions.defaultProps = {
 };
 
 LicenseManagementTableBulkActions.propTypes = {
+  enrollmentLink: PropTypes.string.isRequired,
   selectedUsers: PropTypes.arrayOf(
     PropTypes.shape({
       status: PropTypes.string.isRequired,
