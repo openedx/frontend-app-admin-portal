@@ -131,14 +131,6 @@ const LicenseManagementTable = () => {
     [users],
   );
 
-  // Row action button functions
-  const rowRemindOnClick = (remindUser) => {
-    console.log(remindUser);
-  };
-  const rowRevokeOnClick = (revokeUser) => {
-    console.log(revokeUser);
-  };
-
   // Successful action modal callback
   const onRemindSuccess = (clearTableSelectionCallback) => (() => {
     clearTableSelectionCallback();
@@ -230,9 +222,10 @@ const LicenseManagementTable = () => {
             Cell: ({ row }) => (
               <LicenseManagementTableActionColumn
                 user={row.original}
-                rowRemindOnClick={rowRemindOnClick}
-                rowRevokeOnClick={rowRevokeOnClick}
+                subscription={subscription}
                 disabled={isExpired}
+                onRemindSuccess={onRemindSuccess}
+                onRevokeSuccess={onRevokeSuccess}
               />
               /* eslint-enable */
             ),

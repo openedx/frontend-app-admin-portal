@@ -13,7 +13,6 @@ import {
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
 import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
-
 import {
   useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
