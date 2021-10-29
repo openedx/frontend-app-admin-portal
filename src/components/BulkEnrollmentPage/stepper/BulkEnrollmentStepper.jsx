@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Stepper, Button, Container, Scrollable,
 } from '@edx/paragon';
+
 import AddCoursesStep from './AddCoursesStep';
 import AddLearnersStep from './AddLearnersStep';
 import ReviewStep from './ReviewStep';
@@ -37,6 +38,7 @@ const BulkEnrollmentStepper = ({ subscription, enterpriseSlug, enterpriseId }) =
                 enterpriseId={enterpriseId}
                 enterpriseSlug={enterpriseSlug}
                 subscription={subscription}
+                selectedCoursesNum={selectedCourses.length}
               />
             </Stepper.Step>
 
