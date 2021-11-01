@@ -11,7 +11,7 @@ import { ADD_COURSES_TITLE, ADD_COURSE_DESCRIPTION } from './constants';
 import CourseSearchResults from '../CourseSearchResults';
 
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
-const maxCourses = 1;
+const maxCourses = 7;
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -24,7 +24,7 @@ const AddCoursesStep = ({
   <>
     <p>{ADD_COURSE_DESCRIPTION}</p>
     <h2>{ADD_COURSES_TITLE}</h2>
-    {selectedCoursesNum >= maxCourses ? <DismissibleCourseWarning /> : null}
+    {selectedCoursesNum > maxCourses ? <DismissibleCourseWarning /> : null}
     <SearchData>
       <InstantSearch
         indexName={configuration.ALGOLIA.INDEX_NAME}
