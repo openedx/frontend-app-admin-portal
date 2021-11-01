@@ -28,3 +28,9 @@ export const ADD_COURSE_DESCRIPTION = 'By enrolling your learners in courses, yo
 export const ADD_LEARNERS_DESCRIPTION = 'Select learners with an active or pending subscription '
                                         + 'license to enroll. If you wish to enroll additional '
                                         + 'learners not shown, please first invite them under ';
+export const WARNING_ALERT_TITLE_TEXT = 'Too many courses selected';
+export const WARNING_ALERT_BODY_TEXT = 'We noticed that you are trying to enroll learners in over 7 '
+                                        + 'courses at once - which might be too many for your learners '
+                                        + 'to manage. If this is intentional, please continue with this '
+                                        + 'enrollment process. If not, please go back and modify your '
+                                        + 'course selections.';

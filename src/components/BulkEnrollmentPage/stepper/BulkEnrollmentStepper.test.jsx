@@ -8,7 +8,7 @@ import LicenseManagerApiService from '../../../data/services/LicenseManagerAPISe
 import BulkEnrollmentStepper from './BulkEnrollmentStepper';
 import {
   ADD_LEARNERS_TITLE, REVIEW_TITLE, PREV_BUTTON_TEST_ID, NEXT_BUTTON_TEST_ID, FINAL_BUTTON_TEXT,
-  ADD_COURSES_TITLE,
+  ADD_COURSES_TITLE, WARNING_ALERT_TITLE_TEXT,
 } from './constants';
 import BulkEnrollContextProvider from '../BulkEnrollmentContext';
 
@@ -87,6 +87,7 @@ describe('BulkEnrollmentStepper', () => {
 
     const selectAll = screen.getByTestId('selectAll');
     userEvent.click(selectAll);
+    expect(screen.queryByText(WARNING_ALERT_TITLE_TEXT)).not.toBeInTheDocument();
     const checkboxes = screen.getAllByTestId('selectOne');
     checkboxes.forEach((checkbox) => {
       expect(checkbox).toHaveProperty('checked', true);
