@@ -22,7 +22,6 @@ exports[`<ErrorPage /> renders correctly 1`] = `
           >
             <svg
               aria-hidden={true}
-              aria-label=""
               fill="none"
               focusable={false}
               height={24}
@@ -85,14 +84,18 @@ exports[`<ErrorPage /> renders correctly for 403 errors 1`] = `
           <p>
             For assistance, please contact the edX Customer Success team at
              
-            <a
-              className="default-link standalone-link"
-              href="mailto:customersuccess@edx.org"
-              onClick={null}
-              target="_self"
+            <span
+              className="pgn__mailtolink"
             >
-              customersuccess@edx.org
-            </a>
+              <a
+                className="pgn__hyperlink default-link standalone-link"
+                href="mailto:customersuccess@edx.org"
+                onClick={null}
+                target="_self"
+              >
+                customersuccess@edx.org
+              </a>
+            </span>
             .
           </p>
         </div>
