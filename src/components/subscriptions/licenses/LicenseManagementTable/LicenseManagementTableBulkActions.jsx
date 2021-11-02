@@ -81,7 +81,7 @@ const LicenseManagementTableBulkActions = ({
         href={enrollmentLink}
         iconBefore={BookOpen}
       >
-        Enroll
+        Enroll ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
     </ActionRow>
   );
