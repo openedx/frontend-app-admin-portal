@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useMemo, useContext, useState,
+  useCallback, useMemo, useContext,
 } from 'react';
 import {
   DataTable,
@@ -21,8 +21,6 @@ import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import DownloadCsvButton from '../../buttons/DownloadCsvButton';
-import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
-import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
@@ -51,16 +49,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const modalZeroState = {
-  open: false,
-  users: [],
-  allUsersSelected: false,
-};
-
 const LicenseManagementTable = () => {
-  const [remindModal, setRemindModal] = useState(modalZeroState);
-  const [revokeModal, setRevokeModal] = useState(modalZeroState);
-
   const { addToast } = useContext(ToastsContext);
 
   const { width } = useWindowSize();
@@ -139,50 +128,20 @@ const LicenseManagementTable = () => {
     [users],
   );
 
-  // Row action button functions
-  const rowRemindOnClick = (remindUser) => {
-    setRemindModal({
-      open: true,
-      users: [remindUser],
-    });
-  };
-  const rowRevokeOnClick = (revokeUser) => {
-    setRevokeModal({
-      open: true,
-      users: [revokeUser],
-    });
-  };
-
   // Successful action modal callback
-  const onRemindSuccess = () => {
+  const onRemindSuccess = (clearTableSelectionCallback) => (() => {
+    clearTableSelectionCallback();
     forceRefreshUsers();
-    setRemindModal(modalZeroState);
-    addToast(`User${revokeModal.users.length > 1 ? 's' : ''} successfully reminded`);
-  };
-  const onRevokeSuccess = () => {
+    addToast('Users successfully reminded');
+  });
+  const onRevokeSuccess = (clearTableSelectionCallback) => (() => {
     // refresh subscription and user data to get updated revoke count and revoked user list
+    clearTableSelectionCallback();
     forceRefreshSubscription();
     forceRefreshUsers();
     forceRefreshOverview();
-    setRevokeModal(modalZeroState);
-    addToast(`License${revokeModal.users.length > 1 ? 's' : ''} successfully revoked`);
-  };
-
-  // Bulk Action buttons
-  const bulkRemindOnClick = (usersToRemind, allUsersSelected) => {
-    setRemindModal({
-      open: true,
-      users: usersToRemind,
-      allUsersSelected,
-    });
-  };
-  const bulkRevokeOnClick = (usersToRevoke, allUsersSelected) => {
-    setRevokeModal({
-      open: true,
-      users: usersToRevoke,
-      allUsersSelected,
-    });
-  };
+    addToast('Licenses successfully revoked');
+  });
 
   const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
   return (
@@ -260,9 +219,10 @@ const LicenseManagementTable = () => {
             Cell: ({ row }) => (
               <LicenseManagementTableActionColumn
                 user={row.original}
-                rowRemindOnClick={rowRemindOnClick}
-                rowRevokeOnClick={rowRevokeOnClick}
+                subscription={subscription}
                 disabled={isExpired}
+                onRemindSuccess={onRemindSuccess}
+                onRevokeSuccess={onRevokeSuccess}
               />
               /* eslint-enable */
             ),
@@ -270,12 +230,13 @@ const LicenseManagementTable = () => {
         ]}
         bulkActions={(data) => {
           const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
+          const { clearSelection } = data.tableInstance;
           return (
             <LicenseManagementTableBulkActions
               subscription={subscription}
               selectedUsers={selectedUsers}
-              bulkRemindOnClick={bulkRemindOnClick}
-              bulkRevokeOnClick={bulkRevokeOnClick}
+              onRemindSuccess={onRemindSuccess(clearSelection)}
+              onRevokeSuccess={onRevokeSuccess(clearSelection)}
               activatedUsers={overview.activated}
               assignedUsers={overview.assigned}
               allUsersSelected={data.isEntireTableSelected}
@@ -283,25 +244,6 @@ const LicenseManagementTable = () => {
             />
           );
         }}
-      />
-
-      <LicenseManagementRevokeModal
-        isOpen={revokeModal.open}
-        usersToRevoke={revokeModal.users}
-        subscription={subscription}
-        onClose={() => setRevokeModal(modalZeroState)}
-        onSuccess={onRevokeSuccess}
-        revokeAllUsers={revokeModal.allUsersSelected}
-        totalToRevoke={overview.activated + overview.assigned}
-      />
-      <LicenseManagementRemindModal
-        isOpen={remindModal.open}
-        usersToRemind={remindModal.users}
-        subscription={subscription}
-        onClose={() => setRemindModal(modalZeroState)}
-        onSuccess={onRemindSuccess}
-        remindAllUsers={remindModal.allUsersSelected}
-        totalToRemind={overview.assigned}
       />
     </>
   );
