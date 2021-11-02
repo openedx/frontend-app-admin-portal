@@ -80,6 +80,7 @@ const LicenseManagementTableBulkActions = ({
         variant="primary"
         href={enrollmentLink}
         iconBefore={BookOpen}
+        disabled={usersToRevoke.length >= 1}
       >
         Enroll ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
