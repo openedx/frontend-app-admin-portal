@@ -20,6 +20,7 @@ const EnrollButton = ({ handleEnrollment, enrollableUsers }) => (
     variant="primary"
     onClick={handleEnrollment}
     iconBefore={BookOpen}
+    disabled={enrollableUsers.length < 1}
   >
     Enroll ({enrollableUsers.length })
   </Button>
@@ -38,7 +39,7 @@ const BulkEnrollDialog = ({ subscription, isOpen, onClose }) => (
     footerNode={(
       <ActionRow>
         <p className="x-small text-muted">
-          Please note, there are a limited number of fashion axe
+          Notes
         </p>
         <ActionRow.Spacer />
         <Button variant="tertiary" onClick={onClose}>Cancel</Button>
