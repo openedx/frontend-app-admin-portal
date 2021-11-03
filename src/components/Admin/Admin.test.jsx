@@ -5,9 +5,13 @@ import { mount } from 'enzyme';
 import { MemoryRouter, Link } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+// eslint-disable-next-line no-unused-vars
+import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
+
+jest.mock('@edx/frontend-platform/analytics');
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
