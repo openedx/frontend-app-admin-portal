@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { Pagination, Table } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
@@ -48,14 +49,24 @@ class TableComponent extends React.Component {
       formatData,
       id,
       loading,
+      enterpriseId,
     } = this.props;
+
+    const sortByColumn = (column, direction) => {
+      updateUrl({
+        page: 1,
+        ordering: direction === 'desc' ? `-${column.key}` : column.key,
+      });
+      sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.table.sorted', {
+        tableId: id,
+        column: column.label,
+        direction,
+      });
+    };
 
     const columnConfig = this.props.columns.map(column => ({
       ...column,
-      onSort: column.columnSortable ? direction => updateUrl({
-        page: 1,
-        ordering: direction === 'desc' ? `-${column.key}` : column.key,
-      }) : null,
+      onSort: column.columnSortable ? (direction) => sortByColumn(column, direction) : null,
     }));
 
     let sortDirection;
@@ -90,7 +101,13 @@ class TableComponent extends React.Component {
               paginationLabel={`${id}-pagination`}
               pageCount={pageCount}
               currentPage={currentPage}
-              onPageSelect={page => updateUrl({ page })}
+              onPageSelect={(page) => {
+                updateUrl({ page });
+                sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.table.paginated', {
+                  tableId: id,
+                  page,
+                });
+              }}
             />
           </div>
         </div>
@@ -151,6 +168,7 @@ TableComponent.propTypes = {
   tableSortable: PropTypes.bool,
 
   // Props expected from TableContainer / redux store
+  enterpriseId: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})),
   currentPage: PropTypes.number,
   pageCount: PropTypes.number,

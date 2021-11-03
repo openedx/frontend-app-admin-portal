@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 class DownloadCsvButton extends React.Component {
   componentWillUnmount() {
@@ -14,6 +15,8 @@ class DownloadCsvButton extends React.Component {
       csvLoading,
       disabled,
       buttonLabel,
+      enterpriseId,
+      id,
     } = this.props;
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
@@ -21,7 +24,12 @@ class DownloadCsvButton extends React.Component {
         variant="outline-primary"
         className="download-btn d-sm-inline float-md-right"
         disabled={disabled || csvLoading}
-        onClick={() => fetchCsv(fetchMethod)}
+        onClick={() => {
+          fetchCsv(fetchMethod);
+          sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.download_csv.clicked', {
+            csvId: id,
+          });
+        }}
       >
         <>
           <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
@@ -46,6 +54,8 @@ DownloadCsvButton.propTypes = {
   clearCsv: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   buttonLabel: PropTypes.string,
+  enterpriseId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default DownloadCsvButton;
