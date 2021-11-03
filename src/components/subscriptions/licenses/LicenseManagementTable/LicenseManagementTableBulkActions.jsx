@@ -166,8 +166,7 @@ const LicenseManagementTableBulkActions = ({
         )}
       >
         <>
-          {`You can only enroll active or pending learners in a course.
-          Please deselect any revoked learners, or click "Enroll" to enroll active
+          {`Any learners with revoked licenses are not included. Click "Enroll" to enroll active
           and pending learners only`}
         </>
       </AlertModal>
