@@ -15,20 +15,54 @@ import classNames from 'classnames';
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../data/constants';
 
-const EnrollButton = ({ handleEnrollment, enrollableUsers }) => (
+const BulkEnrollWarningModal = ({
+  learners = [], isDialogOpen = false, onClose, onEnroll,
+}) => (
+  <AlertModal
+    title={(
+      <>
+        <Icon className={classNames('enroll-header', 'mr-1')} src={Error} />Revoked Learners Selected
+      </>
+    )}
+    isOpen={isDialogOpen}
+    footerNode={(
+      <ActionRow>
+        <Button variant="tertiary" onClick={onClose}>Close</Button>
+        <BulkEnrollButton
+          learners={learners}
+          handleEnrollment={onEnroll}
+        />
+      </ActionRow>
+      )}
+  >
+    <>
+      {`Any learners with revoked licenses are not included. Click "Enroll" to enroll active
+        and pending learners only`}
+    </>
+  </AlertModal>
+);
+
+BulkEnrollWarningModal.propTypes = {
+  isDialogOpen: PropTypes.bool.isRequired,
+  learners: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onEnroll: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+const BulkEnrollButton = ({ learners, handleEnrollment }) => (
   <Button
     variant="primary"
     onClick={handleEnrollment}
     iconBefore={BookOpen}
-    disabled={enrollableUsers.length < 1}
+    disabled={learners?.length < 1}
   >
-    Enroll ({enrollableUsers.length })
+    Enroll ({learners?.length })
   </Button>
 );
 
-EnrollButton.propTypes = {
+BulkEnrollButton.propTypes = {
   handleEnrollment: PropTypes.func.isRequired,
-  enrollableUsers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  learners: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 };
 
 const BulkEnrollDialog = ({ subscription, isOpen, onClose }) => (
@@ -73,15 +107,14 @@ const LicenseManagementTableBulkActions = ({
   const target = React.useRef(null);
 
   const revokedUsers = useMemo(() => selectedUsers.filter(user => user.status === REVOKED), [selectedUsers]);
-  const enrollableUsers = useMemo(
+  const enrollableLearners = useMemo(
     () => selectedUsers.filter(
       user => [ACTIVATED, ASSIGNED].includes(user.status),
-    ), [selectedUsers],
+    ).map(user => user.email), [selectedUsers],
   );
 
-  const [revokedUsersSelected, setRevokedUsersSelected] = useState(false);
-
-  const [isEnrollOpen, openEnroll, closeEnroll] = useToggle(false);
+  const [showBulkEnrollWarning, setShowBulkEnrollWarning] = useState(false);
+  const [showBulkEnrollModal, setShowBulkEnrollModal] = useState(false);
 
   // Divides selectedUsers users into two arrays
   const [usersToRemind, usersToRevoke] = useMemo(() => {
@@ -104,19 +137,31 @@ const LicenseManagementTableBulkActions = ({
     return [tempRemind, tempRevoke];
   }, [selectedUsers, allUsersSelected]);
 
-  const handleEnrollment = ({ forced = false }) => {
+  const handleBulkEnrollment = ({ setOfRevokedUsers, validateRevoked = true }) => {
     /**
-     * if forced=true, always attempt to enroll
+     * if validation is not needed, just go ahead and proceed to enrollment
      */
-    if (!forced && revokedUsers.length > 0) {
-      setRevokedUsersSelected(true);
+    if (!validateRevoked) {
+      setShowBulkEnrollWarning(false);
+      // whether to show the bulk enroll main dialog
+      setShowBulkEnrollModal(true);
+      return;
+    }
+    if (setOfRevokedUsers && setOfRevokedUsers.length > 0) {
+      setShowBulkEnrollWarning(true);
+      // whether to show the bulk enroll main dialog
+      setShowBulkEnrollModal(false);
     } else {
-      setRevokedUsersSelected(false);
-      openEnroll();
+      setShowBulkEnrollWarning(false);
+      // whether to show the bulk enroll main dialog
+      setShowBulkEnrollModal(true);
     }
   };
 
-  const handleEnrollmentForced = () => handleEnrollment({ forced: true });
+  const handleBulkEnrollmentForced = ({ setOfRevokedUsers }) => handleBulkEnrollment({
+    setOfRevokedUsers,
+    validateRevoked: false,
+  });
 
   return (
     <ActionRow>
@@ -148,35 +193,32 @@ const LicenseManagementTableBulkActions = ({
       >
         Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
       </Button>
-      <EnrollButton enrollableUsers={enrollableUsers} handleEnrollment={handleEnrollment} />
 
-      {/* Alert modal shows when there is 1 or more revoked licenses selected */}
-      <AlertModal
-        title={(
-          <>
-            <Icon className={classNames('enroll-header', 'mr-1')} src={Error} />Revoked Learners Selected
-          </>
-      )}
-        isOpen={revokedUsersSelected}
-        footerNode={(
-          <ActionRow>
-            <Button variant="tertiary" onClick={() => { setRevokedUsersSelected(false); }}>Close</Button>
-            <EnrollButton enrollableUsers={enrollableUsers} handleEnrollment={handleEnrollmentForced} />
-          </ActionRow>
+      <BulkEnrollButton
+        learners={enrollableLearners}
+        handleEnrollment={() => handleBulkEnrollment({ setOfRevokedUsers: revokedUsers })}
+      />
+
+      {/* warning modal shows when there is 1 or more revoked licenses selected */}
+      {showBulkEnrollWarning
+        && (
+        <BulkEnrollWarningModal
+          learners={enrollableLearners}
+          isDialogOpen={showBulkEnrollWarning}
+          onClose={() => setShowBulkEnrollWarning(false)}
+          onEnroll={() => handleBulkEnrollmentForced({ setOfRevokedUsers: revokedUsers })}
+        />
         )}
-      >
-        <>
-          {`Any learners with revoked licenses are not included. Click "Enroll" to enroll active
-          and pending learners only`}
-        </>
-      </AlertModal>
 
       {/* Bulk Enrollment shows in a dialog when enrollment conditions are met */}
-      <BulkEnrollDialog
-        isOpen={!revokedUsersSelected && isEnrollOpen}
-        onClose={closeEnroll}
-        subscription={subscription}
-      />
+      {showBulkEnrollModal && (
+        <BulkEnrollDialog
+          isOpen={showBulkEnrollModal}
+          onClose={() => { setShowBulkEnrollModal(false); }}
+          subscription={subscription}
+        />
+      )}
+
     </ActionRow>
   );
 };
