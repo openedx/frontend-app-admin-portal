@@ -1,0 +1,45 @@
+.manage-subscription {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .add-users-dropdown {
+        .dropdown-menu {
+            z-index: $zindex-fixed;
+        }
+    }
+
+    .subscription-card,
+    .support-card {
+        .card-title {
+            @extend .h4;
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        .add-users-dropdown {
+            float: right;
+
+            .dropdown-menu {
+                left: inherit;
+                right: 0;
+            }
+        }
+    }
+}
+
+.license-actions {
+    .btn {
+        @extend .mr-2;
+
+        &:last-child {
+            @extend .mr-0;
+        }
+    }
+}
+
+.pgn__modal-title .enroll-header {
+    display: inline-block;
+    background-color: transparent;
+    color: $red;
+}
