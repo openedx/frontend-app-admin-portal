@@ -21,7 +21,7 @@ const BulkEnrollWarningModal = ({
     isOpen={isDialogOpen}
     footerNode={(
       <ActionRow>
-        <Button variant="link" onClick={onClose}>Close</Button>
+        <Button variant="tertiary" onClick={onClose}>Close</Button>
         <BulkEnrollButton
           learners={learners}
           handleEnrollment={onEnroll}
