@@ -1,69 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, AlertModal, Button, FullscreenModal, Icon, ModalPopup, useToggle,
+  ActionRow, Button, FullscreenModal, Icon, ModalPopup, useToggle,
 } from '@edx/paragon';
 import {
-  Error,
-  BookOpen,
   Email,
   RemoveCircle,
   MoreVert,
 } from '@edx/paragon/icons';
 
-import classNames from 'classnames';
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../data/constants';
-
-const BulkEnrollWarningModal = ({
-  learners = [], isDialogOpen = false, onClose, onEnroll,
-}) => (
-  <AlertModal
-    title={(
-      <>
-        <Icon className={classNames('enroll-header', 'mr-1')} src={Error} />Revoked Learners Selected
-      </>
-    )}
-    isOpen={isDialogOpen}
-    footerNode={(
-      <ActionRow>
-        <Button variant="tertiary" onClick={onClose}>Close</Button>
-        <BulkEnrollButton
-          learners={learners}
-          handleEnrollment={onEnroll}
-        />
-      </ActionRow>
-      )}
-  >
-    <>
-      {`Any learners with revoked licenses are not included. Click "Enroll" to enroll active
-        and pending learners only`}
-    </>
-  </AlertModal>
-);
-
-BulkEnrollWarningModal.propTypes = {
-  isDialogOpen: PropTypes.bool.isRequired,
-  learners: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onEnroll: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-const BulkEnrollButton = ({ learners, handleEnrollment }) => (
-  <Button
-    variant="primary"
-    onClick={handleEnrollment}
-    iconBefore={BookOpen}
-    disabled={learners?.length < 1}
-  >
-    Enroll ({learners?.length })
-  </Button>
-);
-
-BulkEnrollButton.propTypes = {
-  handleEnrollment: PropTypes.func.isRequired,
-  learners: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-};
+import BulkEnrollWarningModal from '../../../BulkEnrollmentPage/BulkEnrollmentWarningModal';
+import BulkEnrollButton from '../../../BulkEnrollmentPage/BulkEnrollButton';
 
 const BulkEnrollDialog = ({ subscription, isOpen, onClose }) => (
   <FullscreenModal
