@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+export const CSV_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.download_csv.clicked';
+
 class DownloadCsvButton extends React.Component {
   componentWillUnmount() {
     this.props.clearCsv();
@@ -26,7 +28,7 @@ class DownloadCsvButton extends React.Component {
         disabled={disabled || csvLoading}
         onClick={() => {
           fetchCsv(fetchMethod);
-          sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.download_csv.clicked', {
+          sendEnterpriseTrackEvent(enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, {
             csvId: id,
           });
         }}
