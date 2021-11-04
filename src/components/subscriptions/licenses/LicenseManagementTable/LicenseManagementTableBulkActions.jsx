@@ -63,13 +63,8 @@ const LicenseManagementTableBulkActions = ({
     /**
      * if validation is not needed, just go ahead and proceed to enrollment
      */
-    if (!validateRevoked) {
-      setShowBulkEnrollWarning(false);
-      // whether to show the bulk enroll main dialog
-      setShowBulkEnrollModal(true);
-      return;
-    }
-    if (setOfRevokedUsers && setOfRevokedUsers.length > 0) {
+
+    if (validateRevoked && setOfRevokedUsers && setOfRevokedUsers.length > 0) {
       setShowBulkEnrollWarning(true);
       // whether to show the bulk enroll main dialog
       setShowBulkEnrollModal(false);
