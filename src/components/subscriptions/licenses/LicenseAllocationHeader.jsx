@@ -6,6 +6,7 @@ const LicenseAllocationHeader = () => {
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
+
   return (
     <>
       <h2 className="mb-2">License Allocation</h2>
