@@ -133,6 +133,7 @@ const LicenseManagementTableBulkActions = ({
           isOpen={showBulkEnrollModal}
           onClose={() => { setShowBulkEnrollModal(false); }}
           subscription={subscription}
+          learners={enrollableLearners}
         />
       )}
 
