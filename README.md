@@ -24,6 +24,10 @@ $ npm install
 $ npm start
 ```
 
+#### Themes
+
+By default, the core Paragon theme is installed and used with the `npm start` command. If you'd like to use the @edx/brand-edx.org theme, use the `npm run start:with-theme` command.
+
 The application is now running and can be accessed in a web browser at http://localhost:1991/
 
 #### Sign-in and access
