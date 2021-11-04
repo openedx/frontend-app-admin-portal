@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import { screen, within } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
@@ -23,11 +23,13 @@ const testCourseName = 'TestCourseName';
 const testCourseRunKey = 'TestCourseRun';
 const testStartDate = '2020-09-10T10:00:00Z';
 const testEndDate = '2030-09-10T10:00:00Z';
+const testCourseDesc = '<p>short description of course 1</p>';
 
 const testCourseName2 = 'TestCourseName 2';
 const testCourseRunKey2 = 'edX+testcourse2';
 const testStartDate2 = '2021-10-10T10:00:00Z';
 const testEndDate2 = '2030-09-10T10:00:00Z';
+const testCourseDesc2 = '<p>short description of course 2</p>';
 
 const searchResults = {
   nbHits: 2,
@@ -42,6 +44,7 @@ const searchResults = {
         end: testEndDate,
       },
       key: 'foo',
+      short_description: testCourseDesc,
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
     },
     {
@@ -52,6 +55,7 @@ const searchResults = {
         end: testEndDate2,
       },
       key: 'foo2',
+      short_description: testCourseDesc2,
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
     },
   ],
@@ -102,6 +106,15 @@ describe('<CourseSearchResults />', () => {
     expect(tableCells.at(1).text()).toBe(testCourseName);
     expect(tableCells.at(2).text()).toBe('edX');
     expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
+  });
+  it('renders popover with course description', () => {
+    renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
+    expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
+    const courseTitle = screen.getByText(testCourseName);
+    act(() => {
+      userEvent.click(courseTitle);
+    });
+    expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
