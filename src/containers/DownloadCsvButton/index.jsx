@@ -6,6 +6,7 @@ import DownloadCsvButton from '../../components/DownloadCsvButton';
 const mapStateToProps = (state, ownProps) => {
   const csvState = state.csv[ownProps.id] || {};
   return {
+    enterpriseId: state.portalConfiguration.enterpriseId,
     csvLoading: csvState.csvLoading,
   };
 };

@@ -5,9 +5,15 @@ import { mount } from 'enzyme';
 import { MemoryRouter, Link } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
+import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -387,6 +393,9 @@ describe('<Admin />', () => {
         ));
         wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
+        expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+          enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, { csvId: key },
+        );
       });
     });
   });
