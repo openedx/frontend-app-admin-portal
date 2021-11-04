@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Button, FullscreenModal, Icon, ModalPopup, useToggle,
+  ActionRow, Button, Icon, ModalPopup, useToggle,
 } from '@edx/paragon';
 import {
   Email,
@@ -13,34 +13,7 @@ import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../data/constants';
 import BulkEnrollWarningModal from '../../../BulkEnrollmentPage/BulkEnrollmentWarningModal';
 import BulkEnrollButton from '../../../BulkEnrollmentPage/BulkEnrollButton';
-
-const BulkEnrollDialog = ({ subscription, isOpen, onClose }) => (
-  <FullscreenModal
-    title={`Enrolling for subscription plan ${subscription}`}
-    isOpen={isOpen}
-    onClose={onClose}
-    footerNode={(
-      <ActionRow>
-        <p className="x-small text-muted">
-          Notes
-        </p>
-        <ActionRow.Spacer />
-        <Button variant="tertiary" onClick={onClose}>Cancel</Button>
-        <Button>Submit</Button>
-      </ActionRow>
-      )}
-  >
-    <p>
-      Bulk Enroll Initiated!
-    </p>
-  </FullscreenModal>
-);
-
-BulkEnrollDialog.propTypes = {
-  subscription: PropTypes.shape({}).isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+import BulkEnrollDialog from '../../../BulkEnrollmentPage/BulkEnrollDialog';
 
 const LicenseManagementTableBulkActions = ({
   subscription,
