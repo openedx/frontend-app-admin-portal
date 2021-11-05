@@ -1,16 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ActionRow, Button, Icon, ModalPopup, useToggle,
 } from '@edx/paragon';
 import {
-  BookOpen,
   Email,
   RemoveCircle,
   MoreVert,
 } from '@edx/paragon/icons';
 
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
+import { ACTIVATED, ASSIGNED, REVOKED } from '../../data/constants';
+import BulkEnrollWarningModal from '../../../BulkEnrollmentPage/BulkEnrollmentWarningModal';
+import BulkEnrollButton from '../../../BulkEnrollmentPage/BulkEnrollButton';
+import BulkEnrollDialog from '../../../BulkEnrollmentPage/BulkEnrollDialog';
+
 import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
 import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
 import {
@@ -20,7 +24,6 @@ import {
 
 const LicenseManagementTableBulkActions = ({
   subscription,
-  enrollmentLink,
   selectedUsers,
   onRemindSuccess,
   onRevokeSuccess,
@@ -34,6 +37,16 @@ const LicenseManagementTableBulkActions = ({
 
   const [isOpen, open, close] = useToggle(false);
   const target = React.useRef(null);
+
+  const revokedUsers = useMemo(() => selectedUsers.filter(user => user.status === REVOKED), [selectedUsers]);
+  const enrollableLearners = useMemo(
+    () => selectedUsers.filter(
+      user => [ACTIVATED, ASSIGNED].includes(user.status),
+    ).map(user => user.email), [selectedUsers],
+  );
+
+  const [showBulkEnrollWarning, setShowBulkEnrollWarning] = useState(false);
+  const [showBulkEnrollModal, setShowBulkEnrollModal] = useState(false);
 
   // Divides selectedUsers users into two arrays
   const [usersToRemind, usersToRevoke] = useMemo(() => {
@@ -82,6 +95,27 @@ const LicenseManagementTableBulkActions = ({
     onRemindSuccess();
   };
 
+  const handleBulkEnrollment = ({ setOfRevokedUsers, validateRevoked = true }) => {
+    /**
+     * if validation is not needed, just go ahead and proceed to enrollment
+     */
+
+    if (validateRevoked && setOfRevokedUsers && setOfRevokedUsers.length > 0) {
+      setShowBulkEnrollWarning(true);
+      // whether to show the bulk enroll main dialog
+      setShowBulkEnrollModal(false);
+    } else {
+      setShowBulkEnrollWarning(false);
+      // whether to show the bulk enroll main dialog
+      setShowBulkEnrollModal(true);
+    }
+  };
+
+  const handleBulkEnrollmentForced = ({ setOfRevokedUsers }) => handleBulkEnrollment({
+    setOfRevokedUsers,
+    validateRevoked: false,
+  });
+
   return (
     <>
       <ActionRow>
@@ -113,13 +147,31 @@ const LicenseManagementTableBulkActions = ({
         >
           Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
         </Button>
-        <Button
-          variant="primary"
-          href={enrollmentLink}
-          iconBefore={BookOpen}
-        >
-          Enroll
-        </Button>
+        <BulkEnrollButton
+          learners={enrollableLearners}
+          handleEnrollment={() => handleBulkEnrollment({ setOfRevokedUsers: revokedUsers })}
+        />
+
+        {/* warning modal shows when there is 1 or more revoked licenses selected */}
+        {showBulkEnrollWarning
+        && (
+        <BulkEnrollWarningModal
+          learners={enrollableLearners}
+          isDialogOpen={showBulkEnrollWarning}
+          onClose={() => setShowBulkEnrollWarning(false)}
+          onEnroll={() => handleBulkEnrollmentForced({ setOfRevokedUsers: revokedUsers })}
+        />
+        )}
+
+        {/* Bulk Enrollment shows in a dialog when enrollment conditions are met */}
+        {showBulkEnrollModal && (
+        <BulkEnrollDialog
+          isOpen={showBulkEnrollModal}
+          onClose={() => { setShowBulkEnrollModal(false); }}
+          subscription={subscription}
+          learners={enrollableLearners}
+        />
+        )}
       </ActionRow>
       <LicenseManagementRevokeModal
         isOpen={revokeModal.isOpen}
@@ -157,7 +209,6 @@ LicenseManagementTableBulkActions.propTypes = {
       remaining: PropTypes.number.isRequired,
     }),
   }).isRequired,
-  enrollmentLink: PropTypes.string.isRequired,
   selectedUsers: PropTypes.arrayOf(
     PropTypes.shape({
       status: PropTypes.string.isRequired,
