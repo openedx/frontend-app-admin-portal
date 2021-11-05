@@ -63,7 +63,6 @@ const LicenseManagementTableActionColumn = ({
     onRemindSuccess(clearSelection)();
   };
 
-  // console.log('letContext',letContext)
   return (
     <>
       {displayRemind
