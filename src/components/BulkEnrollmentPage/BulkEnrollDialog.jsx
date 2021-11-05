@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ActionRow, Button, FullscreenModal } from '@edx/paragon';
 import { connect } from 'react-redux';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
-import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
+import AddCoursesStep from './stepper/AddCoursesStep';
+import ReviewStep from './stepper/ReviewStep';
+import BulkEnrollmentSubmit from './stepper/BulkEnrollmentSubmit';
 
 /**
  * Full screen dialog to house Bulk enrollment workflow that starts after selecting learners and
@@ -18,32 +20,71 @@ import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
  */
 const BulkEnrollDialog = ({
   enterpriseId, enterpriseSlug, learners, subscription, isOpen, onClose,
-}) => (
-  <FullscreenModal
-    hasCloseButton={false}
-    title={`Subscription Enrollment for ${subscription.title} and ${learners.length} learners`}
-    isOpen={isOpen}
-    onClose={onClose}
-    footerNode={(
-      <ActionRow>
-        <p className="x-small text-muted">
-          Notes
-        </p>
-        <ActionRow.Spacer />
-        <Button variant="tertiary" onClick={onClose}>Cancel</Button>
-        <Button>Submit</Button>
-      </ActionRow>
+}) => {
+  const COURSE_SELECT = 'COURSE_SELECT';
+  const REVIEW_SELECTIONS = 'REVIEW_SELECTIONS';
+  const [step, setStep] = useState(COURSE_SELECT);
+
+  return (
+    <BulkEnrollContextProvider initialEmailsList={learners}>
+      <FullscreenModal
+        hasCloseButton={false}
+        title="Subscription Enrollment"
+        isOpen={isOpen}
+        onClose={onClose}
+        footerNode={(
+          <ActionRow>
+            <ActionRow.Spacer />
+            <Button variant="tertiary" onClick={onClose}>Cancel</Button>
+
+            {step !== REVIEW_SELECTIONS
+            && (
+            <Button
+              onClick={() => {
+                if (step === COURSE_SELECT) {
+                  setStep(REVIEW_SELECTIONS);
+                }
+              }}
+            >Next
+            </Button>
+            )}
+
+            {step === REVIEW_SELECTIONS
+            && (
+            <Button
+              onClick={() => {
+                setStep(COURSE_SELECT);
+              }}
+            >Previous
+            </Button>
+            )}
+
+            {step === REVIEW_SELECTIONS
+                && (
+                <BulkEnrollmentSubmit
+                  enterpriseId={enterpriseId}
+                  enterpriseSlug={enterpriseSlug}
+                  subscription={subscription}
+                  returnToInitialStep={onClose}
+                />
+                )}
+          </ActionRow>
         )}
-  >
-    <BulkEnrollContextProvider>
-      <BulkEnrollmentStepper
-        subscription={subscription}
-        enterpriseId={enterpriseId}
-        enterpriseSlug={enterpriseSlug}
-      />
+      >
+        {step === COURSE_SELECT && (
+        <AddCoursesStep
+          enterpriseId={enterpriseId}
+          enterpriseSlug={enterpriseSlug}
+          subscription={subscription}
+        />
+        )}
+        {step === REVIEW_SELECTIONS && (
+        <ReviewStep returnToSelection={() => setStep(COURSE_SELECT)} />
+        )}
+      </FullscreenModal>
     </BulkEnrollContextProvider>
-  </FullscreenModal>
-);
+  );
+};
 
 BulkEnrollDialog.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

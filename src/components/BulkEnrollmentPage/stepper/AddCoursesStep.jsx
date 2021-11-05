@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
@@ -7,6 +7,7 @@ import DismissibleCourseWarning from './DismissibleCourseWarning';
 
 import { configuration } from '../../../config';
 import { ADD_COURSES_TITLE, ADD_COURSE_DESCRIPTION } from './constants';
+import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 import CourseSearchResults from '../CourseSearchResults';
 
@@ -19,34 +20,33 @@ const searchClient = algoliasearch(
 );
 
 const AddCoursesStep = ({
-  enterpriseId, enterpriseSlug, subscription, selectedCoursesNum,
-}) => (
-  <>
-    <p>{ADD_COURSE_DESCRIPTION}</p>
-    <h2>{ADD_COURSES_TITLE}</h2>
-    {selectedCoursesNum > MAX_COURSES ? <DismissibleCourseWarning /> : null}
-    <SearchData>
-      <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
-        searchClient={searchClient}
-      >
-        <Configure
-          filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
-          hitsPerPage={25}
-        />
-        <SearchHeader variant="default" />
-        <CourseSearchResults
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-          subscriptionUUID={subscription.uuid}
-        />
-      </InstantSearch>
-    </SearchData>
-  </>
-);
-
-AddCoursesStep.defaultProps = {
-  selectedCoursesNum: 0,
+  enterpriseId, enterpriseSlug, subscription,
+}) => {
+  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
+  return (
+    <>
+      <p>{ADD_COURSE_DESCRIPTION}</p>
+      <h2>{ADD_COURSES_TITLE}</h2>
+      {(selectedCourses?.length || 0) > MAX_COURSES ? <DismissibleCourseWarning /> : null}
+      <SearchData>
+        <InstantSearch
+          indexName={configuration.ALGOLIA.INDEX_NAME}
+          searchClient={searchClient}
+        >
+          <Configure
+            filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
+            hitsPerPage={25}
+          />
+          <SearchHeader variant="default" />
+          <CourseSearchResults
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            subscriptionUUID={subscription.uuid}
+          />
+        </InstantSearch>
+      </SearchData>
+    </>
+  );
 };
 
 AddCoursesStep.propTypes = {
@@ -56,7 +56,6 @@ AddCoursesStep.propTypes = {
     uuid: PropTypes.string.isRequired,
     enterpriseCatalogUuid: PropTypes.string.isRequired,
   }).isRequired,
-  selectedCoursesNum: PropTypes.number,
 };
 
 export default AddCoursesStep;
