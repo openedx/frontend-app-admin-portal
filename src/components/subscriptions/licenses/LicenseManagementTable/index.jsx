@@ -147,12 +147,11 @@ const LicenseManagementTable = () => {
   return (
     <>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
-
       <DataTable
         showFiltersInSidebar={showFiltersInSidebar}
         isFilterable
         manualFilters
-        isSelectable
+        isSelectable={!isExpired}
         manualSelectColumn={selectColumn}
         SelectionStatusComponent={DataTable.ControlledSelectionStatus}
         defaultColumnValues={{ Filter: TextFilter }}
