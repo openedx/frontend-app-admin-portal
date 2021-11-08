@@ -6,6 +6,7 @@ import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import AddCoursesStep from './stepper/AddCoursesStep';
 import ReviewStep from './stepper/ReviewStep';
 import BulkEnrollmentSubmit from './stepper/BulkEnrollmentSubmit';
+import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
 /**
  * Full screen dialog to house Bulk enrollment workflow that starts after selecting learners and
@@ -21,68 +22,22 @@ import BulkEnrollmentSubmit from './stepper/BulkEnrollmentSubmit';
 const BulkEnrollDialog = ({
   enterpriseId, enterpriseSlug, learners, subscription, isOpen, onClose,
 }) => {
-  const COURSE_SELECT = 'COURSE_SELECT';
-  const REVIEW_SELECTIONS = 'REVIEW_SELECTIONS';
-  const [step, setStep] = useState(COURSE_SELECT);
-
   return (
-    <BulkEnrollContextProvider initialEmailsList={learners}>
       <FullscreenModal
-        hasCloseButton={false}
+        hasCloseButton
         title="Subscription Enrollment"
         isOpen={isOpen}
         onClose={onClose}
-        footerNode={(
-          <ActionRow>
-            <ActionRow.Spacer />
-            <Button variant="tertiary" onClick={onClose}>Cancel</Button>
-
-            {step !== REVIEW_SELECTIONS
-            && (
-            <Button
-              onClick={() => {
-                if (step === COURSE_SELECT) {
-                  setStep(REVIEW_SELECTIONS);
-                }
-              }}
-            >Next
-            </Button>
-            )}
-
-            {step === REVIEW_SELECTIONS
-            && (
-            <Button
-              onClick={() => {
-                setStep(COURSE_SELECT);
-              }}
-            >Previous
-            </Button>
-            )}
-
-            {step === REVIEW_SELECTIONS
-                && (
-                <BulkEnrollmentSubmit
-                  enterpriseId={enterpriseId}
-                  enterpriseSlug={enterpriseSlug}
-                  subscription={subscription}
-                  returnToInitialStep={onClose}
-                />
-                )}
-          </ActionRow>
-        )}
       >
-        {step === COURSE_SELECT && (
-        <AddCoursesStep
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-          subscription={subscription}
-        />
-        )}
-        {step === REVIEW_SELECTIONS && (
-        <ReviewStep returnToSelection={() => setStep(COURSE_SELECT)} />
-        )}
+        <BulkEnrollContextProvider initialEmailsList={learners}>
+            <BulkEnrollmentStepper
+                subscription={subscription}
+                enterpriseId={enterpriseId}
+                enterpriseSlug={enterpriseSlug}
+                onEnrollComplete={onClose}
+            />
+        </BulkEnrollContextProvider>
       </FullscreenModal>
-    </BulkEnrollContextProvider>
   );
 };
 
