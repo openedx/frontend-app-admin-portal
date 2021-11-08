@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionRow, Button, FullscreenModal } from '@edx/paragon';
 import { connect } from 'react-redux';
+
+import { FullscreenModal } from '@edx/paragon';
+
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
-import AddCoursesStep from './stepper/AddCoursesStep';
-import ReviewStep from './stepper/ReviewStep';
-import BulkEnrollmentSubmit from './stepper/BulkEnrollmentSubmit';
 import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
 
 /**
  * Full screen dialog to house Bulk enrollment workflow that starts after selecting learners and
  * clicking 'Enroll'. Course selection will happen as part of the workflow in this window.
+ * Learner emails will be sourced from whatever learner emails were selected before opening this
+ * dialog, from the license management bulk actions table
  *
  * @param {object} args
  * @param {array<object>} args.learners learner email list to enroll
@@ -21,25 +22,23 @@ import BulkEnrollmentStepper from './stepper/BulkEnrollmentStepper';
  */
 const BulkEnrollDialog = ({
   enterpriseId, enterpriseSlug, learners, subscription, isOpen, onClose,
-}) => {
-  return (
-      <FullscreenModal
-        hasCloseButton
-        title="Subscription Enrollment"
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <BulkEnrollContextProvider initialEmailsList={learners}>
-            <BulkEnrollmentStepper
-                subscription={subscription}
-                enterpriseId={enterpriseId}
-                enterpriseSlug={enterpriseSlug}
-                onEnrollComplete={onClose}
-            />
-        </BulkEnrollContextProvider>
-      </FullscreenModal>
-  );
-};
+}) => (
+  <FullscreenModal
+    hasCloseButton
+    title="Subscription Enrollment"
+    isOpen={isOpen}
+    onClose={onClose}
+  >
+    <BulkEnrollContextProvider initialEmailsList={learners}>
+      <BulkEnrollmentStepper
+        subscription={subscription}
+        enterpriseId={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
+        onEnrollComplete={onClose}
+      />
+    </BulkEnrollContextProvider>
+  </FullscreenModal>
+);
 
 BulkEnrollDialog.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
