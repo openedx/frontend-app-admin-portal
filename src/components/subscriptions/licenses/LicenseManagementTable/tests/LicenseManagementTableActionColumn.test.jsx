@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LicenseManagementTableActionColumn from '../LicenseManagementTableActionColumn';
 import {
@@ -118,14 +118,14 @@ describe('<LicenseManagementTableActionColumn />', () => {
     });
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
-    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       subscriptionsTableEventNames.revokeRowClick,
     );
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel
-    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       subscriptionsTableEventNames.revokeRowCancel,
     );
@@ -141,14 +141,14 @@ describe('<LicenseManagementTableActionColumn />', () => {
     });
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
-    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       subscriptionsTableEventNames.remindRowClick,
     );
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel
-    expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       subscriptionsTableEventNames.remindRowCancel,
     );
