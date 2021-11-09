@@ -9,10 +9,33 @@
         }
     }
 
-    .subscription-card,
     .support-card {
         .card-title {
             @extend .h4;
+        }
+    }
+
+    .subscription-card {
+        margin-bottom: ($spacer * 1.875);
+
+        @include media-breakpoint-down(sm) {
+            .pgn__card-header {
+                flex-direction: column;
+            }
+
+            .pgn__card-header-actions {
+                text-align: right;
+            }
+
+            .card-body {
+                & > span {
+                    margin-left: 1rem;
+                }
+
+                .row {
+                    margin: 1rem 0 !important;
+                }
+            }
         }
     }
 

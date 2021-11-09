@@ -20,7 +20,7 @@ const BulkEnrollButton = ({ learners, handleEnrollment }) => (
 
 BulkEnrollButton.propTypes = {
   handleEnrollment: PropTypes.func.isRequired,
-  learners: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  learners: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BulkEnrollButton;
