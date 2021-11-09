@@ -72,7 +72,7 @@ export const generateSuccessMessage = numEmails => {
 };
 
 const BulkEnrollmentSubmit = ({
-  enterpriseId, enterpriseSlug, subscription, returnToInitialStep,
+  enterpriseId, enterpriseSlug, subscription, onEnrollComplete,
 }) => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(true);
@@ -108,7 +108,7 @@ const BulkEnrollmentSubmit = ({
       coursesDispatch(clearSelectionAction());
       emailsDispatch(clearSelectionAction());
       addToast(generateSuccessMessage(selectedEmails.length));
-      returnToInitialStep();
+      onEnrollComplete();
     }).catch((err) => {
       logError(err);
       setError(err);
@@ -151,7 +151,7 @@ BulkEnrollmentSubmit.propTypes = {
     uuid: PropTypes.string.isRequired,
     enterpriseCatalogUuid: PropTypes.string.isRequired,
   }).isRequired,
-  returnToInitialStep: PropTypes.func.isRequired,
+  onEnrollComplete: PropTypes.func.isRequired,
 };
 
 export default BulkEnrollmentSubmit;

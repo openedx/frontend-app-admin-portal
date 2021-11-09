@@ -10,7 +10,7 @@ import { Error } from '@edx/paragon/icons';
 import BulkEnrollButton from './BulkEnrollButton';
 
 const BulkEnrollWarningModal = ({
-  learners = [], isDialogOpen = false, onClose, onEnroll,
+  learners, isDialogOpen, onClose, onEnroll,
 }) => (
   <AlertModal
     title={(
@@ -29,16 +29,19 @@ const BulkEnrollWarningModal = ({
       </ActionRow>
     )}
   >
-    <>
-      {`Any learners with revoked licenses are not included. Click "Enroll" to enroll active
-          and pending learners only`}
-    </>
+    Any learners with revoked licenses are not included. Click &quot;Enroll&quot; to enroll
+    active and pending learners only
   </AlertModal>
 );
 
+BulkEnrollWarningModal.defaultProps = {
+  learners: [],
+  isDialogOpen: false,
+};
+
 BulkEnrollWarningModal.propTypes = {
-  isDialogOpen: PropTypes.bool.isRequired,
-  learners: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isDialogOpen: PropTypes.bool,
+  learners: PropTypes.arrayOf(PropTypes.shape({})),
   onEnroll: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

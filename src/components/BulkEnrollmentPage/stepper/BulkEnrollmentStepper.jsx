@@ -1,11 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import {
-  Stepper, Button, Container,
+  Button, ModalDialog, Stepper,
 } from '@edx/paragon';
 
+import BulkEnrollmentSubmit from './BulkEnrollmentSubmit';
 import AddCoursesStep from './AddCoursesStep';
 import ReviewStep from './ReviewStep';
+
 import {
   PREV_BUTTON_TEST_ID,
   NEXT_BUTTON_TEXT,
@@ -17,10 +20,21 @@ import {
   REVIEW_TITLE,
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
-import BulkEnrollmentSubmit from './BulkEnrollmentSubmit';
 
-const BulkEnrollmentStepper = ({
-  subscription, enterpriseSlug, enterpriseId, onEnrollComplete,
+/**
+ * Modal dialog to house Bulk enrollment workflow that starts after selecting learners and
+ * clicking 'Enroll'. Course selection will happen as part of the workflow in this window.
+ * Learner emails will be sourced from whatever learner emails were selected before opening this
+ * dialog, from the license management bulk actions table
+ *
+ * @param {object} args
+ * @param {object} args.subscription subscription plan to enroll into
+ * @param {boolean} args.isOpen whether to show dialog (for controlling open/close)
+ * @param {function} args.onClose handler to call on dialog close event
+ * @returns Modal dialog from Paragon
+ */
+const BulkEnrollStepper = ({
+  enterpriseId, enterpriseSlug, subscription, isOpen, onClose,
 }) => {
   const steps = [ADD_COURSES_STEP, REVIEW_STEP];
   const [currentStep, setCurrentStep] = useState(steps[0]);
@@ -28,9 +42,22 @@ const BulkEnrollmentStepper = ({
 
   return (
     <Stepper activeKey={currentStep}>
-      <Stepper.Header className="my-3" />
-      <div className="sticky-footer-wrapper">
-        <Container size="xl">
+      <ModalDialog
+        hasCloseButton
+        isFullscreenOnMobile
+        title="Subscription Enrollment"
+        isOpen={isOpen}
+        size="xl"
+        onClose={onClose}
+        className="bulk-enroll-modal"
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            Subscription Enrollment
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+
+        <ModalDialog.Body>
           <Stepper.Step eventKey={ADD_COURSES_STEP} title={ADD_COURSES_TITLE}>
             <AddCoursesStep
               enterpriseId={enterpriseId}
@@ -40,12 +67,15 @@ const BulkEnrollmentStepper = ({
             />
           </Stepper.Step>
           <Stepper.Step eventKey={REVIEW_STEP} title={REVIEW_TITLE}>
-            <ReviewStep setCurrentStep={setCurrentStep} />
+            <ReviewStep
+              returnToLearnerSelection={onClose}
+              returnToCourseSelection={() => setCurrentStep(ADD_COURSES_STEP)}
+            />
           </Stepper.Step>
-        </Container>
-        <Container size="xl" className="pb-3 pt-5">
+        </ModalDialog.Body>
+
+        <ModalDialog.Footer>
           <Stepper.ActionRow eventKey={ADD_COURSES_STEP}>
-            <Stepper.ActionRow.Spacer />
             <Button
               onClick={() => setCurrentStep(REVIEW_STEP)}
               data-testid={NEXT_BUTTON_TEST_ID}
@@ -54,7 +84,7 @@ const BulkEnrollmentStepper = ({
               {NEXT_BUTTON_TEXT}
             </Button>
           </Stepper.ActionRow>
-          <Stepper.ActionRow eventKey="review">
+          <Stepper.ActionRow eventKey={REVIEW_STEP}>
             <Button
               variant="outline-primary"
               onClick={() => setCurrentStep(ADD_COURSES_STEP)}
@@ -67,22 +97,21 @@ const BulkEnrollmentStepper = ({
               enterpriseId={enterpriseId}
               enterpriseSlug={enterpriseSlug}
               subscription={subscription}
-              returnToInitialStep={() => { setCurrentStep(ADD_COURSES_STEP); onEnrollComplete(); }}
+              onEnrollComplete={onClose}
             />
           </Stepper.ActionRow>
-        </Container>
-      </div>
+        </ModalDialog.Footer>
+      </ModalDialog>
     </Stepper>
   );
 };
 
-BulkEnrollmentStepper.propTypes = {
+BulkEnrollStepper.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  subscription: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
-  }).isRequired,
-  onEnrollComplete: PropTypes.func.isRequired,
+  subscription: PropTypes.shape({ title: PropTypes.string }).isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
-export default BulkEnrollmentStepper;
+export default BulkEnrollStepper;

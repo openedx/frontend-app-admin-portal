@@ -20,7 +20,7 @@ const COURSES = {
   removal: 'Remove course',
 };
 
-const ReviewStep = ({ returnToSelection }) => {
+const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
   const {
     emails: [selectedEmails, emailsDispatch],
     courses: [selectedCourses, coursesDispatch],
@@ -41,7 +41,7 @@ const ReviewStep = ({ returnToSelection }) => {
           accessor="title"
           dispatch={coursesDispatch}
           subject={COURSES}
-          returnToSelection={returnToSelection}
+          returnToSelection={returnToCourseSelection}
         />
         <ReviewList
           key="emails"
@@ -49,7 +49,7 @@ const ReviewStep = ({ returnToSelection }) => {
           accessor="userEmail"
           dispatch={emailsDispatch}
           subject={LEARNERS}
-          returnToSelection={returnToSelection}
+          returnToSelection={returnToLearnerSelection}
         />
       </Row>
     </>
@@ -58,7 +58,8 @@ const ReviewStep = ({ returnToSelection }) => {
 
 ReviewStep.propTypes = {
   /* Function to return to prior step */
-  returnToSelection: PropTypes.func.isRequired,
+  returnToLearnerSelection: PropTypes.func.isRequired,
+  returnToCourseSelection: PropTypes.func.isRequired,
 };
 
 export default ReviewStep;
