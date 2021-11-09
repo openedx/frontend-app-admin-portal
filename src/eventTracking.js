@@ -18,7 +18,7 @@ const PROJECT_NAME = 'edx.ui.admin_portal';
  */
 const SUBSCRIPTION_TABLE = `${PROJECT_NAME}.subscriptions.table`;
 export const subscriptionsTableEventNames = {
-  // Pagination 
+  // Pagination
   paginationNext: `${SUBSCRIPTION_TABLE}.pagination.next.click`,
   paginationPrevious: `${SUBSCRIPTION_TABLE}.pagination.previous.click`,
   // Filter Actions
