@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import '@testing-library/jest-dom/extend-expect';
 
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
 import {
@@ -40,7 +41,6 @@ const basicProps = {
       remaining: 10,
     },
   },
-  enrollmentLink: 'link',
 };
 
 const email = 'foo@test.edx.org';
@@ -70,17 +70,17 @@ describe('<LicenseManagementTableBulkActions />', () => {
 
   it('renders correct empty state', () => {
     render(<LicenseManagementTableBulkActionsWithContext {...basicProps} />);
-    expect(screen.getAllByRole('button').length).toBe(2);
-    expect(screen.getByText('Enroll')).toBeTruthy();
-    expect(screen.getByText('Remind (0)')).toBeTruthy();
-    expect(screen.getByTestId('revokeToggle')).toBeTruthy();
+    expect(screen.getAllByRole('button').length).toBe(3);
+    expect(screen.queryByText('Enroll (0)')).toBeVisible();
+    expect(screen.queryByText('Remind (0)')).toBeInTheDocument();
+    expect(screen.queryByTestId('revokeToggle')).toBeInTheDocument();
   });
 
   describe('renders correct label when not all users are selected ', () => {
     it('selected only revoked users', async () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testRevokedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll')).toBeTruthy();
+      expect(screen.queryByText('Enroll (0)')).toBeInTheDocument();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
@@ -91,7 +91,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected only activated users', async () => {
       const props = { ...basicProps, selectedUsers: [testActivatedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll')).toBeTruthy();
+      expect(screen.queryByText('Enroll (1)')).toBeInTheDocument();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
@@ -102,7 +102,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected only assigned users', async () => {
       const props = { ...basicProps, selectedUsers: [testAssignedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll')).toBeTruthy();
+      expect(screen.getByText('Enroll (2)')).toBeTruthy();
       expect(screen.getByText('Remind (2)')).toBeTruthy();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
@@ -113,7 +113,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected mix users', async () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testActivatedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll')).toBeTruthy();
+      expect(screen.getByText('Enroll (2)')).toBeTruthy();
       expect(screen.getByText('Remind (1)')).toBeTruthy();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
@@ -124,7 +124,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected undefined users', async () => {
       const props = { ...basicProps, selectedUsers: [testUndefinedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll')).toBeTruthy();
+      expect(screen.getByText('Enroll (0)')).toBeTruthy();
       expect(screen.getByText('Remind (0)')).toBeTruthy();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
@@ -142,7 +142,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
       assignedUsers: 1,
     };
     render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-    expect(screen.getByText('Enroll')).toBeTruthy();
+    expect(screen.getByText('Enroll (0)')).toBeTruthy();
     expect(screen.getByText('Remind (1)')).toBeTruthy();
     const revokeMenu = screen.getByTestId('revokeToggle');
     await act(async () => {

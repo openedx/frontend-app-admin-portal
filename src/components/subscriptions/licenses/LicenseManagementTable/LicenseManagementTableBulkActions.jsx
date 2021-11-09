@@ -132,7 +132,7 @@ const LicenseManagementTableBulkActions = ({
             <Button
               variant="outline-danger"
               iconBefore={RemoveCircle}
-              onClick={() => revokeOnClick(usersToRevoke, allUsersSelected)}
+              onClick={() => revokeOnClick(usersToRevoke)}
               disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
             >
               Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})

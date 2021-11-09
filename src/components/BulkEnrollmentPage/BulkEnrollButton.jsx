@@ -12,9 +12,9 @@ const BulkEnrollButton = ({ learners, handleEnrollment }) => (
     variant="primary"
     onClick={handleEnrollment}
     iconBefore={BookOpen}
-    disabled={learners?.length < 1}
+    disabled={learners.length < 1}
   >
-    Enroll ({learners?.length })
+    Enroll ({learners.length })
   </Button>
 );
 
