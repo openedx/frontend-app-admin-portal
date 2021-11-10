@@ -17,7 +17,7 @@ import {
   ACTIVATED,
   REVOKED,
 } from '../../../data/constants';
-import { subscriptionsTableEventNames } from '../../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import {
   TEST_ENTERPRISE_CUSTOMER_UUID,
   TEST_SUBSCRIPTION_PLAN_UUID,
@@ -120,14 +120,14 @@ describe('<LicenseManagementTableActionColumn />', () => {
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.revokeRowClick,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
     );
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.revokeRowCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CANCEL,
     );
   });
 
@@ -143,14 +143,14 @@ describe('<LicenseManagementTableActionColumn />', () => {
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.remindRowClick,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
     );
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.remindRowCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CANCEL,
     );
   });
 });

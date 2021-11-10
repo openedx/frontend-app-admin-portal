@@ -18,7 +18,7 @@ import {
   useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
 } from '../LicenseManagementModals/LicenseManagementModalHook';
-import { subscriptionsTableEventNames } from '../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const LicenseManagementTableBulkActions = ({
   subscription,
@@ -66,7 +66,7 @@ const LicenseManagementTableBulkActions = ({
     });
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeBulkClick,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CLICK,
       {
         selected_users: revokeUsers.length,
         all_users_selected: allUsersSelected,
@@ -82,7 +82,7 @@ const LicenseManagementTableBulkActions = ({
     });
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindBulkClick,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CLICK,
       {
         selected_users: remindUsers.length,
         all_users_selected: allUsersSelected,
@@ -103,7 +103,7 @@ const LicenseManagementTableBulkActions = ({
   const handleRemindSubmit = () => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindBulkSubmit,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_SUBMIT,
       {
         selected_users: remindModal.users.length,
         all_users_selected: remindModal.allUsersSelected,
@@ -114,7 +114,7 @@ const LicenseManagementTableBulkActions = ({
   const handleRevokeSubmit = () => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeBulkSubmit,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_SUBMIT,
       {
         selected_users: revokeModal.users.length,
         all_users_selected: revokeModal.allUsersSelected,
@@ -126,7 +126,7 @@ const LicenseManagementTableBulkActions = ({
     setRemindModal(modalZeroState);
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindBulkCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CANCEL,
       {
         selected_users: remindModal.users.length,
         all_users_selected: remindModal.allUsersSelected,
@@ -138,7 +138,7 @@ const LicenseManagementTableBulkActions = ({
     setRevokeModal(modalZeroState);
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeBulkCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CANCEL,
       {
         selected_users: revokeModal.users.length,
         all_users_selected: revokeModal.allUsersSelected,

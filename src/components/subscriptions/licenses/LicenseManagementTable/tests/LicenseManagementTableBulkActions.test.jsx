@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { subscriptionsTableEventNames } from '../../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
 import {
   ASSIGNED,
@@ -174,7 +174,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     const eventPayload = { selected_users: 1, all_users_selected: false };
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.remindBulkClick,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CLICK,
       eventPayload,
     );
     expect(screen.getByRole('dialog')).toBeTruthy();
@@ -183,7 +183,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.remindBulkCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CANCEL,
       eventPayload,
     );
   });
@@ -205,7 +205,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     const eventPayload = { selected_users: 1, all_users_selected: false };
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.revokeBulkClick,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CLICK,
       eventPayload,
     );
     expect(screen.getByRole('dialog')).toBeTruthy();
@@ -214,7 +214,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
-      subscriptionsTableEventNames.revokeBulkCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CANCEL,
       eventPayload,
     );
   });

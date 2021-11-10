@@ -20,7 +20,7 @@ import {
   useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
 } from '../LicenseManagementModals/LicenseManagementModalHook';
-import { subscriptionsTableEventNames } from '../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const revokeText = 'Revoke license';
 const remindText = 'Remind learner';
@@ -47,7 +47,7 @@ const LicenseManagementTableActionColumn = ({
     });
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeRowClick,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
     );
   };
 
@@ -59,7 +59,7 @@ const LicenseManagementTableActionColumn = ({
     });
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindRowClick,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
     );
   };
 
@@ -76,14 +76,14 @@ const LicenseManagementTableActionColumn = ({
   const handleRevokeSubmit = () => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeRowSubmit,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_SUBMIT,
     );
   };
 
   const handleRemindSubmit = () => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindRowSubmit,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_SUBMIT,
     );
   };
 
@@ -91,7 +91,7 @@ const LicenseManagementTableActionColumn = ({
     setRevokeModal(modalZeroState);
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.revokeRowCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CANCEL,
     );
   };
 
@@ -99,7 +99,7 @@ const LicenseManagementTableActionColumn = ({
     setRemindModal(modalZeroState);
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.remindRowCancel,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CANCEL,
     );
   };
 

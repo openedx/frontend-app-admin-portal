@@ -25,7 +25,7 @@ import DownloadCsvButton from '../../buttons/DownloadCsvButton';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
-import { subscriptionsTableEventNames } from '../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -82,7 +82,7 @@ const LicenseManagementTable = () => {
   const sendStatusFilterEvent = (statusFilter) => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.filterStatusChange,
+      SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
       { applied_filters: statusFilter },
     );
   };
@@ -90,15 +90,15 @@ const LicenseManagementTable = () => {
   const sendEmailFilterEvent = (emailFilter) => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
-      subscriptionsTableEventNames.filterEmailChange,
+      SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
       { email_filter: emailFilter },
     );
   };
 
   const sendPaginationEvent = (oldPage, newPage) => {
     const eventName = newPage - oldPage > 0
-      ? subscriptionsTableEventNames.paginationNext
-      : subscriptionsTableEventNames.paginationPrevious;
+      ? SUBSCRIPTION_TABLE_EVENTS.PAGINATION_NEXT
+      : SUBSCRIPTION_TABLE_EVENTS.PAGINATION_PREVIOUS;
 
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,

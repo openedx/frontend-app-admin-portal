@@ -20,7 +20,7 @@ import {
 } from '../../../tests/TestUtilities';
 import LicenseManagementTable from '../index';
 import * as hooks from '../../../data/hooks';
-import { subscriptionsTableEventNames } from '../../../../../eventTracking';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../../algoliaUtils';
 import { PAGE_SIZE } from '../../../data/constants';
 
@@ -267,7 +267,7 @@ describe('<LicenseManagementTable />', () => {
 
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
-        subscriptionsTableEventNames.filterStatusChange,
+        SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
         { applied_filters: 'activated' },
       );
     });
@@ -285,7 +285,7 @@ describe('<LicenseManagementTable />', () => {
 
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
-        subscriptionsTableEventNames.filterEmailChange,
+        SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
         { email_filter: 'foo' },
       );
     });
@@ -302,7 +302,7 @@ describe('<LicenseManagementTable />', () => {
       });
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
-        subscriptionsTableEventNames.paginationNext,
+        SUBSCRIPTION_TABLE_EVENTS.PAGINATION_NEXT,
         { page: 1 },
       );
       const prevPageButton = screen.getByText('Previous');
@@ -313,7 +313,7 @@ describe('<LicenseManagementTable />', () => {
       });
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
-        subscriptionsTableEventNames.paginationPrevious,
+        SUBSCRIPTION_TABLE_EVENTS.PAGINATION_PREVIOUS,
         { page: 0 },
       );
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);

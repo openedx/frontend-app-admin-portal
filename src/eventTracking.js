@@ -4,38 +4,48 @@
  * Event names should fallow the convention of:
  * <project name>.<product name>.<location>.<action>
  *
- * @example edx.ui.admin_portal. (project) subscriptions. (product) table. (location) click (action)
- * edx.ui.admin_portal.subscriptions.table.click
+ * @example edx.ui.admin_portal. (project) subscriptions. (product) table. (location) clicked (action)
+ * edx.ui.admin_portal.subscriptions.table.clicked
  */
 
 /**
  * @constant PROJECT_NAME leading project identifier for event names
  */
-export const PROJECT_NAME = 'edx.ui.admin_portal';
+const PROJECT_NAME = 'edx.ui.enterprise.admin_portal';
 
-/**
- * Subscription detail table events
- */
-const SUBSCRIPTION_TABLE = `${PROJECT_NAME}.subscriptions.table`;
-export const subscriptionsTableEventNames = {
+const SUBSCRIPTION_PREFIX = `${PROJECT_NAME}.subscriptions`;
+
+const SUBSCRIPTION_TABLE_PREFIX = `${SUBSCRIPTION_PREFIX}.table`;
+
+export const SUBSCRIPTION_TABLE_EVENTS = {
   // Pagination
-  paginationNext: `${SUBSCRIPTION_TABLE}.pagination.next.click`,
-  paginationPrevious: `${SUBSCRIPTION_TABLE}.pagination.previous.click`,
+  PAGINATION_NEXT: `${SUBSCRIPTION_TABLE_PREFIX}.pagination.next.clicked`,
+  PAGINATION_PREVIOUS: `${SUBSCRIPTION_TABLE_PREFIX}.pagination.previous.clicked`,
   // Filter Actions
-  filterStatusChange: `${SUBSCRIPTION_TABLE}.filter.status.change`,
-  filterEmailChange: `${SUBSCRIPTION_TABLE}.filter.email.change`,
+  FILTER_STATUS: `${SUBSCRIPTION_TABLE_PREFIX}.filter.status.changed`,
+  FILTER_EMAIL: `${SUBSCRIPTION_TABLE_PREFIX}.filter.email.changed`,
   // Row Actions
-  remindRowClick: `${SUBSCRIPTION_TABLE}.remind.row.click`,
-  remindRowSubmit: `${SUBSCRIPTION_TABLE}.remind.row.submit`,
-  remindRowCancel: `${SUBSCRIPTION_TABLE}.remind.row.cancel`,
-  revokeRowClick: `${SUBSCRIPTION_TABLE}.revoke.row.click`,
-  revokeRowSubmit: `${SUBSCRIPTION_TABLE}.revoke.row.submit`,
-  revokeRowCancel: `${SUBSCRIPTION_TABLE}.revoke.row.cancel`,
+  REMIND_ROW_CLICK: `${SUBSCRIPTION_TABLE_PREFIX}.remind.row.clicked`,
+  REMIND_ROW_SUBMIT: `${SUBSCRIPTION_TABLE_PREFIX}.remind.row.submitted`,
+  REMIND_ROW_CANCEL: `${SUBSCRIPTION_TABLE_PREFIX}.remind.row.canceled`,
+  REVOKE_ROW_CLICK: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.row.clicked`,
+  REVOKE_ROW_SUBMIT: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.row.submitted`,
+  REVOKE_ROW_CANCEL: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.row.canceled`,
   // Bulk Actions
-  remindBulkClick: `${SUBSCRIPTION_TABLE}.remind.bulk.click`,
-  remindBulkSubmit: `${SUBSCRIPTION_TABLE}.remind.bulk.submit`,
-  remindBulkCancel: `${SUBSCRIPTION_TABLE}.remind.bulk.cancel`,
-  revokeBulkClick: `${SUBSCRIPTION_TABLE}.revoke.bulk.click`,
-  revokeBulkSubmit: `${SUBSCRIPTION_TABLE}.revoke.bulk.submit`,
-  revokeBulkCancel: `${SUBSCRIPTION_TABLE}.revoke.bulk.cancel`,
+  REMIND_BULK_CLICK: `${SUBSCRIPTION_TABLE_PREFIX}.remind.bulk.clicked`,
+  REMIND_BULK_SUBMIT: `${SUBSCRIPTION_TABLE_PREFIX}.remind.bulk.submitted`,
+  REMIND_BULK_CANCEL: `${SUBSCRIPTION_TABLE_PREFIX}.remind.bulk.canceled`,
+  REVOKE_BULK_CLICK: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.clicked`,
+  REVOKE_BULK_SUBMIT: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.submitted`,
+  REVOKE_BULK_CANCEL: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.canceled`,
 };
+
+export const SUBSCRIPTION_EVENTS = {
+  TABLE: SUBSCRIPTION_TABLE_EVENTS,
+};
+
+const EVENT_NAMES = {
+  SUBSCRIPTIONS: SUBSCRIPTION_EVENTS,
+};
+
+export default EVENT_NAMES;
