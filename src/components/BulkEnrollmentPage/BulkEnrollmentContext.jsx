@@ -27,9 +27,13 @@ const BulkEnrollContextProvider = ({ children, initialEmailsList }) => {
   return <BulkEnrollContext.Provider value={value}>{children}</BulkEnrollContext.Provider>;
 };
 
+BulkEnrollContextProvider.defaultProps = {
+  initialEmailsList: [],
+};
+
 BulkEnrollContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  initialEmailsList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  initialEmailsList: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default BulkEnrollContextProvider;
