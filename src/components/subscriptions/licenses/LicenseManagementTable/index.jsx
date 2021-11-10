@@ -99,6 +99,7 @@ const LicenseManagementTable = () => {
     const eventName = newPage - oldPage > 0
       ? subscriptionsTableEventNames.paginationNext
       : subscriptionsTableEventNames.paginationPrevious;
+
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
       eventName,
