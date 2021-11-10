@@ -31,6 +31,7 @@ const basicProps = {
   selectedUsers: [],
   onRemindSuccess: () => {},
   onRevokeSuccess: () => {},
+  onEnrollSuccess: () => {},
   allUsersSelected: false,
   activatedUsers: 0,
   assignedUsers: 0,
