@@ -11,7 +11,7 @@
 /**
  * @constant PROJECT_NAME leading project identifier for event names
  */
-const PROJECT_NAME = 'edx.ui.admin_portal';
+export const PROJECT_NAME = 'edx.ui.admin_portal';
 
 /**
  * Subscription detail table events
@@ -38,7 +38,4 @@ export const subscriptionsTableEventNames = {
   revokeBulkClick: `${SUBSCRIPTION_TABLE}.revoke.bulk.click`,
   revokeBulkSubmit: `${SUBSCRIPTION_TABLE}.revoke.bulk.submit`,
   revokeBulkCancel: `${SUBSCRIPTION_TABLE}.revoke.bulk.cancel`,
-};
-
-export const subscriptionExpiration = {
 };
