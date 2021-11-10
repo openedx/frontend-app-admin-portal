@@ -128,6 +128,10 @@ const LicenseManagementTable = () => {
     [users],
   );
 
+  const onEnrollSuccess = (clearTableSelectionCallback) => (() => {
+    clearTableSelectionCallback();
+    forceRefreshUsers();
+  });
   // Successful action modal callback
   const onRemindSuccess = (clearTableSelectionCallback) => (() => {
     clearTableSelectionCallback();
@@ -236,6 +240,7 @@ const LicenseManagementTable = () => {
               selectedUsers={selectedUsers}
               onRemindSuccess={onRemindSuccess(clearSelection)}
               onRevokeSuccess={onRevokeSuccess(clearSelection)}
+              onEnrollSuccess={onEnrollSuccess(clearSelection)}
               activatedUsers={overview.activated}
               assignedUsers={overview.assigned}
               allUsersSelected={data.isEntireTableSelected}

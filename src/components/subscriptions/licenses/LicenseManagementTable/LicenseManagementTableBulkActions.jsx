@@ -27,6 +27,7 @@ const LicenseManagementTableBulkActions = ({
   selectedUsers,
   onRemindSuccess,
   onRevokeSuccess,
+  onEnrollSuccess,
   allUsersSelected,
   activatedUsers,
   assignedUsers,
@@ -170,6 +171,7 @@ const LicenseManagementTableBulkActions = ({
           onClose={() => { setShowBulkEnrollModal(false); }}
           subscription={subscription}
           learners={enrollableLearners}
+          onSuccess={onEnrollSuccess}
         />
         )}
       </ActionRow>
@@ -216,6 +218,7 @@ LicenseManagementTableBulkActions.propTypes = {
   ).isRequired,
   onRemindSuccess: PropTypes.func.isRequired,
   onRevokeSuccess: PropTypes.func.isRequired,
+  onEnrollSuccess: PropTypes.func.isRequired,
   allUsersSelected: PropTypes.bool.isRequired,
   activatedUsers: PropTypes.number.isRequired,
   assignedUsers: PropTypes.number.isRequired,
