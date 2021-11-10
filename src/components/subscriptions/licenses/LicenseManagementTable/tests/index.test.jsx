@@ -286,7 +286,6 @@ describe('<LicenseManagementTable />', () => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
-        { email_filter: 'foo' },
       );
     });
 

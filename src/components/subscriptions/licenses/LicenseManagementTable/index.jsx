@@ -87,11 +87,10 @@ const LicenseManagementTable = () => {
     );
   };
 
-  const sendEmailFilterEvent = (emailFilter) => {
+  const sendEmailFilterEvent = () => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
       SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
-      { email_filter: emailFilter },
     );
   };
 
@@ -122,7 +121,7 @@ const LicenseManagementTable = () => {
             break;
           }
           case 'emailLabel': {
-            sendEmailFilterEvent(filter.value);
+            sendEmailFilterEvent();
             setSearchQuery(filter.value);
             break;
           }
