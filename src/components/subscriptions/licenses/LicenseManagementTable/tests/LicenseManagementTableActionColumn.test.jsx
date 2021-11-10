@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LicenseManagementTableActionColumn from '../LicenseManagementTableActionColumn';
 import {
@@ -16,6 +17,15 @@ import {
   ACTIVATED,
   REVOKED,
 } from '../../../data/constants';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import {
+  TEST_ENTERPRISE_CUSTOMER_UUID,
+  TEST_SUBSCRIPTION_PLAN_UUID,
+} from '../../../tests/TestUtilities';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -35,7 +45,8 @@ const basicProps = {
   onRemindSuccess: () => {},
   onRevokeSuccess: () => {},
   subscription: {
-    uuid: '1',
+    uuid: TEST_SUBSCRIPTION_PLAN_UUID,
+    enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
     expirationDate: moment().add(1, 'days').format(),
     isRevocationCapEnabled: false,
     revocations: {
@@ -54,6 +65,7 @@ const LicenseManagementTableActionColumnWithContext = (props) => (
 describe('<LicenseManagementTableActionColumn />', () => {
   afterEach(() => {
     cleanup();
+    jest.clearAllMocks();
   });
   const testDialogClosed = () => {
     const cancelButton = screen.getByText('Cancel');
@@ -105,12 +117,18 @@ describe('<LicenseManagementTableActionColumn />', () => {
       await userEvent.click(revokeButton);
     });
     expect(screen.getByRole('dialog')).toBeTruthy();
+    // Event is sent when open
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
+    );
     // Close dialog
-    const cancelButton = screen.getByText('Cancel');
-    act(() => {
-      userEvent.click(cancelButton);
-    });
-    expect(screen.queryByRole('dialog')).toBeFalsy();
+    testDialogClosed();
+    // Event is sent when cancel
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CANCEL,
+    );
   });
 
   it('opens and closes remind modal', async () => {
@@ -122,7 +140,17 @@ describe('<LicenseManagementTableActionColumn />', () => {
       await userEvent.click(remindButton);
     });
     expect(screen.getByRole('dialog')).toBeTruthy();
+    // Event is sent when open
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
+    );
     // Close dialog
     testDialogClosed();
+    // Event is sent when cancel
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CANCEL,
+    );
   });
 });

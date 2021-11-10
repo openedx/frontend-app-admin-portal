@@ -59,6 +59,7 @@ const LicenseManagementRemindModal = ({
   isOpen,
   onClose,
   onSuccess,
+  onSubmit,
   subscription,
   usersToRemind,
   remindAllUsers,
@@ -75,6 +76,9 @@ const LicenseManagementRemindModal = ({
   const title = `Remind User${remindAllUsers || usersToRemind.length > 1 ? 's' : ''}`;
 
   const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit();
+    }
     setRequestState({ ...initialRequestState, loading: true });
     try {
       validateEmailTemplateForm(emailTemplate, 'body', false);
@@ -214,12 +218,16 @@ LicenseManagementRemindModal.defaultProps = {
   remindAllUsers: false,
   totalToRemind: -1,
   contactEmail: null,
+  onSubmit: undefined,
 };
 
 LicenseManagementRemindModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  /** Function executed after successful remind request resolved */
   onSuccess: PropTypes.func.isRequired,
+  /** Function executed when submit button is pressed */
+  onSubmit: PropTypes.func,
   subscription: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     expirationDate: PropTypes.string.isRequired,
