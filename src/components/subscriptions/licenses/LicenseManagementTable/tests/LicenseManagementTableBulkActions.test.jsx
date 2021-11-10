@@ -10,7 +10,9 @@ import moment from 'moment';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
+import '../../../../../../__mocks__/react-instantsearch-dom';
 
+import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
 import {
   ASSIGNED,
@@ -51,7 +53,9 @@ const testUndefinedUser = { status: 'foo', email };
 
 const LicenseManagementTableBulkActionsWithContext = (props) => (
   <Provider store={store}>
-    <LicenseManagementTableBulkActions {...props} />
+    <SearchContext.Provider value={{ refinementFromQueryParams: {} }}>
+      <LicenseManagementTableBulkActions {...props} />
+    </SearchContext.Provider>
   </Provider>
 );
 
@@ -71,9 +75,32 @@ describe('<LicenseManagementTableBulkActions />', () => {
   it('renders correct empty state', () => {
     render(<LicenseManagementTableBulkActionsWithContext {...basicProps} />);
     expect(screen.getAllByRole('button').length).toBe(3);
-    expect(screen.queryByText('Enroll (0)')).toBeVisible();
+    expect(screen.queryByText('Enroll (0)')).toBeInTheDocument();
     expect(screen.queryByText('Remind (0)')).toBeInTheDocument();
     expect(screen.queryByTestId('revokeToggle')).toBeInTheDocument();
+  });
+
+  describe('bulk enrollment bulk actions', () => {
+    it('shows warning dialog when at least 1 revoked learners selected', () => {
+      const props = { ...basicProps, selectedUsers: [testActivatedUser, testRevokedUser, testRevokedUser] };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      const enrollButton = screen.getByText('Enroll (1)');
+      let revokedTitle = screen.queryByText('Revoked Learners Selected');
+      expect(revokedTitle).toBeNull();
+      userEvent.click(enrollButton);
+      revokedTitle = screen.queryByText('Revoked Learners Selected');
+      expect(revokedTitle).toBeVisible();
+    });
+    it('on clicking enroll in warning dialog, shows the bulk enrollment dialog', async () => {
+      const props = { ...basicProps, selectedUsers: [testActivatedUser, testRevokedUser, testRevokedUser] };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      const enrollButton = screen.getByText('Enroll (1)');
+      userEvent.click(enrollButton);
+      const enrollButtonInDialog = await screen.findByTestId('ENROLL_BTN_IN_WARNING_MODAL');
+      userEvent.click(enrollButtonInDialog);
+      const addCoursesTitle = await screen.findByText('Add courses');
+      expect(addCoursesTitle).toBeVisible();
+    });
   });
 
   describe('renders correct label when not all users are selected ', () => {
@@ -81,7 +108,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testRevokedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
       expect(screen.queryByText('Enroll (0)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (0)')).toBeTruthy();
+      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
@@ -92,7 +119,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
       const props = { ...basicProps, selectedUsers: [testActivatedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
       expect(screen.queryByText('Enroll (1)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (0)')).toBeTruthy();
+      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
@@ -102,8 +129,8 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected only assigned users', async () => {
       const props = { ...basicProps, selectedUsers: [testAssignedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (2)')).toBeTruthy();
-      expect(screen.getByText('Remind (2)')).toBeTruthy();
+      expect(screen.getByText('Enroll (2)')).toBeInTheDocument();
+      expect(screen.getByText('Remind (2)')).toBeInTheDocument();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
@@ -113,8 +140,8 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected mix users', async () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testActivatedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (2)')).toBeTruthy();
-      expect(screen.getByText('Remind (1)')).toBeTruthy();
+      expect(screen.getByText('Enroll (2)')).toBeInTheDocument();
+      expect(screen.getByText('Remind (1)')).toBeInTheDocument();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
@@ -124,13 +151,13 @@ describe('<LicenseManagementTableBulkActions />', () => {
     it('selected undefined users', async () => {
       const props = { ...basicProps, selectedUsers: [testUndefinedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (0)')).toBeTruthy();
-      expect(screen.getByText('Remind (0)')).toBeTruthy();
+      expect(screen.getByText('Enroll (0)')).toBeInTheDocument();
+      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
-      expect(screen.getByText('Revoke (0)')).toBeTruthy();
+      expect(screen.getByText('Revoke (0)')).toBeInTheDocument();
     });
   });
 

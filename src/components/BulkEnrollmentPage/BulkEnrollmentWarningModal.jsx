@@ -25,6 +25,7 @@ const BulkEnrollWarningModal = ({
         <BulkEnrollButton
           learners={learners}
           handleEnrollment={onEnroll}
+          buttonType="ENROLL_BTN_IN_WARNING_MODAL"
         />
       </ActionRow>
     )}
