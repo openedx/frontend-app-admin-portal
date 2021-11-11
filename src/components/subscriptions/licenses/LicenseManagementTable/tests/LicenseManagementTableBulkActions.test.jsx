@@ -16,6 +16,7 @@ import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
+
 import {
   ASSIGNED,
   ACTIVATED,
@@ -28,6 +29,15 @@ import {
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
+}));
+
+/**
+ * Instead of fighting to get the instantsearch mock, we simply mock out the AddcoursesStep
+ * component for this test, and ensure it gets rendered.
+ */
+jest.mock('../../../../BulkEnrollmentPage/stepper/AddCoursesStep', () => ({
+  __esModule: true,
+  default: () => <div>Add courses step mock</div>,
 }));
 
 const mockStore = configureMockStore();
@@ -93,14 +103,14 @@ describe('<LicenseManagementTableBulkActions />', () => {
   });
 
   describe('bulk enrollment bulk actions', () => {
-    it('shows warning dialog when at least 1 revoked learners selected', () => {
+    it('shows warning dialog when at least 1 revoked learners selected', async () => {
       const props = { ...basicProps, selectedUsers: [testActivatedUser, testRevokedUser, testRevokedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
       const enrollButton = screen.getByText('Enroll (1)');
       let revokedTitle = screen.queryByText('Revoked Learners Selected');
       expect(revokedTitle).toBeNull();
       userEvent.click(enrollButton);
-      revokedTitle = screen.queryByText('Revoked Learners Selected');
+      revokedTitle = await screen.findByText('Revoked Learners Selected');
       expect(revokedTitle).toBeVisible();
     });
     it('on clicking enroll in warning dialog, shows the bulk enrollment dialog', async () => {
@@ -110,7 +120,9 @@ describe('<LicenseManagementTableBulkActions />', () => {
       userEvent.click(enrollButton);
       const enrollButtonInDialog = await screen.findByTestId('ENROLL_BTN_IN_WARNING_MODAL');
       userEvent.click(enrollButtonInDialog);
-      const addCoursesTitle = await screen.findByText('Add courses');
+      // Note we mocked out the AddCoursesStep comonent above, so we expect whatever it renders, to be here.
+      // this is sufficient for now to test that bulk enrollment dialog opens up
+      const addCoursesTitle = await screen.findByText('Add courses step mock');
       expect(addCoursesTitle).toBeVisible();
     });
   });
