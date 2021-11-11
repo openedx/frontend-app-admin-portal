@@ -10,15 +10,25 @@ import moment from 'moment';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
-import '../../../../../../__mocks__/react-instantsearch-dom';
 
+import '../../../../../../__mocks__/react-instantsearch-dom';
 import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
 import {
   ASSIGNED,
   ACTIVATED,
   REVOKED,
 } from '../../../data/constants';
+import {
+  TEST_ENTERPRISE_CUSTOMER_UUID,
+  TEST_SUBSCRIPTION_PLAN_UUID,
+} from '../../../tests/TestUtilities';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -36,7 +46,8 @@ const basicProps = {
   activatedUsers: 0,
   assignedUsers: 0,
   subscription: {
-    uuid: '1',
+    uuid: TEST_SUBSCRIPTION_PLAN_UUID,
+    enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
     expirationDate: moment().add(1, 'days').format(),
     isRevocationCapEnabled: false,
     revocations: {
@@ -187,9 +198,22 @@ describe('<LicenseManagementTableBulkActions />', () => {
     await act(async () => {
       await userEvent.click(remindButton);
     });
+    // Event is sent when open
+    const eventPayload = { selected_users: 1, all_users_selected: false };
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CLICK,
+      eventPayload,
+    );
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Close dialog
     testDialogClosed();
+    // Event is sent when cancel
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CANCEL,
+      eventPayload,
+    );
   });
 
   it('opens and closes revoke modal', async () => {
@@ -205,8 +229,21 @@ describe('<LicenseManagementTableBulkActions />', () => {
     await act(async () => {
       userEvent.click(revokeButton);
     });
+    // Event is sent when open
+    const eventPayload = { selected_users: 1, all_users_selected: false };
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CLICK,
+      eventPayload,
+    );
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Close dialog
     testDialogClosed();
+    // Event is sent when cancel
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_CUSTOMER_UUID,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CANCEL,
+      eventPayload,
+    );
   });
 });

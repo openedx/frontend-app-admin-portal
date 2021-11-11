@@ -8,6 +8,7 @@ import {
   RemoveCircle,
   MoreVert,
 } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
 import { ACTIVATED, ASSIGNED, REVOKED } from '../../data/constants';
@@ -21,6 +22,7 @@ import {
   useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
 } from '../LicenseManagementModals/LicenseManagementModalHook';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const LicenseManagementTableBulkActions = ({
   subscription,
@@ -76,6 +78,14 @@ const LicenseManagementTableBulkActions = ({
       users: revokeUsers,
       allUsersSelected,
     });
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CLICK,
+      {
+        selected_users: revokeUsers.length,
+        all_users_selected: allUsersSelected,
+      },
+    );
   };
 
   const remindOnClick = (remindUsers) => {
@@ -84,6 +94,14 @@ const LicenseManagementTableBulkActions = ({
       users: remindUsers,
       allUsersSelected,
     });
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CLICK,
+      {
+        selected_users: remindUsers.length,
+        all_users_selected: allUsersSelected,
+      },
+    );
   };
 
   const handleRevokeSuccess = () => {
@@ -116,6 +134,52 @@ const LicenseManagementTableBulkActions = ({
     setOfRevokedUsers,
     validateRevoked: false,
   });
+
+  const handleRemindSubmit = () => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_SUBMIT,
+      {
+        selected_users: remindModal.users.length,
+        all_users_selected: remindModal.allUsersSelected,
+      },
+    );
+  };
+
+  const handleRevokeSubmit = () => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_SUBMIT,
+      {
+        selected_users: revokeModal.users.length,
+        all_users_selected: revokeModal.allUsersSelected,
+      },
+    );
+  };
+
+  const handleRemindClose = () => {
+    setRemindModal(modalZeroState);
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CANCEL,
+      {
+        selected_users: remindModal.users.length,
+        all_users_selected: remindModal.allUsersSelected,
+      },
+    );
+  };
+
+  const handleRevokeCancel = () => {
+    setRevokeModal(modalZeroState);
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CANCEL,
+      {
+        selected_users: revokeModal.users.length,
+        all_users_selected: revokeModal.allUsersSelected,
+      },
+    );
+  };
 
   return (
     <>
@@ -179,8 +243,9 @@ const LicenseManagementTableBulkActions = ({
         isOpen={revokeModal.isOpen}
         usersToRevoke={revokeModal.users}
         subscription={subscription}
-        onClose={() => setRevokeModal(modalZeroState)}
+        onClose={handleRevokeCancel}
         onSuccess={handleRevokeSuccess}
+        onSubmit={handleRevokeSubmit}
         revokeAllUsers={revokeModal.allUsersSelected}
         totalToRevoke={activatedUsers + assignedUsers}
       />
@@ -188,8 +253,9 @@ const LicenseManagementTableBulkActions = ({
         isOpen={remindModal.isOpen}
         usersToRemind={remindModal.users}
         subscription={subscription}
-        onClose={() => setRemindModal(modalZeroState)}
+        onClose={handleRemindClose}
         onSuccess={handleRemindSuccess}
+        onSubmit={handleRemindSubmit}
         remindAllUsers={remindModal.allUsersSelected}
         totalToRemind={assignedUsers}
       />
@@ -204,6 +270,7 @@ LicenseManagementTableBulkActions.defaultProps = {
 LicenseManagementTableBulkActions.propTypes = {
   subscription: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
+    enterpriseCustomerUuid: PropTypes.string.isRequired,
     expirationDate: PropTypes.string.isRequired,
     isRevocationCapEnabled: PropTypes.bool.isRequired,
     revocations: PropTypes.shape({

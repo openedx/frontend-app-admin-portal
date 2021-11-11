@@ -12,6 +12,7 @@ import {
   RemoveCircle,
 } from '@edx/paragon/icons';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';
 import LicenseManagementRemindModal from '../LicenseManagementModals/LicenseManagementRemindModal';
 import { canRemindLicense, canRevokeLicense } from '../../data/utils';
@@ -19,6 +20,7 @@ import {
   useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
 } from '../LicenseManagementModals/LicenseManagementModalHook';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const revokeText = 'Revoke license';
 const remindText = 'Remind learner';
@@ -43,6 +45,10 @@ const LicenseManagementTableActionColumn = ({
       isOpen: true,
       users: [revokeUser],
     });
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
+    );
   };
 
   const remindOnClick = (remindUser) => {
@@ -51,6 +57,10 @@ const LicenseManagementTableActionColumn = ({
       isOpen: true,
       users: [remindUser],
     });
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
+    );
   };
 
   const handleRevokeSuccess = () => {
@@ -61,6 +71,36 @@ const LicenseManagementTableActionColumn = ({
   const handleRemindSuccess = () => {
     setRemindModal(modalZeroState);
     onRemindSuccess(clearSelection)();
+  };
+
+  const handleRevokeSubmit = () => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_SUBMIT,
+    );
+  };
+
+  const handleRemindSubmit = () => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_SUBMIT,
+    );
+  };
+
+  const handleRevokeCancel = () => {
+    setRevokeModal(modalZeroState);
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CANCEL,
+    );
+  };
+
+  const handleRemindCancel = () => {
+    setRemindModal(modalZeroState);
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CANCEL,
+    );
   };
 
   return (
@@ -112,16 +152,18 @@ const LicenseManagementTableActionColumn = ({
         isOpen={revokeModal.isOpen}
         usersToRevoke={revokeModal.users}
         subscription={subscription}
-        onClose={() => setRevokeModal(modalZeroState)}
+        onClose={handleRevokeCancel}
         onSuccess={handleRevokeSuccess}
+        onSubmit={handleRevokeSubmit}
         revokeAllUsers={revokeModal.allUsersSelected}
       />
       <LicenseManagementRemindModal
         isOpen={remindModal.isOpen}
         usersToRemind={remindModal.users}
         subscription={subscription}
-        onClose={() => setRemindModal(modalZeroState)}
+        onClose={handleRemindCancel}
         onSuccess={handleRemindSuccess}
+        onSubmit={handleRemindSubmit}
         remindAllUsers={remindModal.allUsersSelected}
       />
     </>
@@ -134,6 +176,7 @@ LicenseManagementTableActionColumn.defaultProps = {
 
 LicenseManagementTableActionColumn.propTypes = {
   subscription: PropTypes.shape({
+    enterpriseCustomerUuid: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     expirationDate: PropTypes.string.isRequired,
     isRevocationCapEnabled: PropTypes.bool.isRequired,
