@@ -75,9 +75,6 @@ const LicenseManagementTable = () => {
   } = useContext(SubscriptionDetailContext);
 
   const isExpired = moment().isAfter(subscription.expirationDate);
-  // this is not the cleanest way of getting this, but this will be removed when the
-  // enrollment modal is implemented
-  const enrollmentLink = (window.location.href).replace('subscriptions', 'enrollment');
 
   const sendStatusFilterEvent = (statusFilter) => {
     sendEnterpriseTrackEvent(
@@ -166,6 +163,10 @@ const LicenseManagementTable = () => {
     [users],
   );
 
+  const onEnrollSuccess = (clearTableSelectionCallback) => (() => {
+    clearTableSelectionCallback();
+    forceRefreshUsers();
+  });
   // Successful action modal callback
   const onRemindSuccess = (clearTableSelectionCallback) => (() => {
     clearTableSelectionCallback();
@@ -271,10 +272,10 @@ const LicenseManagementTable = () => {
           return (
             <LicenseManagementTableBulkActions
               subscription={subscription}
-              enrollmentLink={enrollmentLink}
               selectedUsers={selectedUsers}
               onRemindSuccess={onRemindSuccess(clearSelection)}
               onRevokeSuccess={onRevokeSuccess(clearSelection)}
+              onEnrollSuccess={onEnrollSuccess(clearSelection)}
               activatedUsers={overview.activated}
               assignedUsers={overview.assigned}
               allUsersSelected={data.isEntireTableSelected}

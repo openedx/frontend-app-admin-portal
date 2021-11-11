@@ -22,7 +22,7 @@
 
   .card-body {
     @extend .py-2;
-    @extend .px-3
+    @extend .px-3;
   }
 
   .list-item {
@@ -62,28 +62,6 @@
   }
 }
 
-.popover {
-  max-width: 400px;
-}
-
-.popover .popover-header {
-  border-bottom: 2px solid $gray-100;
-  font-weight: 700;
-  font-size: 15px;
-  padding-left: 0;
-  margin: 0 16px 0 16px;
-}
-
-.popover-body {
-  padding: 8px 16px 16px 16px;
-}
-
-.popover-body p {
-  margin: 0 0 8px 0;
-}
-
-.popover-body hr {
-  width: 30%;
-  border-top: 2px solid $gray-100;
-  margin: 8px 0 8px 0;
+.bulk-enroll-modal {
+  min-height: 83vh;
 }

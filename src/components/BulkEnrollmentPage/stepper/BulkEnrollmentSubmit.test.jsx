@@ -38,7 +38,7 @@ const defaultProps = {
   enterpriseId: testEntId,
   enterpriseSlug: testSlug,
   subscription: { uuid: 'foo', enterpriseCatalogUuid: 'bar' },
-  returnToInitialStep: jest.fn(),
+  onEnrollComplete: jest.fn(),
 };
 const defaultAlertProps = {
   isOpen: true,
@@ -139,7 +139,7 @@ describe('BulkEnrollmentSubmit', () => {
     coursesDispatch.mockClear();
     addToast.mockClear();
     logError.mockClear();
-    defaultProps.returnToInitialStep.mockClear();
+    defaultProps.onEnrollComplete.mockClear();
   });
 
   it('displays checkbox and button', () => {
@@ -367,7 +367,7 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     await userEvent.click(button);
-    expect(defaultProps.returnToInitialStep).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onEnrollComplete).toHaveBeenCalledTimes(1);
     await act(() => mockPromiseResolve);
   });
 });
