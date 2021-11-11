@@ -12,7 +12,6 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 
 import '../../../../../../__mocks__/react-instantsearch-dom';
-import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import LicenseManagementTableBulkActions from '../LicenseManagementTableBulkActions';
@@ -75,9 +74,7 @@ const testUndefinedUser = { status: 'foo', email };
 
 const LicenseManagementTableBulkActionsWithContext = (props) => (
   <Provider store={store}>
-    <SearchContext.Provider value={{ refinementFromQueryParams: {} }}>
-      <LicenseManagementTableBulkActions {...props} />
-    </SearchContext.Provider>
+    <LicenseManagementTableBulkActions {...props} />
   </Provider>
 );
 
