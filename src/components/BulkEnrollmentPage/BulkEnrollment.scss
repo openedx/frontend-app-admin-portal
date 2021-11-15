@@ -22,7 +22,7 @@
 
   .card-body {
     @extend .py-2;
-    @extend .px-3
+    @extend .px-3;
   }
 
   .list-item {
@@ -60,4 +60,8 @@
       }
     }
   }
+}
+
+.bulk-enroll-modal {
+  min-height: 83vh;
 }

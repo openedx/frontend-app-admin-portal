@@ -7,7 +7,6 @@ import { breakpoints } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../../containers/CodeManagementPage';
-import BulkEnrollmentPage from '../BulkEnrollmentPage';
 import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
@@ -177,14 +176,6 @@ class EnterpriseApp extends React.Component {
                       )}
                     />,
                   ]}
-                  {(features.BULK_ENROLLMENT && enableSubscriptionManagementScreen)
-                    && (
-                    <Route
-                      key={ROUTE_NAMES.bulkEnrollment}
-                      path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollment}`}
-                      render={routeProps => <BulkEnrollmentPage {...routeProps} />}
-                    />
-                    )}
                   {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"

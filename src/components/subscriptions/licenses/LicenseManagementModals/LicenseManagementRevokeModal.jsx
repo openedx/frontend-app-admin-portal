@@ -66,6 +66,7 @@ const LicenseManagementRevokeModal = ({
   isOpen,
   onClose,
   onSuccess,
+  onSubmit,
   subscription,
   usersToRevoke,
   revokeAllUsers,
@@ -84,6 +85,9 @@ const LicenseManagementRevokeModal = ({
   const isExpired = moment().isAfter(subscription.expirationDate);
 
   const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit();
+    }
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
       if (revokeAllUsers) {
@@ -192,12 +196,16 @@ const LicenseManagementRevokeModal = ({
 LicenseManagementRevokeModal.defaultProps = {
   revokeAllUsers: false,
   totalToRevoke: -1,
+  onSubmit: undefined,
 };
 
 LicenseManagementRevokeModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  /** Function executed after successful remind request resolved */
   onSuccess: PropTypes.func.isRequired,
+  /** Function executed when submit button is pressed */
+  onSubmit: PropTypes.func,
   subscription: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     expirationDate: PropTypes.string.isRequired,

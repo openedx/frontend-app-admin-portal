@@ -9,6 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('@edx/frontend-platform/auth');
 jest.mock('@edx/frontend-platform/logging');
+jest.mock('@edx/frontend-platform/analytics');
 
 // eslint-disable-next-line import/prefer-default-export
 export const axiosMock = new MockAdapter(axios);

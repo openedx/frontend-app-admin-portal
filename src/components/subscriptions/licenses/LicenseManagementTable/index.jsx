@@ -10,6 +10,7 @@ import {
 } from '@edx/paragon';
 import debounce from 'lodash.debounce';
 import moment from 'moment';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { SubscriptionContext } from '../../SubscriptionData';
 import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
@@ -24,6 +25,7 @@ import DownloadCsvButton from '../../buttons/DownloadCsvButton';
 import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
+import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -73,9 +75,33 @@ const LicenseManagementTable = () => {
   } = useContext(SubscriptionDetailContext);
 
   const isExpired = moment().isAfter(subscription.expirationDate);
-  // this is not the cleanest way of getting this, but this will be removed when the
-  // enrollment modal is implemented
-  const enrollmentLink = (window.location.href).replace('subscriptions', 'enrollment');
+
+  const sendStatusFilterEvent = (statusFilter) => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
+      { applied_filters: statusFilter },
+    );
+  };
+
+  const sendEmailFilterEvent = () => {
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
+    );
+  };
+
+  const sendPaginationEvent = (oldPage, newPage) => {
+    const eventName = newPage - oldPage > 0
+      ? SUBSCRIPTION_TABLE_EVENTS.PAGINATION_NEXT
+      : SUBSCRIPTION_TABLE_EVENTS.PAGINATION_PREVIOUS;
+
+    sendEnterpriseTrackEvent(
+      subscription.enterpriseCustomerUuid,
+      eventName,
+      { page: newPage },
+    );
+  };
 
   // Filtering and pagination
   const updateFilters = (filters) => {
@@ -85,12 +111,17 @@ const LicenseManagementTable = () => {
     } else {
       filters.forEach((filter) => {
         switch (filter.id) {
-          case 'statusBadge':
-            setUserStatusFilter(filter.value.join());
+          case 'statusBadge': {
+            const newStatusFilter = filter.value.join();
+            sendStatusFilterEvent(newStatusFilter);
+            setUserStatusFilter(newStatusFilter);
             break;
-          case 'emailLabel':
+          }
+          case 'emailLabel': {
+            sendEmailFilterEvent();
             setSearchQuery(filter.value);
             break;
+          }
           default: break;
         }
       });
@@ -112,6 +143,7 @@ const LicenseManagementTable = () => {
       // pages index from 1 in backend, DataTable component index from 0
       if (args.pageIndex !== currentPage - 1) {
         debouncedSetCurrentPage(args.pageIndex + 1);
+        sendPaginationEvent(currentPage - 1, args.pageIndex);
       }
       debouncedUpdateFilters(args.filters);
     },
@@ -131,6 +163,10 @@ const LicenseManagementTable = () => {
     [users],
   );
 
+  const onEnrollSuccess = (clearTableSelectionCallback) => (() => {
+    clearTableSelectionCallback();
+    forceRefreshUsers();
+  });
   // Successful action modal callback
   const onRemindSuccess = (clearTableSelectionCallback) => (() => {
     // Refresh users to get updated lastRemindDate
@@ -150,12 +186,11 @@ const LicenseManagementTable = () => {
   return (
     <>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
-
       <DataTable
         showFiltersInSidebar={showFiltersInSidebar}
         isFilterable
         manualFilters
-        isSelectable
+        isSelectable={!isExpired}
         manualSelectColumn={selectColumn}
         SelectionStatusComponent={DataTable.ControlledSelectionStatus}
         defaultColumnValues={{ Filter: TextFilter }}
@@ -237,10 +272,10 @@ const LicenseManagementTable = () => {
           return (
             <LicenseManagementTableBulkActions
               subscription={subscription}
-              enrollmentLink={enrollmentLink}
               selectedUsers={selectedUsers}
               onRemindSuccess={onRemindSuccess(clearSelection)}
               onRevokeSuccess={onRevokeSuccess(clearSelection)}
+              onEnrollSuccess={onEnrollSuccess(clearSelection)}
               activatedUsers={overview.activated}
               assignedUsers={overview.assigned}
               allUsersSelected={data.isEntireTableSelected}

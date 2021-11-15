@@ -78,7 +78,7 @@ describe('MultipleSubscriptionsPage', () => {
       route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
       path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
     });
-    expect(screen.getByText('Cohorts')).toBeInTheDocument();
+    expect(screen.getByText('Plans')).toBeInTheDocument();
   });
   it('returns null if there are no subscriptions', () => {
     const subscriptions = { data: { results: [] } };
@@ -86,7 +86,7 @@ describe('MultipleSubscriptionsPage', () => {
       route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
       path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
     });
-    expect(screen.queryByText('Cohorts')).not.toBeInTheDocument();
+    expect(screen.queryByText('Plans')).not.toBeInTheDocument();
   });
   it('redirects if there is only one subscription, default redirectPage', () => {
     const subsUuid = 'bestuuid';
