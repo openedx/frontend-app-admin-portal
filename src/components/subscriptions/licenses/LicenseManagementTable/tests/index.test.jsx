@@ -8,29 +8,21 @@ import {
 } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
-import configureMockStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { ToastsContext } from '../../../../Toasts';
-import SubscriptionDetailContextProvider from '../../../SubscriptionDetailContextProvider';
-import SubscriptionData from '../../../SubscriptionData';
+
 import {
   TEST_ENTERPRISE_CUSTOMER_UUID,
+  generateSubscriptionUser,
+  mockSubscriptionHooks,
+  MockSubscriptionContext,
+  generateSubscriptionPlan,
 } from '../../../tests/TestUtilities';
 import LicenseManagementTable from '../index';
-import * as hooks from '../../../data/hooks';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../../algoliaUtils';
 import { PAGE_SIZE } from '../../../data/constants';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
-
-const mockStore = configureMockStore();
-const store = mockStore({
-  portalConfiguration: {
-    enterpriseId: TEST_ENTERPRISE_CUSTOMER_UUID,
-  },
-});
 
 jest.useFakeTimers('modern');
 
@@ -46,53 +38,10 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-const generateSubscriptionUser = ({
-  uuid = 'test-uuid',
-  userEmail = 'edx@example.com',
-  status = 'activated',
-}) => ({
-  activationDate: moment(),
-  activationKey: 'test-activation-key',
-  lastRemindDate: moment(),
-  revokedDate: null,
-  status,
-  userEmail,
-  uuid,
-});
-
-const nonExpiredSubscriptionPlan = (
-  { licenses } = {},
-) => {
-  const startDate = moment().subtract(1, 'days');
-  const daysUntilExpiration = 2;
-  return {
-    title: 'Foo',
-    uuid: 'bar',
-    startDate: startDate.format(),
-    expirationDate: startDate.add(daysUntilExpiration, 'days').format(),
-    enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
-    isActive: true,
-    licenses: {
-      total: 10,
-      allocated: 0,
-      unassigned: 10,
-      ...licenses,
-    },
-    revocations: {
-      applied: 0,
-      remaining: 0,
-    },
-    daysUntilExpiration,
-    agreementNetDaysUntilExpiration: daysUntilExpiration,
-    hasMultipleSubscriptions: true,
-    isRevocationCapEnabled: false,
-  };
-};
-
 const expiredSubscriptionPlan = (
   { licenses } = {},
 ) => {
-  const baseSubscriptionPlan = nonExpiredSubscriptionPlan();
+  const baseSubscriptionPlan = generateSubscriptionPlan({});
   return {
     ...baseSubscriptionPlan,
     expirationDate: baseSubscriptionPlan.startDate,
@@ -105,75 +54,27 @@ const expiredSubscriptionPlan = (
   };
 };
 
-const forceRefreshSubscription = jest.fn();
-const generateUseSubscriptionData = (subscriptionPlan) => ({
-  subscriptions: {
-    count: 1,
-    next: null,
-    previous: null,
-    results: [subscriptionPlan],
-  },
-  errors: {},
-  setErrors: () => {},
-  forceRefresh: forceRefreshSubscription,
-  loading: false,
-});
-
-const forceRefreshUsersOverview = jest.fn();
-const generateUseSubscriptionUsersOverview = () => ({
-  activated: 0,
-  all: 0,
-  assigned: 0,
-  revoked: 0,
-  unassigned: 0,
-});
-
-const forceRefreshUsers = jest.fn();
-const generateUseSubscriptionUsers = (subscriptionUsers) => ({
-  count: 0,
-  next: null,
-  previous: null,
-  numPages: 2,
-  results: subscriptionUsers,
-});
-
-const mockHooks = ({
-  subscriptionPlan,
-  subscriptionUsers,
-}) => {
-  jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => generateUseSubscriptionData(subscriptionPlan));
-  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [generateUseSubscriptionUsersOverview(), forceRefreshUsersOverview]);
-  jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => [generateUseSubscriptionUsers(subscriptionUsers), forceRefreshUsers]);
-};
-
 // eslint-disable-next-line react/prop-types
 const tableWithContext = ({ subscriptionPlan }) => (
-  <Provider store={store}>
-    <ToastsContext.Provider value={{ addToast: () => {} }}>
-      <SubscriptionData enterpriseId="foo">
-        <SubscriptionDetailContextProvider
-          subscription={subscriptionPlan}
-        >
-          <LicenseManagementTable />
-        </SubscriptionDetailContextProvider>
-      </SubscriptionData>
-    </ToastsContext.Provider>
-  </Provider>
+  <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
+    <LicenseManagementTable />
+  </MockSubscriptionContext>
 );
 
 const singleUserSetup = (status = 'assigned') => {
-  const subscriptionPlan = nonExpiredSubscriptionPlan({
+  const subscriptionPlan = generateSubscriptionPlan({
     licenses: {
       total: 1,
       allocated: 1,
       unassigned: 0,
     },
   });
-  mockHooks({
+  const refreshFunctions = mockSubscriptionHooks(
     subscriptionPlan,
-    subscriptionUsers: [generateSubscriptionUser({ status })],
-  });
+    [generateSubscriptionUser({ status })],
+  );
   render(tableWithContext({ subscriptionPlan }));
+  return refreshFunctions;
 };
 
 describe('<LicenseManagementTable />', () => {
@@ -182,12 +83,10 @@ describe('<LicenseManagementTable />', () => {
     jest.clearAllMocks();
   });
 
-  beforeEach(cleanup);
-
   describe('zero state (no subscription users)', () => {
     it('renders zero state message', () => {
-      const subscriptionPlan = nonExpiredSubscriptionPlan();
-      mockHooks({
+      const subscriptionPlan = generateSubscriptionPlan();
+      mockSubscriptionHooks({
         subscriptionPlan,
         subscriptionUsers: [],
       });
@@ -207,7 +106,7 @@ describe('<LicenseManagementTable />', () => {
         },
       });
       beforeEach(() => {
-        mockHooks({
+        mockSubscriptionHooks({
           subscriptionPlan,
           subscriptionUsers: [{
             activationDate: moment(),
@@ -232,26 +131,17 @@ describe('<LicenseManagementTable />', () => {
     });
 
     describe('non-expired', () => {
-      const subscriptionPlan = nonExpiredSubscriptionPlan({
+      const subscriptionPlan = generateSubscriptionPlan({
         licenses: {
           total: 10,
           unassigned: 5,
         },
       });
       beforeEach(() => {
-        mockHooks({
+        mockSubscriptionHooks(
           subscriptionPlan,
-          subscriptionUsers: [{
-            activationDate: moment(),
-            activationKey: 'test-activation-key',
-            lastRemindDate: moment(),
-            revokedDate: null,
-            status: 'activated',
-            subscriptionPlan: {},
-            userEmail: 'edx@example.com',
-            uuid: 'test-uuid',
-          }],
-        });
+          [generateSubscriptionUser({})],
+        );
       });
 
       it('allows selection of table rows', () => {
@@ -264,7 +154,7 @@ describe('<LicenseManagementTable />', () => {
   });
 
   describe('sends events', () => {
-    const subscriptionPlan = nonExpiredSubscriptionPlan();
+    const subscriptionPlan = generateSubscriptionPlan({});
     const users = [];
     for (let n = 0; n < PAGE_SIZE + 10; n++) {
       users.push(generateSubscriptionUser({
@@ -278,7 +168,7 @@ describe('<LicenseManagementTable />', () => {
       jest.clearAllMocks();
     });
     beforeEach(() => {
-      mockHooks({
+      mockSubscriptionHooks({
         subscriptionPlan,
         subscriptionUsers: users,
       });
@@ -352,7 +242,11 @@ describe('<LicenseManagementTable />', () => {
 
   describe('refreshes data', () => {
     it('revoking a user', async () => {
-      singleUserSetup();
+      const {
+        forceRefreshSubscription,
+        forceRefreshUsers,
+        forceRefreshUsersOverview,
+      } = singleUserSetup();
       // Open revoke dialog by clicking in row button
       const revokeButton = screen.getByTitle('Revoke license');
       await act(async () => { userEvent.click(revokeButton); });
@@ -369,7 +263,9 @@ describe('<LicenseManagementTable />', () => {
       expect(forceRefreshUsersOverview).toHaveBeenCalledTimes(1);
     });
     it('reminding a user', async () => {
-      singleUserSetup();
+      const {
+        forceRefreshUsers,
+      } = singleUserSetup();
       // Open remind dialog by clicking in row button
       const remindButton = screen.getByTitle('Remind learner');
       await act(async () => { userEvent.click(remindButton); });

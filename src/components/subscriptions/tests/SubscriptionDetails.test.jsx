@@ -2,20 +2,31 @@ import {
   screen,
   cleanup,
   render,
+  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
 import React from 'react';
 import SubscriptionDetails from '../SubscriptionDetails';
 import {
-  SubscriptionManagementContext, SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+  SubscriptionManagementContext,
+  SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE,
+  generateSubscriptionPlan,
+  mockSubscriptionHooks,
+  MockSubscriptionContext,
 } from './TestUtilities';
+
+import {
+  INVITE_LEARNERS_BUTTON_TEXT,
+} from '../buttons/InviteLearnersButton';
+
+jest.mock('../buttons/InviteLearnersButton');
 
 const defaultProps = {
   enterpriseSlug: 'sluggy',
 };
 
-const INVITE_LEARNERS_BUTTON_TEXT = 'Invite learners';
 const PURCHASE_DATE = 'Purchase Date';
 
 describe('SubscriptionDetails', () => {
@@ -91,6 +102,36 @@ describe('SubscriptionDetails', () => {
         </SubscriptionManagementContext>,
       );
       expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toBeDisabled();
+    });
+
+    it('Inviting learners should refresh learner data', async () => {
+      const subscriptionPlan = generateSubscriptionPlan({
+        licenses: {
+          allocated: 1,
+          revoked: 0,
+          total: 10,
+        },
+      }, 10);
+      const {
+        forceRefreshSubscription,
+        forceRefreshUsersOverview,
+        forceRefreshUsers,
+      } = mockSubscriptionHooks(subscriptionPlan);
+      render(
+        <MockSubscriptionContext
+          subscriptionPlan={subscriptionPlan}
+        >
+          <SubscriptionDetails {...defaultProps} />
+        </MockSubscriptionContext>
+        ,
+      );
+
+      // Click invite button
+      const inviteButton = screen.getByText(INVITE_LEARNERS_BUTTON_TEXT);
+      await act(async () => { userEvent.click(inviteButton); });
+      expect(forceRefreshSubscription).toHaveBeenCalled();
+      expect(forceRefreshUsersOverview).toHaveBeenCalled();
+      expect(forceRefreshUsers).toHaveBeenCalled();
     });
   });
 

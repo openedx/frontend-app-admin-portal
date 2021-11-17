@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { createMemoryHistory } from 'history';
+import moment from 'moment';
 
 import PropTypes from 'prop-types';
 import SubscriptionData from '../SubscriptionData';
@@ -65,7 +66,7 @@ export const SUBSCRIPTION_PLAN_ASSIGNED_USER_STATE = {
   isLockedForRenewalProcessing: false,
 };
 
-const subscriptionPlan = (state) => {
+const testSubscriptionPlanGenerator = (state) => {
   const {
     priorRenewals,
     daysUntilExpiration,
@@ -132,7 +133,7 @@ export const mockUseSubscriptionData = (state) => ({
     count: 1,
     next: null,
     previous: null,
-    results: [subscriptionPlan(state)],
+    results: [testSubscriptionPlanGenerator(state)],
   },
   errors: {},
   setErrors: () => {},
@@ -161,7 +162,7 @@ export const SubscriptionManagementContext = ({ children, detailState, store }) 
         <ToastsContext.Provider value={{ addToast: () => {} }}>
           <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
             <SubscriptionDetailContextProvider
-              subscription={subscriptionPlan(detailState)}
+              subscription={testSubscriptionPlanGenerator(detailState)}
               hasMultipleSubscriptions={false}
             >
               {children}
@@ -209,5 +210,169 @@ SubscriptionManagementContext.propTypes = {
 };
 
 SubscriptionManagementContext.defaultProps = {
+  store: createMockStore(),
+};
+
+/**
+ * @param {Object} licenses Overrides licenses data
+ * @param {number} daysUntilExpiration
+ * @returns {Object: SubscriptionPlan}
+ */
+export const generateSubscriptionPlan = (
+  { licenses } = {},
+  daysUntilExpiration = 2,
+) => {
+  const startDate = moment().subtract(1, 'days');
+  return {
+    title: TEST_SUBSCRIPTION_PLAN_TITLE,
+    uuid: TEST_SUBSCRIPTION_PLAN_UUID,
+    startDate: startDate.format(),
+    expirationDate: startDate.add(daysUntilExpiration, 'days').format(),
+    enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
+    isActive: true,
+    priorRenewals: [],
+    licenses: {
+      total: 10,
+      allocated: 0,
+      revoked: 0,
+      unassigned: 10,
+      ...licenses,
+    },
+    revocations: {
+      applied: 0,
+      remaining: 0,
+    },
+    daysUntilExpiration,
+    agreementNetDaysUntilExpiration: daysUntilExpiration,
+    hasMultipleSubscriptions: true,
+    isRevocationCapEnabled: false,
+    showExpirationNotifications: true,
+    isLockedForRenewalProcessing: false,
+  };
+};
+
+/**
+ * @param {Object} userDetails overRides user details
+ * @returns {Object: User}
+ */
+export const generateSubscriptionUser = ({
+  uuid = 'test-uuid',
+  userEmail = 'edx@example.com',
+  status = 'activated',
+}) => ({
+  activationDate: moment(),
+  activationKey: 'test-activation-key',
+  lastRemindDate: moment(),
+  revokedDate: null,
+  status,
+  userEmail,
+  uuid,
+});
+
+/**
+ * @param {Object: SubscriptionPlan} subscriptionPlan
+ * @param {function} forceRefresh override force refresh function
+ * @returns subscription data hook output
+ */
+const generateUseSubscriptionData = (subscriptionPlan, forceRefresh = () => {}) => ({
+  subscriptions: {
+    count: 1,
+    next: null,
+    previous: null,
+    results: [subscriptionPlan],
+  },
+  errors: {},
+  setErrors: () => {},
+  forceRefresh,
+  loading: false,
+});
+
+/**
+ * @returns Subscription Over view hook data
+ */
+const generateUseSubscriptionUsersOverviewData = () => ({
+  activated: 0,
+  all: 0,
+  assigned: 0,
+  revoked: 0,
+  unassigned: 0,
+});
+
+/**
+ * @param {Array: SubscriptionUsers} subscriptionUsers
+ * @returns Subscription Users hook data
+ */
+const generateUseSubscriptionUsersData = (subscriptionUsers) => ({
+  count: 0,
+  next: null,
+  previous: null,
+  numPages: 2,
+  results: subscriptionUsers,
+});
+
+/**
+ * Mocks subscription hooks
+ * @param {Object: SubscriptionPlan} subscriptionPlan
+ * @param {Array: SubscriptionUsers} subscriptionUsers
+ * @returns {Object: SubscriptionMockFunctions} Functions to help track when data is fetched
+ */
+export const mockSubscriptionHooks = (
+  subscriptionPlan,
+  subscriptionUsers = [],
+) => {
+  const forceRefreshSubscription = jest.fn();
+  const forceRefreshUsers = jest.fn();
+  const forceRefreshUsersOverview = jest.fn();
+
+  jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(
+    () => generateUseSubscriptionData(subscriptionPlan, forceRefreshSubscription),
+  );
+  jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(
+    () => [generateUseSubscriptionUsersData(subscriptionUsers), forceRefreshUsers],
+  );
+  jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(
+    () => [generateUseSubscriptionUsersOverviewData(), forceRefreshUsersOverview],
+  );
+
+  return {
+    forceRefreshSubscription,
+    forceRefreshUsersOverview,
+    forceRefreshUsers,
+  };
+};
+
+/**
+ * Creates wrapper for subscription detail context
+ * @param {Object: Settings} contextSettings
+ * @returns {React.node} Wrapper component
+ */
+export const MockSubscriptionContext = ({
+  subscriptionPlan,
+  store = createMockStore(),
+  children,
+}) => (
+  <Router history={initialHistory}>
+    <Provider store={store}>
+      <ToastsContext.Provider value={{ addToast: () => {} }}>
+        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+          <SubscriptionDetailContextProvider
+            subscription={subscriptionPlan}
+            hasMultipleSubscriptions={false}
+          >
+            {children}
+          </SubscriptionDetailContextProvider>
+        </SubscriptionData>
+      </ToastsContext.Provider>
+    </Provider>
+  </Router>
+);
+
+MockSubscriptionContext.propTypes = {
+  children: PropTypes.node.isRequired,
+  subscriptionPlan: PropTypes.shape().isRequired,
+  store: PropTypes.shape(),
+};
+
+MockSubscriptionContext.defaultProps = {
   store: createMockStore(),
 };
