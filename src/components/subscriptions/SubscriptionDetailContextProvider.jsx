@@ -17,7 +17,7 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
   const hasMultipleSubscriptions = subscriptions.count > 1;
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
-  const [overview, forceRefresh] = useSubscriptionUsersOverview({
+  const [overview, forceRefreshOverview] = useSubscriptionUsersOverview({
     subscriptionUUID: subscription.uuid,
     search: searchQuery,
     errors,
@@ -34,10 +34,15 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
     userStatusFilter,
   });
 
+  const forceRefreshDetailView = () => {
+    forceRefreshUsers();
+    forceRefreshOverview();
+  };
+
   const context = useMemo(() => ({
     currentPage,
     hasMultipleSubscriptions,
-    forceRefresh,
+    forceRefreshOverview,
     overview,
     searchQuery,
     setCurrentPage,
@@ -47,6 +52,7 @@ const SubscriptionDetailContextProvider = ({ children, subscription }) => {
     forceRefreshUsers,
     loadingUsers,
     setUserStatusFilter,
+    forceRefreshDetailView,
   }), [
     currentPage,
     userStatusFilter,

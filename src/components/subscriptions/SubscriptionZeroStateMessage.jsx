@@ -8,7 +8,10 @@ import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 const SubscriptionZeroStateMessage = () => {
   const { addToast } = useContext(ToastsContext);
   const { forceRefresh } = useContext(SubscriptionContext);
-  const { subscription } = useContext(SubscriptionDetailContext);
+  const {
+    subscription,
+    forceRefreshDetailView,
+  } = useContext(SubscriptionDetailContext);
   const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   return (
@@ -21,6 +24,7 @@ const SubscriptionZeroStateMessage = () => {
         <InviteLearnersButton
           onSuccess={({ numSuccessfulAssignments }) => {
             forceRefresh();
+            forceRefreshDetailView();
             addToast(`${numSuccessfulAssignments} email addresses were successfully added.`);
           }}
           disabled={isSubscriptionExpired}

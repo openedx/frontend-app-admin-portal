@@ -18,7 +18,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
   const {
     hasMultipleSubscriptions,
     subscription,
-    forceRefresh: forceDetailRefresh,
+    forceRefreshDetailView,
   } = useContext(SubscriptionDetailContext);
   const { addToast } = useContext(ToastsContext);
 
@@ -49,7 +49,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
-                    forceDetailRefresh();
+                    forceRefreshDetailView();
                     addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}

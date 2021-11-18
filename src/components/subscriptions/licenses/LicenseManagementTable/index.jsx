@@ -64,7 +64,7 @@ const LicenseManagementTable = () => {
   const {
     currentPage,
     overview,
-    forceRefresh: forceRefreshOverview,
+    forceRefreshDetailView,
     setSearchQuery,
     setCurrentPage,
     subscription,
@@ -169,16 +169,16 @@ const LicenseManagementTable = () => {
   });
   // Successful action modal callback
   const onRemindSuccess = (clearTableSelectionCallback) => (() => {
+    // Refresh users to get updated lastRemindDate
     clearTableSelectionCallback();
     forceRefreshUsers();
     addToast('Users successfully reminded');
   });
   const onRevokeSuccess = (clearTableSelectionCallback) => (() => {
-    // refresh subscription and user data to get updated revoke count and revoked user list
+    // Refresh subscription and user data to get updated revoke count and revoked list of users
     clearTableSelectionCallback();
     forceRefreshSubscription();
-    forceRefreshUsers();
-    forceRefreshOverview();
+    forceRefreshDetailView();
     addToast('Licenses successfully revoked');
   });
 

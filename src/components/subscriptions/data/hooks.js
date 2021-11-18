@@ -23,13 +23,9 @@ const subscriptionInitState = {
 export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({ ...subscriptionInitState });
 
-  const forceRefresh = () => {
-    setSubscriptions({ ...subscriptions });
-  };
-
   const [loading, setLoading] = useState(true);
 
-  useEffect((page = 1) => {
+  const loadCustomerAgreementData = (page = 1) => {
     LicenseManagerApiService.fetchCustomerAgreementData({ enterprise_customer_uuid: enterpriseId, page })
       .then((response) => {
         const { data: customerAgreementData } = camelCaseObject(response);
@@ -53,7 +49,6 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
             });
           subscriptionsData.count = subscriptionsData.results.length;
         }
-
         setSubscriptions(subscriptionsData);
       })
       .catch((err) => {
@@ -65,7 +60,13 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
       }).finally(() => {
         setLoading(false);
       });
-  }, [enterpriseId]);
+  };
+
+  const forceRefresh = () => {
+    loadCustomerAgreementData();
+  };
+
+  useEffect(loadCustomerAgreementData, [enterpriseId]);
 
   return {
     subscriptions,

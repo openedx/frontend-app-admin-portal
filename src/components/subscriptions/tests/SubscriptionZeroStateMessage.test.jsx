@@ -1,14 +1,24 @@
 import {
   screen,
   render,
+  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import SubscriptionZeroStateMessage from '../SubscriptionZeroStateMessage';
-import { SubscriptionManagementContext, SUBSCRIPTION_PLAN_ZERO_STATE } from './TestUtilities';
+import {
+  SubscriptionManagementContext,
+  SUBSCRIPTION_PLAN_ZERO_STATE,
+  generateSubscriptionPlan,
+  mockSubscriptionHooks,
+  MockSubscriptionContext,
+} from './TestUtilities';
+import {
+  INVITE_LEARNERS_BUTTON_TEXT,
+} from '../buttons/InviteLearnersButton';
 
-const INVITE_LEARNERS_BUTTON_TEXT = 'Invite learners';
+jest.mock('../buttons/InviteLearnersButton');
 
 describe('SubscriptionZeroStateMessage', () => {
   it('should enable the invite learners button if the subscription is active', () => {
@@ -37,5 +47,29 @@ describe('SubscriptionZeroStateMessage', () => {
     );
 
     expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toHaveProperty('disabled', true);
+  });
+
+  it('Inviting learners should refresh learner data', async () => {
+    const subscriptionPlan = generateSubscriptionPlan();
+    const {
+      forceRefreshSubscription,
+      forceRefreshUsersOverview,
+      forceRefreshUsers,
+    } = mockSubscriptionHooks(subscriptionPlan);
+    render(
+      <MockSubscriptionContext
+        subscriptionPlan={subscriptionPlan}
+      >
+        <SubscriptionZeroStateMessage />
+      </MockSubscriptionContext>
+      ,
+    );
+
+    // Click invite button
+    const inviteButton = screen.getByText(INVITE_LEARNERS_BUTTON_TEXT);
+    await act(async () => { userEvent.click(inviteButton); });
+    expect(forceRefreshSubscription).toHaveBeenCalled();
+    expect(forceRefreshUsersOverview).toHaveBeenCalled();
+    expect(forceRefreshUsers).toHaveBeenCalled();
   });
 });
