@@ -221,6 +221,7 @@ SubscriptionManagementContext.defaultProps = {
 export const generateSubscriptionPlan = (
   { licenses } = {},
   daysUntilExpiration = 2,
+  agreementNetDaysUntilExpiration = daysUntilExpiration,
 ) => {
   const startDate = moment().subtract(1, 'days');
   return {
@@ -243,7 +244,7 @@ export const generateSubscriptionPlan = (
       remaining: 0,
     },
     daysUntilExpiration,
-    agreementNetDaysUntilExpiration: daysUntilExpiration,
+    agreementNetDaysUntilExpiration,
     hasMultipleSubscriptions: true,
     isRevocationCapEnabled: false,
     showExpirationNotifications: true,

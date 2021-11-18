@@ -33,12 +33,12 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
         const subscriptionsData = { ...subscriptionInitState };
         // Reshape the Customer Agreement API response into the flatter format for the app to use:
         if (customerAgreementData.results && customerAgreementData.count) {
-        // Only look at customer agreements with subs:
+          // Only look at customer agreements with subs:
           customerAgreementData.results.filter(result => (result.subscriptions && result.subscriptions.length))
             .forEach(customerAgreement => {
-            // Push information about whether a particular subscription
-            // should have expiration notices displayed for it down into
-            // that subcription.
+              // Push information about whether a particular subscription
+              // should have expiration notices displayed for it down into
+              // that subcription.
               const flattenedSubscriptionResults = customerAgreement.subscriptions.map(subscription => ({
                 ...subscription,
                 showExpirationNotifications: !(customerAgreement.disableExpirationNotifications || false),

@@ -41,7 +41,7 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
 const expiredSubscriptionPlan = (
   { licenses } = {},
 ) => {
-  const baseSubscriptionPlan = generateSubscriptionPlan({});
+  const baseSubscriptionPlan = generateSubscriptionPlan();
   return {
     ...baseSubscriptionPlan,
     expirationDate: baseSubscriptionPlan.startDate,
@@ -154,7 +154,7 @@ describe('<LicenseManagementTable />', () => {
   });
 
   describe('sends events', () => {
-    const subscriptionPlan = generateSubscriptionPlan({});
+    const subscriptionPlan = generateSubscriptionPlan();
     const users = [];
     for (let n = 0; n < PAGE_SIZE + 10; n++) {
       users.push(generateSubscriptionUser({
