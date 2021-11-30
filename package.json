@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "The frontend-app-admin-portal is a frontend that provides branded learning experiences.",
   "repository": "https://github.com/edx/frontend-app-admin-portal",
-  "browserslist": [
-    "extends @edx/browserslist-config"
-  ],
   "scripts": {
     "build": "fedx-scripts webpack",
     "build:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && fedx-scripts webpack",
@@ -49,7 +46,7 @@
     "moment": "2.27.0",
     "prop-types": "15.7.2",
     "query-string": "5.1.1",
-    "react": "16.13.1",
+    "react": "16.14.0",
     "react-dom": "16.13.1",
     "react-helmet": "5.2.1",
     "react-instantsearch-dom": "6.8.2",
@@ -84,20 +81,21 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "^6.1.0",
+    "@edx/frontend-build": "8.1.6",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
     "@testing-library/dom": "7.31.2",
-    "@testing-library/jest-dom": "5.12.0",
-    "@testing-library/react": "10.4.9",
+    "@testing-library/jest-dom": "5.11.9",
+    "@testing-library/react": "11.2.7",
     "@testing-library/react-hooks": "5.0.3",
     "@testing-library/user-event": "12.8.3",
     "codecov": "3.7.1",
-    "css-loader": "3.5.3",
+    "css-loader": "5.2.6",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "husky": "0.14.3",
     "identity-obj-proxy": "3.0.0",
     "node-sass": "4.14.1",
+    "postcss": "8.1.0",
     "react-dev-utils": "11.0.4",
     "react-test-renderer": "16.13.1"
   }
