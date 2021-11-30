@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
+import { camelCaseObject } from '@edx/frontend-platform';
 import { ToastsContext } from '../Toasts';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
@@ -17,8 +18,9 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
     if (enterpriseId && isLoading) {
       LicenseManagerApiService.fetchBulkEnrollmentJob(enterpriseId, bulkEnrollmentJobId)
         .then((response) => {
-          if (response.data.download_url) {
-            setRedirectUrl(response.data.download_url);
+          const result = camelCaseObject(response.data);
+          if (result.downloadUrl) {
+            setRedirectUrl(result.downloadUrl);
           } else {
             throw new Error('Your download is not ready yet.');
           }
