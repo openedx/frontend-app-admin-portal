@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { ToastsContext } from '../Toasts';
+import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
 const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
@@ -13,16 +14,17 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
   const [isLoading, setLoading] = useState(true);
   const [redirectUrl, setRedirectUrl] = useState(null);
   const [error, setError] = useState(null);
+  const [notReady, setNotReady] = useState(false);
 
   useEffect(() => {
-    if (enterpriseId && isLoading) {
+    if (isLoading) {
       LicenseManagerApiService.fetchBulkEnrollmentJob(enterpriseId, bulkEnrollmentJobId)
         .then((response) => {
           const result = camelCaseObject(response.data);
           if (result.downloadUrl) {
             setRedirectUrl(result.downloadUrl);
           } else {
-            throw new Error('Your download is not ready yet.');
+            setNotReady(true);
           }
         })
         .catch((err) => {
@@ -36,7 +38,11 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
   });
 
   if (isLoading) {
-    return <h1>loading...</h1>;
+    return <EnterpriseAppSkeleton />;
+  }
+  if (notReady) {
+    addToast('Your download is not ready yet.');
+    return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
   }
   if (error) {
     addToast('There was a problem with your request.');
