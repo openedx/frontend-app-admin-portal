@@ -195,7 +195,7 @@ const LicenseManagementTableBulkActions = ({
         <ModalPopup positionRef={target} isOpen={isOpen} onClose={close}>
           <div>
             <Button
-              variant="danger"
+              variant="outline-danger"
               iconBefore={RemoveCircle}
               onClick={() => revokeOnClick(usersToRevoke)}
               disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
