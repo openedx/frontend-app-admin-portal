@@ -35,7 +35,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
           setLoading(false);
         });
     }
-  });
+  }, []);
 
   if (isLoading) {
     return <EnterpriseAppSkeleton />;
