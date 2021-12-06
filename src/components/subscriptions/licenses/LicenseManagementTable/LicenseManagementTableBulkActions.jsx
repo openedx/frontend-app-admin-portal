@@ -193,7 +193,7 @@ const LicenseManagementTableBulkActions = ({
           <Icon src={MoreVert} />
         </Button>
         <ModalPopup positionRef={target} isOpen={isOpen} onClose={close}>
-          <div>
+          <div className="bg-white p-2 rounded shadow">
             <Button
               variant="outline-danger"
               iconBefore={RemoveCircle}
