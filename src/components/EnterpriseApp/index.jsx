@@ -14,6 +14,7 @@ import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
+import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
 import { removeTrailingSlash } from '../../utils';
@@ -227,6 +228,18 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <LmsConfigurations {...routeProps} />}
                     />
                     )}
+                  {features.SETTINGS_PAGE && features.SAML_CONFIGURATION && (
+                    <Route
+                      key="settings"
+                      exact
+                      path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+                      render={routeProps => (
+                        <SettingsPage
+                          {...routeProps}
+                        />
+                      )}
+                    />
+                  )}
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>

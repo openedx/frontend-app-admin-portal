@@ -38,6 +38,7 @@ const features = {
   SUPPORT: process.env.FEATURE_SUPPORT,
   EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_EXTERNAL_LMS_CONFIGURATION,
   FILE_ATTACHMENT: process.env.FEATURE_FILE_ATTACHMENT,
+  SETTINGS_PAGE: process.env.FEATURE_SETTINGS_PAGE,
 };
 
 export { configuration, features };
