@@ -34,9 +34,8 @@ const MultipleFileInputField = ({
       const fileReader = new FileReader();
       fileReader.onload = () => {
         const { name: fileName, size: fileSize, type: fileType } = file;
-        const { result: fileContents } = fileReader;
         inputOnChange([...inputValues, {
-          name: fileName, type: fileType, size: fileSize, contents: new Uint8Array(fileContents).toString(),
+          name: fileName, type: fileType, size: fileSize, contents: new Uint8Array(fileReader.result).toString(),
         }]);
       };
       fileReader.readAsArrayBuffer(file);
