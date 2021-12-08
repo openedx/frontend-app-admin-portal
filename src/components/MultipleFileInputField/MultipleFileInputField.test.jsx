@@ -62,12 +62,14 @@ describe('<MultipleFileInputField />', () => {
     expect(screen.getByText('Select files')).toBeInTheDocument();
     expect(container.querySelector('input')).toBeInTheDocument();
     const fileContents = 'file contents';
-    const file = new Blob([fileContents], { type: 'text/plain', size: 456, name: 'abc.txt' });
+    const file = new Blob([fileContents], { type: 'text/plain', size: 1, name: 'abc.txt' });
     const readAsArrayBuffer = jest.fn();
     const dummyFileReader = { readAsArrayBuffer, result: fileContents };
     window.FileReader = jest.fn(() => dummyFileReader);
     fireEvent.change(container.querySelector('input'), { target: { files: [file] } });
+    dummyFileReader.onload();
     expect(FileReader).toHaveBeenCalled();
     expect(readAsArrayBuffer).toHaveBeenCalled();
+    expect(props.input.onChange).toHaveBeenCalledTimes(1);
   });
 });
