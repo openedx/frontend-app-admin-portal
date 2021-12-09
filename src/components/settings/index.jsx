@@ -16,6 +16,8 @@ import {
   SETTINGS_TAB_PARAM,
 } from './data/constants';
 
+import AccessTab from './SettingsAccessTab';
+
 const PAGE_TILE = 'Settings';
 
 const SettingsPage = (props) => {
@@ -46,12 +48,13 @@ const SettingsPage = (props) => {
       <Container className="py-3" fluid>
 
         <Tabs
-          id="controlled-tab-example"
+          id="settings-tabs"
+          className="mb-3"
           activeKey={tab}
           onSelect={(k) => handleTabChange(k)}
         >
           <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-            Access
+            <AccessTab />
           </Tab>
           <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
             LMS
