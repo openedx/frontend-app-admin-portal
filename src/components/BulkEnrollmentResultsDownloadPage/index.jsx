@@ -48,7 +48,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
     addToast('There was a problem with your request.');
     return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
   }
-  window.location.href = redirectUrl;
+  global.location.href = redirectUrl;
   return <h1>redirecting...</h1>;
 };
 
