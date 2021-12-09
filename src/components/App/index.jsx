@@ -14,7 +14,7 @@ import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
 import { ToastsProvider, Toasts } from '../Toasts';
-import SystemWideWarningBanner from '../system-wide-banner';
+import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 
