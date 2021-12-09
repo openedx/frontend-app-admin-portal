@@ -21,14 +21,16 @@ $ git clone git@github.com:edx/frontend-app-admin-portal.git
 $ cd frontend-app-admin-portal
 $ nvm use (if using nvm) OR install and switch to version of node/npm as per the .nvmrc file to avoid issues during npm install or npm start (and to use the same version of node/npm as used by team plus CI builds)
 $ npm install
-$ npm start
+$ npm start # or "npm run start:with-theme" if you want edX branding
 ```
+
+The application is now running and can be accessed in a web browser at http://localhost:1991/
+
 
 #### Themes
 
 By default, the core Paragon theme is installed and used with the `npm start` command. If you'd like to use the @edx/brand-edx.org theme, use the `npm run start:with-theme` command.
 
-The application is now running and can be accessed in a web browser at http://localhost:1991/
 
 #### Sign-in and access
 
