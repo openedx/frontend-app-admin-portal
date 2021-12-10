@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Hyperlink,
+  ValidationFormGroup,
+  Input,
+  StatefulButton,
+  Icon,
+  Hyperlink,
 } from '@edx/paragon';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
