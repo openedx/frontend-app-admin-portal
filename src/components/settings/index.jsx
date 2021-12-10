@@ -1,74 +1,49 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import {
-  Container,
-  Tabs,
-  Tab,
-} from '@edx/paragon';
-import { useHistory, generatePath } from 'react-router-dom';
-import PropTypes from 'prop-types';
+  Route,
+  Switch,
+  Redirect,
+  useRouteMatch,
+} from 'react-router-dom';
 
 import Hero from '../Hero';
-import { useSettingsTab } from './data/hooks';
+import NotFoundPage from '../NotFoundPage';
 import {
-  SETTINGS_TAB_LABELS,
-  SETTINGS_TABS_VALUES,
-  SETTINGS_TAB_PARAM,
+  DEFAULT_TAB,
+  SETTINGS_PARAM_MATCH,
 } from './data/constants';
-
-import AccessTab from './SettingsAccessTab';
+import SettingsTabs from './SettingsTabs';
 
 const PAGE_TILE = 'Settings';
 
-const SettingsPage = (props) => {
-  const tab = useSettingsTab();
-
-  const history = useHistory();
-
-  /**
-   * Given a key from SETTINGS_TABS_VALUES, will change the current router path
-   * to the new value
-   * @param {string} newTabValue
-   */
-  const handleTabChange = (newTabValue) => {
-    if (SETTINGS_TABS_VALUES[newTabValue]) {
-      const newPath = generatePath(
-        props.match.path,
-        { [SETTINGS_TAB_PARAM]: newTabValue },
-      );
-      history.push({ pathname: newPath });
-    }
-  };
-
+/**
+ * Behaves as the router for settings page
+ * When browsing to {path} (../admin/settings) redirect to default tab
+ */
+const SettingsPage = () => {
+  const { path } = useRouteMatch();
   return (
     <>
       <Helmet title={PAGE_TILE} />
       <Hero title={PAGE_TILE} />
-
-      <Container className="py-3" fluid>
-
-        <Tabs
-          id="settings-tabs"
-          className="mb-3"
-          activeKey={tab}
-          onSelect={(k) => handleTabChange(k)}
-        >
-          <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-            <AccessTab />
-          </Tab>
-          <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-            LMS
-          </Tab>
-        </Tabs>
-      </Container>
+      <Switch>
+        <Redirect
+          exact
+          key="settings"
+          from={path}
+          to={`${path}/${DEFAULT_TAB}`}
+        />
+        <Route
+          key="settings"
+          exact
+          path={`${path}/${SETTINGS_PARAM_MATCH}`}
+          component={SettingsTabs}
+        />
+        <Route path="" component={NotFoundPage} />
+      </Switch>
     </>
   );
-};
-
-SettingsPage.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default SettingsPage;

@@ -4,9 +4,6 @@ const LMS_TAB = 'lms';
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'Configure LMS';
 
-/** Default tab when no parameter is given */
-export const DEFAULT_TAB = ACCESS_TAB;
-
 /**
  * Used as tab values and in router params
  */
@@ -23,8 +20,22 @@ export const SETTINGS_TAB_LABELS = {
   [LMS_TAB]: LMS_TAB_LABEL,
 };
 
+/** Default tab when no parameter is given */
+export const DEFAULT_TAB = ACCESS_TAB;
+
 /**
  * Url parameter that the set in the router
- * Consumed by useSettingsTab hook
+ * Consumed by useCurrentSettingsTab hook to get tab value
  */
 export const SETTINGS_TAB_PARAM = 'settingsTab';
+
+/**
+ * Generates settings url matching from SETTINGS_TABS_VALUES
+ * @example :settingsTab(tab0|tab1)?/
+ */
+const generatePathMatch = () => {
+  const matchTabs = Object.values(SETTINGS_TABS_VALUES).join('|');
+  return `:${SETTINGS_TAB_PARAM}(${matchTabs})?/`;
+};
+
+export const SETTINGS_PARAM_MATCH = generatePathMatch();

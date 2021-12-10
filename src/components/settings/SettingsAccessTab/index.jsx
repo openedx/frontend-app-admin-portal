@@ -6,7 +6,8 @@ import {
 } from '@edx/paragon';
 
 import SupportButton from '../../common/ContactCustomerSupportButton';
-import LinkManagement from './LinkManagement';
+import LinkManagement from './SettingsAccessLinkManagement';
+import SSOManagement from './SettingsAccessSSOManagement';
 
 const SettingsAccessTab = () => (
   <Container fluid className="pl-0">
@@ -28,11 +29,12 @@ const SettingsAccessTab = () => (
         </SupportButton>
       </Col>
     </Row>
-    <Row>
-      <Col>
-        <LinkManagement />
-      </Col>
-    </Row>
+    <div className="mb-4">
+      <LinkManagement />
+    </div>
+    <div className="mb-4">
+      <SSOManagement />
+    </div>
   </Container>
 );
 

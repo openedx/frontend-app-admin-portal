@@ -230,14 +230,8 @@ class EnterpriseApp extends React.Component {
                     )}
                   {features.SETTINGS_PAGE && features.SAML_CONFIGURATION && (
                     <Route
-                      key="settings"
-                      exact
                       path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
-                      render={routeProps => (
-                        <SettingsPage
-                          {...routeProps}
-                        />
-                      )}
+                      component={SettingsPage}
                     />
                   )}
                   <Route path="" component={NotFoundPage} />
