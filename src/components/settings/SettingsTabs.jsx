@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-  Container,
   Tabs,
   Tab,
 } from '@edx/paragon';
 import {
   useHistory,
   generatePath,
+  useRouteMatch,
 } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { useCurrentSettingsTab } from './data/hooks';
 import {
@@ -16,23 +15,24 @@ import {
   SETTINGS_TABS_VALUES,
   SETTINGS_TAB_PARAM,
 } from './data/constants';
+import SettingsAccessTab from './SettingsAccessTab';
+import SettingsLMSTab from './SettingsLMSTab';
 
-import AccessTab from './SettingsAccessTab';
-
-const SettingsPage = (props) => {
+const SettingsTabs = () => {
   const tab = useCurrentSettingsTab();
 
   const history = useHistory();
+  const match = useRouteMatch();
 
   /**
-   * Given a key from SETTINGS_TABS_VALUES, will change the current router path
-   * to the new value
+   * Given a key from SETTINGS_TABS_VALUES, this function
+   * will push a path into browser history
    * @param {string} newTabValue
    */
   const handleTabChange = (newTabValue) => {
     if (SETTINGS_TABS_VALUES[newTabValue]) {
       const newPath = generatePath(
-        props.match.path,
+        match.path,
         { [SETTINGS_TAB_PARAM]: newTabValue },
       );
       history.push({ pathname: newPath });
@@ -40,8 +40,7 @@ const SettingsPage = (props) => {
   };
 
   return (
-    <Container className="py-3" fluid>
-
+    <div className="m-4">
       <Tabs
         id="settings-tabs"
         className="mb-3"
@@ -49,20 +48,14 @@ const SettingsPage = (props) => {
         onSelect={(k) => handleTabChange(k)}
       >
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-          <AccessTab />
+          <SettingsAccessTab />
         </Tab>
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          LMS
+          <SettingsLMSTab />
         </Tab>
       </Tabs>
-    </Container>
+    </div>
   );
 };
 
-SettingsPage.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
-export default SettingsPage;
+export default SettingsTabs;

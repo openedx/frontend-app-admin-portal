@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { SETTINGS_TAB_PARAM, DEFAULT_TAB } from './constants';
+import { SETTINGS_TAB_PARAM } from './constants';
 
 /**
  * Checks url parameter `SETTINGS_TAB_PARAM`
@@ -10,11 +10,7 @@ import { SETTINGS_TAB_PARAM, DEFAULT_TAB } from './constants';
  */
 export const useCurrentSettingsTab = () => {
   const params = useParams();
-  const settingsTab = params[SETTINGS_TAB_PARAM];
-  if (settingsTab) {
-    return settingsTab;
-  }
-  return DEFAULT_TAB;
+  return params[SETTINGS_TAB_PARAM];
 };
 
 // TODO: Remove fake data below
