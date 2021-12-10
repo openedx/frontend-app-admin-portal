@@ -5,6 +5,7 @@ import {
   Row,
 } from '@edx/paragon';
 
+import { features } from '../../../config';
 import SupportButton from '../../common/ContactCustomerSupportButton';
 import LinkManagement from './SettingsAccessLinkManagement';
 import SSOManagement from './SettingsAccessSSOManagement';
@@ -29,9 +30,12 @@ const SettingsAccessTab = () => (
         </SupportButton>
       </Col>
     </Row>
-    <div className="mb-4">
-      <LinkManagement />
-    </div>
+    {features.SETTINGS_UNIVERSAL_LINK
+      && (
+      <div className="mb-4">
+        <LinkManagement />
+      </div>
+      )}
     <div className="mb-4">
       <SSOManagement />
     </div>
