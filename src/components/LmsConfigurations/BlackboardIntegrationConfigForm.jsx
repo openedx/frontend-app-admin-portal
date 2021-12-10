@@ -110,16 +110,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
         </div>
       );
     }
-    let authLinkDisplay;
-    if (config && config.oauthAuthorizationUrl) {
-      authLinkDisplay = (
-        <div className="form-group align-items-left">
-          <Hyperlink destination={config ? config.oauthAuthorizationUrl : null} target="_blank">
-            Authorize
-          </Hyperlink>
-        </div>
-      );
-    }
 
     return (
       <form
@@ -224,13 +214,16 @@ class BlackboardIntegrationConfigForm extends React.Component {
 
         <div className="row">
           <div className="col col-4">
-            <ValidationFormGroup
-              for="oauthAuthorizationUrl"
-              helpText="OAuth Authorization Link. Will be available once Base URL and Client ID are supplied."
-            >
-              <label htmlFor="oauthAuthorizationUrl">OAuth Authoriation URL</label>
-              {authLinkDisplay}
-            </ValidationFormGroup>
+            {config?.oauthAuthorizationUrl && (
+            <div className="form-group align-items-left">
+              <Hyperlink destination={config ? config.oauthAuthorizationUrl : null} target="_blank">
+                Authorize
+              </Hyperlink>
+              <p className="small">
+                OAuth Authorization Link. Will be available once Base URL and Client ID are supplied.
+              </p>
+            </div>
+            )}
           </div>
         </div>
 
