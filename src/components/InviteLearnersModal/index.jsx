@@ -12,6 +12,7 @@ import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
 import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
 import { normalizeFileUpload } from '../../utils';
+import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
 
 class InviteLearnersModal extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class InviteLearnersModal extends React.Component {
       'email-template-greeting': emailTemplate.greeting,
       'email-template-body': emailTemplate.body,
       'email-template-closing': emailTemplate.closing(contactEmail),
+      'notify-users': true,
     });
   }
 
@@ -71,6 +73,7 @@ class InviteLearnersModal extends React.Component {
       template: formData[emailTemplateKey],
       greeting: formData['email-template-greeting'],
       closing: formData['email-template-closing'],
+      notify_users: formData['notify-users'],
     };
 
     options.user_emails = returnValidatedEmails(formData);
@@ -102,6 +105,7 @@ class InviteLearnersModal extends React.Component {
           <div className="mt-4">
             <h3>Add Users</h3>
             <Field
+              id="email-addresses"
               name="email-addresses"
               component={TextAreaAutoSize}
               label="Email Address"
@@ -121,7 +125,15 @@ class InviteLearnersModal extends React.Component {
               normalize={normalizeFileUpload}
               data-hj-suppress
             />
-            <h3>Email Template</h3>
+            <Field
+              id="notify-users-checkbox"
+              name="notify-users"
+              component={CheckboxWithTooltip}
+              label="Notify Learners via Email"
+              defaultChecked
+              data-hj-suppress
+            />
+            <h3 className="mt-3">Email Template</h3>
             <Field
               name="email-template-greeting"
               component={TextAreaAutoSize}

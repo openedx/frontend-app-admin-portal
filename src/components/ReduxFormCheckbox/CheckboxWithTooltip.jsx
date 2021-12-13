@@ -11,24 +11,29 @@ const CheckboxWithTooltip = ({
 }) => (
   <div className={classNames('checkbox-with-tooltip', { className })}>
     <ReduxFormCheckbox {...props} />
+    {icon && (
     <IconWithTooltip
       icon={icon}
       altText={altText}
       tooltipText={tooltipText}
     />
+    )}
   </div>
 );
-
-CheckboxWithTooltip.defaultProps = {
-  className: '',
-};
 
 CheckboxWithTooltip.propTypes = {
   className: PropTypes.string,
   // Icon should be a paragon icon
-  icon: PropTypes.shape().isRequired,
-  altText: PropTypes.string.isRequired,
-  tooltipText: PropTypes.string.isRequired,
+  icon: PropTypes.shape({}),
+  altText: PropTypes.string,
+  tooltipText: PropTypes.string,
+};
+
+CheckboxWithTooltip.defaultProps = {
+  className: '',
+  icon: null,
+  altText: null,
+  tooltipText: null,
 };
 
 export default CheckboxWithTooltip;

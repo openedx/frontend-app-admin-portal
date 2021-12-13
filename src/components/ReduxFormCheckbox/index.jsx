@@ -16,14 +16,15 @@ const ReduxFormCheckbox = (props) => {
       for={id}
       helpText={helptext}
     >
-      <Form.Check
+      <Form.Checkbox
         {...input}
         id={id}
         type="checkbox"
         defaultChecked={defaultChecked}
         checked={input.checked}
-        label={label}
-      />
+      >
+        {label}
+      </Form.Checkbox>
     </ValidationFormGroup>
   );
 };
