@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  ValidationFormGroup,
+  Input,
+  StatefulButton,
+  Icon,
+  Hyperlink,
 } from '@edx/paragon';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -213,6 +217,21 @@ class BlackboardIntegrationConfigForm extends React.Component {
         </div>
 
         <div className="row">
+          <div className="col col-4">
+            {config?.oauthAuthorizationUrl && (
+            <div className="form-group align-items-left">
+              <Hyperlink destination={config ? config.oauthAuthorizationUrl : null} target="_blank">
+                Authorize
+              </Hyperlink>
+              <p className="small">
+                OAuth Authorization Link. Will be available once Base URL and Client ID are supplied.
+              </p>
+            </div>
+            )}
+          </div>
+        </div>
+
+        <div className="row">
           <div className="col col-2">
             <StatefulButton
               state={submitState}
@@ -258,6 +277,7 @@ BlackboardIntegrationConfigForm.propTypes = {
     refreshToken: PropTypes.string,
     clientId: PropTypes.string,
     clientSecret: PropTypes.string,
+    oauthAuthorizationUrl: PropTypes.string,
   }),
   enterpriseId: PropTypes.string,
 };
