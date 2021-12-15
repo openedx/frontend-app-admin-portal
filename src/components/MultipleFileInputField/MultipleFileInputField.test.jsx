@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  screen, render, fireEvent,
+  screen, render, fireEvent, waitFor,
 } from '@testing-library/react';
 import { formatBytes, getSizeInBytes } from './utils';
 import '@testing-library/jest-dom/extend-expect';
 import MultipleFileInputField from './MultipleFileInputField';
+import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';
 
 const formatBytesTestData = [[100, '100 Bytes'], [1024, '1 KB'], [1048576, '1 MB'], [1200000, '1.14 MB'], [4550000, '4.34 MB']];
 const getSizeInBytesTestData = [['1KB', 1024], ['1 MB', 1048576], ['100 Bytes', 100], ['276 KB', 282624], ['1.2 MB', 1258291.2]];
@@ -71,5 +72,14 @@ describe('<MultipleFileInputField />', () => {
     expect(FileReader).toHaveBeenCalled();
     expect(readAsArrayBuffer).toHaveBeenCalled();
     expect(props.input.onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders error when selected files exceeds size', async () => {
+    const { container } = render(<MultipleFileInputField {...props} />);
+    expect(screen.getByText('Select files')).toBeInTheDocument();
+    expect(container.querySelector('input')).toBeInTheDocument();
+    const file = new Blob([['a'.repeat(MAX_FILES_SIZE + 1)]], { type: 'text/plain', size: MAX_FILES_SIZE + 1, name: 'abc.txt' });
+    fireEvent.change(container.querySelector('input'), { target: { files: [file] } });
+    await waitFor(() => expect(screen.queryByText(FILE_SIZE_EXCEEDS_ERROR)).toBeInTheDocument());
   });
 });
