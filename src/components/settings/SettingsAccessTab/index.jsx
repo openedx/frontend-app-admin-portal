@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { features } from '../../../config';
-import SupportButton from '../../common/ContactCustomerSupportButton';
+import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import LinkManagement from './SettingsAccessLinkManagement';
 import SSOManagement from './SettingsAccessSSOManagement';
 
@@ -27,9 +27,9 @@ const SettingsAccessTab = ({ learnerPortalEnabled }) => (
         </p>
       </Col>
       <Col md="auto">
-        <SupportButton variant="outline-primary">
+        <ContactCustomerSupportButton variant="outline-primary">
           Contact support
-        </SupportButton>
+        </ContactCustomerSupportButton>
       </Col>
     </Row>
     {features.SETTINGS_UNIVERSAL_LINK && learnerPortalEnabled

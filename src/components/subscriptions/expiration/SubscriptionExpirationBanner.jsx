@@ -11,7 +11,7 @@ import {
 } from '../data/constants';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { formatTimestamp } from '../../../utils';
-import ContactCustomerSupportButton from '../../common/ContactCustomerSupportButton';
+import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 
 const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const {
