@@ -5,7 +5,7 @@ import { ActionRow, ModalDialog } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { getSubscriptionExpiringCookieName } from '../data/utils';
-import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButton';
+import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
 
 export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';

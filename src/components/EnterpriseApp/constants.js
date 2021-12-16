@@ -3,4 +3,5 @@
 export const ROUTE_NAMES = {
   bulkEnrollment: 'enrollment',
   subscriptionManagement: 'subscriptions',
+  settings: 'settings',
 };

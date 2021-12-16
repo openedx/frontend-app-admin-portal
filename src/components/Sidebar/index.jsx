@@ -4,12 +4,13 @@ import classNames from 'classnames';
 
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import {
-  faCreditCard, faTags, faChartLine, faChartBar, faUniversity,
+  faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
 } from '@fortawesome/free-solid-svg-icons';
 
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -96,6 +97,12 @@ class Sidebar extends React.Component {
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
       },
       // NOTE: keep "Support" link the last nav item
+      {
+        title: 'Settings',
+        to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
+        icon: faCog,
+        hidden: !(features.SETTINGS_PAGE && features.SAML_CONFIGURATION && enableLmsConfigurationsScreen),
+      },
       {
         title: 'Support',
         to: configuration.ENTERPRISE_SUPPORT_URL,

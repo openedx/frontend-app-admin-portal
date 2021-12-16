@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
-import { configuration } from '../../../config';
+import { configuration } from '../../config';
 
 const ContactCustomerSupportButton = (props) => (
   <Button
