@@ -101,7 +101,7 @@ class Sidebar extends React.Component {
         title: 'Settings',
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
-        hidden: !(features.SETTINGS_PAGE && features.SAML_CONFIGURATION),
+        hidden: !(features.SETTINGS_PAGE && features.SAML_CONFIGURATION && enableLmsConfigurationsScreen),
       },
       {
         title: 'Support',

@@ -228,7 +228,7 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <LmsConfigurations {...routeProps} />}
                     />
                     )}
-                  {features.SETTINGS_PAGE && features.SAML_CONFIGURATION && (
+                  {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
                     <Route
                       path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
                       component={SettingsPage}

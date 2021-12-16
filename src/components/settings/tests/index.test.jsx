@@ -36,7 +36,7 @@ describe('<SettingsPage />', () => {
     expect(screen.queryByText('access')).toBeTruthy();
   });
 
-  it('404 when no match is found', () => {
+  it('Renders not found page', () => {
     render(settingsPageWithRouter('settings/foo'));
     expect(screen.queryByText('404')).toBeTruthy();
   });

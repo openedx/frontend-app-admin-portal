@@ -4,13 +4,15 @@ import {
   Col,
   Row,
 } from '@edx/paragon';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { features } from '../../../config';
 import SupportButton from '../../common/ContactCustomerSupportButton';
 import LinkManagement from './SettingsAccessLinkManagement';
 import SSOManagement from './SettingsAccessSSOManagement';
 
-const SettingsAccessTab = () => (
+const SettingsAccessTab = ({ learnerPortalEnabled }) => (
   <Container fluid className="pl-0">
     <Row>
       <Col>
@@ -30,7 +32,7 @@ const SettingsAccessTab = () => (
         </SupportButton>
       </Col>
     </Row>
-    {features.SETTINGS_UNIVERSAL_LINK
+    {features.SETTINGS_UNIVERSAL_LINK && learnerPortalEnabled
       && (
       <div className="mb-4">
         <LinkManagement />
@@ -42,4 +44,12 @@ const SettingsAccessTab = () => (
   </Container>
 );
 
-export default SettingsAccessTab;
+const mapStateToProps = state => ({
+  learnerPortalEnabled: state.portalConfiguration.enableLearnerPortal,
+});
+
+SettingsAccessTab.propTypes = {
+  learnerPortalEnabled: PropTypes.bool.isRequired,
+};
+
+export default connect(mapStateToProps)(SettingsAccessTab);

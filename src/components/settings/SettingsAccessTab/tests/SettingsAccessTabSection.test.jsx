@@ -31,7 +31,7 @@ describe('<SettingsAccessTabSection />', () => {
     // click on title
     const titleArea = screen.getByText(props.title);
     await act(async () => { userEvent.click(titleArea); });
-    // wait till its gone and asset
+    // wait till its gone and assert
     await waitForElementToBeRemoved(() => screen.queryByText(props.children));
     expect(screen.queryByText(props.children)).toBeFalsy();
   });

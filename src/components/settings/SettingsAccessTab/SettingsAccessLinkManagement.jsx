@@ -112,7 +112,6 @@ const SettingsAccessLinkManagement = () => {
         <DataTable.TableControlBar />
         <DataTable.Table />
         <DataTable.EmptyTable content={loadingLinks ? 'Loading...' : 'No links found'} />
-        {data.length < 1 && <DataTable.TableFooter />}
       </DataTable>
     </SettingsAccessTabSection>
 
