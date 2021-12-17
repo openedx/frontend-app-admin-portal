@@ -73,7 +73,10 @@ class ReportingConfig extends React.Component {
         .findIndex(config => config.uuid === uuid);
 
       this.setState((state) => {
-        const newReportingConfig = { ...state.reportingConfigs }.splice(deletedIndex, 1);
+        // Copy the existing, needs to be updated, list of reporting configs
+        const newReportingConfig = [...state.reportingConfigs];
+        // Splice out the one that's being deleted
+        newReportingConfig.splice(deletedIndex, 1);
         return {
           reportingConfigs: newReportingConfig,
         };
