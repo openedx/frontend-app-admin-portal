@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Container,
   Tabs,
   Tab,
 } from '@edx/paragon';
@@ -40,12 +41,12 @@ const SettingsTabs = () => {
   };
 
   return (
-    <div className="m-4">
+    <Container className="py-4" fluid>
       <Tabs
         id="settings-tabs"
         className="mb-3"
         activeKey={tab}
-        onSelect={(k) => handleTabChange(k)}
+        onSelect={handleTabChange}
       >
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
           <SettingsAccessTab />
@@ -54,7 +55,7 @@ const SettingsTabs = () => {
           <SettingsLMSTab />
         </Tab>
       </Tabs>
-    </div>
+    </Container>
   );
 };
 

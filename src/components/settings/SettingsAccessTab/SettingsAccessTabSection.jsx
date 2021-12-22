@@ -8,19 +8,28 @@ import {
 const SettingsAccessTabSection = ({
   title,
   checked,
-  onChange,
+  onFormSwitchChange,
+  onCollapsibleToggle,
   children,
 }) => {
   const [isExpanded, setExpanded] = useState(true);
+
+  const handleToggle = (isOpen) => {
+    setExpanded(isOpen);
+    if (onCollapsibleToggle) {
+      onCollapsibleToggle(isOpen);
+    }
+  };
+
   return (
     <div className="mb-4">
-      <div className="d-flex flex-row-reverse mb-3">
-        <Form.Switch onChange={onChange} checked={checked}>Enable</Form.Switch>
+      <div className="d-flex justify-content-end mb-3">
+        <Form.Switch onChange={onFormSwitchChange} checked={checked}>Enable</Form.Switch>
       </div>
       <div>
         <Collapsible
           open={isExpanded}
-          onToggle={isOpen => setExpanded(isOpen)}
+          onToggle={handleToggle}
           styling="card"
           title={<p><strong>{title}</strong></p>}
         >
@@ -34,8 +43,13 @@ const SettingsAccessTabSection = ({
 SettingsAccessTabSection.propTypes = {
   title: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onFormSwitchChange: PropTypes.func.isRequired,
+  onCollapsibleToggle: PropTypes.func,
   children: PropTypes.node.isRequired,
+};
+
+SettingsAccessTabSection.defaultProps = {
+  onCollapsibleToggle: undefined,
 };
 
 export default SettingsAccessTabSection;

@@ -1,121 +1,145 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   DataTable,
   StatefulButton,
-  Button,
 } from '@edx/paragon';
 
 import { useLinkManagement } from '../data/hooks';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
+import StatusTableCell from './StatusTableCell';
+import DateCreatedTableCell from './DateCreatedTableCell';
+import LinkTableCell from './LinkTableCell';
+import UsageTableCell from './UsageTableCell';
+import ActionsTableCell from './ActionsTableCell';
+import DisableLinkManagementAlertModal from './DisableLinkManagementAlertModal';
 
-const SettingsAccessLinkManagement = () => {
+const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
   const {
     links,
     loadingLinks,
     refreshLinks,
-  } = useLinkManagement();
+  } = useLinkManagement(enterpriseUUID);
+  const [isLinkManagementEnabled, setisLinkManagementEnabled] = useState(true);
+  const [isLinkManagementAlertModalOpen, setisLinkManagementAlertModalOpen] = useState(false);
 
-  const handleLinkManagementToggleChanged = () => {
-    // console.log(e.target.checked);
+  const handleLinkManagementCollapsibleToggled = (isOpen) => {
+    if (isOpen) {
+      refreshLinks();
+    }
   };
 
-  const handleCopyLink = () => {
-    // TODO: Handle Copy link to clipboard
-    // console.log('handleCopyLink', rowData);
+  const handleDeactivatedLink = () => {
+    refreshLinks();
   };
 
-  const handleDeactivateLink = () => {
-    // TODO: Handle deactivate link
-    // console.log('handleDeactivateLink', rowData);
-  };
-
-  /**
-   * When we successfully create a link we should refresh links
-   */
   const handleGenerateLinkSuccess = () => {
     refreshLinks();
+  };
+
+  const handleLinkManagementAlertModalClose = () => {
+    setisLinkManagementAlertModalOpen(false);
+  };
+
+  const handleLinkManagementDisabledSuccess = () => {
+    refreshLinks();
+    setisLinkManagementEnabled(false);
+    setisLinkManagementAlertModalOpen(false);
+  };
+
+  const handleLinkManagementFormSwitchChanged = (e) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setisLinkManagementEnabled(e.target.checked);
+    } else {
+      setisLinkManagementAlertModalOpen(true);
+    }
   };
 
   // TODO: consider moving button to separate component
   const generateLinkButtonProps = {
     labels: {
-      default: 'Generate Link',
-      pending: 'Generating Link...',
-      complete: 'Link Generated',
+      default: 'Generate link',
+      pending: 'Generating link...',
+      complete: 'Link generated',
       error: 'Error',
     },
     state: 'default',
     variant: 'primary',
   };
 
-  // TODO: Make sure our data is being mapped correctly
-  const data = links;
-
   return (
-    <SettingsAccessTabSection
-      title="Access via Link"
-      checked
-      onChange={handleLinkManagementToggleChanged}
-
-    >
-      <p>Generate a link to share with your learners.</p>
-
-      <DataTable
-        data={data}
-        itemCount={data.length}
-        // eslint-disable-next-line no-unused-vars
-        tableActions={(i) => (
-          // TODO: Consider making this its own component with logic
-          <StatefulButton
-            {...generateLinkButtonProps}
-            onClick={handleGenerateLinkSuccess}
-          />
-        )}
-        columns={[
-          {
-            Header: 'Link',
-            accessor: 'link',
-          },
-          {
-            Header: 'Status',
-            accessor: 'linkStatus',
-          },
-          {
-            Header: 'Date created',
-            accessor: 'dateCreated',
-          },
-          {
-            Header: 'Usage',
-            accessor: 'usage',
-          },
-        ]}
-        additionalColumns={[
-          {
-            id: 'action',
-            Header: '',
-            /* eslint-disable react/prop-types */
-            Cell: ({ row }) => {
-              if (row.original.linkStatus === 'activated') {
-                return (
-                  <div className="d-flex flex-row-reverse">
-                    <Button onClick={() => handleCopyLink(row)} variant="link">Copy</Button>
-                    <Button onClick={() => handleDeactivateLink(row)} variant="link">Deactivate</Button>
-                  </div>
-                );
-              }
-              return null;
-            },
-            /* eslint-enable */
-          },
-        ]}
+    <>
+      <SettingsAccessTabSection
+        title="Access via Link"
+        checked={isLinkManagementEnabled}
+        onFormSwitchChange={handleLinkManagementFormSwitchChanged}
+        onCollapsibleToggle={handleLinkManagementCollapsibleToggled}
       >
-        <DataTable.TableControlBar />
-        <DataTable.Table />
-        <DataTable.EmptyTable content={loadingLinks ? 'Loading...' : 'No links found'} />
-      </DataTable>
-    </SettingsAccessTabSection>
-
+        <p>Generate a link to share with your learners.</p>
+        <DataTable
+          data={links}
+          itemCount={links.length}
+          // eslint-disable-next-line no-unused-vars
+          tableActions={(i) => (
+            // TODO: Consider making this its own component with logic
+            <StatefulButton
+              {...generateLinkButtonProps}
+              onClick={handleGenerateLinkSuccess}
+              disabledStates={!isLinkManagementEnabled ? Object.keys(generateLinkButtonProps.labels) : undefined}
+            />
+          )}
+          columns={[
+            {
+              Header: 'Link',
+              accessor: 'link',
+              Cell: LinkTableCell,
+            },
+            {
+              Header: 'Status',
+              accessor: 'isActive',
+              Cell: StatusTableCell,
+            },
+            {
+              Header: 'Date created',
+              accessor: 'created',
+              Cell: DateCreatedTableCell,
+            },
+            {
+              Header: 'Usage',
+              accessor: 'usageCount',
+              Cell: UsageTableCell,
+            },
+          ]}
+          additionalColumns={[
+            {
+              id: 'action',
+              Header: '',
+              Cell: props => <ActionsTableCell {...props} onDeactivateLink={handleDeactivatedLink} />,
+            },
+          ]}
+        >
+          <DataTable.TableControlBar />
+          <DataTable.Table />
+          <DataTable.EmptyTable content={loadingLinks ? 'Loading...' : 'No links found'} />
+        </DataTable>
+      </SettingsAccessTabSection>
+      <DisableLinkManagementAlertModal
+        isOpen={isLinkManagementAlertModalOpen}
+        onDisableLinkManagement={handleLinkManagementDisabledSuccess}
+        onClose={handleLinkManagementAlertModalClose}
+      />
+    </>
   );
 };
 
-export default SettingsAccessLinkManagement;
+const mapStateToProps = (state) => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+SettingsAccessLinkManagement.propTypes = {
+  enterpriseUUID: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(SettingsAccessLinkManagement);
