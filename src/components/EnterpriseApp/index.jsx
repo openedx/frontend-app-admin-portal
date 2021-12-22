@@ -23,6 +23,7 @@ import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
+import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -228,6 +229,11 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <LmsConfigurations {...routeProps} />}
                     />
                     )}
+                  <Route
+                    exact
+                    path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
+                    component={BulkEnrollmentResultsDownloadPage}
+                  />
                   {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
                     <Route
                       path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
