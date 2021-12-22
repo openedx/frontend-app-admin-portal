@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-
 import useHotjar from 'react-use-hotjar';
 
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
@@ -15,11 +15,13 @@ import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
 import { ToastsProvider, Toasts } from '../Toasts';
+import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
+  const config = getConfig();
 
   if (process.env.HOTJAR_APP_ID) {
     const { initHotjar } = useHotjar();
@@ -27,6 +29,27 @@ const AppWrapper = () => {
       initHotjar(process.env.HOTJAR_APP_ID, process.env.HOTJAR_VERSION, process.env.HOTJAR_DEBUG);
     }, [initHotjar]);
   }
+
+  const isMaintenanceAlertOpen = useMemo(() => {
+    if (!config) {
+      return false;
+    }
+    const isEnabledWithMessage = (
+      config.IS_MAINTENANCE_ALERT_ENABLED && config.MAINTENANCE_ALERT_MESSAGE
+    );
+    if (!isEnabledWithMessage) {
+      return false;
+    }
+    const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
+    if (startTimestamp) {
+      return new Date() > new Date(startTimestamp);
+    }
+    return true;
+  }, [
+    config?.IS_MAINTENANCE_ALERT_ENABLED,
+    config?.MAINTENANCE_ALERT_MESSAGE,
+    config?.MAINTENANCE_ALERT_START_TIMESTAMP,
+  ]);
 
   return (
     <AppProvider store={store}>
@@ -36,6 +59,11 @@ const AppWrapper = () => {
           defaultTitle="edX Admin Portal"
         />
         <Toasts />
+        {isMaintenanceAlertOpen && (
+          <SystemWideWarningBanner>
+            {config.MAINTENANCE_ALERT_MESSAGE}
+          </SystemWideWarningBanner>
+        )}
         <Header />
         <Switch>
           <AuthenticatedPageRoute

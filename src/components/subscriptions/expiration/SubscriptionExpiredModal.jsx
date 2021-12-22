@@ -6,7 +6,7 @@ import { configuration } from '../../../config';
 import Img from '../../Img';
 import { formatTimestamp } from '../../../utils';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
-import ContactCustomerSupportButton from '../buttons/ContactCustomerSupportButton';
+import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 
 export const EXPIRED_MODAL_TITLE = 'This subscription cohort is expired';
 

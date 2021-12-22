@@ -114,6 +114,23 @@ const createConfig = () => { };
 const updateConfig = () => { };
 
 describe('<ReportingConfigForm />', () => {
+  it('properly handles deletion of configs', () => {
+    const mock = jest.fn();
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={config}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        deleteConfig={mock}
+      />
+    ));
+    // It's finding three buttons for some reason??
+    wrapper.find('.btn-outline-danger').at(0).simulate('click');
+    expect(mock).toHaveBeenCalled();
+  });
+
   it('renders the proper fields when changing the delivery method', () => {
     const wrapper = mount((
       <ReportingConfigForm
@@ -251,7 +268,7 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     expect(
-      wrapper.find('select#enterpriseCustomerCatalogs').instance().value = ['test-enterprise-customer-catalog'],
-    );
+      wrapper.find('select#enterpriseCustomerCatalogs').instance().value,
+    ).toEqual('test-enterprise-customer-catalog');
   });
 });

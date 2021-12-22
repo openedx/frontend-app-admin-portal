@@ -6,6 +6,7 @@ import {
 import classNames from 'classnames';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons/faTimes';
 import { getSizeInBytes, formatBytes } from './utils';
+import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';
 
 const MultipleFileInputField = ({
   input,
@@ -23,13 +24,12 @@ const MultipleFileInputField = ({
   const [size, setSize] = useState('0');
   const [filesSizeError, setFilesSizeError] = useState(null);
   const { name: inputName, onChange: inputOnChange, value: inputValues } = input;
-  const MAX_FILES_SIZE = 2097152;
 
   const handleInputChange = (e) => {
     const file = e.target.files[0];
     const totalFilesSize = getSizeInBytes(size) + file.size; // size of already uploaded files and new files
     if (totalFilesSize > MAX_FILES_SIZE) {
-      setFilesSizeError('Total files size exceeds 2MB');
+      setFilesSizeError(FILE_SIZE_EXCEEDS_ERROR);
     } else {
       const fileReader = new FileReader();
       fileReader.onload = () => {

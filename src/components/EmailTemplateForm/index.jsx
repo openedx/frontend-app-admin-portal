@@ -54,7 +54,7 @@ export const EMAIL_TEMPLATE_FIELDS = {
       type: 'file',
       label: 'add files',
       value: [],
-      description: "Max files size shouldn't exceed 2mb.",
+      description: "Max files size shouldn't exceed 250kb.",
     },
   }),
 };

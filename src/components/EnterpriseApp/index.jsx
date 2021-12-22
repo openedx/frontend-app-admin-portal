@@ -14,6 +14,7 @@ import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
 import LoadingMessage from '../LoadingMessage';
+import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
 import { removeTrailingSlash } from '../../utils';
@@ -233,6 +234,12 @@ class EnterpriseApp extends React.Component {
                     path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
                     component={BulkEnrollmentResultsDownloadPage}
                   />
+                  {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
+                    <Route
+                      path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+                      component={SettingsPage}
+                    />
+                  )}
                   <Route path="" component={NotFoundPage} />
                 </Switch>
               </div>
