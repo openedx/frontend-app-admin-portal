@@ -42,6 +42,9 @@ export const useLinkManagement = (enterpriseUUID) => {
       }
     };
     fetchLinksForEnterprise();
+    return () => {
+      setLoadingLinks(false);
+    };
   };
 
   const refreshLinks = () => {

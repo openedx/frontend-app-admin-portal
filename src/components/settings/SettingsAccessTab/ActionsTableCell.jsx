@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { ActionRow, Button } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import { getConfig } from '@edx/frontend-platform/config';
+import { logError } from '@edx/frontend-platform/logging';
+
 import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';
+import LinkCopiedToast from './LinkCopiedToast';
 
 const ActionsTableCell = ({ row, onDeactivateLink }) => {
   const [isLinkDeactivationModalOpen, setIsLinkDeactivationModalOpen] = useState(false);
-  const { isActive } = row.original;
-  if (!isActive) {
+  const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
+  const { isValid, uuid: inviteKeyUUID } = row.original;
+  const hasClipboard = !!navigator.clipboard;
+
+  if (!isValid) {
     return null;
   }
+
   const handleCopyLink = () => {
-    // TODO: Handle Copy link to clipboard
-    // console.log('handleCopyLink', row);
+    if (!hasClipboard) {
+      return;
+    }
+    const addToClipboard = async () => {
+      const inviteURL = `${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/invite/${inviteKeyUUID}`;
+      try {
+        await navigator.clipboard.writeText(inviteURL);
+        setIsCopyLinkToastOpen(true);
+      } catch (error) {
+        logError(error);
+      }
+    };
+    addToClipboard();
   };
 
   const handleDeactivateClick = () => {
@@ -29,12 +48,18 @@ const ActionsTableCell = ({ row, onDeactivateLink }) => {
     closeLinkDeactivationModal();
   };
 
+  const handleCloseLinkCopyToast = () => {
+    setIsCopyLinkToastOpen(false);
+  };
+
   return (
     <>
       <div className="d-flex justify-content-end">
         <ActionRow>
-          <Button onClick={() => handleCopyLink()} variant="link" size="inline">Copy</Button>
-          <Button onClick={() => handleDeactivateClick()} variant="link" size="inline">Deactivate</Button>
+          {hasClipboard && (
+            <Button onClick={handleCopyLink} variant="link" size="inline">Copy</Button>
+          )}
+          <Button onClick={handleDeactivateClick} variant="link" size="inline">Deactivate</Button>
         </ActionRow>
       </div>
       <LinkDeactivationAlertModal
@@ -42,6 +67,7 @@ const ActionsTableCell = ({ row, onDeactivateLink }) => {
         onClose={closeLinkDeactivationModal}
         onDeactivateLink={handleLinkDeactivated}
       />
+      <LinkCopiedToast show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
     </>
   );
 };
@@ -49,7 +75,8 @@ const ActionsTableCell = ({ row, onDeactivateLink }) => {
 ActionsTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      isActive: PropTypes.bool,
+      isValid: PropTypes.bool,
+      uuid: PropTypes.string,
     }),
   }).isRequired,
   onDeactivateLink: PropTypes.func,

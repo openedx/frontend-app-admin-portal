@@ -9,7 +9,7 @@ const LinkTableCell = ({ row }) => {
 LinkTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      dateCreated: PropTypes.string,
+      uuid: PropTypes.string,
     }),
   }).isRequired,
 };

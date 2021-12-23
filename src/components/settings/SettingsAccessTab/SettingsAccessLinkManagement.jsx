@@ -98,7 +98,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
             },
             {
               Header: 'Status',
-              accessor: 'isActive',
+              accessor: 'isValid',
               Cell: StatusTableCell,
             },
             {

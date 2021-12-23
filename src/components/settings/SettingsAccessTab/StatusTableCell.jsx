@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Badge } from '@edx/paragon';
 
 const StatusTableCell = ({ row }) => {
-  const { isActive } = row.original;
+  const { isValid } = row.original;
   return (
-    <Badge variant={isActive ? 'success' : 'light'}>
-      {isActive ? 'Active' : 'Inactive'}
+    <Badge variant={isValid ? 'success' : 'light'}>
+      {isValid ? 'Active' : 'Inactive'}
     </Badge>
   );
 };
@@ -14,7 +14,7 @@ const StatusTableCell = ({ row }) => {
 StatusTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      isActive: PropTypes.bool,
+      isValid: PropTypes.bool,
     }),
   }).isRequired,
 };
