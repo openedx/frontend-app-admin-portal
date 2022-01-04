@@ -20,11 +20,13 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
-  static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`
+  static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
-  static enterpriseCustomerCatalogsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_catalogs/`
+  static enterpriseCustomerCatalogsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_catalogs/`;
 
-  static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`
+  static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`;
+
+  static enterpriseCustomerInviteKeyListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/basic-list/`;
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -214,6 +216,14 @@ class LmsApiService {
 
   static markBannerNotificationAsRead(formData) {
     return LmsApiService.apiClient().post(LmsApiService.notificationReadUrl, formData);
+  }
+
+  static getAccessLinks = (enterpriseUUID) => {
+    const queryParams = new URLSearchParams();
+    queryParams.append('enterprise_customer_uuid', enterpriseUUID);
+    queryParams.append('ordering', '-created');
+    const url = `${LmsApiService.enterpriseCustomerInviteKeyListUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
   }
 }
 

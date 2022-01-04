@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  Col,
-  Row,
-} from '@edx/paragon';
+import { Col, Row } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,7 +9,7 @@ import LinkManagement from './SettingsAccessLinkManagement';
 import SSOManagement from './SettingsAccessSSOManagement';
 
 const SettingsAccessTab = ({ learnerPortalEnabled }) => (
-  <Container fluid className="pl-0">
+  <div className="settings-access-tab mt-4">
     <Row>
       <Col>
         <h2>Enable browsing on-demand</h2>
@@ -32,16 +28,15 @@ const SettingsAccessTab = ({ learnerPortalEnabled }) => (
         </ContactCustomerSupportButton>
       </Col>
     </Row>
-    {features.SETTINGS_UNIVERSAL_LINK && learnerPortalEnabled
-      && (
+    {features.SETTINGS_UNIVERSAL_LINK && learnerPortalEnabled && (
       <div className="mb-4">
         <LinkManagement />
       </div>
-      )}
+    )}
     <div className="mb-4">
       <SSOManagement />
     </div>
-  </Container>
+  </div>
 );
 
 const mapStateToProps = state => ({
