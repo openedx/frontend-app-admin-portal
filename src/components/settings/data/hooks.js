@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { SETTINGS_TAB_PARAM } from './constants';
+import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
 /**
  * Checks url parameter `SETTINGS_TAB_PARAM`
@@ -64,7 +66,60 @@ export const useLinkManagement = () => {
   };
 };
 
+const initialCustomerAgreementState = {
+  netDaysUntilExpiration: 0,
+};
+/*
+ * @param {Objet {enterpriseId: string}}
+ * @returns {customerAgreement: Object, loadingCustomerAgreement: bool}
+ * customerAgreement:{
+ *  netDaysUntilExpiration: number
+ * }
+ */
+export const useCustomerAgreementData = ({ enterpriseId, handleError }) => {
+  const [customerAgreement, setCustomerAgreement] = useState(initialCustomerAgreementState);
+  const [loadingCustomerAgreement, setLoadingCustomerAgreement] = useState(true);
+
+  const loadCustomerAgreementData = (page = 1) => {
+    if (!loadingCustomerAgreement) {
+      setLoadingCustomerAgreement(true);
+    }
+    LicenseManagerApiService.fetchCustomerAgreementData({ enterprise_customer_uuid: enterpriseId, page })
+      .then((response) => {
+        const newCustomerAgreementData = {
+          netDaysUntilExpiration: 0,
+        };
+        const { data: customerAgreementData } = camelCaseObject(response);
+        if (customerAgreementData.results && customerAgreementData.count) {
+          // Only look at customer agreements with subs
+          customerAgreementData.results.filter(result => (result.subscriptions && result.subscriptions.length))
+            .forEach(agreement => {
+              // only use highest netDaysUntilExpiration
+              if (newCustomerAgreementData.netDaysUntilExpiration < agreement.netDaysUntilExpiration) {
+                newCustomerAgreementData.netDaysUntilExpiration = agreement.netDaysUntilExpiration;
+              }
+            });
+        }
+        setCustomerAgreement(newCustomerAgreementData);
+      })
+      .catch((err) => {
+        if (handleError) {
+          handleError(err);
+        }
+      }).finally(() => {
+        setLoadingCustomerAgreement(false);
+      });
+  };
+
+  useEffect(loadCustomerAgreementData, [enterpriseId]);
+  return {
+    customerAgreement,
+    loadingCustomerAgreement,
+  };
+};
+
 export default {
+  useCustomerAgreementData,
   useCurrentSettingsTab,
   useLinkManagement,
 };

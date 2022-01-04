@@ -26,6 +26,8 @@ class LmsApiService {
 
   static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`
 
+  static enterpriseCustomerInviteKeyUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key`
+
   static fetchCourseOutline(courseId) {
     const options = {
       course_id: courseId,
@@ -214,6 +216,19 @@ class LmsApiService {
 
   static markBannerNotificationAsRead(formData) {
     return LmsApiService.apiClient().post(LmsApiService.notificationReadUrl, formData);
+  }
+
+  /**
+   * Creates EnterpriseCustomerInviteKey linked to an enterprise
+   * @param {string} enterpriseCustomerUuid Enterprise to set link
+   * @param {Date} expirationDate YYYY-MM-DDThh:mm
+   */
+  static createEnterpriseCustomerLink(enterpriseCustomerUuid, expirationDate) {
+    const formData = {
+      enterprise_customer_uuid: enterpriseCustomerUuid,
+      expiration_date: expirationDate,
+    };
+    return LmsApiService.apiClient().post(LmsApiService.enterpriseCustomerInviteKeyUrl, formData);
   }
 }
 
