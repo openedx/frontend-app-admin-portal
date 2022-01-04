@@ -2,18 +2,15 @@ import Router from 'react-router-dom';
 import { renderHook, act } from '@testing-library/react-hooks/dom';
 import { waitFor } from '@testing-library/react';
 
-import { getAccessLinks } from '../service';
+import LmsApiService from '../../../../data/services/LmsApiService';
 import {
   useCurrentSettingsTab,
   useLinkManagement,
 } from '../hooks';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
+jest.mock('../../../../data/services/LmsApiService');
 
-jest.mock('../service');
-jest.mock('@edx/frontend-platform/config', () => ({
-  getConfig: () => ({ LMS_BASE_URL: 'http://localhost:18000' }),
-}));
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: jest.fn(),
@@ -45,7 +42,7 @@ describe('settings hooks', () => {
       const expectedResponse = {
         data: expectedData,
       };
-      getAccessLinks.mockResolvedValue(expectedResponse);
+      LmsApiService.getAccessLinks.mockResolvedValue(expectedResponse);
       const queryParams = new URLSearchParams();
       queryParams.append('enterprise_customer_uuid', TEST_ENTERPRISE_UUID);
 

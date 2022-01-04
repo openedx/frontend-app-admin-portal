@@ -4,7 +4,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { SETTINGS_TAB_PARAM } from './constants';
-import { getAccessLinks } from './service';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 /**
  * Checks url parameter `SETTINGS_TAB_PARAM`
@@ -32,7 +32,7 @@ export const useLinkManagement = (enterpriseUUID) => {
     setLoadingLinks(true);
     const fetchLinksForEnterprise = async () => {
       try {
-        const response = await getAccessLinks(enterpriseUUID);
+        const response = await LmsApiService.getAccessLinks(enterpriseUUID);
         const result = camelCaseObject(response.data);
         setLinks(result);
       } catch (error) {

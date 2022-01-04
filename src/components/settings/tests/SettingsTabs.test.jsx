@@ -32,7 +32,7 @@ const settingsTabsWithRouter = () => (
   </MemoryRouter>
 );
 
-describe('<SettingsPage />', () => {
+describe('<SettingsTabs />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
