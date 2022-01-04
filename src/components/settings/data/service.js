@@ -6,6 +6,7 @@ import { getConfig } from '@edx/frontend-platform/config';
 export const getAccessLinks = (enterpriseUUID) => {
   const queryParams = new URLSearchParams();
   queryParams.append('enterprise_customer_uuid', enterpriseUUID);
+  queryParams.append('ordering', '-created');
   const url = `${getConfig().LMS_BASE_URL}/enterprise/api/v1/enterprise-customer-invite-key/basic-list/?${queryParams.toString()}`;
   return getAuthenticatedHttpClient().get(url);
 };
