@@ -22,7 +22,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
     refreshLinks,
   } = useLinkManagement(enterpriseUUID);
   const [isLinkManagementEnabled, setisLinkManagementEnabled] = useState(true);
-  const [isLinkManagementAlertModalOpen, setisLinkManagementAlertModalOpen] = useState(false);
+  const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
 
   const handleLinkManagementCollapsibleToggled = (isOpen) => {
     if (isOpen) {
@@ -39,13 +39,13 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
   };
 
   const handleLinkManagementAlertModalClose = () => {
-    setisLinkManagementAlertModalOpen(false);
+    setIsLinkManagementAlertModalOpen(false);
   };
 
   const handleLinkManagementDisabledSuccess = () => {
     refreshLinks();
     setisLinkManagementEnabled(false);
-    setisLinkManagementAlertModalOpen(false);
+    setIsLinkManagementAlertModalOpen(false);
   };
 
   const handleLinkManagementFormSwitchChanged = (e) => {
@@ -53,7 +53,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
     if (isChecked) {
       setisLinkManagementEnabled(e.target.checked);
     } else {
-      setisLinkManagementAlertModalOpen(true);
+      setIsLinkManagementAlertModalOpen(true);
     }
   };
 
