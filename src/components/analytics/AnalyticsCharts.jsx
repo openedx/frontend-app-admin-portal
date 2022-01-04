@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
-import url from 'url';
+
+import TableauReport from 'tableau-react-embed';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
@@ -11,45 +12,15 @@ import AnalyticsApiService from './data/service';
 // eslint-disable-next-line no-unused-vars
 export default function AnalyticsCharts(enterpriseId) {
   const [token, setToken] = useState(null);
-  const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const ref = useRef(null);
-  let tableauUrl = 'https://enterprise-tableau.edx.org/views/enterpriseadminanalytics/enroll_dash';
-  if (configuration.TABLEAU_URL) {
-    tableauUrl = `${configuration.TABLEAU_URL}/views/enterpriseadminanalytics/enroll_dash`;
-  }
-  const options = {
-    height: 900,
-    width: 1250,
-    hideToolbar: true,
-  };
-  const getUrl = () => {
-    const parsed = url.parse(tableauUrl, true);
-    const { protocol, host, pathname } = parsed;
-    const query = '?:embed=yes&:comments=no&:toolbar=no&:refresh=yes';
-    if (!tokenUsedOnce && token) {
-      setTokenUsedOnce(true);
-      return `${protocol}//${host}/trusted/${token}${pathname}${query}`;
-    }
-    return `${protocol}//${host}${pathname}${query}`;
-  };
-  const initViz = () => {
-    const containerDiv = document.getElementById('tableau_frame');
-    const augmentedUrl = getUrl();
-    const viz = new window.tableau.Viz(containerDiv, augmentedUrl, options);
-    return viz;
-  };
-
-  // Initialize tableau Viz and fetch token
+  // Fetch token
   useEffect(() => {
     setIsLoading(true);
     AnalyticsApiService.fetchTableauToken(enterpriseId)
       .then((response) => {
         setIsLoading(false);
         setToken(response.data);
-        setTokenUsedOnce(false);
-        initViz();
       })
       .catch((err) => {
         logError(err);
@@ -57,7 +28,16 @@ export default function AnalyticsCharts(enterpriseId) {
         setError(err);
       });
   }, []);
-
+  let url = null;
+  if (configuration.TABLEAU_URL) {
+    url = `${configuration.TABLEAU_URL}/views/enterpriseadminanalytics/enroll_dash`;
+  }
+  const filters = {};
+  const options = {
+    height: 900,
+    width: 1250,
+    hideToolbar: true,
+  };
   if (isLoading) {
     return <LoadingMessage className="analytics" />;
   }
@@ -70,7 +50,19 @@ export default function AnalyticsCharts(enterpriseId) {
     );
   }
 
-  return <div id="tableau_frame" ref={ref} />;
+  if (token && url) {
+    return (
+      <div data-hj-suppress>
+        <TableauReport
+          url={url}
+          token={token}
+          options={options}
+          filters={filters}
+        />
+      </div>
+    );
+  }
+  return null;
 }
 
 AnalyticsCharts.propTypes = {
