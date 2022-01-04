@@ -59,7 +59,12 @@ const LinkDeactivationAlertModal = ({
       footerNode={(
         <ActionRow>
           <Button variant="tertiary" onClick={handleClose}>Go back</Button>
-          <StatefulButton {...deactivateBtnProps}>Deactivate</StatefulButton>
+          <StatefulButton
+            {...deactivateBtnProps}
+            data-testid="deactivate-modal-confirmation"
+          >
+            Deactivate
+          </StatefulButton>
         </ActionRow>
       )}
     >

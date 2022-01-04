@@ -26,7 +26,7 @@ export const useCurrentSettingsTab = () => {
  */
 export const useLinkManagement = (enterpriseUUID) => {
   const [links, setLinks] = useState([]);
-  const [loadingLinks, setLoadingLinks] = useState(false);
+  const [loadingLinks, setLoadingLinks] = useState(true);
 
   const loadLinks = () => {
     setLoadingLinks(true);
@@ -51,7 +51,6 @@ export const useLinkManagement = (enterpriseUUID) => {
     loadLinks();
   };
 
-  // TODO: update link dependency
   useEffect(loadLinks, []);
 
   return {
