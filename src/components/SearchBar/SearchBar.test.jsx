@@ -26,7 +26,7 @@ describe('<SearchBar />', () => {
       />
     ));
     wrapper.find('input[type="text"]').simulate('change', { target: { value: 'foobar' } });
-    wrapper.find('button[type="submit"]').simulate('submit');
+    wrapper.find('form').simulate('submit');
     expect(mockOnSearchCallback).toHaveBeenCalledTimes(1);
   });
 });
