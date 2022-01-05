@@ -21,7 +21,6 @@ const BUTTON_PROPS = {
 
 const SettingsAccessGenerateLinkButton = ({
   onSuccess,
-  onError,
 }) => {
   const {
     enterpriseId,
@@ -40,7 +39,8 @@ const SettingsAccessGenerateLinkButton = ({
 
   const handleGenerateLink = () => {
     setLoadingLinkCreation(true);
-    const expirationDate = moment().add(netDaysUntilExpiration, 'days').format();
+    // Generate expiration date of netDaysUntilExpiration
+    const expirationDate = moment().add(netDaysUntilExpiration, 'days').startOf('day').format();
 
     LmsApiService.createEnterpriseCustomerLink(enterpriseId, expirationDate)
       .then((response) => {
@@ -48,7 +48,6 @@ const SettingsAccessGenerateLinkButton = ({
       })
       .catch((error) => {
         logError(error);
-        onError(error);
       })
       .finally(() => {
         setLoadingLinkCreation(false);
@@ -66,7 +65,6 @@ const SettingsAccessGenerateLinkButton = ({
 
 SettingsAccessGenerateLinkButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,
-  onError: PropTypes.func.isRequired,
 };
 
 export default SettingsAccessGenerateLinkButton;

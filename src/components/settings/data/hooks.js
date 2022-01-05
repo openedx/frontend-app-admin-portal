@@ -71,7 +71,7 @@ const initialCustomerAgreementState = {
  *  netDaysUntilExpiration: number
  * }
  */
-export const useCustomerAgreementData = ({ enterpriseId, handleError }) => {
+export const useCustomerAgreementData = ({ enterpriseId }) => {
   const [customerAgreement, setCustomerAgreement] = useState(initialCustomerAgreementState);
   const [loadingCustomerAgreement, setLoadingCustomerAgreement] = useState(true);
 
@@ -98,15 +98,14 @@ export const useCustomerAgreementData = ({ enterpriseId, handleError }) => {
         setCustomerAgreement(newCustomerAgreementData);
       })
       .catch((err) => {
-        if (handleError) {
-          handleError(err);
-        }
+        logError(err);
       }).finally(() => {
         setLoadingCustomerAgreement(false);
       });
   };
 
   useEffect(loadCustomerAgreementData, [enterpriseId]);
+
   return {
     customerAgreement,
     loadingCustomerAgreement,

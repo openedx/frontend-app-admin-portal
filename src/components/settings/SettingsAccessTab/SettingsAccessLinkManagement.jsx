@@ -21,7 +21,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
     loadingLinks,
     refreshLinks,
   } = useLinkManagement(enterpriseUUID);
-  const [isLinkManagementEnabled, setisLinkManagementEnabled] = useState(true);
+  const [isLinkManagementEnabled, setIsLinkManagementEnabled] = useState(true);
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
 
   const handleLinkManagementCollapsibleToggled = (isOpen) => {
@@ -44,14 +44,14 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
 
   const handleLinkManagementDisabledSuccess = () => {
     refreshLinks();
-    setisLinkManagementEnabled(false);
+    setIsLinkManagementEnabled(false);
     setIsLinkManagementAlertModalOpen(false);
   };
 
   const handleLinkManagementFormSwitchChanged = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setisLinkManagementEnabled(e.target.checked);
+      setIsLinkManagementEnabled(e.target.checked);
     } else {
       setIsLinkManagementAlertModalOpen(true);
     }
@@ -73,8 +73,6 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
           tableActions={(i) => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
-              // TODO: Handle error
-              onError={() => {}}
             />
           )}
           columns={[
