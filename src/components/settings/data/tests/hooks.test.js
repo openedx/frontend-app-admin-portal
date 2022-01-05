@@ -12,7 +12,7 @@ import {
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 jest.mock('../../../../data/services/LmsApiService');
-jest.mock('../../../../data/services/LicenseManagerApiService');
+jest.mock('../../../../data/services/LicenseManagerAPIService');
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
