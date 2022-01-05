@@ -4,17 +4,28 @@ import {
   render,
   cleanup,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsPage from '../index';
 
 jest.mock('../SettingsTabs');
 
+const mockStore = configureMockStore();
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
+  },
+});
+
 const settingsPageWithRouter = (route) => (
   <MemoryRouter initialEntries={[route]}>
-    <Route path="/settings">
-      <SettingsPage />
-    </Route>
+    <Provider store={store}>
+      <Route path="/settings">
+        <SettingsPage />
+      </Route>
+    </Provider>
   </MemoryRouter>
 );
 

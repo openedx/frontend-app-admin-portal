@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   DataTable,
-  StatefulButton,
 } from '@edx/paragon';
 
 import { useLinkManagement } from '../data/hooks';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
+import SettingsAccessGenerateLinkButton from './SettingsAccessGenerateLinkButton';
 import StatusTableCell from './StatusTableCell';
 import DateCreatedTableCell from './DateCreatedTableCell';
 import LinkTableCell from './LinkTableCell';
@@ -21,7 +21,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
     loadingLinks,
     refreshLinks,
   } = useLinkManagement(enterpriseUUID);
-  const [isLinkManagementEnabled, setisLinkManagementEnabled] = useState(true);
+  const [isLinkManagementEnabled, setIsLinkManagementEnabled] = useState(true);
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
 
   const handleLinkManagementCollapsibleToggled = (isOpen) => {
@@ -44,29 +44,17 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
 
   const handleLinkManagementDisabledSuccess = () => {
     refreshLinks();
-    setisLinkManagementEnabled(false);
+    setIsLinkManagementEnabled(false);
     setIsLinkManagementAlertModalOpen(false);
   };
 
   const handleLinkManagementFormSwitchChanged = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setisLinkManagementEnabled(e.target.checked);
+      setIsLinkManagementEnabled(isChecked);
     } else {
       setIsLinkManagementAlertModalOpen(true);
     }
-  };
-
-  // TODO: consider moving button to separate component
-  const generateLinkButtonProps = {
-    labels: {
-      default: 'Generate link',
-      pending: 'Generating link...',
-      complete: 'Link generated',
-      error: 'Error',
-    },
-    state: 'default',
-    variant: 'primary',
   };
 
   return (
@@ -83,11 +71,9 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
           itemCount={links.length}
           // eslint-disable-next-line no-unused-vars
           tableActions={(i) => (
-            // TODO: Consider making this its own component with logic
-            <StatefulButton
-              {...generateLinkButtonProps}
-              onClick={handleGenerateLinkSuccess}
-              disabledStates={!isLinkManagementEnabled ? Object.keys(generateLinkButtonProps.labels) : undefined}
+            <SettingsAccessGenerateLinkButton
+              onSuccess={handleGenerateLinkSuccess}
+              disabled={!isLinkManagementEnabled}
             />
           )}
           columns={[

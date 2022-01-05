@@ -14,6 +14,7 @@ import {
   SETTINGS_PARAM_MATCH,
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
+import SettingsContext from './SettingsContext';
 
 const PAGE_TILE = 'Settings';
 
@@ -24,7 +25,7 @@ const PAGE_TILE = 'Settings';
 const SettingsPage = () => {
   const { path } = useRouteMatch();
   return (
-    <>
+    <SettingsContext>
       <Helmet title={PAGE_TILE} />
       <Hero title={PAGE_TILE} />
       <Switch>
@@ -40,7 +41,7 @@ const SettingsPage = () => {
         />
         <Route path="" component={NotFoundPage} />
       </Switch>
-    </>
+    </SettingsContext>
   );
 };
 
