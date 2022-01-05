@@ -31,8 +31,11 @@ const LicenseManagementTableBulkActions = ({
   onRevokeSuccess,
   onEnrollSuccess,
   allUsersSelected,
-  activatedUsers,
-  assignedUsers,
+  activatedUsersCount,
+  assignedUsersCount,
+  revokedUsersCount,
+  activeFilters,
+  tableItemCount,
   disabled,
 }) => {
   const [revokeModal, setRevokeModal] = useLicenseManagementModalState();
@@ -181,6 +184,73 @@ const LicenseManagementTableBulkActions = ({
     );
   };
 
+  const totalToRevoke = useMemo(() => {
+    // If not revoking all users, return the number of selected users that are revocable
+    if (!allUsersSelected) {
+      return usersToRevoke.length;
+    }
+
+    // If there are no filters applied, return the number of revocable users
+    if (activeFilters.length === 0) {
+      return activatedUsersCount + assignedUsersCount;
+    }
+
+    // If any filter besides the status filter is applied, we cannot get an accurate count of revocable users
+    if (activeFilters.find(filter => filter.name !== 'statusBadge')) {
+      return null;
+    }
+
+    // If only the status filter is applied and it includes revoked users, substract the number
+    // of revoked users from the table item count
+    const activeFilter = activeFilters[0];
+    if (activeFilter.name === 'statusBadge' && activeFilter.filterValue.includes(REVOKED)) {
+      return tableItemCount - revokedUsersCount;
+    }
+
+    return tableItemCount;
+  }, [
+    allUsersSelected, usersToRevoke.length, activeFilters,
+    activatedUsersCount, assignedUsersCount, revokedUsersCount, tableItemCount,
+  ]);
+
+  const totalToRemind = useMemo(() => {
+    // If not all users are selected, return the number of selected users that are revocable
+    if (!allUsersSelected) {
+      return usersToRemind.length;
+    }
+
+    // If there are no filters applied, return the number of revocable users
+    if (activeFilters.length === 0) {
+      return assignedUsersCount;
+    }
+
+    // If any filter besides the status filter is applied, we cannot get an accurate count of revocable users
+    if (activeFilters.find(filter => filter.name !== 'statusBadge')) {
+      return null;
+    }
+
+    // If only the status filter is applied and it includes active/revoked users,
+    // get the count by subtracting the number of active/revoked users from the table item count
+    const activeFilter = activeFilters[0];
+    if (activeFilter.name === 'statusBadge') {
+      let remindableUsersCount = tableItemCount;
+      if (activeFilter.filterValue.includes(REVOKED)) {
+        remindableUsersCount -= revokedUsersCount;
+      }
+
+      if (activeFilter.filterValue.includes(ACTIVATED)) {
+        remindableUsersCount -= activatedUsersCount;
+      }
+
+      return remindableUsersCount;
+    }
+
+    return tableItemCount;
+  }, [
+    allUsersSelected, usersToRemind.length, activeFilters,
+    activatedUsersCount, assignedUsersCount, revokedUsersCount, tableItemCount,
+  ]);
+
   return (
     <>
       <ActionRow>
@@ -198,9 +268,9 @@ const LicenseManagementTableBulkActions = ({
               variant="outline-danger"
               iconBefore={RemoveCircle}
               onClick={() => revokeOnClick(usersToRevoke)}
-              disabled={(!usersToRevoke.length && !allUsersSelected) || disabled}
+              disabled={(totalToRevoke === 0) || disabled}
             >
-              Revoke ({allUsersSelected ? activatedUsers + assignedUsers : usersToRevoke.length})
+              Revoke {totalToRevoke !== null ? `(${totalToRevoke})` : 'all'}
             </Button>
           </div>
         </ModalPopup>
@@ -208,9 +278,9 @@ const LicenseManagementTableBulkActions = ({
           variant="outline-primary"
           iconBefore={Email}
           onClick={() => remindOnClick(usersToRemind)}
-          disabled={(!usersToRemind.length && !allUsersSelected) || disabled}
+          disabled={(totalToRemind === 0) || disabled}
         >
-          Remind ({allUsersSelected ? assignedUsers : usersToRemind.length })
+          Remind {totalToRemind !== null ? `(${totalToRemind})` : 'all'}
         </Button>
         <BulkEnrollButton
           learners={enrollableLearners}
@@ -247,7 +317,8 @@ const LicenseManagementTableBulkActions = ({
         onSuccess={handleRevokeSuccess}
         onSubmit={handleRevokeSubmit}
         revokeAllUsers={revokeModal.allUsersSelected}
-        totalToRevoke={activatedUsers + assignedUsers}
+        totalToRevoke={totalToRevoke}
+        activeFilters={activeFilters}
       />
       <LicenseManagementRemindModal
         isOpen={remindModal.isOpen}
@@ -257,7 +328,8 @@ const LicenseManagementTableBulkActions = ({
         onSuccess={handleRemindSuccess}
         onSubmit={handleRemindSubmit}
         remindAllUsers={remindModal.allUsersSelected}
-        totalToRemind={assignedUsers}
+        totalToRemind={totalToRemind}
+        activeFilters={activeFilters}
       />
     </>
   );
@@ -287,9 +359,18 @@ LicenseManagementTableBulkActions.propTypes = {
   onRevokeSuccess: PropTypes.func.isRequired,
   onEnrollSuccess: PropTypes.func.isRequired,
   allUsersSelected: PropTypes.bool.isRequired,
-  activatedUsers: PropTypes.number.isRequired,
-  assignedUsers: PropTypes.number.isRequired,
+  activeFilters: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      filter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    }),
+  ).isRequired,
+  activatedUsersCount: PropTypes.number.isRequired,
+  assignedUsersCount: PropTypes.number.isRequired,
+  revokedUsersCount: PropTypes.number.isRequired,
   disabled: PropTypes.bool,
+  tableItemCount: PropTypes.number.isRequired,
 };
 
 export default LicenseManagementTableBulkActions;

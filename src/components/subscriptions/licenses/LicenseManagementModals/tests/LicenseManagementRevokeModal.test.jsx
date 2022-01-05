@@ -12,6 +12,7 @@ import moment from 'moment';
 
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRevokeModal from '../LicenseManagementRevokeModal';
+import { ASSIGNED } from '../../../data/constants';
 
 jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -38,6 +39,7 @@ const basicProps = {
   },
   usersToRevoke: [],
   revokeAllUsers: undefined,
+  activeFilters: [],
   totalToRevoke: undefined,
 };
 
@@ -59,21 +61,21 @@ describe('<LicenseManagementRevokeModal />', () => {
   describe('submit button and title displays right text when ', () => {
     it('revoking only 1 user', () => {
       const props = { ...basicProps, usersToRevoke: [sampleUser] };
-      render(<LicenseManagementRevokeModal {...props} />);
-      expect(screen.queryByText('Revoke License')).toBeTruthy();
-      expect(screen.queryByText('Revoke (1)')).toBeTruthy();
+      render(<LicenseManagementRevokeModal {...props} totalToRevoke={1} />);
+      expect(screen.getByText('Revoke License'));
+      expect(screen.getByText('Revoke (1)'));
     });
     it('revoking only more then 1 user', () => {
       const props = { ...basicProps, usersToRevoke: [sampleUser, sampleUser] };
-      render(<LicenseManagementRevokeModal {...props} />);
-      expect(screen.queryByText('Revoke Licenses')).toBeTruthy();
-      expect(screen.queryByText('Revoke (2)')).toBeTruthy();
+      render(<LicenseManagementRevokeModal {...props} totalToRevoke={2} />);
+      expect(screen.getByText('Revoke Licenses'));
+      expect(screen.getByText('Revoke (2)'));
     });
     it('revoking all users', () => {
-      const props = { ...basicProps, revokeAllUsers: true };
+      const props = { ...basicProps, revokeAllUsers: true, totalToRevoke: null };
       render(<LicenseManagementRevokeModal {...props} />);
-      expect(screen.queryByText('Revoke Licenses')).toBeTruthy();
-      expect(screen.queryByText('Revoke (All)')).toBeTruthy();
+      expect(screen.getByText('Revoke Licenses'));
+      expect(screen.getByText('Revoke all'));
     });
     it('revoking all users, with totalToRevoke provided', () => {
       const props = {
@@ -82,19 +84,18 @@ describe('<LicenseManagementRevokeModal />', () => {
         totalToRevoke: 10,
       };
       render(<LicenseManagementRevokeModal {...props} />);
-      expect(screen.queryByText('Revoke Licenses')).toBeTruthy();
-      expect(screen.queryByText('Revoke (10)')).toBeTruthy();
+      expect(screen.getByText('Revoke Licenses'));
+      expect(screen.getByText('Revoke (10)'));
     });
   });
 
   describe('when submit button is clicked', () => {
     it('displays done on submit', async () => {
-      const mockPromiseResolve = Promise.resolve({ data: {} });
-      LicenseManagerApiService.licenseBulkRevoke.mockReturnValue(mockPromiseResolve);
+      LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue({ data: {} });
       const props = { ...basicProps, usersToRevoke: [sampleUser] };
 
       act(() => {
-        render(<LicenseManagementRevokeModal {...props} />);
+        render(<LicenseManagementRevokeModal {...props} totalToRevoke={1} />);
       });
 
       const button = screen.getByText('Revoke (1)');
@@ -102,14 +103,12 @@ describe('<LicenseManagementRevokeModal />', () => {
       expect(onSubmitMock).toBeCalledTimes(1);
 
       expect(screen.queryByText('Revoke (1)')).toBeFalsy();
-      expect(screen.queryByText('Done')).toBeTruthy();
+      expect(screen.getByText('Done'));
       expect(logError).toBeCalledTimes(0);
     });
-
     it('displays alert if licenseBulkRevoke has error', async () => {
-      const mockPromiseReject = Promise.reject(new Error('something went wrong'));
-      LicenseManagerApiService.licenseBulkRevoke.mockReturnValue(mockPromiseReject);
-      const props = { ...basicProps, usersToRevoke: [sampleUser] };
+      LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(new Error('something went wrong'));
+      const props = { ...basicProps, usersToRevoke: [sampleUser], totalToRevoke: 1 };
 
       act(() => {
         render(<LicenseManagementRevokeModal {...props} />);
@@ -125,15 +124,14 @@ describe('<LicenseManagementRevokeModal />', () => {
       expect(logError).toBeCalledTimes(1);
     });
     it('displays alert if licenseRevokeAll has error', async () => {
-      const mockPromiseReject = Promise.reject(new Error('something went wrong'));
-      LicenseManagerApiService.licenseRevokeAll.mockReturnValue(mockPromiseReject);
-      const props = { ...basicProps, revokeAllUsers: true };
+      LicenseManagerApiService.licenseRevokeAll.mockRejectedValue(new Error('something went wrong'));
+      const props = { ...basicProps, revokeAllUsers: true, totalToRevoke: null };
 
       act(() => {
         render(<LicenseManagementRevokeModal {...props} />);
       });
 
-      const button = screen.getByText('Revoke (All)');
+      const button = screen.getByText('Revoke all');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
 
@@ -156,6 +154,75 @@ describe('<LicenseManagementRevokeModal />', () => {
       };
       render(<LicenseManagementRevokeModal {...props} />);
       expect(screen.getByRole('alert')).toBeTruthy();
+    });
+  });
+
+  describe('calls the correct revoke endpoint', () => {
+    beforeEach(() => {
+      const mockPromiseResolve = Promise.resolve({ data: {} });
+      LicenseManagerApiService.licenseRevokeAll.mockReturnValue(mockPromiseResolve);
+      LicenseManagerApiService.licenseBulkRevoke.mockReturnValue(mockPromiseResolve);
+    });
+
+    it('calls licenseRevokeAll when revoking all users and there are no active filters', async () => {
+      const props = {
+        ...basicProps, revokeAllUsers: true, totalToRevoke: null, activeFilters: [],
+      };
+
+      act(() => {
+        render(<LicenseManagementRevokeModal {...props} />);
+      });
+
+      const button = screen.getByText('Revoke all');
+      await act(async () => { userEvent.click(button); });
+      expect(LicenseManagerApiService.licenseRevokeAll).toHaveBeenCalled();
+    });
+
+    it('calls licenseBulkRevoke with emails when users are passed in', async () => {
+      const props = {
+        ...basicProps, usersToRevoke: [sampleUser], totalToRevoke: 1, activeFilters: [],
+      };
+
+      act(() => {
+        render(<LicenseManagementRevokeModal {...props} />);
+      });
+
+      const button = screen.getByText('Revoke (1)');
+      await act(async () => { userEvent.click(button); });
+      expect(LicenseManagerApiService.licenseBulkRevoke).toHaveBeenCalledWith(
+        props.subscription.uuid,
+        {
+          user_emails: [sampleUser.email],
+        },
+      );
+    });
+
+    it('calls licenseBulkRevoke with filters when revoking all users and filters are applied', async () => {
+      const props = {
+        ...basicProps,
+        revokeAllUsers: true,
+        totalToRevoke: null,
+        activeFilters: [{
+          name: 'statusBadge',
+          filterValue: [ASSIGNED],
+        }],
+      };
+
+      act(() => {
+        render(<LicenseManagementRevokeModal {...props} />);
+      });
+
+      const button = screen.getByText('Revoke all');
+      await act(async () => { userEvent.click(button); });
+      expect(LicenseManagerApiService.licenseBulkRevoke).toHaveBeenCalledWith(
+        props.subscription.uuid,
+        {
+          filters: [{
+            name: 'status_in',
+            filter_value: [ASSIGNED],
+          }],
+        },
+      );
     });
   });
 });

@@ -155,7 +155,9 @@ const LicenseManagementTableActionColumn = ({
         onClose={handleRevokeCancel}
         onSuccess={handleRevokeSuccess}
         onSubmit={handleRevokeSubmit}
-        revokeAllUsers={revokeModal.allUsersSelected}
+        revokeAllUsers={false}
+        activeFilters={[]}
+        totalToRevoke={1}
       />
       <LicenseManagementRemindModal
         isOpen={remindModal.isOpen}
@@ -164,7 +166,9 @@ const LicenseManagementTableActionColumn = ({
         onClose={handleRemindCancel}
         onSuccess={handleRemindSuccess}
         onSubmit={handleRemindSubmit}
-        remindAllUsers={remindModal.allUsersSelected}
+        remindAllUsers={false}
+        activeFilters={[]}
+        totalToRemind={1}
       />
     </>
   );
