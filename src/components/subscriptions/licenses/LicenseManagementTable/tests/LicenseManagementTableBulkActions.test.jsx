@@ -52,8 +52,9 @@ const basicProps = {
   onRevokeSuccess: () => {},
   onEnrollSuccess: () => {},
   allUsersSelected: false,
-  activatedUsers: 0,
-  assignedUsers: 0,
+  activatedUsersCount: 0,
+  assignedUsersCount: 0,
+  revokedUsersCount: 0,
   subscription: {
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
     enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -64,6 +65,8 @@ const basicProps = {
       remaining: 10,
     },
   },
+  activeFilters: [],
+  tableItemCount: 0,
 };
 
 const email = 'foo@test.edx.org';
@@ -124,81 +127,140 @@ describe('<LicenseManagementTableBulkActions />', () => {
     });
   });
 
-  describe('renders correct label when not all users are selected ', () => {
+  describe('renders correct label', () => {
     it('selected only revoked users', async () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testRevokedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.queryByText('Enroll (0)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
+      expect(screen.getByText('Enroll (0)'));
+      expect(screen.getByText('Remind (0)'));
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
-      expect(screen.getByText('Revoke (0)')).toBeTruthy();
+      expect(screen.getByText('Revoke (0)'));
     });
     it('selected only activated users', async () => {
       const props = { ...basicProps, selectedUsers: [testActivatedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.queryByText('Enroll (1)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
+      expect(screen.getByText('Enroll (1)'));
+      expect(screen.getByText('Remind (0)'));
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
-      expect(screen.getByText('Revoke (1)')).toBeTruthy();
+      expect(screen.getByText('Revoke (1)'));
     });
     it('selected only assigned users', async () => {
       const props = { ...basicProps, selectedUsers: [testAssignedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (2)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (2)')).toBeInTheDocument();
+      expect(screen.getByText('Enroll (2)'));
+      expect(screen.getByText('Remind (2)'));
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
-      expect(screen.getByText('Revoke (2)')).toBeTruthy();
+      expect(screen.getByText('Revoke (2)'));
     });
     it('selected mix users', async () => {
       const props = { ...basicProps, selectedUsers: [testRevokedUser, testActivatedUser, testAssignedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (2)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (1)')).toBeInTheDocument();
+      expect(screen.getByText('Enroll (2)'));
+      expect(screen.getByText('Remind (1)'));
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
-      expect(screen.getByText('Revoke (2)')).toBeTruthy();
+      expect(screen.getByText('Revoke (2)'));
     });
     it('selected undefined users', async () => {
       const props = { ...basicProps, selectedUsers: [testUndefinedUser] };
       render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-      expect(screen.getByText('Enroll (0)')).toBeInTheDocument();
-      expect(screen.getByText('Remind (0)')).toBeInTheDocument();
+      expect(screen.getByText('Enroll (0)'));
+      expect(screen.getByText('Remind (0)'));
       const revokeMenu = screen.getByTestId('revokeToggle');
       await act(async () => {
         await userEvent.click(revokeMenu);
       });
       expect(screen.getByText('Revoke (0)')).toBeInTheDocument();
     });
-  });
-
-  it('renders correct label when all users are selected', async () => {
-    const props = {
-      ...basicProps,
-      allUsersSelected: true,
-      activatedUsers: 1,
-      assignedUsers: 1,
-    };
-    render(<LicenseManagementTableBulkActionsWithContext {...props} />);
-    expect(screen.getByText('Enroll (0)')).toBeTruthy();
-    expect(screen.getByText('Remind (1)')).toBeTruthy();
-    const revokeMenu = screen.getByTestId('revokeToggle');
-    await act(async () => {
-      await userEvent.click(revokeMenu);
+    it('when all users are selected', async () => {
+      const props = {
+        ...basicProps,
+        allUsersSelected: true,
+        activatedUsersCount: 1,
+        assignedUsersCount: 1,
+      };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      expect(screen.getByText('Enroll (0)'));
+      expect(screen.getByText('Remind (1)'));
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      await act(async () => {
+        await userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (2)'));
     });
-    expect(screen.getByText('Revoke (2)')).toBeTruthy();
+    it('when all users are selected with an email filter', async () => {
+      const props = {
+        ...basicProps,
+        allUsersSelected: true,
+        activatedUsersCount: 1,
+        assignedUsersCount: 1,
+        activeFilters: [{
+          name: 'emailLabel',
+          filterValue: 'email@',
+        }],
+      };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      expect(screen.getByText('Remind all'));
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      await act(async () => {
+        await userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke all'));
+    });
+    it('when all users are selected with only the status filter', async () => {
+      const activatedUsersCount = 3;
+      const assignedUsersCount = 2;
+      const revokedUsersCount = 1;
+      const props = {
+        ...basicProps,
+        allUsersSelected: true,
+        activatedUsersCount,
+        assignedUsersCount,
+        revokedUsersCount,
+        activeFilters: [{
+          name: 'statusBadge',
+          filterValue: ['activated', 'assigned', 'revoked'],
+        }],
+        tableItemCount: 6,
+      };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      expect(screen.getByText(`Remind (${assignedUsersCount})`));
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      await act(async () => {
+        await userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText(`Revoke (${assignedUsersCount + activatedUsersCount})`));
+    });
+    it('when all users are selected with only the status filter but revoked users are not selected', async () => {
+      const props = {
+        ...basicProps,
+        allUsersSelected: true,
+        activeFilters: [{
+          name: 'statusBadge',
+          filterValue: ['activated', 'assigned'],
+        }],
+        tableItemCount: 99,
+      };
+      render(<LicenseManagementTableBulkActionsWithContext {...props} />);
+      expect(screen.getByText('Remind (99)'));
+      const revokeMenu = screen.getByTestId('revokeToggle');
+      await act(async () => {
+        await userEvent.click(revokeMenu);
+      });
+      expect(screen.getByText('Revoke (99)'));
+    });
   });
-
   it('opens and closes remind modal', async () => {
     const props = { ...basicProps, selectedUsers: [testAssignedUser] };
     render(<LicenseManagementTableBulkActionsWithContext {...props} />);
@@ -214,7 +276,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REMIND_BULK_CLICK,
       eventPayload,
     );
-    expect(screen.getByRole('dialog')).toBeTruthy();
+    expect(screen.getByRole('dialog'));
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel
@@ -224,7 +286,6 @@ describe('<LicenseManagementTableBulkActions />', () => {
       eventPayload,
     );
   });
-
   it('opens and closes revoke modal', async () => {
     const props = { ...basicProps, selectedUsers: [testAssignedUser] };
     render(<LicenseManagementTableBulkActionsWithContext {...props} />);
@@ -245,7 +306,7 @@ describe('<LicenseManagementTableBulkActions />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REVOKE_BULK_CLICK,
       eventPayload,
     );
-    expect(screen.getByRole('dialog')).toBeTruthy();
+    expect(screen.getByRole('dialog'));
     // Close dialog
     testDialogClosed();
     // Event is sent when cancel

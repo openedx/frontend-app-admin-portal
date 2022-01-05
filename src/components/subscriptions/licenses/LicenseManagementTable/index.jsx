@@ -150,6 +150,12 @@ const LicenseManagementTable = () => {
     [currentPage],
   );
 
+  const getActiveFilters = columns => columns.map(column => ({
+    name: column.id,
+    filter: column.filter,
+    filterValue: column.filterValue,
+  })).filter(filter => !!filter.filterValue);
+
   // Maps user to rows
   const rows = useMemo(
     () => users?.results?.map(user => ({
@@ -273,7 +279,13 @@ const LicenseManagementTable = () => {
         ]}
         bulkActions={(data) => {
           const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
-          const { clearSelection } = data.tableInstance;
+          const {
+            itemCount,
+            clearSelection,
+            controlledTableSelections: [{ selectedRows, isEntireTableSelected }],
+          } = data.tableInstance;
+          const tableItemCount = isEntireTableSelected ? itemCount : selectedRows.length;
+
           return (
             <LicenseManagementTableBulkActions
               subscription={subscription}
@@ -281,10 +293,13 @@ const LicenseManagementTable = () => {
               onRemindSuccess={onRemindSuccess(clearSelection)}
               onRevokeSuccess={onRevokeSuccess(clearSelection)}
               onEnrollSuccess={onEnrollSuccess(clearSelection)}
-              activatedUsers={overview.activated}
-              assignedUsers={overview.assigned}
+              activatedUsersCount={overview.activated}
+              assignedUsersCount={overview.assigned}
+              revokedUsersCount={overview.revoked}
               allUsersSelected={data.isEntireTableSelected}
+              activeFilters={getActiveFilters(data.tableInstance.columns)}
               disabled={isExpired}
+              tableItemCount={tableItemCount}
             />
           );
         }}

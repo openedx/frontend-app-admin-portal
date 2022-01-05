@@ -98,11 +98,14 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().post(url, options);
   }
 
-  static licenseRemind(options, subscriptionUUID, bulkRemind) {
-    const remindUrl = bulkRemind ? 'remind-all' : 'remind';
-
-    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/${remindUrl}/`;
+  static licenseBulkRemind(subscriptionUUID, options) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/remind/`;
     return LicenseManagerApiService.apiClient().post(url, options);
+  }
+
+  static licenseRemindAll(subscriptionUUID) {
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/remind-all/`;
+    return LicenseManagerApiService.apiClient().post(url);
   }
 
   static fetchSubscriptions(options) {

@@ -2,10 +2,10 @@ import moment from 'moment';
 import {
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
   ASSIGNED,
-  ACTIVATED,
   ACTIVE,
   SCHEDULED,
   ENDED,
+  REVOCABLE_STATUSES,
 } from './constants';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -16,7 +16,7 @@ export const getSubscriptionExpiringCookieName = ({
   return cookieName;
 };
 
-export const canRevokeLicense = (licenseStatus) => licenseStatus === ASSIGNED || licenseStatus === ACTIVATED;
+export const canRevokeLicense = (licenseStatus) => REVOCABLE_STATUSES.includes(licenseStatus);
 
 export const canRemindLicense = (licenseStatus) => licenseStatus === ASSIGNED;
 
@@ -50,3 +50,16 @@ export const sortSubscriptionsByStatus = (subscriptions) => subscriptions.slice(
     return orderByStatus[sub1Status] - orderByStatus[sub2Status];
   },
 );
+
+export const transformFiltersForRequest = (filters) => {
+  const nameMappings = {
+    emailLabel: 'user_email',
+    statusBadge: 'status_in',
+  };
+  return filters.map(
+    filter => ({
+      name: nameMappings[filter.name],
+      filter_value: filter.filterValue,
+    }),
+  );
+};

@@ -42,7 +42,7 @@ BulkEnrollWarningModal.defaultProps = {
 
 BulkEnrollWarningModal.propTypes = {
   isDialogOpen: PropTypes.bool,
-  learners: PropTypes.arrayOf(PropTypes.shape({})),
+  learners: PropTypes.arrayOf(PropTypes.string),
   onEnroll: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

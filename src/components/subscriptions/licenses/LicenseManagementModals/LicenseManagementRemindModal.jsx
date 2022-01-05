@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -18,6 +18,7 @@ import { validateEmailTemplateForm } from '../../../../data/validation/email';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import { configuration } from '../../../../config';
 import { getSubscriptionContactText } from '../../../../utils';
+import { transformFiltersForRequest } from '../../data/utils';
 
 const generateEmailTemplate = (contactEmail) => ({
   greeting: 'We noticed you haven’t had a chance to start learning on edX! It’s easy to get started and browse the course catalog.',
@@ -31,27 +32,19 @@ const generateEmailTemplate = (contactEmail) => ({
 
 /**
  * Returns StatefulButton labels
- * @param {boolean} remindAllUsers
- * @param {number} userCount
  * @param {number} totalToRemind
  * @returns {Object}
  */
-const generateRemindModalSubmitLabel = (remindAllUsers, userCount, totalToRemind) => {
-  // If we are not reminding all users, use users.length
-  // Else if totalToRemind is passed use that
-  // Else use 'All'
-  let buttonNumberLabel = 'All';
-  if (!remindAllUsers) {
-    buttonNumberLabel = userCount;
-  } else if (totalToRemind > 0) {
-    buttonNumberLabel = totalToRemind;
+const generateRemindModalSubmitLabel = (totalToRemind) => {
+  let buttonNumberLabel = 'all';
+  if (Number.isFinite(totalToRemind)) {
+    buttonNumberLabel = `(${totalToRemind})`;
   }
-
   return {
-    default: `Remind (${buttonNumberLabel})`,
-    pending: `Reminding (${buttonNumberLabel})`,
+    default: `Remind ${buttonNumberLabel}`,
+    pending: `Reminding ${buttonNumberLabel}`,
     complete: 'Done',
-    error: `Retry remind (${buttonNumberLabel})`,
+    error: `Retry remind ${buttonNumberLabel}`,
   };
 };
 
@@ -65,17 +58,18 @@ const LicenseManagementRemindModal = ({
   remindAllUsers,
   totalToRemind,
   contactEmail,
+  activeFilters,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail));
   const isExpired = moment().isAfter(subscription.expirationDate);
 
-  const buttonLabels = generateRemindModalSubmitLabel(remindAllUsers, usersToRemind.length, totalToRemind);
+  const buttonLabels = generateRemindModalSubmitLabel(totalToRemind);
 
-  const title = `Remind User${remindAllUsers || usersToRemind.length > 1 ? 's' : ''}`;
+  const title = `Remind User${remindAllUsers || totalToRemind > 1 ? 's' : ''}`;
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(async () => {
     if (onSubmit) {
       onSubmit();
     }
@@ -88,30 +82,40 @@ const LicenseManagementRemindModal = ({
       return;
     }
 
-    const userEmailsToRemind = usersToRemind.map((user) => user.email);
+    const makeRequest = async () => {
+      const options = {
+        greeting: emailTemplate.greeting,
+        closing: emailTemplate.closing,
+      };
 
-    const options = {
-      greeting: emailTemplate.greeting,
-      closing: emailTemplate.closing,
+      const filtersPresent = activeFilters.length > 0;
+
+      // If reminding all users and there are no filters, hit remind-all endpoint
+      if (remindAllUsers && !filtersPresent) {
+        return LicenseManagerApiService.licenseRemindAll(subscription.uuid);
+      }
+
+      const userEmailsToRemind = usersToRemind.map((user) => user.email);
+
+      // If emails are passed in, send them in the payload.
+      if (userEmailsToRemind.length > 0) {
+        options.user_emails = userEmailsToRemind;
+      } else {
+        options.filters = transformFiltersForRequest(activeFilters);
+      }
+
+      return LicenseManagerApiService.licenseBulkRemind(subscription.uuid, options);
     };
-    if (!remindAllUsers) {
-      options.user_emails = userEmailsToRemind;
-    }
 
-    LicenseManagerApiService.licenseRemind(
-      options,
-      subscription.uuid,
-      remindAllUsers === undefined ? false : remindAllUsers,
-    )
-      .then((response) => {
-        setRequestState({ ...initialRequestState, success: true });
-        onSuccess(response);
-      })
-      .catch((error) => {
-        logError(error);
-        setRequestState({ ...initialRequestState, error });
-      });
-  };
+    try {
+      const response = await makeRequest();
+      setRequestState({ ...initialRequestState, success: true });
+      onSuccess(response);
+    } catch (error) {
+      logError(error);
+      setRequestState({ ...initialRequestState, error });
+    }
+  }, [onSubmit, activeFilters, emailTemplate, remindAllUsers, usersToRemind, subscription.uuid]);
 
   const handleClose = () => {
     if (!requestState.loading) {
@@ -240,6 +244,13 @@ LicenseManagementRemindModal.propTypes = {
   remindAllUsers: PropTypes.bool,
   totalToRemind: PropTypes.number,
   contactEmail: PropTypes.string,
+  activeFilters: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      filter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    }),
+  ).isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -19,6 +19,7 @@ import { useRequestState } from './LicenseManagementModalHook';
 import { configuration } from '../../../../config';
 import { SHOW_REVOCATION_CAP_PERCENT } from '../../data/constants';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
+import { transformFiltersForRequest } from '../../data/utils';
 
 /**
  * Compute if alert should be rendered to warn admin they are approaching revocation limit.
@@ -38,27 +39,21 @@ const showRevocationCapAlert = (revocationCapEnabled, revocations) => {
 
 /**
  * Returns StatefulButton labels
- * @param {boolean} revokeAllUsers
- * @param {number} userCount
  * @param {number} totalToRevoke
  * @returns {Object}
  */
-const generateRevokeModalSubmitLabel = (revokeAllUsers, userCount, totalToRevoke) => {
-  // If we are not revoking all users, use users.length
-  // Else if totalToRevoke is passed use that
-  // Else use 'All'
-  let buttonNumberLabel = 'All';
-  if (!revokeAllUsers) {
-    buttonNumberLabel = userCount;
-  } else if (totalToRevoke > 0) {
-    buttonNumberLabel = totalToRevoke;
+const generateRevokeModalSubmitLabel = (totalToRevoke) => {
+  let buttonNumberLabel = 'all';
+
+  if (Number.isFinite(totalToRevoke)) {
+    buttonNumberLabel = `(${totalToRevoke})`;
   }
 
   return {
-    default: `Revoke (${buttonNumberLabel})`,
-    pending: `Revoking (${buttonNumberLabel})`,
+    default: `Revoke ${buttonNumberLabel}`,
+    pending: `Revoking ${buttonNumberLabel}`,
     complete: 'Done',
-    error: `Retry revoke (${buttonNumberLabel})`,
+    error: `Retry revoke ${buttonNumberLabel}`,
   };
 };
 
@@ -71,43 +66,51 @@ const LicenseManagementRevokeModal = ({
   usersToRevoke,
   revokeAllUsers,
   totalToRevoke,
+  activeFilters,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
-  const buttonLabels = generateRevokeModalSubmitLabel(
-    revokeAllUsers,
-    usersToRevoke.length,
-    totalToRevoke,
-  );
+  const buttonLabels = generateRevokeModalSubmitLabel(totalToRevoke);
 
-  const title = `Revoke License${revokeAllUsers || usersToRevoke.length > 1 ? 's' : ''}`;
+  const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
 
   const isExpired = moment().isAfter(subscription.expirationDate);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(async () => {
     if (onSubmit) {
       onSubmit();
     }
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
-      if (revokeAllUsers) {
+      const filtersPresent = activeFilters.length > 0;
+
+      // If all users are selected and there are no filters, hit revoke-all endpoint
+      if (revokeAllUsers && !filtersPresent) {
         return LicenseManagerApiService.licenseRevokeAll(subscription.uuid);
       }
+
+      // If all users not selected, then hit bulk-revoke with the emails loaded into the UI
       const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
-      const options = { user_emails: userEmailsToRevoke };
+
+      const options = {};
+      if (userEmailsToRevoke.length > 0) {
+        options.user_emails = userEmailsToRevoke;
+      } else {
+        options.filters = transformFiltersForRequest(activeFilters);
+      }
+
       return LicenseManagerApiService.licenseBulkRevoke(subscription.uuid, options);
     };
 
-    makeRequest()
-      .then((response) => {
-        setRequestState({ ...initialRequestState, success: true });
-        onSuccess(response);
-      })
-      .catch((error) => {
-        logError(error);
-        setRequestState({ ...initialRequestState, error });
-      });
-  };
+    try {
+      const response = await makeRequest();
+      setRequestState({ ...initialRequestState, success: true });
+      onSuccess(response);
+    } catch (error) {
+      logError(error);
+      setRequestState({ ...initialRequestState, error });
+    }
+  }, [onSubmit, activeFilters, revokeAllUsers, usersToRevoke, subscription.uuid]);
 
   const handleClose = () => {
     if (!requestState.loading) {
@@ -222,6 +225,13 @@ LicenseManagementRevokeModal.propTypes = {
   ).isRequired,
   revokeAllUsers: PropTypes.bool,
   totalToRevoke: PropTypes.number,
+  activeFilters: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      filter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    }),
+  ).isRequired,
 };
 
 export default LicenseManagementRevokeModal;

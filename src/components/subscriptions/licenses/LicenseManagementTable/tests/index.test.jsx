@@ -34,7 +34,7 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
   default: {
     licenseBulkRevoke: jest.fn(),
-    licenseRemind: jest.fn(),
+    licenseBulkRemind: jest.fn(),
   },
 }));
 
@@ -279,7 +279,7 @@ describe('<LicenseManagementTable />', () => {
       expect(screen.queryByRole('dialog')).toBeTruthy();
       // Clicks submit and closes dialog
       const mockPromiseResolve = Promise.resolve({ data: {} });
-      LicenseManagerApiService.licenseRemind.mockReturnValue(mockPromiseResolve);
+      LicenseManagerApiService.licenseBulkRemind.mockReturnValue(mockPromiseResolve);
       const remindSubmitButton = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(remindSubmitButton); });
       expect(screen.queryByRole('dialog')).toBeFalsy();
