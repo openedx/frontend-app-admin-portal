@@ -21,6 +21,7 @@ const BUTTON_PROPS = {
 
 const SettingsAccessGenerateLinkButton = ({
   onSuccess,
+  disabled,
 }) => {
   const {
     enterpriseId,
@@ -37,25 +38,23 @@ const SettingsAccessGenerateLinkButton = ({
     buttonState = 'pending';
   }
 
-  const handleGenerateLink = () => {
+  const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);
     // Generate expiration date of netDaysUntilExpiration
     const expirationDate = moment().add(netDaysUntilExpiration, 'days').startOf('day').format();
-
-    LmsApiService.createEnterpriseCustomerLink(enterpriseId, expirationDate)
-      .then((response) => {
-        onSuccess(response);
-      })
-      .catch((error) => {
-        logError(error);
-      })
-      .finally(() => {
-        setLoadingLinkCreation(false);
-      });
+    try {
+      const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseId, expirationDate);
+      onSuccess(response);
+    } catch (error) {
+      logError(error);
+    } finally {
+      setLoadingLinkCreation(false);
+    }
   };
 
   return (
     <StatefulButton
+      disabled={disabled}
       {...BUTTON_PROPS}
       state={buttonState}
       onClick={handleGenerateLink}
@@ -63,7 +62,11 @@ const SettingsAccessGenerateLinkButton = ({
   );
 };
 
+SettingsAccessGenerateLinkButton.defaultProps = {
+  disabled: false,
+};
 SettingsAccessGenerateLinkButton.propTypes = {
+  disabled: PropTypes.bool,
   onSuccess: PropTypes.func.isRequired,
 };
 

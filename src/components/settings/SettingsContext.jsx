@@ -1,11 +1,12 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { useCustomerAgreementData } from './data/hooks';
 
 export const SettingsContext = createContext({});
 
-export default function SettingsContextProvider({ children, enterpriseId }) {
+function SettingsContextProvider({ children, enterpriseId }) {
   const {
     customerAgreement,
     loadingCustomerAgreement,
@@ -28,3 +29,9 @@ SettingsContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(SettingsContextProvider);

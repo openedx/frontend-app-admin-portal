@@ -64,8 +64,8 @@ export const useLinkManagement = (enterpriseUUID) => {
 const initialCustomerAgreementState = {
   netDaysUntilExpiration: 0,
 };
-/*
- * @param {Objet {enterpriseId: string}}
+/**
+ * @param {Object {enterpriseId: string}}
  * @returns {customerAgreement: Object, loadingCustomerAgreement: bool}
  * customerAgreement:{
  *  netDaysUntilExpiration: number
@@ -75,33 +75,25 @@ export const useCustomerAgreementData = ({ enterpriseId }) => {
   const [customerAgreement, setCustomerAgreement] = useState(initialCustomerAgreementState);
   const [loadingCustomerAgreement, setLoadingCustomerAgreement] = useState(true);
 
-  const loadCustomerAgreementData = (page = 1) => {
-    if (!loadingCustomerAgreement) {
+  const loadCustomerAgreementData = (page = 1, agreement = 0) => {
+    const fetchCustomerAgreementData = async () => {
       setLoadingCustomerAgreement(true);
-    }
-    LicenseManagerApiService.fetchCustomerAgreementData({ enterprise_customer_uuid: enterpriseId, page })
-      .then((response) => {
-        const newCustomerAgreementData = {
-          netDaysUntilExpiration: 0,
-        };
+      try {
+        const response = await LicenseManagerApiService.fetchCustomerAgreementData({
+          enterprise_customer_uuid: enterpriseId,
+          page,
+        });
         const { data: customerAgreementData } = camelCaseObject(response);
         if (customerAgreementData.results && customerAgreementData.count) {
-          // Only look at customer agreements with subs
-          customerAgreementData.results.filter(result => (result.subscriptions && result.subscriptions.length))
-            .forEach(agreement => {
-              // only use highest netDaysUntilExpiration
-              if (newCustomerAgreementData.netDaysUntilExpiration < agreement.netDaysUntilExpiration) {
-                newCustomerAgreementData.netDaysUntilExpiration = agreement.netDaysUntilExpiration;
-              }
-            });
+          setCustomerAgreement(customerAgreementData.results[agreement]);
         }
-        setCustomerAgreement(newCustomerAgreementData);
-      })
-      .catch((err) => {
-        logError(err);
-      }).finally(() => {
+      } catch (error) {
+        logError(error);
+      } finally {
         setLoadingCustomerAgreement(false);
-      });
+      }
+    };
+    fetchCustomerAgreementData();
   };
 
   useEffect(loadCustomerAgreementData, [enterpriseId]);

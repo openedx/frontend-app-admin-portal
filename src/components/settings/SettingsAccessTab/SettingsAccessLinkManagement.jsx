@@ -51,7 +51,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
   const handleLinkManagementFormSwitchChanged = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setIsLinkManagementEnabled(e.target.checked);
+      setIsLinkManagementEnabled(isChecked);
     } else {
       setIsLinkManagementAlertModalOpen(true);
     }
@@ -73,6 +73,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
           tableActions={(i) => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
+              disabled={!isLinkManagementEnabled}
             />
           )}
           columns={[

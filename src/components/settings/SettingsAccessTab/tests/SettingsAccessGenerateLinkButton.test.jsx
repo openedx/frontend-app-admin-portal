@@ -7,8 +7,10 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
-import ContextProvider from '../../SettingsContext';
+import SettingsContextProvider from '../../SettingsContext';
 import SettingsAccessGenerateLinkButton from '../SettingsAccessGenerateLinkButton';
 import * as hooks from '../../data/hooks';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -20,7 +22,15 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
   },
 }));
 
+const onSuccessMock = jest.fn();
+
 const ENTERPRISE_ID = 'test-enterprise';
+const mockStore = configureMockStore();
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId: ENTERPRISE_ID,
+  },
+});
 const NET_DAYS_UNTIL_EXPIRATION = 100;
 const renderWithContext = (loadingCustomerAgreement = false) => {
   jest.spyOn(hooks, 'useCustomerAgreementData').mockImplementation(
@@ -30,9 +40,11 @@ const renderWithContext = (loadingCustomerAgreement = false) => {
     }),
   );
   return (
-    <ContextProvider enterpriseId={ENTERPRISE_ID}>
-      <SettingsAccessGenerateLinkButton onSuccess={() => {}} />
-    </ContextProvider>
+    <Provider store={store}>
+      <SettingsContextProvider>
+        <SettingsAccessGenerateLinkButton onSuccess={onSuccessMock} />
+      </SettingsContextProvider>
+    </Provider>
   );
 };
 
@@ -64,5 +76,6 @@ describe('<SettingsAccessGenerateLinkButton />', () => {
       ENTERPRISE_ID,
       moment().add(NET_DAYS_UNTIL_EXPIRATION, 'days').startOf('day').format(),
     );
+    expect(onSuccessMock).toHaveBeenCalledTimes(1);
   });
 });
