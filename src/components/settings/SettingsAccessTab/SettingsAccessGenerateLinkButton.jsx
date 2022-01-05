@@ -31,12 +31,7 @@ const SettingsAccessGenerateLinkButton = ({
 
   const [loadingLinkCreation, setLoadingLinkCreation] = useState(false);
 
-  let buttonState = 'default';
-  if (loadingCustomerAgreement) {
-    buttonState = 'loading';
-  } else if (loadingLinkCreation) {
-    buttonState = 'pending';
-  }
+  const buttonState = loadingLinkCreation ? 'loading' : 'default';
 
   const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);
@@ -54,7 +49,7 @@ const SettingsAccessGenerateLinkButton = ({
 
   return (
     <StatefulButton
-      disabled={disabled}
+      disabled={disabled || loadingCustomerAgreement}
       {...BUTTON_PROPS}
       state={buttonState}
       onClick={handleGenerateLink}

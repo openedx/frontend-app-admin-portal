@@ -58,10 +58,11 @@ describe('<SettingsAccessGenerateLinkButton />', () => {
     render(renderWithContext());
     expect(screen.queryByText('Generate link')).toBeTruthy();
   });
-
-  it('Displays loading state', () => {
+  it('Is disable when loadingCustomerAgreement', () => {
     render(renderWithContext(true));
-    expect(screen.queryByText('Readying link generation')).toBeTruthy();
+    const button = screen.queryByText('Generate link').closest('button');
+    expect(button).toBeTruthy();
+    expect(button).toHaveProperty('disabled', true);
   });
 
   it('Clicking button calls api', async () => {
