@@ -45,7 +45,7 @@ describe('<SettingsTabs />', () => {
     expect(screen.queryByText(LMS_MOCK_CONTENT)).toBeTruthy();
   });
 
-  it('Clicking on a on default tab does not change content', async () => {
+  it('Clicking on default tab does not change content', async () => {
     render(settingsTabsWithRouter());
     const accessTab = screen.getByText(SETTINGS_TAB_LABELS.access);
     await act(async () => { userEvent.click(accessTab); });

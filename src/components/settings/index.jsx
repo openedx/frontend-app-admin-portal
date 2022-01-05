@@ -33,12 +33,10 @@ const SettingsPage = ({ enterpriseId }) => {
       <Switch>
         <Redirect
           exact
-          key="settings"
           from={path}
           to={`${path}/${DEFAULT_TAB}`}
         />
         <Route
-          key="settings"
           exact
           path={`${path}/${SETTINGS_PARAM_MATCH}`}
           component={SettingsTabs}

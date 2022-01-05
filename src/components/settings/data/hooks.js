@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { logError } from '@edx/frontend-platform/logging';
 
 import { SETTINGS_TAB_PARAM } from './constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 /**
  * Checks url parameter `SETTINGS_TAB_PARAM`
@@ -15,48 +17,41 @@ export const useCurrentSettingsTab = () => {
   return params[SETTINGS_TAB_PARAM];
 };
 
-// TODO: Remove fake data below
-const FAKE_LINK_DATA = [
-  {
-    link: 'some link',
-    linkStatus: 'activated',
-    dateCreated: '1/2/3',
-    usage: '0',
-    usageMax: '11',
-  },
-  {
-    link: 'some link',
-    linkStatus: 'deactivated',
-    dateCreated: '1/2/3',
-    usage: '2',
-    usageMax: '11',
-  },
-];
-const FAKE_API = new Promise((resolve) => setTimeout(resolve(FAKE_LINK_DATA), 3000));
-
-export const useLinkManagement = () => {
+/**
+ * A React hook that manages the EnterpriseCustomerInviteKey urls, providing an
+ * array of URLs from an API response, a boolean whether the request is pending,
+ * and a function that allows subcomponents to refresh the data as needed.
+ *
+ * @param {string} enterpriseUUID EnterpriseCustomer UUID
+ * @returns An object containing `links`, `loadingLinks`, and `refreshLinks`.
+ */
+export const useLinkManagement = (enterpriseUUID) => {
   const [links, setLinks] = useState([]);
-  const [loadingLinks, setLoadingLinks] = useState(false);
+  const [loadingLinks, setLoadingLinks] = useState(true);
 
   const loadLinks = () => {
     setLoadingLinks(true);
-    // TODO: use real API to fetch links
-    FAKE_API.then((response) => {
-      setLinks(response);
-    })
-      .catch(() => {
-      // TODO: Handle Errors
-      })
-      .finally(() => {
+    const fetchLinksForEnterprise = async () => {
+      try {
+        const response = await LmsApiService.getAccessLinks(enterpriseUUID);
+        const result = camelCaseObject(response.data);
+        setLinks(result);
+      } catch (error) {
+        logError(error);
+      } finally {
         setLoadingLinks(false);
-      });
+      }
+    };
+    fetchLinksForEnterprise();
+    return () => {
+      setLoadingLinks(false);
+    };
   };
 
   const refreshLinks = () => {
     loadLinks();
   };
 
-  // TODO: update link dependency
   useEffect(loadLinks, []);
 
   return {

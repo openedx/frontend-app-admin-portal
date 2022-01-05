@@ -155,6 +155,14 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().post(url, options);
   }
 
+  static fetchBulkEnrollmentJob(enterpriseUuid, bulkEnrollmentJobUuid, options) {
+    const queryParams = new URLSearchParams();
+    queryParams.append('enterprise_customer_uuid', enterpriseUuid);
+    queryParams.append('bulk_enrollment_job_uuid', bulkEnrollmentJobUuid);
+    const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?${queryParams.toString()}`;
+    return LicenseManagerApiService.apiClient().get(url, options);
+  }
+
   static fetchCustomerAgreementData(options) {
     const queryParams = {
       ...options,

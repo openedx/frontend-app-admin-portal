@@ -141,7 +141,9 @@ class ReportingConfigForm extends React.Component {
       submitState,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
-    const dataTypesOptions = reportingConfigTypes.dataType.map(item => ({ label: item[1], value: item[0] }));
+    const dataTypesOptions = reportingConfigTypes.dataType.map((item, index) => ({
+      key: index, label: item[1], value: item[0],
+    }));
     const dataTypesOptionsValues = dataTypesOptions.map(item => item.value);
     const selectedDataTypesOption = config ? [{ label: config.dataType, value: config.dataType, hidden: true }] : [];
     return (
@@ -404,7 +406,16 @@ ReportingConfigForm.propTypes = {
     uuid: PropTypes.string,
     title: PropTypes.string,
   })).isRequired,
-  reportingConfigTypes: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  reportingConfigTypes: PropTypes.shape({
+    dataType: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    reportType: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    deliveryMethod: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    dayOfWeek: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]))),
+    frequency: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  }).isRequired,
   createConfig: PropTypes.func.isRequired,
   updateConfig: PropTypes.func,
   deleteConfig: PropTypes.func,
