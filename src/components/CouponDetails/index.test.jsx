@@ -45,6 +45,7 @@ const sampleCodeData = {
   last_reminder_date: 'June 22, 2020 12:01',
   revocation_date: '',
   error: null,
+  is_public: true,
 };
 
 const sampleTableData = {

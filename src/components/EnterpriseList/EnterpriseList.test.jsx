@@ -165,7 +165,7 @@ describe('<EnterpriseList />', () => {
     const submitSearch = (searchQuery) => {
       wrapper.find('SearchBar').find('input[type="text"]').simulate('change', { target: { value: searchQuery } });
       expect(wrapper.find('SearchBar').find('input[type="text"]').prop('value')).toEqual(searchQuery);
-      wrapper.find('SearchBar').find('button[type="submit"]').simulate('submit');
+      wrapper.find('SearchBar').find('form').simulate('submit');
     };
 
     it('search querystring changes onSearch', () => {

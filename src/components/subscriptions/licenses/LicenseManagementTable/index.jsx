@@ -198,12 +198,11 @@ const LicenseManagementTable = () => {
         manualPagination
         itemCount={users.count}
         pageCount={users.numPages || 1}
-        // eslint-disable-next-line no-unused-vars
-        tableActions={(i) => {
-          if (!showSubscriptionZeroStateMessage) {
-            return <DownloadCsvButton />;
+        tableActions={() => {
+          if (showSubscriptionZeroStateMessage) {
+            return null;
           }
-          return null;
+          return <DownloadCsvButton />;
         }}
         initialState={{
           pageSize: PAGE_SIZE,

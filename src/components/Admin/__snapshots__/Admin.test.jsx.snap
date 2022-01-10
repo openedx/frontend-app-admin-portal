@@ -2478,6 +2478,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <input
                       className="form-control"
                       data-hj-suppress={true}
+                      disabled={false}
                       id="pgn-searchfield-input-106"
                       name="searchfield-input"
                       onBlur={[Function]}
@@ -2490,6 +2491,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     />
                     <button
                       className="btn"
+                      disabled={false}
                       type="submit"
                     >
                       <svg
@@ -3192,6 +3194,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     <input
                       className="form-control"
                       data-hj-suppress={true}
+                      disabled={false}
                       id="pgn-searchfield-input-12"
                       name="searchfield-input"
                       onBlur={[Function]}
@@ -3204,6 +3207,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     />
                     <button
                       className="btn"
+                      disabled={false}
                       type="submit"
                     >
                       <svg
