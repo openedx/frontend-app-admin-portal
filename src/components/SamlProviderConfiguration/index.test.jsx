@@ -1,10 +1,9 @@
+import { mount, shallow } from 'enzyme';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-
-import SamlProviderConfiguration from './index';
 import LmsApiService from '../../data/services/LmsApiService';
-import { REQUIRED_DATA_FIELDS } from './SamlProviderDataForm';
+import { SamlProviderConfigurationCore } from './index';
 import { REQUIRED_CONFIG_FIELDS } from './SamlProviderConfigForm';
+import { REQUIRED_DATA_FIELDS } from './SamlProviderDataForm';
 
 jest.mock('./../../data/services/LmsApiService');
 
@@ -33,7 +32,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   it('get provider config (with no data)', () => {
     LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
     LmsApiService.getProviderData.mockResolvedValue(invalidDataResponse);
-    const wrapper = mount(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = mount(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
     setImmediate(() => {
       expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
     });
@@ -42,7 +41,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   it('get provider config and data', () => {
     LmsApiService.getProviderConfig.mockResolvedValue(configResponse);
     LmsApiService.getProviderData.mockResolvedValue(validDataResponse);
-    const wrapper = mount(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = mount(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
     setImmediate(() => {
       expect(wrapper.state().providerConfig).toEqual(configResponse.data.results[0]);
       expect(wrapper.state().providerData).toEqual(validDataResponse.data.results[0]);
@@ -50,7 +49,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   });
 
   it('creating provider config states', () => {
-    const wrapper = shallow(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = mount(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
 
     LmsApiService.postNewProviderConfig.mockResolvedValue(configResponse);
     wrapper.instance().createProviderConfig(formData, () => {
@@ -59,7 +58,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   });
 
   it('updating provider config states', () => {
-    const wrapper = shallow(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = mount(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
     wrapper.setState({ providerConfig: oldConfig });
 
     LmsApiService.updateProviderConfig.mockResolvedValue(configResponse);
@@ -69,7 +68,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   });
 
   it('deleting provider config resets states', () => {
-    const wrapper = shallow(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = mount(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
     wrapper.setState({ providerConfig: oldConfig });
 
     LmsApiService.deleteProviderConfig.mockResolvedValue({});
@@ -79,7 +78,7 @@ describe('<SamlProviderConfiguration /> ', () => {
   });
 
   it('handling response errors', () => {
-    const wrapper = shallow(<SamlProviderConfiguration enterpriseId="testEnterpriseId" />);
+    const wrapper = shallow(<SamlProviderConfigurationCore enterpriseId="testEnterpriseId" learnerPortalEnabled />);
 
     const errorMessage = 'test error message.';
     LmsApiService.updateProviderConfig.mockImplementation(() => {

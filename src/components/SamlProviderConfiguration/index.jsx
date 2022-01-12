@@ -15,7 +15,7 @@ import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
 
-class SamlProviderConfiguration extends React.Component {
+export class SamlProviderConfigurationCore extends React.Component {
   state = {
     providerConfig: undefined,
     providerData: undefined,
@@ -285,12 +285,12 @@ class SamlProviderConfiguration extends React.Component {
   }
 }
 
-SamlProviderConfiguration.defaultProps = {
+SamlProviderConfigurationCore.defaultProps = {
   enterpriseSlug: null,
   enterpriseName: null,
 };
 
-SamlProviderConfiguration.propTypes = {
+SamlProviderConfigurationCore.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseId: PropTypes.string.isRequired,
@@ -301,4 +301,4 @@ const mapStateToProps = state => ({
   learnerPortalEnabled: state.portalConfiguration.enableLearnerPortal,
 });
 
-export default connect(mapStateToProps)(SamlProviderConfiguration);
+export default connect(mapStateToProps)(SamlProviderConfigurationCore);
