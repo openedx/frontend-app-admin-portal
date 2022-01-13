@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateCreatedTableCell renders correctly 1`] = `"January 10, 2022"`;

@@ -83,17 +83,27 @@ describe('<LicenseManagementTable />', () => {
     jest.clearAllMocks();
   });
 
+  describe('loading', () => {
+    it('renders initially loading state', () => {
+      const subscriptionPlan = generateSubscriptionPlan();
+      mockSubscriptionHooks(subscriptionPlan, [], true);
+      render(tableWithContext({
+        subscriptionPlan,
+      }));
+      // assert that the spinner is shown (`isLoading` is properly passed to `DataTable`)
+      expect(screen.getByRole('status'));
+    });
+  });
+
   describe('zero state (no subscription users)', () => {
     it('renders zero state message', () => {
       const subscriptionPlan = generateSubscriptionPlan();
-      mockSubscriptionHooks({
-        subscriptionPlan,
-        subscriptionUsers: [],
-      });
+      mockSubscriptionHooks(subscriptionPlan, []);
       render(tableWithContext({
         subscriptionPlan,
       }));
       expect(screen.getByText('Get Started'));
+      expect(screen.getByText('No results found'));
     });
   });
 
@@ -106,9 +116,9 @@ describe('<LicenseManagementTable />', () => {
         },
       });
       beforeEach(() => {
-        mockSubscriptionHooks({
+        mockSubscriptionHooks(
           subscriptionPlan,
-          subscriptionUsers: [{
+          [{
             activationDate: moment(),
             activationKey: 'test-activation-key',
             lastRemindDate: moment(),
@@ -118,7 +128,7 @@ describe('<LicenseManagementTable />', () => {
             userEmail: 'edx@example.com',
             uuid: 'test-uuid',
           }],
-        });
+        );
         expect(screen.queryByText('Get Started')).toBeFalsy();
       });
 
@@ -168,10 +178,7 @@ describe('<LicenseManagementTable />', () => {
       jest.clearAllMocks();
     });
     beforeEach(() => {
-      mockSubscriptionHooks({
-        subscriptionPlan,
-        subscriptionUsers: users,
-      });
+      mockSubscriptionHooks(subscriptionPlan, users);
     });
     it('when clicking status filters', async () => {
       render(tableWithContext({

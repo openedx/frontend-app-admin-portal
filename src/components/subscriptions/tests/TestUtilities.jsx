@@ -275,7 +275,11 @@ export const generateSubscriptionUser = ({
  * @param {function} forceRefresh override force refresh function
  * @returns subscription data hook output
  */
-const generateUseSubscriptionData = (subscriptionPlan, forceRefresh = () => {}) => ({
+const generateUseSubscriptionData = (
+  subscriptionPlan,
+  forceRefresh = () => {},
+  isLoading = false,
+) => ({
   subscriptions: {
     count: 1,
     next: null,
@@ -285,7 +289,7 @@ const generateUseSubscriptionData = (subscriptionPlan, forceRefresh = () => {}) 
   errors: {},
   setErrors: () => {},
   forceRefresh,
-  loading: false,
+  loading: isLoading,
 });
 
 /**
@@ -320,16 +324,17 @@ const generateUseSubscriptionUsersData = (subscriptionUsers) => ({
 export const mockSubscriptionHooks = (
   subscriptionPlan,
   subscriptionUsers = [],
+  isLoading = false,
 ) => {
   const forceRefreshSubscription = jest.fn();
   const forceRefreshUsers = jest.fn();
   const forceRefreshUsersOverview = jest.fn();
 
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(
-    () => generateUseSubscriptionData(subscriptionPlan, forceRefreshSubscription),
+    () => generateUseSubscriptionData(subscriptionPlan, forceRefreshSubscription, isLoading),
   );
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(
-    () => [generateUseSubscriptionUsersData(subscriptionUsers), forceRefreshUsers],
+    () => [generateUseSubscriptionUsersData(subscriptionUsers), forceRefreshUsers, isLoading],
   );
   jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(
     () => [generateUseSubscriptionUsersOverviewData(), forceRefreshUsersOverview],
