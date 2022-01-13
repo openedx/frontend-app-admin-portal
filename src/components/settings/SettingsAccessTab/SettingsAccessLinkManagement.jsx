@@ -69,8 +69,8 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
         <DataTable
           data={links}
           itemCount={links.length}
-          // eslint-disable-next-line no-unused-vars
-          tableActions={(i) => (
+          isLoading={loadingLinks}
+          tableActions={() => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
               disabled={!isLinkManagementEnabled}
@@ -108,7 +108,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
         >
           <DataTable.TableControlBar />
           <DataTable.Table />
-          <DataTable.EmptyTable content={loadingLinks ? 'Loading...' : 'No links found'} />
+          {!loadingLinks && <DataTable.EmptyTable content="No links found" />}
         </DataTable>
       </SettingsAccessTabSection>
       <DisableLinkManagementAlertModal
