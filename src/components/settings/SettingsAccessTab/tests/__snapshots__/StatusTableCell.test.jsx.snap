@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusTableCell renders invalid status correctly 1`] = `
+<span
+  className="badge badge-light"
+>
+  Inactive
+</span>
+`;
+
+exports[`StatusTableCell renders valid status correctly 1`] = `
+<span
+  className="badge badge-success"
+>
+  Active
+</span>
+`;

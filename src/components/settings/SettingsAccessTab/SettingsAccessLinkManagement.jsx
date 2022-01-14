@@ -117,6 +117,7 @@ const SettingsAccessLinkManagement = ({
         <DataTable
           data={links}
           itemCount={links.length}
+          isLoading={loadingLinks}
           tableActions={() => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
@@ -155,7 +156,7 @@ const SettingsAccessLinkManagement = ({
         >
           <DataTable.TableControlBar />
           <DataTable.Table />
-          <DataTable.EmptyTable content={loadingLinks ? 'Loading...' : 'No links found'} />
+          {!loadingLinks && <DataTable.EmptyTable content="No links found" />}
         </DataTable>
       </SettingsAccessTabSection>
       <DisableLinkManagementAlertModal

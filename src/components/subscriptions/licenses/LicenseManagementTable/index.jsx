@@ -188,6 +188,7 @@ const LicenseManagementTable = () => {
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
       <DataTable
         showFiltersInSidebar={showFiltersInSidebar}
+        isLoading={loadingUsers}
         isFilterable
         manualFilters
         isSelectable={!isExpired}
@@ -212,7 +213,12 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         EmptyTableComponent={
-          () => <DataTable.EmptyTable content={loadingUsers ? 'Loading...' : 'No results found'} />
+          () => {
+            if (loadingUsers) {
+              return null;
+            }
+            return <DataTable.EmptyTable content="No results found" />;
+          }
         }
         fetchData={fetchData}
         data={rows}
