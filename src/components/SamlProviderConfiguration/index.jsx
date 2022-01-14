@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -5,14 +6,16 @@ import { Collapsible, Icon } from '@edx/paragon';
 import classNames from 'classnames';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
+import { connect } from 'react-redux';
 import SamlProviderConfigForm from './SamlProviderConfigForm';
 import SamlProviderDataForm from './SamlProviderDataForm';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
+import { configuration } from '../../config';
 
-class SamlProviderConfiguration extends React.Component {
+export class SamlProviderConfigurationCore extends React.Component {
   state = {
     providerConfig: undefined,
     providerData: undefined,
@@ -153,13 +156,20 @@ class SamlProviderConfiguration extends React.Component {
         />
       );
     }
+
+    const { id, slug, metadata_source } = providerConfig || { id: '', slug: '', metadata_source: '' };
+
+    const learnerPortalUrl = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${this.props.enterpriseSlug}`;
+    const testLink = this.props.learnerPortalEnabled === true ? learnerPortalUrl : `${configuration.LMS_BASE_URL}/dashboard?tpa_hint=saml-${slug}`;
+    const spMetadataLink = `${configuration.LMS_BASE_URL}/auth/saml/metadata.xml?tpa_hint=saml-${slug}`;
+
     return (
       <main role="main">
         <div>
           <>
             {providerConfig && (
               <div
-                key={providerConfig.id}
+                key={id}
                 className="mb-3"
               >
                 <Collapsible
@@ -182,7 +192,15 @@ class SamlProviderConfiguration extends React.Component {
                       </div>
                       <div className="col">
                         <h3 className="h6">Metadata Source:</h3>
-                        <p>{providerConfig.metadata_source}</p>
+                        <p>{metadata_source}</p>
+                      </div>
+                      <div className="col">
+                        <h3 className="h6">SP Metadata</h3>
+                        <p><a target="_blank" rel="noopener noreferrer" href={spMetadataLink}>{spMetadataLink}</a></p>
+                      </div>
+                      <div className="col">
+                        <h3 className="h6">Test link</h3>
+                        <p><a target="_blank" rel="noopener noreferrer" href={testLink}>{testLink}</a></p>
                       </div>
                     </div>
                   )}
@@ -267,15 +285,20 @@ class SamlProviderConfiguration extends React.Component {
   }
 }
 
-SamlProviderConfiguration.defaultProps = {
+SamlProviderConfigurationCore.defaultProps = {
   enterpriseSlug: null,
   enterpriseName: null,
 };
 
-SamlProviderConfiguration.propTypes = {
+SamlProviderConfigurationCore.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseId: PropTypes.string.isRequired,
+  learnerPortalEnabled: PropTypes.bool.isRequired,
 };
 
-export default SamlProviderConfiguration;
+const mapStateToProps = state => ({
+  learnerPortalEnabled: state.portalConfiguration.enableLearnerPortal,
+});
+
+export default connect(mapStateToProps)(SamlProviderConfigurationCore);
