@@ -233,6 +233,35 @@ class LmsApiService {
     return LmsApiService.apiClient().post(LmsApiService.enterpriseCustomerInviteKeyUrl, formData);
   }
 
+  static getAccessLinks = (enterpriseUUID) => {
+    const queryParams = new URLSearchParams();
+    queryParams.append('enterprise_customer_uuid', enterpriseUUID);
+    queryParams.append('ordering', '-created');
+    const url = `${LmsApiService.enterpriseCustomerInviteKeyListUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
+  }
+
+  /**
+   * Disables EnterpriseCustomerInviteKey
+   * @param {string} EnterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable
+   * @returns {Promise}
+   */
+  static disableEnterpriseCustomerLink(EnterpriseCustomerInviteKeyUUID) {
+    const formData = {
+      is_active: false,
+    };
+    return LmsApiService.apiClient().patch(
+      `${LmsApiService.enterpriseCustomerInviteKeyUrl}${EnterpriseCustomerInviteKeyUUID}/`,
+      formData,
+    );
+  }
+
+  /**
+   * Toggles enable_universal_link flag
+   * If `enable_universal_link` is true and `expiration_date` is passed EnterpriseCustomerInviteKey is created
+   * @param {Object} param0 Object with `enterpriseUUID`, `enableUniversalLink`, `expirationDate` (optional)
+   * @returns {Promise}
+   */
   static toggleEnterpriseCustomerUniversalLink({ enterpriseUUID, enableUniversalLink, expirationDate }) {
     const formData = {
       enable_universal_link: enableUniversalLink,
@@ -242,14 +271,6 @@ class LmsApiService {
       `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`,
       formData,
     );
-  }
-
-  static getAccessLinks = (enterpriseUUID) => {
-    const queryParams = new URLSearchParams();
-    queryParams.append('enterprise_customer_uuid', enterpriseUUID);
-    queryParams.append('ordering', '-created');
-    const url = `${LmsApiService.enterpriseCustomerInviteKeyListUrl}?${queryParams.toString()}`;
-    return LmsApiService.apiClient().get(url);
   }
 }
 

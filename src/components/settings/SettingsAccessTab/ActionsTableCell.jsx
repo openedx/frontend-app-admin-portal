@@ -66,6 +66,7 @@ const ActionsTableCell = ({ row, onDeactivateLink }) => {
         isOpen={isLinkDeactivationModalOpen}
         onClose={closeLinkDeactivationModal}
         onDeactivateLink={handleLinkDeactivated}
+        inviteKeyUUID={inviteKeyUUID}
       />
       <LinkCopiedToast show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
     </>

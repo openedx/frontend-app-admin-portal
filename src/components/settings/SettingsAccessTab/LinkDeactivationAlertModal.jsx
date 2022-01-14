@@ -7,11 +7,13 @@ import {
   StatefulButton,
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 const LinkDeactivationAlertModal = ({
   isOpen,
   onClose,
   onDeactivateLink,
+  inviteKeyUUID,
 }) => {
   const [deactivationState, setDeactivationState] = useState('default');
 
@@ -25,17 +27,12 @@ const LinkDeactivationAlertModal = ({
     const deactivateLink = async () => {
       setDeactivationState('pending');
       try {
-        // TODO: make legit API request
-        await new Promise((resolve) => {
-          setTimeout(() => resolve(), 2000);
-        });
+        await LmsApiService.disableEnterpriseCustomerLink(inviteKeyUUID);
         if (onDeactivateLink) {
           onDeactivateLink();
         }
       } catch (error) {
         logError(error);
-      } finally {
-        setDeactivationState('default');
       }
     };
     deactivateLink();
@@ -77,6 +74,7 @@ LinkDeactivationAlertModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onDeactivateLink: PropTypes.func,
+  inviteKeyUUID: PropTypes.string.isRequired,
 };
 
 LinkDeactivationAlertModal.defaultProps = {
