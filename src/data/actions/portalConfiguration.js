@@ -4,6 +4,7 @@ import {
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
+  UPDATE_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 import LmsApiService from '../services/LmsApiService';
 
@@ -19,6 +20,11 @@ const fetchPortalConfigurationSuccess = data => ({
 const fetchPortalConfigurationFailure = error => ({
   type: FETCH_PORTAL_CONFIGURATION_FAILURE,
   payload: { error },
+});
+
+const updatePortalConfigurationEvent = data => ({
+  type: UPDATE_PORTAL_CONFIGURATION,
+  payload: { data },
 });
 
 const clearPortalConfigurationEvent = () => ({ type: CLEAR_PORTAL_CONFIGURATION });
@@ -46,4 +52,5 @@ const clearPortalConfiguration = () => (
 export {
   fetchPortalConfiguration,
   clearPortalConfiguration,
+  updatePortalConfigurationEvent,
 };

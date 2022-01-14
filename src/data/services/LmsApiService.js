@@ -233,6 +233,17 @@ class LmsApiService {
     return LmsApiService.apiClient().post(LmsApiService.enterpriseCustomerInviteKeyUrl, formData);
   }
 
+  static toggleEnterpriseCustomerUniversalLink({ enterpriseUUID, enableUniversalLink, expirationDate }) {
+    const formData = {
+      enable_universal_link: enableUniversalLink,
+      expiration_date: expirationDate,
+    };
+    return LmsApiService.apiClient().patch(
+      `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`,
+      formData,
+    );
+  }
+
   static getAccessLinks = (enterpriseUUID) => {
     const queryParams = new URLSearchParams();
     queryParams.append('enterprise_customer_uuid', enterpriseUUID);
