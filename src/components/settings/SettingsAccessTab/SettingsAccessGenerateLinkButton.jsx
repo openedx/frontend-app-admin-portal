@@ -5,9 +5,11 @@ import {
 } from '@edx/paragon';
 import moment from 'moment';
 import { logError } from '@edx/frontend-platform/logging';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SettingsContext } from '../SettingsContext';
+import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
 const BUTTON_PROPS = {
   labels: {
@@ -44,6 +46,10 @@ const SettingsAccessGenerateLinkButton = ({
       logError(error);
     } finally {
       setLoadingLinkCreation(false);
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_GENERATE,
+      );
     }
   };
 

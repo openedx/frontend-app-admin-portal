@@ -8,6 +8,7 @@ import {
 import { Info } from '@edx/paragon/icons';
 import moment from 'moment';
 import { logError } from '@edx/frontend-platform/logging';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { useLinkManagement } from '../data/hooks';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
@@ -21,6 +22,7 @@ import DisableLinkManagementAlertModal from './DisableLinkManagementAlertModal';
 import { updatePortalConfigurationEvent } from '../../../data/actions/portalConfiguration';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SettingsContext } from '../SettingsContext';
+import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
@@ -65,6 +67,11 @@ const SettingsAccessLinkManagement = ({
       logError(error);
       setLinkManagementEnabledChangeError(true);
     } finally {
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_TOGGLE,
+        { toggle_to: newEnableUniversalLink },
+      );
       setLoadingLinkManagementEnabledChange(false);
       refreshLinks();
     }
@@ -150,7 +157,13 @@ const SettingsAccessLinkManagement = ({
             {
               id: 'action',
               Header: '',
-              Cell: props => <ActionsTableCell {...props} onDeactivateLink={handleDeactivatedLink} />,
+              Cell: props => (
+                <ActionsTableCell
+                  {...props}
+                  enterpriseUUID={enterpriseUUID}
+                  onDeactivateLink={handleDeactivatedLink}
+                />
+              ),
             },
           ]}
         >

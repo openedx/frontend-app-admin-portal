@@ -14,6 +14,7 @@
 const PROJECT_NAME = 'edx.ui.enterprise.admin_portal';
 
 const SUBSCRIPTION_PREFIX = `${PROJECT_NAME}.subscriptions`;
+const SETTINGS_PREFIX = `${PROJECT_NAME}.settings`;
 
 const SUBSCRIPTION_TABLE_PREFIX = `${SUBSCRIPTION_PREFIX}.table`;
 
@@ -38,6 +39,15 @@ export const SUBSCRIPTION_TABLE_EVENTS = {
   REVOKE_BULK_CLICK: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.clicked`,
   REVOKE_BULK_SUBMIT: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.submitted`,
   REVOKE_BULK_CANCEL: `${SUBSCRIPTION_TABLE_PREFIX}.revoke.bulk.canceled`,
+};
+
+const SETTINGS_ACCESS_PREFIX = `${SETTINGS_PREFIX}.ACCESS`;
+
+export const SETTINGS_ACCESS_EVENTS = {
+  UNIVERSAL_LINK_TOGGLE: `${SETTINGS_ACCESS_PREFIX}.universal-link.toggle.clicked`,
+  UNIVERSAL_LINK_GENERATE: `${SETTINGS_ACCESS_PREFIX}.universal-link.generate.clicked`,
+  UNIVERSAL_LINK_COPIED: `${SETTINGS_ACCESS_PREFIX}.universal-link.copied.clicked`,
+  UNIVERSAL_LINK_DEACTIVATE: `${SETTINGS_ACCESS_PREFIX}.universal-link.deactivate.clicked`,
 };
 
 export const SUBSCRIPTION_EVENTS = {

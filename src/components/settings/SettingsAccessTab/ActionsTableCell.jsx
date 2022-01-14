@@ -3,11 +3,13 @@ import { ActionRow, Button } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform/config';
 import { logError } from '@edx/frontend-platform/logging';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';
 import LinkCopiedToast from './LinkCopiedToast';
+import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
-const ActionsTableCell = ({ row, onDeactivateLink }) => {
+const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
   const [isLinkDeactivationModalOpen, setIsLinkDeactivationModalOpen] = useState(false);
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const { isValid, uuid: inviteKeyUUID } = row.original;
@@ -29,12 +31,22 @@ const ActionsTableCell = ({ row, onDeactivateLink }) => {
       } catch (error) {
         logError(error);
       }
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_COPIED,
+        { invite_key_uuid: inviteKeyUUID },
+      );
     };
     addToClipboard();
   };
 
   const handleDeactivateClick = () => {
     setIsLinkDeactivationModalOpen(true);
+    sendEnterpriseTrackEvent(
+      enterpriseUUID,
+      SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_DEACTIVATE,
+      { invite_key_uuid: inviteKeyUUID },
+    );
   };
 
   const closeLinkDeactivationModal = () => {
@@ -81,6 +93,7 @@ ActionsTableCell.propTypes = {
     }),
   }).isRequired,
   onDeactivateLink: PropTypes.func,
+  enterpriseUUID: PropTypes.string.isRequired,
 };
 
 ActionsTableCell.defaultProps = {
