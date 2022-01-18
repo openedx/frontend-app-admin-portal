@@ -243,22 +243,22 @@ class LmsApiService {
 
   /**
    * Disables EnterpriseCustomerInviteKey
-   * @param {string} EnterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable
+   * @param {string} enterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable
    * @returns {Promise}
    */
-  static disableEnterpriseCustomerLink(EnterpriseCustomerInviteKeyUUID) {
+  static disableEnterpriseCustomerLink(enterpriseCustomerInviteKeyUUID) {
     const formData = {
       is_active: false,
     };
     return LmsApiService.apiClient().patch(
-      `${LmsApiService.enterpriseCustomerInviteKeyUrl}${EnterpriseCustomerInviteKeyUUID}/`,
+      `${LmsApiService.enterpriseCustomerInviteKeyUrl}${enterpriseCustomerInviteKeyUUID}/`,
       formData,
     );
   }
 
   /**
    * Toggles enable_universal_link flag
-   * If `enable_universal_link` is true and `expiration_date` is passed EnterpriseCustomerInviteKey is created
+   * If `enable_universal_link` is true and `expiration_date` is passed, an EnterpriseCustomerInviteKey is created
    * @param {Object} param0 Object with `enterpriseUUID`, `enableUniversalLink`, `expirationDate` (optional)
    * @returns {Promise}
    */

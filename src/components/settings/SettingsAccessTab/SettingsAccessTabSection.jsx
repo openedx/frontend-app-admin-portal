@@ -27,7 +27,15 @@ const SettingsAccessTabSection = ({
   return (
     <div className="mb-4">
       <div className="d-flex justify-content-end align-items-center mb-3">
-        {loading && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
+        {loading && (
+        <Spinner
+          screenReaderText="Processing Feature Toggle"
+          animation="border"
+          className="mr-2"
+          variant="primary"
+          size="sm"
+        />
+        )}
         <Form.Switch disabled={disabled} onChange={onFormSwitchChange} checked={checked}>
           Enable
         </Form.Switch>

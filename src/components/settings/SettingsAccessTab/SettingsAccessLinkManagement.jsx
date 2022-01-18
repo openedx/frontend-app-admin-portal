@@ -26,7 +26,7 @@ import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
-  enableUniversalLink,
+  isUniversalLinkEnabled,
   dispatch,
 }) => {
   const {
@@ -40,11 +40,11 @@ const SettingsAccessLinkManagement = ({
   } = useContext(SettingsContext);
 
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
-  const [loadingLinkManagementEnabledChange, setLoadingLinkManagementEnabledChange] = useState(false);
-  const [linkManagementEnabledChangeError, setLinkManagementEnabledChangeError] = useState(false);
+  const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
+  const [hasLinkManagementEnabledChangeError, setHasLinkManagementEnabledChangeError] = useState(false);
 
-  const setEnableUniversalLink = async (newEnableUniversalLink) => {
-    setLoadingLinkManagementEnabledChange(true);
+  const toggleUniversalLink = async (newEnableUniversalLink) => {
+    setIsLoadingLinkManagementEnabledChange(true);
     const args = {
       enterpriseUUID,
       enableUniversalLink: newEnableUniversalLink,
@@ -57,22 +57,18 @@ const SettingsAccessLinkManagement = ({
     try {
       await LmsApiService.toggleEnterpriseCustomerUniversalLink(args);
       dispatch(updatePortalConfigurationEvent({ enableUniversalLink: newEnableUniversalLink }));
-      if (isLinkManagementAlertModalOpen) {
-        setIsLinkManagementAlertModalOpen(false);
-      }
-      if (linkManagementEnabledChangeError) {
-        setLinkManagementEnabledChangeError(false);
-      }
+      setIsLinkManagementAlertModalOpen(false);
+      setHasLinkManagementEnabledChangeError(false);
     } catch (error) {
       logError(error);
-      setLinkManagementEnabledChangeError(true);
+      setHasLinkManagementEnabledChangeError(true);
     } finally {
       sendEnterpriseTrackEvent(
         enterpriseUUID,
         SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_TOGGLE,
         { toggle_to: newEnableUniversalLink },
       );
-      setLoadingLinkManagementEnabledChange(false);
+      setIsLoadingLinkManagementEnabledChange(false);
       refreshLinks();
     }
   };
@@ -91,14 +87,10 @@ const SettingsAccessLinkManagement = ({
     refreshLinks();
   };
 
-  const handleLinkManagementAlertModalClose = () => {
-    setIsLinkManagementAlertModalOpen(false);
-  };
-
   const handleLinkManagementFormSwitchChanged = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setEnableUniversalLink(isChecked);
+      toggleUniversalLink(isChecked);
     } else {
       setIsLinkManagementAlertModalOpen(true);
     }
@@ -106,7 +98,7 @@ const SettingsAccessLinkManagement = ({
 
   return (
     <>
-      {linkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
+      {hasLinkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
         <Alert icon={Info} variant="danger" dismissible>
           <Alert.Heading>Something went wrong</Alert.Heading>
           There was an issue with your request, try again.
@@ -114,11 +106,11 @@ const SettingsAccessLinkManagement = ({
       )}
       <SettingsAccessTabSection
         title="Access via Link"
-        checked={enableUniversalLink}
+        checked={isUniversalLinkEnabled}
         onFormSwitchChange={handleLinkManagementFormSwitchChanged}
         onCollapsibleToggle={handleLinkManagementCollapsibleToggled}
-        loading={loadingLinkManagementEnabledChange}
-        disabled={loadingLinkManagementEnabledChange}
+        loading={isLoadingLinkManagementEnabledChange}
+        disabled={isLoadingLinkManagementEnabledChange}
       >
         <p>Generate a link to share with your learners.</p>
         <DataTable
@@ -128,7 +120,7 @@ const SettingsAccessLinkManagement = ({
           tableActions={() => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
-              disabled={!enableUniversalLink}
+              disabled={!isUniversalLinkEnabled}
             />
           )}
           columns={[
@@ -174,10 +166,10 @@ const SettingsAccessLinkManagement = ({
       </SettingsAccessTabSection>
       <DisableLinkManagementAlertModal
         isOpen={isLinkManagementAlertModalOpen}
-        onClose={(handleLinkManagementAlertModalClose)}
-        disableCallback={() => (setEnableUniversalLink(false))}
-        loadingDisable={loadingLinkManagementEnabledChange}
-        error={linkManagementEnabledChangeError}
+        onClose={() => { setIsLinkManagementAlertModalOpen(false); }}
+        onDisable={() => (toggleUniversalLink(false))}
+        isLoadingDisable={isLoadingLinkManagementEnabledChange}
+        error={hasLinkManagementEnabledChangeError}
       />
     </>
   );
@@ -185,12 +177,12 @@ const SettingsAccessLinkManagement = ({
 
 const mapStateToProps = (state) => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
-  enableUniversalLink: state.portalConfiguration.enableUniversalLink,
+  isUniversalLinkEnabled: state.portalConfiguration.enableUniversalLink,
 });
 
 SettingsAccessLinkManagement.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  enableUniversalLink: PropTypes.bool.isRequired,
+  isUniversalLinkEnabled: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

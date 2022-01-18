@@ -12,11 +12,11 @@ import { Info } from '@edx/paragon/icons';
 const DisableLinkManagementAlertModal = ({
   isOpen,
   onClose,
-  disableCallback,
-  loadingDisable,
+  onDisable,
+  isLoadingDisable,
   error,
 }) => {
-  const modalDisableButtonState = loadingDisable ? 'pending' : 'default';
+  const modalDisableButtonState = isLoadingDisable ? 'pending' : 'default';
 
   const disableButtonProps = {
     labels: {
@@ -25,7 +25,7 @@ const DisableLinkManagementAlertModal = ({
     },
     state: modalDisableButtonState,
     variant: 'primary',
-    onClick: disableCallback,
+    onClick: onDisable,
   };
 
   return (
@@ -35,7 +35,7 @@ const DisableLinkManagementAlertModal = ({
       onClose={onClose}
       footerNode={(
         <ActionRow>
-          <Button disabled={loadingDisable} variant="tertiary" onClick={onClose}>Go back</Button>
+          <Button disabled={isLoadingDisable} variant="tertiary" onClick={onClose}>Go back</Button>
           <StatefulButton {...disableButtonProps}>Disable</StatefulButton>
         </ActionRow>
       )}
@@ -57,13 +57,13 @@ const DisableLinkManagementAlertModal = ({
 DisableLinkManagementAlertModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  disableCallback: PropTypes.func.isRequired,
-  loadingDisable: PropTypes.bool,
+  onDisable: PropTypes.func.isRequired,
+  isLoadingDisable: PropTypes.bool,
   error: PropTypes.bool,
 };
 
 DisableLinkManagementAlertModal.defaultProps = {
-  loadingDisable: false,
+  isLoadingDisable: false,
   error: false,
 };
 
