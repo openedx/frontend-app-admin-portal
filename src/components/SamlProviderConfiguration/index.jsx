@@ -14,6 +14,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
+import { createSAMLURLs } from './utils';
 
 export class SamlProviderConfigurationCore extends React.Component {
   state = {
@@ -157,11 +158,15 @@ export class SamlProviderConfigurationCore extends React.Component {
       );
     }
 
-    const { id, slug, metadata_source } = providerConfig || { id: '', slug: '', metadata_source: '' };
+    const { id, slug: idpSlug, metadata_source } = providerConfig || { id: '', slug: '', metadata_source: '' };
 
-    const learnerPortalUrl = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${this.props.enterpriseSlug}`;
-    const testLink = this.props.learnerPortalEnabled === true ? learnerPortalUrl : `${configuration.LMS_BASE_URL}/dashboard?tpa_hint=saml-${slug}`;
-    const spMetadataLink = `${configuration.LMS_BASE_URL}/auth/saml/metadata.xml?tpa_hint=saml-${slug}`;
+    const { learnerPortalEnabled, enterpriseSlug } = this.props;
+    const { testLink, spMetadataLink } = createSAMLURLs({
+      configuration,
+      idpSlug,
+      enterpriseSlug,
+      learnerPortalEnabled,
+    });
 
     return (
       <main role="main">
