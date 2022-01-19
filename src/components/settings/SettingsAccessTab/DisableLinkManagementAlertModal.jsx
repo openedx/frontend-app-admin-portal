@@ -36,7 +36,7 @@ const DisableLinkManagementAlertModal = ({
       footerNode={(
         <ActionRow>
           <Button disabled={isLoadingDisable} variant="tertiary" onClick={onClose}>Go back</Button>
-          <StatefulButton {...disableButtonProps}>Disable</StatefulButton>
+          <StatefulButton disabled={isLoadingDisable} {...disableButtonProps}>Disable</StatefulButton>
         </ActionRow>
       )}
     >

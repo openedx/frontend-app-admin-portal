@@ -59,10 +59,10 @@ const SettingsAccessLinkManagement = ({
       dispatch(updatePortalConfigurationEvent({ enableUniversalLink: newEnableUniversalLink }));
       setIsLinkManagementAlertModalOpen(false);
       setHasLinkManagementEnabledChangeError(false);
+      refreshLinks();
     } catch (error) {
       logError(error);
       setHasLinkManagementEnabledChangeError(true);
-      refreshLinks();
     } finally {
       sendEnterpriseTrackEvent(
         enterpriseUUID,
