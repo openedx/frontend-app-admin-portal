@@ -161,7 +161,7 @@ export class SamlProviderConfigurationCore extends React.Component {
 
     const learnerPortalUrl = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${this.props.enterpriseSlug}`;
     const testLink = this.props.learnerPortalEnabled === true ? learnerPortalUrl : `${configuration.LMS_BASE_URL}/dashboard?tpa_hint=saml-${slug}`;
-    const spMetadataLink = `${configuration.LMS_BASE_URL}/auth/saml/metadata.xml?tpa_hint=saml-${slug}`;
+    const spMetadataLink = `${configuration.LMS_BASE_URL}/auth/saml/metadata.xml?tpa_hint=${slug}`;
 
     return (
       <main role="main">
