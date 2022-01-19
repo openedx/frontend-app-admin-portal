@@ -101,7 +101,7 @@ const SettingsAccessLinkManagement = ({
       {hasLinkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
         <Alert icon={Info} variant="danger" dismissible>
           <Alert.Heading>Something went wrong</Alert.Heading>
-          There was an issue with your request, try again.
+          There was an issue with your request, please try again.
         </Alert>
       )}
       <SettingsAccessTabSection

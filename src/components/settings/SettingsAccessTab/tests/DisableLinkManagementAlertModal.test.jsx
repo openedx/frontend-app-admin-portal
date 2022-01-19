@@ -15,7 +15,7 @@ describe('<DisableLinkManagementAlertModal/>', () => {
     jest.clearAllMocks();
   });
 
-  test('Error message is display', () => {
+  test('Error message is displayed', () => {
     render(<DisableLinkManagementAlertModal
       isOpen
       onClose={() => {}}
@@ -30,7 +30,7 @@ describe('<DisableLinkManagementAlertModal/>', () => {
       isOpen
       onClose={() => {}}
       onDisable={() => {}}
-      isLoadingDisable
+      isLoading
     />);
     const disableButton = screen.queryByText('Disabling...').closest('button');
     expect(disableButton).toBeTruthy();

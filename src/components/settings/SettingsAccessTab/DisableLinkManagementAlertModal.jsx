@@ -13,10 +13,10 @@ const DisableLinkManagementAlertModal = ({
   isOpen,
   onClose,
   onDisable,
-  isLoadingDisable,
+  isLoading,
   error,
 }) => {
-  const modalDisableButtonState = isLoadingDisable ? 'pending' : 'default';
+  const modalDisableButtonState = isLoading ? 'pending' : 'default';
 
   const disableButtonProps = {
     labels: {
@@ -35,15 +35,15 @@ const DisableLinkManagementAlertModal = ({
       onClose={onClose}
       footerNode={(
         <ActionRow>
-          <Button disabled={isLoadingDisable} variant="tertiary" onClick={onClose}>Go back</Button>
-          <StatefulButton disabled={isLoadingDisable} {...disableButtonProps}>Disable</StatefulButton>
+          <Button disabled={isLoading} variant="tertiary" onClick={onClose}>Go back</Button>
+          <StatefulButton disabled={isLoading} {...disableButtonProps}>Disable</StatefulButton>
         </ActionRow>
       )}
     >
       {error && (
         <Alert icon={Info} variant="danger" dismissible>
           <Alert.Heading>Something went wrong</Alert.Heading>
-          There was an issue with your request, try again.
+          There was an issue with your request, please try again.
         </Alert>
       )}
       <p>
@@ -58,12 +58,12 @@ DisableLinkManagementAlertModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onDisable: PropTypes.func.isRequired,
-  isLoadingDisable: PropTypes.bool,
+  isLoading: PropTypes.bool,
   error: PropTypes.bool,
 };
 
 DisableLinkManagementAlertModal.defaultProps = {
-  isLoadingDisable: false,
+  isLoading: false,
   error: false,
 };
 

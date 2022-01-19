@@ -49,8 +49,7 @@ describe('<SettingsAccessLinkManagement/>', () => {
   });
 
   test('Toggle Universal Link Off', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue(mockPromiseResolve);
+    LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
     render(renderWithContext());
 
     // Clicking `Enable` opens modal
@@ -82,8 +81,7 @@ describe('<SettingsAccessLinkManagement/>', () => {
   });
 
   test('Toggle Universal Link On', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue(mockPromiseResolve);
+    LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
     render(renderWithContext(generateStore({ enableUniversalLink: false })));
 
     // Clicking `Enable` does not open modal
