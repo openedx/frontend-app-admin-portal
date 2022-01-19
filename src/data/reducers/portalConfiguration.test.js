@@ -19,6 +19,7 @@ const initialState = {
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
   enableLmsConfigurationsScreen: false,
+  enableUniversalLink: false,
 };
 
 const enterpriseData = {
@@ -37,6 +38,7 @@ const enterpriseData = {
   enable_portal_saml_configuration_screen: true,
   enable_analytics_screen: true,
   enable_portal_lms_configurations_screen: true,
+  enable_universal_link: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -61,6 +63,7 @@ describe('portalConfiguration reducer', () => {
       enableSamlConfigurationScreen: enterpriseData.enable_portal_saml_configuration_screen,
       enableAnalyticsScreen: enterpriseData.enable_analytics_screen,
       enableLmsConfigurationsScreen: enterpriseData.enable_portal_lms_configurations_screen,
+      enableUniversalLink: enterpriseData.enable_universal_link,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,

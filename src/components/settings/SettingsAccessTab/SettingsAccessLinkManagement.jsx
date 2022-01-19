@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   DataTable,
+  Alert,
 } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
+import moment from 'moment';
+import { logError } from '@edx/frontend-platform/logging';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { useLinkManagement } from '../data/hooks';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
@@ -14,15 +19,59 @@ import LinkTableCell from './LinkTableCell';
 import UsageTableCell from './UsageTableCell';
 import ActionsTableCell from './ActionsTableCell';
 import DisableLinkManagementAlertModal from './DisableLinkManagementAlertModal';
+import { updatePortalConfigurationEvent } from '../../../data/actions/portalConfiguration';
+import LmsApiService from '../../../data/services/LmsApiService';
+import { SettingsContext } from '../SettingsContext';
+import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
-const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
+const SettingsAccessLinkManagement = ({
+  enterpriseUUID,
+  isUniversalLinkEnabled,
+  dispatch,
+}) => {
   const {
     links,
     loadingLinks,
     refreshLinks,
   } = useLinkManagement(enterpriseUUID);
-  const [isLinkManagementEnabled, setIsLinkManagementEnabled] = useState(true);
+
+  const {
+    customerAgreement: { netDaysUntilExpiration },
+  } = useContext(SettingsContext);
+
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
+  const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
+  const [hasLinkManagementEnabledChangeError, setHasLinkManagementEnabledChangeError] = useState(false);
+
+  const toggleUniversalLink = async (newEnableUniversalLink) => {
+    setIsLoadingLinkManagementEnabledChange(true);
+    const args = {
+      enterpriseUUID,
+      enableUniversalLink: newEnableUniversalLink,
+    };
+
+    if (newEnableUniversalLink) {
+      args.expirationDate = moment().add(netDaysUntilExpiration, 'days').startOf('day').format();
+    }
+
+    try {
+      await LmsApiService.toggleEnterpriseCustomerUniversalLink(args);
+      dispatch(updatePortalConfigurationEvent({ enableUniversalLink: newEnableUniversalLink }));
+      setIsLinkManagementAlertModalOpen(false);
+      setHasLinkManagementEnabledChangeError(false);
+      refreshLinks();
+    } catch (error) {
+      logError(error);
+      setHasLinkManagementEnabledChangeError(true);
+    } finally {
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_TOGGLE,
+        { toggle_to: newEnableUniversalLink },
+      );
+      setIsLoadingLinkManagementEnabledChange(false);
+    }
+  };
 
   const handleLinkManagementCollapsibleToggled = (isOpen) => {
     if (isOpen) {
@@ -38,20 +87,10 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
     refreshLinks();
   };
 
-  const handleLinkManagementAlertModalClose = () => {
-    setIsLinkManagementAlertModalOpen(false);
-  };
-
-  const handleLinkManagementDisabledSuccess = () => {
-    refreshLinks();
-    setIsLinkManagementEnabled(false);
-    setIsLinkManagementAlertModalOpen(false);
-  };
-
   const handleLinkManagementFormSwitchChanged = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setIsLinkManagementEnabled(isChecked);
+      toggleUniversalLink(isChecked);
     } else {
       setIsLinkManagementAlertModalOpen(true);
     }
@@ -59,11 +98,19 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
 
   return (
     <>
+      {hasLinkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
+        <Alert icon={Info} variant="danger" dismissible>
+          <Alert.Heading>Something went wrong</Alert.Heading>
+          There was an issue with your request, please try again.
+        </Alert>
+      )}
       <SettingsAccessTabSection
         title="Access via Link"
-        checked={isLinkManagementEnabled}
+        checked={isUniversalLinkEnabled}
         onFormSwitchChange={handleLinkManagementFormSwitchChanged}
         onCollapsibleToggle={handleLinkManagementCollapsibleToggled}
+        loading={isLoadingLinkManagementEnabledChange}
+        disabled={isLoadingLinkManagementEnabledChange}
       >
         <p>Generate a link to share with your learners.</p>
         <DataTable
@@ -73,7 +120,7 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
           tableActions={() => (
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
-              disabled={!isLinkManagementEnabled}
+              disabled={!isUniversalLinkEnabled}
             />
           )}
           columns={[
@@ -102,7 +149,13 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
             {
               id: 'action',
               Header: '',
-              Cell: props => <ActionsTableCell {...props} onDeactivateLink={handleDeactivatedLink} />,
+              Cell: props => (
+                <ActionsTableCell
+                  {...props}
+                  enterpriseUUID={enterpriseUUID}
+                  onDeactivateLink={handleDeactivatedLink}
+                />
+              ),
             },
           ]}
         >
@@ -113,8 +166,10 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
       </SettingsAccessTabSection>
       <DisableLinkManagementAlertModal
         isOpen={isLinkManagementAlertModalOpen}
-        onDisableLinkManagement={handleLinkManagementDisabledSuccess}
-        onClose={handleLinkManagementAlertModalClose}
+        onClose={() => { setIsLinkManagementAlertModalOpen(false); }}
+        onDisable={() => (toggleUniversalLink(false))}
+        isLoadingDisable={isLoadingLinkManagementEnabledChange}
+        error={hasLinkManagementEnabledChangeError}
       />
     </>
   );
@@ -122,10 +177,13 @@ const SettingsAccessLinkManagement = ({ enterpriseUUID }) => {
 
 const mapStateToProps = (state) => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
+  isUniversalLinkEnabled: state.portalConfiguration.enableUniversalLink,
 });
 
 SettingsAccessLinkManagement.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
+  isUniversalLinkEnabled: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(SettingsAccessLinkManagement);

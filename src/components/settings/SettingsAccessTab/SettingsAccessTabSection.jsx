@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Collapsible,
   Form,
+  Spinner,
 } from '@edx/paragon';
 
 const SettingsAccessTabSection = ({
@@ -11,6 +12,8 @@ const SettingsAccessTabSection = ({
   onFormSwitchChange,
   onCollapsibleToggle,
   children,
+  loading,
+  disabled,
 }) => {
   const [isExpanded, setExpanded] = useState(true);
 
@@ -23,8 +26,19 @@ const SettingsAccessTabSection = ({
 
   return (
     <div className="mb-4">
-      <div className="d-flex justify-content-end mb-3">
-        <Form.Switch onChange={onFormSwitchChange} checked={checked}>Enable</Form.Switch>
+      <div className="d-flex justify-content-end align-items-center mb-3">
+        {loading && (
+        <Spinner
+          screenReaderText="Processing Feature Toggle"
+          animation="border"
+          className="mr-2"
+          variant="primary"
+          size="sm"
+        />
+        )}
+        <Form.Switch disabled={disabled} onChange={onFormSwitchChange} checked={checked}>
+          Enable
+        </Form.Switch>
       </div>
       <div>
         <Collapsible
@@ -46,10 +60,14 @@ SettingsAccessTabSection.propTypes = {
   onFormSwitchChange: PropTypes.func.isRequired,
   onCollapsibleToggle: PropTypes.func,
   children: PropTypes.node.isRequired,
+  loading: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 SettingsAccessTabSection.defaultProps = {
   onCollapsibleToggle: undefined,
+  loading: false,
+  disabled: false,
 };
 
 export default SettingsAccessTabSection;

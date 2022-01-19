@@ -240,6 +240,38 @@ class LmsApiService {
     const url = `${LmsApiService.enterpriseCustomerInviteKeyListUrl}?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(url);
   }
+
+  /**
+   * Disables EnterpriseCustomerInviteKey
+   * @param {string} enterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable
+   * @returns {Promise}
+   */
+  static disableEnterpriseCustomerLink(enterpriseCustomerInviteKeyUUID) {
+    const formData = {
+      is_active: false,
+    };
+    return LmsApiService.apiClient().patch(
+      `${LmsApiService.enterpriseCustomerInviteKeyUrl}${enterpriseCustomerInviteKeyUUID}/`,
+      formData,
+    );
+  }
+
+  /**
+   * Toggles enable_universal_link flag
+   * If `enable_universal_link` is true and `expiration_date` is passed, an EnterpriseCustomerInviteKey is created
+   * @param {Object} param0 Object with `enterpriseUUID`, `enableUniversalLink`, `expirationDate` (optional)
+   * @returns {Promise}
+   */
+  static toggleEnterpriseCustomerUniversalLink({ enterpriseUUID, enableUniversalLink, expirationDate }) {
+    const formData = {
+      enable_universal_link: enableUniversalLink,
+      expiration_date: expirationDate,
+    };
+    return LmsApiService.apiClient().patch(
+      `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`,
+      formData,
+    );
+  }
 }
 
 export default LmsApiService;

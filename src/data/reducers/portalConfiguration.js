@@ -3,6 +3,7 @@ import {
   FETCH_PORTAL_CONFIGURATION_SUCCESS,
   FETCH_PORTAL_CONFIGURATION_FAILURE,
   CLEAR_PORTAL_CONFIGURATION,
+  UPDATE_PORTAL_CONFIGURATION,
 } from '../constants/portalConfiguration';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   enableSamlConfigurationScreen: false,
   enableLmsConfigurationsScreen: false,
   enableAnalyticsScreen: false,
+  enableUniversalLink: false,
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -48,6 +50,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableAnalyticsScreen: action.payload.data.enable_analytics_screen,
         enableLearnerPortal: action.payload.data.enable_learner_portal,
         enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
+        enableUniversalLink: action.payload.data.enable_universal_link,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -65,6 +68,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableSamlConfigurationScreen: false,
         enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
+        enableUniversalLink: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -80,6 +84,12 @@ const portalConfiguration = (state = initialState, action) => {
         enableSamlConfigurationScreen: false,
         enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
+        enableUniversalLink: false,
+      };
+    case UPDATE_PORTAL_CONFIGURATION:
+      return {
+        ...state,
+        ...action.payload.data,
       };
     default:
       return state;
