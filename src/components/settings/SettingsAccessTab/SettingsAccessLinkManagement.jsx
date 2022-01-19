@@ -62,6 +62,7 @@ const SettingsAccessLinkManagement = ({
     } catch (error) {
       logError(error);
       setHasLinkManagementEnabledChangeError(true);
+      refreshLinks();
     } finally {
       sendEnterpriseTrackEvent(
         enterpriseUUID,
@@ -69,7 +70,6 @@ const SettingsAccessLinkManagement = ({
         { toggle_to: newEnableUniversalLink },
       );
       setIsLoadingLinkManagementEnabledChange(false);
-      refreshLinks();
     }
   };
 
