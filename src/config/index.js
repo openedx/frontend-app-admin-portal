@@ -1,3 +1,5 @@
+import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
+
 const configuration = {
   BASE_URL: process.env.BASE_URL,
   LMS_BASE_URL: process.env.LMS_BASE_URL,
@@ -16,7 +18,7 @@ const configuration = {
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,
-  CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org',
+  CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org', // TODO: avoid using hardcoded email address here...
   TABLEAU_URL: process.env.TABLEAU_URL,
   ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
   ALGOLIA: {
@@ -30,16 +32,16 @@ const configuration = {
 };
 
 const features = {
-  BULK_ENROLLMENT: process.env.FEATURE_BULK_ENROLLMENT,
-  CODE_MANAGEMENT: process.env.FEATURE_CODE_MANAGEMENT,
-  REPORTING_CONFIGURATIONS: process.env.FEATURE_REPORTING_CONFIGURATIONS,
-  ANALYTICS: process.env.FEATURE_ANALYTICS,
-  SAML_CONFIGURATION: process.env.FEATURE_SAML_CONFIGURATION,
-  SUPPORT: process.env.FEATURE_SUPPORT,
-  EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_EXTERNAL_LMS_CONFIGURATION,
-  FILE_ATTACHMENT: process.env.FEATURE_FILE_ATTACHMENT,
-  SETTINGS_PAGE: process.env.FEATURE_SETTINGS_PAGE,
-  SETTINGS_UNIVERSAL_LINK: process.env.FEATURE_SETTINGS_UNIVERSAL_LINK,
+  BULK_ENROLLMENT: process.env.FEATURE_BULK_ENROLLMENT || hasFeatureFlagEnabled('BULK_ENROLLMENT'),
+  CODE_MANAGEMENT: process.env.FEATURE_CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
+  REPORTING_CONFIGURATIONS: process.env.FEATURE_REPORTING_CONFIGURATIONS || hasFeatureFlagEnabled('REPORTING_CONFIGURATIONS'),
+  ANALYTICS: process.env.FEATURE_ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
+  SAML_CONFIGURATION: process.env.FEATURE_SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
+  SUPPORT: process.env.FEATURE_SUPPORT || hasFeatureFlagEnabled('SUPPORT'),
+  EXTERNAL_LMS_CONFIGURATION: process.env.FEATURE_EXTERNAL_LMS_CONFIGURATION || hasFeatureFlagEnabled('EXTERNAL_LMS_CONFIGURATION'),
+  FILE_ATTACHMENT: process.env.FEATURE_FILE_ATTACHMENT || hasFeatureFlagEnabled('FILE_ATTACHMENT'),
+  SETTINGS_PAGE: process.env.FEATURE_SETTINGS_PAGE || hasFeatureFlagEnabled('SETTINGS_PAGE'),
+  SETTINGS_UNIVERSAL_LINK: process.env.FEATURE_SETTINGS_UNIVERSAL_LINK || hasFeatureFlagEnabled('SETTINGS_UNIVERSAL_LINK'),
 };
 
 export { configuration, features };

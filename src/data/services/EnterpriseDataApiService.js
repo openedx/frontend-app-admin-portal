@@ -1,5 +1,3 @@
-import qs from 'query-string';
-
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 
@@ -16,49 +14,51 @@ class EnterpriseDataApiService {
 
   static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'enrollments.csv' : 'enrollments';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
-      no_page: csv,
       ...options,
-    };
+    });
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
 
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       has_enrollments: false,
       no_page: csv,
       ...options,
-    };
+    });
 
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchEnrolledLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       has_enrollments: true,
       extra_fields: ['enrollment_count'],
       no_page: csv,
       ...options,
-    };
+    });
 
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchEnrolledLearnersForInactiveCourses(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'users.csv' : 'users';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       has_enrollments: true,
@@ -67,22 +67,22 @@ class EnterpriseDataApiService {
       extra_fields: ['enrollment_count', 'course_completion_count'],
       no_page: csv,
       ...options,
-    };
+    });
 
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchCompletedLearners(enterpriseId, options, { csv } = {}) {
     const endpoint = csv ? 'learner_completed_courses.csv' : 'learner_completed_courses';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       no_page: csv,
       ...options,
-    };
+    });
 
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 }

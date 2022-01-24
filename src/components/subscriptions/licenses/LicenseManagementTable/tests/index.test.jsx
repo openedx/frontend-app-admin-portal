@@ -26,9 +26,13 @@ import LicenseManagerApiService from '../../../../../data/services/LicenseManage
 
 jest.useFakeTimers('modern');
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  sendEnterpriseTrackEvent: jest.fn(),
-}));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,

@@ -74,10 +74,10 @@ const defaultProps = {
   enterpriseSlug: 'fancyCompany',
 };
 
-const refinementsFromQueryParams = {};
+const refinements = {};
 
 // eslint-disable-next-line react/prop-types
-const CourseSearchWrapper = ({ value = { refinementsFromQueryParams }, props = defaultProps }) => (
+const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) => (
   <Provider store={mockStore()}>
     <SearchContext.Provider value={value}>
       <BulkEnrollContextProvider>

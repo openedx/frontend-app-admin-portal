@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import qs from 'query-string';
 
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';
@@ -19,10 +18,10 @@ class EnterpriseList extends React.Component {
     super(props);
 
     const { location } = props;
-    const queryParams = qs.parse(location.search);
+    const queryParams = new URLSearchParams(location.search);
     this.state = {
-      searchQuery: queryParams.search || '',
-      searchSubmitted: !!queryParams.search,
+      searchQuery: queryParams.get('search') || '',
+      searchSubmitted: !!queryParams.get('search'),
     };
   }
 
@@ -34,8 +33,10 @@ class EnterpriseList extends React.Component {
     const { location } = this.props;
 
     if (location.search !== prevProps.location.search) {
-      const { search } = qs.parse(location.search);
-      const { search: prevSearch } = qs.parse(prevProps.location.search);
+      const queryParams = new URLSearchParams(location.search);
+      const search = queryParams.get('search');
+      const prevQueryParams = new URLSearchParams(prevProps.location.search);
+      const prevSearch = prevQueryParams.get('search');
       if (search !== prevSearch) {
         this.handleSearch(search);
       }
@@ -130,7 +131,7 @@ class EnterpriseList extends React.Component {
                     search: query,
                     page: 1,
                   })}
-                  onClear={() => updateUrl({ search: undefined })}
+                  onClear={() => updateUrl({ search: null })}
                   value={searchQuery}
                 />
               </div>

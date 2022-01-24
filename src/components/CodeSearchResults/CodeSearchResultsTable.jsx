@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import qs from 'query-string';
 import { withRouter } from 'react-router-dom';
 import { Icon } from '@edx/paragon';
 
@@ -95,7 +94,7 @@ const CodeSearchResultsTable = ({
   onRevokeSuccess,
   location,
 }) => {
-  const queryParams = qs.parse(location.search);
+  const queryParams = new URLSearchParams(location.search);
   const formatSearchResultsData = (results) => {
     const transformedSearchResults = transformSearchResults(results);
     const defaultEmptyValue = '-';
@@ -150,7 +149,7 @@ const CodeSearchResultsTable = ({
       className="code-search-results-table"
       fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
         [searchParameter(searchQuery)]: searchQuery,
-        page: queryParams.page && parseInt(queryParams.page, 10),
+        page: queryParams.get('page') && parseInt(queryParams.get('page'), 10),
       })}
       columns={handleTableColumns(searchQuery)}
       formatData={formatSearchResultsData}
