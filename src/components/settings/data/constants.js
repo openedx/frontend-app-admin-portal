@@ -2,7 +2,7 @@ const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
-const LMS_TAB_LABEL = 'Configure LMS';
+const LMS_TAB_LABEL = 'LMS';
 
 /**
  * Used as tab values and in router params
