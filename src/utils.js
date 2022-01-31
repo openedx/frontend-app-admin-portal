@@ -10,6 +10,30 @@ import isNumeric from 'validator/lib/isNumeric';
 import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
+import BlackboardIcon from './icons/Blackboard.svg';
+import CanvasIcon from './icons/Canvas.svg';
+import CornerstoneIcon from './icons/CSOD.png';
+import DegreedIcon from './icons/Degreed.png';
+import MoodleIcon from './icons/Moodle.png';
+import SAPIcon from './icons/SAP.svg';
+
+export function getLMSIcon(LMStype) {
+  switch (LMStype) {
+    case 'Blackboard':
+      return BlackboardIcon;
+    case 'Canvas':
+      return CanvasIcon;
+    case 'Cornerstone':
+      return CornerstoneIcon;
+    case 'Degreed':
+      return DegreedIcon;
+    case 'Moodle':
+      return MoodleIcon;
+    default:
+      return SAPIcon;
+  }
+}
+
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
     return moment(timestamp).format(format);
