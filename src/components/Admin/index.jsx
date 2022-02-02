@@ -280,7 +280,9 @@ class Admin extends React.Component {
     } = this.props;
 
     const { params: { actionSlug } } = match;
-    const filtersActive = search;
+
+    const params = Object.keys(qs.parse(search));
+    const filtersActive = params.length !== 0 && !(params.length === 1 && params[0] === 'ordering');
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
     const queryParams = new URLSearchParams(search);

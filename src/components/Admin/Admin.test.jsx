@@ -415,6 +415,17 @@ describe('<Admin />', () => {
       ));
       expect(wrapper.text()).not.toContain('Reset Filters');
     });
+    it('should not be present if only query is ordering', () => {
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: 'ordering=xyz' }
+          }
+        />
+      ));
+      expect(wrapper.text()).not.toContain('Reset Filters');
+    });
     it('should be present if there is a querystring', () => {
       const path = '/lael/';
       const wrapper = mount((
@@ -428,6 +439,21 @@ describe('<Admin />', () => {
       expect(wrapper.text()).toContain('Reset Filters');
       const link = wrapper.find(Link).find('#reset-filters');
       expect(link.first().props().to).toEqual(path);
+    });
+    it('should be present if there is a querystring mixed with ordering', () => {
+      const path = '/lael/';
+      const nonSearchQuery = 'ordering=xyz';
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: `search=foo&${nonSearchQuery}`, pathname: path }
+          }
+        />
+      ));
+      expect(wrapper.text()).toContain('Reset Filters');
+      const link = wrapper.find(Link).find('#reset-filters');
+      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
     });
     it('should not disturb non-search-releated queries', () => {
       const path = '/lael/';
