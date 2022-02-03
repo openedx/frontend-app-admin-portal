@@ -1,6 +1,5 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import qs from 'query-string';
 
 import searchEnterpriseList from './enterpriseList';
 import {
@@ -49,13 +48,13 @@ describe('actions', () => {
         },
       ];
       const store = mockStore();
-      const defaultOptions = {
+      const defaultQueryParams = new URLSearchParams({
         page: 1,
         page_size: 50,
         search: 'test-search-string',
-      };
+      });
 
-      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(defaultOptions)}`)
+      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${defaultQueryParams.toString()}`)
         .replyOnce(200, JSON.stringify(responseData));
 
       return store.dispatch(searchEnterpriseList({ search: 'test-search-string' })).then(() => {
@@ -70,6 +69,7 @@ describe('actions', () => {
         page_size: 10,
         search: 'test-search-string',
       };
+      const queryParams = new URLSearchParams(options);
       const expectedActions = [
         {
           type: PAGINATION_REQUEST,
@@ -87,7 +87,7 @@ describe('actions', () => {
         },
       ];
 
-      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(options)}`)
+      axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`)
         .networkError();
 
       return store.dispatch(searchEnterpriseList(options)).then(() => {

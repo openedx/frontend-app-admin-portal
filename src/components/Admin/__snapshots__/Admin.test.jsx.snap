@@ -2437,12 +2437,14 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       id="form-field105"
                       onBlur={[Function]}
                       onChange={[Function]}
+                      value=""
                     >
                       <option
                         value=""
                       >
                         Choose a course
                       </option>
+                      
                     </select>
                   </div>
                 </div>
@@ -3153,12 +3155,14 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                       id="form-field11"
                       onBlur={[Function]}
                       onChange={[Function]}
+                      value=""
                     >
                       <option
                         value=""
                       >
                         Choose a course
                       </option>
+                      
                     </select>
                   </div>
                 </div>

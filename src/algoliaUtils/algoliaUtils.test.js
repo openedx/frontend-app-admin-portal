@@ -1,4 +1,3 @@
-import qs from 'query-string';
 import {
   excludeKeys, createURL, ALGOLIA_KEYS_TO_EXCLUDE, searchStateToUrl, urlToSearchState,
 } from '.';
@@ -51,36 +50,31 @@ describe('algoliaUtils', () => {
   });
 
   describe('Validate querystring', () => {
-    test.each(['-1', -20, 'foo'])('sends user to the first page if page number is invalid: page=%p', (pageNo) => {
-      const search = {
-        page: pageNo,
-      };
-
-      const result = urlToSearchState({ search: `?${qs.stringify(search)}` });
-      expect(result).toEqual({
-        page: 1,
-      });
+    test.each(['-1', -20, 'foo', 1])('sends user to the first page if page number is invalid: page=%p', (pageNum) => {
+      const params = { page: pageNum };
+      const queryParams = new URLSearchParams(params);
+      const result = urlToSearchState({ search: `?${queryParams.toString()}` });
+      expect(result.has('page')).toBeFalsy();
     });
-    test.each([1, '20', '3'])('accepts valid pages from the querystring: page=%p', (pageNo) => {
-      const search = {
-        page: pageNo,
-      };
-      const result = urlToSearchState({ search: `?${qs.stringify(search)}` });
-      expect(result).toEqual(search);
+    test.each(['20', '3'])('accepts valid pages from the querystring: page=%p', (pageNum) => {
+      const params = { page: pageNum };
+      const queryParams = new URLSearchParams(params);
+      const result = urlToSearchState({ search: `?${queryParams.toString()}` });
+      expect(result.get('page')).toEqual(pageNum);
     });
   });
 
   describe('urlToSearchState', () => {
     it('returns a validated search object', () => {
-      const search = {
-        page: 'foo',
-        filters: ['foo', 'bar'],
-      };
-      const result = urlToSearchState({ search: `?${qs.stringify(search)}` });
-      expect(result).toEqual({
-        page: 1,
-        filters: search.filters,
+      const params = { page: 'foo' };
+      const filters = ['foo', 'bar'];
+      const queryParams = new URLSearchParams(params);
+      filters.forEach((filter) => {
+        queryParams.append('filter', filter);
       });
+      const result = urlToSearchState({ search: `?${queryParams.toString()}` });
+      expect(result.get('page')).toEqual(null);
+      expect(result.getAll('filter')).toEqual(filters);
     });
   });
 });

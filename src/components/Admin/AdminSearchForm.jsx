@@ -60,7 +60,7 @@ class AdminSearchForm extends React.Component {
                 <Form.Control
                   className="w-100"
                   as="select"
-                  value={searchCourseQuery || ''}
+                  value={searchCourseQuery}
                   onChange={e => this.onCourseSelect(e)}
                 >
                   <option value="">All Courses</option>

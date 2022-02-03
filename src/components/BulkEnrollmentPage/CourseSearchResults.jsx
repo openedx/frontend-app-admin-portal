@@ -52,7 +52,7 @@ export const BaseCourseSearchResults = (props) => {
     enterpriseSlug,
   } = props;
 
-  const { refinementsFromQueryParams } = useContext(SearchContext);
+  const { refinements } = useContext(SearchContext);
 
   const columns = useMemo(() => [
     selectColumn,
@@ -76,12 +76,12 @@ export const BaseCourseSearchResults = (props) => {
 
   const page = useMemo(
     () => {
-      if (refinementsFromQueryParams.page) {
-        return refinementsFromQueryParams.page;
+      if (refinements.page) {
+        return refinements.page;
       }
       return searchState && searchState.page;
     },
-    [searchState?.page, refinementsFromQueryParams],
+    [searchState?.page, refinements],
   );
 
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);

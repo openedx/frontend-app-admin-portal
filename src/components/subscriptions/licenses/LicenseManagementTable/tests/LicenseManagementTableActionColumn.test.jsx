@@ -23,9 +23,13 @@ import {
   TEST_SUBSCRIPTION_PLAN_UUID,
 } from '../../../tests/TestUtilities';
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  sendEnterpriseTrackEvent: jest.fn(),
-}));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const mockStore = configureMockStore();
 const store = mockStore({
