@@ -47,6 +47,7 @@ class LmsApiService {
       page: 1,
       page_size: 50,
       ...options,
+      ...{ search: options.search || '' },
     });
     const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(enterpriseListUrl);
