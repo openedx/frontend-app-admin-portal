@@ -43,10 +43,6 @@ class LmsApiService {
   }
 
   static fetchEnterpriseList(options) {
-    if (options.search === undefined) {
-      // eslint-disable-next-line no-param-reassign
-      delete options.search;
-    }
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
