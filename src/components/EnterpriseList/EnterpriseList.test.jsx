@@ -11,6 +11,8 @@ import SearchBar from '../SearchBar';
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';
 
+import LmsApiServices from '../../data/services/LmsApiService';
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   paginateTable: () => {},
@@ -166,6 +168,18 @@ describe('<EnterpriseList />', () => {
       expect(wrapper.find('SearchBar').find('input[type="text"]').prop('value')).toEqual(searchQuery);
       wrapper.find('SearchBar').find('form').simulate('submit');
     };
+
+    it('fetchEnterpriseList called with no search property initially', () => {
+      jest.spyOn(LmsApiServices, 'fetchEnterpriseList');
+      wrapper = mount(
+        <EnterpriseListWrapper
+          location={{
+            path: '/',
+          }}
+        />,
+      );
+      expect(LmsApiServices.fetchEnterpriseList).toHaveBeenCalledWith({ page_size: 50, page: 1 });
+    });
 
     it('search querystring changes onSearch', () => {
       wrapper = mount((
