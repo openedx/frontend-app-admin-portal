@@ -281,7 +281,7 @@ class Admin extends React.Component {
 
     const { params: { actionSlug } } = match;
 
-    const queryParams = new URLSearchParams(search);
+    const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
     const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
     const tableMetadata = this.getMetadataForAction(actionSlug);
