@@ -426,6 +426,17 @@ describe('<Admin />', () => {
       ));
       expect(wrapper.text()).not.toContain('Reset Filters');
     });
+    it('should not be present if query is null', () => {
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { search: null }
+          }
+        />
+      ));
+      expect(wrapper.text()).not.toContain('Reset Filters');
+    });
     it('should be present if there is a querystring', () => {
       const path = '/lael/';
       const wrapper = mount((
