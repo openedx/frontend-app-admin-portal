@@ -43,11 +43,14 @@ class LmsApiService {
   }
 
   static fetchEnterpriseList(options) {
+    if (options.search === undefined) {
+      // eslint-disable-next-line no-param-reassign
+      delete options.search;
+    }
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       ...options,
-      ...{ search: options.search || '' },
     });
     const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(enterpriseListUrl);
