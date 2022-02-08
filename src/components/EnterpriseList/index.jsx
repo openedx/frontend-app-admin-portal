@@ -51,10 +51,10 @@ class EnterpriseList extends React.Component {
   }));
 
   fetchEnterprisesWithSearch = (options) => {
-    const optionsWithSearch = {
-      ...options,
-      search: this.state.searchQuery || undefined,
-    };
+    const optionsWithSearch = { ...options };
+    if (this.state.searchQuery) {
+      optionsWithSearch.search = this.state.searchQuery;
+    }
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
   }
 
