@@ -4,6 +4,13 @@ const LMS_TAB = 'lms';
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'LMS';
 
+export const BLACKBOARD_TYPE = 'Blackboard';
+export const CANVAS_TYPE = 'Canvas';
+export const CORNERSTONE_TYPE = 'Cornerstone';
+export const DEGREED_TYPE = 'Degreed';
+export const MOODLE_TYPE = 'Moodle';
+export const SAP_TYPE = 'SAP';
+
 /**
  * Used as tab values and in router params
  */
