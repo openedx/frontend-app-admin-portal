@@ -60,12 +60,12 @@ class EnterpriseList extends React.Component {
 
   handleSearch(query) {
     this.setState({
-      searchQuery: query,
+      searchQuery: query || '',
       searchSubmitted: true,
     });
-    this.props.searchEnterpriseList({
-      search: query || undefined,
-    });
+    this.props.searchEnterpriseList(query ? {
+      search: query,
+    } : {});
   }
 
   shouldRenderRedirectToEnterpriseAdminPage() {
