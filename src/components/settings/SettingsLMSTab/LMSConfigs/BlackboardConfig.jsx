@@ -38,11 +38,12 @@ const BlackboardConfig = ({ id, onClick }) => {
   };
 
   return (
-    <span>
+    <span data-test="BlackboardConfig">
       <ConfigError isOpen={isOpen} close={close} />
-      <Form>
+      <Form data-test="form">
         <Form.Group>
           <Form.Control
+            data-test="clientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -53,7 +54,7 @@ const BlackboardConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            id="client_secret"
+            data-test="clientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -64,7 +65,7 @@ const BlackboardConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            id="blackboard_base_url"
+            data-test="blackboardBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -75,13 +76,14 @@ const BlackboardConfig = ({ id, onClick }) => {
         </Form.Group>
         <span className="d-flex">
           <Button
+            data-test="cancelButton"
             onClick={onClick}
             variant="outline-primary"
             className="ml-auto mr-2"
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
         </span>
       </Form>
     </span>

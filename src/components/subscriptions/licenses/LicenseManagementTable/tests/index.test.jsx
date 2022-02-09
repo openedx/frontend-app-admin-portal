@@ -91,7 +91,7 @@ describe('<LicenseManagementTable />', () => {
         subscriptionPlan,
       }));
       // assert that the spinner is shown (`isLoading` is properly passed to `DataTable`)
-      expect(screen.getByRole('status'));
+      expect(screen.getByRole('Status'));
     });
   });
 

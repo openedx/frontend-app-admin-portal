@@ -222,6 +222,8 @@ function truncateString(str, maxStrLength = 10) {
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
+const findByTestAttr = (component, attr) => component.find(`[data-test='${attr}']`);
+
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -244,4 +246,5 @@ export {
   getSubscriptionContactText,
   truncateString,
   normalizeFileUpload,
+  findByTestAttr,
 };

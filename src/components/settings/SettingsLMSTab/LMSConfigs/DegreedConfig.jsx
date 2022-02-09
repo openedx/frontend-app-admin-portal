@@ -44,11 +44,12 @@ const DegreedConfig = ({ id, onClick }) => {
   };
 
   return (
-    <span>
+    <span data-test="DegreedConfig">
       <ConfigError isOpen={isOpen} close={close} />
-      <Form>
+      <Form data-test="form">
         <Form.Group>
           <Form.Control
+            data-test="clientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -59,6 +60,7 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="clientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -69,6 +71,7 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="degreedCompanyId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -79,6 +82,7 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="degreedBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -89,8 +93,9 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="degreedUserId"
             className="my-1"
-            type="text"
+            type="username"
             onChange={(e) => {
               setDegreedUserId(e.target.value);
             }}
@@ -100,8 +105,9 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="degreedUserPassword"
             className="my-1"
-            type="text"
+            type="password"
             onChange={(e) => {
               setDegreedUserPassword(e.target.value);
             }}
@@ -111,13 +117,14 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <span className="d-flex">
           <Button
+            data-test="cancelButton"
             onClick={onClick}
             variant="outline-primary"
             className="ml-auto mr-2"
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
         </span>
       </Form>
     </span>

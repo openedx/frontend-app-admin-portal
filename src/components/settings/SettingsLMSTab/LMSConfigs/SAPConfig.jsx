@@ -45,11 +45,12 @@ const SAPConfig = ({ id, onClick }) => {
   };
 
   return (
-    <span>
+    <span data-test="SAPConfig">
       <ConfigError isOpen={isOpen} close={close} />
-      <Form>
+      <Form data-test="form">
         <Form.Group>
           <Form.Control
+            data-test="clientId"
             className="my-4"
             type="text"
             floatingLabel="Client ID"
@@ -57,6 +58,7 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="sapBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -67,6 +69,7 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="sapCompanyId"
             className="my-4"
             type="number"
             onChange={(e) => {
@@ -77,6 +80,7 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="sapUserId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -87,6 +91,7 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="sapClientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -97,6 +102,7 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            data-test="sapClientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -108,6 +114,7 @@ const SAPConfig = ({ id, onClick }) => {
         <Form.Group>
           <Form.Label>SAP User Type</Form.Label>
           <Form.RadioSet
+            data-test="sapUserType"
             name="user-toggle"
             onChange={(e) => {
               setUserType(e.target.value);
@@ -121,13 +128,14 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <span className="d-flex">
           <Button
+            data-test="cancelButton"
             onClick={onClick}
             variant="outline-primary"
             className="ml-auto mr-2"
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
         </span>
       </Form>
     </span>

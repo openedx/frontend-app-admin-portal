@@ -36,11 +36,12 @@ const CornerstoneConfig = ({ id, onClick }) => {
   };
 
   return (
-    <span>
+    <span data-test="CornerstoneConfig">
       <ConfigError isOpen={isOpen} close={close} />
-      <Form>
+      <Form data-test="form">
         <Form.Group>
           <Form.Control
+            data-test="cornerstoneBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -51,13 +52,14 @@ const CornerstoneConfig = ({ id, onClick }) => {
         </Form.Group>
         <span className="d-flex">
           <Button
+            data-test="cancelButton"
             onClick={onClick}
             variant="outline-primary"
             className="ml-auto mr-2"
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
         </span>
       </Form>
     </span>
