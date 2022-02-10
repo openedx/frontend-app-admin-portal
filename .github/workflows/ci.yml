@@ -1,17 +1,24 @@
 name: node_js CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12, 14, 16]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup Nodejs
       uses: actions/setup-node@v1
       with:
-        node-version: 12
+        node-version: ${{ matrix.node }}
     - name: Validate no uncommitted package-lock changes
       run: make validate-no-uncommitted-package-lock-changes
     - name: Install dependencies
