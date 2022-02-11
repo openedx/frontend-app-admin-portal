@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, CardGrid, Toast } from '@edx/paragon';
-import LMSCard from './LmsCard';
-import LMSConfigPage from './LmsConfigPage';
+import LMSCard from './LMSCard';
+import LMSConfigPage from './LMSConfigPage';
 import {
   BLACKBOARD_TYPE,
   CANVAS_TYPE,

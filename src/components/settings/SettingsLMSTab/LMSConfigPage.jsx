@@ -13,12 +13,12 @@ import {
   MOODLE_TYPE,
   SAP_TYPE,
 } from '../data/constants';
-import BlackboardConfig from './LmsConfigs/BlackboardConfig';
-import CanvasConfig from './LmsConfigs/CanvasConfig';
-import CornerstoneConfig from './LmsConfigs/CornerstoneConfig';
-import DegreedConfig from './LmsConfigs/DegreedConfig';
-import MoodleConfig from './LmsConfigs/MoodleConfig';
-import SAPConfig from './LmsConfigs/SAPConfig';
+import BlackboardConfig from './LMSConfigs/BlackboardConfig';
+import CanvasConfig from './LMSConfigs/CanvasConfig';
+import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
+import DegreedConfig from './LMSConfigs/DegreedConfig';
+import MoodleConfig from './LMSConfigs/MoodleConfig';
+import SAPConfig from './LMSConfigs/SAPConfig';
 
 export function buttonBool(config) {
   let returnVal = true;

@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  fireEvent, screen, render,
+  fireEvent, screen,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
-import renderer from 'react-test-renderer';
 import { renderWithRouter } from '../../../test/testUtils';
 import {
   BLACKBOARD_TYPE,
@@ -18,7 +17,7 @@ import {
 } from '../../data/constants';
 
 import SettingsLMSTab from '../index';
-import { buttonBool } from '../LmsConfigPage';
+import { buttonBool } from '../LMSConfigPage';
 
 const initialState = {
   portalConfiguration: {
@@ -47,18 +46,8 @@ const SettingsLMSWrapper = () => (
 );
 
 describe('<SettingsLMSTab />', () => {
-  it('renders correctly', () => {
-    const tree = renderer
-      .create((
-        <SettingsLMSTab />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-  it('has all LMS cards present', () => {
-    render(
-      <SettingsLMSTab />,
-    );
+  it('Renders with all LMS cards present', () => {
+    renderWithRouter(<SettingsLMSWrapper />);
     expect(screen.queryByText(BLACKBOARD_TYPE)).toBeTruthy();
     expect(screen.queryByText(CANVAS_TYPE)).toBeTruthy();
     expect(screen.queryByText(CORNERSTONE_TYPE)).toBeTruthy();

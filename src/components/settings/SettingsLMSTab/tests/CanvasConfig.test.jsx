@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import CanvasConfig from '../LmsConfigs/CanvasConfig';
+import CanvasConfig from '../LMSConfigs/CanvasConfig';
 
 const mockOnClick = jest.fn();
 

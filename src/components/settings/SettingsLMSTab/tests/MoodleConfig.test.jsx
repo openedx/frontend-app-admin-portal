@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import MoodleConfig from '../LmsConfigs/MoodleConfig';
+import MoodleConfig from '../LMSConfigs/MoodleConfig';
 
 const mockOnClick = jest.fn();
 

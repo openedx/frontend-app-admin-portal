@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import CornerstoneConfig from '../LmsConfigs/CornerstoneConfig';
+import CornerstoneConfig from '../LMSConfigs/CornerstoneConfig';
 
 const mockOnClick = jest.fn();
 

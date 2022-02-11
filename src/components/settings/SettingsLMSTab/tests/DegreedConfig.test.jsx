@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import DegreedConfig from '../LmsConfigs/DegreedConfig';
+import DegreedConfig from '../LMSConfigs/DegreedConfig';
 
 const mockOnClick = jest.fn();
 

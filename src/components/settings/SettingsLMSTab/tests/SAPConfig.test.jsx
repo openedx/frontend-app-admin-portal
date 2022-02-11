@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import SAPConfig from '../LmsConfigs/SAPConfig';
+import SAPConfig from '../LMSConfigs/SAPConfig';
 
 const mockOnClick = jest.fn();
 

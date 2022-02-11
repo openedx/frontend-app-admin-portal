@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import BlackboardConfig from '../LmsConfigs/BlackboardConfig';
+import BlackboardConfig from '../LMSConfigs/BlackboardConfig';
 
 const mockOnClick = jest.fn();
 
