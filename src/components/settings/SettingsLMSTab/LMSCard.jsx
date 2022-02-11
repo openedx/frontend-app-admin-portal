@@ -4,7 +4,7 @@ import { Card, Image } from '@edx/paragon';
 import { getLMSIcon } from '../../../utils';
 
 const LMSCard = ({ LMSType, onClick }) => (
-  <Card isClickable className="p-2.5" style={{ width: '22rem' }} onClick={() => onClick(LMSType)}>
+  <Card isClickable tabIndex="0" className="p-2.5 lms-card" onClick={() => onClick(LMSType)}>
     <Card.Body>
       <h3 className="text-center">
         <Image className="lms-icon" src={getLMSIcon(LMSType)} />

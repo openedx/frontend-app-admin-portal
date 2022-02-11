@@ -42,10 +42,10 @@ const BlackboardConfig = ({ id, onClick }) => {
   };
 
   return (
-    <span data-test="BlackboardConfig">
+    <span>
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
-      <Form data-test="form">
+      <Form style={{ maxWidth: '60rem' }}>
         <Form.Group>
           <Form.Control
             data-test="clientId"
@@ -59,7 +59,6 @@ const BlackboardConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="clientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -70,7 +69,6 @@ const BlackboardConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="blackboardBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {

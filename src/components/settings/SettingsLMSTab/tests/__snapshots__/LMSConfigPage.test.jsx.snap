@@ -48,14 +48,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"
@@ -83,14 +79,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"
@@ -118,14 +110,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"
@@ -153,14 +141,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"
@@ -188,14 +172,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"
@@ -223,14 +203,10 @@ exports[`<SettingsLMSTab /> renders correctly 1`] = `
           s={5}
         >
           <div
-            className="p-2.5 card"
+            className="lms-card card"
             isClickable={true}
             onClick={[Function]}
-            style={
-              Object {
-                "width": "22rem",
-              }
-            }
+            tabIndex="0"
           >
             <div
               className="card-body"

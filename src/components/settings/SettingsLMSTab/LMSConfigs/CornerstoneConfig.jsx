@@ -42,7 +42,7 @@ const CornerstoneConfig = ({ id, onClick }) => {
     <span>
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
-      <Form>
+      <Form style={{ maxWidth: '60rem' }}>
         <Form.Group>
           <Form.Control
             className="my-4"

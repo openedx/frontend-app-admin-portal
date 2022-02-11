@@ -18,6 +18,7 @@ import {
 } from '../../data/constants';
 
 import SettingsLMSTab from '../index';
+import { buttonBool } from '../LmsConfigPage';
 
 const initialState = {
   portalConfiguration: {
@@ -25,11 +26,17 @@ const initialState = {
   },
 };
 
-// const config = {
-//   blackboardBaseUrl: 'http://test.com',
-//   clientId: '1234',
-//   clientSecret: '1234',
-// };
+const draftConfig = {
+  field1: '',
+  field2: 'test',
+  field3: 'test',
+};
+
+const completeConfig = {
+  field1: 'test',
+  field2: 'test',
+  field3: 'test',
+};
 
 const mockStore = configureMockStore([thunk]);
 
@@ -71,50 +78,6 @@ describe('<SettingsLMSTab />', () => {
     fireEvent.click(exitButton);
     expect(screen.queryByText('Connect Blackboard')).toBeFalsy();
   });
-  // test('Blackboard card submit flow', async () => {
-  //   jest.mock('../../../../data/services/LmsApiService', () => ({
-  //     postNewBlackboardConfig: jest.fn(),
-  //   }));
-  //   renderWithRouter(<SettingsLMSWrapper />);
-  //   const blackboardCard = screen.getByText(BLACKBOARD_TYPE);
-  //   fireEvent.click(blackboardCard);
-
-  //   act(() => {
-  //     fireEvent.click(blackboardCard);
-  //     fireEvent.change(screen.getByLabelText('API Client ID/Blackboard Application Key'), {
-  //       target: { value: 'test1' },
-  //     });
-  //     fireEvent.change(screen.getByLabelText('API Client Secret/Application Secret'), {
-  //       target: { value: 'test2' },
-  //     });
-  //     fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
-  //       target: { value: 'test3' },
-  //     });
-  //     const submitButton = screen.getByRole('button', { name: 'Submit' });
-  //     fireEvent.click(submitButton);
-
-  //     // const noError = '';
-
-  //     // const spy = jest.spyOn(updateBlackboardConfig, 'updateBlackboardConfig');
-  //     // spy.mockReturnValue(noError);
-
-  //     // await handle
-
-  //     // screen.debug();
-  //     // spy.mockRestore();
-
-  //     // const formData = new FormData();
-  //     // REQUIRED_BLACKBOARD_CONFIG_FIELDS.forEach((
-  // requiredField) => formData.append(requiredField, config[requiredField]));
-
-  //     // const mockUpdateBlackboardConfig = jest.spyOn(
-  // wrapper.instance(), 'updateBlackboardConfig').mockImplementation(() => {});
-  //     // await wrapper.instance().handleSubmit(formData, config);
-  //     // expect(mockUpdateBlackboardConfig).toHaveBeenCalled();
-
-  //   })
-
-  // });
   test('Canvas card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
     const canvasCard = screen.getByText(CANVAS_TYPE);
@@ -174,5 +137,9 @@ describe('<SettingsLMSTab />', () => {
     const exitButton = screen.getByText('Exit without saving');
     fireEvent.click(exitButton);
     expect(screen.queryByText('Connect SAP')).toBeFalsy();
+  });
+  test('test button text', () => {
+    expect(!buttonBool(draftConfig));
+    expect(buttonBool(completeConfig));
   });
 });
