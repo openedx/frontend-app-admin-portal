@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { Button, CardGrid, Toast } from '@edx/paragon';
-import LMSCard from './LMSCard';
-import LMSConfigPage from './LMSConfigPage';
+import LMSCard from './LmsCard';
+import LMSConfigPage from './LmsConfigPage';
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE,
+  CANVAS_TYPE,
+  CORNERSTONE_TYPE,
+  DEGREED_TYPE,
+  HELP_CENTER_LINK,
+  MOODLE_TYPE,
+  SAP_TYPE,
+  SUCCESS_LABEL,
 } from '../data/constants';
 
 export default function SettingsLMSTab() {
   const [config, setConfig] = useState();
-  const [show, setShow] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
-  const configure = (LMStype) => {
-    if (!LMStype) {
-      setShow(true);
+  const onClick = (input) => {
+    if (input === SUCCESS_LABEL) {
+      setShowToast(true);
+      setConfig('');
+    } else {
+      setConfig(input);
     }
-    setConfig(LMStype);
   };
 
   return (
@@ -22,13 +31,13 @@ export default function SettingsLMSTab() {
       <div className="d-flex">
         <h2 className="py-2">Learning Management System Configuration</h2>
         <Button
-          href="https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations"
+          href={HELP_CENTER_LINK}
           className="ml-auto my-2"
           rel="noopener noreferrer"
           target="_blank"
           variant="outline-primary"
         >
-          Need Help?
+          Help Center
         </Button>
       </div>
       <p>
@@ -37,31 +46,35 @@ export default function SettingsLMSTab() {
       </p>
       {!config && (
         <span>
-          <h4 className="mt-4.5 mb-3">New</h4>
+          <h4 className="mt-5">New configurations</h4>
+          <p className="mb-4">Click on a card to start a new configuration</p>
+
           <CardGrid
             columnSizes={{
-              xs: 12,
-              lg: 6,
-              xl: 4,
+              xs: 6,
+              s: 5,
+              m: 4,
+              l: 4,
+              xl: 3,
             }}
           >
-            <LMSCard LMStype={SAP_TYPE} onClick={configure} />
-            <LMSCard LMStype={MOODLE_TYPE} onClick={configure} />
-            <LMSCard LMStype={CORNERSTONE_TYPE} onClick={configure} />
-            <LMSCard LMStype={CANVAS_TYPE} onClick={configure} />
-            <LMSCard LMStype={DEGREED_TYPE} onClick={configure} />
-            <LMSCard LMStype={BLACKBOARD_TYPE} onClick={configure} />
+            <LMSCard LMSType={SAP_TYPE} onClick={onClick} />
+            <LMSCard LMSType={MOODLE_TYPE} onClick={onClick} />
+            <LMSCard LMSType={CORNERSTONE_TYPE} onClick={onClick} />
+            <LMSCard LMSType={CANVAS_TYPE} onClick={onClick} />
+            <LMSCard LMSType={DEGREED_TYPE} onClick={onClick} />
+            <LMSCard LMSType={BLACKBOARD_TYPE} onClick={onClick} />
           </CardGrid>
         </span>
       )}
       {config && (
         <span>
-          <LMSConfigPage LMStype={config} onClick={configure} />
+          <LMSConfigPage LMSType={config} onClick={onClick} />
         </span>
       )}
       <Toast
-        onClose={() => setShow(false)}
-        show={show}
+        onClose={() => setShowToast(false)}
+        show={showToast}
       >
         Configuration was submitted successfully.
       </Toast>

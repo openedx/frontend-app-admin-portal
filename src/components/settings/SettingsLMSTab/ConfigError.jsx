@@ -1,17 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AlertModal, ActionRow, Button } from '@edx/paragon';
+import { HELP_CENTER_LINK } from '../data/constants';
 
-const cardText = 'Something went wrong. Please make sure all fields are correctly filled out.';
+const cardText = 'We were unable to process your request to submit new LMS configuration. Please try submitting again or contact support for help.';
 
-const ConfigError = ({ isOpen, close }) => (
+const ConfigError = ({ isOpen, close, submit }) => (
   <AlertModal
-    title="Error"
+    title="Something went wrong"
     isOpen={isOpen}
     onClose={close}
     footerNode={(
       <ActionRow>
-        <Button variant="tertiary" onClick={close}>Dismiss</Button>
+        <Button
+          href={HELP_CENTER_LINK}
+          className="ml-auto my-2"
+          rel="noopener noreferrer"
+          target="_blank"
+          variant="tertiary"
+        >
+          Help Center
+        </Button>
+        <Button variant="primary" onClick={submit}>Submit</Button>
       </ActionRow>
     )}
   >
@@ -24,5 +34,6 @@ const ConfigError = ({ isOpen, close }) => (
 ConfigError.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
 };
 export default ConfigError;

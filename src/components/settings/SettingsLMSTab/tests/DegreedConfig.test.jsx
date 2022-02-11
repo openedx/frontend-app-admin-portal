@@ -1,47 +1,55 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../../utils';
+import {
+  render, fireEvent, screen,
+} from '@testing-library/react';
 
-import DegreedConfig from '../LMSConfigs/DegreedConfig';
+import DegreedConfig from '../LmsConfigs/DegreedConfig';
+
+const mockOnClick = jest.fn();
 
 describe('<DegreedConfig />', () => {
-  let wrapper;
-  let onClickMock;
-  beforeEach(() => {
-    onClickMock = jest.fn();
-    const props = {
-      id: 'test-enterprise-id',
-      onClick: onClickMock,
-    };
-    wrapper = shallow(<DegreedConfig {...props} />);
+  test('renders Degreed Config Form', () => {
+    render(
+      <DegreedConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    screen.getByLabelText('API Client ID');
+    screen.getByLabelText('API Client Secret');
+    screen.getByLabelText('Degreed Organization Code');
+    screen.getByLabelText('Degreed Base URL');
+    screen.getByLabelText('Degreed User ID');
+    screen.getByLabelText('Degreed User Password');
   });
+  test('test button disable', () => {
+    render(
+      <DegreedConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    expect(screen.getByText('Submit')).toBeDisabled();
 
-  it('renders without errors', () => {
-    const config = findByTestAttr(wrapper, 'DegreedConfig');
-    expect(config.length).toBe(1);
-  });
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('Degreed Organization Code'), {
+      target: { value: 'test3' },
+    });
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'test4' },
+    });
+    fireEvent.change(screen.getByLabelText('Degreed User ID'), {
+      target: { value: 'test5' },
+    });
+    fireEvent.change(screen.getByLabelText('Degreed User Password'), {
+      target: { value: 'test5' },
+    });
 
-  it('should trigger onClick when cancelled', () => {
-    const cancelButton = findByTestAttr(wrapper, 'cancelButton');
-    expect(cancelButton.text().includes('Cancel')).toBe(true);
-    cancelButton.simulate('click');
-    expect(onClickMock.mock.calls.length).toBe(1);
-  });
-
-  it('button text should change when all fields are populated', () => {
-    let submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Save Draft')).toBe(true);
-
-    const config = findByTestAttr(wrapper, 'DegreedConfig');
-    const form = findByTestAttr(config, 'form');
-    findByTestAttr(form, 'clientId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'clientSecret').simulate('change', { target: { value: 'testSecret' } });
-    findByTestAttr(form, 'degreedCompanyId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'degreedBaseUrl').simulate('change', { target: { value: 'testUrl' } });
-    findByTestAttr(form, 'degreedUserId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'degreedUserPassword').simulate('change', { target: { value: 'testPassword' } });
-
-    submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Submit')).toBe(true);
+    expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

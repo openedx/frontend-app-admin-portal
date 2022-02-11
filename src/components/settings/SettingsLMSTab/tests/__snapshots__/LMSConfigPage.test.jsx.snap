@@ -1,0 +1,258 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SettingsLMSTab /> renders correctly 1`] = `
+<div>
+  <div
+    className="d-flex"
+  >
+    <h2
+      className="py-2"
+    >
+      Learning Management System Configuration
+    </h2>
+    <a
+      className="ml-auto my-2 btn btn-outline-primary"
+      href="https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Help Center
+    </a>
+  </div>
+  <p>
+    Enabling a learning management system for your edX account allows quick access to the catalog
+  </p>
+  <span>
+    <h4
+      className="mt-5"
+    >
+      New configurations
+    </h4>
+    <p
+      className="mb-4"
+    >
+      Click on a card to start a new configuration
+    </p>
+    <div
+      className="pgn__card-grid"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="icon/mock/path"
+                />
+                <span
+                  className="ml-2"
+                >
+                  SAP
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="test-file-stub"
+                />
+                <span
+                  className="ml-2"
+                >
+                  Moodle
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="test-file-stub"
+                />
+                <span
+                  className="ml-2"
+                >
+                  Cornerstone
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="icon/mock/path"
+                />
+                <span
+                  className="ml-2"
+                >
+                  Canvas
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="test-file-stub"
+                />
+                <span
+                  className="ml-2"
+                >
+                  Degreed
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xl-3 col-6"
+          l={4}
+          m={4}
+          s={5}
+        >
+          <div
+            className="p-2.5 card"
+            isClickable={true}
+            onClick={[Function]}
+            style={
+              Object {
+                "width": "22rem",
+              }
+            }
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="text-center"
+              >
+                <img
+                  className="lms-icon"
+                  src="icon/mock/path"
+                />
+                <span
+                  className="ml-2"
+                >
+                  Blackboard
+                </span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+`;

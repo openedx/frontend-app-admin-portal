@@ -13,52 +13,54 @@ import {
   MOODLE_TYPE,
   SAP_TYPE,
 } from '../data/constants';
-import BlackboardConfig from './LMSConfigs/BlackboardConfig';
-import CanvasConfig from './LMSConfigs/CanvasConfig';
-import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
-import DegreedConfig from './LMSConfigs/DegreedConfig';
-import MoodleConfig from './LMSConfigs/MoodleConfig';
-import SAPConfig from './LMSConfigs/SAPConfig';
+import BlackboardConfig from './LmsConfigs/BlackboardConfig';
+import CanvasConfig from './LmsConfigs/CanvasConfig';
+import CornerstoneConfig from './LmsConfigs/CornerstoneConfig';
+import DegreedConfig from './LmsConfigs/DegreedConfig';
+import MoodleConfig from './LmsConfigs/MoodleConfig';
+import SAPConfig from './LmsConfigs/SAPConfig';
 
-export function buttonText(config) {
-  let text = 'Submit';
+export function buttonBool(config) {
+  let returnVal = true;
   Object.values(config).forEach(value => {
-    if (!value) { text = 'Save Draft'; }
+    if (!value) {
+      returnVal = false;
+    }
   });
-  return text;
+  return returnVal;
 }
 
 export function handleErrors(error) {
-  const errorMsg = error.message || error.response?.status === 500
+  const errorMsg = error.message || error.response?.status <= 300
     ? error.message
     : JSON.stringify(error.response.data);
   logError(errorMsg);
   return errorMsg;
 }
 
-const LMSConfigPage = ({ LMStype, onClick, enterpriseId }) => (
+const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (
   <span>
     <h3 className="mt-4.5 mb-3.5">
-      <Image className="lms-icon" src={getLMSIcon(LMStype)} />
-      <span className="ml-2">Connect {LMStype}</span>
+      <Image className="lms-icon" src={getLMSIcon(LMSType)} />
+      <span className="ml-2">Connect {LMSType}</span>
     </h3>
-    {LMStype === BLACKBOARD_TYPE && (
-    <BlackboardConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === BLACKBOARD_TYPE && (
+    <BlackboardConfig id={enterpriseId} onClick={onClick} />
     )}
-    {LMStype === CANVAS_TYPE && (
-    <CanvasConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === CANVAS_TYPE && (
+    <CanvasConfig id={enterpriseId} onClick={onClick} />
     )}
-    {LMStype === CORNERSTONE_TYPE && (
-    <CornerstoneConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === CORNERSTONE_TYPE && (
+    <CornerstoneConfig id={enterpriseId} onClick={onClick} />
     )}
-    {LMStype === DEGREED_TYPE && (
-    <DegreedConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === DEGREED_TYPE && (
+    <DegreedConfig id={enterpriseId} onClick={onClick} />
     )}
-    {LMStype === MOODLE_TYPE && (
-    <MoodleConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === MOODLE_TYPE && (
+    <MoodleConfig id={enterpriseId} onClick={onClick} />
     )}
-    {LMStype === SAP_TYPE && (
-    <SAPConfig id={enterpriseId} onClick={() => onClick('')} />
+    {LMSType === SAP_TYPE && (
+    <SAPConfig id={enterpriseId} onClick={onClick} />
     )}
   </span>
 );
@@ -69,7 +71,7 @@ const mapStateToProps = (state) => ({
 
 LMSConfigPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
-  LMStype: PropTypes.string.isRequired,
+  LMSType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

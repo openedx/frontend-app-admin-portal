@@ -20,8 +20,8 @@ import DegreedIcon from './icons/Degreed.png';
 import MoodleIcon from './icons/Moodle.png';
 import SAPIcon from './icons/SAP.svg';
 
-export function getLMSIcon(LMStype) {
-  switch (LMStype) {
+export function getLMSIcon(LMSType) {
+  switch (LMSType) {
     case BLACKBOARD_TYPE:
       return BlackboardIcon;
     case CANVAS_TYPE:
@@ -147,7 +147,7 @@ const modifyObjectKeys = (object, modify) => {
 
 const snakeCaseDict = (data) => {
   const transformedData = {};
-  [...data.entries()]
+  [...Object.entries(data)]
     .forEach(entry => {
       transformedData[snakeCase(entry[0])] = snakeCase(entry[1]);
     });
@@ -222,8 +222,6 @@ function truncateString(str, maxStrLength = 10) {
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
-const findByTestAttr = (component, attr) => component.find(`[data-test='${attr}']`);
-
 export {
   formatPercentage,
   formatPassedTimestamp,
@@ -246,5 +244,4 @@ export {
   getSubscriptionContactText,
   truncateString,
   normalizeFileUpload,
-  findByTestAttr,
 };

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
-import { buttonText, handleErrors } from '../LMSConfigPage';
+import { buttonBool, handleErrors } from '../LmsConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict } from '../../../../utils';
 import ConfigError from '../ConfigError';
+import ConfigModal from '../ConfigModal';
+import { SUCCESS_LABEL } from '../../data/constants';
 
 const SAPConfig = ({ id, onClick }) => {
   const [sapsfBaseUrl, setSapsfBaseUrl] = React.useState('');
@@ -13,7 +15,8 @@ const SAPConfig = ({ id, onClick }) => {
   const [key, setKey] = React.useState('');
   const [secret, setSecret] = React.useState('');
   const [userType, setUserType] = React.useState('user');
-  const [isOpen, open, close] = useToggle(false);
+  const [errorIsOpen, openError, closeError] = useToggle(false);
+  const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
     sapsfBaseUrl,
@@ -38,19 +41,19 @@ const SAPConfig = ({ id, onClick }) => {
       err = handleErrors(error);
     }
     if (err) {
-      open();
+      openError();
     } else {
-      onClick();
+      onClick(SUCCESS_LABEL);
     }
   };
 
   return (
-    <span data-test="SAPConfig">
-      <ConfigError isOpen={isOpen} close={close} />
-      <Form data-test="form">
+    <span>
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
+      <Form style={{ maxWidth: '60rem' }}>
         <Form.Group>
           <Form.Control
-            data-test="clientId"
             className="my-4"
             type="text"
             floatingLabel="Client ID"
@@ -58,7 +61,6 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="sapBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -69,7 +71,6 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="sapCompanyId"
             className="my-4"
             type="number"
             onChange={(e) => {
@@ -80,7 +81,6 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="sapUserId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -91,7 +91,6 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="sapClientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -102,7 +101,6 @@ const SAPConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="sapClientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -114,7 +112,6 @@ const SAPConfig = ({ id, onClick }) => {
         <Form.Group>
           <Form.Label>SAP User Type</Form.Label>
           <Form.RadioSet
-            data-test="sapUserType"
             name="user-toggle"
             onChange={(e) => {
               setUserType(e.target.value);
@@ -127,15 +124,8 @@ const SAPConfig = ({ id, onClick }) => {
           </Form.RadioSet>
         </Form.Group>
         <span className="d-flex">
-          <Button
-            data-test="cancelButton"
-            onClick={onClick}
-            variant="outline-primary"
-            className="ml-auto mr-2"
-          >
-            Cancel
-          </Button>
-          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
         </span>
       </Form>
     </span>

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
-import { buttonText, handleErrors } from '../LMSConfigPage';
+import { buttonBool, handleErrors } from '../LmsConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict } from '../../../../utils';
 import ConfigError from '../ConfigError';
+import ConfigModal from '../ConfigModal';
+import { SUCCESS_LABEL } from '../../data/constants';
 
 const DegreedConfig = ({ id, onClick }) => {
   const [key, setKey] = React.useState('');
@@ -13,7 +15,8 @@ const DegreedConfig = ({ id, onClick }) => {
   const [degreedBaseUrl, setDegreedBaseUrl] = React.useState('');
   const [degreedUserId, setDegreedUserId] = React.useState('');
   const [degreedUserPassword, setDegreedUserPassword] = React.useState('');
-  const [isOpen, open, close] = useToggle(false);
+  const [errorIsOpen, openError, closeError] = useToggle(false);
+  const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
     key,
@@ -37,19 +40,19 @@ const DegreedConfig = ({ id, onClick }) => {
       err = handleErrors(error);
     }
     if (err) {
-      open();
+      openError();
     } else {
-      onClick();
+      onClick(SUCCESS_LABEL);
     }
   };
 
   return (
-    <span data-test="DegreedConfig">
-      <ConfigError isOpen={isOpen} close={close} />
-      <Form data-test="form">
+    <span>
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
+      <Form style={{ maxWidth: '60rem' }}>
         <Form.Group>
           <Form.Control
-            data-test="clientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -60,7 +63,6 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="clientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -71,7 +73,6 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="degreedCompanyId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -82,7 +83,6 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="degreedBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -93,7 +93,6 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="degreedUserId"
             className="my-1"
             type="username"
             onChange={(e) => {
@@ -105,7 +104,6 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="degreedUserPassword"
             className="my-1"
             type="password"
             onChange={(e) => {
@@ -116,15 +114,8 @@ const DegreedConfig = ({ id, onClick }) => {
           <Form.Text> Required for OAuth access token</Form.Text>
         </Form.Group>
         <span className="d-flex">
-          <Button
-            data-test="cancelButton"
-            onClick={onClick}
-            variant="outline-primary"
-            className="ml-auto mr-2"
-          >
-            Cancel
-          </Button>
-          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
         </span>
       </Form>
     </span>

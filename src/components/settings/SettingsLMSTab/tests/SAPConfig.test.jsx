@@ -1,48 +1,56 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../../utils';
+import {
+  render, fireEvent, screen,
+} from '@testing-library/react';
 
-import SAPConfig from '../LMSConfigs/SAPConfig';
+import SAPConfig from '../LmsConfigs/SAPConfig';
+
+const mockOnClick = jest.fn();
 
 describe('<SAPConfig />', () => {
-  let wrapper;
-  let onClickMock;
-  beforeEach(() => {
-    onClickMock = jest.fn();
-    const props = {
-      id: 'test-enterprise-id',
-      onClick: onClickMock,
-    };
-    wrapper = shallow(<SAPConfig {...props} />);
+  test('renders SAP Config Form', () => {
+    render(
+      <SAPConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    screen.getByLabelText('Client ID');
+    screen.getByLabelText('SAP Base URL');
+    screen.getByLabelText('SAP Company ID');
+    screen.getByLabelText('SAP User ID');
+    screen.getByLabelText('OAuth Client ID');
+    screen.getByLabelText('OAuth Client Secret');
+    screen.getByLabelText('SAP User Type');
   });
+  test('test button disable', () => {
+    render(
+      <SAPConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    expect(screen.getByText('Submit')).toBeDisabled();
 
-  it('renders without errors', () => {
-    const config = findByTestAttr(wrapper, 'SAPConfig');
-    expect(config.length).toBe(1);
-  });
-
-  it('should trigger onClick when cancelled', () => {
-    const cancelButton = findByTestAttr(wrapper, 'cancelButton');
-    expect(cancelButton.text().includes('Cancel')).toBe(true);
-    cancelButton.simulate('click');
-    expect(onClickMock.mock.calls.length).toBe(1);
-  });
-
-  it('button text should change when all fields are populated', () => {
-    let submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Save Draft')).toBe(true);
-
-    const config = findByTestAttr(wrapper, 'SAPConfig');
-    const form = findByTestAttr(config, 'form');
-    findByTestAttr(form, 'clientId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'sapBaseUrl').simulate('change', { target: { value: 'testUrl' } });
-    findByTestAttr(form, 'sapCompanyId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'sapUserId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'sapClientId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'sapClientSecret').simulate('change', { target: { value: 'testSecret' } });
-    findByTestAttr(form, 'sapUserType').simulate('change', { target: { value: 'testUser' } });
-
-    submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Submit')).toBe(true);
+    fireEvent.change(screen.getByLabelText('Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('SAP Base URL'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('SAP Company ID'), {
+      target: { value: '3' },
+    });
+    fireEvent.change(screen.getByLabelText('SAP User ID'), {
+      target: { value: 'test4' },
+    });
+    fireEvent.change(screen.getByLabelText('OAuth Client ID'), {
+      target: { value: 'test5' },
+    });
+    fireEvent.change(screen.getByLabelText('OAuth Client Secret'), {
+      target: { value: 'test6' },
+    });
+    // don't have to change userType, will default to user
+    expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

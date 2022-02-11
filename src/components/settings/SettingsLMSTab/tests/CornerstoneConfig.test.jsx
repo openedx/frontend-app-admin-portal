@@ -1,42 +1,35 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../../utils';
+import {
+  render, fireEvent, screen,
+} from '@testing-library/react';
 
-import CornerstoneConfig from '../LMSConfigs/CornerstoneConfig';
+import CornerstoneConfig from '../LmsConfigs/CornerstoneConfig';
+
+const mockOnClick = jest.fn();
 
 describe('<CornerstoneConfig />', () => {
-  let wrapper;
-  let onClickMock;
-  beforeEach(() => {
-    onClickMock = jest.fn();
-    const props = {
-      id: 'test-enterprise-id',
-      onClick: onClickMock,
-    };
-    wrapper = shallow(<CornerstoneConfig {...props} />);
+  test('renders Cornerstone Config Form', () => {
+    render(
+      <CornerstoneConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    screen.getByLabelText('Cornerstone Base URL');
   });
+  test('test button disable', () => {
+    render(
+      <CornerstoneConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    expect(screen.getByText('Submit')).toBeDisabled();
 
-  it('renders without errors', () => {
-    const config = findByTestAttr(wrapper, 'CornerstoneConfig');
-    expect(config.length).toBe(1);
-  });
+    fireEvent.change(screen.getByLabelText('Cornerstone Base URL'), {
+      target: { value: 'test1' },
+    });
 
-  it('should trigger onClick when cancelled', () => {
-    const cancelButton = findByTestAttr(wrapper, 'cancelButton');
-    expect(cancelButton.text().includes('Cancel')).toBe(true);
-    cancelButton.simulate('click');
-    expect(onClickMock.mock.calls.length).toBe(1);
-  });
-
-  it('button text should change when all fields are populated', () => {
-    let submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Save Draft')).toBe(true);
-
-    const config = findByTestAttr(wrapper, 'CornerstoneConfig');
-    const form = findByTestAttr(config, 'form');
-    findByTestAttr(form, 'cornerstoneBaseUrl').simulate('change', { target: { value: 'testUrl' } });
-
-    submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Submit')).toBe(true);
+    expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

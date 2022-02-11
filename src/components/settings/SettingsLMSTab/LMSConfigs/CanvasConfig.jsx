@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
-import { buttonText, handleErrors } from '../LMSConfigPage';
+import { buttonBool, handleErrors } from '../LmsConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict } from '../../../../utils';
 import ConfigError from '../ConfigError';
+import ConfigModal from '../ConfigModal';
+import { SUCCESS_LABEL } from '../../data/constants';
 
 const CanvasConfig = ({ id, onClick }) => {
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
   const [canvasAccountId, setCanvasAccountId] = React.useState('');
   const [canvasBaseUrl, setCanvasBaseUrl] = React.useState('');
-  const [isOpen, open, close] = useToggle(false);
+  const [errorIsOpen, openError, closeError] = useToggle(false);
+  const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
     clientId,
@@ -34,19 +37,19 @@ const CanvasConfig = ({ id, onClick }) => {
       err = handleErrors(error);
     }
     if (err) {
-      open();
+      openError();
     } else {
-      onClick();
+      onClick(SUCCESS_LABEL);
     }
   };
 
   return (
-    <span data-test="CanvasConfig">
-      <ConfigError isOpen={isOpen} close={close} />
-      <Form data-test="form">
+    <span>
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
+      <Form style={{ maxWidth: '60rem' }}>
         <Form.Group>
           <Form.Control
-            data-test="clientId"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -57,7 +60,6 @@ const CanvasConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="clientSecret"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -68,7 +70,6 @@ const CanvasConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="canvasAccountNum"
             className="my-4"
             type="number"
             onChange={(e) => {
@@ -79,7 +80,6 @@ const CanvasConfig = ({ id, onClick }) => {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            data-test="canvasBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -89,15 +89,8 @@ const CanvasConfig = ({ id, onClick }) => {
           />
         </Form.Group>
         <span className="d-flex">
-          <Button
-            data-test="cancelButton"
-            onClick={onClick}
-            variant="outline-primary"
-            className="ml-auto mr-2"
-          >
-            Cancel
-          </Button>
-          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
         </span>
       </Form>
     </span>

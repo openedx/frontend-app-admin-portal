@@ -1,44 +1,41 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../../utils';
+import {
+  render, fireEvent, screen,
+} from '@testing-library/react';
 
-import BlackboardConfig from '../LMSConfigs/BlackboardConfig';
+import BlackboardConfig from '../LmsConfigs/BlackboardConfig';
+
+const mockOnClick = jest.fn();
 
 describe('<BlackboardConfig />', () => {
-  let wrapper;
-  let onClickMock;
-  beforeEach(() => {
-    onClickMock = jest.fn();
-    const props = {
-      id: 'test-enterprise-id',
-      onClick: onClickMock,
-    };
-    wrapper = shallow(<BlackboardConfig {...props} />);
+  test('renders Blackboard Config Form', () => {
+    render(
+      <BlackboardConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    screen.getByLabelText('API Client ID/Blackboard Application Key');
+    screen.getByLabelText('API Client Secret/Application Secret');
+    screen.getByLabelText('Blackboard Base URL');
   });
-
-  it('renders without errors', () => {
-    const config = findByTestAttr(wrapper, 'BlackboardConfig');
-    expect(config.length).toBe(1);
-  });
-
-  it('should trigger onClick when cancelled', () => {
-    const cancelButton = findByTestAttr(wrapper, 'cancelButton');
-    expect(cancelButton.text().includes('Cancel')).toBe(true);
-    cancelButton.simulate('click');
-    expect(onClickMock.mock.calls.length).toBe(1);
-  });
-
-  it('button text should change when all fields are populated', () => {
-    let submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Save Draft')).toBe(true);
-
-    const config = findByTestAttr(wrapper, 'BlackboardConfig');
-    const form = findByTestAttr(config, 'form');
-    findByTestAttr(form, 'clientId').simulate('change', { target: { value: 'testId' } });
-    findByTestAttr(form, 'clientSecret').simulate('change', { target: { value: 'testSecret' } });
-    findByTestAttr(form, 'blackboardBaseUrl').simulate('change', { target: { value: 'testUrl' } });
-
-    submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Submit')).toBe(true);
+  test('test button disable', () => {
+    render(
+      <BlackboardConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    expect(screen.getByText('Submit')).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('API Client ID/Blackboard Application Key'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret/Application Secret'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
+      target: { value: 'test3' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

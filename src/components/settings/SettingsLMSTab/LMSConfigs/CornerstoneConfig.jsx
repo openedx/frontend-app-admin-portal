@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Form, useToggle } from '@edx/paragon';
-import { buttonText, handleErrors } from '../LMSConfigPage';
+import { buttonBool, handleErrors } from '../LmsConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict } from '../../../../utils';
 import ConfigError from '../ConfigError';
+import ConfigModal from '../ConfigModal';
+import { SUCCESS_LABEL } from '../../data/constants';
 
 const CornerstoneConfig = ({ id, onClick }) => {
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
-  const [isOpen, open, close] = useToggle(false);
+  const [errorIsOpen, openError, closeError] = useToggle(false);
+  const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
     cornerstoneBaseUrl,
@@ -29,19 +32,19 @@ const CornerstoneConfig = ({ id, onClick }) => {
       err = handleErrors(error);
     }
     if (err) {
-      open();
+      openError();
     } else {
-      onClick();
+      onClick(SUCCESS_LABEL);
     }
   };
 
   return (
-    <span data-test="CornerstoneConfig">
-      <ConfigError isOpen={isOpen} close={close} />
-      <Form data-test="form">
+    <span>
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
+      <Form>
         <Form.Group>
           <Form.Control
-            data-test="cornerstoneBaseUrl"
             className="my-4"
             type="text"
             onChange={(e) => {
@@ -51,15 +54,8 @@ const CornerstoneConfig = ({ id, onClick }) => {
           />
         </Form.Group>
         <span className="d-flex">
-          <Button
-            data-test="cancelButton"
-            onClick={onClick}
-            variant="outline-primary"
-            className="ml-auto mr-2"
-          >
-            Cancel
-          </Button>
-          <Button data-test="submitButton" onClick={handleSubmit}>{buttonText(config)}</Button>
+          <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
         </span>
       </Form>
     </span>

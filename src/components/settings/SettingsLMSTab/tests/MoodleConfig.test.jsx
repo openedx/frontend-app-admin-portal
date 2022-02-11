@@ -1,43 +1,39 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../../utils';
+import {
+  render, fireEvent, screen,
+} from '@testing-library/react';
 
-import MoodleConfig from '../LMSConfigs/MoodleConfig';
+import MoodleConfig from '../LmsConfigs/MoodleConfig';
+
+const mockOnClick = jest.fn();
 
 describe('<MoodleConfig />', () => {
-  let wrapper;
-  let onClickMock;
-  beforeEach(() => {
-    onClickMock = jest.fn();
-    const props = {
-      id: 'test-enterprise-id',
-      onClick: onClickMock,
-    };
-    wrapper = shallow(<MoodleConfig {...props} />);
+  test('renders Moodle Config Form', () => {
+    render(
+      <MoodleConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    screen.getByLabelText('Moodle Base URL');
+    screen.getByLabelText('Webservice Short Name');
   });
+  test('test button disable', () => {
+    render(
+      <MoodleConfig
+        id="test-enterprise-id"
+        onClick={mockOnClick}
+      />,
+    );
+    expect(screen.getByText('Submit')).toBeDisabled();
 
-  it('renders without errors', () => {
-    const config = findByTestAttr(wrapper, 'MoodleConfig');
-    expect(config.length).toBe(1);
-  });
+    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
+      target: { value: 'test2' },
+    });
 
-  it('should trigger onClick when cancelled', () => {
-    const cancelButton = findByTestAttr(wrapper, 'cancelButton');
-    expect(cancelButton.text().includes('Cancel')).toBe(true);
-    cancelButton.simulate('click');
-    expect(onClickMock.mock.calls.length).toBe(1);
-  });
-
-  it('button text should change when all fields are populated', () => {
-    let submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Save Draft')).toBe(true);
-
-    const config = findByTestAttr(wrapper, 'MoodleConfig');
-    const form = findByTestAttr(config, 'form');
-    findByTestAttr(form, 'moodleBaseUrl').simulate('change', { target: { value: 'testUrl' } });
-    findByTestAttr(form, 'serviceShortName').simulate('change', { target: { value: 'testName' } });
-
-    submitButton = findByTestAttr(wrapper, 'submitButton');
-    expect(submitButton.text().includes('Submit')).toBe(true);
+    expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });
