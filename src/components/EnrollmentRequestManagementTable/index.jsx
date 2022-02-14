@@ -17,7 +17,7 @@ const EnrollmentRequestManagementTable = ({
   onDecline,
   data,
   fetchData,
-  requestFilterChoices,
+  requestStatusFilterChoices,
 }) => {
   const columns = useMemo(
     () => ([
@@ -44,7 +44,7 @@ const EnrollmentRequestManagementTable = ({
         Cell: RequestStatusCell,
         Filter: CheckboxFilter,
         filter: 'includesValue',
-        filterChoices: requestFilterChoices,
+        filterChoices: requestStatusFilterChoices,
       },
       {
         Header: '',
@@ -59,7 +59,7 @@ const EnrollmentRequestManagementTable = ({
         ),
       },
     ]),
-    [onApprove, onDecline, requestFilterChoices],
+    [onApprove, onDecline, requestStatusFilterChoices],
   );
 
   return (
@@ -84,8 +84,6 @@ const EnrollmentRequestManagementTable = ({
 };
 
 EnrollmentRequestManagementTable.propTypes = {
-  onApprove: PropTypes.func.isRequired,
-  onDecline: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
     emailAddress: PropTypes.string,
@@ -94,11 +92,13 @@ EnrollmentRequestManagementTable.propTypes = {
     requestDate: PropTypes.string,
     requestStatus: PropTypes.oneOf(['requested', 'declined']),
   })).isRequired,
-  requestFilterChoices: PropTypes.arrayOf(PropTypes.shape({
+  requestStatusFilterChoices: PropTypes.arrayOf(PropTypes.shape({
     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     name: PropTypes.string,
     value: PropTypes.string,
   })).isRequired,
+  onApprove: PropTypes.func.isRequired,
+  onDecline: PropTypes.func.isRequired,
 };
 
 export default EnrollmentRequestManagementTable;

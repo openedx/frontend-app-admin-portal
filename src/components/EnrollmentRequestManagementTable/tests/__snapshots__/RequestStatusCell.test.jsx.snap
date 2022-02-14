@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestDateCell renders with "approved" status 1`] = `
+<span
+  className="badge badge-dark"
+>
+  Approved
+</span>
+`;
+
+exports[`RequestDateCell renders with "declined" status 1`] = `
+<span
+  className="badge badge-light"
+>
+  Declined
+</span>
+`;
+
+exports[`RequestDateCell renders with "requested" status 1`] = `
+<span
+  className="badge badge-primary"
+>
+  Requested
+</span>
+`;

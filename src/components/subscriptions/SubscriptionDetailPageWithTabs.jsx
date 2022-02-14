@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Redirect,
-  useParams,
   useHistory,
   useLocation,
 } from 'react-router-dom';
@@ -17,29 +16,30 @@ import { useSubscriptionFromParams } from './data/contextHooks';
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
-const SubscriptionDetailPageWithTabs = () => {
-  const [subscription, loadingSubscription] = useSubscriptionFromParams();
+const SubscriptionDetailPageWithTabs = ({ match }) => {
   const {
     enterpriseSlug,
     tabKey: routeTabKey,
-  } = useParams();
+  } = match.params;
+
   const history = useHistory();
   const { pathname } = useLocation();
   const currentTabKey = useMemo(() => routeTabKey?.toLowerCase(), [routeTabKey]);
 
-  const handleTabSelect = (key) => {
-    const pathWithoutTabKey = pathname.split('/');
-    pathWithoutTabKey.pop();
-    history.push(`${pathWithoutTabKey.join('/')}/${key}`);
-  };
+  useEffect(
+    () => {
+      if (!currentTabKey) {
+        history.replace(`${pathname}/learners`);
+      }
+    },
+    [currentTabKey],
+  );
 
-  if (!currentTabKey) {
-    history.replace(`${pathname}/learners`);
-  }
+  const [subscription, loadingSubscription] = useSubscriptionFromParams();
 
   if (!subscription && !loadingSubscription) {
     return (
-      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`} />
+      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`} />
     );
   }
 
@@ -48,6 +48,12 @@ const SubscriptionDetailPageWithTabs = () => {
       <SubscriptionDetailsSkeleton data-testid="skelly" />
     );
   }
+
+  const handleTabSelect = (key) => {
+    const pathWithoutTabKey = pathname.split('/');
+    pathWithoutTabKey.pop();
+    history.push(`${pathWithoutTabKey.join('/')}/${key}`);
+  };
 
   return (
     <SubscriptionDetailContextProvider subscription={subscription}>
