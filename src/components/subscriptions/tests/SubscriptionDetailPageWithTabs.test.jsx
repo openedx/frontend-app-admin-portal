@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import { useSubscriptionFromParams } from '../data/contextHooks';
-import SubscriptionDetailPageWithTabs from '../_SubscriptionDetailPageWithTabs';
+import SubscriptionDetailPageWithTabs from '../SubscriptionDetailPageWithTabs';
 import { renderWithRouter } from '../../test/testUtils';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 

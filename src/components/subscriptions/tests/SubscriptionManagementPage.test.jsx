@@ -1,12 +1,9 @@
-import {
-  screen,
-} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-
 import React from 'react';
 import { Provider } from 'react-redux';
-
 import moment from 'moment';
+import { screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+
 import {
   TEST_ENTERPRISE_CUSTOMER_SLUG, createMockStore,
 } from './TestUtilities';
@@ -25,8 +22,11 @@ describe('SubscriptionManagementPage', () => {
         startDate: moment().toISOString(),
         expirationDate: moment().add(3, 'days').toISOString(),
         licenses: {
+          activated: 5,
+          assigned: 5,
           allocated: 10,
           total: 20,
+          unassigned: 10,
         },
         showExpirationNotifications: true,
       },
@@ -36,8 +36,11 @@ describe('SubscriptionManagementPage', () => {
         startDate: moment().toISOString(),
         expirationDate: moment().subtract(3, 'days').toISOString(),
         licenses: {
+          activated: 6,
+          assigned: 5,
           allocated: 11,
           total: 30,
+          unassigned: 10,
         },
         showExpirationNotifications: true,
       },
@@ -65,13 +68,14 @@ describe('SubscriptionManagementPage', () => {
     };
 
     it('renders the correct button text on subscription cards', () => {
-      renderWithRouter(<SubscriptionManagementPageWrapper />,
-        {
-          route: `/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-          path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-        });
-      expect(screen.getByText('Manage learners'));
-      expect(screen.getByText('View learners'));
+      renderWithRouter(<SubscriptionManagementPageWrapper />, {
+        route: `/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
+      });
+      waitFor(() => {
+        expect(screen.getByText('Manage learners'));
+        expect(screen.getByText('View learners'));
+      });
     });
   });
 });

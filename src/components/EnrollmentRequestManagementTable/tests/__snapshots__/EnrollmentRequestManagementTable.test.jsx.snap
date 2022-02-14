@@ -1,0 +1,440 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnrollmentRequestManagementTable renders data in a table as expected 1`] = `
+<div
+  className="pgn__data-table-layout-wrapper"
+>
+  <div
+    className="pgn__data-table-layout-main"
+  >
+    <div
+      className="pgn__data-table-wrapper"
+    >
+      <div
+        className="pgn__data-table-status-bar"
+      >
+        <div
+          className="pgn__data-table-actions"
+        >
+          <div
+            className="pgn__data-table-actions-left"
+          >
+            <div
+              className="pgn__data-table-filters"
+            >
+              <div
+                className="mr-2"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label sr-only"
+                    htmlFor="form-field2"
+                    id="text-filter-label-header_emailAddress-1"
+                  >
+                    Search Email address
+                  </label>
+                  <input
+                    aria-labelledby="text-filter-label-header_emailAddress-1"
+                    className="form-control"
+                    onChange={[Function]}
+                    placeholder="Search Email address"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  id="table-filters-dropdown"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Filters
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div
+              className="pgn__data-table-toggle"
+            />
+            <div />
+          </div>
+        </div>
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          >
+            <div
+              className="pgn__smart-status"
+            >
+              Showing 
+              3
+               of 
+              3
+              .
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container"
+      >
+        <table
+          className="pgn__data-table is-striped"
+          role="table"
+        >
+          <thead>
+            <tr
+              role="row"
+            >
+              <th
+                colSpan={1}
+                role="columnheader"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Email address
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                role="columnheader"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Course name
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                role="columnheader"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Request date
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                role="columnheader"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Request status
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                role="columnheader"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    
+                  </span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            role="rowgroup"
+          >
+            <tr
+              className="pgn__data-table-row"
+              role="row"
+            >
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  data-hj-suppress={true}
+                >
+                  test@example.com
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <button
+                  className="text-left px-0 btn btn-link btn-sm"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  edX Demonstration Course
+                </button>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                December 3, 2019
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  className="badge badge-primary"
+                >
+                  Requested
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <div
+                  className="pgn__action-row"
+                >
+                  <button
+                    className="btn btn-tertiary btn-inline"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Decline
+                  </button>
+                  <button
+                    className="btn btn-link btn-inline"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="pgn__data-table-row"
+              role="row"
+            >
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  data-hj-suppress={true}
+                >
+                  test@example.com
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <button
+                  className="text-left px-0 btn btn-link btn-sm"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  edX Demonstration Course
+                </button>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                December 3, 2019
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  className="badge badge-primary"
+                >
+                  Requested
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <div
+                  className="pgn__action-row"
+                >
+                  <button
+                    className="btn btn-tertiary btn-inline"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Decline
+                  </button>
+                  <button
+                    className="btn btn-link btn-inline"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr
+              className="pgn__data-table-row"
+              role="row"
+            >
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  data-hj-suppress={true}
+                >
+                  test@example.com
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <button
+                  className="text-left px-0 btn btn-link btn-sm"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  edX Demonstration Course
+                </button>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                December 3, 2019
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              >
+                <span
+                  className="badge badge-light"
+                >
+                  Declined
+                </span>
+              </td>
+              <td
+                className="pgn__data-table-cell-wrap"
+                role="cell"
+              />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="pgn__data-table-footer"
+      >
+        <div>
+          Showing 
+          3
+           of 
+          3
+          .
+        </div>
+        <div
+          className="btn-group btn-group-md"
+          role="group"
+        >
+          <button
+            aria-label="Previous page"
+            className="btn-icon btn-icon-primary btn-icon-md"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="btn-icon__icon-container"
+            >
+              <span
+                className="pgn__icon btn-icon__icon"
+                icon={Object {}}
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button
+            aria-label="Next page"
+            className="btn-icon btn-icon-primary btn-icon-md"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="btn-icon__icon-container"
+            >
+              <span
+                className="pgn__icon btn-icon__icon"
+                icon={Object {}}
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.49 20.13l1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

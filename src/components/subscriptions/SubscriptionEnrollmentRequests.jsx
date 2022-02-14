@@ -58,7 +58,7 @@ const SubscriptionEnrollmentRequests = () => {
     <EnrollmentRequestManagementTable
       data={data}
       fetchData={handleFetchData}
-      requestFilterChoices={overviewData}
+      requestStatusFilterChoices={overviewData}
       onApprove={handleApprove}
       onDecline={handleDecline}
     />

@@ -29,18 +29,21 @@ const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
     <div>
       {(courseDetails?.shortDescription) && (
         <>
-          <p>{courseDetails.shortDescription}</p>
+          <div
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: courseDetails.shortDescription }}
+          />
           <hr />
         </>
       )}
-      <p>
+      <div>
         <Hyperlink
           target="_blank"
           destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseKey}`}
         >
           Learn more about this course
         </Hyperlink>
-      </p>
+      </div>
     </div>
   );
 };
@@ -89,4 +92,4 @@ CourseNameCell.propTypes = {
   }).isRequired,
 };
 
-export default connect(mapStateToProps)(CourseNameCell);
+export default CourseNameCell;

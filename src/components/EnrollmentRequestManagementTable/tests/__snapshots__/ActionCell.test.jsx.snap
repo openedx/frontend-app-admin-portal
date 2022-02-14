@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionCell does not render anything when request status is not "requested" 1`] = `null`;

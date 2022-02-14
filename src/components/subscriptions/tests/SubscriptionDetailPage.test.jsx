@@ -41,6 +41,6 @@ describe('<SubscriptionDetailPage />', () => {
   it('redirects to the subscription choosing page if there is no subscription', () => {
     useSubscriptionFromParams.mockReturnValue([null, false]);
     const { history } = renderWithRouter(<SubscriptionDetailPage {...defaultProps} />);
-    expect(history.location.pathname).toEqual(`/${defaultProps.match.params.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);
+    expect(history.location.pathname).toEqual(`/${defaultProps.match.params.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`);
   });
 });
