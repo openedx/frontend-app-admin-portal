@@ -35,7 +35,6 @@ const DegreedConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewDegreedConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     }

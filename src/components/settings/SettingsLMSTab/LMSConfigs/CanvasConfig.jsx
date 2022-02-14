@@ -32,7 +32,6 @@ const CanvasConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewCanvasConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     }

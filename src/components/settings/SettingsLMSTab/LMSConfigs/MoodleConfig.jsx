@@ -28,7 +28,6 @@ const MoodleConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewMoodleConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     }

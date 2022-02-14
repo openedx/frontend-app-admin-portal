@@ -31,7 +31,6 @@ const BlackboardConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewBlackboardConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     } if (err) {

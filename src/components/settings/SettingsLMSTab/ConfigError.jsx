@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AlertModal, ActionRow, Button } from '@edx/paragon';
 import { HELP_CENTER_LINK } from '../data/constants';
 
-const cardText = 'We were unable to process your request to submit new LMS configuration. Please try submitting again or contact support for help.';
+const cardText = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again or contact support for help.';
 
 const ConfigError = ({ isOpen, close, submit }) => (
   <AlertModal

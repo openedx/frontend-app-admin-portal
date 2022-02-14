@@ -36,7 +36,6 @@ const SAPConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewSuccessFactorsConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     }

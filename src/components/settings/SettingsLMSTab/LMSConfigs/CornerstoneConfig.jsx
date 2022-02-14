@@ -27,7 +27,6 @@ const CornerstoneConfig = ({ id, onClick }) => {
     let err;
     try {
       await LmsApiService.postNewCornerstoneConfig(transformedConfig);
-      err = undefined;
     } catch (error) {
       err = handleErrors(error);
     }
