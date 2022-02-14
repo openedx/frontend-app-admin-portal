@@ -15,7 +15,6 @@ const SubscriptionDetailPage = ({ match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
   if (!subscription && !loadingSubscription) {
     const { params: { enterpriseSlug } } = match;
-
     return (
       <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`} />
     );
