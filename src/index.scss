@@ -26,6 +26,8 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/Hero/Hero";
 @import "./components/BulkEnrollmentPage/BulkEnrollment";
 @import "./components/Admin/Admin";
+@import "./components/settings/settings";
+
 
 body {
   overflow-x: hidden;
@@ -73,8 +75,4 @@ form {
   .modal-dialog {
     max-width: $modal-max-width;
   }
-}
-
-.lms-icon {
-  max-width: 30px;
 }

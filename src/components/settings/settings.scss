@@ -1,0 +1,22 @@
+@import "~@edx/brand/paragon/variables";
+
+.lms-icon {
+  max-width: 35px;
+}
+
+.lms-card {
+  width: 22rem !important;
+  box-shadow: $box-shadow-sm;
+
+  &:hover {
+    box-shadow: $box-shadow;
+    cursor: pointer;
+  }
+
+  &:focus,
+  &.focus {
+    box-shadow: $box-shadow;
+    outline: none;
+    border-color: $dark-300;
+  }
+}

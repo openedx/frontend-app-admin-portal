@@ -9,6 +9,9 @@ import isNumeric from 'validator/lib/isNumeric';
 import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
+import {
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, MOODLE_TYPE,
+} from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
 import CornerstoneIcon from './icons/CSOD.png';
@@ -16,17 +19,17 @@ import DegreedIcon from './icons/Degreed.png';
 import MoodleIcon from './icons/Moodle.png';
 import SAPIcon from './icons/SAP.svg';
 
-export function getLMSIcon(LMStype) {
-  switch (LMStype) {
-    case 'Blackboard':
+export function getLMSIcon(LMSType) {
+  switch (LMSType) {
+    case BLACKBOARD_TYPE:
       return BlackboardIcon;
-    case 'Canvas':
+    case CANVAS_TYPE:
       return CanvasIcon;
-    case 'Cornerstone':
+    case CORNERSTONE_TYPE:
       return CornerstoneIcon;
-    case 'Degreed':
+    case DEGREED_TYPE:
       return DegreedIcon;
-    case 'Moodle':
+    case MOODLE_TYPE:
       return MoodleIcon;
     default:
       return SAPIcon;
@@ -148,6 +151,15 @@ const modifyObjectKeys = (object, modify) => {
   return result;
 };
 
+const snakeCaseDict = (data) => {
+  const transformedData = {};
+  [...Object.entries(data)]
+    .forEach(entry => {
+      transformedData[snakeCase(entry[0])] = snakeCase(entry[1]);
+    });
+  return transformedData;
+};
+
 const snakeCaseFormData = (formData) => {
   const transformedData = new FormData();
   [...formData.entries()]
@@ -228,6 +240,7 @@ export {
   isValidEmail,
   isValidNumber,
   modifyObjectKeys,
+  snakeCaseDict,
   snakeCaseFormData,
   maxLength512,
   transformTemplate,
