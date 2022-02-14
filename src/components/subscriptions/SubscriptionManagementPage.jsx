@@ -10,10 +10,7 @@ import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import SubscriptionDetailPage from './SubscriptionDetailPage';
-import SubscriptionDetailPageWithTabs from './SubscriptionDetailPageWithTabs';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
-
-import { features } from '../../config';
 
 const PAGE_TITLE = 'Subscription Management';
 
@@ -54,19 +51,11 @@ function SubscriptionManagementPage({ enterpriseId }) {
               )}
               exact
             />
-            {features.FEATURE_BROWSE_AND_REQUEST ? (
-              <Route
-                path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID/:tabKey?`}
-                component={SubscriptionDetailPageWithTabs}
-                exact
-              />
-            ) : (
-              <Route
-                path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
-                component={SubscriptionDetailPage}
-                exact
-              />
-            )}
+            <Route
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
+              component={SubscriptionDetailPage}
+              exact
+            />
           </Switch>
         </Container>
       </main>
