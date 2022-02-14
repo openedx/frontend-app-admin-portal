@@ -35,7 +35,7 @@ const SubscriptionDetailPageWithTabs = ({ match }) => {
     [currentTabKey],
   );
 
-  const [subscription, loadingSubscription] = useSubscriptionFromParams();
+  const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
 
   if (!subscription && !loadingSubscription) {
     return (
