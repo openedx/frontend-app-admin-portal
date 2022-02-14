@@ -1,5 +1,4 @@
 import moment from 'moment';
-import qs from 'query-string';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
@@ -59,22 +58,24 @@ const updateUrl = (queryOptions) => {
   if (!queryOptions) {
     return;
   }
-  const currentQuery = qs.parse(window.location.search);
-
+  const newQueryParams = new URLSearchParams(window.location.search);
   // Apply any updates passed in over the current query. This requires consumers to explicitly
   // pass in parameters they want to remove, such as resetting the page when sorting, but ensures
   // that we bring forward all other params such as feature flags
-  const newQuery = {
-    ...currentQuery,
-    ...queryOptions,
-  };
+  Object.entries(queryOptions).forEach(([key, value]) => {
+    if (key === 'page' && value === 1) {
+      // Because we show page 1 by default, theres no reason to set the url to page=1
+      newQueryParams.delete('page');
+      return;
+    }
+    if (!value) {
+      newQueryParams.delete(key);
+      return;
+    }
+    newQueryParams.set(key, value);
+  });
 
-  // Because we show page 1 by default, theres no reason to set the url to page=1
-  if (newQuery.page === 1) {
-    newQuery.page = undefined;
-  }
-
-  const newQueryString = `?${qs.stringify(newQuery)}`;
+  const newQueryString = `?${newQueryParams.toString()}`;
   if (newQueryString !== window.location.search) {
     history.push(newQueryString);
   }
@@ -88,20 +89,25 @@ const getPageOptionsFromUrl = () => {
   const defaults = {
     pageSize: 50,
     page: 1,
-    ordering: undefined,
-    search: undefined,
-    search_course: undefined,
-    search_start_date: undefined,
   };
-  const query = qs.parse(window.location.search);
-  return {
-    page_size: parseInt(query.page_size, 10) || defaults.pageSize,
-    page: parseInt(query.page, 10) || defaults.page,
-    ordering: query.ordering || defaults.ordering,
-    search: query.search || defaults.search,
-    search_course: query.search_course || defaults.search_course,
-    search_start_date: query.search_start_date || defaults.search_start_date,
+  const query = new URLSearchParams(window.location.search);
+  const pageOptions = {
+    page_size: parseInt(query.get('page_size'), 10) || defaults.pageSize,
+    page: parseInt(query.get('page'), 10) || defaults.page,
   };
+  if (query.has('ordering')) {
+    pageOptions.ordering = query.get('ordering');
+  }
+  if (query.has('search')) {
+    pageOptions.search = query.get('search');
+  }
+  if (query.has('search_course')) {
+    pageOptions.search_course = query.get('search_course');
+  }
+  if (query.has('search_start_date')) {
+    pageOptions.search_start_date = query.get('search_start_date');
+  }
+  return pageOptions;
 };
 
 const removeTrailingSlash = path => path.replace(/\/$/, '');

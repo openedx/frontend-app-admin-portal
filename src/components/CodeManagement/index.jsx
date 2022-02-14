@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import qs from 'query-string';
 import { Button, Icon, Pagination } from '@edx/paragon';
 
 import Hero from '../Hero';
@@ -30,10 +29,10 @@ class CodeManagement extends React.Component {
 
   componentDidMount() {
     const { enterpriseId, location, history } = this.props;
-    const queryParams = qs.parse(location.search);
+    const queryParams = new URLSearchParams(location.search);
 
     if (enterpriseId) {
-      this.paginateCouponOrders(queryParams.overview_page || 1);
+      this.paginateCouponOrders(queryParams.get('overview_page') || 1);
     }
 
     if (location.state && location.state.hasRequestedCodes) {
@@ -59,16 +58,16 @@ class CodeManagement extends React.Component {
       location,
     } = this.props;
 
-    const queryParams = qs.parse(location.search);
-    const prevQueryParams = qs.parse(prevProps.location.search);
-    const couponId = queryParams.coupon_id;
+    const queryParams = new URLSearchParams(location.search);
+    const prevQueryParams = new URLSearchParams(prevProps.location.search);
+    const couponId = queryParams.get('coupon_id');
 
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
-      this.paginateCouponOrders(queryParams.overview_page);
+      this.paginateCouponOrders(queryParams.get('overview_page'));
     }
 
-    if (queryParams.overview_page !== prevQueryParams.overview_page) {
-      this.paginateCouponOrders(queryParams.overview_page);
+    if (queryParams.get('overview_page') !== prevQueryParams.get('overview_page')) {
+      this.paginateCouponOrders(queryParams.get('overview_page'));
     }
 
     // If the specified coupon id doesn't exist in the coupons returned by the API,
@@ -114,13 +113,10 @@ class CodeManagement extends React.Component {
   }
 
   removeQueryParams(keys) {
-    const { location } = this.props;
-    const queryParams = qs.parse(location.search);
-
+    const queryParams = {};
     keys.forEach((key) => {
       queryParams[key] = undefined;
     });
-
     updateUrl(queryParams);
   }
 
@@ -136,14 +132,12 @@ class CodeManagement extends React.Component {
   }
 
   handleCouponExpand(selectedIndex) {
-    const { location } = this.props;
-    const queryParams = qs.parse(location.search);
     const coupons = this.getCouponRefs();
     const selectedCoupon = coupons[selectedIndex];
     const couponId = selectedCoupon.props.data.id;
-
-    queryParams.coupon_id = couponId;
-
+    const queryParams = {
+      coupon_id: couponId,
+    };
     updateUrl(queryParams);
     this.setCouponOpacity(couponId);
     this.setState({ searchQuery: '' });
@@ -180,7 +174,7 @@ class CodeManagement extends React.Component {
 
   renderCoupons() {
     const { coupons, location } = this.props;
-    const queryParams = qs.parse(location.search);
+    const queryParams = new URLSearchParams(location.search);
 
     return (
       <>
@@ -189,7 +183,7 @@ class CodeManagement extends React.Component {
             ref={(node) => { this.couponRefs[index] = node; }}
             key={coupon.id}
             data={coupon}
-            isExpanded={coupon.id === parseInt(queryParams.coupon_id, 10)}
+            isExpanded={coupon.id === parseInt(queryParams.get('coupon_id'), 10)}
             onExpand={() => this.handleCouponExpand(index)}
             onCollapse={() => this.handleCouponCollapse()}
           />

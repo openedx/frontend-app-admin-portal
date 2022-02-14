@@ -1,5 +1,3 @@
-import qs from 'query-string';
-
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
 
@@ -38,18 +36,19 @@ class LmsApiService {
       nav_depth: 3,
       block_types_filter: 'course,chapter,sequential,vertical',
     };
+    const queryParams = new URLSearchParams(options);
 
-    const outlineUrl = `${LmsApiService.baseUrl}/api/courses/v1/blocks/?${qs.stringify(options)}`;
+    const outlineUrl = `${LmsApiService.baseUrl}/api/courses/v1/blocks/?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(outlineUrl);
   }
 
   static fetchEnterpriseList(options) {
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       ...options,
-    };
-    const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/dashboard_list/?${qs.stringify(queryParams)}`;
+    });
+    const enterpriseListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(enterpriseListUrl);
   }
 
@@ -58,9 +57,9 @@ class LmsApiService {
       // Because we expect only one enterprise by slug we return only the first result
       .then((response) => {
         const { data } = response;
-        const results = data && data.results;
+        const results = data?.results;
         return {
-          data: results && results.length && results[0],
+          data: results?.length && results[0],
         };
       });
   }

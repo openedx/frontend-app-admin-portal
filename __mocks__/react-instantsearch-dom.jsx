@@ -49,7 +49,7 @@ MockReactInstantSearch.connectRefinementList = Component => (props) => (
     attribute="subjects"
     currentRefinement={[]}
     items={[]}
-    refinementsFromQueryParams={{}}
+    refinements={{}}
     title="Foo"
     searchForItems={() => {}}
     {...props}

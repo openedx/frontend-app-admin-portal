@@ -4,13 +4,14 @@ import { MemoryRouter, Redirect } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import qs from 'query-string';
 
 import EnterpriseList, { TITLE } from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
 import SearchBar from '../SearchBar';
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';
+
+import LmsApiServices from '../../data/services/LmsApiService';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -168,6 +169,18 @@ describe('<EnterpriseList />', () => {
       wrapper.find('SearchBar').find('form').simulate('submit');
     };
 
+    it('fetchEnterpriseList called with no search property initially', () => {
+      jest.spyOn(LmsApiServices, 'fetchEnterpriseList');
+      wrapper = mount(
+        <EnterpriseListWrapper
+          location={{
+            path: '/',
+          }}
+        />,
+      );
+      expect(LmsApiServices.fetchEnterpriseList).toHaveBeenCalledWith({ page_size: 50, page: 1 });
+    });
+
     it('search querystring changes onSearch', () => {
       wrapper = mount((
         <EnterpriseListWrapper
@@ -176,8 +189,8 @@ describe('<EnterpriseList />', () => {
       ));
 
       submitSearch('Enterprise 1');
-      const { search } = qs.parse(window.location.search);
-      expect(search).toEqual('Enterprise 1');
+      const queryParams = new URLSearchParams(window.location.search);
+      expect(queryParams.get('search')).toEqual('Enterprise 1');
     });
 
     it('search querystring clears onClear', () => {
@@ -186,12 +199,10 @@ describe('<EnterpriseList />', () => {
           enterprises={mockEnterpriseList}
         />
       ));
-
       submitSearch('Enterprise 1');
-
       wrapper.find('SearchBar').find('button[type="reset"]').simulate('reset');
-      const { search } = qs.parse(window.location.search);
-      expect(search).toEqual(undefined);
+      const queryParams = new URLSearchParams(window.location.search);
+      expect(queryParams.has('search')).toBeFalsy();
     });
   });
 });

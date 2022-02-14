@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import qs from 'query-string';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { Pagination, Table } from '@edx/paragon';
@@ -24,8 +23,12 @@ class TableComponent extends React.Component {
     // also when the back button is used. We need to determine if this is a pagination or sorting
     // request as we handle these as slightly different actions in the action handlers.
     if (location.search !== prevProps.location.search) {
-      const { page: prevPage, ordering: prevOrdering } = qs.parse(prevProps.location.search);
-      const { page, ordering } = qs.parse(location.search);
+      const prevQueryParams = new URLSearchParams(prevProps.location.search);
+      const prevPage = prevQueryParams.get('page');
+      const prevOrdering = prevQueryParams.get('ordering');
+      const currentQueryParams = new URLSearchParams(location.search);
+      const page = currentQueryParams.get('page');
+      const ordering = currentQueryParams.get('ordering');
       if (ordering !== prevOrdering) {
         this.props.sortTable(ordering);
       } else if (page !== prevPage) {

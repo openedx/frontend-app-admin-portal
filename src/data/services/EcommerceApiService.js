@@ -1,6 +1,5 @@
-import qs from 'query-string';
-
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+
 import { configuration } from '../../config';
 import store from '../store';
 import { EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE } from '../constants/emailTemplate';
@@ -12,26 +11,24 @@ class EcommerceApiService {
 
   static fetchCouponOrders(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       filter: 'active',
       ...options,
-    };
-
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${enterpriseId}/overview/?${qs.stringify(queryParams)}`;
+    });
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${enterpriseId}/overview/?${queryParams.toString()}`;
     return EcommerceApiService.apiClient().get(url);
   }
 
   static fetchCouponDetails(couponId, options, { csv } = {}) {
     const endpoint = csv ? 'codes.csv' : 'codes';
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       ...options,
-    };
-
-    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/${endpoint}/?${qs.stringify(queryParams)}`;
+    });
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/${endpoint}/?${queryParams.toString()}`;
     return EcommerceApiService.apiClient().get(url);
   }
 
@@ -54,7 +51,8 @@ class EcommerceApiService {
     const { enterpriseId } = store.getState().portalConfiguration;
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${enterpriseId}/search/`;
     if (options) {
-      url += `?${qs.stringify(options)}`;
+      const queryParams = new URLSearchParams(options);
+      url += `?${queryParams.toString()}`;
     }
     return EcommerceApiService.apiClient().get(url);
   }
@@ -63,7 +61,8 @@ class EcommerceApiService {
     const { enterpriseId } = store.getState().portalConfiguration;
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/offer-assignment-email-template/${enterpriseId}/`;
     if (options) {
-      url += `?${qs.stringify(options)}`;
+      const queryParams = new URLSearchParams(options);
+      url += `?${queryParams.toString()}`;
     }
     return EcommerceApiService.apiClient().get(url);
   }

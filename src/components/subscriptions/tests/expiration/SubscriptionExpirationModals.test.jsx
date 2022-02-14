@@ -20,9 +20,13 @@ import {
   SubscriptionManagementContext,
 } from '../TestUtilities';
 
-jest.mock('@edx/frontend-enterprise-utils', () => ({
-  sendEnterpriseTrackEvent: jest.fn(),
-}));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types

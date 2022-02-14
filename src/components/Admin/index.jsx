@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import qs from 'query-string';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
@@ -233,11 +232,11 @@ class Admin extends React.Component {
   renderFiltersResetButton() {
     const { location: { search, pathname } } = this.props;
     // remove the querys from the path
-    const queryParams = qs.parse(search);
+    const queryParams = new URLSearchParams(search);
     ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
-      delete queryParams[searchTerm];
+      queryParams.delete(searchTerm);
     });
-    const resetQuery = qs.stringify(queryParams);
+    const resetQuery = queryParams.toString();
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
@@ -281,14 +280,17 @@ class Admin extends React.Component {
     } = this.props;
 
     const { params: { actionSlug } } = match;
-    const filtersActive = search;
+
+    const queryParams = new URLSearchParams(search || '');
+    const queryParamsLength = Array.from(queryParams.entries()).length;
+    const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
-    const queryParams = qs.parse(search);
+
     const searchParams = {
-      searchQuery: queryParams.search,
-      searchCourseQuery: queryParams.search_course,
-      searchDateQuery: queryParams.search_start_date,
+      searchQuery: queryParams.get('search') || '',
+      searchCourseQuery: queryParams.get('search_course') || '',
+      searchDateQuery: queryParams.get('search_start_date') || '',
     };
 
     return (

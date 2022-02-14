@@ -14,6 +14,7 @@ import {
   SETTINGS_PARAM_MATCH,
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
+// eslint-disable-next-line import/no-named-as-default
 import SettingsContext from './SettingsContext';
 
 const PAGE_TILE = 'Settings';

@@ -1,7 +1,5 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
-import { logError } from '@edx/frontend-platform/logging';
 
 import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
@@ -39,7 +37,12 @@ describe('actions', () => {
       { type: FETCH_PORTAL_CONFIGURATION_SUCCESS, payload: { data: responseData } },
     ];
     const store = mockStore();
-    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?enterprise_slug=${slug}&page=1&page_size=50`)
+    const queryParams = new URLSearchParams({
+      page: 1,
+      page_size: 50,
+      enterprise_slug: slug,
+    });
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`)
       .replyOnce(200, JSON.stringify({ results: [responseData] }));
 
     return store.dispatch(fetchPortalConfiguration(slug)).then(() => {
@@ -55,7 +58,12 @@ describe('actions', () => {
     ];
     const store = mockStore();
 
-    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?enterprise_slug=${slug}&page=1&page_size=50`)
+    const queryParams = new URLSearchParams({
+      page: 1,
+      page_size: 50,
+      enterprise_slug: slug,
+    });
+    axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`)
       .replyOnce(500, JSON.stringify({}));
 
     return store.dispatch(fetchPortalConfiguration(slug)).then(() => {

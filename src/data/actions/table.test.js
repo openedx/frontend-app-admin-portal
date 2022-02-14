@@ -1,8 +1,5 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import qs from 'query-string';
-// eslint-disable-next-line no-unused-vars
-import { logError } from '@edx/frontend-platform/logging';
 
 import { paginateTable, sortTable } from './table';
 import {
@@ -211,12 +208,12 @@ describe('actions', () => {
           enterpriseId,
         },
       });
-      const defaultOptions = {
+      const defaultQueryParams = new URLSearchParams({
         page: 1,
         page_size: 50,
         search: 'test3@edx.org',
-      };
-      const params = `?${qs.stringify(defaultOptions)}`;
+      });
+      const params = `?${defaultQueryParams.toString()}`;
       axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/${params}`)
         .replyOnce(200, JSON.stringify(responseData));
 
@@ -254,12 +251,12 @@ describe('actions', () => {
           },
         },
       ];
-      const defaultOptions = {
+      const defaultQueryParams = new URLSearchParams({
         page: 1,
         page_size: 50,
         search: 'test3@edx.org',
-      };
-      const params = `?${qs.stringify(defaultOptions)}`;
+      });
+      const params = `?${defaultQueryParams.toString()}`;
       axiosMock.onGet(`http://localhost:8000/enterprise/api/v1/enterprise/${enterpriseId}/enrollments/${params}`)
         .networkError();
 
