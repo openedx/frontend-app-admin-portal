@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import MoodleConfig from '../LMSConfigs/MoodleConfig';
+import Degreed2Config from '../LMSConfigs/Degreed2Config';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
@@ -17,116 +17,117 @@ const existingConfigData = {
   id: 1,
 };
 
-describe('<MoodleConfig />', () => {
-  test('renders Moodle Config Form', () => {
+describe('<DegreedConfig />', () => {
+  test('renders Degreed Config Form', () => {
     render(
-      <MoodleConfig
+      <Degreed2Config
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
       />,
     );
     screen.getByLabelText('Display Name');
-    screen.getByLabelText('Moodle Base URL');
-    screen.getByLabelText('Webservice Short Name');
+    screen.getByLabelText('API Client ID');
+    screen.getByLabelText('API Client Secret');
+    screen.getByLabelText('Degreed Base URL');
   });
   test('test button disable', () => {
     render(
-      <MoodleConfig
+      <Degreed2Config
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
+
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'reallyreallyreallyreallyreallylongname' },
     });
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
       target: { value: 'test1' },
     });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
       target: { value: 'test2' },
     });
-    expect(screen.queryByText(INVALID_NAME));
-    expect(screen.queryByText(INVALID_LINK));
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'test4' },
+    });
     expect(screen.getByText('Submit')).toBeDisabled();
-
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://test1.com' },
-    });
+    expect(screen.queryByText(INVALID_LINK));
+    expect(screen.queryByText(INVALID_NAME));
     fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'test2' },
+      target: { value: 'test1' },
     });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'https://test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
   test('it edits existing configs on submit', () => {
     render(
-      <MoodleConfig
+      <Degreed2Config
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
       />,
     );
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://www.test1.com' },
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
+      target: { value: 'test2' },
     });
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'test2' },
-    });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'https://test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
-      moodle_base_url: 'https://www.test1.com',
-      service_short_name: 'test2',
+      degreed_base_url: 'https://test1.com',
       display_name: 'displayName',
+      client_id: 'test1',
+      client_secret: 'test2',
       enterprise_customer: enterpriseId,
-      token: 'token111',
     };
-    expect(LmsApiService.updateMoodleConfig).toHaveBeenCalledWith(expectedConfig, 1);
+    expect(LmsApiService.updateDegreed2Config).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', () => {
     render(
-      <MoodleConfig
+      <Degreed2Config
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
       />,
     );
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://www.test1.com' },
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
+      target: { value: 'test2' },
     });
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'test2' },
-    });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'https://test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
-      moodle_base_url: 'https://www.test1.com',
-      service_short_name: 'test2',
+      degreed_base_url: 'https://test1.com',
       display_name: 'displayName',
-      token: 'token111',
+      client_id: 'test1',
+      client_secret: 'test2',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(LmsApiService.postNewDegreed2Config).toHaveBeenCalledWith(expectedConfig);
   });
 });

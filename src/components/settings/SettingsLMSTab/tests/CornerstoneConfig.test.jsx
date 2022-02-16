@@ -6,15 +6,25 @@ import '@testing-library/jest-dom/extend-expect';
 
 import CornerstoneConfig from '../LMSConfigs/CornerstoneConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import LmsApiService from '../../../../data/services/LmsApiService';
+
+jest.mock('../../../../data/services/LmsApiService');
+
+const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
+const noExistingData = {};
+const existingConfigData = {
+  id: 1,
+};
 
 describe('<CornerstoneConfig />', () => {
   test('renders Cornerstone Config Form', () => {
     render(
       <CornerstoneConfig
-        id="test-enterprise-id"
+        enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
+        existingData={noExistingData}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -23,8 +33,9 @@ describe('<CornerstoneConfig />', () => {
   test('test button disable', () => {
     render(
       <CornerstoneConfig
-        id="test-enterprise-id"
+        enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
+        existingData={noExistingData}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -45,5 +56,55 @@ describe('<CornerstoneConfig />', () => {
       target: { value: 'https://www.test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
+  });
+  test('it edits existing configs on submit', () => {
+    render(
+      <CornerstoneConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.change(screen.getByLabelText('Cornerstone Base URL'), {
+      target: { value: 'https://www.test1.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
+    const expectedConfig = {
+      active: false,
+      cornerstone_base_url: 'https://www.test1.com',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.updateCornerstoneConfig).toHaveBeenCalledWith(expectedConfig, 1);
+  });
+  test('it creates new configs on submit', () => {
+    render(
+      <CornerstoneConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.change(screen.getByLabelText('Cornerstone Base URL'), {
+      target: { value: 'https://www.test1.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
+    const expectedConfig = {
+      active: false,
+      cornerstone_base_url: 'https://www.test1.com',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewCornerstoneConfig).toHaveBeenCalledWith(expectedConfig);
   });
 });

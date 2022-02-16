@@ -1,3 +1,50 @@
+@import "~@edx/brand/paragon/variables";
+
+.lms-card-content .pgn__card-header-content {
+  flex-grow: 1 !important;
+}
+
 .lms-icon {
   max-width: 35px;
+}
+
+.lms-card-hover {
+  &:hover {
+    box-shadow: $box-shadow;
+    cursor: pointer;
+  }
+
+  &:focus,
+  &.focus {
+    box-shadow: $box-shadow;
+    outline: none;
+    border-color: $dark-300;
+  }
+}
+
+.lms-card {
+  width: 22rem !important;
+  box-shadow: $box-shadow-sm;
+
+  &:hover {
+    box-shadow: $box-shadow;
+    cursor: pointer;
+  }
+
+  &:focus,
+  &.focus {
+    box-shadow: $box-shadow;
+    outline: none;
+    border-color: $dark-300;
+  }
+}
+
+.lms-card-title-overflow {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+.existing-lms-card-width {
+  width: 70rem !important;
 }
