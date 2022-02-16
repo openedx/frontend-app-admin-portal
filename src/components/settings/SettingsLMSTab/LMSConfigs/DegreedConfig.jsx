@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { buttonBool, handleErrors } from '../LMSConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { snakeCaseDict } from '../../../../utils';
+import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { SUCCESS_LABEL } from '../../data/constants';
@@ -13,6 +13,7 @@ const DegreedConfig = ({ id, onClick }) => {
   const [secret, setSecret] = React.useState('');
   const [degreedCompanyId, setDegreedCompanyId] = React.useState('');
   const [degreedBaseUrl, setDegreedBaseUrl] = React.useState('');
+  const [urlValid, setUrlValid] = React.useState(true);
   const [degreedUserId, setDegreedUserId] = React.useState('');
   const [degreedUserPassword, setDegreedUserPassword] = React.useState('');
   const [errorIsOpen, openError, closeError] = useToggle(false);
@@ -45,6 +46,12 @@ const DegreedConfig = ({ id, onClick }) => {
     }
   };
 
+  const validateUrl = (input) => {
+    setDegreedBaseUrl(input);
+    const urlBool = (urlValidation(input) || input.length === 0);
+    setUrlValid(urlBool);
+  };
+
   return (
     <span>
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
@@ -63,7 +70,7 @@ const DegreedConfig = ({ id, onClick }) => {
         <Form.Group>
           <Form.Control
             className="my-4"
-            type="text"
+            type="password"
             onChange={(e) => {
               setSecret(e.target.value);
             }}
@@ -80,15 +87,20 @@ const DegreedConfig = ({ id, onClick }) => {
             floatingLabel="Degreed Organization Code"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="my-4">
           <Form.Control
-            className="my-4"
             type="text"
+            isInvalid={!urlValid}
             onChange={(e) => {
-              setDegreedBaseUrl(e.target.value);
+              validateUrl(e.target.value);
             }}
             floatingLabel="Degreed Base URL"
           />
+          {!urlValid && (
+            <Form.Control.Feedback type="invalid">
+              This does not look like a valid url
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
         <Form.Group>
           <Form.Control
@@ -114,7 +126,7 @@ const DegreedConfig = ({ id, onClick }) => {
         </Form.Group>
         <span className="d-flex">
           <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid}>Submit</Button>
         </span>
       </Form>
     </span>

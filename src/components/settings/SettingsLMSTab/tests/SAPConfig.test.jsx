@@ -36,6 +36,7 @@ describe('<SAPConfig />', () => {
     fireEvent.change(screen.getByLabelText('Client ID'), {
       target: { value: 'test1' },
     });
+    // bad url, cannot be submitted
     fireEvent.change(screen.getByLabelText('SAP Base URL'), {
       target: { value: 'test2' },
     });
@@ -52,6 +53,11 @@ describe('<SAPConfig />', () => {
       target: { value: 'test6' },
     });
     // don't have to change userType, will default to user
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText('This does not look like a valid url'));
+    fireEvent.change(screen.getByLabelText('SAP Base URL'), {
+      target: { value: 'test2.com' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

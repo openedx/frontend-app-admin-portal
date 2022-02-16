@@ -27,10 +27,15 @@ describe('<CornerstoneConfig />', () => {
     );
     expect(screen.getByText('Submit')).toBeDisabled();
 
+    // bad url not able to be submitted
     fireEvent.change(screen.getByLabelText('Cornerstone Base URL'), {
       target: { value: 'test1' },
     });
-
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText('This does not look like a valid url'));
+    fireEvent.change(screen.getByLabelText('Cornerstone Base URL'), {
+      target: { value: 'test1.com' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

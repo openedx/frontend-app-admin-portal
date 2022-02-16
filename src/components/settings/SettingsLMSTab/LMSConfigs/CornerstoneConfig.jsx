@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { buttonBool, handleErrors } from '../LMSConfigPage';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { snakeCaseDict } from '../../../../utils';
+import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { SUCCESS_LABEL } from '../../data/constants';
 
 const CornerstoneConfig = ({ id, onClick }) => {
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
+  const [urlValid, setUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
@@ -37,24 +38,35 @@ const CornerstoneConfig = ({ id, onClick }) => {
     }
   };
 
+  const validateUrl = (input) => {
+    setCornerstoneBaseUrl(input);
+    const urlBool = (urlValidation(input) || input.length === 0);
+    setUrlValid(urlBool);
+  };
+
   return (
     <span>
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
-        <Form.Group>
+        <Form.Group className="my-4">
           <Form.Control
-            className="my-4"
             type="text"
+            isInvalid={!urlValid}
             onChange={(e) => {
-              setCornerstoneBaseUrl(e.target.value);
+              validateUrl(e.target.value);
             }}
             floatingLabel="Cornerstone Base URL"
           />
+          {!urlValid && (
+            <Form.Control.Feedback type="invalid">
+              This does not look like a valid url
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
         <span className="d-flex">
           <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config)}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid}>Submit</Button>
         </span>
       </Form>
     </span>

@@ -27,14 +27,22 @@ describe('<MoodleConfig />', () => {
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
-
     fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
       target: { value: 'test1' },
     });
     fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
+      target: { value: 'longstringthatisover30characters' },
+    });
+    expect(screen.queryByText('This does not look like a valid url'));
+    expect(screen.queryByText('Display name cannot be over 30 characters'));
+    expect(screen.getByText('Submit')).toBeDisabled();
+
+    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
+      target: { value: 'test1.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
       target: { value: 'test2' },
     });
-
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

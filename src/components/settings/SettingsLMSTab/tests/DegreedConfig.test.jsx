@@ -50,7 +50,12 @@ describe('<DegreedConfig />', () => {
     fireEvent.change(screen.getByLabelText('Degreed User Password'), {
       target: { value: 'test5' },
     });
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText('This does not look like a valid url'));
 
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'test4.com' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

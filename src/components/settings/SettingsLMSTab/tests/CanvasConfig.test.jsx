@@ -39,10 +39,15 @@ describe('<CanvasConfig />', () => {
     fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
       target: { value: '3' },
     });
+    // bad url is not able to be submitted
     fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
       target: { value: 'test4' },
     });
-
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText('This does not look like a valid url'));
+    fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
+      target: { value: 'test4.com' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

@@ -20,7 +20,7 @@ describe('<BlackboardConfig />', () => {
     screen.getByLabelText('API Client Secret/Application Secret');
     screen.getByLabelText('Blackboard Base URL');
   });
-  test('test button disable', () => {
+  test('test validation and button disable', () => {
     render(
       <BlackboardConfig
         id="test-enterprise-id"
@@ -34,8 +34,14 @@ describe('<BlackboardConfig />', () => {
     fireEvent.change(screen.getByLabelText('API Client Secret/Application Secret'), {
       target: { value: 'test2' },
     });
+    // bad url is not able to be submitted
     fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
       target: { value: 'test3' },
+    });
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText('This does not look like a valid url'));
+    fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
+      target: { value: 'test.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });

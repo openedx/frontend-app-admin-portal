@@ -226,6 +226,11 @@ function truncateString(str, maxStrLength = 10) {
   return `${str.slice(0, maxStrLength)}...`;
 }
 
+function urlValidation(url) {
+  const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+  return regex.test(url);
+}
+
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
 export {
@@ -249,5 +254,6 @@ export {
   mergeErrors,
   getSubscriptionContactText,
   truncateString,
+  urlValidation,
   normalizeFileUpload,
 };
