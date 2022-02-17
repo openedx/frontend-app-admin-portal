@@ -94,8 +94,12 @@ export const useSubscriptionUsersOverview = ({
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
   const loadSubscriptionUsersOverview = () => {
+    const options = {};
+    if (search) {
+      options.search = search;
+    }
     if (subscriptionUUID) {
-      LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, { search })
+      LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, options)
         .then((response) => {
           const subscriptionUsersOverviewData = response.data.reduce((accumulator, currentValue) => ({
             ...accumulator, [currentValue.status]: currentValue.count,
@@ -147,9 +151,11 @@ export const useSubscriptionUsers = ({
     setLoadingUsers(true);
     const options = {
       status: userStatusFilter,
-      search: searchQuery,
       page: currentPage,
     };
+    if (searchQuery) {
+      options.search = searchQuery;
+    }
     LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options)
       .then((response) => {
         setSubscriptionUsers(camelCaseObject(response.data));
