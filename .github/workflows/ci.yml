@@ -8,12 +8,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Nodejs Env
-      run: echo "NODE_VER=`cat .nvmrc`" >> $GITHUB_ENV
     - name: Setup Nodejs
-      uses: dcodeIO/setup-node-nvm@v4
+      uses: actions/setup-node@v1
       with:
-        node-version: "${{ env.NODE_VER }}"
+        node-version: 12
     - name: Validate no uncommitted package-lock changes
       run: make validate-no-uncommitted-package-lock-changes
     - name: Install dependencies
