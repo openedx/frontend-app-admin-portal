@@ -6,12 +6,13 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
 const MoodleConfig = ({ id, onClick }) => {
   const [moodleBaseUrl, setMoodleBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [serviceShortName, setServiceShortName] = React.useState('');
+  const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
@@ -19,6 +20,7 @@ const MoodleConfig = ({ id, onClick }) => {
   const config = {
     moodleBaseUrl,
     serviceShortName,
+    displayName,
   };
 
   const handleSubmit = async (event) => {
@@ -41,17 +43,14 @@ const MoodleConfig = ({ id, onClick }) => {
   };
 
   const validateField = (field, input) => {
-    let validBool = false;
     switch (field) {
       case 'Moodle Base URL':
         setMoodleBaseUrl(input);
-        validBool = (urlValidation(input) || input.length === 0);
-        setUrlValid(validBool);
+        setUrlValid(urlValidation(input) || input.length === 0);
         break;
-      case 'Webservice Short Name':
-        setServiceShortName(input);
-        validBool = input.length <= 30;
-        setNameValid(validBool);
+      case 'Display Name':
+        setDisplayName(input);
+        setNameValid(input.length <= 20);
         break;
       default:
         break;
@@ -63,7 +62,23 @@ const MoodleConfig = ({ id, onClick }) => {
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
-        <Form.Group className="my-4">
+        <Form.Group className="my-2.5">
+          <Form.Control
+            type="text"
+            isInvalid={!nameValid}
+            onChange={(e) => {
+              validateField('Display Name', e.target.value);
+            }}
+            floatingLabel="Display Name"
+          />
+          <Form.Text>Create a custom name for this LMS.</Form.Text>
+          {!nameValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_NAME}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group className="mb-4">
           <Form.Control
             type="text"
             isInvalid={!urlValid}
@@ -74,24 +89,18 @@ const MoodleConfig = ({ id, onClick }) => {
           />
           {!urlValid && (
             <Form.Control.Feedback type="invalid">
-              This does not look like a valid url
+              {INVALID_LINK}
             </Form.Control.Feedback>
           )}
         </Form.Group>
         <Form.Group className="my-4">
           <Form.Control
             type="text"
-            isInvalid={!nameValid}
             onChange={(e) => {
-              validateField('Webservice Short Name', e.target.value);
+              setServiceShortName(e.target.value);
             }}
             floatingLabel="Webservice Short Name"
           />
-          {!nameValid && (
-            <Form.Control.Feedback type="invalid">
-              Display name cannot be over 30 characters
-            </Form.Control.Feedback>
-          )}
         </Form.Group>
         <span className="d-flex">
           <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>

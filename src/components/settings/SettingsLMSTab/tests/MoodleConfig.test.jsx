@@ -5,6 +5,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import MoodleConfig from '../LMSConfigs/MoodleConfig';
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 
 const mockOnClick = jest.fn();
 
@@ -16,6 +17,7 @@ describe('<MoodleConfig />', () => {
         onClick={mockOnClick}
       />,
     );
+    screen.getByLabelText('Display Name');
     screen.getByLabelText('Moodle Base URL');
     screen.getByLabelText('Webservice Short Name');
   });
@@ -27,20 +29,23 @@ describe('<MoodleConfig />', () => {
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'reallyreallyreallyreallyreallylongname' },
+    });
     fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
       target: { value: 'test1' },
     });
     fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'longstringthatisover30characters' },
+      target: { value: 'test2' },
     });
-    expect(screen.queryByText('This does not look like a valid url'));
-    expect(screen.queryByText('Display name cannot be over 30 characters'));
+    expect(screen.queryByText(INVALID_NAME));
+    expect(screen.queryByText(INVALID_LINK));
     expect(screen.getByText('Submit')).toBeDisabled();
 
     fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'test1.com' },
+      target: { value: 'https://test1.com' },
     });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
+    fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'test2' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();

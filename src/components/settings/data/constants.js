@@ -14,6 +14,9 @@ export const DEGREED_TYPE = 'Degreed';
 export const MOODLE_TYPE = 'Moodle';
 export const SAP_TYPE = 'SAP';
 
+export const INVALID_LINK = 'Link must be properly formatted and start with http or https';
+export const INVALID_NAME = 'Display name cannot be over 20 characters';
+
 /**
  * Used as tab values and in router params
  */

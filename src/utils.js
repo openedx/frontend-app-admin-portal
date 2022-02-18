@@ -155,7 +155,7 @@ const snakeCaseDict = (data) => {
   const transformedData = {};
   [...Object.entries(data)]
     .forEach(entry => {
-      transformedData[snakeCase(entry[0])] = snakeCase(entry[1]);
+      transformedData.append(snakeCase(entry[0]), entry[1]);
     });
   return transformedData;
 };
@@ -226,9 +226,14 @@ function truncateString(str, maxStrLength = 10) {
   return `${str.slice(0, maxStrLength)}...`;
 }
 
-function urlValidation(url) {
-  const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
-  return regex.test(url);
+function urlValidation(urlString) {
+  let url;
+  try {
+    url = new URL(urlString);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === 'http:' || url.protocol === 'https:';
 }
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);

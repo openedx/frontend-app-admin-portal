@@ -6,10 +6,11 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
-
-import { SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
 const BlackboardConfig = ({ id, onClick }) => {
+  const [displayName, setDisplayName] = React.useState('');
+  const [nameValid, setNameValid] = React.useState(true);
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
@@ -18,6 +19,7 @@ const BlackboardConfig = ({ id, onClick }) => {
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
+    displayName,
     clientId,
     clientSecret,
     blackboardBaseUrl,
@@ -41,10 +43,19 @@ const BlackboardConfig = ({ id, onClick }) => {
     }
   };
 
-  const validateUrl = (input) => {
-    setBlackboardBaseUrl(input);
-    const urlBool = (urlValidation(input) || input.length === 0);
-    setUrlValid(urlBool);
+  const validateField = (field, input) => {
+    switch (field) {
+      case 'Canvas Base URL':
+        setBlackboardBaseUrl(input);
+        setUrlValid(urlValidation(input) || input.length === 0);
+        break;
+      case 'Display Name':
+        setDisplayName(input);
+        setNameValid(input.length <= 20);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -52,10 +63,26 @@ const BlackboardConfig = ({ id, onClick }) => {
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
+        <Form.Group className="my-2.5">
+          <Form.Control
+            type="text"
+            isInvalid={!nameValid}
+            onChange={(e) => {
+              validateField('Display Name', e.target.value);
+            }}
+            floatingLabel="Display Name"
+          />
+          <Form.Text>Create a custom name for this LMS.</Form.Text>
+          {!nameValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_NAME}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
         <Form.Group>
           <Form.Control
             data-test="clientId"
-            className="my-4"
+            className="mb-4"
             type="text"
             onChange={(e) => {
               setClientId(e.target.value);
@@ -78,19 +105,19 @@ const BlackboardConfig = ({ id, onClick }) => {
             type="text"
             isInvalid={!urlValid}
             onChange={(e) => {
-              validateUrl(e.target.value);
+              setBlackboardBaseUrl(e.target.value);
             }}
             floatingLabel="Blackboard Base URL"
           />
           {!urlValid && (
             <Form.Control.Feedback type="invalid">
-              This does not look like a valid url
+              {INVALID_LINK}
             </Form.Control.Feedback>
           )}
         </Form.Group>
         <span className="d-flex">
           <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid || !nameValid}>Submit</Button>
         </span>
       </Form>
     </span>

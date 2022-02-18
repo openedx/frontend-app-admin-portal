@@ -7,15 +7,18 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
 const CornerstoneConfig = ({ id, onClick }) => {
+  const [displayName, setDisplayName] = React.useState('');
+  const [nameValid, setNameValid] = React.useState(true);
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
 
   const config = {
+    displayName,
     cornerstoneBaseUrl,
   };
 
@@ -38,10 +41,19 @@ const CornerstoneConfig = ({ id, onClick }) => {
     }
   };
 
-  const validateUrl = (input) => {
-    setCornerstoneBaseUrl(input);
-    const urlBool = (urlValidation(input) || input.length === 0);
-    setUrlValid(urlBool);
+  const validateField = (field, input) => {
+    switch (field) {
+      case 'Cornerstone Base URL':
+        setCornerstoneBaseUrl(input);
+        setUrlValid(urlValidation(input) || input.length === 0);
+        break;
+      case 'Display Name':
+        setDisplayName(input);
+        setNameValid(input.length <= 20);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -49,24 +61,40 @@ const CornerstoneConfig = ({ id, onClick }) => {
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
-        <Form.Group className="my-4">
+        <Form.Group className="my-2.5">
+          <Form.Control
+            type="text"
+            isInvalid={!nameValid}
+            onChange={(e) => {
+              validateField('Display Name', e.target.value);
+            }}
+            floatingLabel="Display Name"
+          />
+          <Form.Text>Create a custom name for this LMS.</Form.Text>
+          {!nameValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_NAME}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group className="mb-4">
           <Form.Control
             type="text"
             isInvalid={!urlValid}
             onChange={(e) => {
-              validateUrl(e.target.value);
+              validateField('Cornerstone Base URL', e.target.value);
             }}
             floatingLabel="Cornerstone Base URL"
           />
           {!urlValid && (
             <Form.Control.Feedback type="invalid">
-              This does not look like a valid url
+              {INVALID_LINK}
             </Form.Control.Feedback>
           )}
         </Form.Group>
         <span className="d-flex">
           <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid || !nameValid}>Submit</Button>
         </span>
       </Form>
     </span>
