@@ -26,10 +26,13 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const [loading, setLoading] = useState(true);
 
   const loadCustomerAgreementData = (page = 1) => {
-    LicenseManagerApiService.fetchCustomerAgreementData({ enterprise_customer_uuid: enterpriseId, page })
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = LicenseManagerApiService.fetchCustomerAgreementData({
+          enterprise_customer_uuid: enterpriseId,
+          page,
+        });
         const { data: customerAgreementData } = camelCaseObject(response);
-
         const subscriptionsData = { ...subscriptionInitState };
         // Reshape the Customer Agreement API response into the flatter format for the app to use:
         if (customerAgreementData.results && customerAgreementData.count) {
@@ -44,22 +47,22 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
                 showExpirationNotifications: !(customerAgreement.disableExpirationNotifications || false),
                 agreementNetDaysUntilExpiration: customerAgreement.netDaysUntilExpiration,
               }));
-
               subscriptionsData.results = subscriptionsData.results.concat(flattenedSubscriptionResults);
             });
           subscriptionsData.count = subscriptionsData.results.length;
         }
         setSubscriptions(subscriptionsData);
-      })
-      .catch((err) => {
+      } catch (err) {
         logError(err);
         setErrors({
           ...errors,
           [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
         });
-      }).finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchData();
   };
 
   const forceRefresh = () => {
@@ -94,15 +97,14 @@ export const useSubscriptionUsersOverview = ({
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
   const loadSubscriptionUsersOverview = () => {
-    console.log('loadSubscriptionUsersOverview');
-    const options = {};
-    if (search) {
-      options.search = search;
-    }
-    if (subscriptionUUID) {
-      console.log('loadSubscriptionUsersOverview', 'with subs uuid!');
-      LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, options)
-        .then((response) => {
+    const fetchOverview = async () => {
+      const options = {};
+      if (search) {
+        options.search = search;
+      }
+      if (subscriptionUUID) {
+        try {
+          const response = await LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, options);
           const subscriptionUsersOverviewData = response.data.reduce((accumulator, currentValue) => ({
             ...accumulator, [currentValue.status]: currentValue.count,
           }), initialSubscriptionUsersOverview);
@@ -111,15 +113,16 @@ export const useSubscriptionUsersOverview = ({
             0,
           );
           setSubscriptionUsersOverview(camelCaseObject(subscriptionUsersOverviewData));
-        })
-        .catch((err) => {
+        } catch (err) {
           logError(err);
           setErrors({
             ...errors,
             [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
           });
-        });
-    }
+        }
+      }
+    };
+    fetchOverview();
   };
 
   const forceRefresh = () => {
@@ -150,29 +153,30 @@ export const useSubscriptionUsers = ({
     if (!subscriptionUUID) {
       return;
     }
-    setLoadingUsers(true);
-    const options = {
-      status: userStatusFilter,
-      page: currentPage,
-    };
-    if (searchQuery) {
-      options.search = searchQuery;
-    }
-    LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options)
-      .then((response) => {
+    const fetchUsers = async () => {
+      setLoadingUsers(true);
+      const options = {
+        status: userStatusFilter,
+        page: currentPage,
+      };
+      if (searchQuery) {
+        options.search = searchQuery;
+      }
+      try {
+        const response = await LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options);
         setSubscriptionUsers(camelCaseObject(response.data));
         setLoadingUsers(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         logError(err);
         setErrors({
           ...errors,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
         });
-      })
-      .finally(() => {
+      } finally {
         setLoadingUsers(false);
-      });
+      }
+    };
+    fetchUsers();
   };
 
   const forceRefresh = () => {
