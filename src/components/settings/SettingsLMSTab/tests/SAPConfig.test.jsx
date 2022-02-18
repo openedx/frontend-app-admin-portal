@@ -5,6 +5,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import SAPConfig from '../LMSConfigs/SAPConfig';
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 
 const mockOnClick = jest.fn();
 
@@ -16,7 +17,7 @@ describe('<SAPConfig />', () => {
         onClick={mockOnClick}
       />,
     );
-    screen.getByLabelText('Client ID');
+    screen.getByLabelText('Display Name');
     screen.getByLabelText('SAP Base URL');
     screen.getByLabelText('SAP Company ID');
     screen.getByLabelText('SAP User ID');
@@ -33,9 +34,10 @@ describe('<SAPConfig />', () => {
     );
     expect(screen.getByText('Submit')).toBeDisabled();
 
-    fireEvent.change(screen.getByLabelText('Client ID'), {
-      target: { value: 'test1' },
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'reallyreallyreallyreallyreallylongname' },
     });
+    // bad url, cannot be submitted
     fireEvent.change(screen.getByLabelText('SAP Base URL'), {
       target: { value: 'test2' },
     });
@@ -52,6 +54,15 @@ describe('<SAPConfig />', () => {
       target: { value: 'test6' },
     });
     // don't have to change userType, will default to user
+    expect(screen.getByText('Submit')).toBeDisabled();
+    expect(screen.queryByText(INVALID_NAME));
+    expect(screen.queryByText(INVALID_LINK));
+    fireEvent.change(screen.getByLabelText('SAP Base URL'), {
+      target: { value: 'https://test2.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'test2' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });
