@@ -94,11 +94,13 @@ export const useSubscriptionUsersOverview = ({
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
   const loadSubscriptionUsersOverview = () => {
+    console.log('loadSubscriptionUsersOverview');
     const options = {};
     if (search) {
       options.search = search;
     }
     if (subscriptionUUID) {
+      console.log('loadSubscriptionUsersOverview', 'with subs uuid!');
       LicenseManagerApiService.fetchSubscriptionUsersOverview(subscriptionUUID, options)
         .then((response) => {
           const subscriptionUsersOverviewData = response.data.reduce((accumulator, currentValue) => ({
