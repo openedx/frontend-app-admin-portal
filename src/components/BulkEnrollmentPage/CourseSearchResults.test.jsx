@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import { act, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
@@ -107,14 +107,13 @@ describe('<CourseSearchResults />', () => {
     expect(tableCells.at(2).text()).toBe('edX');
     expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
   });
-  it('renders popover with course description', () => {
+  it('renders popover with course description', async () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
     const courseTitle = screen.getByText(testCourseName);
-    act(() => {
-      userEvent.click(courseTitle);
-    });
-    expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
+    userEvent.click(courseTitle);
+    const elem = await screen.findByText(/short description of course 1/);
+    expect(elem).toBeInTheDocument();
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
