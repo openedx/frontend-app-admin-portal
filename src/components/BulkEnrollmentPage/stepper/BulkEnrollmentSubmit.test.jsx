@@ -311,8 +311,8 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    await userEvent.click(button);
-    await flushPromises();
+    userEvent.click(button);
+    await act(() => flushPromises());
 
     expect(addToast).toBeCalledTimes(0);
     expect(logError).toBeCalledTimes(1);
@@ -330,8 +330,10 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
 
-    await userEvent.click(button);
-    await flushPromises();
+    userEvent.click(button);
+    // interesting: doing an act(() => mockPromiseReject) does not work!
+    // we still get the act warnings.
+    await act(() => flushPromises());
     expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument();
     expect(addToast).toBeCalledTimes(0);
   });
@@ -348,8 +350,8 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    await userEvent.click(button);
-    await flushPromises();
+    userEvent.click(button);
+    await act(() => flushPromises());
     const alertModalCloseButton = screen.getByText('OK');
     userEvent.click(alertModalCloseButton);
     expect(screen.queryByText(ALERT_MODAL_TITLE_TEXT)).not.toBeInTheDocument();
