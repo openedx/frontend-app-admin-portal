@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AlertModal, ActionRow, Button } from '@edx/paragon';
-import { HELP_CENTER_LINK } from '../data/constants';
+import { HELP_CENTER_EMAIL } from '../data/constants';
 
 const cardText = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again or contact support for help.';
 
@@ -10,18 +10,19 @@ const ConfigError = ({ isOpen, close, submit }) => (
     title="Something went wrong"
     isOpen={isOpen}
     onClose={close}
+    hasCloseButton
     footerNode={(
       <ActionRow>
         <Button
-          href={HELP_CENTER_LINK}
+          href={HELP_CENTER_EMAIL}
           className="ml-auto my-2"
           rel="noopener noreferrer"
           target="_blank"
           variant="tertiary"
         >
-          Help Center
+          Contact Support
         </Button>
-        <Button variant="primary" onClick={submit}>Submit</Button>
+        <Button variant="primary" onClick={submit}>Try Again</Button>
       </ActionRow>
     )}
   >
