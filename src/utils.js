@@ -155,7 +155,7 @@ const snakeCaseDict = (data) => {
   const transformedData = {};
   [...Object.entries(data)]
     .forEach(entry => {
-      transformedData.append(snakeCase(entry[0]), entry[1]);
+      [, transformedData[snakeCase(entry[0])]] = entry;
     });
   return transformedData;
 };

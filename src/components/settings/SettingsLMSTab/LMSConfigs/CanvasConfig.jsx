@@ -18,6 +18,7 @@ const CanvasConfig = ({ id, onClick }) => {
   const [urlValid, setUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
+  const [errCode, setErrCode] = React.useState();
 
   const config = {
     displayName,
@@ -35,11 +36,12 @@ const CanvasConfig = ({ id, onClick }) => {
     transformedConfig.enterprise_customer = id;
     let err;
     try {
-      await LmsApiService.postNewCanvasConfig(transformedConfig);
+      await LmsApiService.postNewCanvasConfig(config);
     } catch (error) {
       err = handleErrors(error);
     }
     if (err) {
+      setErrCode(errCode);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -63,7 +65,7 @@ const CanvasConfig = ({ id, onClick }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
