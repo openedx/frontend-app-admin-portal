@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from '@edx/paragon';
 import { connect } from 'react-redux';
-import { logError } from '@edx/frontend-platform/logging';
 import { getLMSIcon } from '../../../utils';
 
 import {
@@ -19,24 +18,6 @@ import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
 import DegreedConfig from './LMSConfigs/DegreedConfig';
 import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
-
-export function buttonBool(config) {
-  let returnVal = true;
-  Object.values(config).forEach(value => {
-    if (!value) {
-      returnVal = false;
-    }
-  });
-  return returnVal;
-}
-
-export function handleErrors(error) {
-  const errorMsg = error.message || error.response?.status <= 300
-    ? error.message
-    : JSON.stringify(error.response.data);
-  logError(errorMsg);
-  return error.response?.status || 500;
-}
 
 const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (
   <span>
