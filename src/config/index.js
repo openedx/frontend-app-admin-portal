@@ -14,6 +14,8 @@ const configuration = {
   ECOMMERCE_BASE_URL: process.env.ECOMMERCE_BASE_URL,
   LICENSE_MANAGER_BASE_URL: process.env.LICENSE_MANAGER_BASE_URL,
   DISCOVERY_BASE_URL: process.env.DISCOVERY_BASE_URL,
+  ENTERPRISE_CATALOG_BASE_URL: process.env.ENTERPRISE_CATALOG_BASE_URL,
+  ENTERPRISE_ACCESS_BASE_URL: process.env.ENTERPRISE_ACCESS_BASE_URL,
   SECURE_COOKIES: process.env.NODE_ENV !== 'development',
   SEGMENT_KEY: process.env.SEGMENT_KEY,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
@@ -30,6 +32,7 @@ const configuration = {
   LOGO_URL: process.env.LOGO_URL,
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
+  USE_API_CACHE: process.env.USE_API_CACHE,
 };
 
 const features = {

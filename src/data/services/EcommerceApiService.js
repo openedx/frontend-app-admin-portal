@@ -21,6 +21,15 @@ class EcommerceApiService {
     return EcommerceApiService.apiClient().get(url);
   }
 
+  static fetchCoupon(couponId) {
+    const url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/coupons/${couponId}/`;
+    return EcommerceApiService.apiClient(
+      {
+        useCache: configuration.USE_API_CACHE,
+      },
+    ).get(url);
+  }
+
   static fetchCouponDetails(couponId, options, { csv } = {}) {
     const endpoint = csv ? 'codes.csv' : 'codes';
     const queryParams = new URLSearchParams({
