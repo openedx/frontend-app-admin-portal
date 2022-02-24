@@ -35,7 +35,7 @@ export function handleErrors(error) {
     ? error.message
     : JSON.stringify(error.response.data);
   logError(errorMsg);
-  return error.response?.status;
+  return error.response?.status || 500;
 }
 
 const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (

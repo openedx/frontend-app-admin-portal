@@ -36,7 +36,7 @@ const CanvasConfig = ({ id, onClick }) => {
     transformedConfig.enterprise_customer = id;
     let err;
     try {
-      await LmsApiService.postNewCanvasConfig(config);
+      await LmsApiService.postNewCanvasConfig(transformedConfig);
     } catch (error) {
       err = handleErrors(error);
     }
