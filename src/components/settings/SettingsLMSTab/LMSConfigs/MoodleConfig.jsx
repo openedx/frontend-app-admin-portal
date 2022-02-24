@@ -16,6 +16,7 @@ const MoodleConfig = ({ id, onClick }) => {
   const [nameValid, setNameValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
+  const [errCode, setErrCode] = React.useState();
 
   const config = {
     moodleBaseUrl,
@@ -36,6 +37,7 @@ const MoodleConfig = ({ id, onClick }) => {
       err = handleErrors(error);
     }
     if (err) {
+      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -59,7 +61,7 @@ const MoodleConfig = ({ id, onClick }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
