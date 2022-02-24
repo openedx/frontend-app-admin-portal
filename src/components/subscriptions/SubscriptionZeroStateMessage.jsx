@@ -15,8 +15,8 @@ const SubscriptionZeroStateMessage = () => {
   const isSubscriptionExpired = subscription.daysUntilExpiration <= 0;
 
   return (
-    <Card className="text-center mb-4">
-      <Card.Body>
+    <Card className="mb-4">
+      <Card.Section className="text-center">
         <h2>Get Started</h2>
         <p className="py-2 lead">
           Assign your learners to a subscription license to enable their learning experiences on edX.
@@ -29,7 +29,7 @@ const SubscriptionZeroStateMessage = () => {
           }}
           disabled={isSubscriptionExpired}
         />
-      </Card.Body>
+      </Card.Section>
     </Card>
   );
 };

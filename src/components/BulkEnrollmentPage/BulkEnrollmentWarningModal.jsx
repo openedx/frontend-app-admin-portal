@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import {
   ActionRow, AlertModal, Button, Icon,
@@ -15,7 +14,8 @@ const BulkEnrollWarningModal = ({
   <AlertModal
     title={(
       <>
-        <Icon className={classNames('enroll-header', 'mr-1')} src={Error} />Revoked Learners Selected
+        <Icon className="enroll-header mr-1" src={Error} />
+        Revoked Learners Selected
       </>
       )}
     isOpen={isDialogOpen}

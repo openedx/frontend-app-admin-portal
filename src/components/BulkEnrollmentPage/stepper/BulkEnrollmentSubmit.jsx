@@ -3,7 +3,13 @@ import React, {
   useState,
 } from 'react';
 import {
-  Button, Form, AlertModal, ActionRow, useToggle, MailtoLink,
+  Button,
+  Form,
+  AlertModal,
+  ActionRow,
+  useToggle,
+  MailtoLink,
+  Stack,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
@@ -126,20 +132,22 @@ const BulkEnrollmentSubmit = ({
         error={error}
         enterpriseId={enterpriseId}
       />
-      <Form.Checkbox
-        checked={checked}
-        onChange={handleChange}
-        data-testid={NOTIFY_CHECKBOX_TEST_ID}
-      >
-        Notify learners via Email
-      </Form.Checkbox>
-      <Button
-        disabled={!hasSelectedCoursesAndEmails && !loading}
-        onClick={submitBulkEnrollment}
-        data-testid={FINAL_BUTTON_TEST_ID}
-      >
-        {FINAL_BUTTON_TEXT}
-      </Button>
+      <Stack direction="horizontal" gap={4}>
+        <Form.Checkbox
+          checked={checked}
+          onChange={handleChange}
+          data-testid={NOTIFY_CHECKBOX_TEST_ID}
+        >
+          Notify learners via email
+        </Form.Checkbox>
+        <Button
+          disabled={!hasSelectedCoursesAndEmails && !loading}
+          onClick={submitBulkEnrollment}
+          data-testid={FINAL_BUTTON_TEST_ID}
+        >
+          {FINAL_BUTTON_TEXT}
+        </Button>
+      </Stack>
     </>
   );
 };

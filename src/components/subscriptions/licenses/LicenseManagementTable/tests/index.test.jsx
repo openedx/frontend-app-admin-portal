@@ -225,7 +225,7 @@ describe('<LicenseManagementTable />', () => {
       render(tableWithContext({
         subscriptionPlan,
       }));
-      const nextPageButton = screen.getByLabelText('Next page');
+      const nextPageButton = screen.getByLabelText('next page', { exact: false });
       await act(async () => {
         userEvent.click(nextPageButton);
         // filter debounce
@@ -236,7 +236,7 @@ describe('<LicenseManagementTable />', () => {
         SUBSCRIPTION_TABLE_EVENTS.PAGINATION_NEXT,
         { page: 1 },
       );
-      const prevPageButton = screen.getByLabelText('Previous page');
+      const prevPageButton = screen.getByLabelText('previous page', { exact: false });
       await act(async () => {
         userEvent.click(prevPageButton);
         // filter debounce

@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Image } from '@edx/paragon';
+import { Card, Image, Stack } from '@edx/paragon';
 import { getLMSIcon } from '../../../utils';
 
 const LMSCard = ({ LMSType, onClick }) => (
-  <Card isClickable tabIndex="0" className="p-2.5 lms-card" onClick={() => onClick(LMSType)}>
-    <Card.Body>
-      <h3 className="text-center">
-        <Image className="lms-icon" src={getLMSIcon(LMSType)} />
-        <span className="ml-2">{LMSType}</span>
-      </h3>
-    </Card.Body>
+  <Card
+    isClickable
+    className="pb-4"
+    onClick={() => onClick(LMSType)}
+  >
+    <Card.Header
+      title={(
+        <Stack direction="horizontal" gap={2} className="justify-content-center">
+          <Image className="lms-icon" src={getLMSIcon(LMSType)} />
+          <span>{LMSType}</span>
+        </Stack>
+      )}
+    />
   </Card>
 );
 

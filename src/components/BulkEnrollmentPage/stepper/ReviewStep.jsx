@@ -33,7 +33,7 @@ const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
         You're almost done! Review your selections and make any final changes before completing enrollment for
         your learners.
       </p>
-      <h2 className="mb-5">{REVIEW_TITLE}</h2>
+      <h2 className="mb-4">{REVIEW_TITLE}</h2>
       <Row>
         <ReviewList
           key="courses"

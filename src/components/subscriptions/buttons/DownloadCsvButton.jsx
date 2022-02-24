@@ -50,9 +50,9 @@ const DownloadCsvButton = () => {
       icons={{
         default: <Icon src={Download} />,
         pending: <Spinner animation="border" variant="light" size="sm" />,
-        complete: <Icon icon={Check} />,
+        complete: <Icon src={Check} />,
       }}
-      disabledStates={['pending']}
+      disabledStates={['pending', 'complete']}
       onClick={handleClick}
     />
   );

@@ -189,6 +189,14 @@ const LicenseManagementTable = () => {
   });
 
   const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
+
+  const tableActions = useMemo(() => {
+    if (showSubscriptionZeroStateMessage) {
+      return [];
+    }
+    return [<DownloadCsvButton />];
+  }, [showSubscriptionZeroStateMessage]);
+
   return (
     <>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
@@ -205,12 +213,7 @@ const LicenseManagementTable = () => {
         manualPagination
         itemCount={users.count}
         pageCount={users.numPages || 1}
-        tableActions={() => {
-          if (showSubscriptionZeroStateMessage) {
-            return null;
-          }
-          return <DownloadCsvButton />;
-        }}
+        tableActions={tableActions}
         initialState={{
           pageSize: PAGE_SIZE,
           pageIndex: DEFAULT_PAGE - 1,
@@ -277,6 +280,8 @@ const LicenseManagementTable = () => {
             ),
           },
         ]}
+        // TODO: consider refactoring to use default DataTable behavior
+        // instead of a custom implementation of these bulk actions
         bulkActions={(data) => {
           const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
           const {

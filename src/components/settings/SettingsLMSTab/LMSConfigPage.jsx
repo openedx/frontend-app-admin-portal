@@ -45,22 +45,22 @@ const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (
       <span className="ml-2">Connect {LMSType}</span>
     </h3>
     {LMSType === BLACKBOARD_TYPE && (
-    <BlackboardConfig id={enterpriseId} onClick={onClick} />
+      <BlackboardConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === CANVAS_TYPE && (
-    <CanvasConfig id={enterpriseId} onClick={onClick} />
+      <CanvasConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === CORNERSTONE_TYPE && (
-    <CornerstoneConfig id={enterpriseId} onClick={onClick} />
+      <CornerstoneConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === DEGREED_TYPE && (
-    <DegreedConfig id={enterpriseId} onClick={onClick} />
+      <DegreedConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === MOODLE_TYPE && (
-    <MoodleConfig id={enterpriseId} onClick={onClick} />
+      <MoodleConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === SAP_TYPE && (
-    <SAPConfig id={enterpriseId} onClick={onClick} />
+      <SAPConfig id={enterpriseId} onClick={onClick} />
     )}
   </span>
 );

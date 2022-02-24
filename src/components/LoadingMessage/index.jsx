@@ -12,6 +12,7 @@ const LoadingMessage = (props) => {
       )}
     >
       Loading...
+      <span className="sr-only">Loading</span>
     </div>
   );
 };

@@ -1,27 +1,29 @@
 import React from 'react';
-import { Button } from '@edx/paragon';
+import { Hyperlink } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { configuration } from '../../config';
 
-const ContactCustomerSupportButton = (props) => (
-  <Button
-    {...props}
+const ContactCustomerSupportButton = ({ variant, children, ...rest }) => (
+  <Hyperlink
+    {...rest}
     target="_blank"
-    rel="noopener noreferrer"
-    as="a"
-    href={configuration.ENTERPRISE_SUPPORT_URL}
+    className={classNames('btn', `btn-${variant}`)}
+    destination={configuration.ENTERPRISE_SUPPORT_URL}
   >
-    {props.children}
-  </Button>
+    {children}
+  </Hyperlink>
 );
 
 ContactCustomerSupportButton.propTypes = {
   children: PropTypes.node,
+  variant: PropTypes.string,
 };
 
 ContactCustomerSupportButton.defaultProps = {
   children: 'Contact customer support',
+  variant: 'outline-primary',
 };
 
 export default ContactCustomerSupportButton;
