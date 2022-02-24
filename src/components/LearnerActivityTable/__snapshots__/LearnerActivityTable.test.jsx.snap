@@ -398,7 +398,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
     >
       <nav
         aria-label="active-week-pagination"
-        className="pagination-default  "
+        className="pagination-default"
       >
         <div
           aria-atomic={true}
@@ -879,7 +879,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
     >
       <nav
         aria-label="inactive-month-pagination"
-        className="pagination-default  "
+        className="pagination-default"
       >
         <div
           aria-atomic={true}
@@ -1329,7 +1329,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
     >
       <nav
         aria-label="inactive-week-pagination"
-        className="pagination-default  "
+        className="pagination-default"
       >
         <div
           aria-atomic={true}

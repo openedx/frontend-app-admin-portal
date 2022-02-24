@@ -815,7 +815,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
           >
             <nav
               aria-label="code-search-results-pagination"
-              className="pagination-default  "
+              className="pagination-default"
             >
               <div
                 aria-atomic={true}
@@ -1105,7 +1105,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
           >
             <nav
               aria-label="code-search-results-pagination"
-              className="pagination-default  "
+              className="pagination-default"
             >
               <div
                 aria-atomic={true}

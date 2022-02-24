@@ -271,7 +271,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
     >
       <nav
         aria-label="enrolled-learners-inactive-courses-pagination"
-        className="pagination-default  "
+        className="pagination-default"
       >
         <div
           aria-atomic={true}
