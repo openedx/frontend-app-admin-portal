@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
-import {
-  Container,
-} from '@edx/paragon';
+import { Container } from '@edx/paragon';
 
 import moment from 'moment';
 import Hero from '../Hero';

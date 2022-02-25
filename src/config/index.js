@@ -13,6 +13,7 @@ const configuration = {
   DATA_API_BASE_URL: process.env.DATA_API_BASE_URL,
   ECOMMERCE_BASE_URL: process.env.ECOMMERCE_BASE_URL,
   LICENSE_MANAGER_BASE_URL: process.env.LICENSE_MANAGER_BASE_URL,
+  DISCOVERY_BASE_URL: process.env.DISCOVERY_BASE_URL,
   SECURE_COOKIES: process.env.NODE_ENV !== 'development',
   SEGMENT_KEY: process.env.SEGMENT_KEY,
   ACCESS_TOKEN_COOKIE_NAME: process.env.ACCESS_TOKEN_COOKIE_NAME,
@@ -42,6 +43,7 @@ const features = {
   FILE_ATTACHMENT: process.env.FEATURE_FILE_ATTACHMENT || hasFeatureFlagEnabled('FILE_ATTACHMENT'),
   SETTINGS_PAGE: process.env.FEATURE_SETTINGS_PAGE || hasFeatureFlagEnabled('SETTINGS_PAGE'),
   SETTINGS_UNIVERSAL_LINK: process.env.FEATURE_SETTINGS_UNIVERSAL_LINK || hasFeatureFlagEnabled('SETTINGS_UNIVERSAL_LINK'),
+  FEATURE_BROWSE_AND_REQUEST: process.env.FEATURE_BROWSE_AND_REQUEST || hasFeatureFlagEnabled('BROWSE_AND_REQUEST'),
 };
 
 export { configuration, features };
