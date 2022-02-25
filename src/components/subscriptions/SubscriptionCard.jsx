@@ -85,9 +85,9 @@ const SubscriptionCard = ({
 
     return (
       <Card.Header
-        className={{
+        className={classNames({
           'pb-1': subscriptionStatus !== ACTIVE,
-        }}
+        })}
         title={title}
         subtitle={subtitle}
         actions={(
