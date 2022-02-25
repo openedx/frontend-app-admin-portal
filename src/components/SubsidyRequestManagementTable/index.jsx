@@ -12,7 +12,7 @@ import RequestStatusCell from './RequestStatusCell';
 import CourseNameCell from './CourseNameCell';
 import ActionCell from './ActionCell';
 
-const EnrollmentRequestManagementTable = ({
+const SubsidyRequestManagementTable = ({
   onApprove,
   onDecline,
   data,
@@ -83,7 +83,7 @@ const EnrollmentRequestManagementTable = ({
   );
 };
 
-EnrollmentRequestManagementTable.propTypes = {
+SubsidyRequestManagementTable.propTypes = {
   fetchData: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
     emailAddress: PropTypes.string,
@@ -101,4 +101,4 @@ EnrollmentRequestManagementTable.propTypes = {
   onDecline: PropTypes.func.isRequired,
 };
 
-export default EnrollmentRequestManagementTable;
+export default SubsidyRequestManagementTable;

@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import EnrollmentRequestManagementTable from '..';
+import SubsidyRequestManagementTable from '..';
 
 const defaultProps = {
   fetchData: jest.fn(),
@@ -37,10 +37,10 @@ const defaultProps = {
   onDecline: jest.fn(),
 };
 
-describe('EnrollmentRequestManagementTable', () => {
+describe('SubsidyRequestManagementTable', () => {
   test('renders data in a table as expected', () => {
     const tree = renderer
-      .create(<EnrollmentRequestManagementTable {...defaultProps} />)
+      .create(<SubsidyRequestManagementTable {...defaultProps} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
