@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import {
-  Card, Badge, Button,
+  Card,
+  Badge,
+  Button,
+  Stack,
   Row,
   Col,
 } from '@edx/paragon';
@@ -50,13 +53,18 @@ const SubscriptionCard = ({
   const renderActions = () => {
     const actions = createActions?.(subscription) || [];
 
-    return actions.length > 0 && actions.map(action => (
+    if (actions.length === 0) {
+      return null;
+    }
+
+    return actions.map(action => (
       <Button
         key={action.to}
         variant={action.variant}
         as={Link}
         to={action.to}
-      >{action.buttonText}
+      >
+        {action.buttonText}
       </Button>
     ));
   };
@@ -64,23 +72,22 @@ const SubscriptionCard = ({
   const renderCardHeader = () => {
     const subtitle = (
       <div className="d-flex flex-wrap align-items-center">
-        <Badge
-          className="h-75 mr-3"
-          variant={SUBSCRIPTION_STATUS_BADGE_MAP[subscriptionStatus].variant}
-        >
-          {subscriptionStatus}
-        </Badge>
-        <span>
-          {formattedStartDate} - {formattedExpirationDate}
-        </span>
+        <Stack direction="horizontal" gap={3}>
+          <Badge variant={SUBSCRIPTION_STATUS_BADGE_MAP[subscriptionStatus].variant}>
+            {subscriptionStatus}
+          </Badge>
+          <span>
+            {formattedStartDate} - {formattedExpirationDate}
+          </span>
+        </Stack>
       </div>
     );
 
     return (
       <Card.Header
-        className={classNames('mb-3', {
+        className={{
           'pb-1': subscriptionStatus !== ACTIVE,
-        })}
+        }}
         title={title}
         subtitle={subtitle}
         actions={(
@@ -92,24 +99,30 @@ const SubscriptionCard = ({
     );
   };
 
-  const renderCardBody = () => (subscriptionStatus === ACTIVE && (
-    <Card.Body className="bg-light-200">
-      <span className="d-block h4">Licenses</span>
+  const renderCardSection = () => (subscriptionStatus === ACTIVE && (
+    <Card.Section
+      title="Licenses"
+      muted
+    >
       <Row className="d-flex flex-row justify-content-between w-md-75">
         {['Assigned', 'Activated', 'Allocated', 'Unassigned'].map(licenseStatus => (
-          <Col xs="6" md="auto" className="d-flex flex-column mt-3" key={licenseStatus}>
-            <span className="h5">{licenseStatus}</span>
+          <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0" key={licenseStatus}>
+            <span className="small">{licenseStatus}</span>
             <span>{licenses[licenseStatus.toLowerCase()]} of {licenses.total}</span>
           </Col>
         ))}
       </Row>
-    </Card.Body>
+    </Card.Section>
   ));
 
   return (
-    <Card className="subscription-card overflow-hidden">
-      {renderCardHeader()}
-      {renderCardBody()}
+    <Card orientation="horizontal" className="subscription-card">
+      <Card.Body>
+        <Stack gap={4}>
+          {renderCardHeader()}
+          {renderCardSection()}
+        </Stack>
+      </Card.Body>
     </Card>
   );
 };

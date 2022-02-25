@@ -17,20 +17,19 @@ const ReviewItem = ({
   return (
     <li>
       <Card>
-        <Card.Body>
-          <Card.Text className="list-item">
+        <Card.Section>
+          <div className="list-item">
             <span className="list-item-text">{row.values[accessor]}</span>
             <IconButton
               src={Delete}
               iconAs={Icon}
-              style={{ cursor: 'pointer' }}
               data-testid="delete-button"
               alt={altText}
               onClick={onClick}
               title={altText}
             />
-          </Card.Text>
-        </Card.Body>
+          </div>
+        </Card.Section>
       </Card>
     </li>
   );

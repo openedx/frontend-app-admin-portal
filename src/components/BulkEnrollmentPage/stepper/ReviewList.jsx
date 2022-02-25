@@ -51,7 +51,7 @@ const ReviewList = ({
       <ul className="be-review-list">
         {rows.length < 1 && (
           <Alert variant="danger" data-testid="no-rows-alert">
-            At least one {subject.singular} must be selected to enroll learners
+            At least one {subject.singular} must be selected to enroll learners.
             <Button
               data-testid="return-to-selection-button"
               variant="link"

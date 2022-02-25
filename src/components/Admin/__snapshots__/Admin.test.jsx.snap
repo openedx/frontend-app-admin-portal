@@ -2498,7 +2498,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-search fa-w-16 "
+                        className="svg-inline--fa fa-search "
                         data-icon="search"
                         data-prefix="fas"
                         focusable="false"
@@ -3216,7 +3216,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-search fa-w-16 "
+                        className="svg-inline--fa fa-search "
                         data-icon="search"
                         data-prefix="fas"
                         focusable="false"

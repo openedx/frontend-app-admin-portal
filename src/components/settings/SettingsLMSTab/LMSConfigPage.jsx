@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from '@edx/paragon';
 import { connect } from 'react-redux';
-import { logError } from '@edx/frontend-platform/logging';
 import { getLMSIcon } from '../../../utils';
 
 import {
@@ -20,24 +19,6 @@ import DegreedConfig from './LMSConfigs/DegreedConfig';
 import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
 
-export function buttonBool(config) {
-  let returnVal = true;
-  Object.values(config).forEach(value => {
-    if (!value) {
-      returnVal = false;
-    }
-  });
-  return returnVal;
-}
-
-export function handleErrors(error) {
-  const errorMsg = error.message || error.response?.status <= 300
-    ? error.message
-    : JSON.stringify(error.response.data);
-  logError(errorMsg);
-  return error.response?.status || 500;
-}
-
 const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (
   <span>
     <h3 className="mt-4.5 mb-3.5">
@@ -45,22 +26,22 @@ const LMSConfigPage = ({ LMSType, onClick, enterpriseId }) => (
       <span className="ml-2">Connect {LMSType}</span>
     </h3>
     {LMSType === BLACKBOARD_TYPE && (
-    <BlackboardConfig id={enterpriseId} onClick={onClick} />
+      <BlackboardConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === CANVAS_TYPE && (
-    <CanvasConfig id={enterpriseId} onClick={onClick} />
+      <CanvasConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === CORNERSTONE_TYPE && (
-    <CornerstoneConfig id={enterpriseId} onClick={onClick} />
+      <CornerstoneConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === DEGREED_TYPE && (
-    <DegreedConfig id={enterpriseId} onClick={onClick} />
+      <DegreedConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === MOODLE_TYPE && (
-    <MoodleConfig id={enterpriseId} onClick={onClick} />
+      <MoodleConfig id={enterpriseId} onClick={onClick} />
     )}
     {LMSType === SAP_TYPE && (
-    <SAPConfig id={enterpriseId} onClick={onClick} />
+      <SAPConfig id={enterpriseId} onClick={onClick} />
     )}
   </span>
 );

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Form, useToggle } from '@edx/paragon';
-import { buttonBool, handleErrors } from '../LMSConfigPage';
+import { buttonBool, handleErrors } from '../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';

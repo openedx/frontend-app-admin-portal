@@ -28,7 +28,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
   const loadCustomerAgreementData = (page = 1) => {
     const fetchData = async () => {
       try {
-        const response = LicenseManagerApiService.fetchCustomerAgreementData({
+        const response = await LicenseManagerApiService.fetchCustomerAgreementData({
           enterprise_customer_uuid: enterpriseId,
           page,
         });

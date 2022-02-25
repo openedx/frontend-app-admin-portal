@@ -17,7 +17,7 @@ import {
 } from '../../data/constants';
 
 import SettingsLMSTab from '../index';
-import { buttonBool } from '../LMSConfigPage';
+import { buttonBool } from '../utils';
 
 const initialState = {
   portalConfiguration: {

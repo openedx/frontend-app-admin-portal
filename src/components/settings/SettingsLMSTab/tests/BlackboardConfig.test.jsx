@@ -52,7 +52,6 @@ describe('<BlackboardConfig />', () => {
     fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
       target: { value: 'https://www.test.com' },
     });
-    screen.debug();
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
 });

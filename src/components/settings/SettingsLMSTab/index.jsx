@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, CardGrid, Toast } from '@edx/paragon';
+import { Hyperlink, CardGrid, Toast } from '@edx/paragon';
 import LMSCard from './LMSCard';
 import LMSConfigPage from './LMSConfigPage';
 import {
@@ -30,15 +30,13 @@ export default function SettingsLMSTab() {
     <div>
       <div className="d-flex">
         <h2 className="py-2">Learning Management System Configuration</h2>
-        <Button
-          href={HELP_CENTER_LINK}
-          className="ml-auto my-2"
-          rel="noopener noreferrer"
+        <Hyperlink
+          destination={HELP_CENTER_LINK}
+          className="btn btn-outline-primary ml-auto my-2"
           target="_blank"
-          variant="outline-primary"
         >
           Help Center
-        </Button>
+        </Hyperlink>
       </div>
       <p>
         Enabling a learning management system for your edX account allows quick

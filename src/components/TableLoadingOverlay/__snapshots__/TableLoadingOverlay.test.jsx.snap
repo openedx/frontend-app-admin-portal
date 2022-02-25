@@ -12,6 +12,11 @@ Array [
       className="loading d-flex align-items-center justify-content-center loading"
     >
       Loading...
+      <span
+        className="sr-only"
+      >
+        Loading
+      </span>
     </div>
   </div>,
 ]

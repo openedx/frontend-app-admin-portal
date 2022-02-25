@@ -1,9 +1,15 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import {
+  Row,
+  Col,
+  Card,
+  Hyperlink,
+} from '@edx/paragon';
 
+import LoadingMessage from '../LoadingMessage';
 import { SubscriptionContext } from './SubscriptionData';
-
 import SubscriptionExpiration from './expiration/SubscriptionExpiration';
 import MultipleSubscriptionsPicker from './MultipleSubscriptionPicker';
 import {
@@ -11,16 +17,42 @@ import {
 } from './data/constants';
 import { sortSubscriptionsByStatus } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { configuration } from '../../config';
 
 const MultipleSubscriptionsPage = ({
   match, redirectPage, leadText, createActions,
 }) => {
   const { params: { enterpriseSlug } } = match;
-  const { data } = useContext(SubscriptionContext);
+  const { loading, data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
 
+  if (loading) {
+    return <LoadingMessage className="subscriptions" />;
+  }
+
   if (subscriptions.length === 0) {
-    return null;
+    return (
+      <Card>
+        <Card.Section className="text-center">
+          <Row>
+            <Col xs={12} lg={{ span: 8, offset: 2 }}>
+              <h3 className="mb-3">No subscription plans for your organization</h3>
+              <p>
+                We were unable to find any active subscription plans for your organization. Please contact
+                Customer Support if you have questions.
+              </p>
+              <Hyperlink
+                className="btn btn-brand"
+                target="_blank"
+                destination={configuration.ENTERPRISE_SUPPORT_URL}
+              >
+                Contact support
+              </Hyperlink>
+            </Col>
+          </Row>
+        </Card.Section>
+      </Card>
+    );
   }
 
   if (subscriptions.length === 1) {

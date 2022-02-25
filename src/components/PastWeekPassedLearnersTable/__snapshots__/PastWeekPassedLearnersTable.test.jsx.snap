@@ -170,6 +170,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
     >
       <nav
         aria-label="completed-learners-week-pagination"
+        className="pagination-default"
       >
         <div
           aria-atomic={true}
@@ -187,20 +188,32 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
           >
             <button
               aria-label="Previous"
-              className="btn previous page-link"
+              className="previous page-link btn btn-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               tabIndex="-1"
               type="button"
             >
               <div>
                 <span
-                  aria-hidden={true}
-                  className="fa fa-chevron-left mr-2"
-                  id="Icon1"
-                />
+                  className="pgn__icon"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
                 Previous
               </div>
             </button>
@@ -210,21 +223,33 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
           >
             <button
               aria-label="Next"
-              className="btn next page-link"
+              className="next page-link btn btn-primary"
               disabled={true}
-              onBlur={[Function]}
               onClick={[Function]}
-              onKeyDown={[Function]}
               tabIndex="-1"
               type="button"
             >
               <div>
                 Next
                 <span
-                  aria-hidden={true}
-                  className="fa fa-chevron-right ml-2"
-                  id="Icon2"
-                />
+                  className="pgn__icon"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </div>
             </button>
           </li>

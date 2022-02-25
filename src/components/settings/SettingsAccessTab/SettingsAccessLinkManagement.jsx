@@ -117,12 +117,12 @@ const SettingsAccessLinkManagement = ({
           data={links}
           itemCount={links.length}
           isLoading={loadingLinks}
-          tableActions={() => (
+          tableActions={[
             <SettingsAccessGenerateLinkButton
               onSuccess={handleGenerateLinkSuccess}
               disabled={!isUniversalLinkEnabled}
-            />
-          )}
+            />,
+          ]}
           columns={[
             {
               Header: 'Link',
