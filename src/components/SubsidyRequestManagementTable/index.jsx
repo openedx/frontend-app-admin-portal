@@ -46,18 +46,6 @@ const SubsidyRequestManagementTable = ({
         filter: 'includesValue',
         filterChoices: requestStatusFilterChoices,
       },
-      {
-        Header: '',
-        accessor: 'action',
-        disableFilters: true,
-        Cell: (props) => (
-          <ActionCell
-            {...props}
-            onApprove={onApprove}
-            onDecline={onDecline}
-          />
-        ),
-      },
     ]),
     [onApprove, onDecline, requestStatusFilterChoices],
   );
@@ -74,6 +62,17 @@ const SubsidyRequestManagementTable = ({
       data={data}
       pageCount={1}
       columns={columns}
+      additionalColumns={[{
+        id: 'action',
+        Header: '',
+        Cell: (props) => (
+          <ActionCell
+            {...props}
+            onApprove={onApprove}
+            onDecline={onDecline}
+          />
+        ),
+      }]}
     >
       <DataTable.TableControlBar />
       <DataTable.Table />
