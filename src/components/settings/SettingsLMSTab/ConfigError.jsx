@@ -9,7 +9,11 @@ const cardText400 = 'We were unable to process your request to submit a new LMS 
 const cardText500 = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again later or contact support for help.';
 
 const ConfigError = ({
-  isOpen, close, submit, code,
+  isOpen,
+  close,
+  submit,
+  code,
+  configTextOverride,
 }) => (
   <AlertModal
     title="Something went wrong"
@@ -23,12 +27,17 @@ const ConfigError = ({
       </ActionRow>
     )}
   >
-    {code >= 500 && (
+    {configTextOverride && (
+      <p>
+        {configTextOverride}
+      </p>
+    )}
+    {!configTextOverride && code >= 500 && (
     <p>
       {cardText500}
     </p>
     )}
-    {code <= 499 && (
+    {!configTextOverride && code <= 499 && (
     <p>
       {cardText400}
     </p>
@@ -38,6 +47,7 @@ const ConfigError = ({
 
 ConfigError.defaultProps = {
   code: 400,
+  configTextOverride: '',
 };
 
 ConfigError.propTypes = {
@@ -45,5 +55,6 @@ ConfigError.propTypes = {
   close: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   code: PropTypes.number,
+  configTextOverride: PropTypes.string,
 };
 export default ConfigError;

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
+import isEmpty from 'lodash/isEmpty';
 import { buttonBool, handleErrors } from '../utils';
+
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const DegreedConfig = ({ id, onClick }) => {
+const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [key, setKey] = React.useState('');
@@ -21,6 +23,7 @@ const DegreedConfig = ({ id, onClick }) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
   const [errCode, setErrCode] = React.useState();
+  const [edited, setEdited] = React.useState(false);
 
   const config = {
     displayName,
@@ -32,17 +35,45 @@ const DegreedConfig = ({ id, onClick }) => {
     degreedUserPassword,
   };
 
+  useEffect(() => {
+    setKey(existingData.key);
+    setSecret(existingData.secret);
+    setDegreedCompanyId(existingData.degreedCompanyId);
+    setDegreedBaseUrl(existingData.degreedBaseUrl);
+    setDegreedUserId(existingData.degreedUserId);
+    setDegreedUserPassword(existingData.degreedUserPassword);
+    setDisplayName(existingData.displayName);
+  }, [existingData]);
+
+  const handleCancel = () => {
+    if (edited) {
+      openModal();
+    } else {
+      onClick('');
+    }
+  };
+
   const handleSubmit = async () => {
     const transformedConfig = snakeCaseDict(config);
     // this will need to change based on save draft/submit
     transformedConfig.active = false;
-    transformedConfig.enterprise_customer = id;
+    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
-    try {
-      await LmsApiService.postNewDegreedConfig(transformedConfig);
-    } catch (error) {
-      err = handleErrors(error);
+
+    if (!isEmpty(existingData)) {
+      try {
+        await LmsApiService.updateDegreedConfig(transformedConfig, existingData.id);
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    } else {
+      try {
+        await LmsApiService.postNewDegreedConfig(transformedConfig);
+      } catch (error) {
+        err = handleErrors(error);
+      }
     }
+
     if (err) {
       setErrCode(err);
       openError();
@@ -76,9 +107,11 @@ const DegreedConfig = ({ id, onClick }) => {
             type="text"
             isInvalid={!nameValid}
             onChange={(e) => {
+              setEdited(true);
               validateField('Display Name', e.target.value);
             }}
             floatingLabel="Display Name"
+            defaultValue={existingData.displayName}
           />
           <Form.Text>Create a custom name for this LMS.</Form.Text>
           {!nameValid && (
@@ -92,9 +125,11 @@ const DegreedConfig = ({ id, onClick }) => {
             className="mb-4"
             type="text"
             onChange={(e) => {
+              setEdited(true);
               setKey(e.target.value);
             }}
             floatingLabel="API Client ID"
+            defaultValue={existingData.key}
           />
         </Form.Group>
         <Form.Group>
@@ -102,9 +137,11 @@ const DegreedConfig = ({ id, onClick }) => {
             className="my-4"
             type="password"
             onChange={(e) => {
+              setEdited(true);
               setSecret(e.target.value);
             }}
             floatingLabel="API Client Secret"
+            defaultValue={existingData.secret}
           />
         </Form.Group>
         <Form.Group>
@@ -112,9 +149,11 @@ const DegreedConfig = ({ id, onClick }) => {
             className="my-4"
             type="text"
             onChange={(e) => {
+              setEdited(true);
               setDegreedCompanyId(e.target.value);
             }}
             floatingLabel="Degreed Organization Code"
+            defaultValue={existingData.degreedCompanyId}
           />
         </Form.Group>
         <Form.Group className="my-4">
@@ -122,9 +161,11 @@ const DegreedConfig = ({ id, onClick }) => {
             type="text"
             isInvalid={!urlValid}
             onChange={(e) => {
+              setEdited(true);
               validateField('Degreed Base URL', e.target.value);
             }}
             floatingLabel="Degreed Base URL"
+            defaultValue={existingData.degreedBaseUrl}
           />
           {!urlValid && (
             <Form.Control.Feedback type="invalid">
@@ -140,6 +181,7 @@ const DegreedConfig = ({ id, onClick }) => {
               setDegreedUserId(e.target.value);
             }}
             floatingLabel="Degreed User ID"
+            defaultValue={existingData.degreedUserId}
           />
           <Form.Text> Required for OAuth access token</Form.Text>
         </Form.Group>
@@ -151,11 +193,12 @@ const DegreedConfig = ({ id, onClick }) => {
               setDegreedUserPassword(e.target.value);
             }}
             floatingLabel="Degreed User Password"
+            defaultValue={existingData.degreedUserPassword}
           />
           <Form.Text> Required for OAuth access token</Form.Text>
         </Form.Group>
         <span className="d-flex">
-          <Button onClick={openModal} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={handleCancel} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
           <Button onClick={handleSubmit} disabled={!buttonBool(config) || !nameValid || !urlValid}>Submit</Button>
         </span>
       </Form>
@@ -164,7 +207,17 @@ const DegreedConfig = ({ id, onClick }) => {
 };
 
 DegreedConfig.propTypes = {
-  id: PropTypes.string.isRequired,
+  enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  existingData: PropTypes.shape({
+    displayName: PropTypes.string,
+    key: PropTypes.string,
+    id: PropTypes.number,
+    secret: PropTypes.string,
+    degreedCompanyId: PropTypes.string,
+    degreedBaseUrl: PropTypes.string,
+    degreedUserId: PropTypes.string,
+    degreedUserPassword: PropTypes.string,
+  }).isRequired,
 };
 export default DegreedConfig;

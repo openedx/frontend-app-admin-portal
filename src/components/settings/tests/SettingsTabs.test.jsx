@@ -1,4 +1,6 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import {
   screen,
   render,
@@ -6,6 +8,7 @@ import {
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
@@ -24,11 +27,26 @@ jest.mock(
   () => () => (<div>{LMS_MOCK_CONTENT}</div>),
 );
 
+const enterpriseId = 'test-enterprise';
+const initialStore = {
+  portalConfiguration: {
+    enterpriseId,
+    enterpriseSlug: 'sluggy',
+    enableLearnerPortal: false,
+  },
+};
+
+const mockStore = configureMockStore([thunk]);
+const getMockStore = store => mockStore(store);
+const store = getMockStore({ ...initialStore });
+
 const settingsTabsWithRouter = () => (
   <MemoryRouter initialEntries={['settings/']}>
-    <Route path="settings/">
-      <SettingsTabs />
-    </Route>
+    <Provider store={store}>
+      <Route path="settings/">
+        <SettingsTabs />
+      </Route>
+    </Provider>
   </MemoryRouter>
 );
 

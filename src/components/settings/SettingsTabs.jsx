@@ -9,6 +9,8 @@ import {
   generatePath,
   useRouteMatch,
 } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { useCurrentSettingsTab } from './data/hooks';
 import {
@@ -19,7 +21,7 @@ import {
 import SettingsAccessTab from './SettingsAccessTab';
 import SettingsLMSTab from './SettingsLMSTab';
 
-const SettingsTabs = () => {
+const SettingsTabs = ({ enterpriseId }) => {
   const tab = useCurrentSettingsTab();
 
   const history = useHistory();
@@ -52,11 +54,19 @@ const SettingsTabs = () => {
           <SettingsAccessTab />
         </Tab>
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          <SettingsLMSTab />
+          <SettingsLMSTab enterpriseId={enterpriseId} />
         </Tab>
       </Tabs>
     </Container>
   );
 };
 
-export default SettingsTabs;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+SettingsTabs.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(SettingsTabs);

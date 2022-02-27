@@ -6,15 +6,25 @@ import '@testing-library/jest-dom/extend-expect';
 
 import CanvasConfig from '../LMSConfigs/CanvasConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import LmsApiService from '../../../../data/services/LmsApiService';
+
+jest.mock('../../../../data/services/LmsApiService');
+
+const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
+const noExistingData = {};
+const existingConfigData = {
+  id: 1,
+};
 
 describe('<CanvasConfig />', () => {
   test('renders Canvas Config Form', () => {
     render(
       <CanvasConfig
-        id="test-enterprise-id"
+        enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
+        existingData={noExistingData}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -26,8 +36,9 @@ describe('<CanvasConfig />', () => {
   test('test button disable', () => {
     render(
       <CanvasConfig
-        id="test-enterprise-id"
+        enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
+        existingData={noExistingData}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -58,5 +69,79 @@ describe('<CanvasConfig />', () => {
       target: { value: 'https://www.test4.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
+  });
+  test('it edits existing configs on submit', () => {
+    render(
+      <CanvasConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
+      target: { value: '3' },
+    });
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
+      target: { value: 'https://www.test4.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
+    const expectedConfig = {
+      active: false,
+      canvas_base_url: 'https://www.test4.com',
+      canvas_account_id: '3',
+      client_id: 'test1',
+      client_secret: 'test2',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.updateCanvasConfig).toHaveBeenCalledWith(expectedConfig, 1);
+  });
+  test('it creates new configs on submit', () => {
+    render(
+      <CanvasConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('API Client ID'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
+      target: { value: '3' },
+    });
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
+      target: { value: 'https://www.test4.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
+    const expectedConfig = {
+      active: false,
+      canvas_base_url: 'https://www.test4.com',
+      canvas_account_id: '3',
+      client_id: 'test1',
+      client_secret: 'test2',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
   });
 });

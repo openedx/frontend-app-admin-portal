@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
+import isEmpty from 'lodash/isEmpty';
+
 import { buttonBool, handleErrors } from '../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
@@ -9,39 +10,29 @@ import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
-  const [sapsfBaseUrl, setSapsfBaseUrl] = React.useState('');
+  const [clientId, setClientId] = React.useState('');
+  const [clientSecret, setClientSecret] = React.useState('');
+  const [degreedBaseUrl, setDegreedBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
-  const [sapsfCompanyId, setSapsfCompanyId] = React.useState('');
-  const [sapsfUserId, setSapsfUserId] = React.useState('');
-  const [key, setKey] = React.useState('');
-  const [secret, setSecret] = React.useState('');
-  const [userType, setUserType] = React.useState('user');
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
 
   const config = {
     displayName,
-    sapsfBaseUrl,
-    sapsfCompanyId,
-    sapsfUserId,
-    key,
-    secret,
-    userType,
+    clientId,
+    clientSecret,
+    degreedBaseUrl,
   };
 
   useEffect(() => {
+    setClientId(existingData.clientId);
+    setClientSecret(existingData.clientSecret);
+    setDegreedBaseUrl(existingData.degreedBaseUrl);
     setDisplayName(existingData.displayName);
-    setSapsfBaseUrl(existingData.sapsfBaseUrl);
-    setSapsfCompanyId(existingData.sapsfCompanyId);
-    setSapsfUserId(existingData.sapsfUserId);
-    setKey(existingData.key);
-    setSecret(existingData.secret);
-    setUserType(existingData.userType === 'user' ? 'user' : 'admin');
   }, [existingData]);
 
   const handleCancel = () => {
@@ -52,8 +43,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     const transformedConfig = snakeCaseDict(config);
     // this will need to change based on save draft/submit
     transformedConfig.active = false;
@@ -62,19 +52,19 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
     if (!isEmpty(existingData)) {
       try {
-        await LmsApiService.updateSuccessFactorsConfig(transformedConfig, existingData.id);
+        await LmsApiService.updateDegreed2Config(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
       }
     } else {
       try {
-        await LmsApiService.postNewSuccessFactorsConfig(transformedConfig);
+        await LmsApiService.postNewDegreed2Config(transformedConfig);
       } catch (error) {
         err = handleErrors(error);
       }
     }
+
     if (err) {
-      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -83,8 +73,8 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   const validateField = (field, input) => {
     switch (field) {
-      case 'SAP Base URL':
-        setSapsfBaseUrl(input);
+      case 'Degreed Base URL':
+        setDegreedBaseUrl(input);
         setUrlValid(urlValidation(input) || input.length === 0);
         break;
       case 'Display Name':
@@ -98,7 +88,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -119,81 +109,46 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group className="mb-4">
+        <Form.Group>
+          <Form.Control
+            className="mb-4"
+            type="text"
+            onChange={(e) => {
+              setEdited(true);
+              setClientId(e.target.value);
+            }}
+            floatingLabel="API Client ID"
+            defaultValue={existingData.clientId}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            className="my-4"
+            type="password"
+            onChange={(e) => {
+              setEdited(true);
+              setClientSecret(e.target.value);
+            }}
+            floatingLabel="API Client Secret"
+            defaultValue={existingData.clientSecret}
+          />
+        </Form.Group>
+        <Form.Group className="my-4">
           <Form.Control
             type="text"
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
-              validateField('SAP Base URL', e.target.value);
+              validateField('Degreed Base URL', e.target.value);
             }}
-            floatingLabel="SAP Base URL"
-            defaultValue={existingData.sapsfBaseUrl}
+            floatingLabel="Degreed Base URL"
+            defaultValue={existingData.degreedBaseUrl}
           />
           {!urlValid && (
             <Form.Control.Feedback type="invalid">
               {INVALID_LINK}
             </Form.Control.Feedback>
           )}
-        </Form.Group>
-        <Form.Group className="my-4">
-          <Form.Control
-            type="number"
-            onChange={(e) => {
-              setEdited(true);
-              setSapsfCompanyId(e.target.value);
-            }}
-            floatingLabel="SAP Company ID"
-            defaultValue={existingData.sapsfCompanyId}
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <Form.Control
-            type="text"
-            onChange={(e) => {
-              setEdited(true);
-              setSapsfUserId(e.target.value);
-            }}
-            floatingLabel="SAP User ID"
-            defaultValue={existingData.sapsfUserId}
-          />
-        </Form.Group>
-        <Form.Group className="mb-4">
-          <Form.Control
-            type="text"
-            onChange={(e) => {
-              setEdited(true);
-              setKey(e.target.value);
-            }}
-            floatingLabel="OAuth Client ID"
-            defaultValue={existingData.key}
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <Form.Control
-            type="password"
-            onChange={(e) => {
-              setEdited(true);
-              setSecret(e.target.value);
-            }}
-            floatingLabel="OAuth Client Secret"
-            defaultValue={existingData.secret}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>SAP User Type</Form.Label>
-          <Form.RadioSet
-            name="user-toggle"
-            onChange={(e) => {
-              setEdited(true);
-              setUserType(e.target.value);
-            }}
-            defaultValue={existingData.userType === 'user' ? 'user' : 'admin'}
-            isInline
-          >
-            <Form.Radio value="user">User</Form.Radio>
-            <Form.Radio value="admin">Admin</Form.Radio>
-          </Form.RadioSet>
         </Form.Group>
         <span className="d-flex">
           <Button onClick={handleCancel} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
@@ -204,18 +159,15 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   );
 };
 
-SAPConfig.propTypes = {
+Degreed2Config.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
     displayName: PropTypes.string,
+    clientId: PropTypes.string,
     id: PropTypes.number,
-    sapsfBaseUrl: PropTypes.string,
-    sapsfCompanyId: PropTypes.string,
-    sapsfUserId: PropTypes.string,
-    key: PropTypes.string,
-    secret: PropTypes.string,
-    userType: PropTypes.string,
+    clientSecret: PropTypes.string,
+    degreedBaseUrl: PropTypes.string,
   }).isRequired,
 };
-export default SAPConfig;
+export default Degreed2Config;

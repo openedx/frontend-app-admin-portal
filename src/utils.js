@@ -1,4 +1,5 @@
 import moment from 'moment';
+import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
@@ -10,7 +11,7 @@ import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, MOODLE_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -19,22 +20,7 @@ import DegreedIcon from './icons/Degreed.png';
 import MoodleIcon from './icons/Moodle.png';
 import SAPIcon from './icons/SAP.svg';
 
-export function getLMSIcon(LMSType) {
-  switch (LMSType) {
-    case BLACKBOARD_TYPE:
-      return BlackboardIcon;
-    case CANVAS_TYPE:
-      return CanvasIcon;
-    case CORNERSTONE_TYPE:
-      return CornerstoneIcon;
-    case DEGREED_TYPE:
-      return DegreedIcon;
-    case MOODLE_TYPE:
-      return MoodleIcon;
-    default:
-      return SAPIcon;
-  }
-}
+import LmsApiService from './data/services/LmsApiService';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
@@ -151,6 +137,23 @@ const modifyObjectKeys = (object, modify) => {
   return result;
 };
 
+const camelCaseDict = (data) => {
+  const transformedData = {};
+  [...Object.entries(data)]
+    .forEach(entry => {
+      [, transformedData[camelCase(entry[0])]] = entry;
+    });
+  return transformedData;
+};
+
+const camelCaseDictArray = (data) => {
+  const transformedData = [];
+  data.forEach(config => {
+    transformedData.push(camelCaseDict(config));
+  });
+  return transformedData;
+};
+
 const snakeCaseDict = (data) => {
   const transformedData = {};
   [...Object.entries(data)]
@@ -238,7 +241,55 @@ function urlValidation(urlString) {
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
+const channelMapping = {
+  [BLACKBOARD_TYPE]: {
+    displayName: 'Blackboard',
+    icon: BlackboardIcon,
+    update: LmsApiService.updateBlackboardConfig,
+    delete: LmsApiService.deleteBlackboardConfig,
+  },
+  [CANVAS_TYPE]: {
+    displayName: 'Canvas',
+    icon: CanvasIcon,
+    update: LmsApiService.updateCanvasConfig,
+    delete: LmsApiService.deleteCanvasConfig,
+  },
+  [CORNERSTONE_TYPE]: {
+    displayName: 'Cornerstone',
+    icon: CornerstoneIcon,
+    update: LmsApiService.updateCornerstoneConfig,
+    delete: LmsApiService.deleteCornerstoneConfig,
+  },
+  [MOODLE_TYPE]: {
+    displayName: 'Moodle',
+    icon: MoodleIcon,
+    update: LmsApiService.updateMoodleConfig,
+    delete: LmsApiService.deleteMoodleConfig,
+  },
+  [SAP_TYPE]: {
+    displayName: 'SAP',
+    icon: SAPIcon,
+    update: LmsApiService.updateSuccessFactorsConfig,
+    delete: LmsApiService.deleteSuccessFactorsConfig,
+  },
+  [DEGREED2_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    update: LmsApiService.updateDegreed2Config,
+    delete: LmsApiService.deleteDegreed2Config,
+  },
+  [DEGREED_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    update: LmsApiService.updateDegreedConfig,
+    delete: LmsApiService.deleteDegreedConfig,
+  },
+};
+
 export {
+  camelCaseDict,
+  camelCaseDictArray,
+  channelMapping,
   formatPercentage,
   formatPassedTimestamp,
   formatTimestamp,

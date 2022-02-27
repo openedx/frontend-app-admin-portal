@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Image, Stack } from '@edx/paragon';
-import { getLMSIcon } from '../../../utils';
+import { channelMapping } from '../../../utils';
 
 const LMSCard = ({ LMSType, onClick }) => (
   <Card
@@ -12,8 +12,8 @@ const LMSCard = ({ LMSType, onClick }) => (
     <Card.Header
       title={(
         <Stack direction="horizontal" gap={2} className="justify-content-center">
-          <Image className="lms-icon" src={getLMSIcon(LMSType)} />
-          <span>{LMSType}</span>
+          <Image className="lms-icon" src={channelMapping[LMSType].icon} />
+          <span>{channelMapping[LMSType].displayName}</span>
         </Stack>
       )}
     />
