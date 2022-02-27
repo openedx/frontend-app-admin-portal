@@ -2,7 +2,10 @@ import React from 'react';
 import {
   fireEvent, screen,
 } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import configureMockStore from 'redux-mock-store';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
@@ -21,9 +24,14 @@ import { channelMapping } from '../../../../utils';
 import SettingsLMSTab from '../index';
 import { buttonBool } from '../utils';
 
+const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+const enterpriseSlug = 'test-slug';
+const enableSamlConfigurationScreen = false;
+const identityProvider = '';
+
 const initialState = {
   portalConfiguration: {
-    enterpriseId: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    enterpriseId, enterpriseSlug, enableSamlConfigurationScreen, identityProvider,
   },
 };
 
@@ -43,7 +51,12 @@ const mockStore = configureMockStore([thunk]);
 
 const SettingsLMSWrapper = () => (
   <Provider store={mockStore({ ...initialState })}>
-    <SettingsLMSTab />
+    <SettingsLMSTab
+      enterpriseId={enterpriseId}
+      enterpriseSlug={enterpriseSlug}
+      enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+      identityProvider={identityProvider}
+    />
   </Provider>
 );
 
@@ -216,6 +229,40 @@ describe('<SettingsLMSTab />', () => {
     fireEvent.click(cancelButton);
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect SAP')).toBeFalsy();
+  });
+  test('Expected behavior when customer has no IDP configured', async () => {
+    const history = createMemoryHistory();
+    const samlConfigurationScreenEnabled = true;
+    const needsSSOState = {
+      portalConfiguration: {
+        enterpriseId,
+        enterpriseSlug,
+        identityProvider,
+        enableSamlConfigurationScreen: samlConfigurationScreenEnabled,
+      },
+    };
+    const NeedsSSOConfigLMSWrapper = () => (
+      <Router history={history}>
+        <Provider store={mockStore({ ...needsSSOState })}>
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            identityProvider={identityProvider}
+            enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
+          />
+        </Provider>
+      </Router>
+    );
+    renderWithRouter(<NeedsSSOConfigLMSWrapper />);
+    expect(history.location.pathname).toEqual('/');
+    await screen.findByText('No SSO configured');
+    const configureSSOButton = screen.getByText('Configure SSO');
+    fireEvent.click(configureSSOButton);
+    expect(history.location.pathname).toEqual(`/${enterpriseSlug}/admin/settings/sso`);
+  });
+  test('Expected behavior when customer has IDP configured', async () => {
+    renderWithRouter(<SettingsLMSWrapper />);
+    expect(screen.queryByText('No SSO configured')).not.toBeInTheDocument();
   });
   test('test button text', () => {
     expect(!buttonBool(draftConfig));
