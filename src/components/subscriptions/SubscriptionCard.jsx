@@ -85,9 +85,9 @@ const SubscriptionCard = ({
 
     return (
       <Card.Header
-        className={{
+        className={classNames({
           'pb-1': subscriptionStatus !== ACTIVE,
-        }}
+        })}
         title={title}
         subtitle={subtitle}
         actions={(
@@ -99,24 +99,35 @@ const SubscriptionCard = ({
     );
   };
 
-  const renderCardSection = () => (subscriptionStatus === ACTIVE && (
-    <Card.Section
-      title="Licenses"
-      muted
-    >
-      <Row className="d-flex flex-row justify-content-between w-md-75">
-        {['Assigned', 'Activated', 'Allocated', 'Unassigned'].map(licenseStatus => (
-          <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0" key={licenseStatus}>
-            <span className="small">{licenseStatus}</span>
-            <span>{licenses[licenseStatus.toLowerCase()]} of {licenses.total}</span>
-          </Col>
-        ))}
-      </Row>
-    </Card.Section>
-  ));
+  const renderCardSection = () => {
+    if (subscriptionStatus !== ACTIVE) {
+      return null;
+    }
+
+    return (
+      <Card.Section
+        title="Licenses"
+        muted
+      >
+        <Row className="d-flex flex-row justify-content-between w-md-75">
+          {['Assigned', 'Activated', 'Allocated', 'Unassigned'].map(licenseStatus => (
+            <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0" key={licenseStatus}>
+              <span className="small">{licenseStatus}</span>
+              <span>{licenses[licenseStatus.toLowerCase()]} of {licenses.total}</span>
+            </Col>
+          ))}
+        </Row>
+      </Card.Section>
+    );
+  };
 
   return (
-    <Card orientation="horizontal" className="subscription-card">
+    <Card
+      orientation="horizontal"
+      className={classNames('subscription-card', {
+        'pb-4': subscriptionStatus !== ACTIVE,
+      })}
+    >
       <Card.Body>
         <Stack gap={4}>
           {renderCardHeader()}
