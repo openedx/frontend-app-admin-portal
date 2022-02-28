@@ -18,6 +18,10 @@ const existingConfigData = {
   id: 1,
 };
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe('<CornerstoneConfig />', () => {
   test('renders Cornerstone Config Form', () => {
     render(
@@ -102,6 +106,26 @@ describe('<CornerstoneConfig />', () => {
     const expectedConfig = {
       active: false,
       cornerstone_base_url: 'https://www.test1.com',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewCornerstoneConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('saves draft correctly', () => {
+    render(
+      <CornerstoneConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Save'));
+    const expectedConfig = {
+      active: false,
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
