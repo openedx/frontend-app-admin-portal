@@ -235,6 +235,8 @@ const LicenseManagementTable = () => {
           {
             Header: 'Email address',
             accessor: 'emailLabel',
+            // eslint-disable-next-line react/prop-types
+            Cell: ({ row }) => <span data-hj-suppress>{row.values.emailLabel}</span>,
           },
           {
             Header: 'Status',

@@ -106,7 +106,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
 
   const actions = [];
   if (!isSubscriptionPlanDetails || daysUntilContractExpiration > SUBSCRIPTION_DAYS_REMAINING_SEVERE) {
-    actions.push(<ContactCustomerSupportButton onClick={() => emitAlertActionEvent()} />);
+    actions.push(<ContactCustomerSupportButton variant="primary" onClick={() => emitAlertActionEvent()} />);
   }
 
   const dismissBanner = () => {
@@ -114,8 +114,11 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     emitAlertDismissedEvent();
   };
 
-  return (showExpirationNotifications
-    && (
+  if (!showExpirationNotifications) {
+    return null;
+  }
+
+  return (
     <Alert
       className="expiration-alert mt-1"
       variant={alertType}
@@ -126,7 +129,6 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
     >
       {isSubscriptionPlanDetails ? renderPlanDetailsMessage() : renderContractDetailsMessage()}
     </Alert>
-    )
   );
 };
 
