@@ -17,6 +17,10 @@ const existingConfigData = {
   id: 1,
 };
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe('<SAPConfig />', () => {
   test('renders SAP Config Form', () => {
     render(
@@ -156,6 +160,27 @@ describe('<SAPConfig />', () => {
       user_type: 'admin',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewSuccessFactorsConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('saves draft correctly', () => {
+    render(
+      <SAPConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Save'));
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+      user_type: 'admin',
     };
     expect(LmsApiService.postNewSuccessFactorsConfig).toHaveBeenCalledWith(expectedConfig);
   });

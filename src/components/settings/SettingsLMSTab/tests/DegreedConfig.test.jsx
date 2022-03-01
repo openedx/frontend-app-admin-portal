@@ -17,6 +17,10 @@ const existingConfigData = {
   id: 1,
 };
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe('<DegreedConfig />', () => {
   test('renders Degreed Config Form', () => {
     render(
@@ -162,6 +166,26 @@ describe('<DegreedConfig />', () => {
       display_name: 'displayName',
       key: 'test1',
       secret: 'test2',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewDegreedConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('saves draft correctly', () => {
+    render(
+      <DegreedConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Save'));
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
     expect(LmsApiService.postNewDegreedConfig).toHaveBeenCalledWith(expectedConfig);

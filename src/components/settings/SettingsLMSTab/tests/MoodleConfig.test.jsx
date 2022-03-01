@@ -17,6 +17,10 @@ const existingConfigData = {
   id: 1,
 };
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe('<MoodleConfig />', () => {
   test('renders Moodle Config Form', () => {
     render(
@@ -125,6 +129,26 @@ describe('<MoodleConfig />', () => {
       service_short_name: 'test2',
       display_name: 'displayName',
       token: 'token111',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('saves draft correctly', () => {
+    render(
+      <MoodleConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Save'));
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
     expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);

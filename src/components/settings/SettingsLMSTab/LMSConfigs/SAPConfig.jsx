@@ -99,7 +99,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   return (
     <span>
       <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
-      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} />
+      <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
           <Form.Control

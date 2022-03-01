@@ -68,7 +68,7 @@ const ExistingLMSCardDeck = ({
 
   // Map the existing config data to individual cards
   const listItems = configData.map((config) => (
-    <Card isClickable tabIndex="0" className="p-2.5 existing-lms-card-width" key={config.channelCode + config.id}>
+    <Card tabIndex="0" className="p-2.5 existing-lms-card-width" key={config.channelCode + config.id}>
       <Card.Header
         className="lms-card-content"
         actions={(

@@ -7,7 +7,9 @@ const MODAL_TEXT = 'Your changes will be lost without saving.';
 
 // will have to pass in individual saveDraft method and config when
 // drafting is allowed
-const ConfigModal = ({ isOpen, close, onClick }) => (
+const ConfigModal = ({
+  isOpen, close, onClick, saveDraft,
+}) => (
   <ModalDialog
     title="Cancel Modal"
     isOpen={isOpen}
@@ -27,7 +29,7 @@ const ConfigModal = ({ isOpen, close, onClick }) => (
         <Button onClick={() => onClick('')} variant="outline-primary">
           Exit without saving
         </Button>
-        <Button variant="primary">
+        <Button onClick={saveDraft} variant="primary">
           Save
         </Button>
       </ActionRow>
@@ -39,5 +41,6 @@ ConfigModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  saveDraft: PropTypes.func.isRequired,
 };
 export default ConfigModal;
