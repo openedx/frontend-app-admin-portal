@@ -101,6 +101,39 @@ describe('<BlackboardConfig />', () => {
     };
     expect(LmsApiService.updateBlackboardConfig).toHaveBeenCalledWith(expectedConfig, 1);
   });
+  test('it creates new configs on submit', () => {
+    render(
+      <BlackboardConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={noExistingData}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('API Client ID/Blackboard Application Key'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret/Application Secret'), {
+      target: { value: 'test2' },
+    });
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'displayName' },
+    });
+    fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
+      target: { value: 'https://www.test.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
+    const expectedConfig = {
+      active: false,
+      blackboard_base_url: 'https://www.test.com',
+      client_id: 'test1',
+      client_secret: 'test2',
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+    };
+    expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
+  });
   test('saves draft correctly', () => {
     render(
       <BlackboardConfig
@@ -109,13 +142,28 @@ describe('<BlackboardConfig />', () => {
         existingData={noExistingData}
       />,
     );
+    fireEvent.change(screen.getByLabelText('API Client ID/Blackboard Application Key'), {
+      target: { value: 'test1' },
+    });
+    fireEvent.change(screen.getByLabelText('API Client Secret/Application Secret'), {
+      target: { value: 'test2' },
+    });
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
+    fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
+      target: { value: 'https://www.test.com' },
+    });
+    expect(screen.getByText('Submit')).not.toBeDisabled();
+    fireEvent.click(screen.getByText('Submit'));
+
     fireEvent.click(screen.getByText('Cancel'));
     fireEvent.click(screen.getByText('Save'));
     const expectedConfig = {
       active: false,
+      blackboard_base_url: 'https://www.test.com',
+      client_id: 'test1',
+      client_secret: 'test2',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
