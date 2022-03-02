@@ -151,6 +151,10 @@ class LmsApiService {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/${configId}/`);
   }
 
+  static fetchSingleCanvasConfig(configId) {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${configId}/`);
+  }
+
   static fetchCanvasConfig(uuid) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/?enterprise_customer=${uuid}`);
   }
@@ -167,8 +171,16 @@ class LmsApiService {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/Canvas/configuration/${configId}/`);
   }
 
+  static fetchBlackboardGlobalConfig() {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/global-configuration/`);
+  }
+
   static fetchBlackboardConfig(uuid) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/?enterprise_customer=${uuid}`);
+  }
+
+  static fetchSingleBlackboardConfig(configId) {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`);
   }
 
   static postNewBlackboardConfig(formData) {
