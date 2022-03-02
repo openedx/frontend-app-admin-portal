@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import EnrollmentRequestManagementTable from '../EnrollmentRequestManagementTable';
+import SubsidyRequestManagementTable from '../SubsidyRequestManagementTable';
 
-const SubscriptionEnrollmentRequests = () => {
+const SubscriptionSubsidyRequests = () => {
   const overviewData = useMemo(
     () => ([
       {
@@ -55,7 +55,7 @@ const SubscriptionEnrollmentRequests = () => {
   const handleDecline = (row) => console.log('decline', row);
 
   return (
-    <EnrollmentRequestManagementTable
+    <SubsidyRequestManagementTable
       data={data}
       fetchData={handleFetchData}
       requestStatusFilterChoices={overviewData}
@@ -65,4 +65,4 @@ const SubscriptionEnrollmentRequests = () => {
   );
 };
 
-export default SubscriptionEnrollmentRequests;
+export default SubscriptionSubsidyRequests;

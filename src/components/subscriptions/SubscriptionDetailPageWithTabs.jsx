@@ -11,7 +11,7 @@ import SubscriptionExpirationModals from './expiration/SubscriptionExpirationMod
 import SubscriptionDetails from './SubscriptionDetails';
 import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
 import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
-import SubscriptionEnrollmentRequests from './_SubscriptionEnrollmentRequests';
+import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import { useSubscriptionFromParams } from './data/contextHooks';
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
@@ -72,7 +72,7 @@ const SubscriptionDetailPageWithTabs = ({ match }) => {
         </Tab>
         <Tab eventKey="requests" title="Manage Requests" className="pt-4.5">
           {currentTabKey === 'requests' && (
-            <SubscriptionEnrollmentRequests />
+            <SubscriptionSubsidyRequests />
           )}
         </Tab>
       </Tabs>
