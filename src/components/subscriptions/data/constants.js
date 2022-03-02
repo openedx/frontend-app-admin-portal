@@ -27,7 +27,7 @@ export const SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS = 12;
 export const SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX = 'seen-expiration-modal-';
 
 // Multiple subscription picker
-export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts';
+export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course catalog and manage your subscription cohorts.';
 
 // user status badge mapping, takes user status as key returns label and badge style defined by ux
 export const USER_STATUS_BADGE_MAP = {

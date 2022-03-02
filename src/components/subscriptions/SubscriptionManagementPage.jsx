@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -7,8 +7,7 @@ import {
   Switch,
   Route,
   useHistory,
-  useLocation,
-  useParams,
+  useRouteMatch,
 } from 'react-router-dom';
 import moment from 'moment';
 
@@ -21,16 +20,37 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const PAGE_TITLE = 'Subscription Management';
 
-function SubscriptionManagementPage({ enterpriseId }) {
-  const { pathname } = useLocation();
+function SubscriptionManagementPage({ enterpriseId, enterpriseSlug }) {
+  const routesByTabKey = {
+    requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`,
+    default: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+  };
   const history = useHistory();
-  const params = useParams();
-  const [key, setKey] = React.useState('learners');
+  const requestsTabMatch = useRouteMatch(routesByTabKey.requests);
+  const initialTabKey = requestsTabMatch ? 'requests' : 'default';
 
-  const handleTabSelect = (tabKey) => {
-    console.log('handleTabSelect', pathname, tabKey);
-    setKey(tabKey);
-    history.push(`/${pathname}/enrollment-requests`);
+  const [tabKey, setTabKey] = React.useState(initialTabKey);
+
+  useEffect(() => {
+    if (requestsTabMatch) {
+      setTabKey('requests');
+    }
+  }, []);
+
+  const handleTabSelect = (key) => {
+    setTabKey(key);
+    switch (key) {
+      case 'requests': {
+        history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`);
+        break;
+      }
+      case 'default': {
+        // history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`);
+        break;
+      }
+      default:
+        break;
+    }
   };
 
   return (
@@ -42,53 +62,58 @@ function SubscriptionManagementPage({ enterpriseId }) {
           <Switch>
             <Tabs
               id="controlled-tab-example"
-              activeKey={key}
+              activeKey={tabKey}
               onSelect={handleTabSelect}
             >
-              <Tab eventKey="learners" title="Manage Learners" className="pt-4">
-                <Route
-                  path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
-                  render={routeProps => (
-                    <MultipleSubscriptionsPage
-                      {...routeProps}
-                      createActions={(subscription) => {
-                        const { params: { enterpriseSlug } } = routeProps.match;
-                        const now = moment();
-                        const isScheduled = now.isBefore(subscription.startDate);
-                        const isExpired = now.isAfter(subscription.expirationDate);
-                        const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;
-                        const buttonVariant = isExpired ? 'outline-primary' : 'primary';
+              <Tab eventKey="default" title="Manage Learners" className="pt-4">
+                {tabKey === 'default' && (
+                  <>
+                    <Route
+                      path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
+                      render={routeProps => (
+                        <MultipleSubscriptionsPage
+                          {...routeProps}
+                          createActions={(subscription) => {
+                            const now = moment();
+                            const isScheduled = now.isBefore(subscription.startDate);
+                            const isExpired = now.isAfter(subscription.expirationDate);
+                            const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;
+                            const buttonVariant = isExpired ? 'outline-primary' : 'primary';
 
-                        const actions = [];
+                            const actions = [];
 
-                        if (!isScheduled) {
-                          actions.push({
-                            variant: buttonVariant,
-                            to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`,
-                            buttonText,
-                          });
-                        }
+                            if (!isScheduled) {
+                              actions.push({
+                                variant: buttonVariant,
+                                to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`,
+                                buttonText,
+                              });
+                            }
 
-                        return actions;
-                      }}
+                            return actions;
+                          }}
+                        />
+                      )}
+                      exact
                     />
-                  )}
-                  exact
-                />
+                    <Route
+                      path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
+                      component={SubscriptionDetailPage}
+                      exact
+                    />
+                  </>
+                )}
               </Tab>
               <Tab eventKey="requests" title="Manage Requests" className="pt-4">
-                <Route
-                  path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`}
-                  component={SubscriptionSubsidyRequests}
-                  exact
-                />
+                {tabKey === 'requests' && (
+                  <Route
+                    path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`}
+                    component={SubscriptionSubsidyRequests}
+                    exact
+                  />
+                )}
               </Tab>
             </Tabs>
-            {/* <Route
-              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
-              component={SubscriptionDetailPage}
-              exact
-            /> */}
           </Switch>
         </Container>
       </main>
@@ -98,10 +123,12 @@ function SubscriptionManagementPage({ enterpriseId }) {
 
 SubscriptionManagementPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
 export default connect(mapStateToProps)(SubscriptionManagementPage);
