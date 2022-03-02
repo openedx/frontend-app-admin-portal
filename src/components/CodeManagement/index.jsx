@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { Button, Icon, Pagination } from '@edx/paragon';
 
+import { connect } from 'react-redux';
 import Hero from '../Hero';
 import Coupon from '../Coupon';
 import LoadingMessage from '../LoadingMessage';
@@ -13,8 +14,9 @@ import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
 
 import { updateUrl } from '../../utils';
+import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
 
-class CodeManagement extends React.Component {
+export class CodeManagement extends React.Component {
   constructor(props) {
     super(props);
 
@@ -354,4 +356,20 @@ CodeManagement.propTypes = {
   error: PropTypes.instanceOf(Error),
 };
 
-export default CodeManagement;
+const mapStateToProps = state => ({
+  loading: state.coupons.loading,
+  error: state.coupons.error,
+  enterpriseId: state.portalConfiguration.enterpriseId,
+  coupons: state.coupons.data,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchCouponOrders: (options) => {
+    dispatch(fetchCouponOrders(options));
+  },
+  clearCouponOrders: () => {
+    dispatch(clearCouponOrders());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CodeManagement);
