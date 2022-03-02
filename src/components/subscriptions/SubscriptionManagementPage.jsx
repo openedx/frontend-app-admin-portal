@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -34,8 +34,10 @@ function SubscriptionManagementPage({ enterpriseId, enterpriseSlug }) {
   useEffect(() => {
     if (requestsTabMatch) {
       setTabKey('requests');
+    } else {
+      setTabKey('default');
     }
-  }, []);
+  }, [requestsTabMatch]);
 
   const handleTabSelect = (key) => {
     setTabKey(key);
