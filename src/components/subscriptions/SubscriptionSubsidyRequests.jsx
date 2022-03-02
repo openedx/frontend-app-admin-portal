@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { Stack } from '@edx/paragon';
+
 import SubsidyRequestManagementTable from '../SubsidyRequestManagementTable';
 
 const SubscriptionSubsidyRequests = () => {
@@ -55,13 +57,19 @@ const SubscriptionSubsidyRequests = () => {
   const handleDecline = (row) => console.log('decline', row);
 
   return (
-    <SubsidyRequestManagementTable
-      data={data}
-      fetchData={handleFetchData}
-      requestStatusFilterChoices={overviewData}
-      onApprove={handleApprove}
-      onDecline={handleDecline}
-    />
+    <Stack gap={2}>
+      <div>
+        <h2>Enrollment requests</h2>
+        <p>Approve or decline enrollment requests for individual learners below.</p>
+      </div>
+      <SubsidyRequestManagementTable
+        data={data}
+        fetchData={handleFetchData}
+        requestStatusFilterChoices={overviewData}
+        onApprove={handleApprove}
+        onDecline={handleDecline}
+      />
+    </Stack>
   );
 };
 
