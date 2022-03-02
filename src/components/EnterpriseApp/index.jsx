@@ -161,8 +161,7 @@ class EnterpriseApp extends React.Component {
                   {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
                     <Route
                       key="code-management"
-                      exact
-                      path={`${baseUrl}/admin/coupons`}
+                      path={`${baseUrl}/admin/coupons/:tab?`}
                       render={routeProps => <CodeManagementPage {...routeProps} />}
                     />,
                     <Route
