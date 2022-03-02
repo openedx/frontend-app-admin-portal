@@ -15,9 +15,7 @@ const MultipleSubscriptionsPicker = ({
     <Row>
       <Col xs="12">
         <h2>Plans</h2>
-        <p className="lead">
-          {leadText}
-        </p>
+        <p>{leadText}</p>
       </Col>
       <Col lg="10">
         {subscriptions.map(subscription => (
