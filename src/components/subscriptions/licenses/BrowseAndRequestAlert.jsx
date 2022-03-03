@@ -9,6 +9,7 @@ import { features } from '../../../config';
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
   BROWSE_AND_REQUEST_ALERT_TEXT,
+  REDIRECT_SETTINGS_BUTTON_TEXT,
 } from '../data/constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
@@ -20,7 +21,7 @@ const cookies = new Cookies();
  * @param {string} enterpriseId
  * @returns {string} cookie name
  */
-const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
+export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
 
 const BrowseAndRequestAlert = ({ enterpriseId, enterpriseSlug }) => {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
@@ -57,7 +58,7 @@ const BrowseAndRequestAlert = ({ enterpriseId, enterpriseSlug }) => {
       variant="info"
       actions={[
         <Button onClick={handleGoToSettings} variant="outline-primary">
-          Go to settings
+          {REDIRECT_SETTINGS_BUTTON_TEXT}
         </Button>,
       ]}
       dismissible
