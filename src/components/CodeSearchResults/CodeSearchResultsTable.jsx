@@ -142,15 +142,20 @@ const CodeSearchResultsTable = ({
       ) : defaultEmptyValue,
     }));
   };
+
+  const fetchOptions = {
+    [searchParameter(searchQuery)]: searchQuery,
+  };
+  if (queryParams.get('page')) {
+    fetchOptions.page = parseInt(queryParams.get('page'), 10);
+  }
+
   return (
     <TableContainer
       key={`code-search-results-${searchQuery}-${shouldRefreshTable}`}
       id="code-search-results"
       className="code-search-results-table"
-      fetchMethod={() => EcommerceApiService.fetchCodeSearchResults({
-        [searchParameter(searchQuery)]: searchQuery,
-        page: queryParams.get('page') && parseInt(queryParams.get('page'), 10),
-      })}
+      fetchMethod={() => EcommerceApiService.fetchCodeSearchResults(fetchOptions)}
       columns={handleTableColumns(searchQuery)}
       formatData={formatSearchResultsData}
     />
