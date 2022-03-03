@@ -40,7 +40,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         </Row>
       )}
       <SubscriptionExpirationBanner isSubscriptionPlanDetails />
-      <Row className="mb-5">
+      <Row className="mb-4">
         <Col className="mb-3 mb-lg-0">
           <Row className="m-0 justify-content-between">
             <h2>{subscription.title}</h2>
