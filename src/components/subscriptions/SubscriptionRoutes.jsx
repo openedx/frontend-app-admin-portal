@@ -16,6 +16,52 @@ import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { features } from '../../config';
 
+const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
+  const multipleSubsCreateActions = (subscription) => {
+    const now = moment();
+    const isScheduled = now.isBefore(subscription.startDate);
+    const isExpired = now.isAfter(subscription.expirationDate);
+    const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;
+    const buttonVariant = isExpired ? 'outline-primary' : 'primary';
+
+    const actions = [];
+
+    if (!isScheduled) {
+      actions.push({
+        variant: buttonVariant,
+        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`,
+        buttonText,
+      });
+    }
+
+    return actions;
+  };
+
+  return (
+    <>
+      <Route
+        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
+        render={routeProps => (
+          <MultipleSubscriptionsPage
+            {...routeProps}
+            createActions={multipleSubsCreateActions}
+          />
+        )}
+        exact
+      />
+      <Route
+        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
+        component={SubscriptionDetailPage}
+        exact
+      />
+    </>
+  );
+};
+
+SubscriptionPlanRoutes.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
 const SubscriptionRoutes = ({ enterpriseSlug }) => {
   const isTabsFeatureEnabled = !!features.FEATURE_BROWSE_AND_REQUEST;
 
@@ -46,26 +92,6 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
     setTabKey(key);
   };
 
-  const multipleSubsCreateActions = (subscription) => {
-    const now = moment();
-    const isScheduled = now.isBefore(subscription.startDate);
-    const isExpired = now.isAfter(subscription.expirationDate);
-    const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;
-    const buttonVariant = isExpired ? 'outline-primary' : 'primary';
-
-    const actions = [];
-
-    if (!isScheduled) {
-      actions.push({
-        variant: buttonVariant,
-        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`,
-        buttonText,
-      });
-    }
-
-    return actions;
-  };
-
   if (isTabsFeatureEnabled) {
     return (
       <Switch>
@@ -76,23 +102,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
         >
           <Tab eventKey="default" title="Manage Learners" className="pt-4">
             {tabKey === 'default' && (
-              <>
-                <Route
-                  path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
-                  render={routeProps => (
-                    <MultipleSubscriptionsPage
-                      {...routeProps}
-                      createActions={multipleSubsCreateActions}
-                    />
-                  )}
-                  exact
-                />
-                <Route
-                  path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
-                  component={SubscriptionDetailPage}
-                  exact
-                />
-              </>
+              <SubscriptionPlanRoutes enterpriseSlug={enterpriseSlug} />
             )}
           </Tab>
           <Tab eventKey="requests" title="Manage Requests" className="pt-4">
@@ -111,21 +121,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
 
   return (
     <Switch>
-      <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
-        render={routeProps => (
-          <MultipleSubscriptionsPage
-            {...routeProps}
-            createActions={multipleSubsCreateActions}
-          />
-        )}
-        exact
-      />
-      <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
-        component={SubscriptionDetailPage}
-        exact
-      />
+      <SubscriptionPlanRoutes enterpriseSlug={enterpriseSlug} />
     </Switch>
   );
 };
