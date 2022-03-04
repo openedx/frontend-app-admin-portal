@@ -10,7 +10,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 
-import BrowseAndRequestAlert, { generateBrowseAndRequestAlertCookieName } from '../../licenses/BrowseAndRequestAlert';
+import NewFeatureAlertBrowseAndRequest, { generateBrowseAndRequestAlertCookieName } from '../../licenses/NewFeatureAlertBrowseAndRequest';
 import {
   REDIRECT_SETTINGS_BUTTON_TEXT,
   BROWSE_AND_REQUEST_ALERT_TEXT,
@@ -41,12 +41,12 @@ const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings
 const alertWithContext = () => (
   <Router history={historyMock}>
     <Provider store={store}>
-      <BrowseAndRequestAlert />
+      <NewFeatureAlertBrowseAndRequest />
     </Provider>
   </Router>
 );
 
-describe('<BrowseAndRequestAlert/>', () => {
+describe('<NewFeatureAlertBrowseAndRequest/>', () => {
   afterEach(() => { cleanup(); });
 
   it('if cookie is found, alert is hidden', () => {
@@ -76,5 +76,16 @@ describe('<BrowseAndRequestAlert/>', () => {
     expect(useHistoryPush).toHaveBeenCalledWith({
       pathname: SETTINGS_PAGE_LOCATION,
     });
+  });
+
+  it('banner not showed when feature is off', async () => {
+    features.FEATURE_BROWSE_AND_REQUEST = false;
+    const cookieName = generateBrowseAndRequestAlertCookieName(ENTERPRISE_ID);
+    Object.defineProperty(window.document, 'cookie', {
+      writable: true,
+      value: `${cookieName}=true`,
+    });
+    render(alertWithContext());
+    expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeFalsy();
   });
 });

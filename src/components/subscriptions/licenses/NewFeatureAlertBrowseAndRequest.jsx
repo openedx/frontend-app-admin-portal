@@ -23,7 +23,7 @@ const cookies = new Cookies();
  */
 export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
 
-const BrowseAndRequestAlert = ({ enterpriseId, enterpriseSlug }) => {
+const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
   const foundCookie = cookies.get(browseAndRequestAlertCookieName);
 
@@ -68,7 +68,7 @@ const BrowseAndRequestAlert = ({ enterpriseId, enterpriseSlug }) => {
   );
 };
 
-BrowseAndRequestAlert.propTypes = {
+NewFeatureAlertBrowseAndRequest.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
@@ -78,4 +78,4 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(BrowseAndRequestAlert);
+export default connect(mapStateToProps)(NewFeatureAlertBrowseAndRequest);

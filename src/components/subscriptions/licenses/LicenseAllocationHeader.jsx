@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseAllocationBanner from './LicenseAllocationBanner';
-import BrowseAndRequestAlert from './BrowseAndRequestAlert';
+import NewFeatureAlertBrowseAndRequest from './NewFeatureAlertBrowseAndRequest';
 
 const LicenseAllocationHeader = () => {
   const {
@@ -10,7 +10,7 @@ const LicenseAllocationHeader = () => {
 
   return (
     <>
-      <BrowseAndRequestAlert />
+      <NewFeatureAlertBrowseAndRequest />
       <h2 className="mb-2">License Allocation</h2>
       <p className="lead">
         {subscription.licenses?.allocated}
