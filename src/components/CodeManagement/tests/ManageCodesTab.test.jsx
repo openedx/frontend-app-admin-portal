@@ -7,9 +7,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 
-import CodeManagementPage from './index';
+import ManageCodesTab from '../ManageCodesTab';
 
-import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../data/constants/coupons';
+import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../../data/constants/coupons';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -36,10 +36,10 @@ const initialState = {
   },
 };
 
-const CodeManagementPageWrapper = props => (
+const ManageCodesTabWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CodeManagementPage
+      <ManageCodesTab
         location={{}}
         match={{
           path: '/test-page',
@@ -53,11 +53,11 @@ const CodeManagementPageWrapper = props => (
   </MemoryRouter>
 );
 
-CodeManagementPageWrapper.defaultProps = {
+ManageCodesTabWrapper.defaultProps = {
   store: mockStore({ ...initialState }),
 };
 
-CodeManagementPageWrapper.propTypes = {
+ManageCodesTabWrapper.propTypes = {
   store: PropTypes.shape({}),
 };
 
@@ -70,15 +70,16 @@ const sampleCouponData = {
   max_uses: 10,
   num_unassigned: 2,
   num_uses: 2,
+  available: true,
   usage_limitation: 'Multi-use',
 };
 
-describe('CodeManagementPageWrapper', () => {
+describe('ManageCodesTabWrapper', () => {
   describe('renders', () => {
     it('renders empty results correctly', () => {
       const tree = renderer
         .create((
-          <CodeManagementPageWrapper />
+          <ManageCodesTabWrapper />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -106,7 +107,7 @@ describe('CodeManagementPageWrapper', () => {
 
       const tree = renderer
         .create((
-          <CodeManagementPageWrapper store={store} />
+          <ManageCodesTabWrapper store={store} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -123,7 +124,7 @@ describe('CodeManagementPageWrapper', () => {
 
       const tree = renderer
         .create((
-          <CodeManagementPageWrapper store={store} />
+          <ManageCodesTabWrapper store={store} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -140,7 +141,7 @@ describe('CodeManagementPageWrapper', () => {
 
       const tree = renderer
         .create((
-          <CodeManagementPageWrapper store={store} />
+          <ManageCodesTabWrapper store={store} />
         ))
         .toJSON();
       expect(tree).toMatchSnapshot();
@@ -149,7 +150,7 @@ describe('CodeManagementPageWrapper', () => {
 
   it('handles location.state on componentDidMount', () => {
     const wrapper = mount((
-      <CodeManagementPageWrapper
+      <ManageCodesTabWrapper
         location={{
           state: {
             hasRequestedCodes: true,
@@ -158,7 +159,7 @@ describe('CodeManagementPageWrapper', () => {
       />
     ));
 
-    expect(wrapper.find('CodeManagement').instance().state.hasRequestedCodes).toBeTruthy();
+    expect(wrapper.find('ManageCodesTab').instance().state.hasRequestedCodes).toBeTruthy();
   });
 
   it('handles overview_page query parameter change', () => {
@@ -175,7 +176,7 @@ describe('CodeManagementPageWrapper', () => {
     });
     const spy = jest.spyOn(store, 'dispatch');
 
-    const wrapper = mount(<CodeManagementPageWrapper store={store} />);
+    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
 
     spy.mockRestore();
 
@@ -191,7 +192,7 @@ describe('CodeManagementPageWrapper', () => {
   it('calls clearCouponOrders() on componentWillUnmount', () => {
     const store = mockStore({ ...initialState });
 
-    const wrapper = mount(<CodeManagementPageWrapper store={store} />);
+    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
     wrapper.unmount();
 
     const actions = store.getActions();
@@ -224,8 +225,8 @@ describe('CodeManagementPageWrapper', () => {
       },
     });
 
-    const wrapper = mount(<CodeManagementPageWrapper store={store} />);
-    const instance = wrapper.find('CodeManagement').instance();
+    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    const instance = wrapper.find('ManageCodesTab').instance();
     const spyExpand = jest.spyOn(instance, 'handleCouponExpand');
     const spyCollapse = jest.spyOn(instance, 'handleCouponCollapse');
 
@@ -240,7 +241,7 @@ describe('CodeManagementPageWrapper', () => {
 
   it('fetches coupons on refresh button click', () => {
     const store = mockStore({ ...initialState });
-    const wrapper = mount(<CodeManagementPageWrapper store={store} />);
+    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
     store.clearActions();
     wrapper.find('.fa-refresh').hostNodes().simulate('click');
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
