@@ -8,7 +8,13 @@ import { BULK_ACTION, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';
 import { getBASelectOptions, getFirstNonDisabledOption } from './helpers';
 
 const CouponBulkActions = ({
-  handleBulkAction, selectedToggle, numSelectedCodes, numUnassignedCodes, couponAvailable, isTableLoading, hasTableData,
+  handleBulkAction,
+  selectedToggle,
+  numSelectedCodes,
+  numUnassignedCodes,
+  couponAvailable,
+  isTableLoading,
+  hasTableData,
 }) => {
   const isAssignView = selectedToggle === COUPON_FILTERS.unassigned.value;
   const isRedeemedView = selectedToggle === COUPON_FILTERS.redeemed.value;
