@@ -6,7 +6,7 @@ import { configuration } from '../../config';
 class LicenseManagerApiService {
   static licenseManagerBaseUrl = `${configuration.LICENSE_MANAGER_BASE_URL}/api/v1`;
 
-  static apiClient = getAuthenticatedHttpClient
+  static apiClient = getAuthenticatedHttpClient;
 
   static licenseAssign(options, subscriptionUUID) {
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/subscriptions/${subscriptionUUID}/licenses/assign/`;

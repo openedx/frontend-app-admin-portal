@@ -66,7 +66,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
   const isTabsFeatureEnabled = !!features.FEATURE_BROWSE_AND_REQUEST;
 
   const routesByTabKey = {
-    requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`,
+    requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/requests`,
   };
   const history = useHistory();
   const requestsTabMatch = useRouteMatch(routesByTabKey.requests);
@@ -108,7 +108,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
           <Tab eventKey="requests" title="Manage Requests" className="pt-4">
             {tabKey === 'requests' && (
               <Route
-                path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/enrollment-requests`}
+                path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/requests`}
                 component={SubscriptionSubsidyRequests}
                 exact
               />

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Badge } from '@edx/paragon';
 
-const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
+import { capitalizeFirstLetter } from '../../utils';
 
 const RequestStatusCell = ({ row }) => {
   const { requestStatus } = row.original;
@@ -11,7 +11,8 @@ const RequestStatusCell = ({ row }) => {
     () => {
       const variantsByStatus = {
         requested: 'primary',
-        approved: 'dark',
+        approved: 'secondary',
+        error: 'danger',
       };
       return variantsByStatus[requestStatus] || 'light';
     },
