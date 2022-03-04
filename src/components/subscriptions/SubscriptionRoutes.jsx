@@ -67,6 +67,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
 
   const routesByTabKey = {
     requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/requests`,
+    default: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
   };
   const history = useHistory();
   const requestsTabMatch = useRouteMatch(routesByTabKey.requests);
@@ -88,6 +89,8 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
   const handleTabSelect = (key) => {
     if (key === 'requests') {
       history.push(routesByTabKey.requests);
+    } else if (key === 'default') {
+      history.push(routesByTabKey.default);
     }
     setTabKey(key);
   };
