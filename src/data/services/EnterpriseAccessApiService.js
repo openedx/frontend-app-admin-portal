@@ -54,6 +54,50 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/v1/coupon-code-requests/decline/`;
     return this.apiClient().post(url, options);
   }
+
+  static getLicenseRequests(enterpriseId, requestStatusFilters, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseId,
+      ...options,
+    });
+    if (requestStatusFilters) {
+      // TODO: the API doesn't seem to handle multiple state filters at once, returning results only
+      // for the latest state query parameter passed to the URL. Also tried using comma-separated list
+      // which returns a 400.
+      requestStatusFilters.forEach((requestStatus) => {
+        params.append('state', requestStatus);
+      });
+    }
+    const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  static getLicenseRequestOverview(enterpriseId, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseId,
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/overview/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  static getCouponCodeRequests(enterpriseId, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseId,
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  static getCouponCodeRequestOverview(enterpriseId, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseId,
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/overview/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
 }
 
 export default EnterpriseAccessApiService;
