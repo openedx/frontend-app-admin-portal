@@ -12,9 +12,9 @@ import { getConfig } from '@edx/frontend-platform/config';
 
 import { useCourseDetails } from './data/hooks';
 
-const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
+const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseId }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = getConfig();
-  const [courseDetails, isCourseDetailsLoading] = useCourseDetails(courseKey);
+  const [courseDetails, isCourseDetailsLoading] = useCourseDetails(courseId);
 
   if (isCourseDetailsLoading) {
     return (
@@ -39,7 +39,7 @@ const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
       <div>
         <Hyperlink
           target="_blank"
-          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseKey}`}
+          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseId}`}
         >
           Learn more about this course
         </Hyperlink>
@@ -50,7 +50,7 @@ const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
 
 CourseDetailsPopoverContentBase.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  courseKey: PropTypes.string.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -68,7 +68,7 @@ const CourseNameCell = ({ row }) => (
       <Popover id="popover-requests-table-course-details">
         <Popover.Title as="h5">{row.original.courseName}</Popover.Title>
         <Popover.Content>
-          <CourseDetailsPopoverContent courseKey={row.original.courseKey} />
+          <CourseDetailsPopoverContent courseId={row.original.courseId} />
         </Popover.Content>
       </Popover>
     )}
@@ -87,7 +87,7 @@ CourseNameCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
       courseName: PropTypes.string,
-      courseKey: PropTypes.string,
+      courseId: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };

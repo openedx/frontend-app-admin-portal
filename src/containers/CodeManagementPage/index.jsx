@@ -56,8 +56,8 @@ const CodeManagementPage = (props) => {
           </Tab>
           <Tab eventKey={MANAGE_REQUESTS_TAB} title={MANAGE_REQUESTS_LABEL} className="pt-4.5">
             <Route
-              key="enrollment-requests"
-              path="/:enterpriseSlug/admin/coupons/enrollment-requests"
+              key="requests"
+              path="/:enterpriseSlug/admin/coupons/requests"
               component={CouponCodeRequests}
               exact
             />,
