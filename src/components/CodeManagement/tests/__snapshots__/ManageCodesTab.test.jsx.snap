@@ -97,7 +97,7 @@ Array [
       </button>
       <a
         className="request-codes-btn btn btn-primary"
-        href="/test-page/request"
+        href="/test-page/request-codes"
         onClick={[Function]}
       >
         <span
@@ -270,7 +270,7 @@ Array [
       </button>
       <a
         className="request-codes-btn btn btn-primary"
-        href="/test-page/request"
+        href="/test-page/request-codes"
         onClick={[Function]}
       >
         <span
@@ -448,7 +448,7 @@ Array [
       </button>
       <a
         className="request-codes-btn btn btn-primary"
-        href="/test-page/request"
+        href="/test-page/request-codes"
         onClick={[Function]}
       >
         <span
@@ -594,7 +594,7 @@ Array [
       </button>
       <a
         className="request-codes-btn btn btn-primary"
-        href="/test-page/request"
+        href="/test-page/request-codes"
         onClick={[Function]}
       >
         <span

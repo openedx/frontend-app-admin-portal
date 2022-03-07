@@ -51,7 +51,7 @@ const CodeManagementRoutes = ({ enterpriseSlug }) => {
     return (
       <Switch>
         <Tabs
-          id="controlled-tab-example"
+          id="tabs-code-management"
           activeKey={tabKey}
           onSelect={handleTabSelect}
         >

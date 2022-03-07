@@ -207,7 +207,13 @@ class ManageCodesTab extends React.Component {
 
   renderRequestCodesSuccessMessage() {
     return (
-      <Alert variant="success" icon={CheckCircle} dismissible>
+      <Alert
+        show={this.state.hasRequestedCodes}
+        onClose={() => this.setState({ hasRequestedCodes: false })}
+        variant="success"
+        icon={CheckCircle}
+        dismissible
+      >
         <Alert.Heading>Request for more codes received</Alert.Heading>
         <p>The edX Customer Support team will contact you soon.</p>
       </Alert>
@@ -229,11 +235,11 @@ class ManageCodesTab extends React.Component {
       loading,
       match,
     } = this.props;
-    const { hasRequestedCodes, searchQuery } = this.state;
+    const { searchQuery } = this.state;
     const hasSearchQuery = !!searchQuery;
     return (
       <>
-        {hasRequestedCodes && this.renderRequestCodesSuccessMessage()}
+        {this.renderRequestCodesSuccessMessage()}
         <div className="row mt-4 mb-3 no-gutters">
           <div className="col-12 col-xl-3 mb-3 mb-xl-0">
             <h2>Overview</h2>
