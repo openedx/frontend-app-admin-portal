@@ -4,7 +4,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import debounce from 'lodash.debounce';
 
 import { transformRequestOverview, transformRequests } from './utils';
-import { useIsMounted } from '../../../hooks';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
 
 export const DEBOUNCE_TIME_MS = 200;
@@ -15,15 +14,6 @@ export const useSubsidyRequests = (
   overviewServiceFn,
   requestsServiceFn,
 ) => {
-  const isMounted = useIsMounted();
-  const [searchOptions, setSearchOptions] = useState({
-    query: '',
-    page: 1,
-    filters: {
-      requestStatus: [],
-    },
-  });
-  const debouncedSetSearchOptions = debounce(setSearchOptions, DEBOUNCE_TIME_MS);
   const [requests, setRequests] = useState({
     requests: [],
     pageCount: 0,
@@ -38,12 +28,12 @@ export const useSubsidyRequests = (
   /**
    * Fetches counts of each request status.
    */
-  const fetchOverview = async () => {
+  const fetchOverview = async ({ query }) => {
     setIsLoadingRequestsOverview(true);
     try {
       const options = {};
-      if (searchOptions.query) {
-        options.search = searchOptions.query;
+      if (query) {
+        options.search = query;
       }
       const response = await overviewServiceFn(
         enterpriseId,
@@ -60,21 +50,21 @@ export const useSubsidyRequests = (
   };
 
   /**
-   * Fetches license requests from the API.
+   * Fetches requests from the API.
    */
-  const fetchRequests = async () => {
+  const fetchRequests = async ({ page, query, filters }) => {
     setIsLoadingRequests(true);
     try {
       const options = {
-        page: searchOptions.page,
+        page,
         page_size: PAGE_SIZE,
       };
-      if (searchOptions.query) {
-        options.search = searchOptions.query;
+      if (query) {
+        options.search = query;
       }
       const response = await requestsServiceFn(
         enterpriseId,
-        searchOptions.filters?.requestStatus,
+        filters?.requestStatus,
         options,
       );
       const data = camelCaseObject(response.data);
@@ -91,15 +81,14 @@ export const useSubsidyRequests = (
     }
   };
 
-  /**
-   * Fetches counts of each license request state for use in the table filters
-   * on initial component mount.
-   */
-  useEffect(() => {
-    if (!isMounted) { return; }
-    fetchOverview();
-    fetchRequests();
-  }, [isMounted, searchOptions]);
+  const fetchData = useCallback(
+    ({ page, query, filters }) => {
+      fetchOverview({ query });
+      fetchRequests({ page, query, filters });
+    },
+    [],
+  );
+  const debouncedFetchData = debounce(fetchData, DEBOUNCE_TIME_MS);
 
   /**
    * Handles table pagination/filter/sort changes.
@@ -112,7 +101,7 @@ export const useSubsidyRequests = (
       const requestStatusFilters = args.filters.find(filter => filter.id === 'requestStatus')?.value;
       const page = args.pageIndex + 1;
       const query = args.filters.find(filter => filter.id === 'email')?.value || '';
-      debouncedSetSearchOptions({
+      debouncedFetchData({
         page,
         query,
         filters: {
@@ -130,8 +119,6 @@ export const useSubsidyRequests = (
     isLoading,
   };
 };
-
-// ===
 
 export const useCourseDetails = (courseKey) => {
   const [courseDetails, setCourseDetails] = useState(null);

@@ -13,7 +13,10 @@ const SubscriptionExpiration = () => {
     new Date(sub1.expirationDate) > new Date(sub2.expirationDate) ? sub1 : sub2));
 
   return (
-    <SubscriptionDetailContextProvider subscription={subscriptionFurthestFromExpiration}>
+    <SubscriptionDetailContextProvider
+      subscription={subscriptionFurthestFromExpiration}
+      disableDataFetching
+    >
       <SubscriptionExpirationBanner />
       <SubscriptionExpirationModals />
     </SubscriptionDetailContextProvider>
