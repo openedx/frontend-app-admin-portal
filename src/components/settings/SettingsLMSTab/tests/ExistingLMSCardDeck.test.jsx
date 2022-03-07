@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import ExistingLMSCardDeck from '../ExistingLMSCardDeck';
@@ -69,9 +65,7 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     expect(screen.getByText('barfoo')).toBeInTheDocument();
-    act(() => {
-      fireEvent.mouseOver(screen.getByText('Incomplete'));
-    });
+    userEvent.hover(screen.getByText('Incomplete'));
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
     expect(screen.getByText('2 fields')).toBeInTheDocument();
   });
@@ -97,10 +91,10 @@ describe('<ExistingLMSCardDeck />', () => {
       />,
     );
     expect(screen.getByTestId(`existing-lms-config-card-dropdown-${incompleteConfigData[0].id}`)).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${incompleteConfigData[0].id}`));
+    userEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${incompleteConfigData[0].id}`));
 
     expect(screen.getByTestId('dropdown-delete-item')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('dropdown-delete-item'));
+    userEvent.click(screen.getByTestId('dropdown-delete-item'));
     expect(LmsApiService.deleteBlackboardConfig).toHaveBeenCalledWith(incompleteConfigData[0].id);
   });
   it('renders disable card action', () => {
@@ -113,10 +107,10 @@ describe('<ExistingLMSCardDeck />', () => {
       />,
     );
     expect(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`)).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
+    userEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
 
     expect(screen.getByTestId('dropdown-disable-item')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('dropdown-disable-item'));
+    userEvent.click(screen.getByTestId('dropdown-disable-item'));
     const expectedConfigOptions = {
       active: false,
       enterprise_customer: enterpriseCustomerUuid,
@@ -133,10 +127,10 @@ describe('<ExistingLMSCardDeck />', () => {
       />,
     );
     expect(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`)).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
+    userEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
 
     expect(screen.getByTestId('dropdown-enable-item')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('dropdown-enable-item'));
+    userEvent.click(screen.getByTestId('dropdown-enable-item'));
     const expectedConfigOptions = {
       active: true,
       enterprise_customer: enterpriseCustomerUuid,
