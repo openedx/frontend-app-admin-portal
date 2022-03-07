@@ -1,7 +1,9 @@
 import React from 'react';
 import {
+  act,
   fireEvent,
-  render, screen,
+  render,
+  screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -17,7 +19,7 @@ const configData = [
   {
     channelCode: 'BLACKBOARD',
     id: 1,
-    isValid: {},
+    isValid: [{ missing: [] }, { incorrect: [] }],
     active: true,
     displayName: 'foobar',
   },
@@ -27,7 +29,7 @@ const disabledConfigData = [
   {
     channelCode: 'BLACKBOARD',
     id: 1,
-    isValid: {},
+    isValid: [{ missing: [] }, { incorrect: [] }],
     active: false,
     displayName: 'foobar',
   },
@@ -37,7 +39,7 @@ const incompleteConfigData = [
   {
     channelCode: 'BLACKBOARD',
     id: 2,
-    isValid: { missing: ['client_id'] },
+    isValid: [{ missing: ['client_id', 'refresh_token'] }, { incorrect: ['blackboard_base_url'] }],
     active: false,
     displayName: 'barfoo',
   },
@@ -67,6 +69,11 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     expect(screen.getByText('barfoo')).toBeInTheDocument();
+    act(() => {
+      fireEvent.mouseOver(screen.getByText('Incomplete'));
+    });
+    expect(screen.getByText('Next Steps')).toBeInTheDocument();
+    expect(screen.getByText('2 fields')).toBeInTheDocument();
   });
   it('renders multiple config cards', () => {
     render(

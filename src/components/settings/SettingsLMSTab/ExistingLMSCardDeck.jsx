@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import {
-  Badge, Card, CardGrid, Dropdown, Icon, IconButton, Image, useToggle,
+  Badge, Card, CardGrid, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover, useToggle,
 } from '@edx/paragon';
 import {
   Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
@@ -16,6 +16,9 @@ const errorToggleModalText = 'We were unable to toggle your config. Please try s
 const errorDeleteModalText = 'We were unable to delete your config. Please try removing again later or contact support for help.';
 const TOGGLE_ACTION = 'toggle';
 const DELETE_ACTION = 'delete';
+const INCOMPLETE = 'incomplete';
+const ACTIVE = 'active';
+const INACTIVE = 'inactive';
 
 const ExistingLMSCardDeck = ({
   configData,
@@ -66,9 +69,36 @@ const ExistingLMSCardDeck = ({
     }
   };
 
+  const numIncorrectFields = (fields) => {
+    const { missing } = fields[0];
+    const { incorrect } = fields[1];
+    let totalNum = 0;
+    if (missing.includes('refresh_token')) {
+      totalNum = -1;
+    }
+    totalNum = totalNum + missing.length + incorrect.length;
+    return <span>Amend <strong>{totalNum} fields</strong> to submit this form.</span>;
+  };
+
+  const getStatus = (config) => {
+    if (!isEmpty(config.isValid[0].missing)
+        || !isEmpty(config.isValid[1].incorrect)) {
+      return INCOMPLETE;
+    }
+
+    if (config.active) {
+      return ACTIVE;
+    }
+    return INACTIVE;
+  };
+
   // Map the existing config data to individual cards
   const listItems = configData.map((config) => (
-    <Card tabIndex="0" className="p-2.5 existing-lms-card-width" key={config.channelCode + config.id}>
+    <Card
+      tabIndex="0"
+      className="p-2.5 existing-lms-card-width"
+      key={config.channelCode + config.id}
+    >
       <Card.Header
         className="lms-card-content"
         actions={(
@@ -83,7 +113,7 @@ const ExistingLMSCardDeck = ({
               alt="Actions dropdown"
             />
             <Dropdown.Menu>
-              {isEmpty(config.isValid.missing) && !config.active && (
+              {getStatus(config) === INACTIVE && (
                 <div className="d-flex">
                   <Dropdown.Item
                     onClick={() => toggleConfig(config.id, config.channelCode, true)}
@@ -93,7 +123,7 @@ const ExistingLMSCardDeck = ({
                   </Dropdown.Item>
                 </div>
               )}
-              {isEmpty(config.isValid.missing) && config.active && (
+              {getStatus(config) === ACTIVE && (
                 <div className="d-flex">
                   <Dropdown.Item
                     onClick={() => toggleConfig(config.id, config.channelCode, false)}
@@ -103,7 +133,7 @@ const ExistingLMSCardDeck = ({
                   </Dropdown.Item>
                 </div>
               )}
-              {!isEmpty(config.isValid.missing) && !config.active && (
+              {getStatus(config) === INCOMPLETE && (
                 <div className="d-flex">
                   <Dropdown.Item
                     onClick={() => deleteConfig(config.id, config.channelCode)}
@@ -123,24 +153,43 @@ const ExistingLMSCardDeck = ({
         )}
         title={(
           <div className="ml-1 d-flex">
-            <Image className="lms-icon mr-2" src={channelMapping[config.channelCode].icon} />
+            <Image
+              className="lms-icon mr-2"
+              src={channelMapping[config.channelCode].icon}
+            />
             <div className="lms-card-title-overflow">
-              <span>
-                {config.displayName}
-              </span>
+              <span>{config.displayName}</span>
             </div>
           </div>
         )}
       />
       <Card.Body>
         <h3 className="mb-6 mt-4 ml-4">
-          {!isEmpty(config.isValid.missing) && (
-            <Badge variant="secondary">Incomplete</Badge>
-          )}
-          {isEmpty(config.isValid.missing) && config.active && (
+          {/* Only incomplete badges will show hover */}
+          <OverlayTrigger
+            trigger={['hover', 'focus']}
+            key={`${config.channelCode + config.id }hover`}
+            placement="top"
+            overlay={(
+              <Popover className="popover-positioned-top" id="inc-popover">
+                <Popover.Title as="h5">Next Steps</Popover.Title>
+                <Popover.Content>
+                  {numIncorrectFields(config.isValid)}
+                </Popover.Content>
+              </Popover>
+            )}
+          >
+            <span>
+              {getStatus(config) === INCOMPLETE && (
+                <Badge variant="secondary">Incomplete</Badge>
+              )}
+            </span>
+          </OverlayTrigger>
+
+          {getStatus(config) === ACTIVE && (
             <Badge variant="success">Active</Badge>
           )}
-          {isEmpty(config.isValid.missing) && !config.active && (
+          {getStatus(config) === INACTIVE && (
             <Badge variant="light">Inactive</Badge>
           )}
         </h3>
@@ -172,7 +221,7 @@ const ExistingLMSCardDeck = ({
           xl: 4,
         }}
       >
-        { listItems }
+        {listItems}
       </CardGrid>
     </span>
   );
@@ -181,15 +230,20 @@ const ExistingLMSCardDeck = ({
 ExistingLMSCardDeck.propTypes = {
   onClick: PropTypes.func.isRequired,
   enterpriseCustomerUuid: PropTypes.string.isRequired,
-  configData: PropTypes.arrayOf(PropTypes.shape({
-    active: PropTypes.bool,
-    isValid: PropTypes.shape({
-      missing: PropTypes.arrayOf(PropTypes.string),
+  configData: PropTypes.arrayOf(
+    PropTypes.shape({
+      active: PropTypes.bool,
+      isValid: PropTypes.arrayOf(
+        PropTypes.shape({
+          missing: PropTypes.arrayOf(PropTypes.string),
+          incorrect: PropTypes.arrayOf(PropTypes.string),
+        }),
+      ),
+      channelCode: PropTypes.string,
+      id: PropTypes.number,
+      displayName: PropTypes.string,
     }),
-    channelCode: PropTypes.string,
-    id: PropTypes.number,
-    displayName: PropTypes.string,
-  })).isRequired,
+  ).isRequired,
   editExistingConfig: PropTypes.func.isRequired,
 };
 
