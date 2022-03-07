@@ -2,7 +2,7 @@
 
 exports[`RequestDateCell renders with "approved" status 1`] = `
 <span
-  className="badge badge-dark"
+  className="badge badge-secondary"
 >
   Approved
 </span>

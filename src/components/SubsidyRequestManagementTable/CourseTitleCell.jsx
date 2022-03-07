@@ -59,14 +59,14 @@ const mapStateToProps = (state) => ({
 
 const CourseDetailsPopoverContent = connect(mapStateToProps)(CourseDetailsPopoverContentBase);
 
-const CourseNameCell = ({ row }) => (
+const CourseTitleCell = ({ row }) => (
   <OverlayTrigger
     trigger="click"
     placement="top"
     rootClose
     overlay={(
       <Popover id="popover-requests-table-course-details">
-        <Popover.Title as="h5">{row.original.courseName}</Popover.Title>
+        <Popover.Title as="h5">{row.original.courseTitle}</Popover.Title>
         <Popover.Content>
           <CourseDetailsPopoverContent courseId={row.original.courseId} />
         </Popover.Content>
@@ -78,18 +78,18 @@ const CourseNameCell = ({ row }) => (
       className="text-left px-0"
       size="sm"
     >
-      {row.original.courseName}
+      {row.original.courseTitle}
     </Button>
   </OverlayTrigger>
 );
 
-CourseNameCell.propTypes = {
+CourseTitleCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      courseName: PropTypes.string,
+      courseTitle: PropTypes.string,
       courseId: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };
 
-export default CourseNameCell;
+export default CourseTitleCell;
