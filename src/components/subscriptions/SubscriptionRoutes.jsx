@@ -99,7 +99,7 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
     return (
       <Switch>
         <Tabs
-          id="controlled-tab-example"
+          id="tabs-subscription-management"
           activeKey={tabKey}
           onSelect={handleTabSelect}
         >
