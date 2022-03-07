@@ -87,7 +87,7 @@ export const useSubscriptionUsersOverview = ({
   search,
   errors,
   setErrors,
-  isDisabled,
+  isDisabled = false,
 }) => {
   const initialSubscriptionUsersOverview = {
     all: 0,
@@ -153,7 +153,7 @@ export const useSubscriptionUsers = ({
   errors,
   setErrors,
   userStatusFilter,
-  isDisabled,
+  isDisabled = false,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
