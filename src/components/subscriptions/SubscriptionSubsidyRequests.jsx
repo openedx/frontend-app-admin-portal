@@ -1,11 +1,14 @@
 import React, {
-  useCallback, useEffect, useState,
+  useCallback,
+  useEffect,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Stack } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
+import debounce from 'lodash.debounce';
 
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import SubsidyRequestManagementTable, {
@@ -14,7 +17,26 @@ import SubsidyRequestManagementTable, {
 } from '../SubsidyRequestManagementTable';
 import { PAGE_SIZE } from './data/constants';
 
+export const DEBOUNCE_TIME_MS = 200;
+
+export const useIsMounted = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  return isMounted;
+};
+
 const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
+  const isMounted = useIsMounted();
+  const [searchOptions, setSearchOptions] = useState({
+    query: '',
+    page: 1,
+    filters: {
+      requestStatus: [],
+    },
+  });
+  const debouncedSetSearchOptions = debounce(setSearchOptions, DEBOUNCE_TIME_MS);
   const [licenseRequests, setLicenseRequests] = useState({
     requests: [],
     pageCount: 0,
@@ -28,13 +50,18 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
 
   /**
    * Fetches counts of each request status.
-   *
-   * TODO: will need to handle when a search query (email) is present
    */
   const fetchOverview = async () => {
     setIsLoadingRequestsOverview(true);
     try {
-      const response = await EnterpriseAccessApiService.getLicenseRequestOverview(enterpriseId);
+      const options = {};
+      if (searchOptions.query) {
+        options.search = searchOptions.query;
+      }
+      const response = await EnterpriseAccessApiService.getLicenseRequestOverview(
+        enterpriseId,
+        options,
+      );
       const data = camelCaseObject(response.data);
       const result = transformRequestOverview(data);
       setLicenseRequestsOverview(result);
@@ -47,20 +74,22 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
 
   /**
    * Fetches license requests from the API.
-   *
-   * TODO: will need to handle when a search query (email) is present
-   *
-   * @param {integer} page Page number
-   * @param {Array} requestStatusFilters List of statuses to filter requests, e.g., ['requested', 'approved']
    */
-  const fetchRequests = async (page, requestStatusFilters) => {
+  const fetchRequests = async () => {
     setIsLoadingRequests(true);
     try {
       const options = {
-        page,
+        page: searchOptions.page,
         page_size: PAGE_SIZE,
       };
-      const response = await EnterpriseAccessApiService.getLicenseRequests(enterpriseId, requestStatusFilters, options);
+      if (searchOptions.query) {
+        options.search = searchOptions.query;
+      }
+      const response = await EnterpriseAccessApiService.getLicenseRequests(
+        enterpriseId,
+        searchOptions.filters?.requestStatus,
+        options,
+      );
       const data = camelCaseObject(response.data);
       const requests = transformRequests(data.results);
       setLicenseRequests({
@@ -79,11 +108,14 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
    * Fetches counts of each license request state for use in the table filters
    * on initial component mount.
    */
-  useEffect(() => { fetchOverview(); }, []);
+  useEffect(() => {
+    if (!isMounted) { return; }
+    fetchOverview();
+    fetchRequests();
+  }, [isMounted, searchOptions]);
 
   /**
-   * Fetches license requests data from the API on initial component mount, and
-   * pagination/filter/sort changes.
+   * Handles table pagination/filter/sort changes.
    *
    * @param {Object} args See Paragon documentation on the args passed to the
    * callback fn of `fetchData`.
@@ -92,7 +124,14 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     (args) => {
       const requestStatusFilters = args.filters.find(filter => filter.id === 'requestStatus')?.value;
       const page = args.pageIndex + 1;
-      fetchRequests(page, requestStatusFilters);
+      const query = args.filters.find(filter => filter.id === 'email')?.value || '';
+      debouncedSetSearchOptions({
+        page,
+        query,
+        filters: {
+          requestStatus: requestStatusFilters,
+        },
+      });
     },
     [],
   );

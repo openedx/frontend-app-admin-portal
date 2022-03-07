@@ -60,13 +60,8 @@ class EnterpriseAccessApiService {
       enterprise_customer_uuid: enterpriseId,
       ...options,
     });
-    if (requestStatusFilters) {
-      // TODO: the API doesn't seem to handle multiple state filters at once, returning results only
-      // for the latest state query parameter passed to the URL. Also tried using comma-separated list
-      // which returns a 400.
-      requestStatusFilters.forEach((requestStatus) => {
-        params.append('state', requestStatus);
-      });
+    if (requestStatusFilters?.length > 0) {
+      params.set('state', requestStatusFilters.join(','));
     }
     const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
@@ -86,13 +81,8 @@ class EnterpriseAccessApiService {
       enterprise_customer_uuid: enterpriseId,
       ...options,
     });
-    if (requestStatusFilters) {
-      // TODO: the API doesn't seem to handle multiple state filters at once, returning results only
-      // for the latest state query parameter passed to the URL. Also tried using comma-separated list
-      // which returns a 400.
-      requestStatusFilters.forEach((requestStatus) => {
-        params.append('state', requestStatus);
-      });
+    if (requestStatusFilters?.length > 0) {
+      params.set('state', requestStatusFilters.join(','));
     }
     const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
