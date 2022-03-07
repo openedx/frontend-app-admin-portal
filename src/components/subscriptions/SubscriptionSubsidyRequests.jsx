@@ -9,8 +9,6 @@ import SubsidyRequestManagementTable, {
 } from '../SubsidyRequestManagementTable';
 import { PAGE_SIZE } from './data/constants';
 
-export const DEBOUNCE_TIME_MS = 200;
-
 const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
   const {
     isLoading,
