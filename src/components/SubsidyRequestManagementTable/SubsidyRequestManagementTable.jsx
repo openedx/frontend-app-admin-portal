@@ -9,7 +9,7 @@ import {
 import EmailAddressCell from './EmailAddressCell';
 import RequestDateCell from './RequestDateCell';
 import RequestStatusCell from './RequestStatusCell';
-import CourseNameCell from './CourseNameCell';
+import CourseTitleCell from './CourseTitleCell';
 import ActionCell from './ActionCell';
 
 const SubsidyRequestManagementTable = ({
@@ -35,7 +35,7 @@ const SubsidyRequestManagementTable = ({
       {
         Header: 'Course title',
         accessor: 'courseTitle',
-        Cell: CourseNameCell,
+        Cell: CourseTitleCell,
         disableFilters: true,
       },
       {
