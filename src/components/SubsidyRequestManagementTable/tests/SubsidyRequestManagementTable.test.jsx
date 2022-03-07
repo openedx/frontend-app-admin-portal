@@ -6,22 +6,25 @@ import SubsidyRequestManagementTable from '..';
 const defaultProps = {
   fetchData: jest.fn(),
   data: [{
-    emailAddress: 'test@example.com',
-    courseName: 'edX Demonstration Course',
-    courseKey: 'edX+DemoX',
+    uuid: 'test-uuid-1',
+    email: 'test1@example.com',
+    courseTitle: 'edX Demonstration Course 1',
+    courseId: 'edX+DemoX1',
     requestDate: '2019-12-03T21:39:24.395101Z',
     requestStatus: 'requested',
   }, {
-    emailAddress: 'test@example.com',
-    courseName: 'edX Demonstration Course',
-    courseKey: 'edX+DemoX',
-    requestDate: '2019-12-03T21:39:24.395101Z',
+    uuid: 'test-uuid-2',
+    email: 'test2@example.com',
+    courseTitle: 'edX Demonstration Course 2',
+    courseId: 'edX+DemoX2',
+    requestDate: '2020-12-03T21:39:24.395101Z',
     requestStatus: 'requested',
   }, {
-    emailAddress: 'test@example.com',
-    courseName: 'edX Demonstration Course',
-    courseKey: 'edX+DemoX',
-    requestDate: '2019-12-03T21:39:24.395101Z',
+    uuid: 'test-uuid-3',
+    email: 'test3@example.com',
+    courseTitle: 'edX Demonstration Course 3',
+    courseId: 'edX+DemoX3',
+    requestDate: '2021-12-03T21:39:24.395101Z',
     requestStatus: 'declined',
   }],
   requestStatusFilterChoices: [{
@@ -35,6 +38,16 @@ const defaultProps = {
   }],
   onApprove: jest.fn(),
   onDecline: jest.fn(),
+  itemCount: 24,
+  pageCount: 2,
+  isLoading: false,
+  initialTableOptions: {
+    getRowId: row => row.uuid,
+  },
+  initialState: {
+    pageSize: 20,
+    pageIndex: 0,
+  },
 };
 
 describe('SubsidyRequestManagementTable', () => {
