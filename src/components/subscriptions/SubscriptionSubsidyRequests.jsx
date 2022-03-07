@@ -23,8 +23,10 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     EnterpriseAccessApiService.getLicenseRequests,
   );
 
+  /* eslint-disable no-console */
   const handleApprove = (row) => console.log('approve', row);
   const handleDecline = (row) => console.log('decline', row);
+  /* eslint-enable no-console */
 
   return (
     <Stack gap={2}>
