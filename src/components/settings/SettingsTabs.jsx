@@ -20,6 +20,7 @@ import {
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
 import SettingsLMSTab from './SettingsLMSTab';
+import SettingsSSOTab from './SettingsSSOTab';
 
 const SettingsTabs = ({ enterpriseId }) => {
   const tab = useCurrentSettingsTab();
@@ -55,6 +56,9 @@ const SettingsTabs = ({ enterpriseId }) => {
         </Tab>
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
           <SettingsLMSTab enterpriseId={enterpriseId} />
+        </Tab>
+        <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
+          <SettingsSSOTab enterpriseId={enterpriseId} />
         </Tab>
       </Tabs>
     </Container>
