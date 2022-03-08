@@ -10,13 +10,14 @@ import { useSubscriptionFromParams } from './data/contextHooks';
 
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { MANAGE_LEARNERS_TAB } from './data/constants';
 
 const SubscriptionDetailPage = ({ match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
   if (!subscription && !loadingSubscription) {
     const { params: { enterpriseSlug } } = match;
     return (
-      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`} />
+      <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`} />
     );
   }
 

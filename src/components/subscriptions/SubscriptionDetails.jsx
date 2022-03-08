@@ -31,7 +31,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     <>
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
-          <Link to={`/${enterpriseSlug}/admin/subscriptions`}>
+          <Link to={`/${enterpriseSlug}/admin/subscriptions/manage-learners`}>
             <Button variant="outline-primary">
               <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
               Back to subscriptions

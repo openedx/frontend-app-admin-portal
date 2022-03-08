@@ -78,7 +78,7 @@ const MultipleSubscriptionsPage = ({
 };
 
 MultipleSubscriptionsPage.defaultProps = {
-  redirectPage: ROUTE_NAMES.subscriptionManagement,
+  redirectPage: `${ROUTE_NAMES.subscriptionManagement}/manage-learners`,
   leadText: DEFAULT_LEAD_TEXT,
   createActions: null,
 };
