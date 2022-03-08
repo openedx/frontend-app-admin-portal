@@ -11,6 +11,8 @@ import { MANAGE_LEARNERS_TAB } from './data/constants';
 import { features } from '../../config';
 
 const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+
   const multipleSubsCreateActions = (subscription) => {
     const now = moment();
     const isScheduled = now.isBefore(subscription.startDate);
@@ -22,7 +24,7 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
     if (!isScheduled) {
       let to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`;
-      if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+      if (isBrowseAndRequestEnabled) {
         to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}/${subscription.uuid}`;
       }
       actions.push({
@@ -36,8 +38,13 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   };
 
   let baseManageLearnersPath = `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`;
-  if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+  if (isBrowseAndRequestEnabled) {
     baseManageLearnersPath += `/${MANAGE_LEARNERS_TAB}`;
+  }
+
+  let redirectPage;
+  if (isBrowseAndRequestEnabled) {
+    redirectPage = `${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`;
   }
 
   return (
@@ -47,6 +54,7 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
         render={routeProps => (
           <MultipleSubscriptionsPage
             {...routeProps}
+            redirectPage={redirectPage}
             createActions={multipleSubsCreateActions}
           />
         )}
