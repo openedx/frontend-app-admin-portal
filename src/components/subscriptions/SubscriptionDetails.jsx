@@ -12,8 +12,10 @@ import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
+import { features } from '../../config';
+import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-const SubscriptionDetails = ({ enterpriseSlug }) => {
+const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -27,11 +29,16 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     hasLicensesAllocatedOrRevoked && subscription.daysUntilExpiration > 0
   );
 
+  let backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions`;
+  if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+    backToSubscriptionsPath += `/${MANAGE_LEARNERS_TAB}`;
+  }
+
   return (
     <>
       {hasMultipleSubscriptions && (
         <Row className="ml-0 mb-3">
-          <Link to={`/${enterpriseSlug}/admin/subscriptions/manage-learners`}>
+          <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
               <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
               Back to subscriptions
@@ -93,10 +100,12 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
 
 SubscriptionDetails.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionDetails);
