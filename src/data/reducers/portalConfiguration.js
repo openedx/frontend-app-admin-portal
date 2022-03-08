@@ -51,6 +51,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableLearnerPortal: action.payload.data.enable_learner_portal,
         enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
         enableUniversalLink: action.payload.data.enable_universal_link,
+        identityProvider: action.payload.data.identity_provider,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {

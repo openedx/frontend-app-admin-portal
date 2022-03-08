@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Hyperlink, CardGrid, Toast,
+  Alert, Button, Hyperlink, CardGrid, Toast,
 } from '@edx/paragon';
-import { Add } from '@edx/paragon/icons';
+import { Link } from 'react-router-dom';
+import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import PropTypes from 'prop-types';
 
 import { camelCaseDictArray } from '../../../utils';
 import LMSCard from './LMSCard';
@@ -27,7 +29,12 @@ const SUBMIT_TOAST_MESSAGE = 'Configuration was submitted successfully.';
 const TOGGLE_TOAST_MESSAGE = 'Configuration was toggled successfully.';
 const DELETE_TOAST_MESSAGE = 'Configuration was successfully removed.';
 
-export default function SettingsLMSTab(enterpriseId) {
+export default function SettingsLMSTab({
+  enterpriseId,
+  enterpriseSlug,
+  enableSamlConfigurationScreen,
+  identityProvider,
+}) {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
 
@@ -37,6 +44,7 @@ export default function SettingsLMSTab(enterpriseId) {
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
+  const [displayNeedsSSOAlert, setDisplayNeedsSSOAlert] = useState(false);
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
@@ -51,7 +59,7 @@ export default function SettingsLMSTab(enterpriseId) {
   };
 
   const fetchExistingConfigs = () => {
-    const options = { enterprise_customer: enterpriseId.enterpriseId };
+    const options = { enterprise_customer: enterpriseId };
     LmsApiService.fetchEnterpriseCustomerIntegrationConfigs(options)
       .then((response) => {
         // If the enterprise has existing configs
@@ -113,6 +121,11 @@ export default function SettingsLMSTab(enterpriseId) {
     fetchExistingConfigs();
   }, []);
 
+  useEffect(() => {
+    // Check if the customer needs an idp config
+    setDisplayNeedsSSOAlert(enableSamlConfigurationScreen && !identityProvider);
+  }, [enableSamlConfigurationScreen, identityProvider]);
+
   return (
     <div>
       <div className="d-flex">
@@ -129,13 +142,30 @@ export default function SettingsLMSTab(enterpriseId) {
         Enabling a learning management system for your edX account allows quick
         access to the catalog
       </p>
+      {displayNeedsSSOAlert && (
+        <Alert
+          className="mr-6 sso-alert-modal-margin"
+          variant="danger"
+          icon={Info}
+          actions={[
+            <Link to={`/${enterpriseSlug}/admin/settings/sso`}>
+              <Button>Configure SSO</Button>
+            </Link>,
+          ]}
+        >
+          <Alert.Heading>No SSO configured</Alert.Heading>
+          <p>
+            At least one Single Sign On configuration is needed to create an LMS configuration
+          </p>
+        </Alert>
+      )}
       {configsExist && (
         <span>
           <h4 className="mt-5 mb-4">Existing configurations</h4>
           <ExistingLMSCardDeck
             configData={existingConfigsData}
             editExistingConfig={editExistingConfig}
-            enterpriseCustomerUuid={enterpriseId.enterpriseId}
+            enterpriseCustomerUuid={enterpriseId}
             onClick={onClick}
           />
         </span>
@@ -147,6 +177,7 @@ export default function SettingsLMSTab(enterpriseId) {
           iconBefore={Add}
           size="lg"
           block
+          disabled={displayNeedsSSOAlert}
           onClick={showCreateConfigCards}
         >
           New configuration
@@ -166,12 +197,12 @@ export default function SettingsLMSTab(enterpriseId) {
               xl: 3,
             }}
           >
-            <LMSCard LMSType={SAP_TYPE} onClick={onClick} />
-            <LMSCard LMSType={MOODLE_TYPE} onClick={onClick} />
-            <LMSCard LMSType={CORNERSTONE_TYPE} onClick={onClick} />
-            <LMSCard LMSType={CANVAS_TYPE} onClick={onClick} />
-            <LMSCard LMSType={DEGREED2_TYPE} onClick={onClick} />
-            <LMSCard LMSType={BLACKBOARD_TYPE} onClick={onClick} />
+            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={BLACKBOARD_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
           </CardGrid>
         </span>
       )}
@@ -189,3 +220,10 @@ export default function SettingsLMSTab(enterpriseId) {
     </div>
   );
 }
+
+SettingsLMSTab.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  identityProvider: PropTypes.string.isRequired,
+};

@@ -21,7 +21,12 @@ import {
 import SettingsAccessTab from './SettingsAccessTab';
 import SettingsLMSTab from './SettingsLMSTab';
 
-const SettingsTabs = ({ enterpriseId }) => {
+const SettingsTabs = ({
+  enterpriseId,
+  enterpriseSlug,
+  enableSamlConfigurationScreen,
+  identityProvider,
+}) => {
   const tab = useCurrentSettingsTab();
 
   const history = useHistory();
@@ -54,7 +59,12 @@ const SettingsTabs = ({ enterpriseId }) => {
           <SettingsAccessTab />
         </Tab>
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          <SettingsLMSTab enterpriseId={enterpriseId} />
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+            identityProvider={identityProvider}
+          />
         </Tab>
       </Tabs>
     </Container>
@@ -63,10 +73,16 @@ const SettingsTabs = ({ enterpriseId }) => {
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+  identityProvider: state.portalConfiguration.identityProvider,
 });
 
 SettingsTabs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  identityProvider: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(SettingsTabs);
