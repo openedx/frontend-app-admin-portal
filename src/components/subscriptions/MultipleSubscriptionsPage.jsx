@@ -7,6 +7,7 @@ import {
   Card,
   Hyperlink,
 } from '@edx/paragon';
+import { connect } from 'react-redux';
 
 import LoadingMessage from '../LoadingMessage';
 import { SubscriptionContext } from './SubscriptionData';
@@ -20,9 +21,11 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { configuration } from '../../config';
 
 const MultipleSubscriptionsPage = ({
-  match, redirectPage, leadText, createActions,
+  enterpriseSlug,
+  redirectPage,
+  leadText,
+  createActions,
 }) => {
-  const { params: { enterpriseSlug } } = match;
   const { loading, data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
 
@@ -78,20 +81,20 @@ const MultipleSubscriptionsPage = ({
 };
 
 MultipleSubscriptionsPage.defaultProps = {
-  redirectPage: `${ROUTE_NAMES.subscriptionManagement}/manage-learners`,
+  redirectPage: `${ROUTE_NAMES.subscriptionManagement}`,
   leadText: DEFAULT_LEAD_TEXT,
   createActions: null,
 };
 
 MultipleSubscriptionsPage.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   redirectPage: PropTypes.string,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      enterpriseSlug: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   leadText: PropTypes.string,
   createActions: PropTypes.func,
 };
 
-export default MultipleSubscriptionsPage;
+const mapStateToProps = (state) => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(MultipleSubscriptionsPage);
