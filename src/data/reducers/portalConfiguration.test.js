@@ -13,6 +13,7 @@ const initialState = {
   enterpriseName: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
+  identityProvider: null,
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
@@ -20,6 +21,7 @@ const initialState = {
   enableAnalyticsScreen: false,
   enableLmsConfigurationsScreen: false,
   enableUniversalLink: false,
+  enableBrowseAndRequest: false,
 };
 
 const enterpriseData = {
@@ -32,6 +34,9 @@ const enterpriseData = {
     logo: 'https://s3...',
   },
   contact_email: 'fake@example.com',
+  identity_provider: {
+    uuid: 'test-identity-provider-uuid',
+  },
   enable_portal_code_management_screen: true,
   enable_portal_reporting_config_screen: true,
   enable_portal_subscription_management_screen: true,
@@ -39,6 +44,7 @@ const enterpriseData = {
   enable_analytics_screen: true,
   enable_portal_lms_configurations_screen: true,
   enable_universal_link: true,
+  enable_browse_and_request: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -57,6 +63,7 @@ describe('portalConfiguration reducer', () => {
       enterpriseName: enterpriseData.name,
       enterpriseSlug: enterpriseData.slug,
       enterpriseLogo: enterpriseData.branding_configuration.logo,
+      identityProvider: enterpriseData.identity_provider,
       enableCodeManagementScreen: enterpriseData.enable_portal_code_management_screen,
       enableReportingConfigScreen: enterpriseData.enable_portal_reporting_config_screen,
       enableSubscriptionManagementScreen: enterpriseData.enable_portal_subscription_management_screen, // eslint-disable-line max-len
@@ -64,6 +71,7 @@ describe('portalConfiguration reducer', () => {
       enableAnalyticsScreen: enterpriseData.enable_analytics_screen,
       enableLmsConfigurationsScreen: enterpriseData.enable_portal_lms_configurations_screen,
       enableUniversalLink: enterpriseData.enable_universal_link,
+      enableBrowseAndRequest: enterpriseData.enable_browse_and_request,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,

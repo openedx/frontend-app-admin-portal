@@ -15,6 +15,7 @@ const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise-slug',
   },
   coupons: {
     loading: false,
