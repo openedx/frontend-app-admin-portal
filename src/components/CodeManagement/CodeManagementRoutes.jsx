@@ -1,79 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  useHistory,
   useRouteMatch,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
-import { Tabs, Tab } from '@edx/paragon';
 
 import ManageCodesTab from './ManageCodesTab';
-import ManageRequestsTab from './ManageRequestsTab';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import NotFoundPage from '../NotFoundPage';
+import CouponCodeTabs from './CouponCodeTabs';
 import { features } from '../../config';
+import {
+  DEFAULT_TAB,
+  COUPON_CODES_PARAM_MATCH,
+} from './data/constants';
 
-const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+const CodeManagementRoutes = ({ enableBrowseAndRequest }) => {
+  const { path } = useRouteMatch();
   const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
-
-  const routesByTabKey = {
-    requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/requests`,
-    default: `/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}`,
-  };
-  const history = useHistory();
-  const requestsTabMatch = useRouteMatch(routesByTabKey.requests);
-  const initialTabKey = requestsTabMatch ? 'requests' : 'default';
-  const [tabKey, setTabKey] = useState(initialTabKey);
-
-  useEffect(() => {
-    if (!isTabsFeatureEnabled) {
-      return;
-    }
-
-    if (requestsTabMatch) {
-      setTabKey('requests');
-    } else {
-      setTabKey('default');
-    }
-  }, [isTabsFeatureEnabled, requestsTabMatch]);
-
-  const handleTabSelect = (key) => {
-    if (key === 'requests') {
-      history.push(routesByTabKey.requests);
-    } else if (key === 'default') {
-      history.push(routesByTabKey.default);
-    }
-    setTabKey(key);
-  };
 
   if (isTabsFeatureEnabled) {
     return (
       <Switch>
-        <Tabs
-          id="tabs-code-management"
-          activeKey={tabKey}
-          onSelect={handleTabSelect}
-        >
-          <Tab eventKey="default" title="Manage Codes" className="pt-4">
-            {tabKey === 'default' && (
-              <Route
-                path="/:enterpriseSlug/admin/coupons"
-                component={ManageCodesTab}
-                exact
-              />
-            )}
-          </Tab>
-          <Tab eventKey="requests" title="Manage Requests" className="pt-4">
-            {tabKey === 'requests' && (
-              <Route
-                path="/:enterpriseSlug/admin/coupons/requests"
-                component={ManageRequestsTab}
-                exact
-              />
-            )}
-          </Tab>
-        </Tabs>
+        <Redirect
+          exact
+          from={path}
+          to={`${path}/${DEFAULT_TAB}`}
+        />
+        <Route
+          path={`${path}/${COUPON_CODES_PARAM_MATCH}`}
+          component={CouponCodeTabs}
+        />
+        <Route path="" component={NotFoundPage} />
       </Switch>
     );
   }
@@ -90,12 +50,10 @@ const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 };
 
 CodeManagementRoutes.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
