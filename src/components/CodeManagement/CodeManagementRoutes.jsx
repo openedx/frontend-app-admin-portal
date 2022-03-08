@@ -14,8 +14,8 @@ import ManageRequestsTab from './ManageRequestsTab';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { features } from '../../config';
 
-const CodeManagementRoutes = ({ enterpriseSlug }) => {
-  const isTabsFeatureEnabled = !!features.FEATURE_BROWSE_AND_REQUEST;
+const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   const routesByTabKey = {
     requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/requests`,
@@ -91,11 +91,12 @@ const CodeManagementRoutes = ({ enterpriseSlug }) => {
 
 CodeManagementRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(CodeManagementRoutes);

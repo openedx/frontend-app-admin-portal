@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Stack } from '@edx/paragon';
 import { connect } from 'react-redux';
 
-import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
+  SUPPORTED_SUBSIDY_TYPES,
+  PAGE_SIZE,
 } from '../SubsidyRequestManagementTable';
-import { PAGE_SIZE } from './data/constants';
 
 const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
   const {
@@ -15,11 +15,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     requests,
     requestsOverview,
     handleFetchRequests,
-  } = useSubsidyRequests(
-    enterpriseId,
-    EnterpriseAccessApiService.getLicenseRequestOverview,
-    EnterpriseAccessApiService.getLicenseRequests,
-  );
+  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.licenses);
 
   /* eslint-disable no-console */
   const handleApprove = (row) => console.log('approve', row);

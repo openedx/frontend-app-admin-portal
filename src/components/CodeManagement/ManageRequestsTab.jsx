@@ -5,11 +5,9 @@ import { Stack } from '@edx/paragon';
 
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
+  SUPPORTED_SUBSIDY_TYPES,
+  PAGE_SIZE,
 } from '../SubsidyRequestManagementTable';
-import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
-
-export const PAGE_SIZE = 20;
-export const DEBOUNCE_TIME_MS = 200;
 
 const ManageRequestsTab = ({ enterpriseId }) => {
   const {
@@ -17,11 +15,7 @@ const ManageRequestsTab = ({ enterpriseId }) => {
     requests,
     requestsOverview,
     handleFetchRequests,
-  } = useSubsidyRequests(
-    enterpriseId,
-    EnterpriseAccessApiService.getCouponCodeRequestOverview,
-    EnterpriseAccessApiService.getCouponCodeRequests,
-  );
+  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.codes);
 
   /* eslint-disable no-console */
   const handleApprove = (row) => console.log('approve', row);
