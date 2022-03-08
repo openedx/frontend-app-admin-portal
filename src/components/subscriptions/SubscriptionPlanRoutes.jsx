@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import SubscriptionDetailPage from './SubscriptionDetailPage';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
+import { features } from '../../config';
 
-const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
+const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   const multipleSubsCreateActions = (subscription) => {
     const now = moment();
     const isScheduled = now.isBefore(subscription.startDate);
@@ -19,9 +21,13 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
     const actions = [];
 
     if (!isScheduled) {
+      let to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`;
+      if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+        to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}/${subscription.uuid}`;
+      }
       actions.push({
         variant: buttonVariant,
-        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}/${subscription.uuid}`,
+        to,
         buttonText,
       });
     }
@@ -29,10 +35,15 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
     return actions;
   };
 
+  let baseManageLearnersPath = `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`;
+  if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+    baseManageLearnersPath += `/${MANAGE_LEARNERS_TAB}`;
+  }
+
   return (
     <>
       <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`}
+        path={baseManageLearnersPath}
         render={routeProps => (
           <MultipleSubscriptionsPage
             {...routeProps}
@@ -42,7 +53,7 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
         exact
       />
       <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}/:subscriptionUUID`}
+        path={`${baseManageLearnersPath}/:subscriptionUUID`}
         component={SubscriptionDetailPage}
         exact
       />
@@ -52,6 +63,12 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
 
 SubscriptionPlanRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
-export default SubscriptionPlanRoutes;
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
+});
+
+export default connect(mapStateToProps)(SubscriptionPlanRoutes);

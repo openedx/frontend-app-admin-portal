@@ -45,7 +45,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
         className="pt-4"
       >
         {SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] === subscriptionsTab && (
-          <SubscriptionPlanRoutes enterpriseSlug={enterpriseSlug} />
+          <SubscriptionPlanRoutes />
         )}
       </Tab>
       <Tab
@@ -55,7 +55,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
       >
         {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
           <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/manage-requests`}
+            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
             component={SubscriptionSubsidyRequests}
             exact
           />
