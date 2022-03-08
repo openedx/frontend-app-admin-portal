@@ -3,17 +3,22 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import debounce from 'lodash.debounce';
 
+import {
+  SUPPORTED_SUBSIDY_TYPES,
+  DEBOUNCE_TIME_MS,
+  PAGE_SIZE,
+  SUBSIDY_REQUESTS_TYPES,
+} from './constants';
 import { transformRequestOverview, transformRequests } from './utils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
 
-export const DEBOUNCE_TIME_MS = 200;
-export const PAGE_SIZE = 20;
-
 export const useSubsidyRequests = (
   enterpriseId,
-  overviewServiceFn,
-  requestsServiceFn,
+  subsidyRequestType,
 ) => {
+  if (!Object.values(SUPPORTED_SUBSIDY_TYPES).includes(subsidyRequestType)) {
+    logError(`useSubsidyRequests does not support a subsidy request type of ${subsidyRequestType}.`);
+  }
   const [requests, setRequests] = useState({
     requests: [],
     pageCount: 0,
@@ -35,7 +40,7 @@ export const useSubsidyRequests = (
       if (query) {
         options.search = query;
       }
-      const response = await overviewServiceFn(
+      const response = await SUBSIDY_REQUESTS_TYPES[subsidyRequestType].overview(
         enterpriseId,
         options,
       );
@@ -62,7 +67,7 @@ export const useSubsidyRequests = (
       if (query) {
         options.search = query;
       }
-      const response = await requestsServiceFn(
+      const response = await SUBSIDY_REQUESTS_TYPES[subsidyRequestType].requests(
         enterpriseId,
         filters?.requestStatus,
         options,

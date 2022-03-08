@@ -14,6 +14,7 @@ const initialState = {
   enterpriseName: null,
   enterpriseSlug: null,
   enterpriseLogo: null,
+  identityProvider: null,
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
@@ -21,6 +22,7 @@ const initialState = {
   enableLmsConfigurationsScreen: false,
   enableAnalyticsScreen: false,
   enableUniversalLink: false,
+  enableBrowseAndRequest: false,
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -40,9 +42,8 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseId: action.payload.data.uuid,
         enterpriseName: action.payload.data.name,
         enterpriseSlug: action.payload.data.slug,
-        enterpriseLogo: action.payload.data.branding_configuration
-          ? action.payload.data.branding_configuration.logo
-          : null,
+        enterpriseLogo: action.payload.data.branding_configuration?.logo,
+        identityProvider: action.payload.data.identity_provider,
         enableCodeManagementScreen: action.payload.data.enable_portal_code_management_screen,
         enableReportingConfigScreen: action.payload.data.enable_portal_reporting_config_screen,
         enableSubscriptionManagementScreen: action.payload.data.enable_portal_subscription_management_screen, // eslint-disable-line max-len
@@ -51,7 +52,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableLearnerPortal: action.payload.data.enable_learner_portal,
         enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
         enableUniversalLink: action.payload.data.enable_universal_link,
-        identityProvider: action.payload.data.identity_provider,
+        enableBrowseAndRequest: action.payload.data.enable_browse_and_request,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -63,6 +64,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseName: null,
         enterpriseSlug: null,
         enterpriseLogo: null,
+        identityProvider: null,
         enableCodeManagementScreen: false,
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
@@ -70,6 +72,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
         enableUniversalLink: false,
+        enableBrowseAndRequest: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -79,6 +82,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseName: null,
         enterpriseSlug: null,
         enterpriseLogo: null,
+        identityProvider: null,
         enableCodeManagementScreen: false,
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
@@ -86,6 +90,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
         enableUniversalLink: false,
+        enableBrowseAndRequest: false,
       };
     case UPDATE_PORTAL_CONFIGURATION:
       return {

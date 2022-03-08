@@ -1,123 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import {
-  useHistory,
   useRouteMatch,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
-import { Tabs, Tab } from '@edx/paragon';
 
-import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
-import SubscriptionDetailPage from './SubscriptionDetailPage';
-import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import SubscriptionTabs from './SubscriptionTabs';
+import SubscriptionPlanRoutes from './SubscriptionPlanRoutes';
+import {
+  DEFAULT_TAB,
+  SUBSCRIPTIONS_PARAM_MATCH,
+} from './data/constants';
+import NotFoundPage from '../NotFoundPage';
 import { features } from '../../config';
 
-const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
-  const multipleSubsCreateActions = (subscription) => {
-    const now = moment();
-    const isScheduled = now.isBefore(subscription.startDate);
-    const isExpired = now.isAfter(subscription.expirationDate);
-    const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;
-    const buttonVariant = isExpired ? 'outline-primary' : 'primary';
-
-    const actions = [];
-
-    if (!isScheduled) {
-      actions.push({
-        variant: buttonVariant,
-        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subscription.uuid}`,
-        buttonText,
-      });
-    }
-
-    return actions;
-  };
-
-  return (
-    <>
-      <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`}
-        render={routeProps => (
-          <MultipleSubscriptionsPage
-            {...routeProps}
-            createActions={multipleSubsCreateActions}
-          />
-        )}
-        exact
-      />
-      <Route
-        path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/:subscriptionUUID`}
-        component={SubscriptionDetailPage}
-        exact
-      />
-    </>
-  );
-};
-
-SubscriptionPlanRoutes.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const SubscriptionRoutes = ({ enterpriseSlug }) => {
-  const isTabsFeatureEnabled = !!features.FEATURE_BROWSE_AND_REQUEST;
-
-  const routesByTabKey = {
-    requests: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/requests`,
-    default: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-  };
-  const history = useHistory();
-  const requestsTabMatch = useRouteMatch(routesByTabKey.requests);
-  const initialTabKey = requestsTabMatch ? 'requests' : 'default';
-  const [tabKey, setTabKey] = useState(initialTabKey);
-
-  useEffect(() => {
-    if (!isTabsFeatureEnabled) {
-      return;
-    }
-
-    if (requestsTabMatch) {
-      setTabKey('requests');
-    } else {
-      setTabKey('default');
-    }
-  }, [isTabsFeatureEnabled, requestsTabMatch]);
-
-  const handleTabSelect = (key) => {
-    if (key === 'requests') {
-      history.push(routesByTabKey.requests);
-    } else if (key === 'default') {
-      history.push(routesByTabKey.default);
-    }
-    setTabKey(key);
-  };
+const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+  const { path } = useRouteMatch();
+  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   if (isTabsFeatureEnabled) {
     return (
       <Switch>
-        <Tabs
-          id="tabs-subscription-management"
-          activeKey={tabKey}
-          onSelect={handleTabSelect}
-        >
-          <Tab eventKey="default" title="Manage Learners" className="pt-4">
-            {tabKey === 'default' && (
-              <SubscriptionPlanRoutes enterpriseSlug={enterpriseSlug} />
-            )}
-          </Tab>
-          <Tab eventKey="requests" title="Manage Requests" className="pt-4">
-            {tabKey === 'requests' && (
-              <Route
-                path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/requests`}
-                component={SubscriptionSubsidyRequests}
-                exact
-              />
-            )}
-          </Tab>
-        </Tabs>
+        <Redirect
+          exact
+          from={path}
+          to={`${path}/${DEFAULT_TAB}`}
+        />
+        <Route
+          path={`${path}/${SUBSCRIPTIONS_PARAM_MATCH}`}
+          component={SubscriptionTabs}
+        />
+        <Route path="" component={NotFoundPage} />
       </Switch>
     );
   }
@@ -131,11 +47,12 @@ const SubscriptionRoutes = ({ enterpriseSlug }) => {
 
 SubscriptionRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionRoutes);
