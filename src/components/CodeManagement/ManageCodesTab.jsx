@@ -17,6 +17,7 @@ import LoadingMessage from '../LoadingMessage';
 import Coupon from '../Coupon';
 import { updateUrl } from '../../utils';
 import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 class ManageCodesTab extends React.Component {
   constructor(props) {
@@ -233,7 +234,7 @@ class ManageCodesTab extends React.Component {
       coupons,
       error,
       loading,
-      match,
+      enterpriseSlug,
     } = this.props;
     const { searchQuery } = this.state;
     const hasSearchQuery = !!searchQuery;
@@ -273,7 +274,7 @@ class ManageCodesTab extends React.Component {
             </Button>
             <Link
               className="request-codes-btn btn btn-primary"
-              to={`${match.path}/request-codes`}
+              to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/request-codes`}
             >
               <>
                 <Icon className="fa fa-plus mr-2" />
@@ -316,6 +317,7 @@ class ManageCodesTab extends React.Component {
 
 ManageCodesTab.defaultProps = {
   enterpriseId: null,
+  enterpriseSlug: null,
   coupons: null,
   loading: false,
   error: null,
@@ -338,6 +340,7 @@ ManageCodesTab.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
+  enterpriseSlug: PropTypes.string,
   coupons: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({})),
     num_pages: PropTypes.number,
