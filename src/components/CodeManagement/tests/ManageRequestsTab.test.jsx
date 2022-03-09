@@ -9,7 +9,7 @@ import {
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 
-import SubscriptionSubsidyRequests from '../SubscriptionSubsidyRequests';
+import ManageRequestsTab from '../ManageRequestsTab';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 
 jest.mock('../../SubsidyRequestManagementTable', () => {
@@ -65,23 +65,23 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
-const SubsidySubsidyRequestsWithRouter = ({
+const ManageRequestsTabWithRouter = ({
   store: storeProp,
 }) => (
   <Provider store={storeProp}>
-    <SubscriptionSubsidyRequests />
+    <ManageRequestsTab />
   </Provider>
 );
 
-SubsidySubsidyRequestsWithRouter.propTypes = {
+ManageRequestsTabWithRouter.propTypes = {
   store: PropTypes.shape(),
 };
 
-SubsidySubsidyRequestsWithRouter.defaultProps = {
+ManageRequestsTabWithRouter.defaultProps = {
   store,
 };
 
-describe('<SubscriptionSubsidyRequests />', () => {
+describe('<ManageRequestsTab />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
@@ -98,7 +98,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
       requestsOverview: [],
       handleFetchRequests: jest.fn(),
     }));
-    render(<SubsidySubsidyRequestsWithRouter />);
+    render(<ManageRequestsTabWithRouter />);
     const expectedProps = [
       'isLoading',
       'data',
