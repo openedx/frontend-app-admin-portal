@@ -16,10 +16,12 @@ import {
   MANAGE_REQUESTS_TAB,
   SUBSCRIPTION_TABS_VALUES,
   SUBSCRIPTION_TABS_LABELS,
+  SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
-  const { subscriptionsTab } = useParams();
+  const params = useParams();
+  const subscriptionsTab = params[SUBSCRIPTIONS_TAB_PARAM];
   const history = useHistory();
   const routesByTabKey = {
     [MANAGE_LEARNERS_TAB]: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`,
@@ -71,7 +73,6 @@ SubscriptionTabs.propTypes = {
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionTabs);
