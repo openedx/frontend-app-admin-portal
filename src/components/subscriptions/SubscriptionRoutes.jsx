@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  useRouteMatch,
   Switch,
   Route,
   Redirect,
@@ -17,8 +16,7 @@ import {
 import NotFoundPage from '../NotFoundPage';
 import { features } from '../../config';
 
-const SubscriptionRoutes = ({ enableBrowseAndRequest }) => {
-  const { path } = useRouteMatch();
+const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   if (isTabsFeatureEnabled) {
@@ -26,11 +24,11 @@ const SubscriptionRoutes = ({ enableBrowseAndRequest }) => {
       <Switch>
         <Redirect
           exact
-          from={path}
-          to={`${path}/${DEFAULT_TAB}`}
+          from={`/${enterpriseSlug}/admin/subscriptions`}
+          to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`}
         />
         <Route
-          path={`${path}/${SUBSCRIPTIONS_PARAM_MATCH}`}
+          path={`/${enterpriseSlug}/admin/${SUBSCRIPTIONS_PARAM_MATCH}`}
           component={SubscriptionTabs}
         />
         <Route path="" component={NotFoundPage} />
@@ -46,10 +44,12 @@ const SubscriptionRoutes = ({ enableBrowseAndRequest }) => {
 };
 
 SubscriptionRoutes.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
