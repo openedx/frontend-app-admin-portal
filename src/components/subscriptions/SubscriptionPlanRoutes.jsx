@@ -38,12 +38,9 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   };
 
   let baseManageLearnersPath = `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`;
-  if (isBrowseAndRequestEnabled) {
-    baseManageLearnersPath += `/${MANAGE_LEARNERS_TAB}`;
-  }
-
   let redirectPage;
   if (isBrowseAndRequestEnabled) {
+    baseManageLearnersPath += `/${MANAGE_LEARNERS_TAB}`;
     redirectPage = `${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`;
   }
 
