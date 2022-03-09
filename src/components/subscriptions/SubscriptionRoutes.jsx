@@ -28,7 +28,7 @@ const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
           to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`}
         />
         <Route
-          path={`/${enterpriseSlug}/admin/${SUBSCRIPTIONS_PARAM_MATCH}`}
+          path={`/${enterpriseSlug}/admin/subscriptions/${SUBSCRIPTIONS_PARAM_MATCH}`}
           component={SubscriptionTabs}
         />
         <Route path="" component={NotFoundPage} />
