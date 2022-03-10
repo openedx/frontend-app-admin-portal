@@ -23,6 +23,8 @@ import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 
 const SettingsTabs = ({ enterpriseId }) => {
+  const showSsoTab = false; // we can make this a proper url feature flag is wanted
+
   const tab = useCurrentSettingsTab();
 
   const history = useHistory();
@@ -54,9 +56,11 @@ const SettingsTabs = ({ enterpriseId }) => {
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
           <SettingsAccessTab />
         </Tab>
+        { showSsoTab && (
         <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
           <SettingsSSOTab enterpriseId={enterpriseId} />
         </Tab>
+        )}
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
           <SettingsLMSTab enterpriseId={enterpriseId} />
         </Tab>
