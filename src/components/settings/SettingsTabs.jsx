@@ -54,11 +54,11 @@ const SettingsTabs = ({ enterpriseId }) => {
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
           <SettingsAccessTab />
         </Tab>
-        <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          <SettingsLMSTab enterpriseId={enterpriseId} />
-        </Tab>
         <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
           <SettingsSSOTab enterpriseId={enterpriseId} />
+        </Tab>
+        <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
+          <SettingsLMSTab enterpriseId={enterpriseId} />
         </Tab>
       </Tabs>
     </Container>
