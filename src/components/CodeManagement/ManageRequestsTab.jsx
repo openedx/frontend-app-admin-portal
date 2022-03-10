@@ -1,26 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack } from '@edx/paragon';
 
+import moment from 'moment';
+import { camelCaseObject } from '@edx/frontend-platform';
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
   SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
+  SUBSIDY_REQUEST_STATUS,
 } from '../SubsidyRequestManagementTable';
+import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
+import { ApproveCouponCodeRequestModal, DeclineSubsidyRequestModal } from '../subsidy-request-modals';
+import { fetchCouponOrders } from '../../data/actions/coupons';
+import LoadingMessage from '../LoadingMessage';
+import { NoAvailableCodesBanner } from '../subsidy-request-management-alerts';
 
-const ManageRequestsTab = ({ enterpriseId }) => {
+const ManageRequestsTab = ({
+  enterpriseId, couponsData, loading: loadingCoupons, fetchCoupons,
+}) => {
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
   const {
     isLoading,
     requests,
     requestsOverview,
     handleFetchRequests,
+    updateRequestStatus,
   } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.codes);
 
-  /* eslint-disable no-console */
-  const handleApprove = (row) => console.log('approve', row);
-  const handleDecline = (row) => console.log('decline', row);
-  /* eslint-enable no-console */
+  const [selectedRequest, setSelectedRequest] = useState();
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
+
+  if (loadingCoupons) {
+    return <LoadingMessage className="coupons mt-3" />;
+  }
+
+  const now = moment();
+  const coupons = couponsData.results;
+  const hasAvailableCodes = coupons.some(coupon => moment(coupon.endDate) > now && coupon.numUnassigned > 0);
 
   return (
     <Stack gap={2}>
@@ -28,14 +50,21 @@ const ManageRequestsTab = ({ enterpriseId }) => {
         <h2>Enrollment requests</h2>
         <p>Approve or decline enrollment requests for individual learners below.</p>
       </div>
+      <NoAvailableCodesBanner couponsData={coupons} />
       <SubsidyRequestManagementTable
         pageCount={requests.pageCount}
         itemCount={requests.itemCount}
         data={requests.requests}
         fetchData={handleFetchRequests}
         requestStatusFilterChoices={requestsOverview}
-        onApprove={handleApprove}
-        onDecline={handleDecline}
+        onApprove={(row) => {
+          setSelectedRequest(row);
+          setIsApproveModalOpen(true);
+        }}
+        onDecline={(row) => {
+          setSelectedRequest(row);
+          setIsDenyModalOpen(true);
+        }}
         isLoading={isLoading}
         initialTableOptions={{
           getRowId: row => row.uuid,
@@ -44,17 +73,57 @@ const ManageRequestsTab = ({ enterpriseId }) => {
           pageSize: PAGE_SIZE,
           pageIndex: 0,
         }}
+        disableApproveButton={!hasAvailableCodes}
       />
+      {selectedRequest && (
+        <>
+          {isApproveModalOpen && (
+            <ApproveCouponCodeRequestModal
+              isOpen
+              couponCodeRequest={selectedRequest}
+              onSuccess={() => {
+                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING });
+                setIsApproveModalOpen(false);
+              }}
+              onClose={() => setIsApproveModalOpen(false)}
+            />
+          )}
+          {isDenyModalOpen && (
+            <DeclineSubsidyRequestModal
+              isOpen
+              subsidyRequest={selectedRequest}
+              declineRequestFn={EnterpriseAccessApiService.declineCouponCodeRequests}
+              onSuccess={() => {
+                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED });
+                setIsDenyModalOpen(false);
+              }}
+              onClose={() => setIsDenyModalOpen(false)}
+            />
+          )}
+        </>
+      )}
     </Stack>
   );
 };
 
 ManageRequestsTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  couponsData: PropTypes.shape({
+    results: PropTypes.array,
+  }).isRequired,
+  loading: PropTypes.bool.isRequired,
+  fetchCoupons: PropTypes.func.isRequired,
 };
+const mapDispatchToProps = dispatch => ({
+  fetchCoupons: (options) => {
+    dispatch(fetchCouponOrders(options));
+  },
+});
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  loading: state.coupons.loading,
+  couponsData: state.coupons.data ? camelCaseObject(state.coupons.data) : { results: [] },
 });
 
-export default connect(mapStateToProps)(ManageRequestsTab);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageRequestsTab);

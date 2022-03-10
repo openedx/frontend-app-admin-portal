@@ -15,7 +15,7 @@ class EnterpriseCatalogApiService {
       get_catalogs_containing_specified_content_ids: true,
     });
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-customer/${enterpriseId}/contains_content_items/?${queryParams.toString()}`;
-    return this.apiClient(
+    return EnterpriseCatalogApiService.apiClient(
       {
         useCache: configuration.USE_API_CACHE,
       },

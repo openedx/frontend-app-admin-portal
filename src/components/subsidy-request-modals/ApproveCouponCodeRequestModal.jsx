@@ -17,10 +17,10 @@ import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiS
 import { formatTimestamp } from '../../utils';
 
 export const ApproveCouponCodeRequestModal = ({
-  enterpriseId,
   couponCodeRequest: {
     uuid,
     courseId,
+    enterpriseCustomerUUID,
   },
   coupons,
   isOpen,
@@ -32,7 +32,7 @@ export const ApproveCouponCodeRequestModal = ({
     isLoading: isLoadingApplicableCoupons,
     error: loadApplicableCouponsError,
   } = useApplicableCoupons({
-    enterpriseId,
+    enterpriseId: enterpriseCustomerUUID,
     courseRunIds: [courseId],
     coupons,
   });
@@ -66,7 +66,8 @@ export const ApproveCouponCodeRequestModal = ({
   const approveCouponCodeRequest = useCallback(async () => {
     setIsApprovingRequest(true);
     try {
-      await EnterpriseAccessApiService.approveCouponCodeRequest({
+      await EnterpriseAccessApiService.approveCouponCodeRequests({
+        enterpriseId: enterpriseCustomerUUID,
         couponCodeRequestUUIDs: [uuid],
         couponId: selectedCouponId,
       });
@@ -181,10 +182,10 @@ export const ApproveCouponCodeRequestModal = ({
 };
 
 ApproveCouponCodeRequestModal.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
   couponCodeRequest: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     courseId: PropTypes.string.isRequired,
+    enterpriseCustomerUUID: PropTypes.string.isRequired,
   }).isRequired,
   isOpen: PropTypes.bool.isRequired,
   onSuccess: PropTypes.func.isRequired,
@@ -201,7 +202,6 @@ ApproveCouponCodeRequestModal.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
   coupons: state.coupons.data,
 });
 

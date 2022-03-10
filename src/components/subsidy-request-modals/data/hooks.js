@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
+import moment from 'moment';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 
@@ -61,7 +62,7 @@ export const useApplicableSubscriptions = ({
   useEffect(() => {
     const applicableSubs = subscriptions.results.filter(
       subscription => applicableCatalogs.includes(subscription.enterpriseCatalogUuid)
-        && subscription.licenses.unassigned > 0,
+        && subscription.daysUntilExpiration > 0 && subscription.licenses.unassigned > 0,
     );
     setApplicableSubscriptions(applicableSubs);
   }, [applicableCatalogs, subscriptions]);
@@ -122,8 +123,11 @@ export const useApplicableCoupons = ({
 
   useEffect(() => {
     if (couponDetails) {
+      const now = moment();
       const applicableCoups = couponDetails.filter(
-        coupon => applicableCatalogs.includes(coupon.enterpriseCustomerCatalog) && coupon.numUnassigned > 0,
+        coupon => applicableCatalogs.includes(
+          coupon.enterpriseCustomerCatalog,
+        ) && moment(coupon.endDate) > now && coupon.numUnassigned > 0,
       );
 
       setApplicableCoupons(applicableCoups);
