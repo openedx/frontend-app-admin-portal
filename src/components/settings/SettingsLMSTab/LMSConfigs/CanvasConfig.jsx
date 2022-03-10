@@ -1,14 +1,23 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
+import { CheckCircle, Error } from '@edx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
 import { buttonBool, handleErrors } from '../utils';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { useTimeout, useInterval } from '../../../../data/hooks';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import {
+  CANVAS_OAUTH_REDIRECT_URL,
+  INVALID_LINK,
+  INVALID_NAME,
+  SUCCESS_LABEL,
+  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
+  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
+} from '../../data/constants';
 
 const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [displayName, setDisplayName] = React.useState('');
@@ -22,7 +31,11 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
   const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
-
+  const [authorized, setAuthorized] = React.useState(false);
+  const [oauthPollingInterval, setOauthPollingInterval] = React.useState(null);
+  const [oauthPollingTimeout, setOauthPollingTimeout] = React.useState(null);
+  const [oauthTimeout, setOauthTimeout] = React.useState(false);
+  const [configId, setConfigId] = React.useState();
   const config = {
     displayName,
     clientId,
@@ -31,6 +44,49 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     canvasBaseUrl,
   };
 
+  // Polling method to determine if the user has authorized their config
+  useInterval(async () => {
+    if (configId) {
+      let err;
+      try {
+        const response = await LmsApiService.fetchSingleCanvasConfig(configId);
+        if (response.data.refresh_token) {
+          // Config has been authorized
+          setAuthorized(true);
+          // Stop both the backend polling and the timeout timer
+          setOauthPollingInterval(null);
+          setOauthPollingTimeout(null);
+          setOauthTimeout(false);
+        }
+      } catch (error) {
+        err = handleErrors(error);
+      }
+      if (err) {
+        setErrCode(errCode);
+        openError();
+      }
+    }
+  }, oauthPollingInterval);
+
+  // Polling timeout which stops the requests to LMS and toggles the timeout alert
+  useTimeout(async () => {
+    setOauthTimeout(true);
+    setOauthPollingInterval(null);
+  }, oauthPollingTimeout);
+
+  useEffect(() => {
+    setDisplayName(existingData.displayName);
+    setClientId(existingData.clientId);
+    setClientSecret(existingData.clientSecret);
+    setCanvasAccountId(existingData.canvasAccountId);
+    setCanvasBaseUrl(existingData.canvasBaseUrl);
+    // Check if the config has been authorized
+    if (existingData.refreshToken) {
+      setAuthorized(true);
+    }
+  }, [existingData]);
+
+  // Cancel button onclick
   const handleCancel = () => {
     if (edited) {
       openModal();
@@ -39,13 +95,55 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  useEffect(() => {
-    setDisplayName(existingData.displayName);
-    setClientId(existingData.clientId);
-    setClientSecret(existingData.clientSecret);
-    setCanvasAccountId(existingData.canvasAccountId);
-    setCanvasBaseUrl(existingData.canvasBaseUrl);
-  }, [existingData]);
+  const handleAuthorization = async (event) => {
+    event.preventDefault();
+    const transformedConfig = snakeCaseDict(config);
+
+    transformedConfig.active = false;
+    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
+    let err;
+    let fetchedConfigId;
+    // First either submit the new config or update the existing one before attempting to authorize
+    // If the config exists but has been edited, update it
+    if (!isEmpty(existingData) && edited) {
+      try {
+        const response = await LmsApiService.updateCanvasConfig(transformedConfig, existingData.id);
+        fetchedConfigId = response.data.id;
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    // If the config didn't previously exist, create it
+    } else if (isEmpty(existingData)) {
+      try {
+        const response = await LmsApiService.postNewCanvasConfig(transformedConfig);
+        fetchedConfigId = response.data.id;
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    // else we can retrieve the unedited, existing form's UUID and ID
+    } else {
+      fetchedConfigId = existingData.id;
+    }
+    if (err) {
+      setErrCode(errCode);
+      openError();
+    } else {
+      setConfigId(fetchedConfigId);
+      // Reset config polling timeout
+      setOauthTimeout(false);
+      // Start the config polling
+      setOauthPollingInterval(LMS_CONFIG_OAUTH_POLLING_INTERVAL);
+      // Start the polling timeout timer
+      setOauthPollingTimeout(LMS_CONFIG_OAUTH_POLLING_TIMEOUT);
+
+      const oauthUrl = `${canvasBaseUrl}/login/oauth2/auth?client_id=${clientId}&`
+      + `state=${enterpriseCustomerUuid}&response_type=code&`
+      + `redirect_uri=${CANVAS_OAUTH_REDIRECT_URL}`;
+
+      // Open the oauth window for the user
+      window.open(oauthUrl);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,7 +153,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
 
-    if (!isEmpty(existingData)) {
+    if (!isEmpty(existingData) || configId) {
       try {
         await LmsApiService.updateCanvasConfig(transformedConfig, existingData.id);
       } catch (error) {
@@ -68,7 +166,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         err = handleErrors(error);
       }
     }
-
     if (err) {
       setErrCode(errCode);
       openError();
@@ -167,9 +264,36 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             </Form.Control.Feedback>
           )}
         </Form.Group>
+        {authorized && (
+          <div className="mb-4">
+            <CheckCircle className="mr-1.5 text-success-500" />
+            Authorized
+          </div>
+        )}
+        {oauthTimeout && (
+          <div className="mb-4">
+            <Error className="mr-1.5 text-danger-500" />
+            We were unable to confirm your authorization. Please return to your LMS to authorize edX as an integration.
+          </div>
+        )}
         <span className="d-flex">
           <Button onClick={handleCancel} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid || !nameValid}>Submit</Button>
+          {!authorized && (
+            <Button
+              onClick={handleAuthorization}
+              disabled={!buttonBool(config) || !urlValid || !nameValid}
+            >
+              Authorize
+            </Button>
+          )}
+          {authorized && (
+            <Button
+              onClick={handleSubmit}
+              disabled={!buttonBool(config) || !urlValid || !nameValid}
+            >
+              Submit
+            </Button>
+          )}
         </span>
       </Form>
     </span>
@@ -186,6 +310,8 @@ CanvasConfig.propTypes = {
     id: PropTypes.number,
     clientSecret: PropTypes.string,
     canvasBaseUrl: PropTypes.string,
+    refreshToken: PropTypes.string,
+    uuid: PropTypes.string,
   }).isRequired,
 };
 export default CanvasConfig;
