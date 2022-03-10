@@ -211,12 +211,14 @@ export default function SettingsLMSTab({
           <LMSConfigPage LMSType={config} onClick={onClick} existingConfigFormData={existingConfigFormData} />
         </span>
       )}
-      <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-      >
-        {toastMessage}
-      </Toast>
+      {toastMessage && (
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+        >
+          {toastMessage}
+        </Toast>
+      )}
     </div>
   );
 }

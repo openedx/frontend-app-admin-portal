@@ -286,6 +286,8 @@ const channelMapping = {
   },
 };
 
+const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -312,4 +314,5 @@ export {
   truncateString,
   urlValidation,
   normalizeFileUpload,
+  capitalizeFirstLetter,
 };

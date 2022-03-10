@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import CourseNameCell from '../CourseNameCell';
+import CourseTitleCell from '../CourseTitleCell';
 import { renderWithRouter } from '../../test/testUtils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
 
@@ -27,24 +27,24 @@ const store = mockStore({
 const defaultProps = {
   row: {
     original: {
-      courseName: 'edX Demonstration Course',
-      courseKey: 'edX+DemoX',
+      courseTitle: 'edX Demonstration Course',
+      courseId: 'edX+DemoX',
     },
   },
 };
 
-describe('CourseNameCell', () => {
+describe('CourseTitleCell', () => {
   test('renders', () => {
     const mockCourseDetails = { shortDescription: 'Test short description' };
     const mockPromiseResolve = Promise.resolve({ data: mockCourseDetails });
     DiscoveryApiService.fetchCourseDetails.mockReturnValue(mockPromiseResolve);
     const Component = (
       <Provider store={store}>
-        <CourseNameCell {...defaultProps} />
+        <CourseTitleCell {...defaultProps} />
       </Provider>
     );
     renderWithRouter(Component);
-    userEvent.click(screen.getByText(defaultProps.row.original.courseName));
+    userEvent.click(screen.getByText(defaultProps.row.original.courseTitle));
     expect(screen.getByText('Loading course details...'));
     waitFor(() => {
       screen.getByText(mockCourseDetails.shortDescription);

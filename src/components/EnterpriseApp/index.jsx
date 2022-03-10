@@ -6,7 +6,7 @@ import { breakpoints } from '@edx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import AdminPage from '../../containers/AdminPage';
-import CodeManagementPage from '../../containers/CodeManagementPage';
+import CodeManagementPage from '../CodeManagement';
 import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
 import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
@@ -160,15 +160,9 @@ class EnterpriseApp extends React.Component {
                   />
                   {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
                     <Route
-                      key="code-management"
-                      exact
-                      path={`${baseUrl}/admin/coupons`}
-                      render={routeProps => <CodeManagementPage {...routeProps} />}
-                    />,
-                    <Route
                       key="request-codes"
                       exact
-                      path={`${baseUrl}/admin/coupons/request`}
+                      path={`${baseUrl}/admin/coupons/request-codes`}
                       render={routeProps => (
                         <RequestCodesPage
                           {...routeProps}
@@ -176,6 +170,11 @@ class EnterpriseApp extends React.Component {
                           enterpriseName={this.props.enterpriseName}
                         />
                       )}
+                    />,
+                    <Route
+                      key="code-management"
+                      path={`${baseUrl}/admin/coupons`}
+                      component={CodeManagementPage}
                     />,
                   ]}
                   {features.REPORTING_CONFIGURATIONS && (

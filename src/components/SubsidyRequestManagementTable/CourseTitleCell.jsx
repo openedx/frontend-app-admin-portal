@@ -12,9 +12,9 @@ import { getConfig } from '@edx/frontend-platform/config';
 
 import { useCourseDetails } from './data/hooks';
 
-const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
+const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseId }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = getConfig();
-  const [courseDetails, isCourseDetailsLoading] = useCourseDetails(courseKey);
+  const [courseDetails, isCourseDetailsLoading] = useCourseDetails(courseId);
 
   if (isCourseDetailsLoading) {
     return (
@@ -39,7 +39,7 @@ const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
       <div>
         <Hyperlink
           target="_blank"
-          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseKey}`}
+          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseId}`}
         >
           Learn more about this course
         </Hyperlink>
@@ -50,7 +50,7 @@ const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseKey }) => {
 
 CourseDetailsPopoverContentBase.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  courseKey: PropTypes.string.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -59,16 +59,16 @@ const mapStateToProps = (state) => ({
 
 const CourseDetailsPopoverContent = connect(mapStateToProps)(CourseDetailsPopoverContentBase);
 
-const CourseNameCell = ({ row }) => (
+const CourseTitleCell = ({ row }) => (
   <OverlayTrigger
     trigger="click"
     placement="top"
     rootClose
     overlay={(
       <Popover id="popover-requests-table-course-details">
-        <Popover.Title as="h5">{row.original.courseName}</Popover.Title>
+        <Popover.Title as="h5">{row.original.courseTitle}</Popover.Title>
         <Popover.Content>
-          <CourseDetailsPopoverContent courseKey={row.original.courseKey} />
+          <CourseDetailsPopoverContent courseId={row.original.courseId} />
         </Popover.Content>
       </Popover>
     )}
@@ -78,18 +78,18 @@ const CourseNameCell = ({ row }) => (
       className="text-left px-0"
       size="sm"
     >
-      {row.original.courseName}
+      {row.original.courseTitle}
     </Button>
   </OverlayTrigger>
 );
 
-CourseNameCell.propTypes = {
+CourseTitleCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      courseName: PropTypes.string,
-      courseKey: PropTypes.string,
+      courseTitle: PropTypes.string,
+      courseId: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };
 
-export default CourseNameCell;
+export default CourseTitleCell;

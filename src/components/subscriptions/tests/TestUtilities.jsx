@@ -20,6 +20,7 @@ export const TEST_SUBSCRIPTION_PLAN_TITLE = 'Test Subscription Plan';
 export const TEST_SUBSCRIPTION_PLAN_UUID = '28d4dcdc-c026-4c02-a263-82dd9c0d8b43';
 
 export const SUBSCRIPTION_PLAN_ZERO_STATE = {
+  uuid: 'test-subscription-uuid',
   daysUntilExpiration: 240,
   agreementNetDaysUntilExpiration: 240,
   licenses: {
@@ -111,6 +112,7 @@ export const DEFAULT_STORE_STATE = {
     enterpriseId: TEST_ENTERPRISE_CUSTOMER_UUID,
     enableSubscriptionManagementScreen: true,
     enableCodeManagementScreen: true,
+    enableBrowseAndRequest: false,
   },
 };
 

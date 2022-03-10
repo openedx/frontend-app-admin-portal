@@ -6,7 +6,7 @@ import EmailAddressCell from '../EmailAddressCell';
 const defaultProps = {
   row: {
     original: {
-      emailAddress: 'test@example.com',
+      email: 'test@example.com',
     },
   },
 };

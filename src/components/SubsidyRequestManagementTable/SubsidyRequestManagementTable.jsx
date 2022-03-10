@@ -9,7 +9,7 @@ import {
 import EmailAddressCell from './EmailAddressCell';
 import RequestDateCell from './RequestDateCell';
 import RequestStatusCell from './RequestStatusCell';
-import CourseNameCell from './CourseNameCell';
+import CourseTitleCell from './CourseTitleCell';
 import ActionCell from './ActionCell';
 
 const SubsidyRequestManagementTable = ({
@@ -18,18 +18,24 @@ const SubsidyRequestManagementTable = ({
   data,
   fetchData,
   requestStatusFilterChoices,
+  isLoading,
+  pageCount,
+  itemCount,
+  initialTableOptions,
+  initialState,
+  ...rest
 }) => {
   const columns = useMemo(
     () => ([
       {
         Header: 'Email address',
-        accessor: 'emailAddress',
+        accessor: 'email',
         Cell: EmailAddressCell,
       },
       {
-        Header: 'Course name',
-        accessor: 'courseName',
-        Cell: CourseNameCell,
+        Header: 'Course title',
+        accessor: 'courseTitle',
+        Cell: CourseTitleCell,
         disableFilters: true,
       },
       {
@@ -57,10 +63,11 @@ const SubsidyRequestManagementTable = ({
       isPaginated
       manualPagination
       defaultColumnValues={{ Filter: TextFilter }}
-      itemCount={3}
+      itemCount={itemCount}
+      pageCount={pageCount}
       fetchData={fetchData}
+      isLoading={isLoading}
       data={data}
-      pageCount={1}
       columns={columns}
       additionalColumns={[{
         id: 'action',
@@ -73,10 +80,15 @@ const SubsidyRequestManagementTable = ({
           />
         ),
       }]}
+      initialTableOptions={initialTableOptions}
+      initialState={initialState}
+      {...rest}
     >
       <DataTable.TableControlBar />
       <DataTable.Table />
-      <DataTable.EmptyTable content="No results found" />
+      {!isLoading && (
+        <DataTable.EmptyTable content="No results found" />
+      )}
       <DataTable.TableFooter />
     </DataTable>
   );
@@ -84,12 +96,17 @@ const SubsidyRequestManagementTable = ({
 
 SubsidyRequestManagementTable.propTypes = {
   fetchData: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  pageCount: PropTypes.number.isRequired,
+  itemCount: PropTypes.number.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
-    emailAddress: PropTypes.string,
-    courseName: PropTypes.string,
-    courseKey: PropTypes.string,
+    email: PropTypes.string,
+    courseTitle: PropTypes.string,
+    courseId: PropTypes.string,
     requestDate: PropTypes.string,
-    requestStatus: PropTypes.oneOf(['requested', 'declined']),
+    requestStatus: PropTypes.oneOf([
+      'approved', 'requested', 'declined', 'pending', 'error',
+    ]),
   })).isRequired,
   requestStatusFilterChoices: PropTypes.arrayOf(PropTypes.shape({
     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -98,6 +115,8 @@ SubsidyRequestManagementTable.propTypes = {
   })).isRequired,
   onApprove: PropTypes.func.isRequired,
   onDecline: PropTypes.func.isRequired,
+  initialTableOptions: PropTypes.shape().isRequired,
+  initialState: PropTypes.shape().isRequired,
 };
 
 export default SubsidyRequestManagementTable;

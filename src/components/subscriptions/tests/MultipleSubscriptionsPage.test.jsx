@@ -13,7 +13,7 @@ import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
 
-const fakeSlug = 'snail';
+const fakeSlug = 'sluggo';
 const defaultProps = {
   match: {
     params: {
@@ -25,7 +25,7 @@ const defaultProps = {
 // required for the expiration components
 const fakeStore = {
   portalConfiguration: {
-    enterpriseSlug: 'sluggo',
+    enterpriseSlug: fakeSlug,
     enableCodeManagementScreen: false,
   },
 };
