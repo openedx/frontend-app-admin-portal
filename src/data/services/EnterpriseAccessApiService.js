@@ -8,15 +8,17 @@ class EnterpriseAccessApiService {
   static apiClient = getAuthenticatedHttpClient;
 
   static approveLicenseRequest({
+    enterpriseCustomerUUID,
     licenseRequestUUIDs,
     subscriptionPlanUUID,
   }) {
     const options = {
+      enterprise_customer_uuid: enterpriseCustomerUUID,
       subsidy_request_uuids: licenseRequestUUIDs,
       subscription_plan_uuid: subscriptionPlanUUID,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/v1/license-requests/approve/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/approve/`;
     return this.apiClient().post(url, options);
   }
 
@@ -27,7 +29,7 @@ class EnterpriseAccessApiService {
       subsidy_request_uuids: licenseRequestUUIDs,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/v1/license-requests/decline/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/decline/`;
     return this.apiClient().post(url, options);
   }
 
@@ -40,7 +42,7 @@ class EnterpriseAccessApiService {
       coupon_id: couponId,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/v1/coupon-code-requests/approve/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/approve/`;
     return this.apiClient().post(url, options);
   }
 
@@ -51,7 +53,7 @@ class EnterpriseAccessApiService {
       subsidy_request_uuids: couponCodeRequestUUIDs,
     };
 
-    const url = `${EnterpriseAccessApiService.baseUrl}/v1/coupon-code-requests/decline/`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/decline/`;
     return this.apiClient().post(url, options);
   }
 

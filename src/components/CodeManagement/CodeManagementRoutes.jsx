@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  useRouteMatch,
   Switch,
   Route,
   Redirect,
@@ -17,8 +16,7 @@ import {
   COUPON_CODES_PARAM_MATCH,
 } from './data/constants';
 
-const CodeManagementRoutes = ({ enableBrowseAndRequest }) => {
-  const { path } = useRouteMatch();
+const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   if (isTabsFeatureEnabled) {
@@ -26,11 +24,11 @@ const CodeManagementRoutes = ({ enableBrowseAndRequest }) => {
       <Switch>
         <Redirect
           exact
-          from={path}
-          to={`${path}/${DEFAULT_TAB}`}
+          from={`/${enterpriseSlug}/admin/coupons`}
+          to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
         />
         <Route
-          path={`${path}/${COUPON_CODES_PARAM_MATCH}`}
+          path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
           component={CouponCodeTabs}
         />
         <Route path="" component={NotFoundPage} />
@@ -50,10 +48,12 @@ const CodeManagementRoutes = ({ enableBrowseAndRequest }) => {
 };
 
 CodeManagementRoutes.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
