@@ -9,7 +9,6 @@ import {
   Alert,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
-import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import Skeleton from 'react-loading-skeleton';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
@@ -18,10 +17,10 @@ import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiS
 import { formatTimestamp } from '../../utils';
 
 export const ApproveLicenseRequestModal = ({
-  enterpriseId,
   licenseRequest: {
     uuid,
     courseId,
+    enterpriseCustomerUUID,
   },
   isOpen,
   onSuccess,
@@ -33,10 +32,11 @@ export const ApproveLicenseRequestModal = ({
     isLoading: isLoadingApplicableSubscriptions,
     error: loadApplicableSubscriptionsError,
   } = useApplicableSubscriptions({
-    enterpriseId,
+    enterpriseId: enterpriseCustomerUUID,
     courseRunIds: [courseId],
     subscriptions,
   });
+
   const [selectedSubscriptionUUID, setSelectedSubscriptionUUID] = useState();
   const [isApprovingRequest, setisApprovingRequest] = useState(false);
   const [approveRequestError, setApproveRequestError] = useState(undefined);
@@ -67,7 +67,8 @@ export const ApproveLicenseRequestModal = ({
   const approveLicenseRequest = useCallback(async () => {
     setisApprovingRequest(true);
     try {
-      await EnterpriseAccessApiService.approveLicenseRequest({
+      await EnterpriseAccessApiService.approveLicenseRequests({
+        enterpriseId: enterpriseCustomerUUID,
         licenseRequestUUIDs: [uuid],
         subscriptionPlanUUID: selectedSubscriptionUUID,
       });
@@ -182,10 +183,10 @@ export const ApproveLicenseRequestModal = ({
 };
 
 ApproveLicenseRequestModal.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
   licenseRequest: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     courseId: PropTypes.string.isRequired,
+    enterpriseCustomerUUID: PropTypes.string.isRequired,
   }).isRequired,
   isOpen: PropTypes.bool.isRequired,
   onSuccess: PropTypes.func,
@@ -196,8 +197,4 @@ ApproveLicenseRequestModal.defaultProps = {
   onSuccess: undefined,
 };
 
-const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
-});
-
-export default connect(mapStateToProps)(ApproveLicenseRequestModal);
+export default ApproveLicenseRequestModal;

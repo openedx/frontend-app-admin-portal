@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
+import moment from 'moment';
 import { useApplicableCatalogs, useApplicableSubscriptions, useApplicableCoupons } from '../data/hooks';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
@@ -64,6 +65,7 @@ describe('useApplicableSubscriptions', () => {
       licenses: {
         unassigned: 1,
       },
+      daysUntilExpiration: 23,
     },
     {
       uuid: 'test-subscription-2',
@@ -71,6 +73,7 @@ describe('useApplicableSubscriptions', () => {
       licenses: {
         unassigned: 0,
       },
+      daysUntilExpiration: 33,
     },
     {
       uuid: 'test-subscription-2',
@@ -78,6 +81,7 @@ describe('useApplicableSubscriptions', () => {
       licenses: {
         unassigned: 1,
       },
+      daysUntilExpiration: -1,
     }],
   };
 
@@ -122,11 +126,19 @@ describe('useApplicableCoupons', () => {
       id: 1,
       numUnassigned: 1,
       enterpriseCustomerCatalog: TEST_CATALOG_UUID,
+      endDate: moment().add(1, 'days').toISOString(),
     },
     {
       id: 2,
       numUnassigned: 1,
       enterpriseCustomerCatalog: 'abc',
+      endDate: moment().add(1, 'days').toISOString(),
+    },
+    {
+      id: 3,
+      numUnassigned: 3,
+      enterpriseCustomerCatalog: TEST_CATALOG_UUID,
+      endDate: moment().subtract(1, 'days').toISOString(),
     }],
   };
 
@@ -147,9 +159,7 @@ describe('useApplicableCoupons', () => {
       },
     );
 
-    expect(EcommerceApiService.fetchCoupon).toHaveBeenCalledTimes(2);
-    expect(EcommerceApiService.fetchCoupon).toHaveBeenCalledWith(1);
-    expect(EcommerceApiService.fetchCoupon).toHaveBeenCalledWith(2);
+    expect(EcommerceApiService.fetchCoupon).toHaveBeenCalledTimes(3);
 
     const { applicableCoupons } = result.current;
     expect(applicableCoupons.length).toEqual(1);

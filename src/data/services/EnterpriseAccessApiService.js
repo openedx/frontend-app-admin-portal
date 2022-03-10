@@ -7,54 +7,66 @@ class EnterpriseAccessApiService {
 
   static apiClient = getAuthenticatedHttpClient;
 
-  static approveLicenseRequest({
-    enterpriseCustomerUUID,
+  static approveLicenseRequests({
+    enterpriseId,
     licenseRequestUUIDs,
     subscriptionPlanUUID,
   }) {
     const options = {
-      enterprise_customer_uuid: enterpriseCustomerUUID,
       subsidy_request_uuids: licenseRequestUUIDs,
       subscription_plan_uuid: subscriptionPlanUUID,
+      enterprise_customer_uuid: enterpriseId,
+      send_notification: true,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/approve/`;
-    return this.apiClient().post(url, options);
+    return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
-  static declineLicenseRequest({
-    licenseRequestUUIDs,
+  static declineLicenseRequests({
+    enterpriseId,
+    subsidyRequestUUIDS,
+    sendNotification,
   }) {
     const options = {
-      subsidy_request_uuids: licenseRequestUUIDs,
+      subsidy_request_uuids: subsidyRequestUUIDS,
+      enterprise_customer_uuid: enterpriseId,
+      send_notification: sendNotification,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/decline/`;
-    return this.apiClient().post(url, options);
+    return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
-  static approveCouponCodeRequest({
+  static approveCouponCodeRequests({
+    enterpriseId,
     couponCodeRequestUUIDs,
     couponId,
   }) {
     const options = {
       subsidy_request_uuids: couponCodeRequestUUIDs,
       coupon_id: couponId,
+      enterprise_customer_uuid: enterpriseId,
+      send_notification: true,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/approve/`;
-    return this.apiClient().post(url, options);
+    return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
-  static declineCouponCodeRequest({
-    couponCodeRequestUUIDs,
+  static declineCouponCodeRequests({
+    enterpriseId,
+    subsidyRequestUUIDS,
+    sendNotification,
   }) {
     const options = {
-      subsidy_request_uuids: couponCodeRequestUUIDs,
+      subsidy_request_uuids: subsidyRequestUUIDS,
+      enterprise_customer_uuid: enterpriseId,
+      send_notification: sendNotification,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/decline/`;
-    return this.apiClient().post(url, options);
+    return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
   static getLicenseRequests(enterpriseId, requestStatusFilters, options = {}) {

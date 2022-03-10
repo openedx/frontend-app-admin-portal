@@ -19,3 +19,11 @@ export const SUBSIDY_REQUESTS_TYPES = {
     requests: EnterpriseAccessApiService.getLicenseRequests,
   },
 };
+
+export const SUBSIDY_REQUEST_STATUS = {
+  REQUESTED: 'requested',
+  PENDING: 'pending',
+  APPROVED: 'approved',
+  DECLINED: 'declined',
+  ERROR: 'error',
+};

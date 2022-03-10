@@ -1,18 +1,24 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   ModalDialog, ActionRow, Button, Form, Alert, StatefulButton,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
+import { logError } from '@edx/frontend-platform/logging';
 
 const DeclineSubsidyRequestModal = ({
   isOpen,
-  isLoading,
-  onDecline,
+  subsidyRequest: {
+    uuid,
+    enterpriseCustomerUUID,
+  },
+  declineRequestFn,
+  onSuccess,
   onClose,
-  error,
 }) => {
   const [shouldNotifyLearner, setShouldNotifyLearner] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const buttonState = useMemo(() => {
     if (error) {
@@ -25,6 +31,24 @@ const DeclineSubsidyRequestModal = ({
 
     return 'default';
   }, [error, isLoading]);
+
+  const declineSubsidyRequest = useCallback(async () => {
+    setError(undefined);
+    setIsLoading(true);
+    try {
+      await declineRequestFn({
+        subsidyRequestUUIDS: [uuid],
+        sendNotification: shouldNotifyLearner,
+        enterpriseId: enterpriseCustomerUUID,
+      });
+      onSuccess();
+    } catch (err) {
+      logError(err);
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [uuid, shouldNotifyLearner]);
 
   return (
     <ModalDialog
@@ -76,7 +100,8 @@ const DeclineSubsidyRequestModal = ({
               pending: 'Declining...',
               errored: 'Try again',
             }}
-            onClick={() => onDecline(shouldNotifyLearner)}
+            onClick={declineSubsidyRequest}
+            disabled={isLoading}
             data-testid="decline-subsidy-request-modal-decline-btn"
           />
         </ActionRow>
@@ -87,14 +112,14 @@ const DeclineSubsidyRequestModal = ({
 
 DeclineSubsidyRequestModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  onDecline: PropTypes.func.isRequired,
+  subsidyRequest: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    courseId: PropTypes.string.isRequired,
+    enterpriseCustomerUUID: PropTypes.string.isRequired,
+  }).isRequired,
+  declineRequestFn: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
-  error: PropTypes.instanceOf(Error),
-};
-
-DeclineSubsidyRequestModal.defaultProps = {
-  error: undefined,
 };
 
 export default DeclineSubsidyRequestModal;

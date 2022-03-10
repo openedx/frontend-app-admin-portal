@@ -13,6 +13,7 @@ const defaultProps = {
   },
   onApprove: jest.fn(),
   onDecline: jest.fn(),
+  disableApproveButton: false,
 };
 
 describe('ActionCell', () => {
@@ -43,5 +44,18 @@ describe('ActionCell', () => {
     userEvent.click(screen.getByText('Approve'));
     expect(mockApprove).toHaveBeenCalledTimes(1);
     expect(mockApprove).toHaveBeenCalledWith({ id: 1, requestStatus: 'requested' });
+  });
+
+  test('approve button is disabled when disableApproveButton = true', () => {
+    const props = {
+      ...defaultProps,
+      row: {
+        original: { id: 1, requestStatus: 'requested' },
+      },
+      disableApproveButton: true,
+    };
+    renderWithRouter(<ActionCell {...props} />);
+    const approveButton = screen.getByText('Approve');
+    expect(approveButton.disabled).toBe(true);
   });
 });

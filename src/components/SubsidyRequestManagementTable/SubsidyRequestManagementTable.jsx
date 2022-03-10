@@ -23,6 +23,7 @@ const SubsidyRequestManagementTable = ({
   itemCount,
   initialTableOptions,
   initialState,
+  disableApproveButton,
   ...rest
 }) => {
   const columns = useMemo(
@@ -77,6 +78,7 @@ const SubsidyRequestManagementTable = ({
             {...props}
             onApprove={onApprove}
             onDecline={onDecline}
+            disableApproveButton={disableApproveButton}
           />
         ),
       }]}
@@ -117,6 +119,11 @@ SubsidyRequestManagementTable.propTypes = {
   onDecline: PropTypes.func.isRequired,
   initialTableOptions: PropTypes.shape().isRequired,
   initialState: PropTypes.shape().isRequired,
+  disableApproveButton: PropTypes.bool,
+};
+
+SubsidyRequestManagementTable.defaultProps = {
+  disableApproveButton: false,
 };
 
 export default SubsidyRequestManagementTable;

@@ -5,7 +5,9 @@ import {
   Button,
 } from '@edx/paragon';
 
-const ActionCell = ({ row, onApprove, onDecline }) => {
+const ActionCell = ({
+  row, onApprove, onDecline, disableApproveButton,
+}) => {
   if (row.original.requestStatus !== 'requested') {
     return null;
   }
@@ -22,6 +24,7 @@ const ActionCell = ({ row, onApprove, onDecline }) => {
         variant="link"
         size="inline"
         onClick={() => onApprove(row.original)}
+        disabled={disableApproveButton}
       >
         Approve
       </Button>
@@ -37,6 +40,11 @@ ActionCell.propTypes = {
   }).isRequired,
   onApprove: PropTypes.func.isRequired,
   onDecline: PropTypes.func.isRequired,
+  disableApproveButton: PropTypes.bool,
+};
+
+ActionCell.defaultProps = {
+  disableApproveButton: false,
 };
 
 export default ActionCell;

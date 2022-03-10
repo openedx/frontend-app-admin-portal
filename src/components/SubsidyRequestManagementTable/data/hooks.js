@@ -1,4 +1,6 @@
-import { useCallback, useState, useEffect } from 'react';
+import {
+  useCallback, useState, useEffect, useReducer,
+} from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import debounce from 'lodash.debounce';
@@ -11,6 +13,14 @@ import {
 } from './constants';
 import { transformRequestOverview, transformRequests } from './utils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
+import { initialSubsidyRequestsState, subsidyRequestsReducer } from './reducer';
+import {
+  setIsLoadingSubsidyRequests,
+  setSubsidyRequestsData,
+  setSubsidyRequestsOverviewData,
+  updateSubsidyRequestStatus,
+
+} from './actions';
 
 export const useSubsidyRequests = (
   enterpriseId,
@@ -19,22 +29,16 @@ export const useSubsidyRequests = (
   if (!Object.values(SUPPORTED_SUBSIDY_TYPES).includes(subsidyRequestType)) {
     logError(`useSubsidyRequests does not support a subsidy request type of ${subsidyRequestType}.`);
   }
-  const [requests, setRequests] = useState({
-    requests: [],
-    pageCount: 0,
-    itemCount: 0,
-  });
-  const [requestsOverview, setRequestsOverview] = useState([]);
-  const [isLoadingRequests, setIsLoadingRequests] = useState(false);
-  const [isLoadingRequestsOverview, setIsLoadingRequestsOverview] = useState(false);
-
-  const isLoading = isLoadingRequests || isLoadingRequestsOverview;
+  const [subsidyRequestsState, dispatch] = useReducer(subsidyRequestsReducer, initialSubsidyRequestsState);
+  const {
+    requestsData, overviewData, isLoading,
+  } = subsidyRequestsState;
 
   /**
    * Fetches counts of each request status.
    */
   const fetchOverview = async ({ query }) => {
-    setIsLoadingRequestsOverview(true);
+    dispatch(setIsLoadingSubsidyRequests(true));
     try {
       const options = {};
       if (query) {
@@ -46,11 +50,11 @@ export const useSubsidyRequests = (
       );
       const data = camelCaseObject(response.data);
       const result = transformRequestOverview(data);
-      setRequestsOverview(result);
+      dispatch(setSubsidyRequestsOverviewData(result));
     } catch (err) {
       logError(err);
     } finally {
-      setIsLoadingRequestsOverview(false);
+      dispatch(setIsLoadingSubsidyRequests(false));
     }
   };
 
@@ -58,7 +62,7 @@ export const useSubsidyRequests = (
    * Fetches requests from the API.
    */
   const fetchRequests = async ({ page, query, filters }) => {
-    setIsLoadingRequests(true);
+    dispatch(setIsLoadingSubsidyRequests(true));
     try {
       const options = {
         page,
@@ -74,15 +78,15 @@ export const useSubsidyRequests = (
       );
       const data = camelCaseObject(response.data);
       const transformedRequests = transformRequests(data.results);
-      setRequests({
+      dispatch(setSubsidyRequestsData({
         requests: transformedRequests,
         pageCount: data.numPages,
         itemCount: data.count,
-      });
+      }));
     } catch (err) {
       logError(err);
     } finally {
-      setIsLoadingRequests(false);
+      dispatch(setIsLoadingSubsidyRequests(false));
     }
   };
 
@@ -117,10 +121,19 @@ export const useSubsidyRequests = (
     [],
   );
 
+  const updateRequestStatus = useCallback(({
+    request,
+    newStatus,
+  }) => dispatch(updateSubsidyRequestStatus({
+    request,
+    newStatus,
+  })), []);
+
   return {
     handleFetchRequests,
-    requests,
-    requestsOverview,
+    updateRequestStatus,
+    requests: requestsData,
+    requestsOverview: overviewData,
     isLoading,
   };
 };
