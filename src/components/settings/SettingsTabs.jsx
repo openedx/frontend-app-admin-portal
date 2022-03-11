@@ -20,6 +20,8 @@ import {
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
 import SettingsLMSTab from './SettingsLMSTab';
+import SettingsSSOTab from './SettingsSSOTab';
+import { features } from '../../config';
 
 const SettingsTabs = ({
   enterpriseId,
@@ -27,6 +29,8 @@ const SettingsTabs = ({
   enableSamlConfigurationScreen,
   identityProvider,
 }) => {
+  const { FEATURE_SSO_SETTINGS_TAB } = features;
+
   const tab = useCurrentSettingsTab();
 
   const history = useHistory();
@@ -58,6 +62,11 @@ const SettingsTabs = ({
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
           <SettingsAccessTab />
         </Tab>
+        { FEATURE_SSO_SETTINGS_TAB && (
+        <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
+          <SettingsSSOTab enterpriseId={enterpriseId} />
+        </Tab>
+        )}
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
           <SettingsLMSTab
             enterpriseId={enterpriseId}
