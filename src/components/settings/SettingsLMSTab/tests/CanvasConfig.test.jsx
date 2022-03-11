@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, render, fireEvent, screen,
+  act, render, fireEvent, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -132,7 +132,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Submit'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Submit')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
@@ -162,8 +162,9 @@ describe('<CanvasConfig />', () => {
     expect(screen.getByText('Authorize')).not.toBeDisabled();
 
     userEvent.click(screen.getByText('Authorize'));
+
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
@@ -192,11 +193,12 @@ describe('<CanvasConfig />', () => {
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
-    userEvent.click(screen.getByText('Cancel'));
-    userEvent.click(screen.getByText('Save'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
+
+    userEvent.click(screen.getByText('Cancel'));
+    userEvent.click(screen.getByText('Save'));
 
     const expectedConfig = {
       active: false,
@@ -227,8 +229,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
-    expect(await screen.findByText('Display Name')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -256,8 +257,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
-    expect(await screen.findByText('Display Name')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
@@ -276,7 +276,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Display Name')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();

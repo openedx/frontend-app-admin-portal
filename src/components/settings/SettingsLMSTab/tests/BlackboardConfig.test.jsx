@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, render, fireEvent, screen,
+  act, render, fireEvent, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -142,7 +142,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
@@ -150,7 +150,7 @@ describe('<BlackboardConfig />', () => {
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPostConfigApi).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
     render(
@@ -165,11 +165,11 @@ describe('<BlackboardConfig />', () => {
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
+    // Await a find by text in order to account for state changes in the button callback
+    await waitFor(() => screen.getByText('Submit'));
+
     userEvent.click(screen.getByText('Cancel'));
     userEvent.click(screen.getByText('Save'));
-
-    // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Save')).toBeInTheDocument();
 
     const expectedConfig = {
       active: false,
@@ -194,7 +194,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     await screen.findByText('Display Name');
     expect(window.open).toHaveBeenCalled();
@@ -221,9 +221,7 @@ describe('<BlackboardConfig />', () => {
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
-
-    // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
 
     await screen.findByText('Display Name');
     expect(window.open).toHaveBeenCalled();
@@ -241,9 +239,10 @@ describe('<BlackboardConfig />', () => {
     expect(screen.getByText('Authorize')).not.toBeDisabled();
 
     userEvent.click(screen.getByText('Authorize'));
+
     // Await a find by text in order to account for state changes in the button callback
-    expect(await screen.findByText('Authorize')).toBeInTheDocument();
-    expect(await screen.findByText('Display Name')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Submit'));
+    expect(screen.getByText('Display Name')).toBeInTheDocument();
 
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
