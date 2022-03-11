@@ -47,6 +47,7 @@ const features = {
   SETTINGS_PAGE: process.env.FEATURE_SETTINGS_PAGE || hasFeatureFlagEnabled('SETTINGS_PAGE'),
   SETTINGS_UNIVERSAL_LINK: process.env.FEATURE_SETTINGS_UNIVERSAL_LINK || hasFeatureFlagEnabled('SETTINGS_UNIVERSAL_LINK'),
   FEATURE_BROWSE_AND_REQUEST: process.env.FEATURE_BROWSE_AND_REQUEST || hasFeatureFlagEnabled('BROWSE_AND_REQUEST'),
+  FEATURE_SSO_SETTINGS_TAB: process.env.FEATURE_SSO_SETTINGS_TAB || hasFeatureFlagEnabled('SSO_SETTINGS_TAB'),
 };
 
 export { configuration, features };
