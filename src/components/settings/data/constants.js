@@ -6,7 +6,7 @@ const SSO_TAB = 'sso';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'LMS';
-const SSO_TAB_LABEL = 'SSO';
+const SSO_TAB_LABEL = 'SAML';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
