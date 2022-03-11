@@ -4,6 +4,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 
 const useExistingSSOConfigs = (enterpriseUuid) => {
   const [ssoConfigs, setSsoConfigs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,7 +15,9 @@ const useExistingSSOConfigs = (enterpriseUuid) => {
       };
       fetchData().then(configs => {
         setSsoConfigs(configs);
+        setLoading(false);
       }).catch(err => {
+        setLoading(false);
         if (err.customAttributes?.httpErrorStatus !== 404) {
           // nothing found is okay for this fetcher.
           setError(err);
@@ -22,7 +25,7 @@ const useExistingSSOConfigs = (enterpriseUuid) => {
       });
     }
   }, [enterpriseUuid]);
-  return [ssoConfigs, error];
+  return [ssoConfigs, error, loading];
 };
 
 export {

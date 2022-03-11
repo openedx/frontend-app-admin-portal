@@ -8,7 +8,7 @@ import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
-  const [existingConfigs, error] = useExistingSSOConfigs(enterpriseId);
+  const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
   return (
     <div>
       <div className="d-flex">
@@ -21,18 +21,21 @@ const SettingsSSOTab = ({ enterpriseId }) => {
           Help Center
         </Hyperlink>
       </div>
-      <p key={enterpriseId}>
-        {existingConfigs.length > 0 && <ExistingSSOConfigs />}
-        {existingConfigs.length < 1 && <NewSSOConfigForm />}
-        {error && (
-        <Alert
-          variant="warning"
-          icon={WarningFilled}
-        >
-          An error occurred loading the SAML configs: <p>{error?.message}</p>
-        </Alert>
-        )}
-      </p>
+      {!isLoading && (
+        <p>
+          {existingConfigs.length > 0 && <ExistingSSOConfigs />}
+          {existingConfigs.length < 1 && <NewSSOConfigForm />}
+          {error && (
+          <Alert
+            variant="warning"
+            icon={WarningFilled}
+          >
+            An error occurred loading the SAML configs: <p>{error?.message}</p>
+          </Alert>
+          )}
+        </p>
+      )}
+      {isLoading && <></>}
     </div>
   );
 };
