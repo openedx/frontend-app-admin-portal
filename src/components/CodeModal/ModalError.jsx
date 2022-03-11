@@ -8,9 +8,7 @@ const ModalError = React.forwardRef(({ title, errors }, ref) => (
     ref={ref}
     tabIndex="-1"
   >
-    <Alert
-      variant="danger"
-    >
+    <Alert variant="danger">
       <Icon src={Warning} screenReaderText="Warning" className="alert-icon" />
       {title && (
         <Alert.Heading>{title}</Alert.Heading>

@@ -87,6 +87,7 @@ export const useSubscriptionUsersOverview = ({
   search,
   errors,
   setErrors,
+  isDisabled = false,
 }) => {
   const initialSubscriptionUsersOverview = {
     all: 0,
@@ -129,7 +130,14 @@ export const useSubscriptionUsersOverview = ({
     loadSubscriptionUsersOverview();
   };
 
-  useEffect(loadSubscriptionUsersOverview, [subscriptionUUID, search]);
+  useEffect(
+    () => {
+      if (!isDisabled) {
+        loadSubscriptionUsersOverview();
+      }
+    },
+    [subscriptionUUID, search, isDisabled],
+  );
 
   return [subscriptionUsersOverview, forceRefresh];
 };
@@ -145,6 +153,7 @@ export const useSubscriptionUsers = ({
   errors,
   setErrors,
   userStatusFilter,
+  isDisabled = false,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -183,7 +192,13 @@ export const useSubscriptionUsers = ({
     loadSubscriptionUsers();
   };
 
-  useEffect(loadSubscriptionUsers, [currentPage, searchQuery, subscriptionUUID, userStatusFilter]);
+  useEffect(
+    () => {
+      if (isDisabled) { return; }
+      loadSubscriptionUsers();
+    },
+    [currentPage, searchQuery, subscriptionUUID, userStatusFilter, isDisabled],
+  );
 
   return [subscriptionUsers, forceRefresh, loadingUsers];
 };

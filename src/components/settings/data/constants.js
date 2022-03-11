@@ -1,3 +1,5 @@
+import { configuration } from '../../../config';
+
 const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
 const SSO_TAB = 'sso';
@@ -61,3 +63,8 @@ const generatePathMatch = () => {
 };
 
 export const SETTINGS_PARAM_MATCH = generatePathMatch();
+
+export const BLACKBOARD_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/blackboard/oauth-complete`;
+export const CANVAS_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/canvas/oauth-complete`;
+export const LMS_CONFIG_OAUTH_POLLING_TIMEOUT = 60000;
+export const LMS_CONFIG_OAUTH_POLLING_INTERVAL = 1000;

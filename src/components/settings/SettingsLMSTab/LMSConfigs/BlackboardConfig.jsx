@@ -1,41 +1,84 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
+import { CheckCircle, Error } from '@edx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
 import { buttonBool, handleErrors } from '../utils';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../ConfigError';
+import { useTimeout, useInterval } from '../../../../data/hooks';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import {
+  BLACKBOARD_OAUTH_REDIRECT_URL,
+  INVALID_LINK,
+  INVALID_NAME,
+  SUCCESS_LABEL,
+  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
+  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
+} from '../../data/constants';
 
 const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
-  const [clientId, setClientId] = React.useState('');
-  const [clientSecret, setClientSecret] = React.useState('');
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
   const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
-
+  const [authorized, setAuthorized] = React.useState(false);
+  const [oauthPollingInterval, setOauthPollingInterval] = React.useState(null);
+  const [oauthPollingTimeout, setOauthPollingTimeout] = React.useState(null);
+  const [oauthTimeout, setOauthTimeout] = React.useState(false);
+  const [configId, setConfigId] = React.useState();
   const config = {
     displayName,
-    clientId,
-    clientSecret,
     blackboardBaseUrl,
   };
 
+  // Polling method to determine if the user has authorized their config
+  useInterval(async () => {
+    if (configId) {
+      let err;
+      try {
+        const response = await LmsApiService.fetchSingleBlackboardConfig(configId);
+        if (response.data.refresh_token) {
+          // Config has been authorized
+          setAuthorized(true);
+          // Stop both the backend polling and the timeout timer
+          setOauthPollingInterval(null);
+          setOauthPollingTimeout(null);
+          setOauthTimeout(false);
+        }
+      } catch (error) {
+        err = handleErrors(error);
+      }
+      if (err) {
+        setErrCode(errCode);
+        openError();
+      }
+    }
+  }, oauthPollingInterval);
+
+  // Polling timeout which stops the requests to LMS and toggles the timeout alert
+  useTimeout(async () => {
+    setOauthTimeout(true);
+    setOauthPollingInterval(null);
+  }, oauthPollingTimeout);
+
   useEffect(() => {
-    setClientId(existingData.clientId);
-    setClientSecret(existingData.clientSecret);
+    // Set fields to any existing data
     setBlackboardBaseUrl(existingData.blackboardBaseUrl);
     setDisplayName(existingData.displayName);
+    // Check if the config has been authorized
+    if (existingData.refreshToken) {
+      setAuthorized(true);
+    }
   }, [existingData]);
 
+  // Cancel button onclick
   const handleCancel = () => {
     if (edited) {
       openModal();
@@ -44,19 +87,93 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     }
   };
 
+  const handleAuthorization = async (event) => {
+    event.preventDefault();
+    const transformedConfig = snakeCaseDict(config);
+
+    transformedConfig.active = false;
+    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
+    let err;
+    let configUuid;
+    let fetchedConfigId;
+    // First either submit the new config or update the existing one before attempting to authorize
+    // If the config exists but has been edited, update it
+    if (!isEmpty(existingData) && edited) {
+      try {
+        const response = await LmsApiService.updateBlackboardConfig(transformedConfig, existingData.id);
+        configUuid = response.data.uuid;
+        fetchedConfigId = response.data.id;
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    // If the config didn't previously exist, create it
+    } else if (isEmpty(existingData)) {
+      try {
+        const response = await LmsApiService.postNewBlackboardConfig(transformedConfig);
+        configUuid = response.data.uuid;
+        fetchedConfigId = response.data.id;
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    // else we can retrieve the unedited, existing form's UUID and ID
+    } else {
+      configUuid = existingData.uuid;
+      fetchedConfigId = existingData.id;
+    }
+    if (err) {
+      setErrCode(errCode);
+      openError();
+    } else {
+      // Either collect app key from the existing config data if it exists, otherwise
+      // fetch it from the global config
+      let appKey = existingData.clientId;
+      if (!appKey) {
+        try {
+          const response = await LmsApiService.fetchBlackboardGlobalConfig();
+          appKey = response.data.results[0].app_key;
+        } catch (error) {
+          err = handleErrors(error);
+        }
+      }
+      if (err) {
+        setErrCode(errCode);
+        openError();
+      } else {
+        // Save the config ID so we know one was created in the authorization flow
+        setConfigId(fetchedConfigId);
+        // Reset config polling timeout flag
+        setOauthTimeout(false);
+        // Start the config polling
+        setOauthPollingInterval(LMS_CONFIG_OAUTH_POLLING_INTERVAL);
+        // Start the polling timeout timer
+        setOauthPollingTimeout(LMS_CONFIG_OAUTH_POLLING_TIMEOUT);
+        // Open the oauth window for the user
+        const oauthUrl = `${blackboardBaseUrl}/learn/api/public/v1/oauth2/authorizationcode?`
+          + `redirect_uri=${BLACKBOARD_OAUTH_REDIRECT_URL}&scope=read%20write%20delete%20offline&`
+          + `response_type=code&client_id=${appKey}&state=${configUuid}`;
+        window.open(oauthUrl);
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // format config data for the backend
     const transformedConfig = snakeCaseDict(config);
     // this will need to change based on save draft/submit
     transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
-    if (!isEmpty(existingData)) {
+    // If we have a config that already exists, or a config that was created when authorized, post
+    // an update
+    if (!isEmpty(existingData) || configId) {
       try {
-        await LmsApiService.updateBlackboardConfig(transformedConfig, existingData.id);
+        const configIdToUpdate = configId || existingData.id;
+        await LmsApiService.updateBlackboardConfig(transformedConfig, configIdToUpdate);
       } catch (error) {
         err = handleErrors(error);
       }
+    // Otherwise post a new config
     } else {
       try {
         await LmsApiService.postNewBlackboardConfig(transformedConfig);
@@ -110,31 +227,6 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group>
-          <Form.Control
-            data-test="clientId"
-            className="mb-4"
-            type="text"
-            onChange={(e) => {
-              setEdited(true);
-              setClientId(e.target.value);
-            }}
-            floatingLabel="API Client ID/Blackboard Application Key"
-            defaultValue={existingData.clientId}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Control
-            className="my-4"
-            type="password"
-            onChange={(e) => {
-              setEdited(true);
-              setClientSecret(e.target.value);
-            }}
-            floatingLabel="API Client Secret/Application Secret"
-            defaultValue={existingData.clientSecret}
-          />
-        </Form.Group>
         <Form.Group className="my-4">
           <Form.Control
             type="text"
@@ -152,9 +244,36 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
             </Form.Control.Feedback>
           )}
         </Form.Group>
+        {authorized && (
+          <div className="mb-4">
+            <CheckCircle className="mr-1.5 text-success-500" />
+            Authorized
+          </div>
+        )}
+        {oauthTimeout && (
+          <div className="mb-4">
+            <Error className="mr-1.5 text-danger-500" />
+            We were unable to confirm your authorization. Please return to your LMS to authorize edX as an integration.
+          </div>
+        )}
         <span className="d-flex">
           <Button onClick={handleCancel} className="ml-auto mr-2" variant="outline-primary">Cancel</Button>
-          <Button onClick={handleSubmit} disabled={!buttonBool(config) || !urlValid || !nameValid}>Submit</Button>
+          {!authorized && (
+            <Button
+              onClick={handleAuthorization}
+              disabled={!buttonBool(config) || !urlValid || !nameValid}
+            >
+              Authorize
+            </Button>
+          )}
+          {authorized && (
+            <Button
+              onClick={handleSubmit}
+              disabled={!buttonBool(config) || !urlValid || !nameValid}
+            >
+              Submit
+            </Button>
+          )}
         </span>
       </Form>
     </span>
@@ -170,6 +289,8 @@ BlackboardConfig.propTypes = {
     clientId: PropTypes.string,
     clientSecret: PropTypes.string,
     blackboardBaseUrl: PropTypes.string,
+    refreshToken: PropTypes.string,
+    uuid: PropTypes.string,
   }).isRequired,
 };
 export default BlackboardConfig;

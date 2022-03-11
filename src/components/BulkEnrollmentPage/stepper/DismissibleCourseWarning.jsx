@@ -8,16 +8,14 @@ import { WARNING_ALERT_TITLE_TEXT, WARNING_ALERT_BODY_TEXT } from './constants';
  * Displays simple dismissible banner to remind admins.
  */
 const DismissibleCourseWarning = () => {
-  const [closed, setClosed] = useState(false);
-
-  if (closed) { return null; }
-
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <Alert
       variant="warning"
       dismissible
       icon={WarningFilled}
-      onClose={() => setClosed(true)}
+      show={isOpen}
+      onClose={() => setIsOpen(false)}
     >
       <Alert.Heading>{WARNING_ALERT_TITLE_TEXT}</Alert.Heading>
       <p>

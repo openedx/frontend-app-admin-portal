@@ -23,7 +23,12 @@ import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
 
-const SettingsTabs = ({ enterpriseId }) => {
+const SettingsTabs = ({
+  enterpriseId,
+  enterpriseSlug,
+  enableSamlConfigurationScreen,
+  identityProvider,
+}) => {
   const { FEATURE_SSO_SETTINGS_TAB } = features;
 
   const tab = useCurrentSettingsTab();
@@ -63,7 +68,12 @@ const SettingsTabs = ({ enterpriseId }) => {
         </Tab>
         )}
         <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          <SettingsLMSTab enterpriseId={enterpriseId} />
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+            identityProvider={identityProvider}
+          />
         </Tab>
       </Tabs>
     </Container>
@@ -72,10 +82,16 @@ const SettingsTabs = ({ enterpriseId }) => {
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+  identityProvider: state.portalConfiguration.identityProvider,
 });
 
 SettingsTabs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+  enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  identityProvider: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(SettingsTabs);

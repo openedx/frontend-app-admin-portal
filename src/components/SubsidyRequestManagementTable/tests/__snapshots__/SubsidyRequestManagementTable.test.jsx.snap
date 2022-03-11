@@ -31,12 +31,12 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                   <label
                     className="pgn__form-label sr-only"
                     htmlFor="form-field2"
-                    id="text-filter-label-header_emailAddress-1"
+                    id="text-filter-label-header_email-1"
                   >
                     Search Email address
                   </label>
                   <input
-                    aria-labelledby="text-filter-label-header_emailAddress-1"
+                    aria-labelledby="text-filter-label-header_email-1"
                     className="form-control"
                     onChange={[Function]}
                     placeholder="Search Email address"
@@ -80,7 +80,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
               Showing 
               3
                of 
-              3
+              24
               .
             </div>
           </div>
@@ -120,7 +120,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                   className="d-flex align-items-center"
                 >
                   <span>
-                    Course name
+                    Course title
                   </span>
                 </span>
               </th>
@@ -176,7 +176,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 <span
                   data-hj-suppress={true}
                 >
-                  test@example.com
+                  test1@example.com
                 </span>
               </td>
               <td
@@ -189,7 +189,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                   onClick={[Function]}
                   type="button"
                 >
-                  edX Demonstration Course
+                  edX Demonstration Course 1
                 </button>
               </td>
               <td
@@ -245,7 +245,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 <span
                   data-hj-suppress={true}
                 >
-                  test@example.com
+                  test2@example.com
                 </span>
               </td>
               <td
@@ -258,14 +258,14 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                   onClick={[Function]}
                   type="button"
                 >
-                  edX Demonstration Course
+                  edX Demonstration Course 2
                 </button>
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
                 role="cell"
               >
-                December 3, 2019
+                December 3, 2020
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
@@ -314,7 +314,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 <span
                   data-hj-suppress={true}
                 >
-                  test@example.com
+                  test3@example.com
                 </span>
               </td>
               <td
@@ -327,14 +327,14 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                   onClick={[Function]}
                   type="button"
                 >
-                  edX Demonstration Course
+                  edX Demonstration Course 3
                 </button>
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
                 role="cell"
               >
-                December 3, 2019
+                December 3, 2021
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
@@ -361,8 +361,25 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
           Showing 
           3
            of 
-          3
+          24
           .
+        </div>
+        <div
+          className="dropdown"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-tertiary"
+            disabled={false}
+            id="Pagination dropdown"
+            onClick={[Function]}
+            type="button"
+          >
+            1
+             of 
+            2
+          </button>
         </div>
         <nav
           aria-label="table pagination"
@@ -374,7 +391,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
             aria-relevant="text"
             className="sr-only"
           >
-            Page 1, Current Page, of 1
+            Page 1, Current Page, of 2
           </div>
           <ul
             className="pagination"
@@ -417,14 +434,13 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
               </button>
             </li>
             <li
-              className="page-item disabled"
+              className="page-item"
             >
               <button
                 aria-label="Go to next page"
                 className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                disabled={true}
+                disabled={false}
                 onClick={[Function]}
-                tabIndex="-1"
                 type="button"
               >
                 <span

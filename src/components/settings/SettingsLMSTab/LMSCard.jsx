@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Card, Image, Stack } from '@edx/paragon';
 import { channelMapping } from '../../../utils';
 
-const LMSCard = ({ LMSType, onClick }) => (
+const LMSCard = ({ LMSType, onClick, disabled }) => (
   <Card
-    isClickable
-    className="pb-4"
-    onClick={() => onClick(LMSType)}
+    isClickable={!disabled}
+    className={`pb-4 ${disabled ? 'opacity-50' : ''}`}
+    onClick={() => !disabled && onClick(LMSType)}
   >
     <Card.Header
       title={(
@@ -23,5 +23,6 @@ const LMSCard = ({ LMSType, onClick }) => (
 LMSCard.propTypes = {
   LMSType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 export default LMSCard;
