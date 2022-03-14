@@ -87,11 +87,15 @@ const mapStateToProps = state => ({
   identityProvider: state.portalConfiguration.identityProvider,
 });
 
+SettingsTabs.defaultProps = {
+  identityProvider: null,
+};
+
 SettingsTabs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
-  identityProvider: PropTypes.string.isRequired,
+  identityProvider: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(SettingsTabs);
