@@ -22,7 +22,7 @@ const SettingsSSOTab = ({ enterpriseId }) => {
         </Hyperlink>
       </div>
       {!isLoading && (
-        <p>
+        <div>
           {existingConfigs.length > 0 && <ExistingSSOConfigs />}
           {existingConfigs.length < 1 && <NewSSOConfigForm />}
           {error && (
@@ -33,7 +33,7 @@ const SettingsSSOTab = ({ enterpriseId }) => {
             An error occurred loading the SAML configs: <p>{error?.message}</p>
           </Alert>
           )}
-        </p>
+        </div>
       )}
       {isLoading && <></>}
     </div>
