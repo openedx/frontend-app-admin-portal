@@ -223,9 +223,13 @@ export default function SettingsLMSTab({
   );
 }
 
+SettingsLMSTab.defaultProps = {
+  identityProvider: null,
+};
+
 SettingsLMSTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
-  identityProvider: PropTypes.string.isRequired,
+  identityProvider: PropTypes.string,
 };
