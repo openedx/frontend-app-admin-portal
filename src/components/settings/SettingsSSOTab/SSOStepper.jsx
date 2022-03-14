@@ -1,6 +1,7 @@
 import {
   Button, Container, Form, Stepper,
 } from '@edx/paragon';
+import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
 import { useState } from 'react';
 
 const SSOStepper = () => {
@@ -57,27 +58,27 @@ const SSOStepper = () => {
         <div className="py-3">
           <Stepper.ActionRow eventKey="idp">
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => setCurrentStep('serviceprovider')}>Next</Button>
+            <Button onClick={() => setCurrentStep('serviceprovider')}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
 
           <Stepper.ActionRow eventKey="serviceprovider">
             <Button variant="outline-primary" onClick={() => setCurrentStep('idp')}>
-              Previous
+              <ArrowBack />
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => setCurrentStep('configure')}>Next</Button>
+            <Button onClick={() => setCurrentStep('configure')}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
 
           <Stepper.ActionRow eventKey="configure">
             <Button variant="outline-primary" onClick={() => setCurrentStep('serviceprovider')}>
-              Previous
+              <ArrowBack />
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => setCurrentStep('connect')}>Next</Button>
+            <Button onClick={() => setCurrentStep('connect')}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey="connect">
             <Button variant="outline-primary" onClick={() => setCurrentStep('configure')}>
-              Previous
+              <ArrowBack />
             </Button>
             <Stepper.ActionRow.Spacer />
             <Button onClick={() => alert('connected!')}>Connect</Button>
