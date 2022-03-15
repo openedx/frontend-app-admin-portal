@@ -1,57 +1,37 @@
 import {
-  Button, Container, Form, Stepper,
+  Button, Container, Stepper,
 } from '@edx/paragon';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
 import { useState } from 'react';
+import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
+import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
+import SSOConfigServiceProviderStep from './steps/SSOConfigServiceProviderStep';
+import SSOConfigConnectStep from './steps/SSOConfigureConnectStep';
 
 const SSOStepper = () => {
   const steps = ['idp', 'serviceprovider', 'configure', 'connect'];
   const [currentStep, setCurrentStep] = useState(steps[0]);
-
-  const [metadataMethod, setMetadataMethod] = useState('url'); // vs 'fileupload' in future
-  const [metadataURL, setMetadataURL] = useState('');
-  const handleMetadataUpdate = (event) => setMetadataMethod(event.target.value);
-  const handleMetadataURLChange = (event) => setMetadataURL(event.target.value);
-  const TITLE = 'First, select the way to provide your Identity Provider Metadata and fill out the corresponding fields. ';
 
   return (
     <div className="sso-stepper">
       <Stepper activeKey={currentStep}>
         <Stepper.Header />
 
-        <Container size="lg" className="py-5">
-          <Stepper.Step eventKey="idp" title="idp">
-            <span>{TITLE}</span>
-            <div className="mt-4">
-              <Form.Group>
-                <Form.RadioSet
-                  name="metadataFetchMethod"
-                  onChange={handleMetadataUpdate}
-                  value={metadataMethod}
-                >
-                  <Form.Radio className="mb-3" value="url" placeholder="">Provide URL</Form.Radio>
-                  <Form.Control
-                    className="sso-create-form-control mb-4"
-                    type="text"
-                    onChange={handleMetadataURLChange}
-                    floatingLabel="Identity Provider Metadata URL"
-                    defaultValue={metadataURL}
-                  />
-                </Form.RadioSet>
-              </Form.Group>
-            </div>
+        <Container size="lg" className="py-3">
+          <Stepper.Step eventKey="idp" title="Identity Provider">
+            <SSOConfigIDPStep />
           </Stepper.Step>
 
           <Stepper.Step eventKey="serviceprovider" title="Service Provider">
-            Configure a Service provider
+            <SSOConfigServiceProviderStep />
           </Stepper.Step>
 
           <Stepper.Step eventKey="configure" title="Configure">
-            <h2>Configure</h2>
+            <SSOConfigConfigureStep />
           </Stepper.Step>
 
           <Stepper.Step eventKey="connect" title="Connect">
-            <h2>Connect</h2>
+            <SSOConfigConnectStep />
           </Stepper.Step>
         </Container>
 

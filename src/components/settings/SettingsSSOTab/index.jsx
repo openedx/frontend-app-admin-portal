@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
 import { Alert, Hyperlink } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
@@ -35,7 +36,7 @@ const SettingsSSOTab = ({ enterpriseId }) => {
           )}
         </div>
       )}
-      {isLoading && <></>}
+      {isLoading && <Skeleton count={5} height={10} />}
     </div>
   );
 };
