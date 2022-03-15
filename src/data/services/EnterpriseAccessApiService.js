@@ -7,6 +7,27 @@ class EnterpriseAccessApiService {
 
   static apiClient = getAuthenticatedHttpClient;
 
+  static getSubsidyRequestConfiguration(enterpriseId) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/${enterpriseId}/`;
+    return EnterpriseAccessApiService.apiClient({
+      useCache: configuration.USE_API_CACHE,
+    }).get(url);
+  }
+
+  static createSubsidyRequestConfiguration({
+    enterpriseId,
+    subsidyType,
+  }) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/`;
+    const options = {
+      enterprise_customer_uuid: enterpriseId,
+      subsidy_requests_enabled: false,
+      subsidy_type: subsidyType,
+    };
+
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
   static approveLicenseRequests({
     enterpriseId,
     licenseRequestUUIDs,
