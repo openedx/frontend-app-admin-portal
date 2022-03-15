@@ -17,6 +17,7 @@ const SSOConfigContextProvider = ({ children }) => {
     },
     serviceprovider: {
       stepLabel: 'Service Provider',
+      isSPConfigured: false,
       isComplete: false,
     },
     configure: {

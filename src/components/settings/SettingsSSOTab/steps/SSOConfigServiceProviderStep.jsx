@@ -1,9 +1,14 @@
 import { Form } from '@edx/paragon';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { updateServiceProviderConfigured } from '../data/actions';
+import { SSOConfigContext } from '../SSOConfigContext';
 
 const SSOConfigServiceProviderStep = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const handleChange = (event) => setIsChecked(event.target.checked);
+  const {
+    ssoState: { serviceprovider: { isSPConfigured } },
+    dispatchSsoState,
+  } = useContext(SSOConfigContext);
+  const handleChange = event => dispatchSsoState(updateServiceProviderConfigured(event.target.checked));
   return (
     <>
       <p>
@@ -15,7 +20,7 @@ const SSOConfigServiceProviderStep = () => {
         Once this is done, confirm that you&apos;ve successfully added edX as a Service Provider
         by checking the box below.
       </p>
-      <Form.Checkbox className="mt-4" checked={isChecked} onChange={handleChange}>
+      <Form.Checkbox className="mt-4" checked={isSPConfigured} onChange={handleChange}>
         I have added edX as a Service Provider in my SAML configuration
       </Form.Checkbox>
     </>
