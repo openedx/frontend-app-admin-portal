@@ -65,6 +65,7 @@
     "redux-thunk": "2.3.0",
     "regenerator-runtime": "0.13.7",
     "universal-cookie": "4.0.4",
+    "url": "^0.11.0",
     "validator": "10.11.0"
   },
   "peerDependencies": {
@@ -79,7 +80,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "9.1.1",
+    "@edx/frontend-build": "^9.1.2",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "5.11.9",
