@@ -2,15 +2,17 @@ import {
   Button, Container, Stepper,
 } from '@edx/paragon';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { updateIdpCurrentstep } from './data/actions';
+import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
 import SSOConfigServiceProviderStep from './steps/SSOConfigServiceProviderStep';
 import SSOConfigConnectStep from './steps/SSOConfigureConnectStep';
 
 const SSOStepper = () => {
-  const steps = ['idp', 'serviceprovider', 'configure', 'connect'];
-  const [currentStep, setCurrentStep] = useState(steps[0]);
+  const { ssoState: { currentStep }, dispatchSsoState } = useContext(SSOConfigContext);
+  const setCurrentStep = val => { dispatchSsoState(updateIdpCurrentstep(val)); };
 
   return (
     <div className="sso-stepper">

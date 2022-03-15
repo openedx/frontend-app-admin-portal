@@ -1,5 +1,6 @@
 export const UPDATE_IDP_METADATA_URL = 'update_idp_metadata_url';
 export const UPDATE_IDP_ENTRY_TYPE = 'update_idp_entry_type';
+export const UPDATE_IDP_CURRENT_STEP = 'update_idp_current_step';
 
 // Use this action to update IDP metadata URL in client state
 export const updateIdpMetadataURLAction = metadataURL => ({
@@ -10,4 +11,9 @@ export const updateIdpMetadataURLAction = metadataURL => ({
 export const updateIdpEntryTypeAction = entryType => ({
   type: UPDATE_IDP_ENTRY_TYPE,
   entryType,
+});
+
+export const updateIdpCurrentstep = step => ({
+  type: UPDATE_IDP_CURRENT_STEP,
+  step,
 });

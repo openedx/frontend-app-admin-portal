@@ -7,8 +7,8 @@ const SSOConfigIDPStep = () => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
   const { idp: { entryType, metadataURL } } = ssoState;
   const handleMetadataURLChange = event => dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
-  const TITLE = 'First, select the way to provide your Identity Provider Metadata and fill out the corresponding fields. ';
   const handleMetadataUpdate = event => dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
+  const TITLE = 'First, select the way to provide your Identity Provider Metadata and fill out the corresponding fields. ';
 
   return (
     <>
