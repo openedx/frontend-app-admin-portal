@@ -5,15 +5,14 @@ import { connect } from 'react-redux';
 
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
-  SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
-  SUBSIDY_REQUEST_STATUS,
 } from '../SubsidyRequestManagementTable';
 import { ApproveLicenseRequestModal, DeclineSubsidyRequestModal } from '../subsidy-request-modals';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import { NoAvailableLicensesBanner } from '../subsidy-request-management-alerts';
 import { SubscriptionContext } from './SubscriptionData';
 import LoadingMessage from '../LoadingMessage';
+import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 
 const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
   const {
@@ -22,7 +21,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     requestsOverview,
     handleFetchRequests,
     updateRequestStatus,
-  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.licenses);
+  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.license);
   const { data: subscriptionsData, loading: isLoadingSubscriptions } = useContext(SubscriptionContext);
 
   const [selectedRequest, setSelectedRequest] = useState();

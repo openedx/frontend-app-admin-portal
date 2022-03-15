@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import EnterpriseAccessApiService from '../EnterpriseAccessApiService';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../constants/subsidyRequests';
 
 jest.mock('@edx/frontend-platform/auth');
 const axiosMock = new MockAdapter(axios);
@@ -91,6 +92,27 @@ describe('EnterpriseAccessApiService', () => {
     });
     expect(axios.get).toBeCalledWith(
           `${enterpriseAccessBaseUrl}/api/v1/coupon-code-requests/overview/?enterprise_customer_uuid=${mockEnterpriseUUID}&search=edx`,
+    );
+  });
+
+  test('getSubsidyRequestConfiguration calls enterprise-access to fetch subsidy request configuration', () => {
+    EnterpriseAccessApiService.getSubsidyRequestConfiguration(mockEnterpriseUUID);
+    expect(axios.get).toBeCalledWith(
+          `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`,
+    );
+  });
+
+  test('createSubsidyRequestConfiguration calls enterprise-access to create a subsidy request configuration', () => {
+    EnterpriseAccessApiService.createSubsidyRequestConfiguration({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+    });
+    expect(axios.post).toBeCalledWith(
+        `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/`, {
+          enterprise_customer_uuid: mockEnterpriseUUID,
+          subsidy_requests_enabled: false,
+          subsidy_type: SUPPORTED_SUBSIDY_TYPES.license,
+        },
     );
   });
 });

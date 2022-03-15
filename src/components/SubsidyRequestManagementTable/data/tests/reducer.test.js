@@ -5,7 +5,7 @@ import {
   setSubsidyRequestsOverviewData,
   updateSubsidyRequestStatus,
 } from '../actions';
-import { SUBSIDY_REQUEST_STATUS } from '../constants';
+import { SUBSIDY_REQUEST_STATUS } from '../../../../data/constants/subsidyRequests';
 
 describe('subsidyRequestsReducer', () => {
   it('should handle SET_IS_LOADING_SUBSIDY_REQUESTS', () => {

@@ -7,15 +7,14 @@ import moment from 'moment';
 import { camelCaseObject } from '@edx/frontend-platform';
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
-  SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
-  SUBSIDY_REQUEST_STATUS,
 } from '../SubsidyRequestManagementTable';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import { ApproveCouponCodeRequestModal, DeclineSubsidyRequestModal } from '../subsidy-request-modals';
 import { fetchCouponOrders } from '../../data/actions/coupons';
 import LoadingMessage from '../LoadingMessage';
 import { NoAvailableCodesBanner } from '../subsidy-request-management-alerts';
+import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 
 const ManageRequestsTab = ({
   enterpriseId, couponsData, loading: loadingCoupons, fetchCoupons,
@@ -30,7 +29,7 @@ const ManageRequestsTab = ({
     requestsOverview,
     handleFetchRequests,
     updateRequestStatus,
-  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.codes);
+  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.coupon);
 
   const [selectedRequest, setSelectedRequest] = useState();
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);

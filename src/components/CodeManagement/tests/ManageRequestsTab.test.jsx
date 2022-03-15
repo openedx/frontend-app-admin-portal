@@ -12,9 +12,10 @@ import configureMockStore from 'redux-mock-store';
 
 import moment from 'moment';
 import ManageRequestsTab from '../ManageRequestsTab';
-import { SUBSIDY_REQUEST_STATUS, useSubsidyRequests } from '../../SubsidyRequestManagementTable';
+import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import * as couponActions from '../../../data/actions/coupons';
 import '@testing-library/jest-dom/extend-expect';
+import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
 
 const mockCouponCodeRequest = {
   uuid: 'test-coupon-code-request-uuid', requestStatus: SUBSIDY_REQUEST_STATUS.REQUESTED,

@@ -12,9 +12,10 @@ import configureMockStore from 'redux-mock-store';
 import '@testing-library/jest-dom/extend-expect';
 
 import SubscriptionSubsidyRequests from '../SubscriptionSubsidyRequests';
-import { useSubsidyRequests, SUBSIDY_REQUEST_STATUS } from '../../SubsidyRequestManagementTable';
+import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SubscriptionContext } from '../SubscriptionData';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
+import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
 
 const mockLicenseRequest = {
   uuid: 'test-license-request-uuid', requestStatus: SUBSIDY_REQUESTS_TYPES.REQUESTED,

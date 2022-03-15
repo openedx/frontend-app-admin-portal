@@ -8,7 +8,7 @@ import {
   SET_SUBSIDY_REQUESTS_OVERVIEW_DATA,
   UPDATE_SUBSIDY_REQUEST_STATUS,
 } from '../actions';
-import { SUBSIDY_REQUEST_STATUS } from '../constants';
+import { SUBSIDY_REQUEST_STATUS } from '../../../../data/constants/subsidyRequests';
 
 describe('actions', () => {
   test('setIsLoadingSubsidyRequests returns an action with the correct type and payload', () => {

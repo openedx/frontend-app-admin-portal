@@ -6,7 +6,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import debounce from 'lodash.debounce';
 
 import {
-  SUPPORTED_SUBSIDY_TYPES,
   DEBOUNCE_TIME_MS,
   PAGE_SIZE,
   SUBSIDY_REQUESTS_TYPES,
@@ -21,6 +20,7 @@ import {
   updateSubsidyRequestStatus,
 
 } from './actions';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 export const useSubsidyRequests = (
   enterpriseId,

@@ -24,6 +24,7 @@ import { ROUTE_NAMES } from './constants';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
+import SubsidyRequestConfigurationContextProvider from '../subsidy-request-configuration';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -88,11 +89,13 @@ class EnterpriseApp extends React.Component {
     const {
       error,
       match,
+      enableBrowseAndRequest,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
       enableSamlConfigurationScreen,
       enableLmsConfigurationsScreen,
+      enterpriseId,
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
@@ -122,62 +125,66 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <div className="enterprise-app">
-        <MediaQuery minWidth={breakpoints.large.minWidth}>
-          {matchesMediaQ => (
-            <>
-              <Sidebar
-                baseUrl={baseUrl}
-                wrappedComponentRef={(node) => {
-                  this.sidebarRef = node && node.getWrappedInstance();
-                }}
-                onWidthChange={(width) => {
-                  this.setState({
-                    sidebarWidth: width + defaultContentPadding,
-                  });
-                }}
-                isMobile={!matchesMediaQ}
-              />
-              <div
-                className="content-wrapper full-page"
-                tabIndex="-1"
-                ref={this.contentWrapperRef}
-                style={{
-                  paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
-                }}
-              >
-                <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                <Switch>
-                  <Redirect
-                    exact
-                    from={baseUrl}
-                    to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
-                  />
-                  <Route
-                    exact
-                    path={`${baseUrl}/admin/learners/:actionSlug?`}
-                    render={routeProps => <AdminPage {...routeProps} />}
-                  />
-                  {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
-                    <Route
-                      key="request-codes"
+      <SubsidyRequestConfigurationContextProvider
+        enableBrowseAndRequest={enableBrowseAndRequest}
+        enterpriseUUID={enterpriseId}
+      >
+        <div className="enterprise-app">
+          <MediaQuery minWidth={breakpoints.large.minWidth}>
+            {matchesMediaQ => (
+              <>
+                <Sidebar
+                  baseUrl={baseUrl}
+                  wrappedComponentRef={(node) => {
+                    this.sidebarRef = node && node.getWrappedInstance();
+                  }}
+                  onWidthChange={(width) => {
+                    this.setState({
+                      sidebarWidth: width + defaultContentPadding,
+                    });
+                  }}
+                  isMobile={!matchesMediaQ}
+                />
+                <div
+                  className="content-wrapper full-page"
+                  tabIndex="-1"
+                  ref={this.contentWrapperRef}
+                  style={{
+                    paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
+                  }}
+                >
+                  <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
+                  <Switch>
+                    <Redirect
                       exact
-                      path={`${baseUrl}/admin/coupons/request-codes`}
-                      render={routeProps => (
-                        <RequestCodesPage
-                          {...routeProps}
-                          emailAddress={email}
-                          enterpriseName={this.props.enterpriseName}
-                        />
-                      )}
-                    />,
+                      from={baseUrl}
+                      to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
+                    />
                     <Route
-                      key="code-management"
-                      path={`${baseUrl}/admin/coupons`}
-                      component={CodeManagementPage}
-                    />,
-                  ]}
-                  {features.REPORTING_CONFIGURATIONS && (
+                      exact
+                      path={`${baseUrl}/admin/learners/:actionSlug?`}
+                      render={routeProps => <AdminPage {...routeProps} />}
+                    />
+                    {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
+                      <Route
+                        key="request-codes"
+                        exact
+                        path={`${baseUrl}/admin/coupons/request-codes`}
+                        render={routeProps => (
+                          <RequestCodesPage
+                            {...routeProps}
+                            emailAddress={email}
+                            enterpriseName={this.props.enterpriseName}
+                          />
+                        )}
+                      />,
+                      <Route
+                        key="code-management"
+                        path={`${baseUrl}/admin/coupons`}
+                        component={CodeManagementPage}
+                      />,
+                    ]}
+                    {features.REPORTING_CONFIGURATIONS && (
                     <Route
                       key="reporting-config"
                       exact
@@ -187,15 +194,15 @@ class EnterpriseApp extends React.Component {
                         : <LoadingMessage className="overview" />
                       )}
                     />
-                  )}
-                  {enableSubscriptionManagementScreen && (
+                    )}
+                    {enableSubscriptionManagementScreen && (
                     <Route
                       key="subscription-management"
                       path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
                       render={routeProps => <SubscriptionManagementPage {...routeProps} />}
                     />
-                  )}
-                  {features.ANALYTICS && enableAnalyticsScreen && (
+                    )}
+                    {features.ANALYTICS && enableAnalyticsScreen && (
                     <Route
                       key="analytics"
                       exact
@@ -206,8 +213,8 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                  )}
-                  {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
+                    )}
+                    {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
                     <Route
                       key="saml-configuration"
                       exact
@@ -218,8 +225,8 @@ class EnterpriseApp extends React.Component {
                         />
                       )}
                     />
-                  )}
-                  {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
+                    )}
+                    {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
                     && (
                     <Route
                       key="lms-integrations"
@@ -228,24 +235,25 @@ class EnterpriseApp extends React.Component {
                       render={routeProps => <LmsConfigurations {...routeProps} />}
                     />
                     )}
-                  <Route
-                    exact
-                    path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
-                    component={BulkEnrollmentResultsDownloadPage}
-                  />
-                  {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
+                    <Route
+                      exact
+                      path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
+                      component={BulkEnrollmentResultsDownloadPage}
+                    />
+                    {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
                     <Route
                       path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
                       component={SettingsPage}
                     />
-                  )}
-                  <Route path="" component={NotFoundPage} />
-                </Switch>
-              </div>
-            </>
-          )}
-        </MediaQuery>
-      </div>
+                    )}
+                    <Route path="" component={NotFoundPage} />
+                  </Switch>
+                </div>
+              </>
+            )}
+          </MediaQuery>
+        </div>
+      </SubsidyRequestConfigurationContextProvider>
     );
   }
 }
@@ -254,6 +262,7 @@ EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
   error: null,
+  enableBrowseAndRequest: false,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
@@ -279,6 +288,7 @@ EnterpriseApp.propTypes = {
     replace: PropTypes.func,
   }).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
+  enableBrowseAndRequest: PropTypes.bool,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,

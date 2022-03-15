@@ -10,9 +10,7 @@ export {
 } from './data/hooks';
 
 export {
-  SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
-  SUBSIDY_REQUEST_STATUS,
 } from './data/constants';
 
 export default SubsidyRequestManagementTable;

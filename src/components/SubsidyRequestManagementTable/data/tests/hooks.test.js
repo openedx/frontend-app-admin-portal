@@ -7,10 +7,7 @@ import {
   useSubsidyRequests,
   useCourseDetails,
 } from '../hooks';
-import {
-  SUPPORTED_SUBSIDY_TYPES,
-  SUBSIDY_REQUEST_STATUS,
-} from '../constants';
+import { SUBSIDY_REQUEST_STATUS, SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
@@ -47,7 +44,7 @@ describe('useSubsidyRequests', () => {
       });
       const { result } = renderHook(() => useSubsidyRequests(
         TEST_ENTERPRISE_UUID,
-        SUPPORTED_SUBSIDY_TYPES.licenses,
+        SUPPORTED_SUBSIDY_TYPES.license,
       ));
 
       const { handleFetchRequests } = result.current;
@@ -83,7 +80,7 @@ describe('useSubsidyRequests', () => {
       });
       const { result } = renderHook(() => useSubsidyRequests(
         TEST_ENTERPRISE_UUID,
-        SUPPORTED_SUBSIDY_TYPES.codes,
+        SUPPORTED_SUBSIDY_TYPES.coupon,
       ));
 
       const { handleFetchRequests } = result.current;
@@ -130,7 +127,7 @@ describe('useSubsidyRequests', () => {
       });
       const { result } = renderHook(() => useSubsidyRequests(
         TEST_ENTERPRISE_UUID,
-        SUPPORTED_SUBSIDY_TYPES.codes,
+        SUPPORTED_SUBSIDY_TYPES.coupon,
       ));
 
       const { handleFetchRequests } = result.current;
