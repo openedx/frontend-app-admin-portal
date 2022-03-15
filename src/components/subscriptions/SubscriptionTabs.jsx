@@ -19,13 +19,15 @@ import {
   SUBSCRIPTION_TABS_LABELS,
   SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
-  const params = useParams();
   const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
-  console.log(subsidyRequestConfiguration);
-  const history = useHistory();
+  const { subsidyType } = subsidyRequestConfiguration;
+  const isRequestsTabShown = subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
+  const history = useHistory();
+  const params = useParams();
   const subscriptionsTab = params[SUBSCRIPTIONS_TAB_PARAM];
 
   const routesByTabKey = {
@@ -56,19 +58,21 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           <SubscriptionPlanRoutes />
         )}
       </Tab>
-      <Tab
-        eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
-        title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
-        className="pt-4"
-      >
-        {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
-          <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
-            component={SubscriptionSubsidyRequests}
-            exact
-          />
-        )}
-      </Tab>
+      {isRequestsTabShown && (
+        <Tab
+          eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
+          title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
+          className="pt-4"
+        >
+          {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
+            <Route
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
+              component={SubscriptionSubsidyRequests}
+              exact
+            />
+          )}
+        </Tab>
+      )}
     </Tabs>
   );
 };

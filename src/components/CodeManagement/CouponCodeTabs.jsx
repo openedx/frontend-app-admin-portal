@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
@@ -8,6 +8,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
 import ManageCodesTab from './ManageCodesTab';
 import ManageRequestsTab from './ManageRequestsTab';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
@@ -16,11 +17,19 @@ import {
   MANAGE_REQUESTS_TAB,
   COUPON_CODE_TABS_VALUES,
   COUPON_CODE_TABS_LABELS,
+  COUPON_CODE_TAB_PARAM,
 } from './data/constants';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const CouponCodeTabs = ({ enterpriseSlug }) => {
-  const { couponCodesTab } = useParams();
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyType } = subsidyRequestConfiguration;
+  const isRequestsTabShown = subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon;
+
   const history = useHistory();
+  const params = useParams();
+  const couponCodesTab = params[COUPON_CODE_TAB_PARAM];
+
   const routesByTabKey = {
     [MANAGE_CODES_TAB]: `/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_CODES_TAB}`,
     [MANAGE_REQUESTS_TAB]: `/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_REQUESTS_TAB}`,
@@ -52,19 +61,21 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
           />
         )}
       </Tab>
-      <Tab
-        eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
-        title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
-        className="pt-4"
-      >
-        {COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] === couponCodesTab && (
-          <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_REQUESTS_TAB}`}
-            component={ManageRequestsTab}
-            exact
-          />
-        )}
-      </Tab>
+      {isRequestsTabShown && (
+        <Tab
+          eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
+          title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
+          className="pt-4"
+        >
+          {COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] === couponCodesTab && (
+            <Route
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_REQUESTS_TAB}`}
+              component={ManageRequestsTab}
+              exact
+            />
+          )}
+        </Tab>
+      )}
     </Tabs>
   );
 };
