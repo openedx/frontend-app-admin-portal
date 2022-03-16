@@ -10,7 +10,7 @@ import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
 import SSOConfigServiceProviderStep from './steps/SSOConfigServiceProviderStep';
-import SSOConfigConnectStep from './steps/SSOConfigureConnectStep';
+import SSOConfigConnectStep from './steps/SSOConfigConnectStep';
 
 const SSOStepper = () => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);

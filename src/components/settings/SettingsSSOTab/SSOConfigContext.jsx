@@ -28,6 +28,7 @@ const SSOConfigContextProvider = ({ children }) => {
       stepLabel: 'Connect',
       isComplete: false,
     },
+    providerConfigs: [], // list of provider configs. May be synced with server side state through the process.
   };
   const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, SSO_INITIAL_STATE);
   return (

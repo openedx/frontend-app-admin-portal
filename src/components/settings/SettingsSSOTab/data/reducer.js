@@ -1,5 +1,6 @@
 import {
   UPDATE_CURRENT_STEP, UPDATE_IDP_ENTRY_TYPE, UPDATE_IDP_METADATA_URL, UPDATE_SP_CONFIGURED,
+  SET_PROVIDER_CONFIGS, ADD_PROVIDER_CONFIG,
 } from './actions';
 
 const SSOStateReducer = (state, action) => {
@@ -17,6 +18,18 @@ const SSOStateReducer = (state, action) => {
       return {
         ...state,
         serviceprovider: { ...state.serviceprovider, isSPConfigured: action.isSPConfigured },
+      };
+    }
+    case SET_PROVIDER_CONFIGS: {
+      return {
+        ...state,
+        providerConfigs: action.providerConfigs,
+      };
+    }
+    case ADD_PROVIDER_CONFIG: {
+      return {
+        ...state,
+        providerConfigs: [...state.providerConfigs, action.providerConfig],
       };
     }
     default: return state;
