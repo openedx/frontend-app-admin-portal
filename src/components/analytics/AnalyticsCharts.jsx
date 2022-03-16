@@ -8,8 +8,7 @@ import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
 
-// eslint-disable-next-line no-unused-vars
-export default function AnalyticsCharts(enterpriseId) {
+export default function AnalyticsCharts({ enterpriseId }) {
   const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,7 +41,7 @@ export default function AnalyticsCharts(enterpriseId) {
   // Initialize tableau Viz and fetch token
   useEffect(() => {
     setIsLoading(true);
-    AnalyticsApiService.fetchTableauToken(enterpriseId)
+    AnalyticsApiService.fetchTableauToken({ enterpriseId })
       .then((response) => {
         setIsLoading(false);
         setTokenUsedOnce(false);
@@ -71,6 +70,5 @@ export default function AnalyticsCharts(enterpriseId) {
 }
 
 AnalyticsCharts.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
   enterpriseId: PropTypes.string.isRequired,
 };

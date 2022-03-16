@@ -5,9 +5,9 @@ import '@testing-library/jest-dom/extend-expect';
 
 import React from 'react';
 import moment from 'moment';
-import { Context as ResponsiveContext } from 'react-responsive';
 import {
   breakpoints,
+  ResponsiveContext,
 } from '@edx/paragon';
 import { renderWithRouter } from '../../test/testUtils';
 import SubscriptionCard from '../SubscriptionCard';

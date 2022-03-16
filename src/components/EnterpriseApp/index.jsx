@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import MediaQuery from 'react-responsive';
-import { breakpoints } from '@edx/paragon';
+import { breakpoints, MediaQuery } from '@edx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import AdminPage from '../../containers/AdminPage';
