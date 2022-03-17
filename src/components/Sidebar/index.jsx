@@ -11,6 +11,7 @@ import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { TOUR_TARGETS } from '../ProductTours/constants';
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -99,6 +100,7 @@ class Sidebar extends React.Component {
       // NOTE: keep "Support" link the last nav item
       {
         title: 'Settings',
+        id: TOUR_TARGETS.SETTINGS_SIDEBAR,
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
         hidden: !(features.SETTINGS_PAGE && features.SAML_CONFIGURATION && enableLmsConfigurationsScreen),

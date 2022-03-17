@@ -39,7 +39,7 @@ exports[`<SearchBar /> renders correctly 1`] = `
     >
       <svg
         aria-hidden="true"
-        className="svg-inline--fa fa-search "
+        className="svg-inline--fa fa-search fa-w-16 "
         data-icon="search"
         data-prefix="fas"
         focusable="false"

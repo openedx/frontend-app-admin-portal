@@ -19,6 +19,8 @@ import NotFoundPage from '../../components/NotFoundPage';
 
 features.CODE_MANAGEMENT = true;
 
+jest.mock('../../components/ProductTours/BrowseAndRequestTour', () => () => null);
+
 getAuthenticatedUser.mockReturnValue({
   isActive: true,
   email: 'foo@bar.com',

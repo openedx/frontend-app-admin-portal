@@ -23,11 +23,11 @@ const cookies = new Cookies();
  */
 export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
 
-const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
+const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug, enableBrowseAndRequest }) => {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
   const foundCookie = cookies.get(browseAndRequestAlertCookieName);
-
-  const hideAlert = !features.FEATURE_BROWSE_AND_REQUEST || foundCookie;
+  const isFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+  const hideAlert = !isFeatureEnabled || foundCookie;
 
   const [showAlert, setShowAlert] = useState(!hideAlert);
 
@@ -71,11 +71,13 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
 NewFeatureAlertBrowseAndRequest.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(NewFeatureAlertBrowseAndRequest);

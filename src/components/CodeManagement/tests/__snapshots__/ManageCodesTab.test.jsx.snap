@@ -55,7 +55,7 @@ Array [
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-search "
+              className="svg-inline--fa fa-search fa-w-16 "
               data-icon="search"
               data-prefix="fas"
               focusable="false"
@@ -228,7 +228,7 @@ Array [
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-search "
+              className="svg-inline--fa fa-search fa-w-16 "
               data-icon="search"
               data-prefix="fas"
               focusable="false"
@@ -406,7 +406,7 @@ Array [
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-search "
+              className="svg-inline--fa fa-search fa-w-16 "
               data-icon="search"
               data-prefix="fas"
               focusable="false"
@@ -552,7 +552,7 @@ Array [
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-search "
+              className="svg-inline--fa fa-search fa-w-16 "
               data-icon="search"
               data-prefix="fas"
               focusable="false"

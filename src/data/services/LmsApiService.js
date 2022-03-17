@@ -26,7 +26,9 @@ class LmsApiService {
 
   static enterpriseCustomerInviteKeyListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/basic-list/`;
 
-  static enterpriseCustomerInviteKeyUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/`
+  static enterpriseCustomerInviteKeyUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/`;
+
+  static userPreferencesUrl = `${LmsApiService.baseUrl}/api/user/v1/preferences/`;
 
   static fetchCourseOutline(courseId) {
     const options = {
@@ -322,6 +324,20 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(
       `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`,
       formData,
+    );
+  }
+
+  static getUserPreferences(username) {
+    return LmsApiService.apiClient().get(
+      `${LmsApiService.userPreferencesUrl}${username}`,
+    );
+  }
+
+  static patchUserPreferences(username, params) {
+    return LmsApiService.apiClient().patch(
+      `${LmsApiService.userPreferencesUrl}${username}`,
+      params,
+      { headers: { 'Content-Type': 'application/merge-patch+json' } },
     );
   }
 }
