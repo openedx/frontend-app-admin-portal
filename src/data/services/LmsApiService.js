@@ -293,6 +293,11 @@ class LmsApiService {
     return LmsApiService.apiClient().get(url);
   }
 
+  static updateEnterpriseCustomer = (enterpriseUUID, options) => LmsApiService.apiClient().patch(
+      `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/`,
+      options,
+  )
+
   /**
    * Disables EnterpriseCustomerInviteKey
    * @param {string} enterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable

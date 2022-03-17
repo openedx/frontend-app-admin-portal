@@ -6,10 +6,15 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 export const SubsidyRequestConfigurationContext = createContext();
 
 const SubsidyRequestConfigurationContextProvider = ({ enterpriseUUID, children }) => {
-  const { subsidyRequestConfiguration, isLoading } = useSubsidyRequestConfiguration(enterpriseUUID);
+  const {
+    subsidyRequestConfiguration,
+    isLoading,
+    updateSubsidyRequestConfiguration,
+  } = useSubsidyRequestConfiguration(enterpriseUUID);
 
   const context = useMemo(() => ({
     subsidyRequestConfiguration,
+    updateSubsidyRequestConfiguration,
   }), [subsidyRequestConfiguration]);
 
   if (isLoading) {

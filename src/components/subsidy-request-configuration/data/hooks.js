@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -23,7 +23,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       return;
     }
 
-    const createCustomerConfiguration = async () => {
+    const createSubsidyRequestConfiguration = async () => {
       try {
         const [couponsData, subscriptionsData] = await Promise.all([
           EcommerceApiService.fetchCouponOrders(),
@@ -60,7 +60,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       }
     };
 
-    const fetchCustomerConfiguration = async () => {
+    const fetchSubsidyRequestConfiguration = async () => {
       try {
         const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(enterpriseUUID);
         const config = camelCaseObject(response.data);
@@ -69,7 +69,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
         const httpErrorStatus = error.customAttributes?.httpErrorStatus;
         if (httpErrorStatus === 404) {
           // Customer configuration does not exist, create one
-          const customerConfiguration = await createCustomerConfiguration();
+          const customerConfiguration = await createSubsidyRequestConfiguration();
           setSubsidyRequestConfiguration(customerConfiguration);
         } else {
           logError(error);
@@ -79,10 +79,34 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       }
     };
 
-    fetchCustomerConfiguration(enterpriseUUID);
+    fetchSubsidyRequestConfiguration(enterpriseUUID);
+  }, [enterpriseUUID]);
+
+  const updateSubsidyRequestConfiguration = useCallback(async ({
+    subsidyType,
+    isSubsidyRequestsEnabled,
+  }) => {
+    const options = {
+      subsidy_type: subsidyType,
+      subsidy_requests_enabled: isSubsidyRequestsEnabled,
+    };
+
+    try {
+      const response = await EnterpriseAccessApiService.updateSubsidyRequestConfiguration(
+        enterpriseUUID,
+        options,
+      );
+      const config = camelCaseObject(response.data);
+      setSubsidyRequestConfiguration(config);
+    } catch (error) {
+      logError(error);
+      throw error;
+    }
   }, [enterpriseUUID]);
 
   return {
-    subsidyRequestConfiguration, isLoading,
+    subsidyRequestConfiguration,
+    isLoading,
+    updateSubsidyRequestConfiguration,
   };
 };

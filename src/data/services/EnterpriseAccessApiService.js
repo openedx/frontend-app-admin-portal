@@ -28,6 +28,14 @@ class EnterpriseAccessApiService {
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
+  static updateSubsidyRequestConfiguration(
+    enterpriseId,
+    options,
+  ) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/${enterpriseId}/`;
+    return EnterpriseAccessApiService.apiClient().patch(url, options);
+  }
+
   static approveLicenseRequests({
     enterpriseId,
     licenseRequestUUIDs,

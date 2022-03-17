@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor } from '@testing-library/react';
+import { waitFor, act } from '@testing-library/react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import * as logging from '@edx/frontend-platform/logging';
 import { useSubsidyRequestConfiguration } from '../hooks';
@@ -176,6 +176,51 @@ describe('useSubsidyRequestConfiguration', () => {
       const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
 
       await waitForNextUpdate();
+
+      expect(logging.logError).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('updateSubsidyRequestConfiguration', () => {
+    it('should update a configuration correctly', async () => {
+      EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValue(
+        createSubsidyRequestConfigurationResponse({
+          subsidyRequestsEnabled: false,
+        }),
+      );
+      EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockResolvedValue(
+        createSubsidyRequestConfigurationResponse({
+          subsidyRequestsEnabled: true,
+        }),
+      );
+      const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+
+      await waitFor(() => {
+        expect(result.current.subsidyRequestConfiguration.subsidyRequestsEnabled).toEqual(false);
+      });
+
+      const { updateSubsidyRequestConfiguration } = result.current;
+
+      await act(() => updateSubsidyRequestConfiguration({
+        isSubsidyRequestsEnabled: true,
+      }));
+
+      expect(result.current.subsidyRequestConfiguration.subsidyRequestsEnabled).toEqual(true);
+    });
+
+    it('should handle errors', async () => {
+      const error = new Error('Error updating subsidy request configuration');
+      EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockRejectedValue(error);
+
+      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+
+      await waitForNextUpdate();
+
+      const { updateSubsidyRequestConfiguration } = result.current;
+
+      await expect(() => updateSubsidyRequestConfiguration({
+        isSubsidyRequestsEnabled: true,
+      })).rejects.toThrowError(error);
 
       expect(logging.logError).toHaveBeenCalledWith(error);
     });

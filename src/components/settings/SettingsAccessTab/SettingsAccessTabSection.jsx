@@ -10,6 +10,7 @@ const SettingsAccessTabSection = ({
   title,
   checked,
   onFormSwitchChange,
+  formSwitchHelperText,
   onCollapsibleToggle,
   children,
   loading,
@@ -26,7 +27,7 @@ const SettingsAccessTabSection = ({
 
   return (
     <div className="mb-4">
-      <div className="d-flex justify-content-end align-items-center mb-3">
+      <div className="d-flex justify-content-end mb-3">
         {loading && (
         <Spinner
           screenReaderText="Processing Feature Toggle"
@@ -36,19 +37,31 @@ const SettingsAccessTabSection = ({
           size="sm"
         />
         )}
-        <Form.Switch disabled={disabled} onChange={onFormSwitchChange} checked={checked}>
+        <Form.Switch
+          disabled={disabled}
+          onChange={onFormSwitchChange}
+          checked={checked}
+          helperText={formSwitchHelperText}
+          className="justify-content-end"
+        >
           Enable
         </Form.Switch>
       </div>
       <div>
-        <Collapsible
-          open={isExpanded}
-          onToggle={handleToggle}
-          styling="card"
-          title={<p><strong>{title}</strong></p>}
-        >
-          {children}
-        </Collapsible>
+        {children ? (
+          <Collapsible
+            open={isExpanded}
+            onToggle={handleToggle}
+            styling="card"
+            title={<p><strong>{title}</strong></p>}
+          >
+            {children}
+          </Collapsible>
+        ) : (
+          <p className="card rounded-0 p-2">
+            <strong>{title}</strong>
+          </p>
+        )}
       </div>
     </div>
   );
@@ -58,14 +71,17 @@ SettingsAccessTabSection.propTypes = {
   title: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
   onFormSwitchChange: PropTypes.func.isRequired,
+  formSwitchHelperText: PropTypes.node,
   onCollapsibleToggle: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
 };
 
 SettingsAccessTabSection.defaultProps = {
+  formSwitchHelperText: null,
   onCollapsibleToggle: undefined,
+  children: null,
   loading: false,
   disabled: false,
 };
