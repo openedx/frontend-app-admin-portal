@@ -21,6 +21,8 @@ const initialState = {
   enableSamlConfigurationScreen: false,
   enableLmsConfigurationsScreen: false,
   enableAnalyticsScreen: false,
+  enableIntegratedCustomerLearnerPortalSearch: false,
+  enableLearnerPortal: false,
   enableUniversalLink: false,
   enableBrowseAndRequest: false,
 };
@@ -50,6 +52,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableSamlConfigurationScreen: action.payload.data.enable_portal_saml_configuration_screen,
         enableAnalyticsScreen: action.payload.data.enable_analytics_screen,
         enableLearnerPortal: action.payload.data.enable_learner_portal,
+        enableIntegratedCustomerLearnerPortalSearch: action.payload.data.enable_integrated_customer_learner_portal_search, // eslint-disable-line max-len
         enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
         enableUniversalLink: action.payload.data.enable_universal_link,
         enableBrowseAndRequest: action.payload.data.enable_browse_and_request,
@@ -69,8 +72,10 @@ const portalConfiguration = (state = initialState, action) => {
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
         enableSamlConfigurationScreen: false,
-        enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
+        enableLearnerPortal: false,
+        enableIntegratedCustomerLearnerPortalSearch: false,
+        enableLmsConfigurationsScreen: false,
         enableUniversalLink: false,
         enableBrowseAndRequest: false,
       };
@@ -87,8 +92,10 @@ const portalConfiguration = (state = initialState, action) => {
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
         enableSamlConfigurationScreen: false,
-        enableLmsConfigurationsScreen: false,
         enableAnalyticsScreen: false,
+        enableLearnerPortal: false,
+        enableIntegratedCustomerLearnerPortalSearch: false,
+        enableLmsConfigurationsScreen: false,
         enableUniversalLink: false,
         enableBrowseAndRequest: false,
       };

@@ -22,12 +22,18 @@ import SettingsAccessTab from './SettingsAccessTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
+import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
 
 const SettingsTabs = ({
   enterpriseId,
   enterpriseSlug,
+  enableBrowseAndRequest,
+  enableIntegratedCustomerLearnerPortalSearch,
+  enableLearnerPortal,
   enableSamlConfigurationScreen,
+  enableUniversalLink,
   identityProvider,
+  updatePortalConfiguration,
 }) => {
   const { FEATURE_SSO_SETTINGS_TAB } = features;
 
@@ -60,7 +66,15 @@ const SettingsTabs = ({
         onSelect={handleTabChange}
       >
         <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-          <SettingsAccessTab />
+          <SettingsAccessTab
+            enterpriseId={enterpriseId}
+            enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+            identityProvider={identityProvider}
+            enableBrowseAndRequest={enableBrowseAndRequest}
+            enableLearnerPortal={enableLearnerPortal}
+            enableUniversalLink={enableUniversalLink}
+            updatePortalConfiguration={updatePortalConfiguration}
+          />
         </Tab>
         { FEATURE_SSO_SETTINGS_TAB && (
         <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
@@ -80,12 +94,29 @@ const SettingsTabs = ({
   );
 };
 
-const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
-  identityProvider: state.portalConfiguration.identityProvider,
-});
+const mapStateToProps = state => {
+  const {
+    enterpriseId,
+    enterpriseSlug,
+    enableBrowseAndRequest,
+    enableIntegratedCustomerLearnerPortalSearch,
+    enableLearnerPortal,
+    enableSamlConfigurationScreen,
+    enableUniversalLink,
+    identityProvider,
+  } = state.portalConfiguration;
+
+  return ({
+    enterpriseId,
+    enterpriseSlug,
+    enableBrowseAndRequest,
+    enableIntegratedCustomerLearnerPortalSearch,
+    enableLearnerPortal,
+    enableSamlConfigurationScreen,
+    enableUniversalLink,
+    identityProvider,
+  });
+};
 
 SettingsTabs.defaultProps = {
   identityProvider: null,
@@ -94,8 +125,19 @@ SettingsTabs.defaultProps = {
 SettingsTabs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableBrowseAndRequest: PropTypes.bool.isRequired,
+  enableIntegratedCustomerLearnerPortalSearch: PropTypes.bool.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
+  updatePortalConfiguration: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(SettingsTabs);
+const mapDispatchToProps = dispatch => ({
+  updatePortalConfiguration: (config) => {
+    dispatch(updatePortalConfigurationEvent(config));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsTabs);
