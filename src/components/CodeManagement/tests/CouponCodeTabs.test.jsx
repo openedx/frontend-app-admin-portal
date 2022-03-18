@@ -1,17 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import {
   screen,
-  render,
   cleanup,
-  act,
-  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
 import CouponCodeTabs from '../CouponCodeTabs';
 import {
   MANAGE_CODES_TAB,
@@ -33,11 +33,11 @@ jest.mock(
 );
 
 const enterpriseId = 'test-enterprise';
+const enterpriseSlug = 'sluggy';
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
-    enterpriseSlug: 'sluggy',
-    enableLearnerPortal: false,
+    enterpriseSlug,
   },
 };
 
@@ -45,15 +45,29 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
-const CouponCodeTabsWithRouter = () => (
-  <MemoryRouter initialEntries={[`coupons/${MANAGE_CODES_TAB}`]}>
-    <Provider store={store}>
-      <Route path="coupons/:couponCodesTab">
+const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TAB}`;
+
+const CouponCodeTabsWrapper = ({ subsidyRequestConfiguration }) => (
+  <Provider store={store}>
+    <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
+      <SubsidyRequestConfigurationContext.Provider value={{ subsidyRequestConfiguration }}>
         <CouponCodeTabs />
-      </Route>
-    </Provider>
-  </MemoryRouter>
+      </SubsidyRequestConfigurationContext.Provider>
+    </Route>
+  </Provider>
 );
+
+CouponCodeTabsWrapper.defaultProps = {
+  subsidyRequestConfiguration: {
+    subsidyType: 'coupon',
+  },
+};
+
+CouponCodeTabsWrapper.propTypes = {
+  subsidyRequestConfiguration: PropTypes.shape({
+    subsidyType: PropTypes.string,
+  }),
+};
 
 describe('<CouponCodeTabs />', () => {
   afterEach(() => {
@@ -61,28 +75,35 @@ describe('<CouponCodeTabs />', () => {
     jest.clearAllMocks();
   });
 
-  it('Clicking on a tab changes content via router', () => {
-    render(<CouponCodeTabsWithRouter />);
+  it('Clicking on a tab changes content via router', async () => {
+    renderWithRouter(<CouponCodeTabsWrapper />, { route: INITIAL_ROUTER_ENTRY });
+
     // assert "manage codes" and "manage requests" tabs are visible
     const manageCodesTab = screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
     const manageRequestsTab = screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]);
 
     // assert current tab's ("manage codes") content is visible
-    waitFor(() => expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT)));
+    expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT));
 
     // click a different tab and assert the content changed
-    act(() => { userEvent.click(manageRequestsTab); });
-    waitFor(() => expect(screen.getByText(MANAGE_REQUESTS_MOCK_CONTENT)));
+    userEvent.click(manageRequestsTab);
+    await screen.findByText(MANAGE_REQUESTS_MOCK_CONTENT);
 
     // click default tab again and assert the content changed
-    act(() => { userEvent.click(manageCodesTab); });
-    waitFor(() => expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT)));
+    userEvent.click(manageCodesTab);
+    await screen.findByText(MANAGE_CODES_MOCK_CONTENT);
   });
 
-  it('Clicking on default tab does not change content', () => {
-    render(<CouponCodeTabsWithRouter />);
+  it('Clicking on default tab does not change content', async () => {
+    renderWithRouter(<CouponCodeTabsWrapper />, { route: INITIAL_ROUTER_ENTRY });
     const manageCodesTab = screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
-    act(() => { userEvent.click(manageCodesTab); });
-    waitFor(() => expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT)));
+    userEvent.click(manageCodesTab);
+    await screen.findByText(MANAGE_CODES_MOCK_CONTENT);
+  });
+
+  it('When configured subsidy request is not coupon, hide "Manage Requests" tab', async () => {
+    renderWithRouter(<CouponCodeTabsWrapper subsidyRequestConfiguration={{ subsidyType: 'license' }} />, { route: INITIAL_ROUTER_ENTRY });
+    screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
+    expect(screen.queryByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
   });
 });
