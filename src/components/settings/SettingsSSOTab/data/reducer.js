@@ -1,6 +1,6 @@
 import {
   UPDATE_CURRENT_STEP, UPDATE_IDP_ENTRY_TYPE, UPDATE_IDP_METADATA_URL, UPDATE_SP_CONFIGURED,
-  SET_PROVIDER_CONFIGS, ADD_PROVIDER_CONFIG,
+  SET_PROVIDER_CONFIG, UPDATE_IDP_ENTITYID, UPDATE_CURRENT_ERROR,
 } from './actions';
 
 const SSOStateReducer = (state, action) => {
@@ -11,8 +11,14 @@ const SSOStateReducer = (state, action) => {
     case UPDATE_IDP_ENTRY_TYPE: {
       return { ...state, idp: { ...state.idp, entryType: action.entryType } };
     }
+    case UPDATE_IDP_ENTITYID: {
+      return { ...state, idp: { ...state.idp, entityID: action.entityID } };
+    }
     case UPDATE_CURRENT_STEP: {
       return { ...state, currentStep: action.step };
+    }
+    case UPDATE_CURRENT_ERROR: {
+      return { ...state, currentError: action.currentError };
     }
     case UPDATE_SP_CONFIGURED: {
       return {
@@ -20,16 +26,10 @@ const SSOStateReducer = (state, action) => {
         serviceprovider: { ...state.serviceprovider, isSPConfigured: action.isSPConfigured },
       };
     }
-    case SET_PROVIDER_CONFIGS: {
+    case SET_PROVIDER_CONFIG: {
       return {
         ...state,
-        providerConfigs: action.providerConfigs,
-      };
-    }
-    case ADD_PROVIDER_CONFIG: {
-      return {
-        ...state,
-        providerConfigs: [...state.providerConfigs, action.providerConfig],
+        providerConfig: action.providerConfig,
       };
     }
     default: return state;

@@ -1,24 +1,30 @@
 import {
   Button, Container, Stepper,
 } from '@edx/paragon';
+import PropTypes from 'prop-types';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
+import isEmpty from 'validator/lib/isEmpty';
 import isURL from 'validator/lib/isURL';
 import { useContext, useMemo } from 'react';
+import { connect } from 'react-redux';
 import { updateCurrentstep } from './data/actions';
-import { useIdpMetadataURL } from './hooks';
+import { useIdpState } from './hooks';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
 import SSOConfigServiceProviderStep from './steps/SSOConfigServiceProviderStep';
 import SSOConfigConnectStep from './steps/SSOConfigConnectStep';
 
-const SSOStepper = () => {
+const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
-  const { currentStep } = ssoState;
+  const { currentStep, providerConfig } = ssoState;
   const setCurrentStep = val => { dispatchSsoState(updateCurrentstep(val)); };
 
-  const { metadataURL } = useIdpMetadataURL();
-  const isIdpStepComplete = useMemo(() => isURL(metadataURL), [metadataURL]);
+  const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
+  const isIdpStepComplete = useMemo(
+    () => isURL(metadataURL) && (entityID && !isEmpty(entityID)),
+    [metadataURL, entityID],
+  );
 
   const { serviceprovider: { isSPConfigured } } = ssoState;
 
@@ -48,7 +54,21 @@ const SSOStepper = () => {
         <div className="py-3">
           <Stepper.ActionRow eventKey="idp">
             <Stepper.ActionRow.Spacer />
-            <Button disabled={!isIdpStepComplete} onClick={() => setCurrentStep('serviceprovider')}>
+            <Button
+              disabled={!isIdpStepComplete}
+              onClick={() => {
+                if (!providerConfig) {
+                  createOrUpdateIdpRecord({
+                    enterpriseName,
+                    enterpriseSlug,
+                    enterpriseId,
+                    onSuccess: () => setCurrentStep('serviceprovider'),
+                  });
+                } else {
+                  setCurrentStep('serviceprovider');
+                }
+              }}
+            >
               Next<ArrowForward className="ml-2" />
             </Button>
           </Stepper.ActionRow>
@@ -84,4 +104,16 @@ const SSOStepper = () => {
   );
 };
 
-export default SSOStepper;
+SSOStepper.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseName: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseName: state.portalConfiguration.enterpriseName,
+});
+
+export default connect(mapStateToProps)(SSOStepper);

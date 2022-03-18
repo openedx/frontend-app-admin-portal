@@ -13,6 +13,7 @@ const SSOConfigContextProvider = ({ children }) => {
       stepLabel: 'Identity Provider',
       isComplete: false,
       metadataURL: '',
+      entityID: '',
       entryType: 'url', // vs directEntry
     },
     serviceprovider: {
@@ -28,7 +29,7 @@ const SSOConfigContextProvider = ({ children }) => {
       stepLabel: 'Connect',
       isComplete: false,
     },
-    providerConfigs: [], // list of provider configs. May be synced with server side state through the process.
+    providerConfig: null, // the provider config we are working with currently
   };
   const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, SSO_INITIAL_STATE);
   return (
