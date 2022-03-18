@@ -118,6 +118,12 @@ const Sidebar = ({
         hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
       },
       {
+        title: 'New-Analytics',
+        to: `${baseUrl}/admin/${ROUTE_NAMES.new_analytics}`,
+        icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+        hidden: !features.NEW_ANALYTICS || !enableAnalyticsScreen,
+      },
+      {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/${ROUTE_NAMES.samlConfiguration}`,
         icon: <FontAwesomeIcon icon={faIdCard} fixedWidth />,

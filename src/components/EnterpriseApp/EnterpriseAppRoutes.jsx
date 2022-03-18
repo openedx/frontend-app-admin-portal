@@ -12,6 +12,7 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
+import { NewAnalyticsPage } from '../NewAnalytics';
 import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
@@ -87,6 +88,15 @@ const EnterpriseAppRoutes = ({
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
           component={AnalyticsPage}
+        />
+      )}
+
+      {enableAnalyticsPage && (
+        <Route
+          key="new-analytics"
+          exact
+          path={`${baseUrl}/admin/${ROUTE_NAMES.new_analytics}`}
+          component={NewAnalyticsPage}
         />
       )}
 
