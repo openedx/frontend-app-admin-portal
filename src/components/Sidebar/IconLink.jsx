@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const IconLink = props => {
   const {
-    to, isExpanded, title, icon, external,
+    to, isExpanded, title, icon, external, id,
   } = props;
   if (external) {
     return (
@@ -25,6 +25,7 @@ const IconLink = props => {
     <NavLink
       className="nav-link text-left rounded-0"
       to={to}
+      id={id}
     >
       <FontAwesomeIcon icon={icon} className={classNames([{ 'mr-2': isExpanded }])} />
       {!isExpanded ? <span className="sr-only">{title}</span> : null}
@@ -37,6 +38,7 @@ IconLink.defaultProps = {
   icon: null,
   isExpanded: false,
   external: false,
+  id: undefined,
 };
 
 IconLink.propTypes = {
@@ -45,6 +47,7 @@ IconLink.propTypes = {
   icon: PropTypes.shape({}),
   isExpanded: PropTypes.bool,
   external: PropTypes.bool,
+  id: PropTypes.string,
 };
 
 export default IconLink;

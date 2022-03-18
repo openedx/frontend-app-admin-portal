@@ -23,6 +23,7 @@ import { ROUTE_NAMES } from './constants';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
+import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
 import SubsidyRequestConfigurationContextProvider from '../subsidy-request-configuration';
 
 class EnterpriseApp extends React.Component {
@@ -132,6 +133,7 @@ class EnterpriseApp extends React.Component {
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>
+                <BrowseAndRequestTour />
                 <Sidebar
                   baseUrl={baseUrl}
                   wrappedComponentRef={(node) => {
