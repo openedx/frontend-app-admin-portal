@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Stack } from '@edx/paragon';
 import { connect } from 'react-redux';
 
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
-  SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
 } from '../SubsidyRequestManagementTable';
+import { ApproveLicenseRequestModal, DeclineSubsidyRequestModal } from '../subsidy-request-modals';
+import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
+import { NoAvailableLicensesBanner } from '../subsidy-request-management-alerts';
+import { SubscriptionContext } from './SubscriptionData';
+import LoadingMessage from '../LoadingMessage';
+import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 
 const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
   const {
@@ -15,12 +20,23 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     requests,
     requestsOverview,
     handleFetchRequests,
-  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.licenses);
+    updateRequestStatus,
+  } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.license);
+  const { data: subscriptionsData, loading: isLoadingSubscriptions } = useContext(SubscriptionContext);
 
-  /* eslint-disable no-console */
-  const handleApprove = (row) => console.log('approve', row);
-  const handleDecline = (row) => console.log('decline', row);
-  /* eslint-enable no-console */
+  const [selectedRequest, setSelectedRequest] = useState();
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
+
+  if (isLoadingSubscriptions) {
+    return <LoadingMessage className="subscriptions" />;
+  }
+
+  const subscriptions = subscriptionsData.results;
+
+  const hasAvailableLicenses = subscriptions.some(
+    subscription => subscription.licenses.unassigned > 0 && subscription.daysUntilExpiration > 0,
+  );
 
   return (
     <Stack gap={2}>
@@ -28,14 +44,21 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
         <h2>Enrollment requests</h2>
         <p>Approve or decline enrollment requests for individual learners below.</p>
       </div>
+      <NoAvailableLicensesBanner />
       <SubsidyRequestManagementTable
         pageCount={requests.pageCount}
         itemCount={requests.itemCount}
         data={requests.requests}
         fetchData={handleFetchRequests}
         requestStatusFilterChoices={requestsOverview}
-        onApprove={handleApprove}
-        onDecline={handleDecline}
+        onApprove={(row) => {
+          setSelectedRequest(row);
+          setIsApproveModalOpen(true);
+        }}
+        onDecline={(row) => {
+          setSelectedRequest(row);
+          setIsDenyModalOpen(true);
+        }}
         isLoading={isLoading}
         initialTableOptions={{
           getRowId: row => row.uuid,
@@ -44,7 +67,35 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
           pageSize: PAGE_SIZE,
           pageIndex: 0,
         }}
+        disableApproveButton={!hasAvailableLicenses}
       />
+      {selectedRequest && (
+        <>
+          {isApproveModalOpen && (
+            <ApproveLicenseRequestModal
+              isOpen
+              licenseRequest={selectedRequest}
+              onSuccess={() => {
+                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING });
+                setIsApproveModalOpen(false);
+              }}
+              onClose={() => setIsApproveModalOpen(false)}
+            />
+          )}
+          {isDenyModalOpen && (
+            <DeclineSubsidyRequestModal
+              isOpen
+              subsidyRequest={selectedRequest}
+              declineRequestFn={EnterpriseAccessApiService.declineLicenseRequests}
+              onSuccess={() => {
+                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED });
+                setIsDenyModalOpen(false);
+              }}
+              onClose={() => setIsDenyModalOpen(false)}
+            />
+          )}
+        </>
+      )}
     </Stack>
   );
 };

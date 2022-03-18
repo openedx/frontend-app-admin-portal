@@ -10,7 +10,6 @@ export {
 } from './data/hooks';
 
 export {
-  SUPPORTED_SUBSIDY_TYPES,
   PAGE_SIZE,
 } from './data/constants';
 

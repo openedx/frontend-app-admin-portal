@@ -27,4 +27,5 @@ export const transformRequests = requests => requests.map((request) => ({
   courseId: request.courseId,
   requestDate: request.created,
   requestStatus: request.state,
+  enterpriseCustomerUUID: request.enterpriseCustomerUuid,
 }));

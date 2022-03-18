@@ -2,7 +2,6 @@ import React from 'react';
 import {
   render,
   fireEvent,
-  act,
   waitFor,
 } from '@testing-library/react';
 import { ApproveLicenseRequestModal } from '../ApproveLicenseRequestModal';
@@ -10,6 +9,7 @@ import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessA
 import * as hooks from '../data/hooks';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
+const TEST_REQUEST_UUID = 'test-license-request-uuid';
 const TEST_COURSE_RUN_ID = 'edx+101';
 const TEST_SUBSCRIPTION_UUID = 'test-subscription-uuid';
 const TEST_SUBSCRIPTION_UUID_2 = 'test-subscription-2-uuid';
@@ -17,15 +17,15 @@ const TEST_SUBSCRIPTION_UUID_2 = 'test-subscription-2-uuid';
 jest.mock('../data/hooks');
 
 jest.mock('../../../data/services/EnterpriseAccessApiService', () => ({
-  approveLicenseRequest: jest.fn(),
+  approveLicenseRequests: jest.fn(),
 }));
 
 describe('<ApproveLicenseRequestModal />', () => {
   const basicProps = {
-    enterpriseId: TEST_ENTERPRISE_UUID,
     licenseRequest: {
-      uuid: 'test-license-request-uuid',
+      uuid: TEST_REQUEST_UUID,
       courseId: TEST_COURSE_RUN_ID,
+      enterpriseCustomerUUID: TEST_ENTERPRISE_UUID,
     },
     isOpen: true,
     onSuccess: jest.fn(),
@@ -117,17 +117,20 @@ describe('<ApproveLicenseRequestModal />', () => {
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    await act(async () => { fireEvent.click(approveBtn); });
+    fireEvent.click(approveBtn);
 
-    expect(EnterpriseAccessApiService.approveLicenseRequest).toHaveBeenCalledWith({
-      licenseRequestUUIDs: [basicProps.licenseRequest.uuid],
-      subscriptionPlanUUID: TEST_SUBSCRIPTION_UUID,
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        licenseRequestUUIDs: [basicProps.licenseRequest.uuid],
+        subscriptionPlanUUID: TEST_SUBSCRIPTION_UUID,
+      });
+      expect(handleSuccess).toHaveBeenCalled();
     });
-    expect(handleSuccess).toHaveBeenCalled();
   });
 
   it('should render alert if an error occured', async () => {
-    EnterpriseAccessApiService.approveLicenseRequest.mockRejectedValue(new Error('something went wrong'));
+    EnterpriseAccessApiService.approveLicenseRequests.mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(
       <ApproveLicenseRequestModal {...basicProps} />,
@@ -139,16 +142,18 @@ describe('<ApproveLicenseRequestModal />', () => {
     let approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    await act(async () => { fireEvent.click(approveBtn); });
+    fireEvent.click(approveBtn);
 
-    expect(EnterpriseAccessApiService.approveLicenseRequest).toHaveBeenCalledWith({
-      licenseRequestUUIDs: [basicProps.licenseRequest.uuid],
-      subscriptionPlanUUID: TEST_SUBSCRIPTION_UUID,
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        licenseRequestUUIDs: [basicProps.licenseRequest.uuid],
+        subscriptionPlanUUID: TEST_SUBSCRIPTION_UUID,
+      });
+      approveBtn = getByTestId('approve-license-request-modal-approve-btn');
+      expect(getByTestId('approve-license-request-modal-error-alert'));
+      expect(approveBtn.textContent).toBe('Try again');
     });
-
-    approveBtn = getByTestId('approve-license-request-modal-approve-btn');
-    expect(getByTestId('approve-license-request-modal-error-alert'));
-    expect(approveBtn.textContent).toBe('Try again');
   });
 
   it('should render alert if there are no applicable subscriptions', async () => {
