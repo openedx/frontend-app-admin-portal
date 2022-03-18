@@ -7,15 +7,14 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import { ToastsContext } from '../Toasts';
-import { AnalyticsPage } from './index';
-import AnalyticsApiService from './data/service';
+import { NewAnalyticsPage } from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 
-jest.mock('./data/service');
+jest.mock('../analytics/data/service');
 
 const history = createMemoryHistory({
-  initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/analytics`],
+  initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/new-analytics`],
 });
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -26,52 +25,40 @@ const initialState = {
 const store = mockStore({
   ...initialState,
 });
-const AnalyticsPageWrapper = ({
+const NewAnalyticsPageWrapper = ({
   ...rest
 }) => (
   <Router history={history}>
     <ToastsContext.Provider value={{ addToast: () => {} }}>
       <Route
         exact
-        path="/:enterpriseSlug/admin/analytics"
-        render={routeProps => <AnalyticsPage {...routeProps} {...rest} />}
+        path="/:enterpriseSlug/admin/new-analytics"
+        render={routeProps => <NewAnalyticsPage {...routeProps} {...rest} />}
       />
     </ToastsContext.Provider>
   </Router>
 );
 
-describe('<AnalyticsPage />', () => {
+describe('<NewAnalyticsPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
   it('renders loading skeleton when not authenticated (redirect to enterprise proxy login)', () => {
-    AnalyticsApiService.fetchTableauToken.mockImplementation(() => Promise.resolve({
-      data: 'tableau-token',
-    }));
     getAuthenticatedUser.mockReturnValue(null);
-    const wrapper = mount(<AnalyticsPageWrapper store={store} />);
+    const wrapper = mount(<NewAnalyticsPageWrapper store={store} />);
 
     // verify that the loading skeleton appears during redirect
     expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
     expect(global.location.href).toBeTruthy();
   });
 
-  it('redirects to /admin/analytics route when user is authenticated and has "enterprise_admin" JWT role', () => {
-    AnalyticsApiService.fetchTableauToken.mockImplementation(() => Promise.resolve({
-      data: 'tableau-token',
-    }));
+  it('redirects to /admin/new-analytics route when user is authenticated and has "enterprise_admin" JWT role', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_admin:*'],
     });
-    mount(<AnalyticsPageWrapper store={store} />);
-    const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/analytics`;
+    mount(<NewAnalyticsPageWrapper store={store} />);
+    const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/new-analytics`;
     expect(history.location.pathname).toEqual(expectedRedirectRoute);
-  });
-
-  it('show StatusAlert on errors', () => {
-    const wrapper = mount((<AnalyticsPageWrapper store={store} />));
-    wrapper.setState({ error: 'error occurred.' });
-    expect(wrapper.find('StatusAlert').first().props().message).toEqual('error occurred.');
   });
 });

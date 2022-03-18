@@ -85,6 +85,12 @@ class Sidebar extends React.Component {
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
       },
       {
+        title: 'New-Analytics',
+        to: `${baseUrl}/admin/new-analytics`,
+        icon: faChartBar,
+        hidden: !features.NEW_ANALYTICS || !enableAnalyticsScreen,
+      },
+      {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
         icon: faIdCard,
