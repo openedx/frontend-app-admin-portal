@@ -17,9 +17,9 @@ import NotFoundPage from '../NotFoundPage';
 import { features } from '../../config';
 
 const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+  const isBrowseAndRequestEnabled = (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest);
 
-  if (isTabsFeatureEnabled) {
+  if (isBrowseAndRequestEnabled) {
     return (
       <Switch>
         <Redirect

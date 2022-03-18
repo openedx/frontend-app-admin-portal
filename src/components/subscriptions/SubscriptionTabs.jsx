@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
@@ -8,6 +8,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
 import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import SubscriptionPlanRoutes from './SubscriptionPlanRoutes';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
@@ -18,15 +19,22 @@ import {
   SUBSCRIPTION_TABS_LABELS,
   SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyType } = subsidyRequestConfiguration;
+  const isRequestsTabShown = subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
+
+  const history = useHistory();
   const params = useParams();
   const subscriptionsTab = params[SUBSCRIPTIONS_TAB_PARAM];
-  const history = useHistory();
+
   const routesByTabKey = {
     [MANAGE_LEARNERS_TAB]: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`,
     [MANAGE_REQUESTS_TAB]: `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`,
   };
+
   const handleTabSelect = (key) => {
     if (key === MANAGE_REQUESTS_TAB) {
       history.push(routesByTabKey[MANAGE_REQUESTS_TAB]);
@@ -50,19 +58,21 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           <SubscriptionPlanRoutes />
         )}
       </Tab>
-      <Tab
-        eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
-        title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
-        className="pt-4"
-      >
-        {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
-          <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
-            component={SubscriptionSubsidyRequests}
-            exact
-          />
-        )}
-      </Tab>
+      {isRequestsTabShown && (
+        <Tab
+          eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
+          title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
+          className="pt-4"
+        >
+          {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
+            <Route
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
+              component={SubscriptionSubsidyRequests}
+              exact
+            />
+          )}
+        </Tab>
+      )}
     </Tabs>
   );
 };
