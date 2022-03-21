@@ -2,6 +2,7 @@ import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useExistingSSOConfigs } from '../hooks';
+import SSOConfigCard from '../SSOConfigCard';
 
 const SSOConfigConnectStep = ({ enterpriseId }) => {
   // When we render this cmponent, we need to re-fetch provider configs and updatee the store
@@ -9,13 +10,15 @@ const SSOConfigConnectStep = ({ enterpriseId }) => {
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
   return (
     <>
-      {isLoading && <span>Loading...</span>}
+      {isLoading && <span>Loading SSO Configurations...</span>}
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
         <>
           <p>
-            Lastly, let’s test your configuration. Click on a card below to connect to edX via your SSO.
+            Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
           </p>
-          {existingConfigs.map(config => <p>{config.name}</p>)}
+          <div className="d-flex">
+            {existingConfigs.map(config => <SSOConfigCard config={config} />)}
+          </div>
         </>
       )}
       {!isLoading && existingConfigs && existingConfigs.length === 0 && (

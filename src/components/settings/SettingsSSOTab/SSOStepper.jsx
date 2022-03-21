@@ -22,7 +22,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
 
   const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
   const isIdpStepComplete = useMemo(
-    () => isURL(metadataURL) && (entityID && !isEmpty(entityID)),
+    () => (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID)),
     [metadataURL, entityID],
   );
 
@@ -96,7 +96,6 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               <ArrowBack />
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => alert('connected!')}>Connect</Button>
           </Stepper.ActionRow>
         </div>
       </Stepper>

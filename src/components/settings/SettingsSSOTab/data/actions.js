@@ -5,6 +5,7 @@ export const UPDATE_CURRENT_STEP = 'update_current_step';
 export const UPDATE_SP_CONFIGURED = 'update_sp_configured';
 export const SET_PROVIDER_CONFIG = 'set_provider_config';
 export const UPDATE_CURRENT_ERROR = 'update_current_error';
+export const CLEAR_PROVIDER_CONFIG = 'clear_provider_config';
 
 // Use this action to update IDP metadata URL in client state
 export const updateIdpMetadataURLAction = metadataURL => ({
@@ -35,6 +36,12 @@ export const updateServiceProviderConfigured = isSPConfigured => ({
 export const setProviderConfig = providerConfig => ({
   type: SET_PROVIDER_CONFIG,
   providerConfig,
+});
+
+// used when we want to clear currently selected provider
+// typically used to take UI back to the listing page of providers
+export const clearProviderConfig = () => ({
+  type: CLEAR_PROVIDER_CONFIG,
 });
 
 export const updateCurrentError = error => ({

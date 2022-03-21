@@ -6,6 +6,7 @@ import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
   updateCurrentError, setProviderConfig,
 } from './data/actions';
+import { fetchMetadataFromRemote } from './utils';
 
 const useIdpState = () => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
@@ -39,6 +40,11 @@ const useIdpState = () => {
       // here we can assume the customer only has one sso config, at this time
       // but we need to update this support the case when the correct sso config must be updated
       dispatchSsoState(setProviderConfig(response.data));
+
+      // also fetch and parse remote metadata and extract the needed fields to save samlproviderdata
+      const { parsedEntityID, parsedSSOURL, parsedX509Cert } = await fetchMetadataFromRemote(metadataURL);
+      console.log({ parsedEntityID, parsedSSOURL, parsedX509Cert });
+      // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {
       dispatchSsoState(updateCurrentError(error));

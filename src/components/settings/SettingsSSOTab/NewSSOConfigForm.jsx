@@ -1,5 +1,4 @@
 import React from 'react';
-import { SSOConfigContextProvider } from './SSOConfigContext';
 import SSOStepper from './SSOStepper';
 
 const NewSSOConfigForm = () => (
@@ -8,9 +7,7 @@ const NewSSOConfigForm = () => (
       Connect to SAML identity provider for single sign-on,
       such as Okta or OneLogin to allow quick access to your organization&apos;s learning catalog.
     </span>
-    <SSOConfigContextProvider>
-      <SSOStepper />
-    </SSOConfigContextProvider>
+    <SSOStepper />
   </div>
 );
 export default NewSSOConfigForm;
