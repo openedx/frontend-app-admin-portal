@@ -23,8 +23,13 @@ const SettingsAccessTab = ({
     updateSubsidyRequestConfiguration,
   } = useContext(SubsidyRequestConfigurationContext);
 
-  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST
+  const isEligibleForBrowseAndRequest = features.FEATURE_BROWSE_AND_REQUEST
    && enableBrowseAndRequest && !!subsidyRequestConfiguration.subsidyType;
+
+  const isBrowseAndRequestDisabled = !(enableUniversalLink || (
+    identityProvider && enableIntegratedCustomerLearnerPortalSearch
+  ));
+
   const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
 
   return (
@@ -69,7 +74,7 @@ const SettingsAccessTab = ({
         />
       )}
 
-      {isBrowseAndRequestEnabled && (
+      {isEligibleForBrowseAndRequest && (
         <div className="mt-5">
           <h3>Manage course requests</h3>
           <p>
@@ -79,7 +84,7 @@ const SettingsAccessTab = ({
           <SettingsAccessSubsidyRequestManagement
             subsidyRequestConfiguration={subsidyRequestConfiguration}
             updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-            disabled={!(enableUniversalLink || enableIntegratedCustomerLearnerPortalSearch)}
+            disabled={isBrowseAndRequestDisabled}
           />
         </div>
       )}

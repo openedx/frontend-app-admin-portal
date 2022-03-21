@@ -34,6 +34,9 @@ export const generateStore = (portalConfiguration) => (mockStore({
     ...basicStore.portalConfiguration,
     ...portalConfiguration,
   },
+  coupons: {
+    loading: false,
+  },
 }));
 
 const mockSettingsHooks = (loadingCustomerAgreement = false) => {

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -20,6 +21,8 @@ import {
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
 import { features } from '../../../config';
+import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 features.FEATURE_BROWSE_AND_REQUEST = true;
 
@@ -44,28 +47,49 @@ const historyMock = (pathname = SUBSCRIPTION_PAGE_LOCATION) => ({
   listen: jest.fn(),
 });
 
-// eslint-disable-next-line react/prop-types
-const tourWithContext = ({ pathname } = {}) => (
+const TourWithContext = ({
+  pathname = undefined,
+  subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
+  subsidyRequestsEnabled = false,
+}) => (
   <Router history={historyMock(pathname)}>
     <Provider store={store}>
-      <>
-        <BrowseAndRequestTour />
-        <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
-      </>
+      <SubsidyRequestConfigurationContext.Provider value={{
+        subsidyRequestConfiguration: {
+          subsidyType,
+          subsidyRequestsEnabled,
+        },
+      }}
+      >
+        <>
+          <BrowseAndRequestTour />
+          <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
+        </>
+      </SubsidyRequestConfigurationContext.Provider>
     </Provider>
   </Router>
 );
 
 describe('<BrowseAndRequestTour/>', () => {
-  afterEach(() => { cleanup(); });
+  afterEach(() => cleanup());
 
-  it('is shown when feature is enabled and no cookie found ', () => {
-    render(tourWithContext());
+  it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
+    render(<TourWithContext />);
     expect(screen.queryByText('New Feature')).toBeTruthy();
   });
 
+  it('is not shown if enterprise is not eligible for browse and request', () => {
+    render(<TourWithContext subsidyType={null} />);
+    expect(screen.queryByText('New Feature')).toBeFalsy();
+  });
+
+  it('is not shown if enterprise already has subsidy requests turned on', () => {
+    render(<TourWithContext subsidyRequestsEnabled />);
+    expect(screen.queryByText('New Feature')).toBeFalsy();
+  });
+
   it(`redirects to settings page at ${SETTINGS_PAGE_LOCATION}`, async () => {
-    render(tourWithContext());
+    render(<TourWithContext />);
     const button = screen.getByText('Continue To Settings');
     await act(async () => { userEvent.click(button); });
     expect(useHistoryPush).toHaveBeenCalledWith({
@@ -79,12 +103,12 @@ describe('<BrowseAndRequestTour/>', () => {
       writable: true,
       value: `${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}=true`,
     });
-    render(tourWithContext());
+    render(<TourWithContext />);
     expect(screen.queryByText('New Feature')).toBeFalsy();
   });
 
   it('not shown in settings page', () => {
-    render(tourWithContext({ pathname: SETTINGS_PAGE_LOCATION }));
+    render(<TourWithContext pathname={SETTINGS_PAGE_LOCATION} />);
     expect(screen.queryByText('New Feature')).toBeFalsy();
   });
 });

@@ -2,17 +2,12 @@ import React from 'react';
 import {
   screen,
   render,
-  cleanup,
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 
-import SettingsContextProvider from '../../SettingsContext';
 import SettingsAccessGenerateLinkButton from '../SettingsAccessGenerateLinkButton';
-import * as hooks from '../../data/hooks';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
@@ -22,51 +17,34 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
   },
 }));
 
-const onSuccessMock = jest.fn();
-
 const ENTERPRISE_ID = 'test-enterprise';
-const mockStore = configureMockStore();
-const store = mockStore({
-  portalConfiguration: {
-    enterpriseId: ENTERPRISE_ID,
-  },
-});
-const NET_DAYS_UNTIL_EXPIRATION = 100;
-const renderWithContext = (loadingCustomerAgreement = false) => {
-  jest.spyOn(hooks, 'useCustomerAgreementData').mockImplementation(
-    () => ({
-      customerAgreement: { netDaysUntilExpiration: NET_DAYS_UNTIL_EXPIRATION },
-      loadingCustomerAgreement,
-    }),
-  );
-  return (
-    <Provider store={store}>
-      <SettingsContextProvider>
-        <SettingsAccessGenerateLinkButton onSuccess={onSuccessMock} />
-      </SettingsContextProvider>
-    </Provider>
-  );
-};
 
 describe('<SettingsAccessGenerateLinkButton />', () => {
+  const basicProps = {
+    enterpriseUUID: ENTERPRISE_ID,
+    formattedLinkExpirationDate: moment().format(),
+    disabled: false,
+    onSuccess: jest.fn(),
+  };
+
   afterEach(() => {
-    cleanup();
     jest.clearAllMocks();
   });
 
   it('Displays default state', () => {
-    render(renderWithContext());
+    render(<SettingsAccessGenerateLinkButton {...basicProps} />);
     expect(screen.queryByText('Generate link')).toBeTruthy();
   });
-  it('Is disable when loadingCustomerAgreement', () => {
-    render(renderWithContext(true));
+  it('Is disabled if disabled = true', () => {
+    render(<SettingsAccessGenerateLinkButton {...basicProps} disabled />);
     const button = screen.queryByText('Generate link').closest('button');
     expect(button).toBeTruthy();
     expect(button).toHaveProperty('disabled', true);
   });
 
   it('Clicking button calls api', async () => {
-    render(renderWithContext());
+    const mockHandleSuccess = jest.fn();
+    render(<SettingsAccessGenerateLinkButton {...basicProps} onSuccess={mockHandleSuccess} />);
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LmsApiService.createEnterpriseCustomerLink.mockReturnValue(mockPromiseResolve);
     const button = screen.getByText('Generate link');
@@ -75,8 +53,8 @@ describe('<SettingsAccessGenerateLinkButton />', () => {
 
     expect(LmsApiService.createEnterpriseCustomerLink).toHaveBeenCalledWith(
       ENTERPRISE_ID,
-      moment().add(NET_DAYS_UNTIL_EXPIRATION, 'days').startOf('day').format(),
+      basicProps.formattedLinkExpirationDate,
     );
-    expect(onSuccessMock).toHaveBeenCalledTimes(1);
+    expect(mockHandleSuccess).toHaveBeenCalledTimes(1);
   });
 });

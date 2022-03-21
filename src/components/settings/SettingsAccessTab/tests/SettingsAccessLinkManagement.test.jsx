@@ -2,7 +2,6 @@ import React from 'react';
 import {
   screen,
   render,
-  cleanup,
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -14,6 +13,9 @@ import MockSettingsContext, { MOCK_CONSTANTS, generateStore } from './TestUtils'
 import SettingsAccessLinkManagement from '../SettingsAccessLinkManagement';
 import * as hooks from '../../data/hooks';
 import { SETTINGS_ACCESS_EVENTS } from '../../../../eventTracking';
+import * as couponActions from '../../../../data/actions/coupons';
+
+jest.mock('../../../../data/actions/coupons');
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   __esModule: true,
@@ -47,8 +49,11 @@ const renderWithContext = (store = generateStore(), links = [], loadingLinks = f
 };
 
 describe('<SettingsAccessLinkManagement/>', () => {
+  beforeEach(() => couponActions.fetchCouponOrders.mockReturnValue({
+    type: 'fetch coupons',
+  }));
+
   afterEach(() => {
-    cleanup();
     jest.clearAllMocks();
   });
 

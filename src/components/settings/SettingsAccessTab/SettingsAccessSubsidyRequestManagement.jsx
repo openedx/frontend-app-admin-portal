@@ -52,7 +52,7 @@ const SettingsAccessSubsidyRequestManagement = ({
         </Alert>
       )}
       <SettingsAccessTabSection
-        title="Manage course requests"
+        title="Course requests"
         checked={subsidyRequestsEnabled}
         loading={isLoading}
         onFormSwitchChange={handleFormSwitchChange}

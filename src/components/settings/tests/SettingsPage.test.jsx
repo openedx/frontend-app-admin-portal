@@ -2,7 +2,6 @@ import React from 'react';
 import {
   screen,
   render,
-  cleanup,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -12,10 +11,19 @@ import SettingsPage from '../index';
 
 jest.mock('../SettingsTabs');
 
+jest.mock('../SettingsContext', () => ({
+  __esModule: true, // this property makes it work
+  // eslint-disable-next-line react/prop-types
+  default: ({ children }) => <div>{ children }</div>,
+}));
+
 const mockStore = configureMockStore();
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+  },
+  coupons: {
+    loading: false,
   },
 });
 
@@ -31,7 +39,6 @@ const settingsPageWithRouter = (route) => (
 
 describe('<SettingsPage />', () => {
   afterEach(() => {
-    cleanup();
     jest.clearAllMocks();
   });
 
