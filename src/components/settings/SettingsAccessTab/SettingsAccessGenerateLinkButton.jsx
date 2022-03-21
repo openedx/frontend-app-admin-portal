@@ -1,14 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   StatefulButton,
 } from '@edx/paragon';
-import moment from 'moment';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LmsApiService from '../../../data/services/LmsApiService';
-import { SettingsContext } from '../SettingsContext';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
 const BUTTON_PROPS = {
@@ -22,32 +20,26 @@ const BUTTON_PROPS = {
 };
 
 const SettingsAccessGenerateLinkButton = ({
+  enterpriseUUID,
+  formattedLinkExpirationDate,
   onSuccess,
   disabled,
 }) => {
-  const {
-    enterpriseId,
-    loadingCustomerAgreement,
-    customerAgreement: { netDaysUntilExpiration },
-  } = useContext(SettingsContext);
-
   const [loadingLinkCreation, setLoadingLinkCreation] = useState(false);
 
   const buttonState = loadingLinkCreation ? 'loading' : 'default';
 
   const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);
-    // Generate expiration date of netDaysUntilExpiration
-    const expirationDate = moment().add(netDaysUntilExpiration, 'days').startOf('day').format();
     try {
-      const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseId, expirationDate);
+      const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseUUID, formattedLinkExpirationDate);
       onSuccess(response);
     } catch (error) {
       logError(error);
     } finally {
       setLoadingLinkCreation(false);
       sendEnterpriseTrackEvent(
-        enterpriseId,
+        enterpriseUUID,
         SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_GENERATE,
       );
     }
@@ -55,7 +47,7 @@ const SettingsAccessGenerateLinkButton = ({
 
   return (
     <StatefulButton
-      disabled={disabled || loadingCustomerAgreement}
+      disabled={disabled}
       {...BUTTON_PROPS}
       state={buttonState}
       onClick={handleGenerateLink}
@@ -67,6 +59,8 @@ SettingsAccessGenerateLinkButton.defaultProps = {
   disabled: false,
 };
 SettingsAccessGenerateLinkButton.propTypes = {
+  enterpriseUUID: PropTypes.string.isRequired,
+  formattedLinkExpirationDate: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   onSuccess: PropTypes.func.isRequired,
 };

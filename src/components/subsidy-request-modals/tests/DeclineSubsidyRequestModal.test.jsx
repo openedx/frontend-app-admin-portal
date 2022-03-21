@@ -37,7 +37,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
         />,
       );
 
-      if (shouldNotifyLearner) {
+      if (!shouldNotifyLearner) {
         const checkbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
         fireEvent.click(checkbox);
       }
@@ -88,7 +88,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
     await waitFor(() => {
       expect(mockDeclineRequestFn).toHaveBeenCalledWith({
         subsidyRequestUUIDS: [TEST_REQUEST_UUID],
-        sendNotification: false,
+        sendNotification: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
       });
       expect(getByTestId('decline-subsidy-request-modal-alert'));

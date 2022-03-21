@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
@@ -12,19 +12,24 @@ import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from './constants';
+import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
 
 const cookies = new Cookies();
 
 const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const isEligibleForFeature = !!subsidyRequestConfiguration?.subsidyType;
   const isFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   const history = useHistory();
-  const inSettingsPage = history.location.pathname.split('/')[3] === ROUTE_NAMES.settings;
+  const inSettingsPage = history.location.pathname.includes(ROUTE_NAMES.settings);
 
   const dismissedTourCookie = cookies.get(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
 
-  // only show tour if feature is enabled, hide cookie is undefined or false and not in settings page
-  const showTour = isFeatureEnabled && !dismissedTourCookie && !inSettingsPage;
+  // Only show tour if feature is enabled, the enterprise is eligible for the feature,
+  // hide cookie is undefined or false, not in settings page, and subsidy requests are not already enabled
+  const showTour = isFeatureEnabled && isEligibleForFeature
+    && !dismissedTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
   if (!showTour) {
     return null;

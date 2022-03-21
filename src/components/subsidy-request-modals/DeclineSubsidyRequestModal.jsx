@@ -16,7 +16,7 @@ const DeclineSubsidyRequestModal = ({
   onSuccess,
   onClose,
 }) => {
-  const [shouldNotifyLearner, setShouldNotifyLearner] = useState(false);
+  const [shouldNotifyLearner, setShouldNotifyLearner] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 

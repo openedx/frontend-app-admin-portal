@@ -18,7 +18,13 @@ jest.mock('../SettingsAccessSSOManagement', () => ({
 }));
 jest.mock('../SettingsAccessSubsidyRequestManagement', () => ({
   __esModule: true, // this property makes it work
-  default: jest.fn(() => 'SettingsAccessSubsidyRequestManagement'),
+  default: jest.fn(({ disabled }) => (
+    <>
+      SettingsAccessSubsidyRequestManagement
+      <span>{disabled ? 'disabled' : ''}
+      </span>
+    </>
+  )),
 }));
 jest.mock('../../../../config');
 
@@ -30,8 +36,8 @@ const mockSubsidyRequestConfiguration = {
 const basicProps = {
   enterpriseId: 'test-enterprise-uuid',
   enableBrowseAndRequest: false,
-  enableIntegratedCustomerLearnerPortalSearch: true,
-  enableUniversalLink: true,
+  enableIntegratedCustomerLearnerPortalSearch: false,
+  enableUniversalLink: false,
   enableLearnerPortal: false,
   identityProvider: undefined,
   updatePortalConfiguration: jest.fn(),
@@ -73,5 +79,18 @@ describe('<SettingsAccessTab />', () => {
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
+  });
+
+  it.only('should disable <SettingsAccessSubsidyRequestManagement/> if neither universal link or sso are configured', () => {
+    config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
+    render(
+      <SettingsAccessTabWrapper
+        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+      />,
+    );
+    expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
+    expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
+    expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
+    expect(screen.getByText('disabled'));
   });
 });

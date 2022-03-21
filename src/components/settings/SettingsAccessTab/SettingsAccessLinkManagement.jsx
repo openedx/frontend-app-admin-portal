@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -27,7 +27,7 @@ import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
   isUniversalLinkEnabled,
-  dispatch,
+  updatePortalConfiguration,
 }) => {
   const {
     links,
@@ -37,11 +37,23 @@ const SettingsAccessLinkManagement = ({
 
   const {
     customerAgreement: { netDaysUntilExpiration },
+    couponsData,
   } = useContext(SettingsContext);
 
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
   const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
   const [hasLinkManagementEnabledChangeError, setHasLinkManagementEnabledChangeError] = useState(false);
+  const formattedLinkExpirationDate = useMemo(
+    () => {
+      const expirationDates = [
+        ...couponsData.results.map(coupon => moment(coupon.endDate)),
+        moment().add(netDaysUntilExpiration, 'days').startOf('day'),
+      ];
+      const furthestExpirationDate = moment.max(expirationDates);
+      return furthestExpirationDate.format();
+    },
+    [couponsData.results, netDaysUntilExpiration],
+  );
 
   const toggleUniversalLink = async (newEnableUniversalLink) => {
     setIsLoadingLinkManagementEnabledChange(true);
@@ -51,12 +63,12 @@ const SettingsAccessLinkManagement = ({
     };
 
     if (newEnableUniversalLink) {
-      args.expirationDate = moment().add(netDaysUntilExpiration, 'days').startOf('day').format();
+      args.expirationDate = formattedLinkExpirationDate;
     }
 
     try {
       await LmsApiService.toggleEnterpriseCustomerUniversalLink(args);
-      dispatch(updatePortalConfigurationEvent({ enableUniversalLink: newEnableUniversalLink }));
+      updatePortalConfiguration({ enableUniversalLink: newEnableUniversalLink });
       setIsLinkManagementAlertModalOpen(false);
       setHasLinkManagementEnabledChangeError(false);
       refreshLinks();
@@ -119,8 +131,10 @@ const SettingsAccessLinkManagement = ({
           isLoading={loadingLinks}
           tableActions={[
             <SettingsAccessGenerateLinkButton
+              enterpriseUUID={enterpriseUUID}
+              formattedLinkExpirationDate={formattedLinkExpirationDate}
               onSuccess={handleGenerateLinkSuccess}
-              disabled={!isUniversalLinkEnabled}
+              disabled={!isUniversalLinkEnabled || loadingLinks}
             />,
           ]}
           columns={[
@@ -168,7 +182,7 @@ const SettingsAccessLinkManagement = ({
         isOpen={isLinkManagementAlertModalOpen}
         onClose={() => { setIsLinkManagementAlertModalOpen(false); }}
         onDisable={() => (toggleUniversalLink(false))}
-        isLoadingDisable={isLoadingLinkManagementEnabledChange}
+        isLoading={isLoadingLinkManagementEnabledChange}
         error={hasLinkManagementEnabledChangeError}
       />
     </>
@@ -180,10 +194,14 @@ const mapStateToProps = (state) => ({
   isUniversalLinkEnabled: state.portalConfiguration.enableUniversalLink,
 });
 
+const mapDispatchToProps = dispatch => ({
+  updatePortalConfiguration: data => dispatch(updatePortalConfigurationEvent(data)),
+});
+
 SettingsAccessLinkManagement.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   isUniversalLinkEnabled: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  updatePortalConfiguration: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(SettingsAccessLinkManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsAccessLinkManagement);
