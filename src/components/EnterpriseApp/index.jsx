@@ -16,6 +16,7 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
+import { NewAnalyticsPage } from '../NewAnalytics';
 import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
 import LmsConfigurations from '../../containers/LmsConfigurations';
@@ -210,6 +211,18 @@ class EnterpriseApp extends React.Component {
                       path={`${baseUrl}/admin/analytics`}
                       render={routeProps => (
                         <AnalyticsPage
+                          {...routeProps}
+                        />
+                      )}
+                    />
+                    )}
+                    {features.NEW_ANALYTICS && enableAnalyticsScreen && (
+                    <Route
+                      key="new-analytics"
+                      exact
+                      path={`${baseUrl}/admin/new-analytics`}
+                      render={routeProps => (
+                        <NewAnalyticsPage
                           {...routeProps}
                         />
                       )}
