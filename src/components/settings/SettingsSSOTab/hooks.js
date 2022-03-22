@@ -1,12 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import { useEffect, useState, useContext } from 'react';
+import { logInfo } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
   updateCurrentError, setProviderConfig,
 } from './data/actions';
-import { fetchMetadataFromRemote } from './utils';
+import { updateSamlProviderData } from './utils';
 
 const useIdpState = () => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
@@ -18,16 +19,18 @@ const useIdpState = () => {
     enterpriseName,
     enterpriseSlug,
     enterpriseId,
+    providerConfig = null,
     onSuccess,
   }) => {
-    // handler to call when we click 'next' on the first step (IDP creation initial)
-    // this function will do two things:
-    // send a post to server to create/update a SAMLProviderConfig record (and to request creation of SAMLProviderData)
-    // if that succeeds, it will dispatch to ssoState to update it per server
-    // if that fails,
-    //   dispatch to ssoState to update just the currentError to the error
-    //   dispatch to ssoState to set idp.isComplete = false
-    //   sets ssoState.currentState to 'idp' to take user back to idp screen if necessary
+    // This function will do two things:
+    //  1:   Send a post to create a SAMLProviderConfig record (and to request creation of SAMLProviderData)
+    //     OR,
+    //  2:  An update instead of create will be called if providerConfig is not null (based on its id)
+    //  if that succeeds, it will dispatch to ssoState to update it per server
+    //  if that fails,
+    //     dispatch to ssoState to update just the currentError to the error
+    //     dispatch to ssoState to set idp.isComplete = false
+    //     sets ssoState.currentState to 'idp' to take user back to idp screen if necessary
     const formData = new FormData();
     formData.append('name', enterpriseName);
     formData.append('slug', enterpriseSlug);
@@ -35,15 +38,27 @@ const useIdpState = () => {
     formData.append('metadata_source', metadataURL);
     formData.append('entity_id', entityID);
     try {
-      const response = await LmsApiService.postNewProviderConfig(formData);
+      let response;
+      if (!providerConfig) {
+        response = await LmsApiService.postNewProviderConfig(formData);
+      } else {
+        logInfo(`Updating ProviderConfig for id: ${providerConfig.id}`);
+        response = await LmsApiService.updateProviderConfig(formData, providerConfig.id);
+      }
+
       // response.data is the providerConfig
       // here we can assume the customer only has one sso config, at this time
       // but we need to update this support the case when the correct sso config must be updated
       dispatchSsoState(setProviderConfig(response.data));
 
-      // also fetch and parse remote metadata and extract the needed fields to save samlproviderdata
-      const { parsedEntityID, parsedSSOURL, parsedX509Cert } = await fetchMetadataFromRemote(metadataURL);
-      console.log({ parsedEntityID, parsedSSOURL, parsedX509Cert });
+      // also get samlproviderdata updated from remote metadata url
+      const providerdataResponse = await updateSamlProviderData({
+        enterpriseId,
+        metadataURL,
+        entityID,
+      });
+      logInfo(providerdataResponse);
+
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {

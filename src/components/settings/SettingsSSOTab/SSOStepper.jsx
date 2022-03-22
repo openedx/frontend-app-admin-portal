@@ -57,16 +57,13 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
             <Button
               disabled={!isIdpStepComplete}
               onClick={() => {
-                if (!providerConfig) {
-                  createOrUpdateIdpRecord({
-                    enterpriseName,
-                    enterpriseSlug,
-                    enterpriseId,
-                    onSuccess: () => setCurrentStep('serviceprovider'),
-                  });
-                } else {
-                  setCurrentStep('serviceprovider');
-                }
+                createOrUpdateIdpRecord({
+                  enterpriseName,
+                  enterpriseSlug,
+                  enterpriseId,
+                  providerConfig,
+                  onSuccess: () => setCurrentStep('serviceprovider'),
+                });
               }}
             >
               Next<ArrowForward className="ml-2" />

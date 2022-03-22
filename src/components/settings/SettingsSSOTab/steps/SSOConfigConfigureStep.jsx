@@ -46,9 +46,7 @@ const SSOConfigConfigureStep = () => {
     emailAddress: '',
     samlConfig: '',
   };
-  const handleUpdate = itemName => event => {
-    console.log(`updating ${ itemName } with ${ event.target.value} from ${data[itemName]}`);
-  };
+  const handleUpdate = () => {};
   return (
     <>
       <p>Next, enter additional information to customize SAML attributes if needed.

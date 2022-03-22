@@ -10,7 +10,7 @@ import { SSOConfigContext } from '../SSOConfigContext';
 const SSOConfigConnectStep = ({ enterpriseId }) => {
   // When we render this cmponent, we need to re-fetch provider configs and updatee the store
   // so that we can correctly show latest state of providers
-  // apply latest version of config to ssoState
+  // also, apply latest version of config to ssoState
   const { ssoState: { providerConfig }, dispatchSsoState } = useContext(SSOConfigContext);
 
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
