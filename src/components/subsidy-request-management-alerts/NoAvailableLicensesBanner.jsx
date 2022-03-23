@@ -1,21 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert } from '@edx/paragon';
+import PropTypes from 'prop-types';
 
-import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 
-const NoAvailableLicensesBanner = () => {
-  const { data } = useContext(SubscriptionContext);
-
+const NoAvailableLicensesBanner = ({ subscriptions }) => {
   const [showBanner, setShowBanner] = useState(true);
 
   const dismissBanner = () => {
     setShowBanner(false);
   };
 
-  const subscriptions = data.results;
-
-  if (!(subscriptions.length > 0)) {
+  if (subscriptions.length === 0) {
     return null;
   }
 
@@ -36,18 +32,20 @@ const NoAvailableLicensesBanner = () => {
     </Alert>
   );
 
-  const allSubscriptionsExpired = subscriptions[0].agreementNetDaysUntilExpiration <= 0;
+  const nonExpiredSubscriptions = subscriptions.filter(subscription => subscription.daysUntilExpiration > 0);
 
-  if (allSubscriptionsExpired) {
+  if (nonExpiredSubscriptions.length === 0) {
     return renderAlert(
       'All subscriptions ended',
       'Browsing on-demand has been disabled and all links have been deactivated. Contact support to renew your subscription and approve outstanding requests.',
     );
   }
 
-  const allLicensesAssigned = subscriptions.every(subscription => subscription.licenses.unassigned === 0);
+  const hasAvailableLicenses = nonExpiredSubscriptions.some(
+    subscription => subscription.licenses.unassigned > 0,
+  );
 
-  if (allLicensesAssigned) {
+  if (!hasAvailableLicenses) {
     return renderAlert(
       'Not enough licenses',
       'You don’t have any licenses left in your subscriptions. Contact support to get additional licenses and approve outstanding requests.',
@@ -55,6 +53,15 @@ const NoAvailableLicensesBanner = () => {
   }
 
   return null;
+};
+
+NoAvailableLicensesBanner.propTypes = {
+  subscriptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      daysUntilExpiration: PropTypes.number.isRequired,
+      licenses: { unassigned: PropTypes.number.isRequired },
+    }),
+  ).isRequired,
 };
 
 export default NoAvailableLicensesBanner;

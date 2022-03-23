@@ -63,6 +63,7 @@ export const useLinkManagement = (enterpriseUUID) => {
 
 const initialCustomerAgreementState = {
   netDaysUntilExpiration: 0,
+  subscriptions: [],
 };
 /**
  * @param {Object {enterpriseId: string}}
