@@ -24,7 +24,7 @@ const SettingsAccessTab = ({
   } = useContext(SubsidyRequestConfigurationContext);
 
   const isEligibleForBrowseAndRequest = features.FEATURE_BROWSE_AND_REQUEST
-   && enableBrowseAndRequest && !!subsidyRequestConfiguration.subsidyType;
+   && enableBrowseAndRequest && !!subsidyRequestConfiguration?.subsidyType;
 
   const isBrowseAndRequestDisabled = !(enableUniversalLink || (
     identityProvider && enableIntegratedCustomerLearnerPortalSearch

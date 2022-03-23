@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
 import { Alert } from '@edx/paragon';
 
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { camelCaseObject } from '@edx/frontend-platform/utils';
 import moment from 'moment';
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 
-export const NoAvailableCodesBanner = ({ couponsData }) => {
+export const NoAvailableCodesBanner = ({ coupons }) => {
   const [showBanner, setShowBanner] = useState(true);
 
   const dismissBanner = () => {
     setShowBanner(false);
   };
 
-  const coupons = couponsData?.results || [];
-
-  if (!(coupons.length > 0)) {
+  if (coupons.length === 0) {
     return null;
   }
 
   const now = moment();
-  const allCouponsExpired = coupons.every(coupon => moment(coupon.endDate) <= now);
+  const nonExpiredCoupons = coupons.filter(coupon => moment(coupon.endDate) > now);
 
   const renderAlert = (heading, body) => (
     <Alert
@@ -40,16 +36,18 @@ export const NoAvailableCodesBanner = ({ couponsData }) => {
     </Alert>
   );
 
-  if (allCouponsExpired) {
+  if (nonExpiredCoupons.length === 0) {
     return renderAlert(
       'All code batches expired',
       'Browsing on-demand has been disabled and all links have been deactivated. Contact support to get new code batches and approve outstanding requests.',
     );
   }
 
-  const allCodesAssigned = coupons.every(coupon => coupon.numUnassigned === 0);
+  const hasAvailableCodes = nonExpiredCoupons.some(
+    coupon => coupon.numUnassigned > 0,
+  );
 
-  if (allCodesAssigned) {
+  if (!hasAvailableCodes) {
     return renderAlert(
       'Not enough codes',
       'You don’t have any codes left. Contact support to get additional codes and approve outstanding requests.',
@@ -60,20 +58,14 @@ export const NoAvailableCodesBanner = ({ couponsData }) => {
 };
 
 NoAvailableCodesBanner.propTypes = {
-  couponsData: PropTypes.shape({
-    results: PropTypes.arrayOf(PropTypes.shape({
-      endDate: PropTypes.string.isRequired,
-      numUnassigned: PropTypes.number.isRequired,
-    })),
-  }),
+  coupons: PropTypes.arrayOf(PropTypes.shape({
+    endDate: PropTypes.string.isRequired,
+    numUnassigned: PropTypes.number.isRequired,
+  })),
 };
 
 NoAvailableCodesBanner.defaultProps = {
   couponsData: null,
 };
 
-const mapStateToProps = state => ({
-  couponsData: camelCaseObject(state.coupons.data),
-});
-
-export default connect(mapStateToProps)(NoAvailableCodesBanner);
+export default NoAvailableCodesBanner;

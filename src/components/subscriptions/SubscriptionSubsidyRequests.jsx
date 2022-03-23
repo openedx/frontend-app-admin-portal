@@ -44,7 +44,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
         <h2>Enrollment requests</h2>
         <p>Approve or decline enrollment requests for individual learners below.</p>
       </div>
-      <NoAvailableLicensesBanner />
+      <NoAvailableLicensesBanner subscriptions={subscriptions} />
       <SubsidyRequestManagementTable
         pageCount={requests.pageCount}
         itemCount={requests.itemCount}

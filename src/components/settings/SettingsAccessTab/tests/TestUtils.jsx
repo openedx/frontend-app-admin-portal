@@ -4,7 +4,6 @@ import configureMockStore from 'redux-mock-store';
 import PropTypes from 'prop-types';
 
 import SettingsContextProvider from '../../SettingsContext';
-import * as hooks from '../../data/hooks';
 
 const mockStore = configureMockStore();
 
@@ -25,10 +24,13 @@ const basicStore = {
 
 /**
  * Generates Store from `basicStore`
- * @param {Object} portalConfiguration
+ * @param {portalConfiguration: Object, coupons: Object} Object custom store data
  * @returns {Object} Generated store
  */
-export const generateStore = (portalConfiguration) => (mockStore({
+export const generateStore = ({
+  portalConfiguration,
+  coupons,
+}) => (mockStore({
   ...basicStore,
   portalConfiguration: {
     ...basicStore.portalConfiguration,
@@ -36,28 +38,18 @@ export const generateStore = (portalConfiguration) => (mockStore({
   },
   coupons: {
     loading: false,
+    ...coupons,
   },
 }));
 
-const mockSettingsHooks = (loadingCustomerAgreement = false) => {
-  jest.spyOn(hooks, 'useCustomerAgreementData').mockImplementation(
-    () => ({
-      customerAgreement: { netDaysUntilExpiration: NET_DAYS_UNTIL_EXPIRATION },
-      loadingCustomerAgreement,
-    }),
-  );
-};
-
-const MockSettingsContext = ({ store, children }) => {
-  mockSettingsHooks();
-  return (
-    <Provider store={store}>
-      <SettingsContextProvider>
-        {children}
-      </SettingsContextProvider>
-    </Provider>
-  );
-};
+// eslint-disable-next-line react/prop-types
+const MockSettingsContext = ({ store, children }) => (
+  <Provider store={store}>
+    <SettingsContextProvider>
+      {children}
+    </SettingsContextProvider>
+  </Provider>
+);
 
 MockSettingsContext.propTypes = {
   children: PropTypes.node.isRequired,

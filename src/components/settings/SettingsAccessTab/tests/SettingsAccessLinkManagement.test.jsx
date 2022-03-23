@@ -33,7 +33,11 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 });
 
 const mockRefreshLinks = jest.fn();
-const renderWithContext = (store = generateStore(), links = [], loadingLinks = false) => {
+
+const SettingsAccessLinkManagementWrapper = ({
+  // eslint-disable-next-line react/prop-types
+  store = generateStore({}), links = [], loadingLinks = false, subscriptions = [],
+}) => {
   jest.spyOn(hooks, 'useLinkManagement').mockImplementation(
     () => ({
       links,
@@ -41,6 +45,15 @@ const renderWithContext = (store = generateStore(), links = [], loadingLinks = f
       refreshLinks: mockRefreshLinks,
     }),
   );
+  jest.spyOn(hooks, 'useCustomerAgreementData').mockImplementation(
+    () => ({
+      customerAgreement: {
+        subscriptions,
+      },
+      loadingCustomerAgreement: false,
+    }),
+  );
+
   return (
     <MockSettingsContext store={store}>
       <SettingsAccessLinkManagement />
@@ -59,7 +72,9 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
   test('Toggle Universal Link Off', async () => {
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
-    render(renderWithContext());
+    render(
+      <SettingsAccessLinkManagementWrapper />,
+    );
 
     // Clicking `Enable` opens modal
     const switchInput = screen.queryByText('Enable');
@@ -91,19 +106,33 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
   test('Toggle Universal Link On', async () => {
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
-    render(renderWithContext(generateStore({ enableUniversalLink: false })));
+    const subExpirationDate = moment().add(1, 'days').format();
+    const couponExpirationDate = moment().add(3, 'days').format();
+    render(
+      <SettingsAccessLinkManagementWrapper
+        store={generateStore({
+          portalConfiguration: { enableUniversalLink: false },
+          coupons: {
+            data: {
+              results: [{ endDate: couponExpirationDate }],
+            },
+          },
+        })}
+        subscriptions={[{ expirationDate: subExpirationDate }]}
+      />,
+    );
 
     // Clicking `Enable` does not open modal
     const switchInput = screen.queryByText('Enable');
     await act(async () => { userEvent.click(switchInput); });
     expect(screen.queryByText('Are you sure?')).toBeFalsy();
 
-    // It calls api
+    // It calls api with the furthest subsidy expiration date
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledTimes(1);
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledWith({
       enterpriseUUID: MOCK_CONSTANTS.ENTERPRISE_ID,
       enableUniversalLink: true,
-      expirationDate: moment().add(MOCK_CONSTANTS.NET_DAYS_UNTIL_EXPIRATION, 'days').startOf('day').format(),
+      expirationDate: couponExpirationDate,
     });
 
     // Links are refreshed

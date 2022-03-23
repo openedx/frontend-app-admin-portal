@@ -36,23 +36,24 @@ const SettingsAccessLinkManagement = ({
   } = useLinkManagement(enterpriseUUID);
 
   const {
-    customerAgreement: { netDaysUntilExpiration },
-    couponsData,
+    customerAgreement: { subscriptions },
+    couponsData: { results: coupons },
   } = useContext(SettingsContext);
 
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
   const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
   const [hasLinkManagementEnabledChangeError, setHasLinkManagementEnabledChangeError] = useState(false);
+
   const formattedLinkExpirationDate = useMemo(
     () => {
       const expirationDates = [
-        ...couponsData.results.map(coupon => moment(coupon.endDate)),
-        moment().add(netDaysUntilExpiration, 'days').startOf('day'),
+        ...coupons.map(coupon => moment(coupon.endDate)),
+        ...subscriptions.map(subscription => moment(subscription.expirationDate).startOf('day')),
       ];
       const furthestExpirationDate = moment.max(expirationDates);
       return furthestExpirationDate.format();
     },
-    [couponsData.results, netDaysUntilExpiration],
+    [coupons, subscriptions],
   );
 
   const toggleUniversalLink = async (newEnableUniversalLink) => {
