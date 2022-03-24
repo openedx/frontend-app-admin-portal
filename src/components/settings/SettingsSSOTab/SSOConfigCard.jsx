@@ -15,7 +15,6 @@ import {
   updateConnectInProgress,
   updateConnectIsSsoValid,
   updateCurrentError,
-  updateCurrentstep,
 } from './data/actions';
 import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -31,7 +30,9 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     try {
       const response = await LmsApiService.getProviderConfig(enterpriseId);
       const providerConfigs = response.data.results;
-      const theProvider = providerConfigs.filter(aConfig => aConfig.id === config.id).shift();
+      const theProvider = providerConfigs.filter(
+        aConfig => (aConfig.name === config.name) && (aConfig.entity_id === config.entity_id),
+      ).shift();
       dispatchSsoState(setProviderConfig(theProvider));
       if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
         dispatchSsoState(updateConnectIsSsoValid(true));
@@ -56,7 +57,6 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     if (isSsoValid) {
       setInterval(null); // just in case, disable the timer
       dispatchSsoState(updateConnectInProgress(false));
-      dispatchSsoState(updateCurrentstep('idp'));
     } else {
       // nothing to do right now
       logInfo('Waiting for SSO valid to become true');
@@ -82,7 +82,8 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
         )}
       />
       <Card.Section>
-        {!inProgress && <Badge variant="warning">configured</Badge>}{' '}
+        {!inProgress && !isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
+        {!inProgress && isSsoValid && <Badge variant="success">completed</Badge>}{' '}
       </Card.Section>
     </Card>
   ) : <Skeleton>Testing of SSO in progress...Please wait a bit or reload page at a different time.</Skeleton>;
@@ -90,9 +91,10 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
 
 SSOConfigCard.propTypes = {
   config: PropTypes.shape({
-    name: PropTypes.string,
-    slug: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    entity_id: PropTypes.string.isRequired,
   }).isRequired,
   testLink: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
