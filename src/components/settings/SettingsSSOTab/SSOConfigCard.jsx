@@ -13,13 +13,15 @@ import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateConnectInProgress,
   updateConnectIsSsoValid,
-  updateCurrentError,
 } from './data/actions';
 import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
-  const { ssoState, dispatchSsoState, setProviderConfig } = useContext(SSOConfigContext);
+  const {
+    ssoState, dispatchSsoState,
+    setProviderConfig, setCurrentError,
+  } = useContext(SSOConfigContext);
   const { connect: { inProgress, isSsoValid } } = ssoState;
   const [interval, setInterval] = useState(null);
   const LIMIT_MILLIS = 120000;
@@ -42,10 +44,10 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
         // eslint-disable-next-line no-lonely-if
         if (performance.now() - startTime > LIMIT_MILLIS) {
           setInterval(null); // disable the polling
-          dispatchSsoState(updateCurrentError('Cannot validate SSO, please make changes and try again'));
+          setCurrentError('Cannot validate SSO, please make changes and try again');
         }
       }
-    } catch (error) { dispatchSsoState(updateCurrentError(error)); setInterval(null); }
+    } catch (error) { setCurrentError(error); setInterval(null); }
   }, interval);
   const initiateValidation = () => {
     setInterval(1000);

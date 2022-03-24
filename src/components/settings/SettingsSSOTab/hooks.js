@@ -5,12 +5,14 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
-  updateCurrentError, updateIdpDirtyState,
+  updateIdpDirtyState,
 } from './data/actions';
 import { updateSamlProviderData } from './utils';
 
 const useIdpState = () => {
-  const { ssoState, dispatchSsoState, setProviderConfig } = useContext(SSOConfigContext);
+  const {
+    ssoState, dispatchSsoState, setProviderConfig, setCurrentError,
+  } = useContext(SSOConfigContext);
   const {
     idp: {
       metadataURL,
@@ -74,7 +76,7 @@ const useIdpState = () => {
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {
-      dispatchSsoState(updateCurrentError(error));
+      setCurrentError(error);
     }
     dispatchSsoState(updateIdpDirtyState(false)); // we must reset dirty state
   };
