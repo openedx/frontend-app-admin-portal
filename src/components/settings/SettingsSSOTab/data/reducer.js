@@ -22,7 +22,7 @@ const SSOStateReducer = (state, action) => {
       return { ...state, currentStep: action.step };
     }
     case UPDATE_CURRENT_ERROR: {
-      return { ...state, currentError: action.currentError };
+      return { ...state, currentError: action.error };
     }
     case UPDATE_SP_CONFIGURED: {
       return {
