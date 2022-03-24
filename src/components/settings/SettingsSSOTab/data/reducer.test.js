@@ -9,7 +9,7 @@ import SSOStateReducer from './reducer';
 describe('reducer sso tests', () => {
   test('adds metadataURL', () => {
     expect(SSOStateReducer({}, updateIdpMetadataURLAction('aTestURL'))).toStrictEqual({
-      idp: { metadataURL: 'aTestURL' },
+      idp: { metadataURL: 'aTestURL', isDirty: true },
     });
   });
 
@@ -19,7 +19,7 @@ describe('reducer sso tests', () => {
         metadataURL: 'oldOne',
       },
     }, updateIdpMetadataURLAction('aTestURL'))).toStrictEqual({
-      idp: { metadataURL: 'aTestURL' },
+      idp: { metadataURL: 'aTestURL', isDirty: true },
     });
   });
   test('overwrites metadataURL', () => {
@@ -29,7 +29,7 @@ describe('reducer sso tests', () => {
         entryType: 'oldOne',
       },
     }, updateIdpEntryTypeAction('typeII'))).toStrictEqual({
-      idp: { metadataURL: 'a', entryType: 'typeII' },
+      idp: { metadataURL: 'a', entryType: 'typeII', isDirty: true },
     });
   });
   test('overwrites currentStep', () => {
