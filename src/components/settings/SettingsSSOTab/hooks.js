@@ -5,13 +5,20 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
-  updateCurrentError, setProviderConfig,
+  updateCurrentError, setProviderConfig, updateIdpDirtyState,
 } from './data/actions';
 import { updateSamlProviderData } from './utils';
 
 const useIdpState = () => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
-  const { idp: { metadataURL, entityID, entryType } } = ssoState;
+  const {
+    idp: {
+      metadataURL,
+      entityID,
+      entryType,
+      isDirty,
+    },
+  } = ssoState;
   const handleMetadataURLUpdate = event => dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
   const handleMetadataEntryTypeUpdate = event => dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
   const handleEntityIDUpdate = event => dispatchSsoState(updateEntityIDAction(event.target.value));
@@ -22,7 +29,12 @@ const useIdpState = () => {
     providerConfig = null,
     onSuccess,
   }) => {
-    // This function will do two things:
+    if (!isDirty) {
+      dispatchSsoState(updateIdpDirtyState(false));
+      onSuccess();
+      return;
+    }
+    // This function will do two things when isDirty is true:
     //  1:   Send a post to create a SAMLProviderConfig record (and to request creation of SAMLProviderData)
     //     OR,
     //  2:  An update instead of create will be called if providerConfig is not null (based on its id)
@@ -64,6 +76,7 @@ const useIdpState = () => {
     } catch (error) {
       dispatchSsoState(updateCurrentError(error));
     }
+    dispatchSsoState(updateIdpDirtyState(false)); // we must reset dirty state
   };
   return {
     metadataURL,

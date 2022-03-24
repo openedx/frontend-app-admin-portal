@@ -15,6 +15,7 @@ const SSOConfigContextProvider = ({ children }) => {
       metadataURL: '',
       entityID: '',
       entryType: 'url', // vs directEntry
+      isDirty: false,
     },
     serviceprovider: {
       stepLabel: 'Service Provider',
