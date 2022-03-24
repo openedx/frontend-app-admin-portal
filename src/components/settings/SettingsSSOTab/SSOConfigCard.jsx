@@ -11,7 +11,6 @@ import { logInfo } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
-  updateProviderConfig,
   updateConnectInProgress,
   updateConnectIsSsoValid,
   updateCurrentError,
@@ -20,7 +19,7 @@ import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
-  const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
+  const { ssoState, dispatchSsoState, setProviderConfig } = useContext(SSOConfigContext);
   const { connect: { inProgress, isSsoValid } } = ssoState;
   const [interval, setInterval] = useState(null);
   const LIMIT_MILLIS = 120000;
@@ -33,7 +32,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
       const theProvider = providerConfigs.filter(
         aConfig => (aConfig.name === config.name) && (aConfig.entity_id === config.entity_id),
       ).shift();
-      dispatchSsoState(updateProviderConfig(theProvider));
+      setProviderConfig(theProvider);
       if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
         dispatchSsoState(updateConnectIsSsoValid(true));
         dispatchSsoState(updateConnectInProgress(false));

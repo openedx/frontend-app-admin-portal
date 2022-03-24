@@ -2,6 +2,7 @@
 import { createContext, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import SSOStateReducer from './data/reducer';
+import { updateProviderConfig } from './data/actions';
 
 const SSOConfigContext = createContext({});
 
@@ -34,9 +35,19 @@ const SSOConfigContextProvider = ({ children }) => {
     },
     providerConfig: null, // the provider config we are working with currently
   };
+
   const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, SSO_INITIAL_STATE);
+
+  // setter shortcuts
+  const setProviderConfig = config => dispatchSsoState(updateProviderConfig(config));
+
   return (
-    <SSOConfigContext.Provider value={{ ssoState, dispatchSsoState }}>
+    <SSOConfigContext.Provider value={{
+      ssoState,
+      dispatchSsoState,
+      setProviderConfig,
+    }}
+    >
       {children}
     </SSOConfigContext.Provider>
   );

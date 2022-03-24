@@ -3,7 +3,6 @@ import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { updateProviderConfig } from '../data/actions';
 import { useExistingSSOConfigs } from '../hooks';
 import SSOConfigCard from '../SSOConfigCard';
 import { SSOConfigContext } from '../SSOConfigContext';
@@ -13,13 +12,13 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
   // When we render this cmponent, we need to re-fetch provider configs and updatee the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
-  const { ssoState: { providerConfig }, dispatchSsoState } = useContext(SSOConfigContext);
+  const { ssoState: { providerConfig }, setProviderConfig } = useContext(SSOConfigContext);
   const { slug: idpSlug } = providerConfig;
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
     const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
-    dispatchSsoState(updateProviderConfig(updatedProviderConfig));
+    setProviderConfig(updatedProviderConfig);
   }, [existingConfigs]);
   const configuration = getConfig();
   const { testLink } = createSAMLURLs({

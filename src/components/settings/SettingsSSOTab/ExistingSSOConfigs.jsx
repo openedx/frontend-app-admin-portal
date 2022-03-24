@@ -1,11 +1,10 @@
 import { Hyperlink } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
-import { updateProviderConfig } from './data/actions';
 import { SSOConfigContext } from './SSOConfigContext';
 
 const ExistingSSOConfigs = ({ configs }) => {
-  const { dispatchSsoState } = useContext(SSOConfigContext);
+  const { setProviderConfig } = useContext(SSOConfigContext);
   // useEffect(() => dispatchSsoState(clearProviderConfig()), []);
   return (
     <>
@@ -15,7 +14,7 @@ const ExistingSSOConfigs = ({ configs }) => {
             destination="https://abc"
             onClick={e => {
               e.preventDefault();
-              dispatchSsoState(updateProviderConfig(config));
+              setProviderConfig(config);
             }}
           >{config.name}
           </Hyperlink>
