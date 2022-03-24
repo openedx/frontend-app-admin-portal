@@ -29,6 +29,8 @@ const SSOConfigContextProvider = ({ children }) => {
     connect: {
       stepLabel: 'Connect',
       isComplete: false,
+      isSsoValid: false,
+      inProgress: false, // if testing is happening this will be set to true,
     },
     providerConfig: null, // the provider config we are working with currently
   };

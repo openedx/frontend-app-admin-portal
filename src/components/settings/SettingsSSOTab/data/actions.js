@@ -4,6 +4,8 @@ export const UPDATE_IDP_ENTITYID = 'update_idp_entityid';
 export const UPDATE_IDP_DIRTYSTATE = 'update_idp_dirtystate';
 export const UPDATE_CURRENT_STEP = 'update_current_step';
 export const UPDATE_SP_CONFIGURED = 'update_sp_configured';
+export const UPDATE_CONNECT_IN_PROGRESS = 'update_connect_in_progress';
+export const UPDATE_CONNECT_IS_SSO_VALID = 'update_connect_is_sso_valid';
 export const SET_PROVIDER_CONFIG = 'set_provider_config';
 export const UPDATE_CURRENT_ERROR = 'update_current_error';
 export const CLEAR_PROVIDER_CONFIG = 'clear_provider_config';
@@ -27,6 +29,16 @@ export const updateEntityIDAction = entityID => ({
 export const updateIdpDirtyState = value => ({
   type: UPDATE_IDP_DIRTYSTATE,
   value,
+});
+
+export const updateConnectInProgress = value => ({
+  type: UPDATE_CONNECT_IN_PROGRESS,
+  value,
+});
+
+export const updateConnectIsSsoValid = isValid => ({
+  type: UPDATE_CONNECT_IS_SSO_VALID,
+  isValid,
 });
 
 export const updateCurrentstep = step => ({

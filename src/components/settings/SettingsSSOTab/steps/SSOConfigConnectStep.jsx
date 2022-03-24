@@ -1,3 +1,4 @@
+import { getConfig } from '@edx/frontend-platform/config';
 import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
@@ -6,19 +7,27 @@ import { setProviderConfig } from '../data/actions';
 import { useExistingSSOConfigs } from '../hooks';
 import SSOConfigCard from '../SSOConfigCard';
 import { SSOConfigContext } from '../SSOConfigContext';
+import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
-const SSOConfigConnectStep = ({ enterpriseId }) => {
+const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabled }) => {
   // When we render this cmponent, we need to re-fetch provider configs and updatee the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
   const { ssoState: { providerConfig }, dispatchSsoState } = useContext(SSOConfigContext);
-
+  const { slug: idpSlug } = providerConfig;
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
     const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
     dispatchSsoState(setProviderConfig(updatedProviderConfig));
   }, [existingConfigs]);
+  const configuration = getConfig();
+  const { testLink } = createSAMLURLs({
+    configuration,
+    idpSlug,
+    enterpriseSlug,
+    learnerPortalEnabled,
+  });
   return (
     <>
       {isLoading && <span>Loading SSO Configurations...</span>}
@@ -28,7 +37,7 @@ const SSOConfigConnectStep = ({ enterpriseId }) => {
             Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
           </p>
           <div className="d-flex">
-            <SSOConfigCard config={providerConfig} />
+            <SSOConfigCard config={providerConfig} testLink={testLink} />
           </div>
         </>
       )}
@@ -45,10 +54,14 @@ const SSOConfigConnectStep = ({ enterpriseId }) => {
 
 SSOConfigConnectStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+  learnerPortalEnabled: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  learnerPortalEnabled: state.portalConfiguration.enableLearnerPortal,
 });
 
 export default connect(mapStateToProps)(SSOConfigConnectStep);

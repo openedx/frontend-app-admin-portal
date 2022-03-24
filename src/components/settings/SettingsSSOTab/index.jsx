@@ -11,7 +11,7 @@ import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
-  const { ssoState: { currentError, providerConfig } } = useContext(SSOConfigContext);
+  const { ssoState: { providerConfig } } = useContext(SSOConfigContext);
   return (
     <div>
       <div className="d-flex">
@@ -43,7 +43,6 @@ const SettingsSSOTab = ({ enterpriseId }) => {
         </div>
       )}
       {isLoading && <Skeleton count={5} height={10} />}
-      {currentError && <Alert variant="warning" icon={WarningFilled}>There has been an error {currentError}</Alert>}
     </div>
   );
 };
