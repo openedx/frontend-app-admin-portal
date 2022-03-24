@@ -11,7 +11,7 @@ import { logInfo } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
-  setProviderConfig,
+  updateProviderConfig,
   updateConnectInProgress,
   updateConnectIsSsoValid,
   updateCurrentError,
@@ -33,7 +33,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
       const theProvider = providerConfigs.filter(
         aConfig => (aConfig.name === config.name) && (aConfig.entity_id === config.entity_id),
       ).shift();
-      dispatchSsoState(setProviderConfig(theProvider));
+      dispatchSsoState(updateProviderConfig(theProvider));
       if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
         dispatchSsoState(updateConnectIsSsoValid(true));
         dispatchSsoState(updateConnectInProgress(false));
@@ -71,7 +71,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     return true;
   };
   return !inProgress ? (
-    <Card isClickable>
+    <Card style={{ maxWidth: '400px' }} isClickable>
       <Card.Header
         size="sm"
         title={config.name}

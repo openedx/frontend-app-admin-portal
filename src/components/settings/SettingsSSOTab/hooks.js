@@ -5,7 +5,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
-  updateCurrentError, setProviderConfig, updateIdpDirtyState,
+  updateCurrentError, updateProviderConfig, updateIdpDirtyState,
 } from './data/actions';
 import { updateSamlProviderData } from './utils';
 
@@ -61,7 +61,7 @@ const useIdpState = () => {
       // response.data is the providerConfig
       // here we can assume the customer only has one sso config, at this time
       // but we need to update this support the case when the correct sso config must be updated
-      dispatchSsoState(setProviderConfig(response.data));
+      dispatchSsoState(updateProviderConfig(response.data));
 
       // also get samlproviderdata updated from remote metadata url
       const providerdataResponse = await updateSamlProviderData({

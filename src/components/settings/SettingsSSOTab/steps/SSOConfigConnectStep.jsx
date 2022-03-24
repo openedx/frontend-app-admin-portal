@@ -3,7 +3,7 @@ import { Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setProviderConfig } from '../data/actions';
+import { updateProviderConfig } from '../data/actions';
 import { useExistingSSOConfigs } from '../hooks';
 import SSOConfigCard from '../SSOConfigCard';
 import { SSOConfigContext } from '../SSOConfigContext';
@@ -19,7 +19,7 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
     const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
-    dispatchSsoState(setProviderConfig(updatedProviderConfig));
+    dispatchSsoState(updateProviderConfig(updatedProviderConfig));
   }, [existingConfigs]);
   const configuration = getConfig();
   const { testLink } = createSAMLURLs({
@@ -36,7 +36,7 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
           <p>
             Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
           </p>
-          <div className="d-flex">
+          <div>
             <SSOConfigCard config={providerConfig} testLink={testLink} />
           </div>
         </>

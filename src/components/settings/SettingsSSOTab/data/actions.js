@@ -51,7 +51,7 @@ export const updateServiceProviderConfigured = isSPConfigured => ({
   isSPConfigured,
 });
 
-export const setProviderConfig = providerConfig => ({
+export const updateProviderConfig = providerConfig => ({
   type: SET_PROVIDER_CONFIG,
   providerConfig,
 });
