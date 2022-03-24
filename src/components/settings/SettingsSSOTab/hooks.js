@@ -51,6 +51,15 @@ const useIdpState = () => {
     formData.append('enterprise_customer_uuid', enterpriseId);
     formData.append('metadata_source', metadataURL);
     formData.append('entity_id', entityID);
+    formData.append('skip_hinted_login_dialog', true);
+    formData.append('skip_registration_form', true);
+    formData.append('skip_email_verification', true);
+    formData.append('visible', false);
+    formData.append('skip_email_verification', true);
+    formData.append('send_to_registration_first', true);
+    formData.append('sync_learner_profile_data', false);
+    formData.append('enable_sso_id_verification', true);
+
     try {
       let response;
       if (!providerConfig) {
