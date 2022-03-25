@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import {
-  ActionRow,
   Badge,
   Card,
-  Hyperlink,
 } from '@edx/paragon';
 import { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -50,8 +48,9 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     } catch (error) { setCurrentError(error); setInterval(null); }
   }, interval);
   const initiateValidation = () => {
-    setInterval(1000);
     dispatchSsoState(updateConnectInProgress(true));
+    window.open(testLink);
+    setInterval(1000);
   };
   // until isValid is false, keep checking server state (after about 3 minutes, reset and message customer)
   useEffect(() => {
@@ -71,23 +70,34 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     initiateValidation();
     return true;
   };
-  return !inProgress ? (
-    <Card style={{ maxWidth: '400px' }} isClickable>
-      <Card.Header
-        size="sm"
-        title={config.name}
-        actions={(
-          <ActionRow>
-            {!inProgress && <Hyperlink destination={testLink} target="_blank" onClick={handleTestClick}>Test</Hyperlink>}
-          </ActionRow>
-        )}
-      />
-      <Card.Section>
-        {!inProgress && !isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
-        {!inProgress && isSsoValid && <Badge variant="success">completed</Badge>}{' '}
-      </Card.Section>
-    </Card>
-  ) : <Skeleton>Testing of SSO in progress...Please wait a bit or reload page at a different time.</Skeleton>;
+  return (
+    <>
+      {!inProgress && (
+        <p>
+          Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
+        </p>
+      )}
+      {inProgress && (
+      <p>
+        Please connect via SSO in the newly opened window. Checking for successful SSO connection...
+      </p>
+      )}
+      {!inProgress ? (
+        <>
+          <Card onClick={handleTestClick} style={{ maxWidth: '400px' }} isClickable>
+            <Card.Header
+              size="sm"
+              title={config.name}
+            />
+            <Card.Section>
+              {!inProgress && !isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
+              {!inProgress && isSsoValid && <Badge variant="success">completed</Badge>}{' '}
+            </Card.Section>
+          </Card>
+        </>
+      ) : <Skeleton>Testing of SSO in progress...Please wait a bit or reload page at a different time.</Skeleton>}
+    </>
+  );
 };
 
 SSOConfigCard.propTypes = {

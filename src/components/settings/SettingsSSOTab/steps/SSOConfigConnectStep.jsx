@@ -32,9 +32,6 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
       {isLoading && <span>Loading SSO Configurations...</span>}
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
         <>
-          <p>
-            Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
-          </p>
           <div>
             <SSOConfigCard config={providerConfig} testLink={testLink} />
           </div>
