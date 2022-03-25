@@ -2,8 +2,9 @@ import { logError } from '@edx/frontend-platform/logging';
 
 export function buttonBool(config) {
   let returnVal = true;
-  Object.values(config).forEach(value => {
-    if (!value) {
+  Object.entries(config).forEach(entry => {
+    const [key, value] = entry;
+    if ((key !== 'displayName' && key !== 'degreedFetchUrl') && !value) {
       returnVal = false;
     }
   });

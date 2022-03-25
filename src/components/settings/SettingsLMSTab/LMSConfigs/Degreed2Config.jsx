@@ -12,11 +12,13 @@ import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants'
 
 const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [displayName, setDisplayName] = React.useState('');
-  const [nameValid, setNameValid] = React.useState(true);
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
   const [degreedBaseUrl, setDegreedBaseUrl] = React.useState('');
+  const [degreedFetchUrl, setDegreedFetchUrl] = React.useState('');
+  const [nameValid, setNameValid] = React.useState(true);
   const [urlValid, setUrlValid] = React.useState(true);
+  const [fetchUrlValid, setFetchUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
   const [edited, setEdited] = React.useState(false);
@@ -26,12 +28,14 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     clientId,
     clientSecret,
     degreedBaseUrl,
+    degreedFetchUrl,
   };
 
   useEffect(() => {
     setClientId(existingData.clientId);
     setClientSecret(existingData.clientSecret);
     setDegreedBaseUrl(existingData.degreedBaseUrl);
+    setDegreedFetchUrl(existingData.degreedFetchUrl);
     setDisplayName(existingData.displayName);
   }, [existingData]);
 
@@ -73,6 +77,10 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   const validateField = (field, input) => {
     switch (field) {
+      case 'Degreed Token Fetch Base Url':
+        setDegreedFetchUrl(input);
+        setFetchUrlValid(urlValidation(input) || input.length === 0);
+        break;
       case 'Degreed Base URL':
         setDegreedBaseUrl(input);
         setUrlValid(urlValidation(input) || input.length === 0);
@@ -88,12 +96,13 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!nameValid}
             onChange={(e) => {
               setEdited(true);
@@ -113,8 +122,10 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="mb-4"
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
+              validateField('API Client ID', e.target.value);
               setClientId(e.target.value);
             }}
             floatingLabel="API Client ID"
@@ -125,8 +136,10 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-4"
             type="password"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
+              validateField('API Client Secret', e.target.value);
               setClientSecret(e.target.value);
             }}
             floatingLabel="API Client Secret"
@@ -136,6 +149,7 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
@@ -145,6 +159,27 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             defaultValue={existingData.degreedBaseUrl}
           />
           {!urlValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_LINK}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group className="my-4">
+          <Form.Control
+            type="text"
+            maxLength={255}
+            isInvalid={!fetchUrlValid}
+            onChange={(e) => {
+              setEdited(true);
+              validateField('Degreed Token Fetch Base Url', e.target.value);
+            }}
+            floatingLabel="Degreed Token Fetch Base Url"
+            defaultValue={existingData.degreedFetchUrl}
+          />
+          <Form.Text>
+            Optional: If provided, will be used as base url instead of Degreed Base URL to fetch tokens.
+          </Form.Text>
+          {!fetchUrlValid && (
             <Form.Control.Feedback type="invalid">
               {INVALID_LINK}
             </Form.Control.Feedback>
@@ -168,6 +203,7 @@ Degreed2Config.propTypes = {
     id: PropTypes.number,
     clientSecret: PropTypes.string,
     degreedBaseUrl: PropTypes.string,
+    degreedFetchUrl: PropTypes.string,
   }).isRequired,
 };
 export default Degreed2Config;

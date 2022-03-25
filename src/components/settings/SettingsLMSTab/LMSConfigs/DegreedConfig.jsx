@@ -22,7 +22,6 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [degreedUserPassword, setDegreedUserPassword] = React.useState('');
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
 
   const config = {
@@ -75,7 +74,6 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
 
     if (err) {
-      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -99,7 +97,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -124,6 +122,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="mb-4"
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setKey(e.target.value);
@@ -136,6 +135,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-4"
             type="password"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setSecret(e.target.value);
@@ -148,6 +148,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-4"
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setDegreedCompanyId(e.target.value);
@@ -159,6 +160,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
@@ -177,7 +179,9 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-1"
             type="username"
+            maxLength={255}
             onChange={(e) => {
+              setEdited(true);
               setDegreedUserId(e.target.value);
             }}
             floatingLabel="Degreed User ID"
@@ -189,7 +193,9 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-1"
             type="password"
+            maxLength={255}
             onChange={(e) => {
+              setEdited(true);
               setDegreedUserPassword(e.target.value);
             }}
             floatingLabel="Degreed User Password"
