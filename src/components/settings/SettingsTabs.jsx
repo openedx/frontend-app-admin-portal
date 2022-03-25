@@ -30,12 +30,13 @@ const SettingsTabs = ({
   enableBrowseAndRequest,
   enableIntegratedCustomerLearnerPortalSearch,
   enableLearnerPortal,
+  enableLmsConfigurationsScreen,
   enableSamlConfigurationScreen,
   enableUniversalLink,
   identityProvider,
   updatePortalConfiguration,
 }) => {
-  const { FEATURE_SSO_SETTINGS_TAB } = features;
+  const { FEATURE_SSO_SETTINGS_TAB, EXTERNAL_LMS_CONFIGURATION } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -76,19 +77,23 @@ const SettingsTabs = ({
             updatePortalConfiguration={updatePortalConfiguration}
           />
         </Tab>
-        { FEATURE_SSO_SETTINGS_TAB && (
-        <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
-          <SettingsSSOTab enterpriseId={enterpriseId} />
-        </Tab>
+
+        {FEATURE_SSO_SETTINGS_TAB && (
+          <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
+            <SettingsSSOTab enterpriseId={enterpriseId} />
+          </Tab>
         )}
-        <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-          <SettingsLMSTab
-            enterpriseId={enterpriseId}
-            enterpriseSlug={enterpriseSlug}
-            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-            identityProvider={identityProvider}
-          />
-        </Tab>
+
+        {EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
+          <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
+            <SettingsLMSTab
+              enterpriseId={enterpriseId}
+              enterpriseSlug={enterpriseSlug}
+              enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+              identityProvider={identityProvider}
+            />
+          </Tab>
+        )}
       </Tabs>
     </Container>
   );
@@ -101,6 +106,7 @@ const mapStateToProps = state => {
     enableBrowseAndRequest,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
+    enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
     enableUniversalLink,
     identityProvider,
@@ -112,6 +118,7 @@ const mapStateToProps = state => {
     enableBrowseAndRequest,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
+    enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
     enableUniversalLink,
     identityProvider,
@@ -128,6 +135,7 @@ SettingsTabs.propTypes = {
   enableBrowseAndRequest: PropTypes.bool.isRequired,
   enableIntegratedCustomerLearnerPortalSearch: PropTypes.bool.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  enableLmsConfigurationsScreen: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,

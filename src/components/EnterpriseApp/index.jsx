@@ -241,11 +241,11 @@ class EnterpriseApp extends React.Component {
                       path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
                       component={BulkEnrollmentResultsDownloadPage}
                     />
-                    {features.SETTINGS_PAGE && features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
-                    <Route
-                      path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
-                      component={SettingsPage}
-                    />
+                    {features.SETTINGS_PAGE && (
+                      <Route
+                        path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+                        component={SettingsPage}
+                      />
                     )}
                     <Route path="" component={NotFoundPage} />
                   </Switch>
