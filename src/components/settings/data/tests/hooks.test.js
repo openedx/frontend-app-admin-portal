@@ -2,6 +2,7 @@ import Router from 'react-router-dom';
 import { renderHook, act } from '@testing-library/react-hooks/dom';
 import { waitFor } from '@testing-library/react';
 
+import { camelCaseObject } from '@edx/frontend-platform';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import {
@@ -72,34 +73,28 @@ describe('settings hooks', () => {
     beforeEach(() => {
       jest.resetAllMocks();
     });
-    test('success', () => {
-      const NET_DAYS_UNTIL_EXPIRATION = 100;
+    test('success', async () => {
+      const customerAgreementResult = {
+        enterprise_customer_slug: 'test-enterprise',
+        net_days_until_expiration: 100,
+        ordered_subscription_plan_expirations: [{ title: 'Test Sub' }],
+        subscription_for_auto_applied_licenses: null,
+        subscriptions: [{ title: 'Test Sub' }],
+        uuid: '54358914-ca53-469e-a478-c591b7ec346e',
+      };
       const expectedResponse = {
         data: {
           count: 1,
-          results: [{
-            enterprise_customer_slug: 'test-enterprise',
-            net_days_until_expiration: NET_DAYS_UNTIL_EXPIRATION,
-            ordered_subscription_plan_expirations: [{ title: 'Test Sub' }],
-            subscription_for_auto_applied_licenses: null,
-            subscriptions: [{ title: 'Test Sub' }],
-            uuid: '54358914-ca53-469e-a478-c591b7ec346e',
-          }],
+          results: [customerAgreementResult],
         },
       };
       LicenseManagerApiService.fetchCustomerAgreementData.mockResolvedValue(expectedResponse);
-      let result;
-      act(() => {
-        ({ result } = renderHook(() => useCustomerAgreementData(TEST_ENTERPRISE_UUID)));
+      const { result } = renderHook(() => useCustomerAgreementData(TEST_ENTERPRISE_UUID));
+
+      await waitFor(() => {
         expect(result.current).toStrictEqual({
-          customerAgreement: { netDaysUntilExpiration: 0 },
-          loadingCustomerAgreement: true,
-        });
-      });
-      waitFor(() => {
-        expect(result.current).toStrictEqual({
-          customerAgreement: { netDaysUntilExpiration: NET_DAYS_UNTIL_EXPIRATION },
-          loadingLinks: false,
+          customerAgreement: (camelCaseObject(customerAgreementResult)),
+          loadingCustomerAgreement: false,
         });
       });
     });
