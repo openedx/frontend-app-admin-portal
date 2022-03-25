@@ -56,7 +56,7 @@ describe('<SAPConfig />', () => {
       target: { value: 'test2' },
     });
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
-      target: { value: '3' },
+      target: { value: 'test3' },
     });
     fireEvent.change(screen.getByLabelText('SAP User ID'), {
       target: { value: 'test4' },
@@ -88,7 +88,7 @@ describe('<SAPConfig />', () => {
       />,
     );
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
-      target: { value: '3' },
+      target: { value: 'test3' },
     });
     fireEvent.change(screen.getByLabelText('SAP User ID'), {
       target: { value: 'test4' },
@@ -111,7 +111,7 @@ describe('<SAPConfig />', () => {
     const expectedConfig = {
       active: false,
       sapsf_base_url: 'https://www.test.com',
-      sapsf_company_id: '3',
+      sapsf_company_id: 'test3',
       sapsf_user_id: 'test4',
       secret: 'test6',
       key: 'test5',
@@ -130,7 +130,7 @@ describe('<SAPConfig />', () => {
       />,
     );
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
-      target: { value: '3' },
+      target: { value: 'test3' },
     });
     fireEvent.change(screen.getByLabelText('SAP User ID'), {
       target: { value: 'test4' },
