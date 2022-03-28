@@ -177,7 +177,7 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             defaultValue={existingData.degreedFetchUrl}
           />
           <Form.Text>
-            Optional: If provided, will be used as base url instead of Degreed Base URL to fetch tokens.
+            Optional: If provided, will be used as the url to fetch tokens.
           </Form.Text>
           {!fetchUrlValid && (
             <Form.Control.Feedback type="invalid">
