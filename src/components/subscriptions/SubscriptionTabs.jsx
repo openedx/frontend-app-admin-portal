@@ -23,8 +23,9 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
-  const { subsidyType } = subsidyRequestConfiguration;
-  const isRequestsTabShown = subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
+  const isSubsibyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const subsidyType = subsidyRequestConfiguration?.subsidyType;
+  const isRequestsTabShown = isSubsibyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
   const history = useHistory();
   const params = useParams();

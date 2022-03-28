@@ -13,11 +13,11 @@ const BulkEnrollWarningModal = ({
 }) => (
   <AlertModal
     title={(
-      <>
+      <div className="d-flex align-items-center">
         <Icon className="enroll-header mr-1" src={Error} />
         Revoked Learners Selected
-      </>
-      )}
+      </div>
+    )}
     isOpen={isDialogOpen}
     footerNode={(
       <ActionRow>
@@ -31,7 +31,7 @@ const BulkEnrollWarningModal = ({
     )}
   >
     Any learners with revoked licenses are not included. Click &quot;Enroll&quot; to enroll
-    active and pending learners only
+    active and pending learners only.
   </AlertModal>
 );
 

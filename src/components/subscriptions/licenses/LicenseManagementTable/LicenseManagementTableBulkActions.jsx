@@ -121,8 +121,7 @@ const LicenseManagementTableBulkActions = ({
     /**
      * if validation is not needed, just go ahead and proceed to enrollment
      */
-
-    if (validateRevoked && setOfRevokedUsers && setOfRevokedUsers.length > 0) {
+    if (validateRevoked && setOfRevokedUsers?.length > 0) {
       setShowBulkEnrollWarning(true);
       // whether to show the bulk enroll main dialog
       setShowBulkEnrollModal(false);
@@ -286,27 +285,24 @@ const LicenseManagementTableBulkActions = ({
           learners={enrollableLearners}
           handleEnrollment={() => handleBulkEnrollment({ setOfRevokedUsers: revokedUsers })}
         />
-
         {/* warning modal shows when there is 1 or more revoked licenses selected */}
-        {showBulkEnrollWarning
-        && (
-        <BulkEnrollWarningModal
-          learners={enrollableLearners}
-          isDialogOpen={showBulkEnrollWarning}
-          onClose={() => setShowBulkEnrollWarning(false)}
-          onEnroll={() => handleBulkEnrollmentForced({ setOfRevokedUsers: revokedUsers })}
-        />
+        {showBulkEnrollWarning && (
+          <BulkEnrollWarningModal
+            learners={enrollableLearners}
+            isDialogOpen={showBulkEnrollWarning}
+            onClose={() => setShowBulkEnrollWarning(false)}
+            onEnroll={() => handleBulkEnrollmentForced({ setOfRevokedUsers: revokedUsers })}
+          />
         )}
-
         {/* Bulk Enrollment shows in a dialog when enrollment conditions are met */}
         {showBulkEnrollModal && (
-        <BulkEnrollDialog
-          isOpen={showBulkEnrollModal}
-          onClose={() => { setShowBulkEnrollModal(false); }}
-          subscription={subscription}
-          learners={enrollableLearners}
-          onSuccess={onEnrollSuccess}
-        />
+          <BulkEnrollDialog
+            isOpen={showBulkEnrollModal}
+            onClose={() => { setShowBulkEnrollModal(false); }}
+            subscription={subscription}
+            learners={enrollableLearners}
+            onSuccess={onEnrollSuccess}
+          />
         )}
       </ActionRow>
       <LicenseManagementRevokeModal

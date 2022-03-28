@@ -26,6 +26,16 @@ const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
     courses: [selectedCourses, coursesDispatch],
   } = useContext(BulkEnrollContext);
 
+  const newSelectedCourses = [...selectedCourses];
+  newSelectedCourses[0] = {
+    values: {
+      title: 'edX Demonstration Course',
+    },
+    original: {
+      advertised_course_run: { key: 'course-v1:edX+DemoX+Demo_Course' },
+    },
+  };
+
   return (
     <>
       <p>
@@ -37,7 +47,7 @@ const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
       <Row>
         <ReviewList
           key="courses"
-          rows={selectedCourses}
+          rows={newSelectedCourses}
           accessor="title"
           dispatch={coursesDispatch}
           subject={COURSES}
