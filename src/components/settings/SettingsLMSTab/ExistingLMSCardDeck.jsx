@@ -12,10 +12,8 @@ import { handleErrors } from './utils';
 import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
 import ConfigError from './ConfigError';
 
-const errorToggleModalText = 'We were unable to toggle your config. Please try submitting again later or contact support for help.';
-const errorDeleteModalText = 'We were unable to delete your config. Please try removing again later or contact support for help.';
-const TOGGLE_ACTION = 'toggle';
-const DELETE_ACTION = 'delete';
+const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
+const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
 const INCOMPLETE = 'incomplete';
 const ACTIVE = 'active';
 const INACTIVE = 'inactive';
@@ -27,8 +25,6 @@ const ExistingLMSCardDeck = ({
   onClick,
 }) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
-  const [erroredConfig, setErroredConfig] = useState();
-  const [errorCardActionType, setErrorCardActionType] = useState();
   const [errorModalText, setErrorModalText] = useState();
 
   const toggleConfig = async (id, channelType, toggle) => {
@@ -45,8 +41,6 @@ const ExistingLMSCardDeck = ({
     if (err) {
       setErrorModalText(errorToggleModalText);
       openError();
-      setErroredConfig({ id, channelType, toggle });
-      setErrorCardActionType(TOGGLE_ACTION);
     } else {
       onClick(TOGGLE_SUCCESS_LABEL);
     }
@@ -62,8 +56,6 @@ const ExistingLMSCardDeck = ({
     if (err) {
       setErrorModalText(errorDeleteModalText);
       openError();
-      setErroredConfig({ id, channelType });
-      setErrorCardActionType(DELETE_ACTION);
     } else {
       onClick(DELETE_SUCCESS_LABEL);
     }
@@ -203,13 +195,6 @@ const ExistingLMSCardDeck = ({
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}
-        submit={() => {
-          if (errorCardActionType === DELETE_ACTION) {
-            deleteConfig(erroredConfig.id, erroredConfig.channelType);
-          } else if (errorCardActionType === TOGGLE_ACTION) {
-            toggleConfig(erroredConfig.id, erroredConfig.channelType, erroredConfig.toggle);
-          }
-        }}
       />
       <CardGrid
         className="mr-6"

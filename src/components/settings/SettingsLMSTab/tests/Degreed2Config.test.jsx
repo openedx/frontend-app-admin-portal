@@ -57,14 +57,21 @@ describe('<DegreedConfig />', () => {
     fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
       target: { value: 'test4' },
     });
+    fireEvent.change(screen.getByLabelText('Degreed Token Fetch Base Url'), {
+      target: { value: 'test5' },
+    });
     expect(screen.getByText('Submit')).toBeDisabled();
-    expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
+    const linkText = screen.queryAllByText(INVALID_LINK);
+    expect(linkText.length).toBe(2);
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'test1' },
     });
     fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
       target: { value: 'https://test1.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
+      target: { value: 'https://test2.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
   });
@@ -88,12 +95,16 @@ describe('<DegreedConfig />', () => {
     fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
       target: { value: 'https://test1.com' },
     });
+    fireEvent.change(screen.getByLabelText('Degreed Token Fetch Base Url'), {
+      target: { value: 'https://test2.com' },
+    });
     expect(screen.getByText('Submit')).not.toBeDisabled();
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
       degreed_base_url: 'https://test1.com',
+      degreed_fetch_url: 'https://test2.com',
       display_name: 'displayName',
       client_id: 'test1',
       client_secret: 'test2',

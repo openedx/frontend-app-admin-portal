@@ -206,12 +206,13 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!nameValid}
             onChange={(e) => {
               setEdited(true);
@@ -230,6 +231,7 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
