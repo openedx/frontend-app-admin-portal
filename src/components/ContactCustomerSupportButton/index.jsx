@@ -22,7 +22,7 @@ ContactCustomerSupportButton.propTypes = {
 };
 
 ContactCustomerSupportButton.defaultProps = {
-  children: 'Contact customer support',
+  children: 'Contact support',
   variant: 'outline-primary',
 };
 

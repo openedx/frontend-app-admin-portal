@@ -114,7 +114,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     }
   });
 
-  test('handles customer support button click', () => {
+  test('handles support button click', () => {
     const agreementNetDaysUntilExpiration = 0;
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -122,7 +122,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
 
     render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
-    userEvent.click(screen.getByText('Contact customer support'));
+    userEvent.click(screen.getByText('Contact support'));
     expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       'edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked',

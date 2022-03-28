@@ -89,7 +89,7 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles customer support button click', () => {
+    test('handles support button click', () => {
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -97,7 +97,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact customer support'));
+      userEvent.click(screen.getByText('Contact support'));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
@@ -158,7 +158,7 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles customer support button click', () => {
+    test('handles support button click', () => {
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -166,7 +166,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact customer support'));
+      userEvent.click(screen.getByText('Contact support'));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
