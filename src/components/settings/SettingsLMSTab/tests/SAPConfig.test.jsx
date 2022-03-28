@@ -153,7 +153,7 @@ describe('<SAPConfig />', () => {
     const expectedConfig = {
       active: false,
       sapsf_base_url: 'https://www.test.com',
-      sapsf_company_id: '3',
+      sapsf_company_id: 'test3',
       sapsf_user_id: 'test4',
       secret: 'test6',
       key: 'test5',
