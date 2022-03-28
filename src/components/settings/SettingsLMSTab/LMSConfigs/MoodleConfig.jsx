@@ -63,8 +63,6 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
-    // this will need to change based on save draft/submit
-    transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
 
@@ -76,6 +74,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       }
     } else {
       try {
+        transformedConfig.active = false;
         await LmsApiService.postNewMoodleConfig(transformedConfig);
       } catch (error) {
         err = handleErrors(error);

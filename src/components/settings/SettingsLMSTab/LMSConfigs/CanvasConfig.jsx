@@ -99,7 +99,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
 
-    transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
     let fetchedConfigId;
@@ -115,6 +114,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     // If the config didn't previously exist, create it
     } else if (isEmpty(existingData)) {
       try {
+        transformedConfig.active = false;
         const response = await LmsApiService.postNewCanvasConfig(transformedConfig);
         fetchedConfigId = response.data.id;
       } catch (error) {
@@ -148,8 +148,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
-    // this will need to change based on save draft/submit
-    transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
 
@@ -161,6 +159,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       }
     } else {
       try {
+        transformedConfig.active = false;
         await LmsApiService.postNewCanvasConfig(transformedConfig);
       } catch (error) {
         err = handleErrors(error);

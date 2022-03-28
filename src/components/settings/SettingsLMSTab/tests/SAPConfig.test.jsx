@@ -109,7 +109,6 @@ describe('<SAPConfig />', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
-      active: false,
       sapsf_base_url: 'https://www.test.com',
       sapsf_company_id: '3',
       sapsf_user_id: 'test4',

@@ -55,8 +55,6 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   const handleSubmit = async () => {
     const transformedConfig = snakeCaseDict(config);
-    // this will need to change based on save draft/submit
-    transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
 
@@ -68,6 +66,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       }
     } else {
       try {
+        transformedConfig.active = false;
         await LmsApiService.postNewDegreedConfig(transformedConfig);
       } catch (error) {
         err = handleErrors(error);

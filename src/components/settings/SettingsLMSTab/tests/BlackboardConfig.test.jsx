@@ -114,7 +114,6 @@ describe('<BlackboardConfig />', () => {
 
     userEvent.click(screen.getByText('Submit'));
     const expectedConfig = {
-      active: false,
       blackboard_base_url: 'https://www.test.com',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,

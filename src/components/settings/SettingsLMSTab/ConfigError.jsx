@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  AlertModal, ActionRow, Button, MailtoLink,
+  AlertModal, ActionRow, Button, Hyperlink,
 } from '@edx/paragon';
-import { HELP_CENTER_EMAIL } from '../data/constants';
+import { HELP_CENTER_LINK } from '../data/constants';
 
 const cardText400 = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again or contact support for help.';
 const cardText500 = 'We were unable to process your request to submit a new LMS configuration. Please try submitting again later or contact support for help.';
@@ -22,7 +22,10 @@ const ConfigError = ({
     hasCloseButton
     footerNode={(
       <ActionRow>
-        <MailtoLink className="ml-auto my-2 mr-2" to={HELP_CENTER_EMAIL}>Contact Support</MailtoLink>
+        <ActionRow.Spacer />
+        <Button variant="primary">
+          <Hyperlink style={{ color: 'white' }} destination={HELP_CENTER_LINK} target="_blank">Contact Support</Hyperlink>
+        </Button>
         {code <= 499 && <Button variant="primary" onClick={submit}>Try Again</Button>}
       </ActionRow>
     )}
