@@ -45,6 +45,6 @@ describe('<SubscriptionExpiredModal />', () => {
 
   test('support button is rendered', async () => {
     render(<ExpiredModalWithContext detailState={detailStateCopy(0)} />);
-    expect(screen.queryByText('Contact customer support')).toBeTruthy();
+    expect(screen.queryByText('Contact support')).toBeTruthy();
   });
 });
