@@ -6,6 +6,7 @@ import {
   SCHEDULED,
   ENDED,
   REVOCABLE_STATUSES,
+  ENROLLABLE_STATUSES,
 } from './constants';
 
 export const getSubscriptionExpiringCookieName = ({
@@ -19,7 +20,7 @@ export const canRevokeLicense = (licenseStatus) => REVOCABLE_STATUSES.includes(l
 
 export const canRemindLicense = (licenseStatus) => licenseStatus === ASSIGNED;
 
-export const canEnrollLicense = (licenseStatus) => REVOCABLE_STATUSES.includes(licenseStatus);
+export const canEnrollLicense = (licenseStatus) => ENROLLABLE_STATUSES.includes(licenseStatus);
 
 export const getSubscriptionStatus = (subscription) => {
   const now = moment();
