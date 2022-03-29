@@ -34,8 +34,7 @@ const AddCoursesStep = ({
           searchClient={searchClient}
         >
           <Configure
-            // filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
-            filters={`enterprise_catalog_uuids:88fce376-946e-419e-967b-ea6e68a44d23 AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
+            filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
             hitsPerPage={25}
           />
           <SearchHeader variant="default" />
