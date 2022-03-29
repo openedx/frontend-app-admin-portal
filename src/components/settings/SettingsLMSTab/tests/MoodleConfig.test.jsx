@@ -91,7 +91,6 @@ describe('<MoodleConfig />', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
-      active: false,
       moodle_base_url: 'https://www.test1.com',
       service_short_name: 'test2',
       display_name: 'displayName',

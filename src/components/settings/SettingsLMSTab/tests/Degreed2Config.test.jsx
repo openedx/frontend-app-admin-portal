@@ -102,7 +102,6 @@ describe('<DegreedConfig />', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
-      active: false,
       degreed_base_url: 'https://test1.com',
       degreed_fetch_url: 'https://test2.com',
       display_name: 'displayName',

@@ -79,7 +79,6 @@ describe('<CornerstoneConfig />', () => {
     fireEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
-      active: false,
       cornerstone_base_url: 'https://www.test1.com',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,

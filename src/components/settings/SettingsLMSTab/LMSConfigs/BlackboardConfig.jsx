@@ -160,8 +160,6 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     event.preventDefault();
     // format config data for the backend
     const transformedConfig = snakeCaseDict(config);
-    // this will need to change based on save draft/submit
-    transformedConfig.active = false;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
     // If we have a config that already exists, or a config that was created when authorized, post
@@ -176,6 +174,7 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     // Otherwise post a new config
     } else {
       try {
+        transformedConfig.active = false;
         await LmsApiService.postNewBlackboardConfig(transformedConfig);
       } catch (error) {
         err = handleErrors(error);

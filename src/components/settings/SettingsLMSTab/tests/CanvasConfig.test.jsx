@@ -135,7 +135,6 @@ describe('<CanvasConfig />', () => {
     await waitFor(() => screen.getByText('Submit'));
 
     const expectedConfig = {
-      active: false,
       canvas_base_url: 'https://www.test4.com',
       canvas_account_id: '3',
       client_id: 'test1',

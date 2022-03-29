@@ -168,7 +168,7 @@ class LmsApiService {
   }
 
   static deleteCanvasConfig(configId) {
-    return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/Canvas/configuration/${configId}/`);
+    return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${configId}/`);
   }
 
   static fetchBlackboardGlobalConfig() {
