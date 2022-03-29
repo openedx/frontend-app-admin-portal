@@ -3,7 +3,6 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import moment from 'moment';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
-import EcommerceApiService from '../../../data/services/EcommerceApiService';
 
 /**
  * This hook returns the enterprise's catalogs that contain the given course runs.
@@ -85,59 +84,28 @@ export const useApplicableCoupons = ({
 }) => {
   const {
     applicableCatalogs,
-    isLoading: isLoadingApplicableCatalogs,
-    error: fetchApplicableCatalogsError,
+    isLoading,
+    error,
   } = useApplicableCatalogs({ enterpriseId, courseRunIds });
-  const [isLoading, setIsLoading] = useState(false);
   const [applicableCoupons, setApplicableCoupons] = useState([]);
-  const [couponDetails, setCouponDetails] = useState([]);
-  const [fetchCouponsError, setFetchCouponsError] = useState();
 
   useEffect(() => {
-    const fetchCouponDetails = async () => {
-      setIsLoading(true);
-      try {
-        // We need to fetch individual coupons to get the associated enterprise catalog
-        const details = (await Promise.all(
-          coupons.results.map(coupon => EcommerceApiService.fetchCoupon(coupon.id)),
-        )).map(
-          (resp, index) => camelCaseObject({
-            ...resp.data,
-            ...coupons.results[index],
-          }),
-        );
-
-        setCouponDetails(details);
-      } catch (err) {
-        logError(err);
-        setFetchCouponsError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (coupons?.results?.length > 0) {
-      fetchCouponDetails();
-    }
-  }, [coupons?.results?.length]);
-
-  useEffect(() => {
-    if (couponDetails) {
+    if (applicableCatalogs.length > 0 && coupons.results.length > 0) {
       const now = moment();
-      const applicableCoups = couponDetails.filter(
+      const applicableCoups = coupons.results.filter(
         coupon => applicableCatalogs.includes(
-          coupon.enterpriseCustomerCatalog,
+          coupon.enterpriseCatalogUuid,
         ) && moment(coupon.endDate) > now && coupon.numUnassigned > 0,
       );
 
       setApplicableCoupons(applicableCoups);
     }
-  }, [applicableCatalogs, couponDetails]);
+  }, [applicableCatalogs, coupons.results]);
 
   return {
     applicableCatalogs,
     applicableCoupons,
-    isLoading: isLoadingApplicableCatalogs || isLoading,
-    error: fetchApplicableCatalogsError || fetchCouponsError,
+    isLoading,
+    error,
   };
 };
