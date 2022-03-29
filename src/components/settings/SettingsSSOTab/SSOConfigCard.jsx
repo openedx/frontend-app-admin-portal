@@ -40,6 +40,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
         // setting providerConfig to null will do that!
         // because the SettingsSSOTab/index.jsx is looking for that value
         setProviderConfig(null);
+        setCurrentError(null);
       } else {
         // if time has elapsed, then we can warn user: TODO
         // eslint-disable-next-line no-lonely-if
