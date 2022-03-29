@@ -29,7 +29,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [urlValid, setUrlValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
   const [authorized, setAuthorized] = React.useState(false);
   const [oauthPollingInterval, setOauthPollingInterval] = React.useState(null);
@@ -62,7 +61,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         err = handleErrors(error);
       }
       if (err) {
-        setErrCode(errCode);
         openError();
       }
     }
@@ -125,7 +123,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       fetchedConfigId = existingData.id;
     }
     if (err) {
-      setErrCode(errCode);
       openError();
     } else {
       setConfigId(fetchedConfigId);
@@ -166,7 +163,6 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       }
     }
     if (err) {
-      setErrCode(errCode);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -190,7 +186,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -215,6 +211,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="mb-4"
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setClientId(e.target.value);
@@ -227,7 +224,9 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-4"
             type="password"
+            maxLength={255}
             onChange={(e) => {
+              setEdited(true);
               setClientSecret(e.target.value);
             }}
             floatingLabel="API Client Secret"
@@ -238,6 +237,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
           <Form.Control
             className="my-4"
             type="number"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setCanvasAccountId(e.target.value);
@@ -249,6 +249,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);

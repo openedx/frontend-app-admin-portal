@@ -21,7 +21,6 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [userType, setUserType] = React.useState('user');
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
 
   const config = {
@@ -73,7 +72,6 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       }
     }
     if (err) {
-      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -97,7 +95,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -121,6 +119,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="mb-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
@@ -137,7 +136,8 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         </Form.Group>
         <Form.Group className="my-4">
           <Form.Control
-            type="number"
+            type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setSapsfCompanyId(e.target.value);
@@ -149,6 +149,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setSapsfUserId(e.target.value);
@@ -160,6 +161,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="mb-4">
           <Form.Control
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setKey(e.target.value);
@@ -171,6 +173,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="password"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setSecret(e.target.value);

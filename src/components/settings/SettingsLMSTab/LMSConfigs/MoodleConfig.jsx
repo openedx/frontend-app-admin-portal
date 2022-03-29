@@ -20,7 +20,6 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
   const [nameValid, setNameValid] = React.useState(true);
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
 
   const config = {
@@ -82,7 +81,6 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
 
     if (err) {
-      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -106,7 +104,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -130,6 +128,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="mb-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
@@ -147,6 +146,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setServiceShortName(e.target.value);
@@ -158,6 +158,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setToken(e.target.value);
@@ -173,6 +174,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         <Form.Group className="my-4">
           <Form.Control
             type="text"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setUsername(e.target.value);
@@ -187,7 +189,8 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         </Form.Group>
         <Form.Group className="my-4">
           <Form.Control
-            type="text"
+            type="password"
+            maxLength={255}
             onChange={(e) => {
               setEdited(true);
               setPassword(e.target.value);

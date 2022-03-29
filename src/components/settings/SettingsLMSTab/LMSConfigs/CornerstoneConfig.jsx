@@ -18,7 +18,6 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
 
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [modalIsOpen, openModal, closeModal] = useToggle(false);
-  const [errCode, setErrCode] = React.useState();
   const [edited, setEdited] = React.useState(false);
 
   const config = {
@@ -61,7 +60,6 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
     }
 
     if (err) {
-      setErrCode(err);
       openError();
     } else {
       onClick(SUCCESS_LABEL);
@@ -85,7 +83,7 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
 
   return (
     <span>
-      <ConfigError isOpen={errorIsOpen} close={closeError} submit={handleSubmit} err={errCode} />
+      <ConfigError isOpen={errorIsOpen} close={closeError} />
       <ConfigModal isOpen={modalIsOpen} close={closeModal} onClick={onClick} saveDraft={handleSubmit} />
       <Form style={{ maxWidth: '60rem' }}>
         <Form.Group className="my-2.5">
@@ -109,6 +107,7 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
         <Form.Group className="mb-4">
           <Form.Control
             type="text"
+            maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
