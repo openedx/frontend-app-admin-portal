@@ -26,9 +26,9 @@ export const updateEntityIDAction = entityID => ({
   entityID,
 });
 
-export const updateIdpDirtyState = value => ({
+export const updateIdpDirtyState = dirtyState => ({
   type: UPDATE_IDP_DIRTYSTATE,
-  value,
+  dirtyState,
 });
 
 export const updateConnectInProgress = value => ({

@@ -1,5 +1,9 @@
 import {
+  updateConnectIsSsoValid,
+  updateCurrentError,
   updateCurrentstep,
+  updateEntityIDAction,
+  updateIdpDirtyState,
   updateIdpEntryTypeAction,
   updateIdpMetadataURLAction,
   updateServiceProviderConfigured,
@@ -22,7 +26,7 @@ describe('reducer sso tests', () => {
       idp: { metadataURL: 'aTestURL', isDirty: true },
     });
   });
-  test('overwrites metadataURL', () => {
+  test('overwrites entryType', () => {
     expect(SSOStateReducer({
       idp: {
         metadataURL: 'a',
@@ -51,6 +55,38 @@ describe('reducer sso tests', () => {
     }, updateServiceProviderConfigured(true))).toStrictEqual({
       serviceprovider: { isSPConfigured: true },
       currentStep: 'abc',
+    });
+  });
+  test('overwrites isSPConfigured and isSsoValid', () => {
+    expect(SSOStateReducer({
+      serviceprovider: { isSPConfigured: false },
+      currentStep: 'abc',
+    }, updateConnectIsSsoValid(true))).toStrictEqual({
+      serviceprovider: { isSPConfigured: true },
+      currentStep: 'abc',
+      connect: { isSsoValid: true },
+    });
+  });
+  test('overwrites dirty state for idp', () => {
+    expect(SSOStateReducer({
+      idp: { isDirty: false },
+    }, updateIdpDirtyState(true))).toStrictEqual({
+      idp: { isDirty: true },
+    });
+  });
+  test('overwrites entityid in idp', () => {
+    expect(SSOStateReducer({
+      idp: { entityID: 'abc' },
+    }, updateEntityIDAction('a-new-entity-id'))).toStrictEqual({
+      idp: { entityID: 'a-new-entity-id', isDirty: true },
+    });
+  });
+  test('overwrites currentError', () => {
+    const anError = Error('test');
+    expect(SSOStateReducer({
+      currentError: null,
+    }, updateCurrentError(anError))).toStrictEqual({
+      currentError: anError,
     });
   });
 });
