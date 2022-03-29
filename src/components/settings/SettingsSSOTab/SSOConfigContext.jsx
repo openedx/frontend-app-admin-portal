@@ -19,7 +19,7 @@ export const SSO_INITIAL_STATE = {
   },
   serviceprovider: {
     stepLabel: 'Service Provider',
-    isSPConfigured: false,
+    isSPConfigured: false, // this will be set for now to the same value as isSsoValid
     isComplete: false,
   },
   configure: {

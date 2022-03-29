@@ -27,13 +27,15 @@ const SSOFormControl = ({
 SSOFormControl.defaultProps = {
   floatingLabel: '',
   readOnly: false,
+  defaultValue: undefined,
+  onChange: () => {},
 };
 
 SSOFormControl.propTypes = {
   label: PropTypes.string.isRequired,
   floatingLabel: PropTypes.string,
-  defaultValue: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  defaultValue: PropTypes.string,
+  onChange: PropTypes.func,
   readOnly: PropTypes.bool,
 };
 
@@ -46,6 +48,7 @@ const SSOConfigConfigureStep = () => {
     emailAddress: '',
     samlConfig: '',
   };
+  // TODO: This is not yet implemented, will be in future work when we work on this screen.
   const handleUpdate = () => {};
   return (
     <>
@@ -56,7 +59,7 @@ const SSOConfigConfigureStep = () => {
       <div className="py-4">
         <Form.Group>
           <SSOFormControl
-            label={`Setting this option will limit users session lenght to the set value.
+            label={`Setting this option will limit users session length to the set value.
                    If set to 0 (zero), the session will expire upon the user closing their browser.
                    If left blank, the Django platform session default length will be used.
             `}

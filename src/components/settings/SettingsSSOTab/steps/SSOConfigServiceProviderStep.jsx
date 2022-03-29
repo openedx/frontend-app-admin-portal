@@ -45,7 +45,7 @@ SSOConfigServiceProviderStep.propTypes = {
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  learnerPortalEnabled: state.portalConfiguration.learnerPortalEnabled,
+  learnerPortalEnabled: state.portalConfiguration.enableLearnerPortal,
 });
 
 export default connect(mapStateToProps)(SSOConfigServiceProviderStep);

@@ -40,6 +40,7 @@ const SSOStateReducer = (state, action) => {
       return {
         ...state,
         connect: { ...state.connect, isSsoValid: action.isValid },
+        serviceprovider: { ...state.serviceprovider, isSPConfigured: action.isValid },
       };
     }
     case SET_PROVIDER_CONFIG: {
