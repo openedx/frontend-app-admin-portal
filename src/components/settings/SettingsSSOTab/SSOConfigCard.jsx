@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateConnectInProgress,
-  updateConnectIsSsoValid,
 } from './data/actions';
 import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -18,7 +17,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
   const {
     ssoState, dispatchSsoState,
-    setProviderConfig, setCurrentError,
+    setProviderConfig, setCurrentError, setIsSsoValid,
   } = useContext(SSOConfigContext);
   const { connect: { inProgress, isSsoValid } } = ssoState;
   const [interval, setInterval] = useState(null);
@@ -32,16 +31,21 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
       const theProvider = providerConfigs.filter(
         aConfig => (aConfig.name === config.name) && (aConfig.entity_id === config.entity_id),
       ).shift();
-      setProviderConfig(theProvider);
+      if (theProvider) { setProviderConfig(theProvider); }
       if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
-        dispatchSsoState(updateConnectIsSsoValid(true));
         dispatchSsoState(updateConnectInProgress(false));
-        setInterval(null);
+        setIsSsoValid(true);
+        setInterval(null); // disable the polling
+        // at this point we want to take users to the listing page showing this config
+        // setting providerConfig to null will do that!
+        // because the SettingsSSOTab/index.jsx is looking for that value
+        setProviderConfig(null);
       } else {
         // if time has elapsed, then we can warn user: TODO
         // eslint-disable-next-line no-lonely-if
         if (performance.now() - startTime > LIMIT_MILLIS) {
           setInterval(null); // disable the polling
+          setIsSsoValid(false);
           setCurrentError('Cannot validate SSO, please make changes and try again');
         }
       }
@@ -57,6 +61,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
     if (isSsoValid) {
       setInterval(null); // just in case, disable the timer
       dispatchSsoState(updateConnectInProgress(false));
+      logInfo('SSO successfully validated');
     } else {
       // nothing to do right now
       logInfo('Waiting for SSO valid to become true');

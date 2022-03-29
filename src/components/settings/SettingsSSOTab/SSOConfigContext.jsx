@@ -2,7 +2,12 @@
 import { createContext, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import SSOStateReducer from './data/reducer';
-import { updateCurrentError, updateProviderConfig } from './data/actions';
+import {
+  updateConnectIsSsoValid,
+  updateCurrentError,
+  updateCurrentstep,
+  updateProviderConfig,
+} from './data/actions';
 
 const SSOConfigContext = createContext({});
 
@@ -41,6 +46,8 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   // setter shortcuts
   const setProviderConfig = config => dispatchSsoState(updateProviderConfig(config));
   const setCurrentError = error => dispatchSsoState(updateCurrentError(error));
+  const setCurrentStep = step => dispatchSsoState(updateCurrentstep(step));
+  const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
 
   return (
     <SSOConfigContext.Provider value={{
@@ -48,6 +55,8 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
       dispatchSsoState,
       setProviderConfig,
       setCurrentError,
+      setCurrentStep,
+      setIsSsoValid,
     }}
     >
       {children}

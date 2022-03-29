@@ -4,8 +4,7 @@ import { useContext } from 'react';
 import { SSOConfigContext } from './SSOConfigContext';
 
 const ExistingSSOConfigs = ({ configs }) => {
-  const { setProviderConfig } = useContext(SSOConfigContext);
-  // useEffect(() => dispatchSsoState(clearProviderConfig()), []);
+  const { setProviderConfig, setCurrentStep } = useContext(SSOConfigContext);
   return (
     <>
       { configs.map(config => (
@@ -15,6 +14,7 @@ const ExistingSSOConfigs = ({ configs }) => {
             onClick={e => {
               e.preventDefault();
               setProviderConfig(config);
+              setCurrentStep('idp'); // reset to first stepper screen
             }}
           >{config.name}
           </Hyperlink>

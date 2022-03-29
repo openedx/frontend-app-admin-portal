@@ -49,8 +49,8 @@ const SSOStateReducer = (state, action) => {
         providerConfig: action.providerConfig,
         idp: {
           ...state.idp,
-          metadataURL: action.providerConfig.metadata_source,
-          entityID: action.providerConfig.entity_id,
+          metadataURL: action.providerConfig?.metadata_source,
+          entityID: action.providerConfig?.entity_id,
         },
       };
     }
