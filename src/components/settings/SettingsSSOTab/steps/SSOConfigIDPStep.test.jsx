@@ -3,10 +3,10 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
 import { getMockStore, initialStore } from './testutils';
-import SSOConfigServiceProviderStep from './SSOConfigServiceProviderStep';
+import SSOConfigIDPStep from './SSOConfigIDPStep';
 import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
 
-describe('SSO Config Service provider step, with preloaded providerConfig', () => {
+describe('SSO Config IDP step, with no available providerConfig', () => {
   test('renders page with metadata link', () => {
     const store = getMockStore({ ...initialStore });
     const INITIAL_SSO_STATE = {
@@ -18,12 +18,12 @@ describe('SSO Config Service provider step, with preloaded providerConfig', () =
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigServiceProviderStep />
+          <SSOConfigIDPStep />
         </SSOConfigContextProvider>
       </Provider>,
     );
-    const link = screen.getByText('metadata file');
-    expect(screen.getByText('metadata file')).toBeInTheDocument();
-    expect(link.getAttribute('href')).toBe('http://localhost:18000/auth/saml/metadata.xml?tpa_hint=slug-provider');
+    expect(screen.getByText('Provide URL')).toBeInTheDocument();
+    expect(screen.getByText('Identity Provider Metadata URL')).toBeInTheDocument();
+    expect(screen.getByText('Identity Provider EntityID')).toBeInTheDocument();
   });
 });
