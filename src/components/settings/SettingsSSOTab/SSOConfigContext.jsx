@@ -6,37 +6,37 @@ import { updateCurrentError, updateProviderConfig } from './data/actions';
 
 const SSOConfigContext = createContext({});
 
-const SSOConfigContextProvider = ({ children }) => {
-  const SSO_INITIAL_STATE = {
-    currentStep: 'idp',
-    currentError: null,
-    idp: {
-      stepLabel: 'Identity Provider',
-      isComplete: false,
-      metadataURL: '',
-      entityID: '',
-      entryType: 'url', // vs directEntry
-      isDirty: false,
-    },
-    serviceprovider: {
-      stepLabel: 'Service Provider',
-      isSPConfigured: false,
-      isComplete: false,
-    },
-    configure: {
-      stepLabel: 'Configure',
-      isComplete: false,
-    },
-    connect: {
-      stepLabel: 'Connect',
-      isComplete: false,
-      isSsoValid: false,
-      inProgress: false, // if testing is happening this will be set to true,
-    },
-    providerConfig: null, // the provider config we are working with currently
-  };
+export const SSO_INITIAL_STATE = {
+  currentStep: 'idp',
+  currentError: null,
+  idp: {
+    stepLabel: 'Identity Provider',
+    isComplete: false,
+    metadataURL: '',
+    entityID: '',
+    entryType: 'url', // vs directEntry
+    isDirty: false,
+  },
+  serviceprovider: {
+    stepLabel: 'Service Provider',
+    isSPConfigured: false,
+    isComplete: false,
+  },
+  configure: {
+    stepLabel: 'Configure',
+    isComplete: false,
+  },
+  connect: {
+    stepLabel: 'Connect',
+    isComplete: false,
+    isSsoValid: false,
+    inProgress: false, // if testing is happening this will be set to true,
+  },
+  providerConfig: null, // the provider config we are working with currently
+};
 
-  const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, SSO_INITIAL_STATE);
+const SSOConfigContextProvider = ({ children, initialState }) => {
+  const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, initialState);
 
   // setter shortcuts
   const setProviderConfig = config => dispatchSsoState(updateProviderConfig(config));
@@ -55,8 +55,13 @@ const SSOConfigContextProvider = ({ children }) => {
   );
 };
 
+SSOConfigContextProvider.defaultProps = {
+  initialState: SSO_INITIAL_STATE,
+};
+
 SSOConfigContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  initialState: PropTypes.shape({}),
 };
 
 export {
