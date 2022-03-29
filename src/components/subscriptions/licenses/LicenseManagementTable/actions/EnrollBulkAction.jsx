@@ -116,7 +116,7 @@ const EnrollBulkAction = ({
         onClick={handleEnrollClick}
         disabled={!totalToEnroll}
       >
-        Enroll {totalToEnroll && <>({totalToEnroll})</>}
+        Enroll ({totalToEnroll})
       </Button>
       <BulkEnrollWarningModal
         learners={selectedEnrollableLearnerEmails}
