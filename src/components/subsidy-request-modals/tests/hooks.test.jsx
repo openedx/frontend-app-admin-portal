@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react-hooks/dom';
 import moment from 'moment';
 import { useApplicableCatalogs, useApplicableSubscriptions, useApplicableCoupons } from '../data/hooks';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
-import EcommerceApiService from '../../../data/services/EcommerceApiService';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_COURSE_RUN_IDS = ['edx+101'];
@@ -12,15 +11,6 @@ jest.mock('../../../data/services/EnterpriseCatalogApiService', () => ({
   fetchApplicableCatalogs: jest.fn(() => ({
     data: {
       catalog_list: [TEST_CATALOG_UUID],
-    },
-  })),
-}));
-
-jest.mock('../../../data/services/EcommerceApiService', () => ({
-  fetchCoupon: jest.fn((couponId) => ({
-    data: {
-      id: couponId,
-      max_uses: 3,
     },
   })),
 }));
@@ -125,20 +115,23 @@ describe('useApplicableCoupons', () => {
     results: [{
       id: 1,
       numUnassigned: 1,
-      enterpriseCustomerCatalog: TEST_CATALOG_UUID,
+      enterpriseCatalogUuid: TEST_CATALOG_UUID,
       endDate: moment().add(1, 'days').toISOString(),
+      maxUses: 3,
     },
     {
       id: 2,
       numUnassigned: 1,
-      enterpriseCustomerCatalog: 'abc',
+      enterpriseCatalogUuid: 'abc',
       endDate: moment().add(1, 'days').toISOString(),
+      maxUses: 3,
     },
     {
       id: 3,
       numUnassigned: 3,
-      enterpriseCustomerCatalog: TEST_CATALOG_UUID,
+      enterpriseCatalogUuid: TEST_CATALOG_UUID,
       endDate: moment().subtract(1, 'days').toISOString(),
+      maxUses: 3,
     }],
   };
 
@@ -159,33 +152,14 @@ describe('useApplicableCoupons', () => {
       },
     );
 
-    expect(EcommerceApiService.fetchCoupon).toHaveBeenCalledTimes(3);
-
     const { applicableCoupons } = result.current;
     expect(applicableCoupons.length).toEqual(1);
-    expect(applicableCoupons[0]).toEqual({
-      ...couponOrders.results[0],
-      maxUses: 3,
-    });
+    expect(applicableCoupons[0].id).toEqual(couponOrders.results[0].id);
   });
 
   it('should handle errors fetching applicable catalogs', async () => {
     const error = new Error('something went wrong fetching applicable catalogs');
     EnterpriseCatalogApiService.fetchApplicableCatalogs.mockRejectedValueOnce(error);
-
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCoupons({
-      enterpriseId: TEST_ENTERPRISE_UUID,
-      courseRunIds: TEST_COURSE_RUN_IDS,
-      coupons: couponOrders,
-    }));
-
-    await waitForNextUpdate();
-    expect(result.current.error).toEqual(error);
-  });
-
-  it('should handle errors fetching coupons', async () => {
-    const error = new Error('something went wrong fetching coupons');
-    EcommerceApiService.fetchCoupon.mockRejectedValueOnce(error);
 
     const { result, waitForNextUpdate } = renderHook(() => useApplicableCoupons({
       enterpriseId: TEST_ENTERPRISE_UUID,
