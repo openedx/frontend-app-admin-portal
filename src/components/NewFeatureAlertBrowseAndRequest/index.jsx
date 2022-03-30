@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
-import { features } from '../../../config';
+import { features } from '../../config';
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
   BROWSE_AND_REQUEST_ALERT_TEXT,
   REDIRECT_SETTINGS_BUTTON_TEXT,
-} from '../data/constants';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
-import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
+} from '../subscriptions/data/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
 
 const cookies = new Cookies();
 

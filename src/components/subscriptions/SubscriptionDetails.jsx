@@ -64,6 +64,10 @@ const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
               </div>
             )}
           </Row>
+          <p className="mt-1">
+            In accordance with edX privacy policies, learners that do not activate their allocated
+            licenses within 90 days of invitation are purged from the record tables below.
+          </p>
           <div className="mt-3 d-flex align-items-center">
             {subscription.priorRenewals[0]?.priorSubscriptionPlanStartDate && (
               <div className="mr-5">
