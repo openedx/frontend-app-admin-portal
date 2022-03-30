@@ -2,10 +2,14 @@ import {
   UPDATE_CURRENT_STEP, UPDATE_IDP_ENTRY_TYPE, UPDATE_IDP_METADATA_URL, UPDATE_SP_CONFIGURED,
   SET_PROVIDER_CONFIG, UPDATE_IDP_ENTITYID, UPDATE_CURRENT_ERROR, CLEAR_PROVIDER_CONFIG,
   UPDATE_IDP_DIRTYSTATE, UPDATE_CONNECT_IN_PROGRESS, UPDATE_CONNECT_IS_SSO_VALID,
+  UPDATE_INFO_MESSAGE,
 } from './actions';
 
 const SSOStateReducer = (state, action) => {
   switch (action.type) {
+    case UPDATE_INFO_MESSAGE: {
+      return { ...state, infoMessage: action.infoMessage };
+    }
     case UPDATE_IDP_METADATA_URL: {
       return { ...state, idp: { ...state.idp, metadataURL: action.metadataURL, isDirty: true } };
     }

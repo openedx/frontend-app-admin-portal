@@ -6,6 +6,7 @@ import {
   updateIdpDirtyState,
   updateIdpEntryTypeAction,
   updateIdpMetadataURLAction,
+  updateInfoMessage,
   updateServiceProviderConfigured,
 } from './actions';
 import SSOStateReducer from './reducer';
@@ -14,6 +15,13 @@ describe('reducer sso tests', () => {
   test('adds metadataURL', () => {
     expect(SSOStateReducer({}, updateIdpMetadataURLAction('aTestURL'))).toStrictEqual({
       idp: { metadataURL: 'aTestURL', isDirty: true },
+    });
+  });
+
+  test('adds infoMessage', () => {
+    const infoMessage = 'sdf;akjsdf;klj';
+    expect(SSOStateReducer({}, updateInfoMessage(infoMessage))).toStrictEqual({
+      infoMessage,
     });
   });
 

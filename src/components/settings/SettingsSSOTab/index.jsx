@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
-import { Alert, Hyperlink } from '@edx/paragon';
+import { Alert, Hyperlink, Toast } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs } from './hooks';
@@ -11,7 +11,7 @@ import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
-  const { ssoState: { providerConfig } } = useContext(SSOConfigContext);
+  const { ssoState: { providerConfig, infoMessage }, setInfoMessage } = useContext(SSOConfigContext);
   return (
     <div>
       <div className="d-flex">
@@ -40,6 +40,7 @@ const SettingsSSOTab = ({ enterpriseId }) => {
             An error occurred loading the SAML configs: <p>{error?.message}</p>
           </Alert>
           )}
+          {infoMessage && (<Toast onClose={() => setInfoMessage(null)}>{infoMessage}</Toast>)}
         </div>
       )}
       {isLoading && <Skeleton count={5} height={10} />}

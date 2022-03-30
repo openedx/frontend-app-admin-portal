@@ -6,6 +6,7 @@ import {
   updateConnectIsSsoValid,
   updateCurrentError,
   updateCurrentstep,
+  updateInfoMessage,
   updateProviderConfig,
 } from './data/actions';
 
@@ -14,6 +15,7 @@ const SSOConfigContext = createContext({});
 export const SSO_INITIAL_STATE = {
   currentStep: 'idp',
   currentError: null,
+  infoMessage: '',
   idp: {
     stepLabel: 'Identity Provider',
     isComplete: false,
@@ -48,6 +50,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   const setCurrentError = error => dispatchSsoState(updateCurrentError(error));
   const setCurrentStep = step => dispatchSsoState(updateCurrentstep(step));
   const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
+  const setInfoMessage = message => dispatchSsoState(updateInfoMessage(message));
 
   return (
     <SSOConfigContext.Provider value={{
@@ -57,6 +60,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
       setCurrentError,
       setCurrentStep,
       setIsSsoValid,
+      setInfoMessage,
     }}
     >
       {children}

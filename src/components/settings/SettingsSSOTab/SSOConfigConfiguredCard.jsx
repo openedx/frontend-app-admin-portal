@@ -14,10 +14,14 @@ import {
 import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
+/**
+ * This is the clickable card that is used to test the SSO config before we complete the config creation process.
+ */
+const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
   const {
     ssoState, dispatchSsoState,
     setProviderConfig, setCurrentError, setIsSsoValid,
+    setInfoMessage,
   } = useContext(SSOConfigContext);
   const { connect: { inProgress, isSsoValid } } = ssoState;
   const [interval, setInterval] = useState(null);
@@ -35,6 +39,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
       if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
         dispatchSsoState(updateConnectInProgress(false));
         setIsSsoValid(true);
+        setInfoMessage('SSO connected successfully');
         setInterval(null); // disable the polling
         // at this point we want to take users to the listing page showing this config
         // setting providerConfig to null will do that!
@@ -96,8 +101,8 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
               title={config.name}
             />
             <Card.Section>
-              {!inProgress && !isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
-              {!inProgress && isSsoValid && <Badge variant="success">completed</Badge>}{' '}
+              {!isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
+              {isSsoValid && <Badge variant="success">completed</Badge>}{' '}
             </Card.Section>
           </Card>
         </>
@@ -106,7 +111,7 @@ const SSOConfigCard = ({ config, testLink, enterpriseId }) => {
   );
 };
 
-SSOConfigCard.propTypes = {
+SSOConfigConfiguredCard.propTypes = {
   config: PropTypes.shape({
     name: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
@@ -121,4 +126,4 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(SSOConfigCard);
+export default connect(mapStateToProps)(SSOConfigConfiguredCard);

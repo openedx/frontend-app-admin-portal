@@ -9,6 +9,7 @@ export const UPDATE_CONNECT_IS_SSO_VALID = 'update_connect_is_sso_valid';
 export const SET_PROVIDER_CONFIG = 'set_provider_config';
 export const UPDATE_CURRENT_ERROR = 'update_current_error';
 export const CLEAR_PROVIDER_CONFIG = 'clear_provider_config';
+export const UPDATE_INFO_MESSAGE = 'update_info_message';
 
 // Use this action to update IDP metadata URL in client state
 export const updateIdpMetadataURLAction = metadataURL => ({
@@ -65,4 +66,9 @@ export const clearProviderConfig = () => ({
 export const updateCurrentError = error => ({
   type: UPDATE_CURRENT_ERROR,
   error,
+});
+
+export const updateInfoMessage = infoMessage => ({
+  type: UPDATE_INFO_MESSAGE,
+  infoMessage,
 });

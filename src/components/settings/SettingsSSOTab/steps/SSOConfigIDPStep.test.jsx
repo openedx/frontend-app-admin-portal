@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
-import { getMockStore, initialStore } from './testutils';
 import SSOConfigIDPStep from './SSOConfigIDPStep';
 import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
+import { getMockStore, initialStore } from '../testutils';
 
 describe('SSO Config IDP step, with no available providerConfig', () => {
   test('renders page with metadata link', () => {

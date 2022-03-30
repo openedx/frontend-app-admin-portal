@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useExistingSSOConfigs } from '../hooks';
-import SSOConfigCard from '../SSOConfigCard';
+import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
@@ -33,7 +33,7 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
         <>
           <div>
-            <SSOConfigCard config={providerConfig} testLink={testLink} />
+            <SSOConfigConfiguredCard config={providerConfig} testLink={testLink} />
           </div>
         </>
       )}
