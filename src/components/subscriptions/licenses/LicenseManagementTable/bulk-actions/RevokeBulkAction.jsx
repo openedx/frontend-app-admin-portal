@@ -133,16 +133,26 @@ const RevokeBulkAction = ({
   );
 };
 
+RevokeBulkAction.defaultProps = {
+  selectedFlatRows: [],
+  tableInstance: {
+    itemCount: 0,
+    columns: [],
+    clearSelection: () => {},
+  },
+  isEntireTableSelected: false,
+};
+
 RevokeBulkAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(
     PropTypes.shape({ original: PropTypes.shape() }),
-  ).isRequired,
+  ),
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number.isRequired,
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     clearSelection: PropTypes.func.isRequired,
-  }).isRequired,
-  isEntireTableSelected: PropTypes.bool.isRequired,
+  }),
+  isEntireTableSelected: PropTypes.bool,
   subscription: PropTypes.shape({
     enterpriseCustomerUuid: PropTypes.string.isRequired,
   }).isRequired,

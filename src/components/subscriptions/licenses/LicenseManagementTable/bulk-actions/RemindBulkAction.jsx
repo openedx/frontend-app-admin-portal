@@ -31,6 +31,7 @@ const calculateTotalToRemind = ({
 
   const activeStatusFilter = activeFilters.find(filter => filter.name === 'statusBadge');
   let remindableUsersCount = tableItemCount;
+
   if (activeStatusFilter?.filterValue.includes(REVOKED)) {
     remindableUsersCount -= revokedUsersCount;
   }
@@ -135,16 +136,26 @@ const RemindBulkAction = ({
   );
 };
 
+RemindBulkAction.defaultProps = {
+  selectedFlatRows: [],
+  tableInstance: {
+    itemCount: 0,
+    columns: [],
+    clearSelection: () => {},
+  },
+  isEntireTableSelected: false,
+};
+
 RemindBulkAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(
     PropTypes.shape({ original: PropTypes.shape() }),
-  ).isRequired,
+  ),
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number.isRequired,
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     clearSelection: PropTypes.func.isRequired,
-  }).isRequired,
-  isEntireTableSelected: PropTypes.bool.isRequired,
+  }),
+  isEntireTableSelected: PropTypes.bool,
   subscription: PropTypes.shape({
     enterpriseCustomerUuid: PropTypes.string.isRequired,
   }).isRequired,

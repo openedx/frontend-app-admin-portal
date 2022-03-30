@@ -61,7 +61,6 @@ const BulkEnrollStepper = ({
             Subscription Enrollment
           </ModalDialog.Title>
         </ModalDialog.Header>
-
         <ModalDialog.Body>
           <Stepper.Step eventKey={ADD_COURSES_STEP} title={ADD_COURSES_TITLE}>
             <AddCoursesStep
@@ -78,7 +77,6 @@ const BulkEnrollStepper = ({
             />
           </Stepper.Step>
         </ModalDialog.Body>
-
         <ModalDialog.Footer>
           <Stepper.ActionRow eventKey={ADD_COURSES_STEP}>
             <Button
