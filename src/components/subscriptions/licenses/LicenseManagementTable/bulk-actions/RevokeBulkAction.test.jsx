@@ -49,7 +49,7 @@ const RevokeBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   </Provider>
 );
 
-const mockOnRemindSuccess = jest.fn();
+const mockOnRevokeSuccess = jest.fn();
 const basicProps = {
   subscription: {
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
@@ -58,7 +58,7 @@ const basicProps = {
     expirationDate: moment().add(1, 'year').toISOString(),
     isRevocationCapEnabled: false,
   },
-  onRevokeSuccess: mockOnRemindSuccess,
+  onRevokeSuccess: mockOnRevokeSuccess,
   activatedUsersCount: 0,
   assignedUsersCount: 0,
   revokedUsersCount: 0,
