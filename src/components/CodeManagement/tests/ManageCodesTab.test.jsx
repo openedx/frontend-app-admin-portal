@@ -10,6 +10,14 @@ import { mount } from 'enzyme';
 import ManageCodesTab from '../ManageCodesTab';
 
 import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../../data/constants/coupons';
+import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+
+const BNR_NEW_FEATURE_ALERT_TEXT = 'browse and request new feature alert!';
+jest.mock('../../NewFeatureAlertBrowseAndRequest', () => ({
+  __esModule: true,
+  default: () => BNR_NEW_FEATURE_ALERT_TEXT,
+}));
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -37,29 +45,39 @@ const initialState = {
   },
 };
 
-const ManageCodesTabWrapper = props => (
+const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props }) => (
   <MemoryRouter>
-    <Provider store={props.store}>
-      <ManageCodesTab
-        location={{}}
-        match={{
-          path: '/test-page',
-        }}
-        history={{
-          replace: () => {},
-        }}
-        {...props}
-      />
+    <Provider store={store}>
+      <SubsidyRequestConfigurationContext.Provider value={{
+        subsidyRequestConfiguration,
+      }}
+      >
+        <ManageCodesTab
+          location={{}}
+          match={{
+            path: '/test-page',
+          }}
+          history={{
+            replace: () => {},
+          }}
+          {...props}
+        />
+      </SubsidyRequestConfigurationContext.Provider>
     </Provider>
   </MemoryRouter>
 );
 
 ManageCodesTabWrapper.defaultProps = {
   store: mockStore({ ...initialState }),
+  subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: true,
+    subsidyType: 'coupon',
+  },
 };
 
 ManageCodesTabWrapper.propTypes = {
   store: PropTypes.shape({}),
+  subsidyRequestConfiguration: PropTypes.shape({}),
 };
 
 const sampleCouponData = {
@@ -246,5 +264,39 @@ describe('ManageCodesTabWrapper', () => {
     store.clearActions();
     wrapper.find('.fa-refresh').hostNodes().simulate('click');
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
+  });
+
+  describe('<NewFeatureAlertBrowseAndRequest />', () => {
+    it.each([
+      {
+        subsidyRequestConfiguration: {
+          subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidyRequestsEnabled: false,
+        },
+        shouldShowAlert: true,
+      },
+      {
+        subsidyRequestConfiguration: {
+          subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+          subsidyRequestsEnabled: false,
+        },
+        shouldShowAlert: false,
+      },
+      {
+        subsidyRequestConfiguration: {
+          subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidyRequestsEnabled: true,
+        },
+        shouldShowAlert: false,
+      },
+    ])('should render correctly', ({ subsidyRequestConfiguration, shouldShowAlert }) => {
+      const wrapper = mount(<ManageCodesTabWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
+
+      if (shouldShowAlert) {
+        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(true);
+      } else {
+        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(false);
+      }
+    });
   });
 });

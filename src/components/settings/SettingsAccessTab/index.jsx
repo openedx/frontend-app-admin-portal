@@ -79,7 +79,7 @@ const SettingsAccessTab = ({
           <h3>Manage course requests</h3>
           <p>
             Allow learners to request subsidy to courses. You will see the requests under subsidy tab.
-            Disabling this feature will not affect learners’ browsing capability.
+            Disabling this feature will not affect learners&apos; browsing capability.
           </p>
           <SettingsAccessSubsidyRequestManagement
             subsidyRequestConfiguration={subsidyRequestConfiguration}

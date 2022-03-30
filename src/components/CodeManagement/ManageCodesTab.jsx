@@ -18,6 +18,9 @@ import Coupon from '../Coupon';
 import { updateUrl } from '../../utils';
 import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
+import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 class ManageCodesTab extends React.Component {
   constructor(props) {
@@ -230,6 +233,11 @@ class ManageCodesTab extends React.Component {
   }
 
   render() {
+    const { subsidyRequestConfiguration } = this.context;
+    // don't show alert if the enterprise already has subsidy requests enabled
+    const isBrowseAndRequestFeatureAlertShown = subsidyRequestConfiguration?.subsidyType
+      === SUPPORTED_SUBSIDY_TYPES.coupon && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
+
     const {
       coupons,
       error,
@@ -241,6 +249,7 @@ class ManageCodesTab extends React.Component {
     return (
       <>
         {this.renderRequestCodesSuccessMessage()}
+        {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
         <div className="row mt-4 mb-3 no-gutters">
           <div className="col-12 col-xl-3 mb-3 mb-xl-0">
             <h2>Overview</h2>
@@ -366,5 +375,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(clearCouponOrders());
   },
 });
+
+ManageCodesTab.contextType = SubsidyRequestConfigurationContext;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCodesTab);
