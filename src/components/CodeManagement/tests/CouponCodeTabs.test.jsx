@@ -59,6 +59,7 @@ const CouponCodeTabsWrapper = ({ subsidyRequestConfiguration }) => (
 
 CouponCodeTabsWrapper.defaultProps = {
   subsidyRequestConfiguration: {
+    subsidyRequestsEnabled: true,
     subsidyType: 'coupon',
   },
 };
@@ -103,6 +104,20 @@ describe('<CouponCodeTabs />', () => {
 
   it('When configured subsidy request is not coupon, hide "Manage Requests" tab', async () => {
     renderWithRouter(<CouponCodeTabsWrapper subsidyRequestConfiguration={{ subsidyType: 'license' }} />, { route: INITIAL_ROUTER_ENTRY });
+    screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
+    expect(screen.queryByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
+  });
+
+  it('When subsidy requests are not enabled, hide "Manage Requests" tab', async () => {
+    renderWithRouter(
+      <CouponCodeTabsWrapper
+        subsidyRequestConfiguration={{
+          subsidyRequestsEnabled: false,
+          subsidyType: 'coupon',
+        }}
+      />,
+      { route: INITIAL_ROUTER_ENTRY },
+    );
     screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
     expect(screen.queryByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
   });

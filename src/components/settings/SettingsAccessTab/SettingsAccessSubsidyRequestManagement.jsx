@@ -15,9 +15,7 @@ const SettingsAccessSubsidyRequestManagement = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const {
-    subsidyRequestsEnabled,
-  } = subsidyRequestConfiguration;
+  const subsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
   const toggleSubsidyRequests = async (isEnabled) => {
     setIsLoading(true);

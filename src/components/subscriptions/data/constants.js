@@ -5,6 +5,7 @@ export const ACTIVATED = 'activated';
 export const ASSIGNED = 'assigned';
 export const REVOKED = 'revoked';
 export const REVOCABLE_STATUSES = [ACTIVATED, ASSIGNED];
+export const ENROLLABLE_STATUSES = [ACTIVATED, ASSIGNED];
 
 export const SUBSCRIPTIONS = 'Subscriptions';
 export const SUBSCRIPTION_USERS = 'Subscription Users';

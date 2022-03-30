@@ -15,7 +15,7 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
  */
 // eslint-disable-next-line import/prefer-default-export
 export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
-  const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState();
+  const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

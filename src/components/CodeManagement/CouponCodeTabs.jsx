@@ -23,8 +23,9 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const CouponCodeTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
-  const { subsidyType } = subsidyRequestConfiguration;
-  const isRequestsTabShown = subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon;
+  const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const subsidyType = subsidyRequestConfiguration?.subsidyType;
+  const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon;
 
   const history = useHistory();
   const params = useParams();

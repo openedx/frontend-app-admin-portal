@@ -22,7 +22,9 @@ import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import DownloadCsvButton from '../../buttons/DownloadCsvButton';
-import LicenseManagementTableBulkActions from './LicenseManagementTableBulkActions';
+import EnrollBulkAction from './bulk-actions/EnrollBulkAction';
+import RemindBulkAction from './bulk-actions/RemindBulkAction';
+import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
@@ -150,12 +152,6 @@ const LicenseManagementTable = () => {
     [currentPage],
   );
 
-  const getActiveFilters = columns => columns.map(column => ({
-    name: column.id,
-    filter: column.filter,
-    filterValue: column.filterValue,
-  })).filter(filter => !!filter.filterValue);
-
   // Maps user to rows
   const rows = useMemo(
     () => users?.results?.map(user => ({
@@ -169,24 +165,22 @@ const LicenseManagementTable = () => {
     [users],
   );
 
-  const onEnrollSuccess = (clearTableSelectionCallback) => (() => {
-    clearTableSelectionCallback();
+  const onEnrollSuccess = () => {
     forceRefreshUsers();
-  });
+  };
+
   // Successful action modal callback
-  const onRemindSuccess = (clearTableSelectionCallback) => (() => {
+  const onRemindSuccess = () => {
     // Refresh users to get updated lastRemindDate
-    clearTableSelectionCallback();
     forceRefreshUsers();
     addToast('Users successfully reminded');
-  });
-  const onRevokeSuccess = (clearTableSelectionCallback) => (() => {
+  };
+  const onRevokeSuccess = () => {
     // Refresh subscription and user data to get updated revoke count and revoked list of users
-    clearTableSelectionCallback();
     forceRefreshSubscription();
     forceRefreshDetailView();
     addToast('Licenses successfully revoked');
-  });
+  };
 
   const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
 
@@ -282,34 +276,26 @@ const LicenseManagementTable = () => {
             ),
           },
         ]}
-        // TODO: consider refactoring to use default DataTable behavior
-        // instead of a custom implementation of these bulk actions
-        bulkActions={(data) => {
-          const selectedUsers = data.selectedFlatRows.map((selectedRow) => selectedRow.original);
-          const {
-            itemCount,
-            clearSelection,
-            controlledTableSelections: [{ selectedRows, isEntireTableSelected }],
-          } = data.tableInstance;
-          const tableItemCount = isEntireTableSelected ? itemCount : selectedRows.length;
-
-          return (
-            <LicenseManagementTableBulkActions
-              subscription={subscription}
-              selectedUsers={selectedUsers}
-              onRemindSuccess={onRemindSuccess(clearSelection)}
-              onRevokeSuccess={onRevokeSuccess(clearSelection)}
-              onEnrollSuccess={onEnrollSuccess(clearSelection)}
-              activatedUsersCount={overview.activated}
-              assignedUsersCount={overview.assigned}
-              revokedUsersCount={overview.revoked}
-              allUsersSelected={data.isEntireTableSelected}
-              activeFilters={getActiveFilters(data.tableInstance.columns)}
-              disabled={isExpired}
-              tableItemCount={tableItemCount}
-            />
-          );
-        }}
+        bulkActions={[
+          <EnrollBulkAction
+            subscription={subscription}
+            onEnrollSuccess={onEnrollSuccess}
+          />,
+          <RemindBulkAction
+            subscription={subscription}
+            activatedUsersCount={overview.activated}
+            assignedUsersCount={overview.assigned}
+            revokedUsersCount={overview.revoked}
+            onRemindSuccess={onRemindSuccess}
+          />,
+          <RevokeBulkAction
+            subscription={subscription}
+            onRevokeSuccess={onRevokeSuccess}
+            activatedUsersCount={overview.activated}
+            assignedUsersCount={overview.assigned}
+            revokedUsersCount={overview.revoked}
+          />,
+        ]}
       />
     </>
   );
