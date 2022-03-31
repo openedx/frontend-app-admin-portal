@@ -52,7 +52,9 @@ describe('useSubsidyRequestConfiguration', () => {
 
     await waitForNextUpdate();
 
-    expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
+      { clearCacheEntry: false, enterpriseId: TEST_ENTERPRISE_UUID },
+    );
 
     expect(result.current.subsidyRequestConfiguration).toEqual(
       camelCaseObject(TEST_CONFIGURATION_RESPONSE.data),
@@ -67,7 +69,9 @@ describe('useSubsidyRequestConfiguration', () => {
 
     await waitForNextUpdate();
 
-    expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
+      { clearCacheEntry: false, enterpriseId: TEST_ENTERPRISE_UUID },
+    );
     expect(result.current.subsidyRequestConfiguration).toEqual(
       camelCaseObject(TEST_CONFIGURATION_RESPONSE.data),
     );
@@ -183,16 +187,20 @@ describe('useSubsidyRequestConfiguration', () => {
 
   describe('updateSubsidyRequestConfiguration', () => {
     it('should update a configuration correctly', async () => {
-      EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValue(
+      EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValueOnce(
         createSubsidyRequestConfigurationResponse({
           subsidyRequestsEnabled: false,
         }),
-      );
-      EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockResolvedValue(
+      ).mockResolvedValueOnce(createSubsidyRequestConfigurationResponse({
+        subsidyRequestsEnabled: true,
+      }));
+
+      EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockResolvedValueOnce(
         createSubsidyRequestConfigurationResponse({
           subsidyRequestsEnabled: true,
         }),
       );
+
       const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
 
       await waitFor(() => {
@@ -205,7 +213,13 @@ describe('useSubsidyRequestConfiguration', () => {
         isSubsidyRequestsEnabled: true,
       }));
 
-      expect(result.current.subsidyRequestConfiguration.subsidyRequestsEnabled).toEqual(true);
+      await waitFor(() => {
+        expect(result.current.subsidyRequestConfiguration.subsidyRequestsEnabled).toEqual(true);
+      });
+
+      expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
+        { clearCacheEntry: true, enterpriseId: TEST_ENTERPRISE_UUID },
+      );
     });
 
     it('should handle errors', async () => {
