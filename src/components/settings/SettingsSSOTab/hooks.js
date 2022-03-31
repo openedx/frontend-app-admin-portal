@@ -83,6 +83,7 @@ const useIdpState = () => {
       });
       logInfo(providerdataResponse);
 
+      setCurrentError(null);
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {
