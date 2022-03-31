@@ -13,7 +13,13 @@ const NewSSOConfigForm = () => {
         such as Okta or OneLogin to allow quick access to your organization&apos;s learning catalog.
       </span>
       <SSOStepper />
-      {currentError && <Alert variant="warning" icon={WarningFilled}>There has been an error {currentError}</Alert>}
+      {currentError && (
+      <Alert variant="warning" icon={WarningFilled}>
+        <p className="my-3" style={{ wordBreak: 'break-all' }}>
+          There has been an error {currentError}
+        </p>
+      </Alert>
+      )}
     </div>
   );
 };

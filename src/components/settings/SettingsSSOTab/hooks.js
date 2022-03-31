@@ -48,6 +48,7 @@ const useIdpState = () => {
     const formData = new FormData();
     formData.append('name', enterpriseName);
     formData.append('slug', enterpriseSlug);
+    formData.append('enabled', true);
     formData.append('enterprise_customer_uuid', enterpriseId);
     formData.append('metadata_source', metadataURL);
     formData.append('entity_id', entityID);
@@ -85,7 +86,8 @@ const useIdpState = () => {
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {
-      setCurrentError(error);
+      const { message, customAttributes } = error;
+      setCurrentError(`${message } Details: ${JSON.stringify(customAttributes)}`);
     }
     dispatchSsoState(updateIdpDirtyState(false)); // we must reset dirty state
   };

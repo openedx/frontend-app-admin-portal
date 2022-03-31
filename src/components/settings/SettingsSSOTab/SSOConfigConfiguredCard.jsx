@@ -52,6 +52,8 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
         if (performance.now() - startTime > LIMIT_MILLIS) {
           setInterval(null); // disable the polling
           setIsSsoValid(false);
+          setInfoMessage(null);
+          dispatchSsoState(updateConnectInProgress(false));
           setCurrentError('Cannot validate SSO, please make changes and try again');
         }
       }

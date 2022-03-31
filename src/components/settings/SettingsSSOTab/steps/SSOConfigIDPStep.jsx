@@ -13,7 +13,7 @@ const SSOConfigIDPStep = () => {
     handleMetadataURLUpdate, handleMetadataEntryTypeUpdate, handleEntityIDUpdate,
   } = useIdpState();
 
-  const TITLE = 'First, select the way to provide your Identity Provider Metadata and fill out the corresponding fields. ';
+  const TITLE = 'First, select the method to provide your Identity Provider Metadata and fill out the corresponding fields. ';
 
   return (
     <>
