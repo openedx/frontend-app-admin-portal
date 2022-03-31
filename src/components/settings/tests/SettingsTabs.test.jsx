@@ -67,18 +67,22 @@ describe('<SettingsTabs />', () => {
   afterEach(() => {
     features.EXTERNAL_LMS_CONFIGURATION = true;
     features.FEATURE_SSO_SETTINGS_TAB = true;
+    features.SETTINGS_PAGE_LMS_TAB = true;
 
     jest.clearAllMocks();
   });
 
   test.each([
-    [true, false],
-    [false, true],
-  ])('LMS tab is not rendered if enableLmsConfigurationsScreen = false or EXTERNAL_LMS_CONFIGURATION = false', (
+    [false, true, true],
+    [true, false, true],
+    [true, true, false],
+  ])('LMS tab is not rendered if any of EXTERNAL_LMS_CONFIGURATION, SETTINGS_PAGE_LMS_TAB, enableLmsConfigurationsScreen = false', (
+    enableExternalLmsConfiguration,
+    enableSettingsPageLmsTab,
     enableLmsConfigurationsScreen,
-    isFeatureFlagToggled,
   ) => {
-    features.EXTERNAL_LMS_CONFIGURATION = isFeatureFlagToggled;
+    features.EXTERNAL_LMS_CONFIGURATION = enableExternalLmsConfiguration;
+    features.SETTINGS_PAGE_LMS_TAB = enableSettingsPageLmsTab;
 
     render(
       <SettingsTabsWithRouter
