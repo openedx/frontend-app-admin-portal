@@ -34,7 +34,7 @@ const defaultProps = {
 };
 
 describe('CourseTitleCell', () => {
-  test('renders', () => {
+  test('renders', async () => {
     const mockCourseDetails = { shortDescription: 'Test short description' };
     const mockPromiseResolve = Promise.resolve({ data: mockCourseDetails });
     DiscoveryApiService.fetchCourseDetails.mockReturnValue(mockPromiseResolve);
@@ -46,10 +46,10 @@ describe('CourseTitleCell', () => {
     renderWithRouter(Component);
     userEvent.click(screen.getByText(defaultProps.row.original.courseTitle));
     expect(screen.getByText('Loading course details...'));
-    waitFor(() => {
+    await waitFor(() => {
       screen.getByText(mockCourseDetails.shortDescription);
       screen.getByText('Learn more about this course');
-      screen.getByLabelText('in a new tab');
+      screen.getByText('in a new tab');
     });
   });
 });

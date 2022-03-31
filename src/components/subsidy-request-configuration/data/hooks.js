@@ -18,59 +18,71 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
   const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+  const createSubsidyRequestConfiguration = useCallback(async () => {
+    try {
+      const [couponsData, subscriptionsData] = await Promise.all([
+        EcommerceApiService.fetchCouponOrders(),
+        LicenseManagerApiService.fetchSubscriptions({
+          enterprise_customer_uuid: enterpriseUUID,
+        }),
+      ]);
+      const hasCoupons = couponsData.data.results.length > 0;
+      const hasSubscriptions = subscriptionsData.data.results.length > 0;
+
+      // If the customer has two subsidy types, they are not eligible for Browse & Request in the MVP
+      // A subsidy type of null on the customer configuration indicates that the customer is not eligible
+      let subsidyType = null;
+
+      if (!(hasCoupons && hasSubscriptions)) {
+        if (hasCoupons) {
+          subsidyType = SUPPORTED_SUBSIDY_TYPES.coupon;
+        } else if (hasSubscriptions) {
+          subsidyType = SUPPORTED_SUBSIDY_TYPES.license;
+        }
+      }
+
+      const response = await EnterpriseAccessApiService.createSubsidyRequestConfiguration({
+        enterpriseId: enterpriseUUID,
+        subsidyType,
+      });
+
+      const customerConfiguration = camelCaseObject(response.data);
+      setSubsidyRequestConfiguration(customerConfiguration);
+    } catch (error) {
+      // log error and do nothing
+      logError(error);
+    }
+  }, [enterpriseUUID]);
+
+  const loadSubsidyRequestConfiguration = useCallback(
+    async ({ clearCacheEntry = false } = { clearCacheEntry: false },
+    ) => {
+      try {
+        const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(
+          { enterpriseId: enterpriseUUID, clearCacheEntry },
+        );
+        const customerConfiguration = camelCaseObject(response.data);
+        setSubsidyRequestConfiguration(customerConfiguration);
+      } catch (error) {
+        logError(error);
+        throw error;
+      }
+    }, [enterpriseUUID],
+  );
+
   useEffect(() => {
     if (!enterpriseUUID) {
       return;
     }
 
-    const createSubsidyRequestConfiguration = async () => {
+    const loadConfiguration = async () => {
       try {
-        const [couponsData, subscriptionsData] = await Promise.all([
-          EcommerceApiService.fetchCouponOrders(),
-          LicenseManagerApiService.fetchSubscriptions({
-            enterprise_customer_uuid: enterpriseUUID,
-          }),
-        ]);
-        const hasCoupons = couponsData.data.results.length > 0;
-        const hasSubscriptions = subscriptionsData.data.results.length > 0;
-
-        // If the customer has two subsidy types, they are not eligible for Browse & Request in the MVP
-        // A subsidy type of null on the customer configuration indicates that the customer is not eligible
-        let subsidyType = null;
-
-        if (!(hasCoupons && hasSubscriptions)) {
-          if (hasCoupons) {
-            subsidyType = SUPPORTED_SUBSIDY_TYPES.coupon;
-          } else if (hasSubscriptions) {
-            subsidyType = SUPPORTED_SUBSIDY_TYPES.license;
-          }
-        }
-
-        const response = await EnterpriseAccessApiService.createSubsidyRequestConfiguration({
-          enterpriseId: enterpriseUUID,
-          subsidyType,
-        });
-
-        const customerConfiguration = camelCaseObject(response.data);
-
-        return customerConfiguration;
-      } catch (error) {
-        logError(error);
-        return null;
-      }
-    };
-
-    const fetchSubsidyRequestConfiguration = async () => {
-      try {
-        const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(enterpriseUUID);
-        const config = camelCaseObject(response.data);
-        setSubsidyRequestConfiguration(config);
+        await loadSubsidyRequestConfiguration();
       } catch (error) {
         const httpErrorStatus = error.customAttributes?.httpErrorStatus;
         if (httpErrorStatus === 404) {
           // Customer configuration does not exist, create one
-          const customerConfiguration = await createSubsidyRequestConfiguration();
-          setSubsidyRequestConfiguration(customerConfiguration);
+          await createSubsidyRequestConfiguration();
         } else {
           logError(error);
         }
@@ -79,7 +91,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       }
     };
 
-    fetchSubsidyRequestConfiguration(enterpriseUUID);
+    loadConfiguration();
   }, [enterpriseUUID]);
 
   const updateSubsidyRequestConfiguration = useCallback(async ({
@@ -97,10 +109,12 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
         options,
       );
       const config = camelCaseObject(response.data);
+
       setSubsidyRequestConfiguration(config);
-    } catch (error) {
-      logError(error);
-      throw error;
+      loadSubsidyRequestConfiguration({ clearCacheEntry: true });
+    } catch (err) {
+      logError(err);
+      throw err;
     }
   }, [enterpriseUUID]);
 

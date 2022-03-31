@@ -43,7 +43,7 @@ const SubsidyRequestConfigurationContextProviderWrapper = ({ enableBrowseAndRequ
       subsidyRequestsEnabled: false,
       subsidyType: null,
     },
-    isLoading: false,
+    updateSubsidyRequestConfiguration: () => {},
   }), []);
 
   return (
