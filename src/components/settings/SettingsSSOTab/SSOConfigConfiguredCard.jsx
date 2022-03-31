@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import {
   Badge,
   Card,
+  Hyperlink,
 } from '@edx/paragon';
 import { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -88,11 +89,14 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
       {!inProgress && (
         <p>
           Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
+          (or visit <Hyperlink destination={testLink} target="_blank">this link</Hyperlink> in a separate browser/incognito window).
         </p>
       )}
       {inProgress && (
       <p>
-        Please connect via SSO in the newly opened window. Checking for successful SSO connection...
+        Please connect via SSO in the newly opened window
+        (or visit <Hyperlink destination={testLink} target="_blank">this link</Hyperlink> in a separate browser/incognito window).
+        Checking for successful SSO connection...
       </p>
       )}
       {!inProgress ? (
