@@ -7,7 +7,6 @@ import {
 import {
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import Skeleton from 'react-loading-skeleton';
