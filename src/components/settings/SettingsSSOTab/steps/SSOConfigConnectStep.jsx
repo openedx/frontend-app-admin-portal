@@ -9,7 +9,7 @@ import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
 const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabled }) => {
-  // When we render this cmponent, we need to re-fetch provider configs and updatee the store
+  // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
   const { ssoState: { providerConfig }, setProviderConfig } = useContext(SSOConfigContext);

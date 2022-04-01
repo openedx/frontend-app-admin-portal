@@ -52,14 +52,14 @@ SettingsSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-const Wrapped = ({ enterpriseId }) => (
+const WrappedSSOTab = ({ enterpriseId }) => (
   <SSOConfigContextProvider>
     <SettingsSSOTab enterpriseId={enterpriseId} />
   </SSOConfigContextProvider>
 );
 
-Wrapped.propTypes = {
+WrappedSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-export default Wrapped;
+export default WrappedSSOTab;
