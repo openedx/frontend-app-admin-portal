@@ -167,6 +167,7 @@ class ReportingConfig extends React.Component {
                     deleteConfig={this.deleteConfig}
                     availableCatalogs={camelCaseObject(availableCatalogs)}
                     reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
+                    enterpriseCustomerUuid={this.props.enterpriseId}
                   />
                 </Collapsible>
               </div>
@@ -180,6 +181,7 @@ class ReportingConfig extends React.Component {
               <div>
                 <ReportingConfigForm
                   createConfig={this.createConfig}
+                  enterpriseCustomerUuid={this.props.enterpriseId}
                   availableCatalogs={camelCaseObject(availableCatalogs)}
                   reportingConfigTypes={camelCaseObject(reportingConfigTypes)}
                 />
