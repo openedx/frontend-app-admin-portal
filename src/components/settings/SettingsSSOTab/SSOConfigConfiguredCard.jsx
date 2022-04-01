@@ -34,10 +34,10 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
       const response = await LmsApiService.getProviderConfig(enterpriseId);
       const providerConfigs = response.data.results;
       const theProvider = providerConfigs.filter(
-        aConfig => (aConfig.name === config.name) && (aConfig.entity_id === config.entity_id),
+        aProviderConfig => (aProviderConfig.name === config.name) && (aProviderConfig.entity_id === config.entity_id),
       ).shift();
       if (theProvider) { setProviderConfig(theProvider); }
-      if (theProvider && theProvider.was_valid_at && theProvider.was_valid_at !== null) {
+      if (theProvider && theProvider.was_valid_at) {
         dispatchSsoState(updateConnectInProgress(false));
         setIsSsoValid(true);
         setInfoMessage('SSO connected successfully');
