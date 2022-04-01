@@ -4,7 +4,12 @@ import {
   Card,
   Hyperlink,
 } from '@edx/paragon';
-import { useContext, useEffect, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
@@ -22,13 +27,18 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
   const {
     ssoState, dispatchSsoState,
     setProviderConfig, setCurrentError, setIsSsoValid,
-    setInfoMessage,
+    setInfoMessage, setStartTime,
   } = useContext(SSOConfigContext);
-  const { connect: { inProgress, isSsoValid } } = ssoState;
+  const {
+    connect: {
+      startTime,
+      inProgress,
+      isSsoValid,
+    },
+  } = ssoState;
   const [interval, setInterval] = useState(null);
   const LIMIT_MILLIS = 120000;
 
-  const startTime = performance.now();
   useInterval(async () => {
     try {
       const response = await LmsApiService.getProviderConfig(enterpriseId);
@@ -37,7 +47,7 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
         aProviderConfig => (aProviderConfig.name === config.name) && (aProviderConfig.entity_id === config.entity_id),
       ).shift();
       if (theProvider) { setProviderConfig(theProvider); }
-      if (theProvider && theProvider.was_valid_at) {
+      if (theProvider?.was_valid_at !== null) {
         dispatchSsoState(updateConnectInProgress(false));
         setIsSsoValid(true);
         setInfoMessage('SSO connected successfully');
@@ -61,6 +71,11 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
     } catch (error) { setCurrentError(error); setInterval(null); }
   }, interval);
   const initiateValidation = () => {
+    if (inProgress) {
+      // make no op in case click happens again during prior progress.
+      return;
+    }
+    setStartTime(performance.now());
     dispatchSsoState(updateConnectInProgress(true));
     window.open(testLink);
     setInterval(1000);

@@ -2,7 +2,7 @@ import {
   UPDATE_CURRENT_STEP, UPDATE_IDP_ENTRY_TYPE, UPDATE_IDP_METADATA_URL, UPDATE_SP_CONFIGURED,
   SET_PROVIDER_CONFIG, UPDATE_IDP_ENTITYID, UPDATE_CURRENT_ERROR, CLEAR_PROVIDER_CONFIG,
   UPDATE_IDP_DIRTYSTATE, UPDATE_CONNECT_IN_PROGRESS, UPDATE_CONNECT_IS_SSO_VALID,
-  UPDATE_INFO_MESSAGE,
+  UPDATE_INFO_MESSAGE, UPDATE_CONNECT_START_TIME,
 } from './actions';
 
 const SSOStateReducer = (state, action) => {
@@ -32,6 +32,12 @@ const SSOStateReducer = (state, action) => {
       return {
         ...state,
         serviceprovider: { ...state.serviceprovider, isSPConfigured: action.isSPConfigured },
+      };
+    }
+    case UPDATE_CONNECT_START_TIME: {
+      return {
+        ...state,
+        connect: { ...state.connect, startTime: action.startTime },
       };
     }
     case UPDATE_CONNECT_IN_PROGRESS: {

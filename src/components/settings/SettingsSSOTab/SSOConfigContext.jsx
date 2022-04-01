@@ -8,6 +8,7 @@ import {
   updateCurrentstep,
   updateInfoMessage,
   updateProviderConfig,
+  updateStartTime,
 } from './data/actions';
 
 const SSOConfigContext = createContext({});
@@ -34,6 +35,7 @@ export const SSO_INITIAL_STATE = {
     isComplete: false,
   },
   connect: {
+    startTime: undefined, // when undefined, it means we are not tracking the connect progress.
     stepLabel: 'Connect',
     isComplete: false,
     isSsoValid: false,
@@ -51,6 +53,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   const setCurrentStep = step => dispatchSsoState(updateCurrentstep(step));
   const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
   const setInfoMessage = message => dispatchSsoState(updateInfoMessage(message));
+  const setStartTime = timeVal => dispatchSsoState(updateStartTime(timeVal));
 
   return (
     <SSOConfigContext.Provider value={{
@@ -61,6 +64,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
       setCurrentStep,
       setIsSsoValid,
       setInfoMessage,
+      setStartTime,
     }}
     >
       {children}

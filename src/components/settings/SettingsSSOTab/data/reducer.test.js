@@ -8,6 +8,7 @@ import {
   updateIdpMetadataURLAction,
   updateInfoMessage,
   updateServiceProviderConfigured,
+  updateStartTime,
 } from './actions';
 import SSOStateReducer from './reducer';
 
@@ -73,6 +74,13 @@ describe('reducer sso tests', () => {
       serviceprovider: { isSPConfigured: true },
       currentStep: 'abc',
       connect: { isSsoValid: true },
+    });
+  });
+  test('overwrites connect.startTime', () => {
+    expect(SSOStateReducer({
+      connect: { isSsoValid: true, startTime: undefined },
+    }, updateStartTime(100))).toStrictEqual({
+      connect: { isSsoValid: true, startTime: 100 },
     });
   });
   test('overwrites dirty state for idp', () => {
