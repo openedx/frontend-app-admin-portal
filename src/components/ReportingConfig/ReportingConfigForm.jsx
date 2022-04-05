@@ -122,6 +122,7 @@ class ReportingConfigForm extends React.Component {
       }
     } else {
       // ...or create a new configuration
+      formData.append('enterprise_customer_id', this.props.enterpriseCustomerUuid);
       const err = await this.props.createConfig(formData);
       if (err) {
         this.setState({ submitState: SUBMIT_STATES.ERROR });
@@ -381,6 +382,7 @@ ReportingConfigForm.defaultProps = {
 };
 
 ReportingConfigForm.propTypes = {
+  enterpriseCustomerUuid: PropTypes.string.isRequired,
   config: PropTypes.shape({
     active: PropTypes.bool,
     dataType: PropTypes.string,
