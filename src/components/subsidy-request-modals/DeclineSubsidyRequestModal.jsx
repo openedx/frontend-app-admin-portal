@@ -17,6 +17,7 @@ const DeclineSubsidyRequestModal = ({
   onClose,
 }) => {
   const [shouldNotifyLearner, setShouldNotifyLearner] = useState(true);
+  const [shouldUnlinkLearnerFromEnterprise, setShouldUnlinkLearnerFromEnterprise] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -37,9 +38,10 @@ const DeclineSubsidyRequestModal = ({
     setIsLoading(true);
     try {
       await declineRequestFn({
+        enterpriseId: enterpriseCustomerUUID,
         subsidyRequestUUIDS: [uuid],
         sendNotification: shouldNotifyLearner,
-        enterpriseId: enterpriseCustomerUUID,
+        unlinkUsersFromEnterprise: shouldUnlinkLearnerFromEnterprise,
       });
       onSuccess();
     } catch (err) {
@@ -48,7 +50,7 @@ const DeclineSubsidyRequestModal = ({
     } finally {
       setIsLoading(false);
     }
-  }, [uuid, shouldNotifyLearner]);
+  }, [uuid, shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise]);
 
   return (
     <ModalDialog
@@ -85,6 +87,15 @@ const DeclineSubsidyRequestModal = ({
           onChange={(e) => setShouldNotifyLearner(e.target.checked)}
         >
           Send the learner an email notification
+        </Form.Checkbox>
+        <Form.Checkbox
+          className="mt-1"
+          data-testid="decline-subsidy-request-modal-unlink-learner-checkbox"
+          checked={shouldUnlinkLearnerFromEnterprise}
+          onChange={(e) => setShouldUnlinkLearnerFromEnterprise(e.target.checked)}
+          description="Your learner won't know they have been disassociated."
+        >
+          Disassociate the learner with your organization
         </Form.Checkbox>
       </ModalDialog.Body>
       <ModalDialog.Footer>

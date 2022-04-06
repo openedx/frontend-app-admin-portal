@@ -24,8 +24,16 @@ describe('<DeclineSubsidyRequestModal />', () => {
     error: undefined,
   };
 
-  it.each([true, false])(
-    'should call Enterprise Access API to decline the request and call onSuccess afterwards', async (shouldNotifyLearner) => {
+  it.each([{
+    shouldNotifyLearner: true,
+    shouldUnlinkLearnerFromEnterprise: false,
+  }, {
+    shouldNotifyLearner: false,
+    shouldUnlinkLearnerFromEnterprise: true,
+  }])(
+    'should call Enterprise Access API to decline the request and call onSuccess afterwards', async (
+      { shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise },
+    ) => {
       const mockHandleSuccess = jest.fn();
       const mockDeclineRequestFn = jest.fn();
 
@@ -38,8 +46,13 @@ describe('<DeclineSubsidyRequestModal />', () => {
       );
 
       if (!shouldNotifyLearner) {
-        const checkbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
-        fireEvent.click(checkbox);
+        const notifyLearnerCheckbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
+        fireEvent.click(notifyLearnerCheckbox);
+      }
+
+      if (shouldUnlinkLearnerFromEnterprise) {
+        const unlinkLearnerCheckbox = getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox');
+        fireEvent.click(unlinkLearnerCheckbox);
       }
 
       const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');
@@ -50,6 +63,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
           subsidyRequestUUIDS: [TEST_REQUEST_UUID],
           sendNotification: shouldNotifyLearner,
           enterpriseId: TEST_ENTERPRISE_UUID,
+          unlinkUsersFromEnterprise: shouldUnlinkLearnerFromEnterprise,
         });
 
         expect(mockHandleSuccess).toHaveBeenCalled();
@@ -90,6 +104,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
         subsidyRequestUUIDS: [TEST_REQUEST_UUID],
         sendNotification: true,
         enterpriseId: TEST_ENTERPRISE_UUID,
+        unlinkUsersFromEnterprise: false,
       });
       expect(getByTestId('decline-subsidy-request-modal-alert'));
     });
