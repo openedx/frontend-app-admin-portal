@@ -42,11 +42,13 @@ describe('EnterpriseAccessApiService', () => {
       enterpriseId: mockEnterpriseUUID,
       subsidyRequestUUIDS: [mockLicenseRequestUUID],
       sendNotification: true,
+      unlinkUsersFromEnterprise: false,
     });
     expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/license-requests/decline/`, {
       subsidy_request_uuids: [mockLicenseRequestUUID],
       enterprise_customer_uuid: mockEnterpriseUUID,
       send_notification: true,
+      unlink_users_from_enterprise: false,
     });
   });
 
@@ -78,11 +80,13 @@ describe('EnterpriseAccessApiService', () => {
       enterpriseId: mockEnterpriseUUID,
       subsidyRequestUUIDS: [mockCouponCodeRequestUUID],
       sendNotification: true,
+      unlinkUsersFromEnterprise: true,
     });
     expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/coupon-code-requests/decline/`, {
       subsidy_request_uuids: [mockCouponCodeRequestUUID],
       enterprise_customer_uuid: mockEnterpriseUUID,
       send_notification: true,
+      unlink_users_from_enterprise: true,
     });
   });
 

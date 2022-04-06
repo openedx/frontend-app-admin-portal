@@ -56,11 +56,13 @@ class EnterpriseAccessApiService {
     enterpriseId,
     subsidyRequestUUIDS,
     sendNotification,
+    unlinkUsersFromEnterprise,
   }) {
     const options = {
       subsidy_request_uuids: subsidyRequestUUIDS,
       enterprise_customer_uuid: enterpriseId,
       send_notification: sendNotification,
+      unlink_users_from_enterprise: unlinkUsersFromEnterprise,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/license-requests/decline/`;
@@ -87,11 +89,13 @@ class EnterpriseAccessApiService {
     enterpriseId,
     subsidyRequestUUIDS,
     sendNotification,
+    unlinkUsersFromEnterprise,
   }) {
     const options = {
       subsidy_request_uuids: subsidyRequestUUIDS,
       enterprise_customer_uuid: enterpriseId,
       send_notification: sendNotification,
+      unlink_users_from_enterprise: unlinkUsersFromEnterprise,
     };
 
     const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/decline/`;
