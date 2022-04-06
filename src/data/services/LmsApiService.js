@@ -16,6 +16,8 @@ class LmsApiService {
 
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
 
+  static providerDataSyncUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/sync_provider_data/`;
+
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
@@ -128,6 +130,10 @@ class LmsApiService {
   static deleteProviderData(pdid, uuid) {
     const providerDataUrl = `${LmsApiService.providerDataUrl}${pdid}/?enterprise_customer_uuid=${uuid}`;
     return LmsApiService.apiClient().delete(providerDataUrl);
+  }
+
+  static syncProviderData(formData) {
+    return LmsApiService.apiClient().post(LmsApiService.providerDataSyncUrl, formData);
   }
 
   static fetchSamlConfigurations() {

@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Hyperlink } from '@edx/paragon';
+import Skeleton from 'react-loading-skeleton';
+import { Alert, Hyperlink, Toast } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs } from './hooks';
 import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
+import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
+  const { ssoState: { providerConfig, infoMessage }, setInfoMessage } = useContext(SSOConfigContext);
   return (
     <div>
       <div className="d-flex">
@@ -22,9 +25,13 @@ const SettingsSSOTab = ({ enterpriseId }) => {
         </Hyperlink>
       </div>
       {!isLoading && (
-        <p>
-          {existingConfigs.length > 0 && <ExistingSSOConfigs />}
+        <div>
+          {/* Configs found and editing mode is off, so let's go to listing page */}
+          {existingConfigs.length > 0 && (providerConfig === null) && <ExistingSSOConfigs configs={existingConfigs} />}
+          {/* nothing found so guide user to creation form */}
           {existingConfigs.length < 1 && <NewSSOConfigForm />}
+          {/* editing mode is active since we found a selected providerConfig */}
+          {existingConfigs.length > 0 && (providerConfig !== null) && <NewSSOConfigForm />}
           {error && (
           <Alert
             variant="warning"
@@ -33,9 +40,10 @@ const SettingsSSOTab = ({ enterpriseId }) => {
             An error occurred loading the SAML configs: <p>{error?.message}</p>
           </Alert>
           )}
-        </p>
+          {infoMessage && (<Toast onClose={() => setInfoMessage(null)}>{infoMessage}</Toast>)}
+        </div>
       )}
-      {isLoading && <></>}
+      {isLoading && <Skeleton count={5} height={10} />}
     </div>
   );
 };
@@ -44,4 +52,14 @@ SettingsSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-export default SettingsSSOTab;
+const WrappedSSOTab = ({ enterpriseId }) => (
+  <SSOConfigContextProvider>
+    <SettingsSSOTab enterpriseId={enterpriseId} />
+  </SSOConfigContextProvider>
+);
+
+WrappedSSOTab.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+export default WrappedSSOTab;
