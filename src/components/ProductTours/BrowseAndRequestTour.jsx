@@ -65,8 +65,8 @@ const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
     checkpoints: [
       {
         placement: 'right',
-        body: 'We’ve recently added a Settings feature where you can manage on-demand '
-          + 'browsing for the learners and configurations. Continue to Settings to learn more.',
+        body: 'We’ve recently added a new feature that enables learners to browse for courses and request access. '
+          + 'Continue to the settings page to learn more and configure access.',
         target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
         title: 'New Feature',
         showDismissButton: true,
