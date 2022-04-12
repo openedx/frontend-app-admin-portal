@@ -173,16 +173,23 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     switch (field) {
       case 'Canvas Base URL':
         setCanvasBaseUrl(input);
-        setUrlValid(urlValidation(input) || input.length === 0);
+        setUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input.length <= 20);
+        setNameValid(input?.length <= 20);
         break;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(existingData)) {
+      validateField('Canvas Base URL', existingData.canvasBaseUrl);
+      validateField('Display Name', existingData.displayName);
+    }
+  }, [existingData]);
 
   return (
     <span>

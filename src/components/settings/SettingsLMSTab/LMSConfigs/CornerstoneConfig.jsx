@@ -70,16 +70,23 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
     switch (field) {
       case 'Cornerstone Base URL':
         setCornerstoneBaseUrl(input);
-        setUrlValid(urlValidation(input) || input.length === 0);
+        setUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input.length <= 20);
+        setNameValid(input?.length <= 20);
         break;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(existingData)) {
+      validateField('Cornerstone Base URL', existingData.cornerstoneBaseUrl);
+      validateField('Display Name', existingData.displayName);
+    }
+  }, [existingData]);
 
   return (
     <span>
