@@ -83,16 +83,23 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     switch (field) {
       case 'Degreed Base URL':
         setDegreedBaseUrl(input);
-        setUrlValid(urlValidation(input) || input.length === 0);
+        setUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input.length <= 20);
+        setNameValid(input?.length <= 20);
         break;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(existingData)) {
+      validateField('Degreed Base URL', existingData.degreedBaseUrl);
+      validateField('Display Name', existingData.displayName);
+    }
+  }, [existingData]);
 
   return (
     <span>

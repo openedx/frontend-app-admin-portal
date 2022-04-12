@@ -78,20 +78,28 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     switch (field) {
       case 'Degreed Token Fetch Base Url':
         setDegreedFetchUrl(input);
-        setFetchUrlValid(urlValidation(input) || input.length === 0);
+        setFetchUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Degreed Base URL':
         setDegreedBaseUrl(input);
-        setUrlValid(urlValidation(input) || input.length === 0);
+        setUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input.length <= 20);
+        setNameValid(input?.length <= 20);
         break;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(existingData)) {
+      validateField('Degreed Base URL', existingData.degreedBaseUrl);
+      validateField('Display Name', existingData.displayName);
+      validateField('Degreed Token Fetch Base Url', existingData.degreedFetchUrl);
+    }
+  }, [existingData]);
 
   return (
     <span>
@@ -124,7 +132,6 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             maxLength={255}
             onChange={(e) => {
               setEdited(true);
-              validateField('API Client ID', e.target.value);
               setClientId(e.target.value);
             }}
             floatingLabel="API Client ID"
@@ -138,7 +145,6 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
             maxLength={255}
             onChange={(e) => {
               setEdited(true);
-              validateField('API Client Secret', e.target.value);
               setClientSecret(e.target.value);
             }}
             floatingLabel="API Client Secret"

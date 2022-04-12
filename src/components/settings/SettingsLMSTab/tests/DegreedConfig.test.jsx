@@ -15,6 +15,13 @@ const mockOnClick = jest.fn();
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
+  displayName: 'test ayylmao',
+  degreedBaseUrl: 'https://foobar.com',
+};
+// Existing invalid data that will be validated on load
+const invalidExistingData = {
+  displayName: 'fooooooooobaaaaaaaaar',
+  degreedBaseUrl: 'bad_url :^(',
 };
 
 afterEach(() => {
@@ -188,5 +195,27 @@ describe('<DegreedConfig />', () => {
       enterprise_customer: enterpriseId,
     };
     expect(LmsApiService.postNewDegreedConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('validates poorly formatted existing data on load', () => {
+    render(
+      <DegreedConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={invalidExistingData}
+      />,
+    );
+    expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
+    expect(screen.getByText(INVALID_NAME)).toBeInTheDocument();
+  });
+  test('validates properly formatted existing data on load', () => {
+    render(
+      <DegreedConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigData}
+      />,
+    );
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
 });

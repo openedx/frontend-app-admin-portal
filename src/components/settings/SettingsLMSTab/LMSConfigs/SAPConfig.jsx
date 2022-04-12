@@ -82,16 +82,23 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     switch (field) {
       case 'SAP Base URL':
         setSapsfBaseUrl(input);
-        setUrlValid(urlValidation(input) || input.length === 0);
+        setUrlValid(urlValidation(input) || input?.length === 0);
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input.length <= 20);
+        setNameValid(input?.length <= 20);
         break;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(existingData)) {
+      validateField('SAP Base URL', existingData.sapsfBaseUrl);
+      validateField('Display Name', existingData.displayName);
+    }
+  }, [existingData]);
 
   return (
     <span>

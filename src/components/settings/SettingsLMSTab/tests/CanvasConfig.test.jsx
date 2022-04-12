@@ -34,6 +34,11 @@ const existingConfigData = {
   id: 1,
   displayName: 'foobarss',
 };
+// Existing invalid data that will be validated on load
+const invalidExistingData = {
+  displayName: 'fooooooooobaaaaaaaaar',
+  canvasBaseUrl: 'bad_url :^(',
+};
 // Existing config data that has not been authorized
 const existingConfigDataNoAuth = {
   id: 1,
@@ -280,5 +285,27 @@ describe('<CanvasConfig />', () => {
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+  });
+  test('validates poorly formatted existing data on load', () => {
+    render(
+      <CanvasConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={invalidExistingData}
+      />,
+    );
+    expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
+    expect(screen.getByText(INVALID_NAME)).toBeInTheDocument();
+  });
+  test('validates properly formatted existing data on load', () => {
+    render(
+      <CanvasConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigDataNoAuth}
+      />,
+    );
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
 });
