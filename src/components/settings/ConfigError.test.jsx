@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import ConfigError from '../ConfigError';
+import ConfigError from './ConfigError';
 
 const mockClose = jest.fn();
 

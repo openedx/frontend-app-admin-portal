@@ -400,7 +400,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
               className="page-item disabled"
             >
               <button
-                aria-label="Previous"
+                aria-label="Go to previous page"
                 className="btn-icon btn-icon-primary btn-icon-md previous page-link"
                 disabled={true}
                 onClick={[Function]}
@@ -412,6 +412,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 >
                   <span
                     className="pgn__icon btn-icon__icon"
+                    icon={Object {}}
                   >
                     <svg
                       aria-hidden={true}
@@ -436,7 +437,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
               className="page-item"
             >
               <button
-                aria-label="Next, Page 2"
+                aria-label="Go to next page"
                 className="btn-icon btn-icon-primary btn-icon-md next page-link"
                 disabled={false}
                 onClick={[Function]}
@@ -447,6 +448,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 >
                   <span
                     className="pgn__icon btn-icon__icon"
+                    icon={Object {}}
                   >
                     <svg
                       aria-hidden={true}
