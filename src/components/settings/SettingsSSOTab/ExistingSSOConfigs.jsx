@@ -89,7 +89,7 @@ const ExistingSSOConfigs = ({
           {configs.map((config) => (
             <Card
               className="pb-4"
-              key={config.backend_name + config.id}
+              key={config.name + config.id}
             >
               <Card.Header
                 title={(
