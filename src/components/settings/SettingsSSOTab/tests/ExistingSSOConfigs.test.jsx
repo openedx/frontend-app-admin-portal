@@ -30,6 +30,7 @@ const activeConfig = [
     was_valid_at: '2022-04-12T19:51:25Z',
     enabled: true,
     display_name: 'cool ranch',
+    name: 'cool-ranch',
   },
 ];
 const inactiveConfig = [
@@ -38,6 +39,7 @@ const inactiveConfig = [
     was_valid_at: '2022-04-12T19:51:25Z',
     enabled: false,
     display_name: 'nacho cheese',
+    name: 'nacho-cheese',
   },
 ];
 const incompleteConfig = [
@@ -46,6 +48,7 @@ const incompleteConfig = [
     was_valid_at: null,
     enabled: false,
     display_name: 'bbq',
+    name: 'bbq',
   },
 ];
 
@@ -112,5 +115,36 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('bbq')).toBeInTheDocument();
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    expect(screen.getByText('Delete')).toBeInTheDocument();
+    expect(screen.getByText('Edit')).toBeInTheDocument();
+  });
+  it('renders multiple config cards', () => {
+    render(
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={activeConfig.concat(inactiveConfig)}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+        />
+      </Provider>,
+    );
+    expect(screen.getByText('cool ranch')).toBeInTheDocument();
+    expect(screen.getByText('nacho cheese')).toBeInTheDocument();
+  });
+  it('executes delete action on incomplete card', () => {
+    render(
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={incompleteConfig}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+        />
+      </Provider>,
+    );
+    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    userEvent.click(screen.getByText('Delete'));
+    expect(LmsApiService.deleteProviderConfig).toHaveBeenCalledWith(incompleteConfig[0].id, enterpriseId);
   });
 });
