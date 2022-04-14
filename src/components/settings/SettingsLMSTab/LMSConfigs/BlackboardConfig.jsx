@@ -167,6 +167,7 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     if (!isEmpty(existingData) || configId) {
       try {
         const configIdToUpdate = configId || existingData.id;
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateBlackboardConfig(transformedConfig, configIdToUpdate);
       } catch (error) {
         err = handleErrors(error);
@@ -292,6 +293,7 @@ BlackboardConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     id: PropTypes.number,
     displayName: PropTypes.string,
     clientId: PropTypes.string,

@@ -150,6 +150,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
     if (!isEmpty(existingData) || configId) {
       try {
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateCanvasConfig(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
@@ -311,6 +312,7 @@ CanvasConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     displayName: PropTypes.string,
     clientId: PropTypes.string,
     canvasAccountId: PropTypes.number,

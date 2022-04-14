@@ -59,6 +59,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
     if (!isEmpty(existingData)) {
       try {
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateSuccessFactorsConfig(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
@@ -217,6 +218,7 @@ SAPConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     displayName: PropTypes.string,
     id: PropTypes.number,
     sapsfBaseUrl: PropTypes.string,

@@ -59,6 +59,7 @@ const DegreedConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
     if (!isEmpty(existingData)) {
       try {
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateDegreedConfig(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
@@ -222,6 +223,7 @@ DegreedConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     displayName: PropTypes.string,
     key: PropTypes.string,
     id: PropTypes.number,

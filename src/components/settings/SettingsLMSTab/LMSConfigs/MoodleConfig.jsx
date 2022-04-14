@@ -67,6 +67,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
 
     if (!isEmpty(existingData)) {
       try {
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateMoodleConfig(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
@@ -222,6 +223,7 @@ MoodleConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     token: PropTypes.string,
     username: PropTypes.string,
     password: PropTypes.string,

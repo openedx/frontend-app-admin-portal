@@ -46,6 +46,7 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
 
     if (!isEmpty(existingData)) {
       try {
+        transformedConfig.active = existingData.active;
         await LmsApiService.updateCornerstoneConfig(transformedConfig, existingData.id);
       } catch (error) {
         err = handleErrors(error);
@@ -142,6 +143,7 @@ CornerstoneConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingData: PropTypes.shape({
+    active: PropTypes.bool,
     id: PropTypes.number,
     cornerstoneBaseUrl: PropTypes.string,
     displayName: PropTypes.string,
