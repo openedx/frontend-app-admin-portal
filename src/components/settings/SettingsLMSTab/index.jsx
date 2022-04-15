@@ -172,7 +172,7 @@ export default function SettingsLMSTab({
       )}
       {!showNewConfigButtons && (
         <Button
-          varient="primary"
+          variant="primary"
           className="mr-6"
           iconBefore={Add}
           size="lg"

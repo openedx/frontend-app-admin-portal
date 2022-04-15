@@ -8,9 +8,9 @@ import {
   Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
 } from '@edx/paragon/icons';
 import { channelMapping } from '../../../utils';
-import { handleErrors } from './utils';
+import handleErrors from '../utils';
 import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
-import ConfigError from './ConfigError';
+import ConfigError from '../ConfigError';
 
 const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
 const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';

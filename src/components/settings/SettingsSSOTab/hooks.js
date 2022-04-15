@@ -103,7 +103,7 @@ const useIdpState = () => {
   };
 };
 
-const useExistingSSOConfigs = (enterpriseUuid) => {
+const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
   const [ssoConfigs, setSsoConfigs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -125,7 +125,7 @@ const useExistingSSOConfigs = (enterpriseUuid) => {
         }
       });
     }
-  }, [enterpriseUuid]);
+  }, [enterpriseUuid, refreshBool]);
   return [ssoConfigs, error, loading];
 };
 

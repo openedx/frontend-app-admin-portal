@@ -39,6 +39,15 @@
   }
 }
 
+.button-link {
+  text-decoration: none;
+  color: $white;
+  &:hover {
+    text-decoration: none;
+    color: $white;
+  }
+}
+
 .sso-alert-modal-margin {
   margin-right: 15% !important;
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import { Alert, Hyperlink, Toast } from '@edx/paragon';
@@ -10,8 +10,10 @@ import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
-  const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
+  const [refreshBool, setRefreshBool] = useState(true);
+  const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
   const { ssoState: { providerConfig, infoMessage }, setInfoMessage } = useContext(SSOConfigContext);
+
   return (
     <div>
       <div className="d-flex">
@@ -27,7 +29,14 @@ const SettingsSSOTab = ({ enterpriseId }) => {
       {!isLoading && (
         <div>
           {/* Configs found and editing mode is off, so let's go to listing page */}
-          {existingConfigs.length > 0 && (providerConfig === null) && <ExistingSSOConfigs configs={existingConfigs} />}
+          {existingConfigs.length > 0 && (providerConfig === null)
+            && (
+            <ExistingSSOConfigs
+              configs={existingConfigs}
+              refreshBool={refreshBool}
+              setRefreshBool={setRefreshBool}
+            />
+            )}
           {/* nothing found so guide user to creation form */}
           {existingConfigs.length < 1 && <NewSSOConfigForm />}
           {/* editing mode is active since we found a selected providerConfig */}

@@ -22,7 +22,7 @@ import {
 import { channelMapping } from '../../../../utils';
 
 import SettingsLMSTab from '../index';
-import { buttonBool } from '../utils';
+import buttonBool from '../utils';
 
 const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const enterpriseSlug = 'test-slug';
