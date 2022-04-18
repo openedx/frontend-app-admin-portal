@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 
 import { features } from '../../../config';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
+import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy-request-management-alerts';
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
 import SettingsAccessSSOManagement from './SettingsAccessSSOManagement';
 import SettingsAccessSubsidyRequestManagement from './SettingsAccessSubsidyRequestManagement';
 import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+import { SettingsContext } from '../SettingsContext';
 
 const SettingsAccessTab = ({
   enterpriseId,
@@ -23,6 +26,11 @@ const SettingsAccessTab = ({
     updateSubsidyRequestConfiguration,
   } = useContext(SubsidyRequestConfigurationContext);
 
+  const {
+    couponsData: { results: coupons },
+    customerAgreement: { subscriptions },
+  } = useContext(SettingsContext);
+
   const isEligibleForBrowseAndRequest = features.FEATURE_BROWSE_AND_REQUEST
    && enableBrowseAndRequest && !!subsidyRequestConfiguration?.subsidyType;
 
@@ -34,6 +42,12 @@ const SettingsAccessTab = ({
 
   return (
     <div className="settings-access-tab mt-4">
+      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
+       && subsidyRequestConfiguration?.subsidyRequestsEnabled
+        && <NoAvailableCodesBanner coupons={coupons} /> }
+      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.license
+       && subsidyRequestConfiguration?.subsidyRequestsEnabled
+        && <NoAvailableLicensesBanner subscriptions={subscriptions} /> }
       <Row>
         <Col>
           <h2>Enable browsing on-demand</h2>

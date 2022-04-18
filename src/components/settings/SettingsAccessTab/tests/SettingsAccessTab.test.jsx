@@ -3,21 +3,22 @@ import {
   render,
 } from '@testing-library/react';
 import SettingsAccessTab from '../index';
+import { SettingsContext } from '../../SettingsContext';
 import { SubsidyRequestConfigurationContext } from '../../../subsidy-request-configuration';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import * as config from '../../../../config';
 import '@testing-library/jest-dom';
 
 jest.mock('../SettingsAccessLinkManagement', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: jest.fn(() => 'SettingsAccessLinkManagement'),
 }));
 jest.mock('../SettingsAccessSSOManagement', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: jest.fn(() => 'SettingsAccessSSOManagement'),
 }));
 jest.mock('../SettingsAccessSubsidyRequestManagement', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: jest.fn(({ disabled }) => (
     <>
       SettingsAccessSubsidyRequestManagement
@@ -26,10 +27,18 @@ jest.mock('../SettingsAccessSubsidyRequestManagement', () => ({
     </>
   )),
 }));
+jest.mock('../../../subsidy-request-management-alerts/NoAvailableLicensesBanner', () => ({
+  __esModule: true,
+  default: jest.fn(() => 'NoAvailableLicensesBanner'),
+}));
+jest.mock('../../../subsidy-request-management-alerts/NoAvailableCodesBanner', () => ({
+  __esModule: true,
+  default: jest.fn(() => 'NoAvailableCodesBanner'),
+}));
 jest.mock('../../../../config');
 
 const mockSubsidyRequestConfiguration = {
-  enableSubsidyRequests: false,
+  subsidyRequestsEnabled: false,
   subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
 };
 
@@ -50,9 +59,20 @@ const SettingsAccessTabWrapper = ({
     updateSubsidyRequestConfiguration: jest.fn(),
   },
   props = {},
+  settingsContextValue = {
+    customerAgreement: {
+      netDaysUntilExpiration: 0,
+      subscriptions: [],
+    },
+    couponsData: {
+      results: [],
+    },
+  },
 }) => (
   <SubsidyRequestConfigurationContext.Provider value={value}>
-    <SettingsAccessTab {...{ ...basicProps, ...props }} />
+    <SettingsContext.Provider value={settingsContextValue}>
+      <SettingsAccessTab {...{ ...basicProps, ...props }} />
+    </SettingsContext.Provider>
   </SubsidyRequestConfigurationContext.Provider>
 );
 /* eslint-enable react/prop-types */
@@ -81,7 +101,7 @@ describe('<SettingsAccessTab />', () => {
     expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
   });
 
-  it.only('should disable <SettingsAccessSubsidyRequestManagement/> if neither universal link or sso are configured', () => {
+  it('should disable <SettingsAccessSubsidyRequestManagement/> if neither universal link or sso are configured', () => {
     config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
     render(
       <SettingsAccessTabWrapper
@@ -92,5 +112,65 @@ describe('<SettingsAccessTab />', () => {
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
     expect(screen.getByText('disabled'));
+  });
+
+  it('should render NoAvailableCodesBanner when subsidy type is SUPPORTED_SUBSIDY_TYPES.coupon', () => {
+    config.features.FEATURE_BROWSE_AND_REQUEST = true;
+    const mockSubsidyRequestConfigurationCoupons = {
+      subsidyRequestsEnabled: true,
+      subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+    };
+    render(
+      <SettingsAccessTabWrapper
+        value={{ subsidyRequestConfiguration: mockSubsidyRequestConfigurationCoupons }}
+        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+      />,
+    );
+    expect(screen.getByText('NoAvailableCodesBanner')).toBeInTheDocument();
+  });
+
+  it('should not render NoAvailableCodesBanner when swhen B&R is disabled', () => {
+    config.features.FEATURE_BROWSE_AND_REQUEST = true;
+    const mockSubsidyRequestConfigurationCoupons = {
+      subsidyRequestsEnabled: false,
+      subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+    };
+    render(
+      <SettingsAccessTabWrapper
+        value={{ subsidyRequestConfiguration: mockSubsidyRequestConfigurationCoupons }}
+        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+      />,
+    );
+    expect(screen.queryByText('NoAvailableCodesBanner')).not.toBeInTheDocument();
+  });
+
+  it('should render NoAvailableLicensesBanner when subsidy type is SUPPORTED_SUBSIDY_TYPES.license', () => {
+    config.features.FEATURE_BROWSE_AND_REQUEST = true;
+    const mockSubsidyRequestConfigurationLicense = {
+      subsidyRequestsEnabled: true,
+      subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+    };
+    render(
+      <SettingsAccessTabWrapper
+        value={{ subsidyRequestConfiguration: mockSubsidyRequestConfigurationLicense }}
+        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+      />,
+    );
+    expect(screen.getByText('NoAvailableLicensesBanner')).toBeInTheDocument();
+  });
+
+  it('should not render NoAvailableLicensesBanner when B&R is disabled', () => {
+    config.features.FEATURE_BROWSE_AND_REQUEST = true;
+    const mockSubsidyRequestConfigurationLicense = {
+      subsidyRequestsEnabled: false,
+      subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+    };
+    render(
+      <SettingsAccessTabWrapper
+        value={{ subsidyRequestConfiguration: mockSubsidyRequestConfigurationLicense }}
+        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+      />,
+    );
+    expect(screen.queryByText('NoAvailableLicensesBanner')).not.toBeInTheDocument();
   });
 });
