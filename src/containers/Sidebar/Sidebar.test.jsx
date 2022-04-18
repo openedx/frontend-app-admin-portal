@@ -256,6 +256,34 @@ describe('<Sidebar />', () => {
     expect(subscriptionManagementLink).toBeInTheDocument();
   });
 
+  it('renders settings link if the settings page has visible tabs.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: true,
+      },
+    });
+
+    features.SETTINGS_PAGE = true;
+
+    render(<SidebarWrapper store={store} />);
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('hides settings link if the settings page has no visible tabs.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: false,
+      },
+    });
+
+    features.SETTINGS_PAGE = true;
+
+    render(<SidebarWrapper store={store} />);
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
   describe('notifications', () => {
     it('displays notification bubble when there are outstanding license requests', () => {
       const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 2 } };

@@ -30,7 +30,7 @@ const initialState = {
 const SettingsContextProviderWrapper = (props) => (
   <Provider store={mockStore(props.state)}>
     <SettingsContextProvider>
-      {props.children}
+      children
     </SettingsContextProvider>
   </Provider>
 );
@@ -41,35 +41,40 @@ describe('<SettingsContextProvider/>', () => {
       type: 'fetch coupons',
     });
     hooks.useCustomerAgreementData.mockReturnValue({
-      customerAgreement: {},
+      customerAgreement: {
+        subscriptions: [{ uuid: 'subscription-uuid' }],
+      },
     });
   });
 
   it('should fetch coupons and render children', () => {
     render(
-      <SettingsContextProviderWrapper state={initialState}>
-        children
-      </SettingsContextProviderWrapper>,
+      <SettingsContextProviderWrapper state={initialState} />,
     );
     expect(couponActions.fetchCouponOrders).toHaveBeenCalled();
     expect(screen.getByText('children'));
   });
 
   it('should render <LoadingMessage /> if loading coupons', () => {
-    render(<SettingsContextProviderWrapper state={{
-      ...initialState,
-      coupons: {
-        loading: true,
-      },
-    }}
-    />);
+    render(
+      <SettingsContextProviderWrapper
+        state={{
+          ...initialState,
+          coupons: {
+            loading: true,
+          },
+        }}
+      />,
+    );
     expect(couponActions.fetchCouponOrders).toHaveBeenCalled();
     expect(screen.getByText('Loading...'));
   });
 
   it('should render <LoadingMessage /> if loading customer agreement', () => {
     hooks.useCustomerAgreementData.mockReturnValue({
-      customerAgreement: undefined,
+      customerAgreement: {
+        subscriptions: [],
+      },
       loadingCustomerAgreement: true,
     });
     render(<SettingsContextProviderWrapper state={initialState} />);

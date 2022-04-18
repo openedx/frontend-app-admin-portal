@@ -28,8 +28,8 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       const hasCoupons = couponsData.data.results.length > 0;
       const hasSubscriptions = subscriptionsData.data.results.length > 0;
 
-      // If the customer has two subsidy types, they are not eligible for Browse & Request in the MVP
-      // A subsidy type of null on the customer configuration indicates that the customer is not eligible
+      // A subsidy type of null on the customer configuration indicates that the customer will have to select a subsidy
+      // type before enabling requests
       let subsidyType = null;
 
       if (!(hasCoupons && hasSubscriptions)) {
