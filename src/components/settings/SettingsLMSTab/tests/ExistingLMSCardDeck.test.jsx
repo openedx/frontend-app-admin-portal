@@ -41,6 +41,26 @@ const incompleteConfigData = [
   },
 ];
 
+const singleInvalidFieldConfigData = [
+  {
+    channelCode: 'BLACKBOARD',
+    id: 2,
+    isValid: [{ missing: ['client_id', 'refresh_token'] }, { incorrect: [] }],
+    active: false,
+    displayName: 'barfoo',
+  },
+];
+
+const needsRefreshTokenConfigData = [
+  {
+    channelCode: 'BLACKBOARD',
+    id: 2,
+    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
+    active: false,
+    displayName: 'barfoo',
+  },
+];
+
 describe('<ExistingLMSCardDeck />', () => {
   it('renders active config card', () => {
     render(
@@ -136,5 +156,33 @@ describe('<ExistingLMSCardDeck />', () => {
       enterprise_customer: enterpriseCustomerUuid,
     };
     expect(LmsApiService.updateBlackboardConfig).toHaveBeenCalledWith(expectedConfigOptions, configData[0].id);
+  });
+  it('renders correct single field incomplete config hover text', () => {
+    render(
+      <ExistingLMSCardDeck
+        configData={singleInvalidFieldConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    expect(screen.getByText('Incomplete')).toBeInTheDocument();
+    userEvent.hover(screen.getByText('Incomplete'));
+    expect(screen.getByText('Next Steps')).toBeInTheDocument();
+    expect(screen.getByText('1 field')).toBeInTheDocument();
+  });
+  it('renders correct refresh token needed hover text', () => {
+    render(
+      <ExistingLMSCardDeck
+        configData={needsRefreshTokenConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    expect(screen.getByText('Incomplete')).toBeInTheDocument();
+    userEvent.hover(screen.getByText('Incomplete'));
+    expect(screen.getByText('Next Steps')).toBeInTheDocument();
+    expect(screen.getByText('authorize your LMS')).toBeInTheDocument();
   });
 });

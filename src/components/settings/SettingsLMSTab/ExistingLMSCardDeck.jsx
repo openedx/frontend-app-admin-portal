@@ -69,7 +69,14 @@ const ExistingLMSCardDeck = ({
       totalNum = -1;
     }
     totalNum = totalNum + missing.length + incorrect.length;
-    return <span>Amend <strong>{totalNum} fields</strong> to submit this form.</span>;
+    let strongText;
+    if (totalNum === 0) {
+      return <span>Please <strong>authorize your LMS</strong> to submit this form.</span>;
+    }
+    if (totalNum === 1) {
+      strongText = `${totalNum} field`;
+    } else { strongText = `${totalNum} fields`; }
+    return <span>Amend <strong>{strongText}</strong> to submit this form.</span>;
   };
 
   const getStatus = (config) => {
