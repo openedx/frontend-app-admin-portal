@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Bubble } from '@edx/paragon';
 
+const BUBBLE_MARGIN_LEFT = 5;
+
 const IconLink = (props) => {
   const {
     to, isExpanded, title, icon, external, id, notification,
@@ -16,7 +18,6 @@ const IconLink = (props) => {
   const [notificationBubbleLeft, setNotificationBubbleLeft] = useState(0);
 
   useLayoutEffect(() => {
-    const BUBBLE_MARGIN_LEFT = 5;
     const iconRect = iconRef.current?.getBoundingClientRect();
     const titleRect = titleRef.current?.getBoundingClientRect();
 
