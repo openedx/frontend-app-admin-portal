@@ -74,30 +74,6 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
     });
   });
 
-  it('should update configuration if disabled = false and subsidy requests are not currently enabled ', async () => {
-    const mockUpdateSubsidyRequestConfiguration = jest.fn();
-    const props = {
-      subsidyRequestConfiguration: {
-        subsidyRequestsEnabled: false,
-        subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
-      },
-      updateSubsidyRequestConfiguration: mockUpdateSubsidyRequestConfiguration,
-      disabled: false,
-    };
-
-    render(
-      <SettingsAccessSubsidyRequestManagement
-        {...props}
-      />,
-    );
-
-    await waitFor(() => {
-      expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
-        { isSubsidyRequestsEnabled: true },
-      );
-    });
-  });
-
   it('should not update configuration if disabled = false and subsidy requests is currently enabled ', async () => {
     const mockUpdateSubsidyRequestConfiguration = jest.fn();
     const props = {
