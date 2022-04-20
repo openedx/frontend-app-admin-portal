@@ -37,7 +37,7 @@ const SettingsAccessSubsidyRequestManagement = ({
   }, [disabled, subsidyRequestsEnabled]);
 
   useEffect(() => {
-    if (!disabled) {
+    if (!disabled && !subsidyRequestsEnabled) {
       toggleSubsidyRequests(true);
     }
   }, [disabled]);
