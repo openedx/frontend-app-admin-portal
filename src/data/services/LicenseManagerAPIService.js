@@ -72,8 +72,12 @@ class LicenseManagerApiService {
 
   static fetchBulkEnrollmentJob(enterpriseUuid, bulkEnrollmentJobUuid) {
     const queryParams = new URLSearchParams();
-    queryParams.append('enterprise_customer_uuid', enterpriseUuid);
-    queryParams.append('bulk_enrollment_job_uuid', bulkEnrollmentJobUuid);
+    if (enterpriseUuid) {
+      queryParams.set('enterprise_customer_uuid', enterpriseUuid);
+    }
+    if (bulkEnrollmentJobUuid) {
+      queryParams.set('bulk_enrollment_job_uuid', bulkEnrollmentJobUuid);
+    }
     const url = `${LicenseManagerApiService.licenseManagerBaseUrl}/bulk-license-enrollment/?${queryParams.toString()}`;
     return LicenseManagerApiService.apiClient().get(url);
   }
