@@ -8,7 +8,7 @@ import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
 import SettingsAccessSSOManagement from './SettingsAccessSSOManagement';
 import SettingsAccessSubsidyRequestManagement from './SettingsAccessSubsidyRequestManagement';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import { SettingsContext } from '../SettingsContext';
 
@@ -24,7 +24,7 @@ const SettingsAccessTab = ({
   const {
     subsidyRequestConfiguration,
     updateSubsidyRequestConfiguration,
-  } = useContext(SubsidyRequestConfigurationContext);
+  } = useContext(SubsidyRequestsContext);
 
   const {
     couponsData: { results: coupons },

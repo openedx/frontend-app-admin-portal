@@ -8,7 +8,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import ManageCodesTab from './ManageCodesTab';
 import ManageRequestsTab from './ManageRequestsTab';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
@@ -22,7 +22,7 @@ import {
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const CouponCodeTabs = ({ enterpriseSlug }) => {
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon;
@@ -67,6 +67,7 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
           eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
+          notification={subsidyRequestsCounts.couponCodes}
         >
           {COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] === couponCodesTab && (
             <Route

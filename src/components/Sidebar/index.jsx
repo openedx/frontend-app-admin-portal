@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import {
   faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
@@ -10,6 +9,7 @@ import {
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 
@@ -55,62 +55,73 @@ class Sidebar extends React.Component {
       enableLmsConfigurationsScreen,
     } = this.props;
 
+    const { subsidyRequestsCounts } = this.context;
+
     return [
       {
         title: 'Learner Progress Report',
         to: `${baseUrl}/admin/learners`,
         icon: faChartLine,
+        notification: false,
       },
       {
         title: 'Code Management',
         to: `${baseUrl}/admin/coupons`,
         icon: faTags,
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+        notification: !!subsidyRequestsCounts.couponCodes,
       },
       {
         title: 'Reporting Configurations',
         to: `${baseUrl}/admin/reporting`,
         icon: faFile,
         hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
+        notification: false,
       },
       {
         title: 'Subscription Management',
         to: `${baseUrl}/admin/subscriptions`,
         icon: faCreditCard,
         hidden: !enableSubscriptionManagementScreen,
+        notification: !!subsidyRequestsCounts.subscriptionLicenses,
       },
       {
         title: 'Analytics',
         to: `${baseUrl}/admin/analytics`,
         icon: faChartBar,
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+        notification: false,
       },
       {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
         icon: faIdCard,
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
+        notification: false,
       },
       {
         title: 'LMS Integration Configuration',
         to: `${baseUrl}/admin/lmsintegrations`,
         icon: faUniversity,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
+        notification: false,
       },
-      // NOTE: keep "Support" link the last nav item
       {
         title: 'Settings',
         id: TOUR_TARGETS.SETTINGS_SIDEBAR,
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
         hidden: !features.SETTINGS_PAGE,
+        notification: false,
       },
+      // NOTE: keep "Support" link the last nav item
       {
         title: 'Support',
         to: configuration.ENTERPRISE_SUPPORT_URL,
         icon: faLifeRing,
         hidden: !features.SUPPORT,
         external: true,
+        notification: false,
       },
     ];
   }
@@ -181,6 +192,8 @@ class Sidebar extends React.Component {
     );
   }
 }
+
+Sidebar.contextType = SubsidyRequestsContext;
 
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,

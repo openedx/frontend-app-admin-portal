@@ -1,12 +1,12 @@
 import { screen, render } from '@testing-library/react';
-import SubsidyRequestConfigurationContextProvider from '../SubsidyRequestConfigurationContextProvider';
+import SubsidyRequestsContextProvider from '../SubsidyRequestsContextProvider';
 import * as hooks from '../data/hooks';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
 jest.mock('../data/hooks');
 
-describe('SubsidyRequestConfigurationContextProvider', () => {
+describe('SubsidyRequestsContextProvider', () => {
   const basicProps = {
     enableBrowseAndRequest: true,
     enterpriseUUID: TEST_ENTERPRISE_UUID,
@@ -15,7 +15,7 @@ describe('SubsidyRequestConfigurationContextProvider', () => {
 
   it('should not call useSubsidyRequestConfiguration if enableBrowseAndRequest = false', () => {
     render(
-      <SubsidyRequestConfigurationContextProvider {...basicProps} enableBrowseAndRequest={false} />,
+      <SubsidyRequestsContextProvider {...basicProps} enableBrowseAndRequest={false} />,
     );
 
     expect(hooks.useSubsidyRequestConfiguration).not.toHaveBeenCalled();
@@ -29,7 +29,7 @@ describe('SubsidyRequestConfigurationContextProvider', () => {
     });
 
     render(
-      <SubsidyRequestConfigurationContextProvider {...basicProps} />,
+      <SubsidyRequestsContextProvider {...basicProps} />,
     );
 
     expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
@@ -43,7 +43,7 @@ describe('SubsidyRequestConfigurationContextProvider', () => {
     });
 
     render(
-      <SubsidyRequestConfigurationContextProvider {...basicProps} />,
+      <SubsidyRequestsContextProvider {...basicProps} />,
     );
 
     expect(screen.getByText('Loading...'));

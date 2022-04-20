@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import SettingsAccessTab from '../index';
 import { SettingsContext } from '../../SettingsContext';
-import { SubsidyRequestConfigurationContext } from '../../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 import * as config from '../../../../config';
 import '@testing-library/jest-dom';
@@ -69,11 +69,11 @@ const SettingsAccessTabWrapper = ({
     },
   },
 }) => (
-  <SubsidyRequestConfigurationContext.Provider value={value}>
+  <SubsidyRequestsContext.Provider value={value}>
     <SettingsContext.Provider value={settingsContextValue}>
       <SettingsAccessTab {...{ ...basicProps, ...props }} />
     </SettingsContext.Provider>
-  </SubsidyRequestConfigurationContext.Provider>
+  </SubsidyRequestsContext.Provider>
 );
 /* eslint-enable react/prop-types */
 

@@ -8,7 +8,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import SubscriptionPlanRoutes from './SubscriptionPlanRoutes';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
@@ -22,7 +22,8 @@ import {
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
+
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
@@ -64,6 +65,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
+          notification={subsidyRequestsCounts.subscriptionLicenses}
         >
           {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
             <Route

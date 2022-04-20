@@ -17,8 +17,8 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 
-jest.mock('../../components/subsidy-request-configuration', () => ({
-  __esModule: true, // this property makes it work
+jest.mock('../../components/subsidy-requests', () => ({
+  __esModule: true,
   // eslint-disable-next-line react/prop-types
   default: ({ children }) => <div>{children}</div>,
 }));

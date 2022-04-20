@@ -24,7 +24,7 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
-import SubsidyRequestConfigurationContextProvider from '../subsidy-request-configuration';
+import SubsidyRequestsContextProvider from '../subsidy-requests';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -125,7 +125,7 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <SubsidyRequestConfigurationContextProvider
+      <SubsidyRequestsContextProvider
         enableBrowseAndRequest={enableBrowseAndRequest}
         enterpriseUUID={enterpriseId}
       >
@@ -254,7 +254,7 @@ class EnterpriseApp extends React.Component {
             )}
           </MediaQuery>
         </div>
-      </SubsidyRequestConfigurationContextProvider>
+      </SubsidyRequestsContextProvider>
     );
   }
 }

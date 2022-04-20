@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
@@ -29,7 +29,7 @@ export const useLinkManagement = (enterpriseUUID) => {
   const [links, setLinks] = useState([]);
   const [loadingLinks, setLoadingLinks] = useState(true);
 
-  const loadLinks = () => {
+  const loadLinks = useCallback(() => {
     setLoadingLinks(true);
     const fetchLinksForEnterprise = async () => {
       try {
@@ -46,18 +46,14 @@ export const useLinkManagement = (enterpriseUUID) => {
     return () => {
       setLoadingLinks(false);
     };
-  };
-
-  const refreshLinks = () => {
-    loadLinks();
-  };
+  }, []);
 
   useEffect(loadLinks, []);
 
   return {
     links,
     loadingLinks,
-    refreshLinks,
+    refreshLinks: loadLinks,
   };
 };
 

@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store';
 import { Route } from 'react-router-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import CouponCodeTabs from '../CouponCodeTabs';
 import {
   MANAGE_CODES_TAB,
@@ -50,9 +50,9 @@ const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TA
 const CouponCodeTabsWrapper = ({ subsidyRequestConfiguration }) => (
   <Provider store={store}>
     <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
-      <SubsidyRequestConfigurationContext.Provider value={{ subsidyRequestConfiguration }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
         <CouponCodeTabs />
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Route>
   </Provider>
 );

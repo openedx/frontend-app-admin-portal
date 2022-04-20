@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Stack } from '@edx/paragon';
 import { connect } from 'react-redux';
 
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
   PAGE_SIZE,
@@ -22,6 +23,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
     handleFetchRequests,
     updateRequestStatus,
   } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.license);
+  const { decrementLicenseRequestCount } = useContext(SubsidyRequestsContext);
   const { data: subscriptionsData, loading: isLoadingSubscriptions } = useContext(SubscriptionContext);
 
   const [selectedRequest, setSelectedRequest] = useState();
@@ -77,6 +79,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
               licenseRequest={selectedRequest}
               onSuccess={() => {
                 updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING });
+                decrementLicenseRequestCount();
                 setIsApproveModalOpen(false);
               }}
               onClose={() => setIsApproveModalOpen(false)}

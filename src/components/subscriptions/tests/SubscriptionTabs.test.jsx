@@ -12,7 +12,7 @@ import { Route } from 'react-router-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import SubscriptionTabs from '../SubscriptionTabs';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import {
   MANAGE_LEARNERS_TAB,
   MANAGE_REQUESTS_TAB,
@@ -50,9 +50,9 @@ const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LE
 const SubscriptionTabsWrapper = ({ subsidyRequestConfiguration }) => (
   <Provider store={store}>
     <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
-      <SubsidyRequestConfigurationContext.Provider value={{ subsidyRequestConfiguration }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
         <SubscriptionTabs />
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Route>
   </Provider>
 );

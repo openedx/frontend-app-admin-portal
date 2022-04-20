@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import ManageCodesTab from '../ManageCodesTab';
 
 import { COUPONS_REQUEST, CLEAR_COUPONS } from '../../../data/constants/coupons';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 const BNR_NEW_FEATURE_ALERT_TEXT = 'browse and request new feature alert!';
@@ -48,7 +48,7 @@ const initialState = {
 const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props }) => (
   <MemoryRouter>
     <Provider store={store}>
-      <SubsidyRequestConfigurationContext.Provider value={{
+      <SubsidyRequestsContext.Provider value={{
         subsidyRequestConfiguration,
       }}
       >
@@ -62,7 +62,7 @@ const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props })
           }}
           {...props}
         />
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Provider>
   </MemoryRouter>
 );
