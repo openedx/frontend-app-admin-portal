@@ -15,11 +15,15 @@ export const createURL = state => {
   Object.entries(sanitizedState).forEach(([key, value]) => {
     if (Array.isArray(value)) {
       value.forEach((item) => {
-        queryParams.append(key, item);
+        if (typeof item !== 'undefined') {
+          queryParams.append(key, item);
+        }
       });
       return;
     }
-    queryParams.set(key, value);
+    if (typeof value !== 'undefined') {
+      queryParams.set(key, value);
+    }
   });
   return `?${queryParams.toString()}`;
 };
