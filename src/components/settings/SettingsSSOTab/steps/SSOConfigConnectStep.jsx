@@ -8,13 +8,16 @@ import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
-const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabled }) => {
+const SSOConfigConnectStep = ({
+  enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError,
+}) => {
   // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
   const { ssoState: { providerConfig }, setProviderConfig } = useContext(SSOConfigContext);
   const { slug: idpSlug } = providerConfig;
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
+
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
     const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
@@ -27,13 +30,18 @@ const SSOConfigConnectStep = ({ enterpriseId, enterpriseSlug, learnerPortalEnabl
     enterpriseSlug,
     learnerPortalEnabled,
   });
+
   return (
     <>
       {isLoading && <span>Loading SSO Configurations...</span>}
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
         <>
           <div>
-            <SSOConfigConfiguredCard config={providerConfig} testLink={testLink} />
+            <SSOConfigConfiguredCard
+              config={providerConfig}
+              testLink={testLink}
+              setConnectError={setConnectError}
+            />
           </div>
         </>
       )}
@@ -52,6 +60,7 @@ SSOConfigConnectStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   learnerPortalEnabled: PropTypes.bool.isRequired,
+  setConnectError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

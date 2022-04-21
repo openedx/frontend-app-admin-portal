@@ -24,6 +24,7 @@ export const SAP_TYPE = 'SAP';
 
 export const INVALID_LINK = 'Link must be properly formatted and start with http or https';
 export const INVALID_NAME = 'Display name cannot be over 20 characters';
+export const INVALID_LENGTH = 'Max length cannot be over 2 weeks (1210000 seconds)';
 
 /**
  * Used as tab values and in router params
@@ -67,3 +68,5 @@ export const BLACKBOARD_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/blac
 export const CANVAS_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/canvas/oauth-complete`;
 export const LMS_CONFIG_OAUTH_POLLING_TIMEOUT = 60000;
 export const LMS_CONFIG_OAUTH_POLLING_INTERVAL = 1000;
+export const SSO_CONFIG_POLLING_TIMEOUT = 120000;
+export const SSO_CONFIG_POLLING_INTERVAL = 1000;

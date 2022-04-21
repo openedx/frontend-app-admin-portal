@@ -5,7 +5,7 @@ import SSOStateReducer from './data/reducer';
 import {
   updateConnectIsSsoValid,
   updateCurrentError,
-  updateCurrentstep,
+  updateCurrentStep,
   updateInfoMessage,
   updateProviderConfig,
   updateStartTime,
@@ -50,7 +50,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   // setter shortcuts
   const setProviderConfig = config => dispatchSsoState(updateProviderConfig(config));
   const setCurrentError = error => dispatchSsoState(updateCurrentError(error));
-  const setCurrentStep = step => dispatchSsoState(updateCurrentstep(step));
+  const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
   const setInfoMessage = message => dispatchSsoState(updateInfoMessage(message));
   const setStartTime = timeVal => dispatchSsoState(updateStartTime(timeVal));
