@@ -241,19 +241,20 @@ describe('useSubsidyRequestsOverview', () => {
   });
 
   it('fetches counts in initial loading state', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
+    const { result } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
     const actualResult = result.current;
-    expect(actualResult.isLoading).toBeTruthy();
-    expect(actualResult.subsidyRequestsCounts).toEqual(
-      expect.objectContaining({
-        subscriptionLicenses: 0,
-        couponCodes: 0,
-      }),
-    );
-    expect(actualResult.refreshsubsidyRequestsCounts).toEqual(expect.any(Function));
-    expect(actualResult.decrementLicenseRequestCount).toEqual(expect.any(Function));
-    expect(actualResult.decrementCouponCodeRequestCount).toEqual(expect.any(Function));
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(actualResult.isLoading).toBeTruthy();
+      expect(actualResult.subsidyRequestsCounts).toEqual(
+        expect.objectContaining({
+          subscriptionLicenses: 0,
+          couponCodes: 0,
+        }),
+      );
+      expect(actualResult.refreshsubsidyRequestsCounts).toEqual(expect.any(Function));
+      expect(actualResult.decrementLicenseRequestCount).toEqual(expect.any(Function));
+      expect(actualResult.decrementCouponCodeRequestCount).toEqual(expect.any(Function));
+    });
   });
 
   it('fetches outstanding subsidy request counts', async () => {
