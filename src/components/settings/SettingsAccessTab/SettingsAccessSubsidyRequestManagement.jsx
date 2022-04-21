@@ -36,6 +36,12 @@ const SettingsAccessSubsidyRequestManagement = ({
     }
   }, [disabled, subsidyRequestsEnabled]);
 
+  useEffect(() => {
+    if (!disabled && !subsidyRequestsEnabled) {
+      toggleSubsidyRequests(true);
+    }
+  }, [disabled]);
+
   const handleFormSwitchChange = useCallback(async (e) => {
     const formSwitchValue = e.target.checked;
     await toggleSubsidyRequests(formSwitchValue);
