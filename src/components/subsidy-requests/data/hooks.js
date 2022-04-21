@@ -131,12 +131,15 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
  */
 export const useSubsidyRequestsOverview = (enterpriseId) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [subsidyRequestsCounts, setsubsidyRequestsCounts] = useState({
-    subscriptionLicenses: undefined,
-    couponCodes: undefined,
+  const [subsidyRequestsCounts, setSubsidyRequestsCounts] = useState({
+    subscriptionLicenses: 0,
+    couponCodes: 0,
   });
 
   const fetchsubsidyRequestsCounts = useCallback(async () => {
+    if (!enterpriseId) {
+      return;
+    }
     setIsLoading(true);
     try {
       const responses = await Promise.all([
@@ -145,7 +148,7 @@ export const useSubsidyRequestsOverview = (enterpriseId) => {
       ]);
       const licenseRequestCount = responses[0].data.find(obj => obj.state === 'requested')?.count;
       const codeRequestCount = responses[1].data.find(obj => obj.state === 'requested')?.count;
-      setsubsidyRequestsCounts({
+      setSubsidyRequestsCounts({
         subscriptionLicenses: licenseRequestCount,
         couponCodes: codeRequestCount,
       });
@@ -158,17 +161,17 @@ export const useSubsidyRequestsOverview = (enterpriseId) => {
 
   useEffect(() => {
     fetchsubsidyRequestsCounts();
-  }, []);
+  }, [enterpriseId]);
 
   const decrementLicenseRequestCount = useCallback(() => {
-    setsubsidyRequestsCounts(prevState => ({
+    setSubsidyRequestsCounts(prevState => ({
       ...prevState,
       subscriptionLicenses: prevState.subscriptionLicenses - 1,
     }));
   }, []);
 
   const decrementCouponCodeRequestCount = useCallback(() => {
-    setsubsidyRequestsCounts(prevState => ({
+    setSubsidyRequestsCounts(prevState => ({
       ...prevState,
       couponCodes: prevState.couponCodes - 1,
     }));

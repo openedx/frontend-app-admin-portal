@@ -29,7 +29,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
   let requestsTabNotification;
-  const hasRequests = subsidyRequestsCounts.subscriptionLicenses && subsidyRequestsCounts.subscriptionLicenses > 0;
+  const hasRequests = subsidyRequestsCounts.subscriptionLicenses > 0;
   if (isRequestsTabShown && hasRequests) {
     requestsTabNotification = (
       <>

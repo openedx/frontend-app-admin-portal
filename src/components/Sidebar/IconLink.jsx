@@ -17,19 +17,19 @@ const BaseNavLink = ({
   const iconRef = useRef();
   const titleRef = useRef();
 
-  const [notificationBubbleLeft, setNotificationBubbleLeft] = useState(0);
+  const [notificationBubbleMarginLeft, setNotificationBubbleMarginLeft] = useState(0);
 
   useLayoutEffect(() => {
     const iconRect = iconRef.current?.getBoundingClientRect();
     const titleRect = titleRef.current?.getBoundingClientRect();
 
     if (isExpanded && iconRect && titleRect) {
-      setNotificationBubbleLeft(iconRect.width + titleRect.width + BUBBLE_MARGIN_LEFT);
+      setNotificationBubbleMarginLeft(iconRect.width + titleRect.width + BUBBLE_MARGIN_LEFT);
       return;
     }
 
     if (iconRect) {
-      setNotificationBubbleLeft(iconRect.width + BUBBLE_MARGIN_LEFT);
+      setNotificationBubbleMarginLeft(iconRect.width + BUBBLE_MARGIN_LEFT);
     }
   }, [iconRef, titleRef, isExpanded]);
 
@@ -51,7 +51,7 @@ const BaseNavLink = ({
             style={{
               minHeight: '0.5rem',
               minWidth: '0.5rem',
-              left: notificationBubbleLeft,
+              left: notificationBubbleMarginLeft,
               top: -2,
             }}
           >

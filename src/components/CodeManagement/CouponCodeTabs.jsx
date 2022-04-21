@@ -28,7 +28,7 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon;
 
   let requestsTabNotification;
-  const hasRequests = subsidyRequestsCounts.couponCodes && subsidyRequestsCounts.couponCodes > 0;
+  const hasRequests = subsidyRequestsCounts.couponCodes > 0;
   if (isRequestsTabShown && hasRequests) {
     requestsTabNotification = (
       <>
