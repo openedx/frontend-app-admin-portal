@@ -13,19 +13,28 @@ describe('SubsidyRequestsContextProvider', () => {
     children: 'children',
   };
 
-  it('should not call useSubsidyRequestConfiguration if enableBrowseAndRequest = false', () => {
+  it('should not call useSubsidyRequestConfiguration or useSubsidyRequestsOverview if enableBrowseAndRequest = false', () => {
     render(
       <SubsidyRequestsContextProvider {...basicProps} enableBrowseAndRequest={false} />,
     );
 
     expect(hooks.useSubsidyRequestConfiguration).not.toHaveBeenCalled();
+    expect(hooks.useSubsidyRequestsOverview).not.toHaveBeenCalled();
     expect(screen.getByText('children'));
   });
 
-  it('should call useSubsidyRequestConfiguration and render children', () => {
+  it('should call useSubsidyRequestConfiguration and useSubsidyRequestsOverview, then render children', () => {
     hooks.useSubsidyRequestConfiguration.mockReturnValue({
       subsidyRequestConfiguration: undefined,
       isLoading: false,
+    });
+    const noop = () => {};
+    hooks.useSubsidyRequestsOverview.mockReturnValue({
+      isLoading: false,
+      subsidyRequestsCounts: { subscriptionLicenses: undefined, couponCodes: undefined },
+      refreshsubsidyRequestsCounts: noop,
+      decrementLicenseRequestCount: noop,
+      decrementCouponCodeRequestCount: noop,
     });
 
     render(
@@ -33,12 +42,34 @@ describe('SubsidyRequestsContextProvider', () => {
     );
 
     expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(hooks.useSubsidyRequestsOverview).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
     expect(screen.getByText('children'));
   });
 
   it('should render <EnterpriseAppSkeleton /> if loading configuration', () => {
     hooks.useSubsidyRequestConfiguration.mockReturnValue({
       subsidyRequestConfiguration: undefined,
+      isLoading: true,
+    });
+    hooks.useSubsidyRequestsOverview.mockReturnValue({
+      subsidyRequestsCounts: undefined,
+      isLoading: false,
+    });
+
+    render(
+      <SubsidyRequestsContextProvider {...basicProps} />,
+    );
+
+    expect(screen.getByText('Loading...'));
+  });
+
+  it('should render <EnterpriseAppSkeleton /> if loading outstanding requests counts', () => {
+    hooks.useSubsidyRequestConfiguration.mockReturnValue({
+      subsidyRequestConfiguration: undefined,
+      isLoading: false,
+    });
+    hooks.useSubsidyRequestsOverview.mockReturnValue({
+      subsidyRequestsCounts: undefined,
       isLoading: true,
     });
 

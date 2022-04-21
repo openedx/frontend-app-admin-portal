@@ -7,11 +7,13 @@ import { Bubble } from '@edx/paragon';
 
 const BUBBLE_MARGIN_LEFT = 5;
 
-const IconLink = (props) => {
-  const {
-    to, isExpanded, title, icon, external, id, notification,
-  } = props;
-
+const BaseNavLink = ({
+  icon,
+  isExpanded,
+  title,
+  notification,
+  ...rest
+}) => {
   const iconRef = useRef();
   const titleRef = useRef();
 
@@ -31,28 +33,10 @@ const IconLink = (props) => {
     }
   }, [iconRef, titleRef, isExpanded]);
 
-  if (external) {
-    return (
-      <NavLink
-        className="nav-link text-left rounded-0"
-        to={{ pathname: to }}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span ref={iconRef}>
-          <FontAwesomeIcon icon={icon} className={classNames({ 'mr-2': isExpanded })} />
-        </span>
-        {!isExpanded ? <span className="sr-only">{title}</span> : null}
-        {isExpanded && <span ref={titleRef}>{title}</span>}
-      </NavLink>
-    );
-  }
-
   return (
     <NavLink
       className="nav-link text-left rounded-0"
-      to={to}
-      id={id}
+      {...rest}
     >
       <div className="position-relative">
         <span ref={iconRef}>
@@ -79,22 +63,47 @@ const IconLink = (props) => {
   );
 };
 
-IconLink.defaultProps = {
-  icon: null,
+const commonPropTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.shape().isRequired,
+  isExpanded: PropTypes.bool,
+  notification: PropTypes.bool,
+};
+const commonDefaultProps = {
   isExpanded: false,
-  external: false,
-  id: undefined,
   notification: false,
 };
 
+BaseNavLink.propTypes = commonPropTypes;
+BaseNavLink.defaultProps = commonDefaultProps;
+
+const IconLink = (props) => {
+  const { external, to, ...rest } = props;
+
+  if (external) {
+    return (
+      <BaseNavLink
+        to={{ pathname: to }}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...rest}
+      />
+    );
+  }
+  return <BaseNavLink to={to} {...rest} />;
+};
+
+IconLink.defaultProps = {
+  ...commonDefaultProps,
+  external: false,
+  id: undefined,
+};
+
 IconLink.propTypes = {
-  title: PropTypes.string.isRequired,
+  ...commonPropTypes,
   to: PropTypes.string.isRequired,
-  icon: PropTypes.shape({}),
-  isExpanded: PropTypes.bool,
   external: PropTypes.bool,
   id: PropTypes.string,
-  notification: PropTypes.bool,
 };
 
 export default IconLink;

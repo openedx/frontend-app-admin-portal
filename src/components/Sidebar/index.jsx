@@ -62,7 +62,6 @@ class Sidebar extends React.Component {
         title: 'Learner Progress Report',
         to: `${baseUrl}/admin/learners`,
         icon: faChartLine,
-        notification: false,
       },
       {
         title: 'Code Management',
@@ -76,7 +75,6 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/reporting`,
         icon: faFile,
         hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
-        notification: false,
       },
       {
         title: 'Subscription Management',
@@ -90,21 +88,18 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/analytics`,
         icon: faChartBar,
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
-        notification: false,
       },
       {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
         icon: faIdCard,
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
-        notification: false,
       },
       {
         title: 'LMS Integration Configuration',
         to: `${baseUrl}/admin/lmsintegrations`,
         icon: faUniversity,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
-        notification: false,
       },
       {
         title: 'Settings',
@@ -112,7 +107,6 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
         hidden: !features.SETTINGS_PAGE,
-        notification: false,
       },
       // NOTE: keep "Support" link the last nav item
       {
@@ -121,7 +115,6 @@ class Sidebar extends React.Component {
         icon: faLifeRing,
         hidden: !features.SUPPORT,
         external: true,
-        notification: false,
       },
     ];
   }
@@ -178,10 +171,15 @@ class Sidebar extends React.Component {
       >
         <div className="sidebar-content py-2">
           <ul className="nav nav-pills flex-column m-0">
-            {this.getMenuItems().filter(item => !item.hidden).map(item => (
-              <li key={item.to} className="nav-item">
+            {this.getMenuItems().filter(item => !item.hidden).map(({
+              to, title, icon, notification,
+            }) => (
+              <li key={to} className="nav-item">
                 <IconLink
-                  {...item}
+                  to={to}
+                  title={title}
+                  icon={icon}
+                  notification={notification}
                   isExpanded={this.isSidebarExpanded()}
                 />
               </li>
