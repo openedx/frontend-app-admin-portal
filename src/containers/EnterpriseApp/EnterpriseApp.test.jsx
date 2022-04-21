@@ -23,7 +23,7 @@ jest.mock('../../components/subsidy-requests', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../sidebar', () => ({
+jest.mock('../Sidebar', () => ({
   __esModule: true,
   // eslint-disable-next-line react/prop-types
   default: ({ children }) => <div>{children}</div>,
