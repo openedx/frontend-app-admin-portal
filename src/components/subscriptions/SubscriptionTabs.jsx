@@ -28,6 +28,17 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
+  let requestsTabNotification;
+  const hasRequests = subsidyRequestsCounts.subscriptionLicenses && subsidyRequestsCounts.subscriptionLicenses > 0;
+  if (isRequestsTabShown && hasRequests) {
+    requestsTabNotification = (
+      <>
+        {subsidyRequestsCounts.subscriptionLicenses}
+        <span className="sr-only">outstanding enrollment requests</span>
+      </>
+    );
+  }
+
   const history = useHistory();
   const params = useParams();
   const subscriptionsTab = params[SUBSCRIPTIONS_TAB_PARAM];
@@ -65,12 +76,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
-          notification={(
-            <>
-              {subsidyRequestsCounts.subscriptionLicenses}
-              <span className="sr-only">outstanding enrollment requests</span>
-            </>
-          )}
+          notification={requestsTabNotification}
         >
           {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
             <Route
