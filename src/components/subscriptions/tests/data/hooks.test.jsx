@@ -8,7 +8,7 @@ import { useSubscriptionUsersOverview } from '../../data/hooks';
 const TEST_SUBSCRIPTION_PLAN_UUID = 'test-plan-uuid-1';
 
 jest.mock('../../../../data/services/LicenseManagerAPIService', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: {
     fetchSubscriptionUsersOverview: jest.fn(),
   },

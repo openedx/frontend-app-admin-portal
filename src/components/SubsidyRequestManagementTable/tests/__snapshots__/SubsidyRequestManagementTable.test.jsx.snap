@@ -366,6 +366,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
         </div>
         <div
           className="dropdown"
+          data-testid="dropdown"
         >
           <button
             aria-expanded={false}

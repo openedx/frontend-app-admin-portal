@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import {
   faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
@@ -10,6 +9,7 @@ import {
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 
@@ -55,6 +55,8 @@ class Sidebar extends React.Component {
       enableLmsConfigurationsScreen,
     } = this.props;
 
+    const { subsidyRequestsCounts } = this.context;
+
     return [
       {
         title: 'Learner Progress Report',
@@ -66,6 +68,7 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/coupons`,
         icon: faTags,
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+        notification: !!subsidyRequestsCounts.couponCodes,
       },
       {
         title: 'Reporting Configurations',
@@ -78,6 +81,7 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/subscriptions`,
         icon: faCreditCard,
         hidden: !enableSubscriptionManagementScreen,
+        notification: !!subsidyRequestsCounts.subscriptionLicenses,
       },
       {
         title: 'Analytics',
@@ -97,7 +101,6 @@ class Sidebar extends React.Component {
         icon: faUniversity,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
       },
-      // NOTE: keep "Support" link the last nav item
       {
         title: 'Settings',
         id: TOUR_TARGETS.SETTINGS_SIDEBAR,
@@ -105,6 +108,7 @@ class Sidebar extends React.Component {
         icon: faCog,
         hidden: !features.SETTINGS_PAGE,
       },
+      // NOTE: keep "Support" link the last nav item
       {
         title: 'Support',
         to: configuration.ENTERPRISE_SUPPORT_URL,
@@ -167,10 +171,15 @@ class Sidebar extends React.Component {
       >
         <div className="sidebar-content py-2">
           <ul className="nav nav-pills flex-column m-0">
-            {this.getMenuItems().filter(item => !item.hidden).map(item => (
-              <li key={item.to} className="nav-item">
+            {this.getMenuItems().filter(item => !item.hidden).map(({
+              to, title, icon, notification,
+            }) => (
+              <li key={to} className="nav-item">
                 <IconLink
-                  {...item}
+                  to={to}
+                  title={title}
+                  icon={icon}
+                  notification={notification}
                   isExpanded={this.isSidebarExpanded()}
                 />
               </li>
@@ -181,6 +190,8 @@ class Sidebar extends React.Component {
     );
   }
 }
+
+Sidebar.contextType = SubsidyRequestsContext;
 
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,

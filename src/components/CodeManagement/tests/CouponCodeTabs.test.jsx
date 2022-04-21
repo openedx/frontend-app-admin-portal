@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store';
 import { Route } from 'react-router-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import CouponCodeTabs from '../CouponCodeTabs';
 import {
   MANAGE_CODES_TAB,
@@ -47,12 +47,15 @@ const store = getMockStore({ ...initialStore });
 
 const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TAB}`;
 
-const CouponCodeTabsWrapper = ({ subsidyRequestConfiguration }) => (
+const CouponCodeTabsWrapper = ({
+  subsidyRequestConfiguration,
+  subsidyRequestsCounts,
+}) => (
   <Provider store={store}>
     <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
-      <SubsidyRequestConfigurationContext.Provider value={{ subsidyRequestConfiguration }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
         <CouponCodeTabs />
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Route>
   </Provider>
 );
@@ -62,11 +65,19 @@ CouponCodeTabsWrapper.defaultProps = {
     subsidyRequestsEnabled: true,
     subsidyType: 'coupon',
   },
+  subsidyRequestsCounts: {
+    subscriptionLicenses: undefined,
+    couponCodes: undefined,
+  },
 };
 
 CouponCodeTabsWrapper.propTypes = {
   subsidyRequestConfiguration: PropTypes.shape({
     subsidyType: PropTypes.string,
+  }),
+  subsidyRequestsCounts: PropTypes.shape({
+    subscriptionLicenses: PropTypes.number,
+    couponCodes: PropTypes.number,
   }),
 };
 
@@ -120,5 +131,20 @@ describe('<CouponCodeTabs />', () => {
     );
     screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
     expect(screen.queryByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
+  });
+
+  it('Show notification bubble on "Manage Requests" tab with outstanding license requests', () => {
+    renderWithRouter(
+      <CouponCodeTabsWrapper
+        subsidyRequestsCounts={{
+          subscriptionLicenses: undefined,
+          couponCodes: 12,
+        }}
+      />,
+      { route: INITIAL_ROUTER_ENTRY },
+    );
+    screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]);
+    screen.getByText(12);
+    screen.getByText('outstanding enrollment requests');
   });
 });

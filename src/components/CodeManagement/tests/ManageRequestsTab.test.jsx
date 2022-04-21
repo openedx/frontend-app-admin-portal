@@ -2,20 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
+import moment from 'moment';
 import {
   screen,
   render,
   cleanup,
   fireEvent,
 } from '@testing-library/react';
-import configureMockStore from 'redux-mock-store';
-
-import moment from 'moment';
-import ManageRequestsTab from '../ManageRequestsTab';
-import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
-import * as couponActions from '../../../data/actions/coupons';
 import '@testing-library/jest-dom/extend-expect';
+
+import ManageRequestsTab from '../ManageRequestsTab';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
+import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
+import * as couponActions from '../../../data/actions/coupons';
 
 const mockCouponCodeRequest = {
   uuid: 'test-coupon-code-request-uuid', requestStatus: SUBSIDY_REQUEST_STATUS.REQUESTED,
@@ -25,7 +26,7 @@ jest.mock('../../../data/actions/coupons');
 jest.mock('../../SubsidyRequestManagementTable', () => {
   const originalModule = jest.requireActual('../../SubsidyRequestManagementTable');
   return {
-    __esModule: true, // this property makes it work
+    __esModule: true,
     ...originalModule,
     /* eslint-disable react/prop-types */
     default: ({
@@ -63,7 +64,7 @@ jest.mock('../../SubsidyRequestManagementTable', () => {
           {!!onDecline && (
             <>
               <span>has onDecline</span>
-              <button type="button" onClick={onDecline}>Decline</button>
+              <button type="button" onClick={() => onDecline(mockCouponCodeRequest)}>Decline</button>
             </>
           )}
           {!!hasInitialTableOptions && <span>has initialTableOptions</span>}
@@ -142,11 +143,15 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const defaultStore = getMockStore({ ...initialStore });
 
+const mockDecrementCouponCodeRequestCount = jest.fn();
+
 const ManageRequestsTabWithRouter = ({
   store: storeProp,
 }) => (
   <Provider store={storeProp}>
-    <ManageRequestsTab />
+    <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
+      <ManageRequestsTab />
+    </SubsidyRequestsContext.Provider>
   </Provider>
 );
 
@@ -283,7 +288,7 @@ describe('<ManageRequestsTab />', () => {
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
   });
 
-  it('calls updateRequestStatus and closes the modal after successfully approving a request', () => {
+  it('handles successfully approving a request', () => {
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -320,6 +325,7 @@ describe('<ManageRequestsTab />', () => {
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
+    expect(mockDecrementCouponCodeRequestCount).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('Approve in modal')).not.toBeInTheDocument();
   });
 
@@ -342,5 +348,46 @@ describe('<ManageRequestsTab />', () => {
     fireEvent.click(closeButton);
 
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
+  });
+
+  it('handles successfully declining a request', () => {
+    const mockHandleUpdateRequestStatus = jest.fn();
+    useSubsidyRequests.mockImplementation(() => ({
+      isLoading: false,
+      requests: {
+        pageCount: 1,
+        itemCount: 1,
+        requests: [mockCouponCodeRequest],
+      },
+      requestsOverview: [],
+      handleFetchRequests: jest.fn(),
+      updateRequestStatus: mockHandleUpdateRequestStatus,
+    }));
+
+    const store = getMockStore({
+      ...initialStore,
+      coupons: {
+        loading: false,
+        data: {
+          results: [{
+            endDate: moment().add(1, 'days').toISOString(),
+            numUnassigned: 3,
+          }],
+        },
+      },
+    });
+    render(<ManageRequestsTabWithRouter store={store} />);
+
+    const declineButton = screen.getByText('Decline');
+    fireEvent.click(declineButton);
+    expect(screen.getByText('Decline coupon code request modal'));
+
+    const declineInModalButton = screen.getByText('Decline in modal');
+    fireEvent.click(declineInModalButton);
+    expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
+      { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
+    );
+    expect(mockDecrementCouponCodeRequestCount).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('Decline in modal')).not.toBeInTheDocument();
   });
 });

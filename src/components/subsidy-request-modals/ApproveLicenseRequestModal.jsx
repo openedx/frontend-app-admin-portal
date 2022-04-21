@@ -38,7 +38,7 @@ export const ApproveLicenseRequestModal = ({
   });
 
   const [selectedSubscriptionUUID, setSelectedSubscriptionUUID] = useState();
-  const [isApprovingRequest, setisApprovingRequest] = useState(false);
+  const [isApprovingRequest, setIsApprovingRequest] = useState(false);
   const [approveRequestError, setApproveRequestError] = useState(undefined);
 
   const hasError = loadApplicableSubscriptionsError || approveRequestError;
@@ -65,7 +65,7 @@ export const ApproveLicenseRequestModal = ({
   }, [applicableSubscriptions.length]);
 
   const approveLicenseRequest = useCallback(async () => {
-    setisApprovingRequest(true);
+    setIsApprovingRequest(true);
     try {
       await EnterpriseAccessApiService.approveLicenseRequests({
         enterpriseId: enterpriseCustomerUUID,
@@ -76,8 +76,7 @@ export const ApproveLicenseRequestModal = ({
     } catch (err) {
       logError(err);
       setApproveRequestError(err);
-    } finally {
-      setisApprovingRequest(false);
+      setIsApprovingRequest(false);
     }
   }, [onSuccess, selectedSubscriptionUUID]);
 

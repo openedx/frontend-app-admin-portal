@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
@@ -8,7 +8,7 @@ const LicenseAllocationHeader = () => {
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
 
   // don't show alert if the enterprise already has subsidy requests enabled
   const isBrowseAndRequestFeatureAlertShown = subsidyRequestConfiguration?.subsidyType

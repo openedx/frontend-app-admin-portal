@@ -25,7 +25,7 @@ import LicenseManagerApiService from '../../../data/services/LicenseManagerAPISe
 import { configuration } from '../../../config';
 
 jest.mock('../../../data/services/LicenseManagerAPIService', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: {
     licenseBulkEnroll: jest.fn(),
   },

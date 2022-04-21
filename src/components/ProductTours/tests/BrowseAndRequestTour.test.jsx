@@ -21,7 +21,7 @@ import {
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
 import { features } from '../../../config';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 features.FEATURE_BROWSE_AND_REQUEST = true;
@@ -54,7 +54,7 @@ const TourWithContext = ({
 }) => (
   <Router history={historyMock(pathname)}>
     <Provider store={store}>
-      <SubsidyRequestConfigurationContext.Provider value={{
+      <SubsidyRequestsContext.Provider value={{
         subsidyRequestConfiguration: {
           subsidyType,
           subsidyRequestsEnabled,
@@ -65,7 +65,7 @@ const TourWithContext = ({
           <BrowseAndRequestTour />
           <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
         </>
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Provider>
   </Router>
 );

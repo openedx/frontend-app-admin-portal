@@ -12,12 +12,12 @@ import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from './constants';
-import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 
 const cookies = new Cookies();
 
 const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
   const isEligibleForFeature = !!subsidyRequestConfiguration?.subsidyType;
   const isFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 

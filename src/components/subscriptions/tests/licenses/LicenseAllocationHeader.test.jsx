@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
-import { SubsidyRequestConfigurationContext } from '../../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
 import LicenseAllocationHeader from '../../licenses/LicenseAllocationHeader';
 
@@ -28,9 +28,9 @@ const LicenseAllocationHeaderWrapper = ({
   subsidyRequestConfiguration = mockSubsidyRequestConfiguration,
 }) => (
   <SubscriptionDetailContext.Provider value={{ subscription }}>
-    <SubsidyRequestConfigurationContext.Provider value={{ subsidyRequestConfiguration }}>
+    <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
       <LicenseAllocationHeader />
-    </SubsidyRequestConfigurationContext.Provider>
+    </SubsidyRequestsContext.Provider>
   </SubscriptionDetailContext.Provider>
 );
 

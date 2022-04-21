@@ -9,7 +9,7 @@ import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequ
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 
 jest.mock('../SettingsAccessTabSection', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: jest.fn(({ checked, onFormSwitchChange }) => (
     <div>
       <input type="checkbox" id="checkbox" checked={checked} onChange={onFormSwitchChange} />

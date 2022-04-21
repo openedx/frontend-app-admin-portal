@@ -13,7 +13,6 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
  * @param {string} enterpriseUUID UUID of the enterprise
  * @returns {Object} {customerConfiguration: Object, isLoading: bool}
  */
-// eslint-disable-next-line import/prefer-default-export
 export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
   const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -122,5 +121,67 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
     subsidyRequestConfiguration,
     isLoading,
     updateSubsidyRequestConfiguration,
+  };
+};
+
+/**
+ * Fetches overview of subsidy requests for both subscriptions and coupon codes in order to
+ * determine counts for notification bubbles.
+ *
+ */
+export const useSubsidyRequestsOverview = (enterpriseId) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [subsidyRequestsCounts, setSubsidyRequestsCounts] = useState({
+    subscriptionLicenses: 0,
+    couponCodes: 0,
+  });
+
+  const fetchsubsidyRequestsCounts = useCallback(async () => {
+    if (!enterpriseId) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const responses = await Promise.all([
+        EnterpriseAccessApiService.getLicenseRequestOverview(enterpriseId),
+        EnterpriseAccessApiService.getCouponCodeRequestOverview(enterpriseId),
+      ]);
+      const licenseRequestCount = responses[0].data.find(obj => obj.state === 'requested')?.count;
+      const codeRequestCount = responses[1].data.find(obj => obj.state === 'requested')?.count;
+      setSubsidyRequestsCounts({
+        subscriptionLicenses: licenseRequestCount,
+        couponCodes: codeRequestCount,
+      });
+    } catch (err) {
+      logError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  });
+
+  useEffect(() => {
+    fetchsubsidyRequestsCounts();
+  }, [enterpriseId]);
+
+  const decrementLicenseRequestCount = useCallback(() => {
+    setSubsidyRequestsCounts(prevState => ({
+      ...prevState,
+      subscriptionLicenses: prevState.subscriptionLicenses - 1,
+    }));
+  }, []);
+
+  const decrementCouponCodeRequestCount = useCallback(() => {
+    setSubsidyRequestsCounts(prevState => ({
+      ...prevState,
+      couponCodes: prevState.couponCodes - 1,
+    }));
+  }, []);
+
+  return {
+    isLoading,
+    subsidyRequestsCounts,
+    refreshsubsidyRequestsCounts: fetchsubsidyRequestsCounts,
+    decrementLicenseRequestCount,
+    decrementCouponCodeRequestCount,
   };
 };
