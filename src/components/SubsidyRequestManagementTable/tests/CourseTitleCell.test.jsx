@@ -11,7 +11,7 @@ import { renderWithRouter } from '../../test/testUtils';
 import DiscoveryApiService from '../../../data/services/DiscoveryApiService';
 
 jest.mock('../../../data/services/DiscoveryApiService', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: {
     fetchCourseDetails: jest.fn(),
   },

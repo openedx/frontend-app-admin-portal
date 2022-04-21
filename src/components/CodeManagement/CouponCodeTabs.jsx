@@ -67,7 +67,12 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
           eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
-          notification={subsidyRequestsCounts.couponCodes}
+          notification={(
+            <>
+              {subsidyRequestsCounts.couponCodes}
+              <span className="sr-only">outstanding enrollment requests</span>
+            </>
+          )}
         >
           {COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] === couponCodesTab && (
             <Route

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack } from '@edx/paragon';
-
 import moment from 'moment';
 import { camelCaseObject } from '@edx/frontend-platform';
+
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
   PAGE_SIZE,
@@ -15,6 +15,7 @@ import { fetchCouponOrders } from '../../data/actions/coupons';
 import LoadingMessage from '../LoadingMessage';
 import { NoAvailableCodesBanner } from '../subsidy-request-management-alerts';
 import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 
 const ManageRequestsTab = ({
   enterpriseId, couponsData, loading: loadingCoupons, fetchCoupons,
@@ -30,6 +31,7 @@ const ManageRequestsTab = ({
     handleFetchRequests,
     updateRequestStatus,
   } = useSubsidyRequests(enterpriseId, SUPPORTED_SUBSIDY_TYPES.coupon);
+  const { decrementCouponCodeRequestCount } = useContext(SubsidyRequestsContext);
 
   const [selectedRequest, setSelectedRequest] = useState();
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
@@ -82,6 +84,7 @@ const ManageRequestsTab = ({
               couponCodeRequest={selectedRequest}
               onSuccess={() => {
                 updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING });
+                decrementCouponCodeRequestCount();
                 setIsApproveModalOpen(false);
               }}
               onClose={() => setIsApproveModalOpen(false)}
@@ -94,6 +97,7 @@ const ManageRequestsTab = ({
               declineRequestFn={EnterpriseAccessApiService.declineCouponCodeRequests}
               onSuccess={() => {
                 updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED });
+                decrementCouponCodeRequestCount();
                 setIsDenyModalOpen(false);
               }}
               onClose={() => setIsDenyModalOpen(false)}

@@ -132,8 +132,8 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
 export const useSubsidyRequestsOverview = (enterpriseId) => {
   const [isLoading, setIsLoading] = useState(false);
   const [subsidyRequestsCounts, setsubsidyRequestsCounts] = useState({
-    subscriptionLicenses: null,
-    couponCodes: null,
+    subscriptionLicenses: undefined,
+    couponCodes: undefined,
   });
 
   const fetchsubsidyRequestsCounts = useCallback(async () => {

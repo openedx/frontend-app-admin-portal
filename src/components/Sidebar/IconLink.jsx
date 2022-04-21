@@ -39,7 +39,9 @@ const IconLink = (props) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FontAwesomeIcon icon={icon} ref={iconRef} className={classNames({ 'mr-2': isExpanded })} />
+        <span ref={iconRef}>
+          <FontAwesomeIcon icon={icon} className={classNames({ 'mr-2': isExpanded })} />
+        </span>
         {!isExpanded ? <span className="sr-only">{title}</span> : null}
         {isExpanded && <span ref={titleRef}>{title}</span>}
       </NavLink>
@@ -59,19 +61,18 @@ const IconLink = (props) => {
         {!isExpanded && <span className="sr-only">{title}</span>}
         {isExpanded && <span ref={titleRef}>{title}</span>}
         {notification && (
-          <>
-            <Bubble
-              variant="error"
-              className="position-absolute"
-              style={{
-                minHeight: '0.5rem',
-                minWidth: '0.5rem',
-                left: notificationBubbleLeft,
-                top: -2,
-              }}
-            />
+          <Bubble
+            variant="error"
+            className="position-absolute"
+            style={{
+              minHeight: '0.5rem',
+              minWidth: '0.5rem',
+              left: notificationBubbleLeft,
+              top: -2,
+            }}
+          >
             <span className="sr-only">has unread notifications</span>
-          </>
+          </Bubble>
         )}
       </div>
     </NavLink>

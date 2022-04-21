@@ -92,6 +92,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
               declineRequestFn={EnterpriseAccessApiService.declineLicenseRequests}
               onSuccess={() => {
                 updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED });
+                decrementLicenseRequestCount();
                 setIsDenyModalOpen(false);
               }}
               onClose={() => setIsDenyModalOpen(false)}

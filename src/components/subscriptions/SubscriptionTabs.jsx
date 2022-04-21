@@ -65,7 +65,12 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
-          notification={subsidyRequestsCounts.subscriptionLicenses}
+          notification={(
+            <>
+              {subsidyRequestsCounts.subscriptionLicenses}
+              <span className="sr-only">outstanding enrollment requests</span>
+            </>
+          )}
         >
           {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
             <Route

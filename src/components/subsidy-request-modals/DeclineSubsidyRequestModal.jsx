@@ -47,7 +47,6 @@ const DeclineSubsidyRequestModal = ({
     } catch (err) {
       logError(err);
       setError(err);
-    } finally {
       setIsLoading(false);
     }
   }, [uuid, shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise]);

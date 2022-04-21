@@ -47,10 +47,13 @@ const store = getMockStore({ ...initialStore });
 
 const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
-const SubscriptionTabsWrapper = ({ subsidyRequestConfiguration }) => (
+const SubscriptionTabsWrapper = ({
+  subsidyRequestConfiguration,
+  subsidyRequestsCounts,
+}) => (
   <Provider store={store}>
     <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
-      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
         <SubscriptionTabs />
       </SubsidyRequestsContext.Provider>
     </Route>
@@ -62,11 +65,19 @@ SubscriptionTabsWrapper.defaultProps = {
     subsidyRequestsEnabled: true,
     subsidyType: 'license',
   },
+  subsidyRequestsCounts: {
+    subscriptionLicenses: undefined,
+    couponCodes: undefined,
+  },
 };
 
 SubscriptionTabsWrapper.propTypes = {
   subsidyRequestConfiguration: PropTypes.shape({
     subsidyType: PropTypes.string,
+  }),
+  subsidyRequestsCounts: PropTypes.shape({
+    subscriptionLicenses: PropTypes.number,
+    couponCodes: PropTypes.number,
   }),
 };
 
@@ -119,5 +130,20 @@ describe('<SubscriptionTabs />', () => {
     );
     screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
     expect(screen.queryByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
+  });
+
+  it('Show notification bubble on "Manage Requests" tab with outstanding license requests', () => {
+    renderWithRouter(
+      <SubscriptionTabsWrapper
+        subsidyRequestsCounts={{
+          subscriptionLicenses: 12,
+          couponCodes: undefined,
+        }}
+      />,
+      { route: INITIAL_ROUTER_ENTRY },
+    );
+    screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]);
+    screen.getByText(12);
+    screen.getByText('outstanding enrollment requests');
   });
 });
