@@ -6,17 +6,17 @@ import SSOConfigConnectStep from './SSOConfigConnectStep';
 import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore, initialStore } from '../testutils';
 
+const store = getMockStore({ ...initialStore });
+const INITIAL_SSO_STATE = {
+  ...SSO_INITIAL_STATE,
+  providerConfig: {
+    enterpriseId: 'id-1',
+    slug: 'slug-provider',
+  },
+};
+
 describe('SSO Config Connect step', () => {
   test('renders page with metadata link', () => {
-    const store = getMockStore({ ...initialStore });
-    const INITIAL_SSO_STATE = {
-      ...SSO_INITIAL_STATE,
-      providerConfig: {
-        enterpriseId: 'id-1',
-        slug: 'slug-provider',
-      },
-    };
-
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>

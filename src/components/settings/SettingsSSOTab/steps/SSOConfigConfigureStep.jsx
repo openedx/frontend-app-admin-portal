@@ -5,55 +5,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HELP_CENTER_SAML_LINK, INVALID_LENGTH, INVALID_NAME } from '../../data/constants';
 
-const SSOFormControl = ({
-  label, floatingLabel, defaultValue, onChange, readOnly,
-  valid, invalidMessage, type,
-}) => {
-  const labelNoSpaces = label.replace(/ /g, '');
-  return (
-    <>
-      <Form.Control
-        readOnly={readOnly}
-        className="mt-4 mb-1"
-        type={type}
-        onChange={onChange}
-        floatingLabel={floatingLabel || label}
-        defaultValue={defaultValue}
-        aria-labelledby={labelNoSpaces}
-      />
-      <Form.Label id={`sso-field-${labelNoSpaces}`} className="mb-2">
-        {label}
-      </Form.Label>
-      {!valid && (
-        <Form.Control.Feedback type="invalid">
-            {invalidMessage}
-        </Form.Control.Feedback>
-      )}
-    </>
-  );
-};
-
-SSOFormControl.defaultProps = {
-  floatingLabel: '',
-  readOnly: false,
-  defaultValue: undefined,
-  onChange: () => {},
-  type: 'text',
-  valid: true,
-  invalidMessage: null,
-};
-
-SSOFormControl.propTypes = {
-  label: PropTypes.string.isRequired,
-  floatingLabel: PropTypes.string,
-  defaultValue: PropTypes.string,
-  onChange: PropTypes.func,
-  readOnly: PropTypes.bool,
-  valid: PropTypes.bool,
-  invalidMessage: PropTypes.string,
-  type: PropTypes.string,
-};
-
 const SSOConfigConfigureStep = ({ setConfigValues, connectError }) => {
   const configData = new FormData();
   const [nameValid, setNameValid] = React.useState(true);
@@ -134,85 +85,131 @@ const SSOConfigConfigureStep = ({ setConfigValues, connectError }) => {
       )}
       <div className="py-4">
         <Form.Group>
-          <SSOFormControl
-            label="Create a name for your configuration for easy navigation. Leave blank for default."
-            floatingLabel="SSO Configuration Name"
-            defaultValue={(connectError ? errorData.displayName : data.displayName)}
+          <Form.Control
+            type="text"
+            isInvalid={!nameValid}
             onChange={(e) => {
               validateField('name', e.target.value);
             }}
-            valid={nameValid}
-            invalidMessage={INVALID_NAME}
+            floatingLabel="SSO Configuration Name"
+            defaultValue={(connectError ? errorData.displayName : data.displayName)}
           />
-          <SSOFormControl
-            label={`Setting this option will limit user's session length to the set value.
-                 If set to 0 (zero), the session will expire upon the user closing their browser.
-                 If left blank, the Django platform session default length will be used.
-          `}
-            floatingLabel="Maximum Session Length (seconds)"
-            defaultValue={(connectError ? errorData.maxSessionLength : data.maxSessionLength)}
+          <Form.Text>Create a name for your configuration for easy navigation. Leave blank for default.</Form.Text>
+          {!nameValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_NAME}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            isInvalid={!lengthValid}
             onChange={(e) => {
               validateField('seconds', e.target.value);
             }}
-            valid={lengthValid}
-            invalidMessage={INVALID_LENGTH}
+            floatingLabel="Maximum Session Length (seconds)"
+            defaultValue={(connectError ? errorData.maxSessionLength : data.maxSessionLength)}
           />
-          <SSOFormControl
-            label="URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default."
-            floatingLabel="User ID Attribute"
-            maxLength={128}
-            defaultValue={(connectError ? errorData.userId : data.userId)}
+          <Form.Text>
+            Setting this option will limit user&apos;s session length to the set value.
+            If set to 0 (zero), the session will expire upon the user closing their browser.
+            If left blank, the Django platform session default length will be used.
+          </Form.Text>
+          {!lengthValid && (
+            <Form.Control.Feedback type="invalid">
+              {INVALID_LENGTH}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Control
+            type="text"
             onChange={(e) => {
               configData.set('attr_user_permanent_id', e.target.value);
               setConfigValues(configData);
             }}
+            maxLength={128}
+            floatingLabel="User ID Attribute"
+            defaultValue={(connectError ? errorData.userId : data.userId)}
           />
-          <SSOFormControl
-            label="URN of SAML attribute containing the user's full name. Leave blank for default."
-            floatingLabel="Full Name Attribute"
-            maxLength={255}
-            defaultValue={(connectError ? errorData.fullName : data.fullName)}
+          <Form.Text>
+            URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
             onChange={(e) => {
               configData.set('attr_full_name', e.target.value);
               setConfigValues(configData);
             }}
+            maxLength={255}
+            floatingLabel="Full Name Attribute"
+            defaultValue={(connectError ? errorData.fullName : data.fullName)}
           />
-          <SSOFormControl
-            label="URN of SAML attribute containing the user's first name. Leave blank for default."
-            floatingLabel="First Name Attribute"
-            maxLength={128}
-            defaultValue={(connectError ? errorData.firstName : data.firstName)}
+          <Form.Text>
+            URN of SAML attribute containing the user&apos;s full name. Leave blank for default.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
             onChange={(e) => {
               configData.set('attr_first_name', e.target.value);
               setConfigValues(configData);
             }}
-          />
-          <SSOFormControl
-            label="URN of SAML attribute containing the user's last name. Leave blank for default."
-            floatingLabel="Last Name Attribute"
             maxLength={128}
-            defaultValue={(connectError ? errorData.lastName : data.lastName)}
+            floatingLabel="First Name Attribute"
+            defaultValue={(connectError ? errorData.firstName : data.firstName)}
+          />
+          <Form.Text>
+            URN of SAML attribute containing the user&apos;s first name. Leave blank for default.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
             onChange={(e) => {
               configData.set('attr_last_name', e.target.value);
               setConfigValues(configData);
             }}
-          />
-          <SSOFormControl
-            label="URN of SAML attribute containing the user's email address[es]. Leave blank for default."
-            floatingLabel="Email Address Attribute"
             maxLength={128}
-            defaultValue={(connectError ? errorData.emailAddress : data.emailAddress)}
+            floatingLabel="Last Name Attribute"
+            defaultValue={(connectError ? errorData.lastName : data.lastName)}
+          />
+          <Form.Text>
+            URN of SAML attribute containing the user&apos;s last name. Leave blank for default.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Control
+            type="text"
             onChange={(e) => {
               configData.set('attr_email', e.target.value);
               setConfigValues(configData);
             }}
+            maxLength={128}
+            floatingLabel="Email Address Attribute"
+            defaultValue={(connectError ? errorData.emailAddress : data.emailAddress)}
           />
-          <SSOFormControl
-            label="We use the default SAML certificate for all configurations"
-            floatingLabel="SAML configuration"
-            defaultValue={(connectError ? errorData.samlConfig : data.samlConfig)}
+          <Form.Text>
+            URN of SAML attribute containing the user&apos;s email address[es]. Leave blank for default.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Control
+            type="text"
             readOnly
+            floatingLabel="SAML Configuration"
+            defaultValue={(connectError ? errorData.samlConfig : data.samlConfig)}
           />
+          <Form.Text>
+            We use the default SAML certificate for all configurations.
+          </Form.Text>
         </Form.Group>
       </div>
     </>
