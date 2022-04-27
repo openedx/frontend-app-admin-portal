@@ -31,12 +31,11 @@ const SettingsAccessTab = ({
     customerAgreement: { subscriptions },
   } = useContext(SettingsContext);
 
-  const isEligibleForBrowseAndRequest = features.FEATURE_BROWSE_AND_REQUEST
+  const isEligibleForSubsidyRequests = features.FEATURE_BROWSE_AND_REQUEST
    && enableBrowseAndRequest && !!subsidyRequestConfiguration?.subsidyType;
 
-  const isBrowseAndRequestDisabled = !(enableUniversalLink || (
-    identityProvider && enableIntegratedCustomerLearnerPortalSearch
-  ));
+  const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
+  const hasActiveAccessChannel = enableUniversalLink || isLearnerPortalSearchEnabled;
 
   const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
 
@@ -88,7 +87,7 @@ const SettingsAccessTab = ({
         />
       )}
 
-      {isEligibleForBrowseAndRequest && (
+      {isEligibleForSubsidyRequests && (
         <div className="mt-5">
           <h3>Manage course requests</h3>
           <p>
@@ -98,7 +97,7 @@ const SettingsAccessTab = ({
           <SettingsAccessSubsidyRequestManagement
             subsidyRequestConfiguration={subsidyRequestConfiguration}
             updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-            disabled={isBrowseAndRequestDisabled}
+            disabled={!hasActiveAccessChannel}
           />
         </div>
       )}
