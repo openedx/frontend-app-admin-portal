@@ -172,10 +172,11 @@ class Sidebar extends React.Component {
         <div className="sidebar-content py-2">
           <ul className="nav nav-pills flex-column m-0">
             {this.getMenuItems().filter(item => !item.hidden).map(({
-              to, title, icon, notification, external,
+              id, to, title, icon, notification, external,
             }) => (
               <li key={to} className="nav-item">
                 <IconLink
+                  id={id}
                   to={to}
                   title={title}
                   icon={icon}
