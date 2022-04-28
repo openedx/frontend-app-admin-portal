@@ -54,7 +54,7 @@ const SubsidyRequestManagementTable = ({
         filterChoices: requestStatusFilterChoices,
       },
     ]),
-    [onApprove, onDecline, requestStatusFilterChoices],
+    [requestStatusFilterChoices],
   );
 
   return (

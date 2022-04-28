@@ -84,7 +84,8 @@ const SSOConfigConfiguredCard = ({
       setInterval(null); // so that when we unload, the timer is stopped
       dispatchSsoState(updateConnectInProgress(false));
     };
-  }, [isSsoValid]);
+  }, [isSsoValid, dispatchSsoState]);
+
   const handleTestClick = () => {
     initiateValidation();
     return true;

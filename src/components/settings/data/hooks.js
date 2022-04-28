@@ -46,7 +46,7 @@ export const useLinkManagement = (enterpriseUUID) => {
     return () => {
       setLoadingLinks(false);
     };
-  }, []);
+  }, [enterpriseUUID]);
 
   useEffect(loadLinks, []);
 

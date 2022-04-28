@@ -15,7 +15,7 @@ export const SELECT_ALL_TEST_ID = 'selectAll';
 export const BaseSelectWithContext = ({ row, contextKey }) => {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
 
-  const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows]);
+  const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows, row]);
 
   const toggleSelected = isSelected
     ? () => { dispatch(deleteSelectedRowAction(row.id)); }

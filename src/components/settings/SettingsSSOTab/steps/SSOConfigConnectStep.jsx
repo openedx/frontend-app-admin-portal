@@ -22,7 +22,8 @@ const SSOConfigConnectStep = ({
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
     const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
     setProviderConfig(updatedProviderConfig);
-  }, [existingConfigs]);
+  }, [isLoading, existingConfigs, setProviderConfig, providerConfig]);
+
   const configuration = getConfig();
   const { testLink } = createSAMLURLs({
     configuration,

@@ -29,7 +29,14 @@ const SubsidyRequestsContextProvider = ({ enterpriseUUID, children }) => {
     refreshsubsidyRequestsCounts,
     decrementLicenseRequestCount,
     decrementCouponCodeRequestCount,
-  }), [subsidyRequestConfiguration, subsidyRequestsCounts]);
+  }), [
+    subsidyRequestConfiguration,
+    subsidyRequestsCounts,
+    decrementCouponCodeRequestCount,
+    decrementLicenseRequestCount,
+    refreshsubsidyRequestsCounts,
+    updateSubsidyRequestConfiguration,
+  ]);
 
   const isLoading = isLoadingSubsidyRequestConfiguration || isLoadingSubsidyRequestOverview;
 
@@ -45,16 +52,8 @@ const SubsidyRequestsContextProvider = ({ enterpriseUUID, children }) => {
 };
 
 const SubsidyRequestsContextProviderWrapper = ({ enableBrowseAndRequest, enterpriseUUID, children }) => {
-  if (enableBrowseAndRequest) {
-    return (
-      <SubsidyRequestsContextProvider enterpriseUUID={enterpriseUUID}>
-        {children}
-      </SubsidyRequestsContextProvider>
-    );
-  }
-
   const noop = () => {};
-  const context = useMemo(() => ({
+  const contextValueForDisabledBrowseAndRequest = useMemo(() => ({
     subsidyRequestConfiguration: {
       enterpriseCustomerUuid: enterpriseUUID,
       subsidyRequestsEnabled: false,
@@ -65,10 +64,18 @@ const SubsidyRequestsContextProviderWrapper = ({ enableBrowseAndRequest, enterpr
     refreshsubsidyRequestsCounts: noop,
     decrementLicenseRequestCount: noop,
     decrementCouponCodeRequestCount: noop,
-  }), []);
+  }), [enterpriseUUID]);
+
+  if (enableBrowseAndRequest) {
+    return (
+      <SubsidyRequestsContextProvider enterpriseUUID={enterpriseUUID}>
+        {children}
+      </SubsidyRequestsContextProvider>
+    );
+  }
 
   return (
-    <SubsidyRequestsContext.Provider value={context}>
+    <SubsidyRequestsContext.Provider value={contextValueForDisabledBrowseAndRequest}>
       {children}
     </SubsidyRequestsContext.Provider>
   );

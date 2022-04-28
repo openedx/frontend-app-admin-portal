@@ -34,7 +34,7 @@ export const useApplicableCatalogs = ({
     };
 
     fetchApplicableCatalogs();
-  }, [enterpriseId, courseRunIds.join('')]);
+  }, [enterpriseId, courseRunIds]);
 
   return {
     applicableCatalogs,

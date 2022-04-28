@@ -110,7 +110,16 @@ const LicenseManagementRevokeModal = ({
       logError(error);
       setRequestState({ ...initialRequestState, error });
     }
-  }, [onSubmit, activeFilters, revokeAllUsers, usersToRevoke, subscription.uuid]);
+  }, [
+    onSubmit,
+    activeFilters,
+    revokeAllUsers,
+    usersToRevoke,
+    subscription.uuid,
+    initialRequestState,
+    onSuccess,
+    setRequestState,
+  ]);
 
   const handleClose = () => {
     if (!requestState.loading) {

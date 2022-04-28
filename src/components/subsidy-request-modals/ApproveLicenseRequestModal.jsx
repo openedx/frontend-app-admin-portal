@@ -62,7 +62,7 @@ export const ApproveLicenseRequestModal = ({
     if (applicableSubscriptions.length === 1) {
       setSelectedSubscriptionUUID(applicableSubscriptions[0].uuid);
     }
-  }, [applicableSubscriptions.length]);
+  }, [applicableSubscriptions]);
 
   const approveLicenseRequest = useCallback(async () => {
     setIsApprovingRequest(true);
@@ -78,7 +78,7 @@ export const ApproveLicenseRequestModal = ({
       setApproveRequestError(err);
       setIsApprovingRequest(false);
     }
-  }, [onSuccess, selectedSubscriptionUUID]);
+  }, [onSuccess, selectedSubscriptionUUID, enterpriseCustomerUUID, uuid]);
 
   return (
     <ModalDialog

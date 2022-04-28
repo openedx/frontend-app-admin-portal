@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
-
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import {
   NETWORK_ERROR_MESSAGE,
@@ -97,7 +97,7 @@ export const useSubscriptionUsersOverview = ({
   };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
-  const loadSubscriptionUsersOverview = () => {
+  const loadSubscriptionUsersOverview = useCallback(() => {
     const fetchOverview = async () => {
       const options = {};
       if (search) {
@@ -124,7 +124,7 @@ export const useSubscriptionUsersOverview = ({
       }
     };
     fetchOverview();
-  };
+  }, [errors, initialSubscriptionUsersOverview, search, setErrors, subscriptionUUID]);
 
   const forceRefresh = () => {
     loadSubscriptionUsersOverview();
@@ -136,7 +136,7 @@ export const useSubscriptionUsersOverview = ({
         loadSubscriptionUsersOverview();
       }
     },
-    [subscriptionUUID, search, isDisabled],
+    [isDisabled, loadSubscriptionUsersOverview],
   );
 
   return [subscriptionUsersOverview, forceRefresh];
@@ -158,7 +158,7 @@ export const useSubscriptionUsers = ({
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
 
-  const loadSubscriptionUsers = () => {
+  const loadSubscriptionUsers = useCallback(() => {
     if (!subscriptionUUID) {
       return;
     }
@@ -186,7 +186,7 @@ export const useSubscriptionUsers = ({
       }
     };
     fetchUsers();
-  };
+  }, [currentPage, errors, searchQuery, setErrors, subscriptionUUID, userStatusFilter]);
 
   const forceRefresh = () => {
     loadSubscriptionUsers();
@@ -197,7 +197,7 @@ export const useSubscriptionUsers = ({
       if (isDisabled) { return; }
       loadSubscriptionUsers();
     },
-    [currentPage, searchQuery, subscriptionUUID, userStatusFilter, isDisabled],
+    [isDisabled, loadSubscriptionUsers],
   );
 
   return [subscriptionUsers, forceRefresh, loadingUsers];

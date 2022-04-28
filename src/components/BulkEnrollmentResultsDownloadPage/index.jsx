@@ -35,7 +35,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [bulkEnrollmentJobId, enterpriseId, isLoading]);
 
   if (isLoading) {
     return <EnterpriseAppSkeleton />;

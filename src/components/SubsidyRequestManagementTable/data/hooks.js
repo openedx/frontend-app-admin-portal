@@ -37,7 +37,7 @@ export const useSubsidyRequests = (
   /**
    * Fetches counts of each request status.
    */
-  const fetchOverview = async ({ query }) => {
+  const fetchOverview = useCallback(async ({ query }) => {
     dispatch(setIsLoadingSubsidyRequests(true));
     try {
       const options = {};
@@ -56,12 +56,12 @@ export const useSubsidyRequests = (
     } finally {
       dispatch(setIsLoadingSubsidyRequests(false));
     }
-  };
+  }, [enterpriseId, subsidyRequestType]);
 
   /**
    * Fetches requests from the API.
    */
-  const fetchRequests = async ({ page, query, filters }) => {
+  const fetchRequests = useCallback(async ({ page, query, filters }) => {
     dispatch(setIsLoadingSubsidyRequests(true));
     try {
       const options = {
@@ -88,14 +88,14 @@ export const useSubsidyRequests = (
     } finally {
       dispatch(setIsLoadingSubsidyRequests(false));
     }
-  };
+  }, [enterpriseId, subsidyRequestType]);
 
   const fetchData = useCallback(
     ({ page, query, filters }) => {
       fetchOverview({ query });
       fetchRequests({ page, query, filters });
     },
-    [],
+    [fetchOverview, fetchRequests],
   );
   const debouncedFetchData = debounce(fetchData, DEBOUNCE_TIME_MS);
 
@@ -118,7 +118,7 @@ export const useSubsidyRequests = (
         },
       });
     },
-    [],
+    [debouncedFetchData],
   );
 
   const updateRequestStatus = useCallback(({

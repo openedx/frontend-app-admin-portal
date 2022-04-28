@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useMemo, useState,
+  createContext, useCallback, useContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -38,10 +38,10 @@ const SubscriptionDetailContextProvider = ({
     isDisabled: disableDataFetching,
   });
 
-  const forceRefreshDetailView = () => {
+  const forceRefreshDetailView = useCallback(() => {
     forceRefreshUsers();
     forceRefreshOverview();
-  };
+  }, [forceRefreshUsers, forceRefreshOverview]);
 
   const context = useMemo(() => ({
     currentPage,
@@ -59,13 +59,15 @@ const SubscriptionDetailContextProvider = ({
     forceRefreshDetailView,
   }), [
     currentPage,
-    userStatusFilter,
     searchQuery,
     hasMultipleSubscriptions,
     overview,
     subscription,
     users,
     loadingUsers,
+    forceRefreshDetailView,
+    forceRefreshOverview,
+    forceRefreshUsers,
   ]);
   return (
     <SubscriptionDetailContext.Provider value={context}>

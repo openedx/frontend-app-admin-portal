@@ -115,7 +115,17 @@ const LicenseManagementRemindModal = ({
       logError(error);
       setRequestState({ ...initialRequestState, error });
     }
-  }, [onSubmit, activeFilters, emailTemplate, remindAllUsers, usersToRemind, subscription.uuid]);
+  }, [
+    onSubmit,
+    activeFilters,
+    emailTemplate,
+    remindAllUsers,
+    usersToRemind,
+    subscription.uuid,
+    initialRequestState,
+    onSuccess,
+    setRequestState,
+  ]);
 
   const handleClose = () => {
     if (!requestState.loading) {

@@ -30,11 +30,11 @@ const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   const showTour = isFeatureEnabledForEnterprise
     && !dismissedTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
+  const [tourEnabled, setTourEnabled] = useState(showTour);
+
   if (!showTour) {
     return null;
   }
-
-  const [tourEnabled, setTourEnabled] = useState(showTour);
 
   const disableTour = () => {
     cookies.set(

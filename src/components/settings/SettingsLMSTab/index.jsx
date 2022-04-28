@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Alert, Button, Hyperlink, CardGrid, Toast,
 } from '@edx/paragon';
@@ -58,7 +58,7 @@ export default function SettingsLMSTab({
     setConfigsExist(false);
   };
 
-  const fetchExistingConfigs = () => {
+  const fetchExistingConfigs = useCallback(() => {
     const options = { enterprise_customer: enterpriseId };
     LmsApiService.fetchEnterpriseCustomerIntegrationConfigs(options)
       .then((response) => {
@@ -76,7 +76,7 @@ export default function SettingsLMSTab({
         // We can ignore errors here as user will se the banner in the next page refresh.
         logError(error);
       });
-  };
+  }, [enterpriseId]);
 
   const onClick = (input) => {
     // Either we're creating a new config (a create config card was clicked), or we're navigating
@@ -119,7 +119,7 @@ export default function SettingsLMSTab({
   useEffect(() => {
     // On load fetch potential existing configs
     fetchExistingConfigs();
-  }, []);
+  }, [fetchExistingConfigs]);
 
   useEffect(() => {
     // Check if the customer needs an idp config

@@ -91,7 +91,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
     };
 
     loadConfiguration();
-  }, [enterpriseUUID]);
+  }, [enterpriseUUID, loadSubsidyRequestConfiguration, createSubsidyRequestConfiguration]);
 
   const updateSubsidyRequestConfiguration = useCallback(async ({
     subsidyType,
@@ -115,7 +115,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       logError(err);
       throw err;
     }
-  }, [enterpriseUUID]);
+  }, [enterpriseUUID, loadSubsidyRequestConfiguration]);
 
   return {
     subsidyRequestConfiguration,
@@ -136,7 +136,7 @@ export const useSubsidyRequestsOverview = (enterpriseId) => {
     couponCodes: 0,
   });
 
-  const fetchsubsidyRequestsCounts = useCallback(async () => {
+  const fetchSubsidyRequestsCounts = useCallback(async () => {
     if (!enterpriseId) {
       return;
     }
@@ -157,11 +157,11 @@ export const useSubsidyRequestsOverview = (enterpriseId) => {
     } finally {
       setIsLoading(false);
     }
-  });
+  }, [enterpriseId]);
 
   useEffect(() => {
-    fetchsubsidyRequestsCounts();
-  }, [enterpriseId]);
+    fetchSubsidyRequestsCounts();
+  }, [fetchSubsidyRequestsCounts]);
 
   const decrementLicenseRequestCount = useCallback(() => {
     setSubsidyRequestsCounts(prevState => ({
@@ -180,7 +180,7 @@ export const useSubsidyRequestsOverview = (enterpriseId) => {
   return {
     isLoading,
     subsidyRequestsCounts,
-    refreshsubsidyRequestsCounts: fetchsubsidyRequestsCounts,
+    refreshsubsidyRequestsCounts: fetchSubsidyRequestsCounts,
     decrementLicenseRequestCount,
     decrementCouponCodeRequestCount,
   };

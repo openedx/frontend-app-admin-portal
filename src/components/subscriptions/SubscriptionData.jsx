@@ -22,7 +22,7 @@ export default function SubscriptionData({ children, enterpriseId }) {
     setErrors,
     forceRefresh,
     loading,
-  }), [subscriptions, errors, loading]);
+  }), [subscriptions, errors, loading, forceRefresh, setErrors]);
 
   if (subscriptions) {
     return (

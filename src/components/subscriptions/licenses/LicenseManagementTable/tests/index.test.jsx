@@ -6,7 +6,6 @@ import {
   act,
   fireEvent,
 } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';

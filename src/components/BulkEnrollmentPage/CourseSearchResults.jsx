@@ -72,16 +72,16 @@ export const BaseCourseSearchResults = (props) => {
       // eslint-disable-next-line react/prop-types
       Cell: ({ value }) => <FormattedDateCell startValue={value.start} endValue={value.end} />,
     },
-  ], []);
+  ], [enterpriseSlug]);
 
   const page = useMemo(
     () => {
       if (refinements.page) {
         return refinements.page;
       }
-      return searchState && searchState.page;
+      return searchState?.page;
     },
-    [searchState?.page, refinements],
+    [searchState, refinements],
   );
 
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);

@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
 import url from 'url';
@@ -22,7 +24,7 @@ export default function AnalyticsCharts({ enterpriseId }) {
     width: 1250,
     hideToolbar: true,
   };
-  const getUrl = (token) => {
+  const getUrl = useCallback((token) => {
     const parsed = url.parse(tableauUrl, true);
     const { protocol, host, pathname } = parsed;
     const query = '?:embed=yes&:comments=no&:toolbar=no&:refresh=yes';
@@ -31,12 +33,13 @@ export default function AnalyticsCharts({ enterpriseId }) {
       return `${protocol}//${host}/trusted/${token}${pathname}${query}`;
     }
     return `${protocol}//${host}${pathname}${query}`;
-  };
-  const initViz = (token) => {
+  }, [tableauUrl, tokenUsedOnce]);
+
+  const initViz = useCallback((token) => {
     const augmentedUrl = getUrl(token);
     const viz = new window.tableau.Viz(tableauRef.current, augmentedUrl, options);
     return viz;
-  };
+  }, [getUrl, options]);
 
   // Initialize tableau Viz and fetch token
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function AnalyticsCharts({ enterpriseId }) {
         setIsLoading(false);
         setError(err);
       });
-  }, []);
+  }, [enterpriseId, initViz]);
 
   if (isLoading) {
     return <LoadingMessage className="analytics" />;

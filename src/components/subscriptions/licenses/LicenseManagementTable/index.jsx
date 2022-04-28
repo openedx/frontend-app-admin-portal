@@ -78,22 +78,22 @@ const LicenseManagementTable = () => {
 
   const isExpired = moment().isAfter(subscription.expirationDate);
 
-  const sendStatusFilterEvent = (statusFilter) => {
+  const sendStatusFilterEvent = useCallback((statusFilter) => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
       SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
       { applied_filters: statusFilter },
     );
-  };
+  }, [subscription.enterpriseCustomerUuid]);
 
-  const sendEmailFilterEvent = () => {
+  const sendEmailFilterEvent = useCallback(() => {
     sendEnterpriseTrackEvent(
       subscription.enterpriseCustomerUuid,
       SUBSCRIPTION_TABLE_EVENTS.FILTER_EMAIL,
     );
-  };
+  }, [subscription.enterpriseCustomerUuid]);
 
-  const sendPaginationEvent = (oldPage, newPage) => {
+  const sendPaginationEvent = useCallback((oldPage, newPage) => {
     const eventName = newPage - oldPage > 0
       ? SUBSCRIPTION_TABLE_EVENTS.PAGINATION_NEXT
       : SUBSCRIPTION_TABLE_EVENTS.PAGINATION_PREVIOUS;
@@ -103,10 +103,10 @@ const LicenseManagementTable = () => {
       eventName,
       { page: newPage },
     );
-  };
+  }, [subscription.enterpriseCustomerUuid]);
 
   // Filtering and pagination
-  const updateFilters = (filters) => {
+  const updateFilters = useCallback((filters) => {
     if (filters.length < 1) {
       setSearchQuery(null);
       setUserStatusFilter(defaultStatusFilter);
@@ -128,17 +128,18 @@ const LicenseManagementTable = () => {
         }
       });
     }
-  };
+  }, [sendEmailFilterEvent, sendStatusFilterEvent, setSearchQuery, setUserStatusFilter]);
 
-  const debouncedUpdateFilters = debounce(
+  const debouncedUpdateFilters = useMemo(() => debounce(
     updateFilters,
     DEBOUNCE_TIME_MILLIS,
-  );
+  ), [updateFilters]);
 
-  const debouncedSetCurrentPage = debounce(
+  const debouncedSetCurrentPage = useMemo(() => debounce(
     setCurrentPage,
     DEBOUNCE_TIME_MILLIS,
-  );
+  ), [setCurrentPage]);
+
   // Call back function, handles filters and page changes
   const fetchData = useCallback(
     (args) => {
@@ -149,7 +150,7 @@ const LicenseManagementTable = () => {
       }
       debouncedUpdateFilters(args.filters);
     },
-    [currentPage],
+    [currentPage, debouncedSetCurrentPage, debouncedUpdateFilters, sendPaginationEvent],
   );
 
   // Maps user to rows
