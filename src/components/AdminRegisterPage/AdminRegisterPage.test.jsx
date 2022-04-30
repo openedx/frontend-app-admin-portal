@@ -2,17 +2,26 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
+import { waitFor } from '@testing-library/react';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
 
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import AdminRegisterPage from './index';
+import LmsApiService from '../../data/services/LmsApiService';
+
+jest.mock('../../data/services/LmsApiService');
+jest.mock('@edx/frontend-enterprise-utils');
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
+
+const mockEnterpriseCustomer = {
+  uuid: 'dc3bfcf8-c61f-11ec-9d64-0242ac120002',
+};
 
 const history = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register`],
 });
-
 const AdminRegisterPageWrapper = ({
   ...rest
 }) => (
@@ -29,39 +38,49 @@ describe('<AdminRegisterPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-  it('renders loading skeleton when not authenticated (redirect to enterprise proxy login)', () => {
-    getAuthenticatedUser.mockReturnValue(null);
 
+  it('renders loading skeleton when not authenticated (redirect to enterprise proxy login)', async () => {
+    getAuthenticatedUser.mockReturnValue(null);
+    isEnterpriseUser.mockReturnValue(false);
+    LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
+      data: mockEnterpriseCustomer,
+    }));
     const wrapper = mount(<AdminRegisterPageWrapper />);
 
     // verify that the loading skeleton appears during redirect
-    expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
-    expect(global.location.href).toBeTruthy();
+    await waitFor(() => expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy());
+    await waitFor(() => expect(global.location.href).toBeTruthy());
   });
 
   [
     { roles: [] },
     { roles: ['enterprise_learner:*'] },
   ].forEach(({ roles }) => {
-    it('displays app skeleton when user is authenticated without "enterprise_admin" JWT role', () => {
+    it('displays app skeleton when user is authenticated without "enterprise_admin" JWT role', async () => {
       getAuthenticatedUser.mockReturnValue({
         username: 'edx',
         roles,
       });
-
+      isEnterpriseUser.mockReturnValue(false);
+      LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
+        data: mockEnterpriseCustomer,
+      }));
       const wrapper = mount(<AdminRegisterPageWrapper />);
-      expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy();
+      await waitFor(() => expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy());
     });
   });
 
-  it('redirects to /admin/register/activate route when user is authenticated and has "enterprise_admin" JWT role', () => {
+  it('redirects to /admin/register/activate route when user is authenticated and has "enterprise_admin" JWT role', async () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
-      roles: ['enterprise_admin:*'],
+      roles: ['enterprise_admin:dc3bfcf8-c61f-11ec-9d64-0242ac120002'],
     });
-
+    isEnterpriseUser.mockReturnValue(true);
+    LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
+      data: mockEnterpriseCustomer,
+    }));
     mount(<AdminRegisterPageWrapper />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
-    expect(history.location.pathname).toEqual(expectedRedirectRoute);
+    await waitFor(() => expect(history.location.pathname).toEqual(expectedRedirectRoute));
   });
 });
