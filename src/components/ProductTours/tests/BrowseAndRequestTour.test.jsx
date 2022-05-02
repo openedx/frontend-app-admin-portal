@@ -78,11 +78,6 @@ describe('<BrowseAndRequestTour/>', () => {
     expect(screen.queryByText('New Feature')).toBeTruthy();
   });
 
-  it('is not shown if enterprise is not eligible for browse and request', () => {
-    render(<TourWithContext subsidyType={null} />);
-    expect(screen.queryByText('New Feature')).toBeFalsy();
-  });
-
   it('is not shown if enterprise already has subsidy requests turned on', () => {
     render(<TourWithContext subsidyRequestsEnabled />);
     expect(screen.queryByText('New Feature')).toBeFalsy();

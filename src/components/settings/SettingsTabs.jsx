@@ -66,17 +66,19 @@ const SettingsTabs = ({
         activeKey={tab}
         onSelect={handleTabChange}
       >
-        <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-          <SettingsAccessTab
-            enterpriseId={enterpriseId}
-            enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
-            identityProvider={identityProvider}
-            enableBrowseAndRequest={enableBrowseAndRequest}
-            enableLearnerPortal={enableLearnerPortal}
-            enableUniversalLink={enableUniversalLink}
-            updatePortalConfiguration={updatePortalConfiguration}
-          />
-        </Tab>
+        {enableLearnerPortal && (
+          <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
+            <SettingsAccessTab
+              enterpriseId={enterpriseId}
+              enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+              identityProvider={identityProvider}
+              enableBrowseAndRequest={enableBrowseAndRequest}
+              enableLearnerPortal={enableLearnerPortal}
+              enableUniversalLink={enableUniversalLink}
+              updatePortalConfiguration={updatePortalConfiguration}
+            />
+          </Tab>
+        )}
 
         {FEATURE_SSO_SETTINGS_TAB && (
           <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>

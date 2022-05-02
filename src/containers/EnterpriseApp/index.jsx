@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
     enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
     enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
     enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
+    enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,

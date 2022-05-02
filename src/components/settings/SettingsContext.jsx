@@ -6,6 +6,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { useCustomerAgreementData } from './data/hooks';
 import { fetchCouponOrders } from '../../data/actions/coupons';
 import LoadingMessage from '../LoadingMessage';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 export const SettingsContext = createContext({});
 
@@ -25,11 +26,24 @@ function SettingsContextProvider({
     fetchCoupons();
   }, []);
 
+  const enterpriseSubsidyTypes = useMemo(() => {
+    const subsidyTypes = [];
+    if (couponsData.results.length > 0) {
+      subsidyTypes.push(SUPPORTED_SUBSIDY_TYPES.coupon);
+    }
+
+    if (customerAgreement.subscriptions.length > 0) {
+      subsidyTypes.push(SUPPORTED_SUBSIDY_TYPES.license);
+    }
+    return subsidyTypes;
+  }, [customerAgreement, couponsData]);
+
   const context = useMemo(() => ({
     enterpriseId,
     customerAgreement,
     couponsData,
-  }), [customerAgreement, couponsData]);
+    enterpriseSubsidyTypes,
+  }), [customerAgreement, couponsData, enterpriseSubsidyTypes]);
 
   if (loadingCustomerAgreement || loadingCoupons) {
     return <LoadingMessage className="settings mt-3" />;

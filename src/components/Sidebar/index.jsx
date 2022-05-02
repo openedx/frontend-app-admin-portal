@@ -52,10 +52,19 @@ class Sidebar extends React.Component {
       enableSubscriptionManagementScreen,
       enableSamlConfigurationScreen,
       enableAnalyticsScreen,
+      enableLearnerPortal,
       enableLmsConfigurationsScreen,
     } = this.props;
 
     const { subsidyRequestsCounts } = this.context;
+
+    // Hide Settings link if there are no visible tabs
+    const shouldShowSettingsLink = (
+      features.SETTINGS_PAGE && (
+        enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
+       || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
+      )
+    );
 
     return [
       {
@@ -106,7 +115,7 @@ class Sidebar extends React.Component {
         id: TOUR_TARGETS.SETTINGS_SIDEBAR,
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
-        hidden: !features.SETTINGS_PAGE,
+        hidden: !shouldShowSettingsLink,
       },
       // NOTE: keep "Support" link the last nav item
       {
@@ -201,6 +210,7 @@ Sidebar.defaultProps = {
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
+  enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
@@ -217,6 +227,7 @@ Sidebar.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
+  enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
