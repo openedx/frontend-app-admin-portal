@@ -12,6 +12,7 @@ import {
 import '@testing-library/jest-dom';
 
 import Sidebar from './index';
+import { SubsidyRequestsContext } from '../../components/subsidy-requests';
 
 import { features } from '../../config';
 
@@ -35,13 +36,26 @@ const initialState = {
   },
 };
 
-const SidebarWrapper = props => (
+const initialSubsidyRequestsContextValue = {
+  subsidyRequestsCounts: {
+    subscriptionLicenses: null,
+    couponCodes: null,
+  },
+};
+
+const SidebarWrapper = ({
+  // eslint-disable-next-line react/prop-types
+  subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
+  ...props
+}) => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <Sidebar
-        baseUrl="/test-enterprise-slug"
-        {...props}
-      />
+      <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+        <Sidebar
+          baseUrl="/test-enterprise-slug"
+          {...props}
+        />
+      </SubsidyRequestsContext.Provider>
     </Provider>
   </MemoryRouter>
 );
@@ -224,12 +238,11 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
+    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' }, { exact: false });
     expect(subscriptionManagementLink).toBeNull();
   });
 
-  it('renders correctly when subscriptionManagementScreen and Bulk Enrollment is enabled', () => {
-    // should cause both subscription management and enrollment links to not be present
+  it('renders correctly when subscriptionManagementScreen', () => {
     const store = mockStore({
       sidebar: {
         ...initialState.sidebar,
@@ -238,11 +251,59 @@ describe('<Sidebar />', () => {
         enableSubscriptionManagementScreen: true,
       },
     });
+    render(<SidebarWrapper store={store} />);
+    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' }, { exact: false });
+    expect(subscriptionManagementLink).toBeInTheDocument();
+  });
 
-    features.BULK_ENROLLMENT = true;
+  it('renders settings link if the settings page has visible tabs.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: true,
+      },
+    });
+
+    features.SETTINGS_PAGE = true;
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
-    expect(subscriptionManagementLink).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('hides settings link if the settings page has no visible tabs.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: false,
+      },
+    });
+
+    features.SETTINGS_PAGE = true;
+
+    render(<SidebarWrapper store={store} />);
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
+  describe('notifications', () => {
+    it('displays notification bubble when there are outstanding license requests', () => {
+      const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 2 } };
+      render(<SidebarWrapper subsidyRequestsContextValue={contextValue} />);
+      expect(screen.getByRole('link', { name: 'Subscription Management has unread notifications' })).toBeInTheDocument();
+    });
+    it('does not display notification bubble when there are 0 outstanding license requests', () => {
+      const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 0 } };
+      render(<SidebarWrapper subsidyRequestsContextValue={contextValue} />);
+      expect(screen.queryByRole('link', { name: 'Subscription Management has unread notifications' })).not.toBeInTheDocument();
+    });
+    it('displays notification bubble when there are outstanding coupon code requests', () => {
+      const contextValue = { subsidyRequestsCounts: { couponCodes: 2 } };
+      render(<SidebarWrapper subsidyRequestsContextValue={contextValue} />);
+      expect(screen.getByRole('link', { name: 'Code Management has unread notifications' })).toBeInTheDocument();
+    });
+    it('does not display notification bubble when there are 0 outstanding coupon code requests', () => {
+      const contextValue = { subsidyRequestsCounts: { couponCodes: 0 } };
+      render(<SidebarWrapper subsidyRequestsContextValue={contextValue} />);
+      expect(screen.queryByRole('link', { name: 'Code Management has unread notifications' })).not.toBeInTheDocument();
+    });
   });
 });

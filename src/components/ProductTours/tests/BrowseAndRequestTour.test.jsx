@@ -21,7 +21,7 @@ import {
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
 import { features } from '../../../config';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 features.FEATURE_BROWSE_AND_REQUEST = true;
@@ -54,7 +54,7 @@ const TourWithContext = ({
 }) => (
   <Router history={historyMock(pathname)}>
     <Provider store={store}>
-      <SubsidyRequestConfigurationContext.Provider value={{
+      <SubsidyRequestsContext.Provider value={{
         subsidyRequestConfiguration: {
           subsidyType,
           subsidyRequestsEnabled,
@@ -65,7 +65,7 @@ const TourWithContext = ({
           <BrowseAndRequestTour />
           <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
         </>
-      </SubsidyRequestConfigurationContext.Provider>
+      </SubsidyRequestsContext.Provider>
     </Provider>
   </Router>
 );
@@ -76,11 +76,6 @@ describe('<BrowseAndRequestTour/>', () => {
   it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
     render(<TourWithContext />);
     expect(screen.queryByText('New Feature')).toBeTruthy();
-  });
-
-  it('is not shown if enterprise is not eligible for browse and request', () => {
-    render(<TourWithContext subsidyType={null} />);
-    expect(screen.queryByText('New Feature')).toBeFalsy();
   });
 
   it('is not shown if enterprise already has subsidy requests turned on', () => {

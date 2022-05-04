@@ -13,8 +13,14 @@ export const createURL = state => {
   const sanitizedState = excludeKeys(state, ALGOLIA_KEYS_TO_EXCLUDE);
   const queryParams = new URLSearchParams();
   Object.entries(sanitizedState).forEach(([key, value]) => {
+    if (value === null || value === undefined) {
+      return;
+    }
     if (Array.isArray(value)) {
       value.forEach((item) => {
+        if (item === null || item === undefined) {
+          return;
+        }
         queryParams.append(key, item);
       });
       return;

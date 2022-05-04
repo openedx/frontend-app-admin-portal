@@ -16,6 +16,7 @@ import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SubscriptionContext } from '../SubscriptionData';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
 import { SUBSIDY_REQUEST_STATUS } from '../../../data/constants/subsidyRequests';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 
 const mockLicenseRequest = {
   uuid: 'test-license-request-uuid', requestStatus: SUBSIDY_REQUESTS_TYPES.REQUESTED,
@@ -23,7 +24,7 @@ const mockLicenseRequest = {
 jest.mock('../../SubsidyRequestManagementTable', () => {
   const originalModule = jest.requireActual('../../SubsidyRequestManagementTable');
   return {
-    __esModule: true, // this property makes it work
+    __esModule: true,
     ...originalModule,
     /* eslint-disable react/prop-types */
     default: ({
@@ -61,7 +62,7 @@ jest.mock('../../SubsidyRequestManagementTable', () => {
           {!!onDecline && (
             <>
               <span>has onDecline</span>
-              <button type="button" onClick={onDecline}>Decline</button>
+              <button type="button" onClick={() => onDecline(mockLicenseRequest)}>Decline</button>
             </>
           )}
           {!!hasInitialTableOptions && <span>has initialTableOptions</span>}
@@ -140,14 +141,18 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
+const mockDecrementLicenseRequestCount = jest.fn();
+
 const SubsidySubsidyRequestsWithRouter = ({
   store: storeProp,
   subscriptionsData,
 }) => (
   <Provider store={storeProp}>
-    <SubscriptionContext.Provider value={subscriptionsData}>
-      <SubscriptionSubsidyRequests />
-    </SubscriptionContext.Provider>
+    <SubsidyRequestsContext.Provider value={{ decrementLicenseRequestCount: mockDecrementLicenseRequestCount }}>
+      <SubscriptionContext.Provider value={subscriptionsData}>
+        <SubscriptionSubsidyRequests />
+      </SubscriptionContext.Provider>
+    </SubsidyRequestsContext.Provider>
   </Provider>
 );
 
@@ -247,7 +252,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
     expect(screen.getByText('Approve license request modal'));
   });
 
-  it('calls updateRequestStatus and closes the modal after successfully approving a request', () => {
+  it('handles successfully approving a request', () => {
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -282,6 +287,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
+    expect(mockDecrementLicenseRequestCount).toHaveBeenCalledTimes(1);
     expect(screen.queryByText('Approve in modal')).not.toBeInTheDocument();
   });
 
@@ -304,5 +310,44 @@ describe('<SubscriptionSubsidyRequests />', () => {
     fireEvent.click(closeButton);
 
     expect(screen.queryByText('Decline license request modal')).not.toBeInTheDocument();
+  });
+
+  it('handles successfully declining a request', () => {
+    const mockHandleUpdateRequestStatus = jest.fn();
+    useSubsidyRequests.mockImplementation(() => ({
+      isLoading: false,
+      requests: {
+        pageCount: 1,
+        itemCount: 1,
+        requests: [mockLicenseRequest],
+      },
+      requestsOverview: [],
+      handleFetchRequests: jest.fn(),
+      updateRequestStatus: mockHandleUpdateRequestStatus,
+    }));
+
+    render(<SubsidySubsidyRequestsWithRouter subscriptionsData={{
+      data: {
+        results: [{
+          daysUntilExpiration: 100,
+          licenses: {
+            unassigned: 1,
+          },
+        }],
+      },
+      loading: false,
+    }}
+    />);
+    const declineButton = screen.getByText('Decline');
+    fireEvent.click(declineButton);
+    expect(screen.getByText('Decline license request modal'));
+
+    const declineInModalButton = screen.getByText('Decline in modal');
+    fireEvent.click(declineInModalButton);
+    expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
+      { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
+    );
+    expect(mockDecrementLicenseRequestCount).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('Decline in modal')).not.toBeInTheDocument();
   });
 });

@@ -1,4 +1,5 @@
 import { configuration } from '../../../config';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
@@ -70,3 +71,8 @@ export const LMS_CONFIG_OAUTH_POLLING_TIMEOUT = 60000;
 export const LMS_CONFIG_OAUTH_POLLING_INTERVAL = 1000;
 export const SSO_CONFIG_POLLING_TIMEOUT = 120000;
 export const SSO_CONFIG_POLLING_INTERVAL = 1000;
+
+export const SUBSIDY_TYPE_LABELS = {
+  [SUPPORTED_SUBSIDY_TYPES.coupon]: 'Codes',
+  [SUPPORTED_SUBSIDY_TYPES.license]: 'Licenses',
+};

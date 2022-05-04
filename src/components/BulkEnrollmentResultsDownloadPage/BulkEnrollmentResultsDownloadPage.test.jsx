@@ -26,7 +26,7 @@ const initialHistory = createMemoryHistory({
 
 const mockAddToast = jest.fn();
 jest.mock('../../data/services/LicenseManagerAPIService', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: {
     fetchBulkEnrollmentJob: jest.fn(),
   },

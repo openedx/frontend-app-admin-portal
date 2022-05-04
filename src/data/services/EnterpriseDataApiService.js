@@ -33,9 +33,12 @@ class EnterpriseDataApiService {
       page: 1,
       page_size: 50,
       has_enrollments: false,
-      no_page: csv,
       ...options,
     });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
@@ -48,9 +51,12 @@ class EnterpriseDataApiService {
       page_size: 50,
       has_enrollments: true,
       extra_fields: ['enrollment_count'],
-      no_page: csv,
       ...options,
     });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
@@ -65,9 +71,12 @@ class EnterpriseDataApiService {
       active_courses: false,
       all_enrollments_passed: true,
       extra_fields: ['enrollment_count', 'course_completion_count'],
-      no_page: csv,
       ...options,
     });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
@@ -78,9 +87,12 @@ class EnterpriseDataApiService {
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
-      no_page: csv,
       ...options,
     });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);

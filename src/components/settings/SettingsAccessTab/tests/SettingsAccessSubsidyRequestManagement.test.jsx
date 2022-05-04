@@ -9,7 +9,7 @@ import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequ
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 
 jest.mock('../SettingsAccessTabSection', () => ({
-  __esModule: true, // this property makes it work
+  __esModule: true,
   default: jest.fn(({ checked, onFormSwitchChange }) => (
     <div>
       <input type="checkbox" id="checkbox" checked={checked} onChange={onFormSwitchChange} />
@@ -50,7 +50,40 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
     });
   });
 
-  it('should update configuration if disable = true and subsidy requests are currently enabled ', async () => {
+  it('should update configuration if disabled becomes false and subsidy requests are not currently enabled', async () => {
+    const mockUpdateSubsidyRequestConfiguration = jest.fn();
+    const props = {
+      subsidyRequestConfiguration: {
+        subsidyRequestsEnabled: false,
+        subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
+      },
+      updateSubsidyRequestConfiguration: mockUpdateSubsidyRequestConfiguration,
+      disabled: true,
+    };
+
+    const { rerender } = render(
+      <SettingsAccessSubsidyRequestManagement
+        {...props}
+      />,
+    );
+
+    rerender(
+      <SettingsAccessSubsidyRequestManagement
+        {...{
+          ...props,
+          disabled: false,
+        }}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
+        { isSubsidyRequestsEnabled: true },
+      );
+    });
+  });
+
+  it('should update configuration if disabled = true and subsidy requests are currently enabled ', async () => {
     const mockUpdateSubsidyRequestConfiguration = jest.fn();
     const props = {
       ...basicProps,

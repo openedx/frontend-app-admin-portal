@@ -11,9 +11,11 @@ class EnterpriseCatalogApiService {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
     const queryParams = new URLSearchParams({
-      course_run_ids: courseRunIds.join(','),
       get_catalogs_containing_specified_content_ids: true,
     });
+    if (courseRunIds?.length > 0) {
+      queryParams.set('course_run_ids', courseRunIds.join(','));
+    }
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-customer/${enterpriseId}/contains_content_items/?${queryParams.toString()}`;
     return EnterpriseCatalogApiService.apiClient(
       {

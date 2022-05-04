@@ -12,14 +12,13 @@ import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from './constants';
-import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 
 const cookies = new Cookies();
 
 const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestConfigurationContext);
-  const isEligibleForFeature = !!subsidyRequestConfiguration?.subsidyType;
-  const isFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const isFeatureEnabledForEnterprise = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
   const history = useHistory();
   const inSettingsPage = history.location.pathname.includes(ROUTE_NAMES.settings);
@@ -28,7 +27,7 @@ const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
   // Only show tour if feature is enabled, the enterprise is eligible for the feature,
   // hide cookie is undefined or false, not in settings page, and subsidy requests are not already enabled
-  const showTour = isFeatureEnabled && isEligibleForFeature
+  const showTour = isFeatureEnabledForEnterprise
     && !dismissedTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
   if (!showTour) {
@@ -65,7 +64,7 @@ const BrowseAndRequestTour = ({ enterpriseSlug, enableBrowseAndRequest }) => {
     checkpoints: [
       {
         placement: 'right',
-        body: 'We’ve recently added a new feature that enables learners to browse for courses and request access. '
+        body: "We've recently added a new feature that enables learners to browse for courses and request access. "
           + 'Continue to the settings page to learn more and configure access.',
         target: `#${TOUR_TARGETS.SETTINGS_SIDEBAR}`,
         title: 'New Feature',

@@ -4,10 +4,15 @@ import PropTypes from 'prop-types';
 
 import { features } from '../../../config';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
+import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy-request-management-alerts';
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
 import SettingsAccessSSOManagement from './SettingsAccessSSOManagement';
 import SettingsAccessSubsidyRequestManagement from './SettingsAccessSubsidyRequestManagement';
-import { SubsidyRequestConfigurationContext } from '../../subsidy-request-configuration';
+import SettingsAccessSubsidyTypeSelection from './SettingsAccessSubsidyTypeSelection';
+import { SettingsContext } from '../SettingsContext';
+import SettingsAccessConfiguredSubsidyType from './SettingsAccessConfiguredSubsidyType';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
+import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
 const SettingsAccessTab = ({
   enterpriseId,
@@ -21,19 +26,29 @@ const SettingsAccessTab = ({
   const {
     subsidyRequestConfiguration,
     updateSubsidyRequestConfiguration,
-  } = useContext(SubsidyRequestConfigurationContext);
+  } = useContext(SubsidyRequestsContext);
+  const {
+    couponsData: { results: coupons },
+    customerAgreement: { subscriptions },
+    enterpriseSubsidyTypes,
+  } = useContext(SettingsContext);
 
-  const isEligibleForBrowseAndRequest = features.FEATURE_BROWSE_AND_REQUEST
-   && enableBrowseAndRequest && !!subsidyRequestConfiguration?.subsidyType;
+  const hasConfiguredSubsidyType = !!subsidyRequestConfiguration?.subsidyType;
+  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
 
-  const isBrowseAndRequestDisabled = !(enableUniversalLink || (
-    identityProvider && enableIntegratedCustomerLearnerPortalSearch
-  ));
+  const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
+  const hasActiveAccessChannel = enableUniversalLink || isLearnerPortalSearchEnabled;
 
   const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
 
   return (
     <div className="settings-access-tab mt-4">
+      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
+       && subsidyRequestConfiguration?.subsidyRequestsEnabled
+        && <NoAvailableCodesBanner coupons={coupons} /> }
+      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.license
+       && subsidyRequestConfiguration?.subsidyRequestsEnabled
+        && <NoAvailableLicensesBanner subscriptions={subscriptions} /> }
       <Row>
         <Col>
           <h2>Enable browsing on-demand</h2>
@@ -43,7 +58,7 @@ const SettingsAccessTab = ({
         <Col>
           <p>
             Allow learners without a subsidy to browse the catalog and request enrollment to courses.
-            Browsing on demand will expire at the end of your latest subscription.
+            Browsing on demand will expire at the end of your latest purchase.
           </p>
         </Col>
         <Col md="auto">
@@ -53,40 +68,62 @@ const SettingsAccessTab = ({
         </Col>
       </Row>
 
-      <h3>Select access channel</h3>
-      <p>
-        Channels determine how learners access the catalog(s).
-        You can select one or both and change your selection at any time.
-      </p>
-
-      {isUniversalLinkEnabled && (
+      {enterpriseSubsidyTypes.length > 1 && (
         <div className="mb-4">
-          <SettingsAccessLinkManagement />
+          <h3>Subsidy type</h3>
+          {hasConfiguredSubsidyType
+            ? <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
+            : (
+              <SettingsAccessSubsidyTypeSelection
+                subsidyRequestConfiguration={subsidyRequestConfiguration}
+                subsidyTypes={enterpriseSubsidyTypes}
+                disabled={hasConfiguredSubsidyType}
+                updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+              />
+            )}
         </div>
       )}
 
-      {identityProvider && (
-        <SettingsAccessSSOManagement
-          enterpriseId={enterpriseId}
-          enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
-          identityProvider={identityProvider}
-          updatePortalConfiguration={updatePortalConfiguration}
-        />
-      )}
+      {hasConfiguredSubsidyType && (
+        <>
+          <div className="mb-5">
+            <h3>Select access channel</h3>
+            <p>
+              Channels determine how learners access the catalog(s).
+              You can select one or both and change your selection at any time.
+            </p>
 
-      {isEligibleForBrowseAndRequest && (
-        <div className="mt-5">
-          <h3>Manage course requests</h3>
-          <p>
-            Allow learners to request subsidy to courses. You will see the requests under subsidy tab.
-            Disabling this feature will not affect learners&apos; browsing capability.
-          </p>
-          <SettingsAccessSubsidyRequestManagement
-            subsidyRequestConfiguration={subsidyRequestConfiguration}
-            updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-            disabled={isBrowseAndRequestDisabled}
-          />
-        </div>
+            {isUniversalLinkEnabled && (
+              <div className="mb-4">
+                <SettingsAccessLinkManagement />
+              </div>
+            )}
+
+            {identityProvider && (
+              <SettingsAccessSSOManagement
+                enterpriseId={enterpriseId}
+                enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+                identityProvider={identityProvider}
+                updatePortalConfiguration={updatePortalConfiguration}
+              />
+            )}
+          </div>
+
+          {isBrowseAndRequestEnabled && (
+            <div>
+              <h3>Manage course requests</h3>
+              <p>
+                Allow learners to request subsidy to courses. You will see the requests under subsidy tab.
+                Disabling this feature will not affect learners&apos; browsing capability.
+              </p>
+              <SettingsAccessSubsidyRequestManagement
+                subsidyRequestConfiguration={subsidyRequestConfiguration}
+                updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+                disabled={!hasActiveAccessChannel}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

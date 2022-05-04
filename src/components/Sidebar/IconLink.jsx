@@ -1,51 +1,107 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Bubble } from '@edx/paragon';
 
-const IconLink = props => {
-  const {
-    to, isExpanded, title, icon, external, id,
-  } = props;
-  if (external) {
-    return (
-      <NavLink
-        className="nav-link text-left rounded-0"
-        to={{ pathname: to }}
-        target="_blank"
-      >
-        <FontAwesomeIcon icon={icon} className={classNames([{ 'mr-2': isExpanded }])} />
-        {!isExpanded ? <span className="sr-only">{title}</span> : null}
-        {isExpanded && title}
-      </NavLink>
-    );
-  }
+const BUBBLE_MARGIN_LEFT = 5;
+
+const BaseNavLink = ({
+  icon,
+  isExpanded,
+  title,
+  notification,
+  ...rest
+}) => {
+  const iconRef = useRef();
+  const titleRef = useRef();
+
+  const [notificationBubbleMarginLeft, setNotificationBubbleMarginLeft] = useState(0);
+
+  useLayoutEffect(() => {
+    const iconRect = iconRef.current?.getBoundingClientRect();
+    const titleRect = titleRef.current?.getBoundingClientRect();
+
+    if (isExpanded && iconRect && titleRect) {
+      setNotificationBubbleMarginLeft(iconRect.width + titleRect.width + BUBBLE_MARGIN_LEFT);
+      return;
+    }
+
+    if (iconRect) {
+      setNotificationBubbleMarginLeft(iconRect.width + BUBBLE_MARGIN_LEFT);
+    }
+  }, [iconRef, titleRef, isExpanded]);
+
   return (
     <NavLink
       className="nav-link text-left rounded-0"
-      to={to}
-      id={id}
+      {...rest}
     >
-      <FontAwesomeIcon icon={icon} className={classNames([{ 'mr-2': isExpanded }])} />
-      {!isExpanded ? <span className="sr-only">{title}</span> : null}
-      {isExpanded && title}
+      <div className="position-relative">
+        <span ref={iconRef}>
+          <FontAwesomeIcon icon={icon} className={classNames({ 'mr-2': isExpanded })} />
+        </span>
+        {!isExpanded && <span className="sr-only">{title}</span>}
+        {isExpanded && <span ref={titleRef}>{title}</span>}
+        {notification && (
+          <Bubble
+            variant="error"
+            className="position-absolute"
+            style={{
+              minHeight: '0.5rem',
+              minWidth: '0.5rem',
+              left: notificationBubbleMarginLeft,
+              top: -2,
+            }}
+          >
+            <span className="sr-only">has unread notifications</span>
+          </Bubble>
+        )}
+      </div>
     </NavLink>
   );
 };
 
-IconLink.defaultProps = {
-  icon: null,
+const commonPropTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.shape().isRequired,
+  isExpanded: PropTypes.bool,
+  notification: PropTypes.bool,
+};
+const commonDefaultProps = {
   isExpanded: false,
+  notification: false,
+};
+
+BaseNavLink.propTypes = commonPropTypes;
+BaseNavLink.defaultProps = commonDefaultProps;
+
+const IconLink = (props) => {
+  const { external, to, ...rest } = props;
+
+  if (external) {
+    return (
+      <BaseNavLink
+        to={{ pathname: to }}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...rest}
+      />
+    );
+  }
+  return <BaseNavLink to={to} {...rest} />;
+};
+
+IconLink.defaultProps = {
+  ...commonDefaultProps,
   external: false,
   id: undefined,
 };
 
 IconLink.propTypes = {
-  title: PropTypes.string.isRequired,
+  ...commonPropTypes,
   to: PropTypes.string.isRequired,
-  icon: PropTypes.shape({}),
-  isExpanded: PropTypes.bool,
   external: PropTypes.bool,
   id: PropTypes.string,
 };

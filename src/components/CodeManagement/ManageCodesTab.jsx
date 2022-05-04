@@ -19,7 +19,7 @@ import { updateUrl } from '../../utils';
 import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
-import { SubsidyRequestConfigurationContext } from '../subsidy-request-configuration';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
 class ManageCodesTab extends React.Component {
@@ -376,6 +376,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-ManageCodesTab.contextType = SubsidyRequestConfigurationContext;
+ManageCodesTab.contextType = SubsidyRequestsContext;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCodesTab);

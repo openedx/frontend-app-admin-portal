@@ -24,7 +24,7 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
-import SubsidyRequestConfigurationContextProvider from '../subsidy-request-configuration';
+import SubsidyRequestsContextProvider from '../subsidy-requests';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -94,6 +94,7 @@ class EnterpriseApp extends React.Component {
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
       enableSamlConfigurationScreen,
+      enableLearnerPortal,
       enableLmsConfigurationsScreen,
       enterpriseId,
       loading,
@@ -110,6 +111,14 @@ class EnterpriseApp extends React.Component {
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
 
+    // Hide Settings page if there are no visible tabs
+    const shouldShowSettingsPage = (
+      features.SETTINGS_PAGE && (
+        enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
+       || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
+      )
+    );
+
     if (error) {
       return this.renderError(error);
     }
@@ -125,7 +134,7 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <SubsidyRequestConfigurationContextProvider
+      <SubsidyRequestsContextProvider
         enableBrowseAndRequest={enableBrowseAndRequest}
         enterpriseUUID={enterpriseId}
       >
@@ -241,7 +250,7 @@ class EnterpriseApp extends React.Component {
                       path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
                       component={BulkEnrollmentResultsDownloadPage}
                     />
-                    {features.SETTINGS_PAGE && (
+                    {shouldShowSettingsPage && (
                       <Route
                         path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
                         component={SettingsPage}
@@ -254,7 +263,7 @@ class EnterpriseApp extends React.Component {
             )}
           </MediaQuery>
         </div>
-      </SubsidyRequestConfigurationContextProvider>
+      </SubsidyRequestsContextProvider>
     );
   }
 }
@@ -268,6 +277,7 @@ EnterpriseApp.defaultProps = {
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
+  enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
   loading: true,
 };
@@ -294,6 +304,7 @@ EnterpriseApp.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
+  enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,

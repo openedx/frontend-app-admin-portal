@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
@@ -17,8 +17,14 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 
-jest.mock('../../components/subsidy-request-configuration', () => ({
-  __esModule: true, // this property makes it work
+jest.mock('../../components/subsidy-requests', () => ({
+  __esModule: true,
+  // eslint-disable-next-line react/prop-types
+  default: ({ children }) => <div>{children}</div>,
+}));
+
+jest.mock('../Sidebar', () => ({
+  __esModule: true,
   // eslint-disable-next-line react/prop-types
   default: ({ children }) => <div>{children}</div>,
 }));
@@ -40,6 +46,7 @@ const initialState = {
   dashboardAnalytics: {},
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise-slug',
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
@@ -59,23 +66,9 @@ const initialState = {
 const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
   <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
-      <EnterpriseApp
-        match={{
-          url: '/foo/bar',
-          params: {
-            enterpriseSlug: 'foo',
-          },
-        }}
-        location={{
-          pathname: '/test-enterprise-slug/admin/learners',
-        }}
-        history={{
-          replace: () => {},
-        }}
-        {...props}
-        portalConfiguration={{
-          enterpriseId: null,
-        }}
+      <Route
+        path="/:enterpriseSlug"
+        render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
       />
     </Provider>
   </MemoryRouter>
@@ -103,13 +96,8 @@ describe('<EnterpriseApp />', () => {
     });
     const wrapper = mount((
       <EnterpriseAppWrapper
-        initialEntries={[{ pathname: '/foo/bar' }]}
+        initialEntries={['/foo/bar']}
         store={store}
-        match={{
-          url: '/foo',
-          path: '/:enterpriseSlug',
-          params: { enterpriseSlug: 'foo' },
-        }}
       />
     ));
     expect(wrapper.find(NotFoundPage).length).toEqual(1);
@@ -120,7 +108,8 @@ describe('<EnterpriseApp />', () => {
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
-        ...initialState.portalConfiguration, loading: true,
+        ...initialState.portalConfiguration,
+        loading: true,
       },
     });
 

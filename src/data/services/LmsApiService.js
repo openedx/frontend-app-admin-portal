@@ -30,20 +30,6 @@ class LmsApiService {
 
   static enterpriseCustomerInviteKeyUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/`;
 
-  static fetchCourseOutline(courseId) {
-    const options = {
-      course_id: courseId,
-      username: 'staff',
-      depth: 'all',
-      nav_depth: 3,
-      block_types_filter: 'course,chapter,sequential,vertical',
-    };
-    const queryParams = new URLSearchParams(options);
-
-    const outlineUrl = `${LmsApiService.baseUrl}/api/courses/v1/blocks/?${queryParams.toString()}`;
-    return LmsApiService.apiClient().get(outlineUrl);
-  }
-
   static fetchEnterpriseList(options) {
     const queryParams = new URLSearchParams({
       page: 1,
@@ -291,18 +277,21 @@ class LmsApiService {
     return LmsApiService.apiClient().post(LmsApiService.enterpriseCustomerInviteKeyUrl, formData);
   }
 
-  static getAccessLinks = (enterpriseUUID) => {
-    const queryParams = new URLSearchParams();
-    queryParams.append('enterprise_customer_uuid', enterpriseUUID);
-    queryParams.append('ordering', '-created');
+  static getAccessLinks(enterpriseUUID) {
+    const queryParams = new URLSearchParams({
+      ordering: '-created',
+    });
+    if (enterpriseUUID) {
+      queryParams.set('enterprise_customer_uuid', enterpriseUUID);
+    }
     const url = `${LmsApiService.enterpriseCustomerInviteKeyListUrl}?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(url);
   }
 
-  static updateEnterpriseCustomer = (enterpriseUUID, options) => LmsApiService.apiClient().patch(
-      `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/`,
-      options,
-  )
+  static updateEnterpriseCustomer(enterpriseUUID, options) {
+    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/`;
+    return LmsApiService.apiClient().patch(url, options);
+  }
 
   /**
    * Disables EnterpriseCustomerInviteKey
@@ -313,10 +302,8 @@ class LmsApiService {
     const formData = {
       is_active: false,
     };
-    return LmsApiService.apiClient().patch(
-      `${LmsApiService.enterpriseCustomerInviteKeyUrl}${enterpriseCustomerInviteKeyUUID}/`,
-      formData,
-    );
+    const url = `${LmsApiService.enterpriseCustomerInviteKeyUrl}${enterpriseCustomerInviteKeyUUID}/`;
+    return LmsApiService.apiClient().patch(url, formData);
   }
 
   /**
@@ -330,10 +317,8 @@ class LmsApiService {
       enable_universal_link: enableUniversalLink,
       expiration_date: expirationDate,
     };
-    return LmsApiService.apiClient().patch(
-      `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`,
-      formData,
-    );
+    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/toggle_universal_link/`;
+    return LmsApiService.apiClient().patch(url, formData);
   }
 }
 

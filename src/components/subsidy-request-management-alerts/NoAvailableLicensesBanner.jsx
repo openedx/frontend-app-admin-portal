@@ -59,7 +59,7 @@ NoAvailableLicensesBanner.propTypes = {
   subscriptions: PropTypes.arrayOf(
     PropTypes.shape({
       daysUntilExpiration: PropTypes.number.isRequired,
-      licenses: { unassigned: PropTypes.number.isRequired },
+      licenses: PropTypes.shape({ unassigned: PropTypes.number.isRequired }),
     }),
   ).isRequired,
 };

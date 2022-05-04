@@ -39,7 +39,7 @@ const initialStore = {
   portalConfiguration: {
     enterpriseId,
     enterpriseSlug: 'sluggy',
-    enableLearnerPortal: false,
+    enableLearnerPortal: true,
     enableLmsConfigurationsScreen: true,
     enableBrowseAndRequest: false,
     enableIntegratedCustomerLearnerPortalSearch: true,

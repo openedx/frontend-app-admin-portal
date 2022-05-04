@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import {
   faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
@@ -10,6 +9,7 @@ import {
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
+import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 
@@ -52,8 +52,19 @@ class Sidebar extends React.Component {
       enableSubscriptionManagementScreen,
       enableSamlConfigurationScreen,
       enableAnalyticsScreen,
+      enableLearnerPortal,
       enableLmsConfigurationsScreen,
     } = this.props;
+
+    const { subsidyRequestsCounts } = this.context;
+
+    // Hide Settings link if there are no visible tabs
+    const shouldShowSettingsLink = (
+      features.SETTINGS_PAGE && (
+        enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
+       || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
+      )
+    );
 
     return [
       {
@@ -66,6 +77,7 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/coupons`,
         icon: faTags,
         hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+        notification: !!subsidyRequestsCounts.couponCodes,
       },
       {
         title: 'Reporting Configurations',
@@ -78,6 +90,7 @@ class Sidebar extends React.Component {
         to: `${baseUrl}/admin/subscriptions`,
         icon: faCreditCard,
         hidden: !enableSubscriptionManagementScreen,
+        notification: !!subsidyRequestsCounts.subscriptionLicenses,
       },
       {
         title: 'Analytics',
@@ -97,14 +110,14 @@ class Sidebar extends React.Component {
         icon: faUniversity,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
       },
-      // NOTE: keep "Support" link the last nav item
       {
         title: 'Settings',
         id: TOUR_TARGETS.SETTINGS_SIDEBAR,
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
         icon: faCog,
-        hidden: !features.SETTINGS_PAGE,
+        hidden: !shouldShowSettingsLink,
       },
+      // NOTE: keep "Support" link the last nav item
       {
         title: 'Support',
         to: configuration.ENTERPRISE_SUPPORT_URL,
@@ -167,10 +180,17 @@ class Sidebar extends React.Component {
       >
         <div className="sidebar-content py-2">
           <ul className="nav nav-pills flex-column m-0">
-            {this.getMenuItems().filter(item => !item.hidden).map(item => (
-              <li key={item.to} className="nav-item">
+            {this.getMenuItems().filter(item => !item.hidden).map(({
+              id, to, title, icon, notification, external,
+            }) => (
+              <li key={to} className="nav-item">
                 <IconLink
-                  {...item}
+                  id={id}
+                  to={to}
+                  title={title}
+                  icon={icon}
+                  notification={notification}
+                  external={external}
                   isExpanded={this.isSidebarExpanded()}
                 />
               </li>
@@ -182,12 +202,15 @@ class Sidebar extends React.Component {
   }
 }
 
+Sidebar.contextType = SubsidyRequestsContext;
+
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
+  enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
@@ -204,6 +227,7 @@ Sidebar.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,
+  enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
