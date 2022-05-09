@@ -49,7 +49,7 @@ const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
       <SubscriptionExpirationBanner isSubscriptionPlanDetails />
       <Row className="mb-4">
         <Col className="mb-3 mb-lg-0">
-          <Row className="m-0 justify-content-between">
+          <div className="d-flex justify-content-between mb-3">
             <h2>{subscription.title}</h2>
             {shouldShowInviteLearnersButton && (
               <div className="text-md-right">
@@ -63,8 +63,8 @@ const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
                 />
               </div>
             )}
-          </Row>
-          <p className="mt-1">
+          </div>
+          <p>
             In accordance with edX privacy policies, learners that do not activate their allocated
             licenses within 90 days of invitation are purged from the record tables below.
           </p>
