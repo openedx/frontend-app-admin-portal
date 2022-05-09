@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import {
-  Badge, Button, Card, CardGrid, Dropdown, Hyperlink, Icon, IconButton, useToggle,
+  Badge, Card, CardGrid, Dropdown, Icon, IconButton, useToggle,
 } from '@edx/paragon';
 import {
-  Add, Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
+  Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
 } from '@edx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
 import ConfigError from '../ConfigError';
@@ -152,24 +152,6 @@ const ExistingSSOConfigs = ({
             </Card>
           ))}
         </CardGrid>
-        <Button
-          variant="primary"
-          className="mr-6"
-          iconBefore={Add}
-          size="lg"
-          block
-        >
-          <Hyperlink
-            className="button-link"
-            destination="https://abc"
-            onClick={e => {
-              e.preventDefault();
-              setProviderConfig();
-              setCurrentStep('idp'); // reset to first stepper screen
-            }}
-          >New configuration
-          </Hyperlink>
-        </Button>
       </span>
     </>
   );

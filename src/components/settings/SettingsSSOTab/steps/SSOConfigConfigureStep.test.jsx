@@ -34,11 +34,37 @@ describe('SSO Config Configure step', () => {
     screen.getByLabelText('Email Address Attribute');
     screen.getByLabelText('SAML Configuration');
   });
-  test('test page form validation', () => {
+  test('updating fields fires setFormUpdated', () => {
+    const mockSetFormUpdated = jest.fn();
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfigureStep setConfigValues={jest.fn()} connectError={false} />
+          <SSOConfigConfigureStep
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setFormUpdated={mockSetFormUpdated}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
+    );
+    userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
+    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), 'f');
+    userEvent.type(screen.getByLabelText('User ID Attribute'), 'f');
+    userEvent.type(screen.getByLabelText('Full Name Attribute'), 'f');
+    userEvent.type(screen.getByLabelText('First Name Attribute'), 'f');
+    userEvent.type(screen.getByLabelText('Last Name Attribute'), 'f');
+    userEvent.type(screen.getByLabelText('Email Address Attribute'), 'f');
+    expect(mockSetFormUpdated).toHaveBeenCalledTimes(7);
+  });
+  test('page form validation', () => {
+    render(
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConfigureStep
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setFormUpdated={jest.fn()}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );
@@ -47,7 +73,7 @@ describe('SSO Config Configure step', () => {
     expect(screen.queryByText(INVALID_NAME));
     expect(screen.queryByText(INVALID_LENGTH));
   });
-  test('test error with default values', () => {
+  test('error with default values', () => {
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>

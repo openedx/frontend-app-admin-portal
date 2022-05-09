@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import { Alert, Hyperlink, Toast } from '@edx/paragon';
@@ -10,9 +10,12 @@ import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
 const SettingsSSOTab = ({ enterpriseId }) => {
-  const [refreshBool, setRefreshBool] = useState(true);
+  const {
+    ssoState: { providerConfig, infoMessage, refreshBool },
+    setInfoMessage,
+    setRefreshBool,
+  } = useContext(SSOConfigContext);
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
-  const { ssoState: { providerConfig, infoMessage }, setInfoMessage } = useContext(SSOConfigContext);
 
   return (
     <div>
@@ -28,8 +31,9 @@ const SettingsSSOTab = ({ enterpriseId }) => {
       </div>
       {!isLoading && (
         <div>
-          {/* Configs found and editing mode is off, so let's go to listing page */}
-          {existingConfigs.length > 0 && (providerConfig === null)
+          {/* providerConfig represents the currently selected config to edit/create, if there are
+          existing configs but no providerConfig then we can safely render the listings page */}
+          {existingConfigs?.length > 0 && (providerConfig === null)
             && (
             <ExistingSSOConfigs
               configs={existingConfigs}
@@ -37,10 +41,11 @@ const SettingsSSOTab = ({ enterpriseId }) => {
               setRefreshBool={setRefreshBool}
             />
             )}
-          {/* nothing found so guide user to creation form */}
-          {existingConfigs.length < 1 && <NewSSOConfigForm />}
-          {/* editing mode is active since we found a selected providerConfig */}
-          {existingConfigs.length > 0 && (providerConfig !== null) && <NewSSOConfigForm />}
+          {/* Nothing found so guide user to creation/edit form */}
+          {existingConfigs?.length < 1 && <NewSSOConfigForm />}
+          {/* Since we found a selected providerConfig we know we are in editing mode and can safely
+          render the create/edit form */}
+          {existingConfigs?.length > 0 && (providerConfig !== null) && <NewSSOConfigForm />}
           {error && (
           <Alert
             variant="warning"

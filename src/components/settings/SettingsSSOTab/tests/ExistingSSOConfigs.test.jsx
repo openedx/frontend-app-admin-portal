@@ -52,7 +52,7 @@ const incompleteConfig = [
   },
 ];
 
-describe('<ExistingLMSCardDeck />', () => {
+describe('<ExistingSSOConfigs />', () => {
   it('renders active config card', () => {
     render(
       <Provider store={store}>

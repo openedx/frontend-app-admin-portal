@@ -9,11 +9,13 @@ import { SSOConfigContext } from '../SSOConfigContext';
 
 const SSOConfigServiceProviderStep = ({ enterpriseSlug, learnerPortalEnabled }) => {
   const {
-    ssoState: { providerConfig: { slug: idpSlug }, serviceprovider: { isSPConfigured } },
+    ssoState,
     dispatchSsoState,
   } = useContext(SSOConfigContext);
   const handleChange = event => dispatchSsoState(updateServiceProviderConfigured(event.target.checked));
   const configuration = getConfig();
+  const idpSlug = ssoState.providerConfig?.slug;
+  const { isSPConfigured } = ssoState.serviceprovider;
   const { spMetadataLink } = createSAMLURLs({
     configuration,
     idpSlug,
