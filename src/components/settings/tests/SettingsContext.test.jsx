@@ -20,7 +20,6 @@ const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-uuid',
     enterpriseSlug: ENTERPRISE_SLUG,
-    enableBrowseAndRequest: true,
   },
   coupons: {
     loading: false,

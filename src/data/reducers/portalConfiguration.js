@@ -24,7 +24,6 @@ const initialState = {
   enableIntegratedCustomerLearnerPortalSearch: false,
   enableLearnerPortal: false,
   enableUniversalLink: false,
-  enableBrowseAndRequest: false,
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -55,7 +54,6 @@ const portalConfiguration = (state = initialState, action) => {
         enableIntegratedCustomerLearnerPortalSearch: action.payload.data.enable_integrated_customer_learner_portal_search, // eslint-disable-line max-len
         enableLmsConfigurationsScreen: action.payload.data.enable_portal_lms_configurations_screen,
         enableUniversalLink: action.payload.data.enable_universal_link,
-        enableBrowseAndRequest: action.payload.data.enable_browse_and_request,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -77,7 +75,6 @@ const portalConfiguration = (state = initialState, action) => {
         enableIntegratedCustomerLearnerPortalSearch: false,
         enableLmsConfigurationsScreen: false,
         enableUniversalLink: false,
-        enableBrowseAndRequest: false,
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -97,7 +94,6 @@ const portalConfiguration = (state = initialState, action) => {
         enableIntegratedCustomerLearnerPortalSearch: false,
         enableLmsConfigurationsScreen: false,
         enableUniversalLink: false,
-        enableBrowseAndRequest: false,
       };
     case UPDATE_PORTAL_CONFIGURATION:
       return {

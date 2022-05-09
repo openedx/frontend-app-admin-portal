@@ -16,8 +16,8 @@ import {
 import NotFoundPage from '../NotFoundPage';
 import { features } from '../../config';
 
-const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const isBrowseAndRequestEnabled = (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest);
+const SubscriptionRoutes = ({ enterpriseSlug }) => {
+  const isBrowseAndRequestEnabled = (features.FEATURE_BROWSE_AND_REQUEST);
 
   if (isBrowseAndRequestEnabled) {
     return (
@@ -45,12 +45,10 @@ const SubscriptionRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
 SubscriptionRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionRoutes);

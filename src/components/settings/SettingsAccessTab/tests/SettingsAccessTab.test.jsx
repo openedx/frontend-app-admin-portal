@@ -52,7 +52,6 @@ const mockSubsidyRequestConfiguration = {
 
 const basicProps = {
   enterpriseId: 'test-enterprise-uuid',
-  enableBrowseAndRequest: false,
   enableIntegratedCustomerLearnerPortalSearch: false,
   enableUniversalLink: false,
   enableLearnerPortal: false,
@@ -102,9 +101,9 @@ describe('<SettingsAccessTab />', () => {
     expect(screen.queryByText('SettingsAccessSubsidyRequestManagement')).not.toBeInTheDocument();
   });
 
-  it('should render <SettingsAccessSubsidyRequestManagement/> if browse and request(feature flag & setting) is enabled', () => {
+  it('should render <SettingsAccessSubsidyRequestManagement/> if browse and request is enabled', () => {
     config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
-    render(<SettingsAccessTabWrapper props={{ enableBrowseAndRequest: true }} />);
+    render(<SettingsAccessTabWrapper />);
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
@@ -114,7 +113,7 @@ describe('<SettingsAccessTab />', () => {
     config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
     render(
       <SettingsAccessTabWrapper
-        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+        props={{ enableUniversalLink: false, identityProvider: null }}
       />,
     );
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
@@ -134,7 +133,7 @@ describe('<SettingsAccessTab />', () => {
     render(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
-        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+        props={{ enableUniversalLink: false, identityProvider: null }}
       />,
     );
     expect(screen.getByText('NoAvailableCodesBanner')).toBeInTheDocument();
@@ -152,7 +151,7 @@ describe('<SettingsAccessTab />', () => {
     render(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
-        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+        props={{ enableUniversalLink: false, identityProvider: null }}
       />,
     );
     expect(screen.queryByText('NoAvailableCodesBanner')).not.toBeInTheDocument();
@@ -170,7 +169,7 @@ describe('<SettingsAccessTab />', () => {
     render(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
-        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+        props={{ enableUniversalLink: false, identityProvider: null }}
       />,
     );
     expect(screen.getByText('NoAvailableLicensesBanner')).toBeInTheDocument();
@@ -188,7 +187,7 @@ describe('<SettingsAccessTab />', () => {
     render(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
-        props={{ enableBrowseAndRequest: true, enableUniversalLink: false, identityProvider: null }}
+        props={{ enableUniversalLink: false, identityProvider: null }}
       />,
     );
     expect(screen.queryByText('NoAvailableLicensesBanner')).not.toBeInTheDocument();

@@ -89,7 +89,6 @@ class EnterpriseApp extends React.Component {
     const {
       error,
       match,
-      enableBrowseAndRequest,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
@@ -135,7 +134,6 @@ class EnterpriseApp extends React.Component {
 
     return (
       <SubsidyRequestsContextProvider
-        enableBrowseAndRequest={enableBrowseAndRequest}
         enterpriseUUID={enterpriseId}
       >
         <div className="enterprise-app">
@@ -272,7 +270,6 @@ EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
   error: null,
-  enableBrowseAndRequest: false,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
   enableSamlConfigurationScreen: false,
@@ -299,7 +296,6 @@ EnterpriseApp.propTypes = {
     replace: PropTypes.func,
   }).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
-  enableBrowseAndRequest: PropTypes.bool,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableSamlConfigurationScreen: PropTypes.bool,

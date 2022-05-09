@@ -16,7 +16,6 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 
 const SettingsAccessTab = ({
   enterpriseId,
-  enableBrowseAndRequest,
   enableIntegratedCustomerLearnerPortalSearch,
   enableLearnerPortal,
   enableUniversalLink,
@@ -34,7 +33,7 @@ const SettingsAccessTab = ({
   } = useContext(SettingsContext);
 
   const hasConfiguredSubsidyType = !!subsidyRequestConfiguration?.subsidyType;
-  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
   const hasActiveAccessChannel = enableUniversalLink || isLearnerPortalSearchEnabled;
@@ -131,7 +130,6 @@ const SettingsAccessTab = ({
 
 SettingsAccessTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableIntegratedCustomerLearnerPortalSearch: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,

@@ -99,7 +99,6 @@ CouponCodeTabs.propTypes = {
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(CouponCodeTabs);

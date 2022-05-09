@@ -27,7 +27,6 @@ import { updatePortalConfigurationEvent } from '../../data/actions/portalConfigu
 const SettingsTabs = ({
   enterpriseId,
   enterpriseSlug,
-  enableBrowseAndRequest,
   enableIntegratedCustomerLearnerPortalSearch,
   enableLearnerPortal,
   enableLmsConfigurationsScreen,
@@ -72,7 +71,6 @@ const SettingsTabs = ({
               enterpriseId={enterpriseId}
               enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
               identityProvider={identityProvider}
-              enableBrowseAndRequest={enableBrowseAndRequest}
               enableLearnerPortal={enableLearnerPortal}
               enableUniversalLink={enableUniversalLink}
               updatePortalConfiguration={updatePortalConfiguration}
@@ -105,7 +103,6 @@ const mapStateToProps = state => {
   const {
     enterpriseId,
     enterpriseSlug,
-    enableBrowseAndRequest,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
@@ -117,7 +114,6 @@ const mapStateToProps = state => {
   return ({
     enterpriseId,
     enterpriseSlug,
-    enableBrowseAndRequest,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
@@ -134,7 +130,6 @@ SettingsTabs.defaultProps = {
 SettingsTabs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
   enableIntegratedCustomerLearnerPortalSearch: PropTypes.bool.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableLmsConfigurationsScreen: PropTypes.bool.isRequired,

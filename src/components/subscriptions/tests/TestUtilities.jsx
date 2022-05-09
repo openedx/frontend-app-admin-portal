@@ -112,7 +112,6 @@ export const DEFAULT_STORE_STATE = {
     enterpriseId: TEST_ENTERPRISE_CUSTOMER_UUID,
     enableSubscriptionManagementScreen: true,
     enableCodeManagementScreen: true,
-    enableBrowseAndRequest: false,
   },
 };
 

@@ -13,12 +13,12 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 import { features } from '../../config';
 
-const SubscriptionDetailPage = ({ enterpriseSlug, match, enableBrowseAndRequest }) => {
+const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
 
   if (!subscription && !loadingSubscription) {
     let to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`;
-    if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+    if (features.FEATURE_BROWSE_AND_REQUEST) {
       to += `/${MANAGE_LEARNERS_TAB}`;
     }
     return (
@@ -47,11 +47,9 @@ SubscriptionDetailPage.propTypes = {
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

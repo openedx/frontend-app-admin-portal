@@ -32,7 +32,6 @@ const ENTERPRISE_SLUG = 'sluggy';
 const store = mockStore({
   portalConfiguration: {
     enterpriseSlug: ENTERPRISE_SLUG,
-    enableBrowseAndRequest: true,
   },
 });
 
