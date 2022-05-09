@@ -5,27 +5,47 @@ import PropTypes from 'prop-types';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
 import isEmpty from 'validator/lib/isEmpty';
 import isURL from 'validator/lib/isURL';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { updateCurrentstep } from './data/actions';
+import { updateCurrentStep } from './data/actions';
 import { useIdpState } from './hooks';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
 import SSOConfigServiceProviderStep from './steps/SSOConfigServiceProviderStep';
 import SSOConfigConnectStep from './steps/SSOConfigConnectStep';
+import handleErrors from '../utils';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
   const { currentStep, providerConfig } = ssoState;
-  const setCurrentStep = val => { dispatchSsoState(updateCurrentstep(val)); };
+  const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
+  const [configValues, setConfigValues] = useState(null);
+  const [connectError, setConnectError] = useState(false);
 
   const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
+
   const isIdpStepComplete = useMemo(
     () => (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID)),
     [metadataURL, entityID],
   );
 
+  const updateConfig = async () => {
+    if (configValues !== null) {
+      configValues.append('enterprise_customer_uuid', enterpriseId);
+      let err;
+      try {
+        await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+      } catch (error) {
+        err = handleErrors(error);
+      }
+      if (err) {
+        // TODO - what do we want to do on error??
+      }
+    }
+    setCurrentStep('connect');
+  };
   const { serviceprovider: { isSPConfigured } } = ssoState;
 
   return (
@@ -43,11 +63,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
           </Stepper.Step>
 
           <Stepper.Step eventKey="configure" title="Configure">
-            <SSOConfigConfigureStep />
+            <SSOConfigConfigureStep setConfigValues={setConfigValues} connectError={connectError} />
           </Stepper.Step>
 
           <Stepper.Step eventKey="connect" title="Connect">
-            <SSOConfigConnectStep />
+            <SSOConfigConnectStep setConnectError={setConnectError} />
           </Stepper.Step>
         </Container>
 
@@ -86,7 +106,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               <ArrowBack />
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => setCurrentStep('connect')}>Next<ArrowForward className="ml-2" /></Button>
+            <Button onClick={() => updateConfig()}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey="connect">
             <Button variant="outline-primary" onClick={() => setCurrentStep('configure')}>

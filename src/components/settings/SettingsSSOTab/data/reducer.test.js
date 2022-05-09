@@ -1,7 +1,7 @@
 import {
   updateConnectIsSsoValid,
   updateCurrentError,
-  updateCurrentstep,
+  updateCurrentStep,
   updateEntityIDAction,
   updateIdpDirtyState,
   updateIdpEntryTypeAction,
@@ -52,7 +52,7 @@ describe('reducer sso tests', () => {
         metadataURL: 'a',
         entryType: 'oldOne',
       },
-    }, updateCurrentstep('aGiantLeapForMankind'))).toStrictEqual({
+    }, updateCurrentStep('aGiantLeapForMankind'))).toStrictEqual({
       idp: { metadataURL: 'a', entryType: 'oldOne' },
       currentStep: 'aGiantLeapForMankind',
     });

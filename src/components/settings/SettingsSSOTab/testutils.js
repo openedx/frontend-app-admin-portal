@@ -7,7 +7,7 @@ const initialStore = {
     enterpriseId,
     enterpriseSlug: 'sluggy',
     enterpriseName: 'sluggyent',
-    learnerPortalEnabled: true,
+    enableLearnerPortal: true,
   },
 };
 

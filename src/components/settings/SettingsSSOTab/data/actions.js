@@ -43,7 +43,7 @@ export const updateConnectIsSsoValid = isValid => ({
   isValid,
 });
 
-export const updateCurrentstep = step => ({
+export const updateCurrentStep = step => ({
   type: UPDATE_CURRENT_STEP,
   step,
 });

@@ -1,28 +1,21 @@
 import PropTypes from 'prop-types';
-import {
-  Badge,
-  Card,
-  Hyperlink,
-} from '@edx/paragon';
-import {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { Badge, Card, Hyperlink } from '@edx/paragon';
+import { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';
-import {
-  updateConnectInProgress,
-} from './data/actions';
+import { updateConnectInProgress, updateCurrentStep } from './data/actions';
+import { SSO_CONFIG_POLLING_INTERVAL, SSO_CONFIG_POLLING_TIMEOUT } from '../data/constants';
 import { useInterval } from '../../../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 /**
  * This is the clickable card that is used to test the SSO config before we complete the config creation process.
  */
-const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
+const SSOConfigConfiguredCard = ({
+  config, testLink, enterpriseId, setConnectError,
+}) => {
   const {
     ssoState, dispatchSsoState,
     setProviderConfig, setCurrentError, setIsSsoValid,
@@ -35,8 +28,8 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
       isSsoValid,
     },
   } = ssoState;
+  const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const [interval, setInterval] = useState(null);
-  const LIMIT_MILLIS = 120000;
 
   useInterval(async () => {
     try {
@@ -54,18 +47,16 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
         // at this point we want to take users to the listing page showing this config
         // setting providerConfig to null will do that!
         // because the SettingsSSOTab/index.jsx is looking for that value
+        setConnectError(true);
         setProviderConfig(null);
         setCurrentError(null);
-      } else {
-        // if time has elapsed, then we can warn user: TODO
-        // eslint-disable-next-line no-lonely-if
-        if (performance.now() - startTime > LIMIT_MILLIS) {
-          setInterval(null); // disable the polling
-          setIsSsoValid(false);
-          setInfoMessage(null);
-          dispatchSsoState(updateConnectInProgress(false));
-          setCurrentError('Cannot validate SSO, please make changes and try again');
-        }
+      } else if (performance.now() - startTime > SSO_CONFIG_POLLING_TIMEOUT) {
+        setInterval(null); // disable the polling
+        setIsSsoValid(false);
+        setInfoMessage(null);
+        dispatchSsoState(updateConnectInProgress(false));
+        setConnectError(true);
+        setCurrentStep('configure');
       }
     } catch (error) { setCurrentError(error); setInterval(null); }
   }, interval);
@@ -77,7 +68,7 @@ const SSOConfigConfiguredCard = ({ config, testLink, enterpriseId }) => {
     setStartTime(performance.now());
     dispatchSsoState(updateConnectInProgress(true));
     window.open(testLink);
-    setInterval(1000);
+    setInterval(SSO_CONFIG_POLLING_INTERVAL);
   };
   // until isValid is false, keep checking server state (after about 3 minutes, reset and message customer)
   useEffect(() => {
@@ -140,6 +131,7 @@ SSOConfigConfiguredCard.propTypes = {
   }).isRequired,
   testLink: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  setConnectError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
