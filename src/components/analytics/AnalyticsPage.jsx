@@ -9,8 +9,7 @@ import AnalyticsCharts from './AnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
 
-// eslint-disable-next-line no-unused-vars
-function AnalyticsPage({ enterpriseSlug, enterpriseId }) {
+function AnalyticsPage({ enterpriseId }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -49,12 +48,10 @@ function AnalyticsPage({ enterpriseSlug, enterpriseId }) {
 }
 
 AnalyticsPage.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 

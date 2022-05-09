@@ -24,7 +24,7 @@ function SettingsContextProvider({
 
   useEffect(() => {
     fetchCoupons();
-  }, []);
+  }, [fetchCoupons]);
 
   const enterpriseSubsidyTypes = useMemo(() => {
     const subsidyTypes = [];
@@ -43,7 +43,7 @@ function SettingsContextProvider({
     customerAgreement,
     couponsData,
     enterpriseSubsidyTypes,
-  }), [customerAgreement, couponsData, enterpriseSubsidyTypes]);
+  }), [enterpriseId, customerAgreement, couponsData, enterpriseSubsidyTypes]);
 
   if (loadingCustomerAgreement || loadingCoupons) {
     return <LoadingMessage className="settings mt-3" />;

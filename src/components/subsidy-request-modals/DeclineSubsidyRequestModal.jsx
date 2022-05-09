@@ -49,7 +49,14 @@ const DeclineSubsidyRequestModal = ({
       setError(err);
       setIsLoading(false);
     }
-  }, [uuid, shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise]);
+  }, [
+    uuid,
+    shouldNotifyLearner,
+    shouldUnlinkLearnerFromEnterprise,
+    declineRequestFn,
+    onSuccess,
+    enterpriseCustomerUUID,
+  ]);
 
   return (
     <ModalDialog

@@ -33,7 +33,7 @@ const SettingsAccessSSOManagement = ({
     } finally {
       setIsLoading(false);
     }
-  }, [updatePortalConfiguration]);
+  }, [enterpriseId, updatePortalConfiguration]);
 
   return (
     <>

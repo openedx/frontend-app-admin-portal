@@ -14,16 +14,10 @@ const AdminRegisterPage = ({ match }) => {
   const { enterpriseSlug } = match.params;
   const history = useHistory();
 
-  if (!user) {
-    // user is not authenticated, so redirect to enterprise proxy login flow
-    return (
-      <LoginRedirect
-        loadingDisplay={<EnterpriseAppSkeleton />}
-      />
-    );
-  }
-
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     const processEnterpriseAdmin = (enterpriseUUID) => {
       const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
       if (isEnterpriseAdmin) {
@@ -36,19 +30,29 @@ const AdminRegisterPage = ({ match }) => {
         const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
         global.location.href = logoutRedirectUrl;
       }
-      return <EnterpriseAppSkeleton />;
     };
 
-    LmsApiService.fetchEnterpriseBySlug(enterpriseSlug)
-      .then((response) => {
+    const getEnterpriseBySlug = async () => {
+      try {
+        const response = await LmsApiService.fetchEnterpriseBySlug(enterpriseSlug);
         if (response.data && response.data.uuid) {
           processEnterpriseAdmin(response.data.uuid);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         logError(error);
-      });
-  }, [user, enterpriseSlug]);
+      }
+    };
+    getEnterpriseBySlug();
+  }, [user, history, enterpriseSlug]);
+
+  if (!user) {
+    // user is not authenticated, so redirect to enterprise proxy login flow
+    return (
+      <LoginRedirect
+        loadingDisplay={<EnterpriseAppSkeleton />}
+      />
+    );
+  }
 
   return <EnterpriseAppSkeleton />;
 };

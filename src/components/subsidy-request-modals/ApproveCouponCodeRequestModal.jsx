@@ -62,7 +62,7 @@ export const ApproveCouponCodeRequestModal = ({
     if (applicableCoupons.length === 1) {
       setSelectedCouponId(applicableCoupons[0].id);
     }
-  }, [applicableCoupons.length]);
+  }, [applicableCoupons]);
 
   const approveCouponCodeRequest = useCallback(async () => {
     setIsApprovingRequest(true);
@@ -79,7 +79,7 @@ export const ApproveCouponCodeRequestModal = ({
     } finally {
       setIsApprovingRequest(false);
     }
-  }, [onSuccess, selectedCouponId]);
+  }, [onSuccess, selectedCouponId, enterpriseCustomerUUID, uuid]);
 
   return (
     <ModalDialog

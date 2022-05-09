@@ -15,6 +15,16 @@ const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
 const UserActivationPage = ({ match }) => {
   const user = getAuthenticatedUser();
+  const { addToast } = useContext(ToastsContext);
+
+  const { enterpriseSlug } = match.params;
+  const { roles, isActive } = user || {};
+
+  useInterval(() => {
+    if (user && !user.isActive) {
+      hydrateAuthenticatedUser();
+    }
+  }, USER_ACCOUNT_POLLING_TIMEOUT);
 
   if (!user) {
     // user is not authenticated, so redirect to enterprise proxy login flow
@@ -24,9 +34,6 @@ const UserActivationPage = ({ match }) => {
       />
     );
   }
-  const { enterpriseSlug } = match.params;
-  const { addToast } = useContext(ToastsContext);
-  const { roles, isActive } = user;
 
   if (!roles?.length) {
     // user is authenticated but doesn't have any JWT roles so redirect the user to
@@ -40,12 +47,6 @@ const UserActivationPage = ({ match }) => {
     // user hydration is still pending when ``isActive`` is undefined, so display app skeleton state
     return <EnterpriseAppSkeleton />;
   }
-
-  useInterval(() => {
-    if (!isActive) {
-      hydrateAuthenticatedUser();
-    }
-  }, USER_ACCOUNT_POLLING_TIMEOUT);
 
   // user data is hydrated with a verified email address, so redirect the user
   // to the default page in the Admin Portal.

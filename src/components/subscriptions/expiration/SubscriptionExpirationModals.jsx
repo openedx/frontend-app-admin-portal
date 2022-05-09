@@ -78,7 +78,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
 
       return true;
     },
-    [agreementNetDaysUntilExpiration, subscriptionExpirationThreshold, isSubscriptionExpired],
+    [agreementNetDaysUntilExpiration, subscriptionExpirationThreshold, isSubscriptionExpired, enterpriseId],
   );
 
   const [isExpiredModalOpen, openExpiredModal, closeExpiredModal] = useToggle(isSubscriptionExpired);
@@ -88,13 +88,13 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
     if (shouldShowSubscriptionExpiringModal) {
       openExpiringModal();
     }
-  }, [shouldShowSubscriptionExpiringModal]);
+  }, [shouldShowSubscriptionExpiringModal, openExpiringModal]);
 
   useEffect(() => {
     if (isSubscriptionExpired) {
       openExpiredModal();
     }
-  }, [isSubscriptionExpired]);
+  }, [isSubscriptionExpired, openExpiredModal]);
 
   const emitAlertActionEvent = () => {
     sendEnterpriseTrackEvent(

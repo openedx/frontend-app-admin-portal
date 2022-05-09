@@ -4,7 +4,7 @@ export function useInterval(callback, delay) {
   const savedCallback = useRef();
   useEffect(() => {
     savedCallback.current = callback;
-  }, [delay]);
+  }, [delay, callback]);
 
   /* eslint-disable-next-line */
   useEffect(() => {

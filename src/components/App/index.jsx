@@ -22,13 +22,13 @@ import store from '../../data/store';
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
+  const { initHotjar } = useHotjar();
 
-  if (process.env.HOTJAR_APP_ID) {
-    const { initHotjar } = useHotjar();
-    useEffect(() => {
+  useEffect(() => {
+    if (process.env.HOTJAR_APP_ID) {
       initHotjar(process.env.HOTJAR_APP_ID, process.env.HOTJAR_VERSION, process.env.HOTJAR_DEBUG);
-    }, [initHotjar]);
-  }
+    }
+  }, [initHotjar]);
 
   const isMaintenanceAlertOpen = useMemo(() => {
     if (!config) {
@@ -45,11 +45,7 @@ const AppWrapper = () => {
       return new Date() > new Date(startTimestamp);
     }
     return true;
-  }, [
-    config?.IS_MAINTENANCE_ALERT_ENABLED,
-    config?.MAINTENANCE_ALERT_MESSAGE,
-    config?.MAINTENANCE_ALERT_START_TIMESTAMP,
-  ]);
+  }, [config]);
 
   return (
     <AppProvider store={store}>

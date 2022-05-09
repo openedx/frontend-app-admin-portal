@@ -22,7 +22,7 @@ const ManageRequestsTab = ({
 }) => {
   useEffect(() => {
     fetchCoupons();
-  }, []);
+  }, [fetchCoupons]);
 
   const {
     isLoading,

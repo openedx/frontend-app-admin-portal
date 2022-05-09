@@ -18,7 +18,7 @@ const SettingsAccessSubsidyRequestManagement = ({
 
   const subsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
-  const toggleSubsidyRequests = async (isEnabled) => {
+  const toggleSubsidyRequests = useCallback(async (isEnabled) => {
     setIsLoading(true);
     try {
       await updateSubsidyRequestConfiguration({
@@ -29,13 +29,13 @@ const SettingsAccessSubsidyRequestManagement = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [updateSubsidyRequestConfiguration]);
 
   useEffect(() => {
     if (disabled && subsidyRequestsEnabled) {
       toggleSubsidyRequests(false);
     }
-  }, [disabled, subsidyRequestsEnabled]);
+  }, [disabled, subsidyRequestsEnabled, toggleSubsidyRequests]);
 
   useEffect(() => {
     // auto toggle to true if disabled becomes false
@@ -43,7 +43,7 @@ const SettingsAccessSubsidyRequestManagement = ({
       toggleSubsidyRequests(true);
       setIsInitiallyDisabled(false);
     }
-  }, [disabled]);
+  }, [disabled, isInitiallyDisabled, toggleSubsidyRequests]);
 
   const handleFormSwitchChange = useCallback(async (e) => {
     const formSwitchValue = e.target.checked;
