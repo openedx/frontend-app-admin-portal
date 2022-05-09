@@ -135,7 +135,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       setOauthPollingTimeout(LMS_CONFIG_OAUTH_POLLING_TIMEOUT);
 
       const oauthUrl = `${canvasBaseUrl}/login/oauth2/auth?client_id=${clientId}&`
-      + `state=${enterpriseCustomerUuid}&response_type=code&`
+      + `state=${fetchedConfigId}&response_type=code&`
       + `redirect_uri=${CANVAS_OAUTH_REDIRECT_URL}`;
 
       // Open the oauth window for the user
