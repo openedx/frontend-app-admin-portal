@@ -1,5 +1,5 @@
 import {
-  useCallback, useState, useEffect, useReducer,
+  useCallback, useState, useEffect, useReducer, useMemo,
 } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
@@ -97,7 +97,7 @@ export const useSubsidyRequests = (
     },
     [fetchOverview, fetchRequests],
   );
-  const debouncedFetchData = debounce(fetchData, DEBOUNCE_TIME_MS);
+  const debouncedFetchData = useMemo(() => debounce(fetchData, DEBOUNCE_TIME_MS), [fetchData]);
 
   /**
    * Handles table pagination/filter/sort changes.
