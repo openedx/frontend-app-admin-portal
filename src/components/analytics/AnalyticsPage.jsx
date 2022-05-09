@@ -8,6 +8,7 @@ import StatusAlert from '../StatusAlert';
 import AnalyticsCharts from './AnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
+
 function AnalyticsPage({ enterpriseId }) {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',

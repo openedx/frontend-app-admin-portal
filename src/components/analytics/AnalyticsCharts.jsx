@@ -10,6 +10,12 @@ import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
 
+const options = {
+  height: 900,
+  width: 1250,
+  hideToolbar: true,
+};
+
 export default function AnalyticsCharts({ enterpriseId }) {
   const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,11 +25,6 @@ export default function AnalyticsCharts({ enterpriseId }) {
   if (configuration.TABLEAU_URL) {
     tableauUrl = `${configuration.TABLEAU_URL}/views/enterpriseadminanalytics/enroll_dash`;
   }
-  const options = {
-    height: 900,
-    width: 1250,
-    hideToolbar: true,
-  };
   const getUrl = useCallback((token) => {
     const parsed = url.parse(tableauUrl, true);
     const { protocol, host, pathname } = parsed;
@@ -39,22 +40,24 @@ export default function AnalyticsCharts({ enterpriseId }) {
     const augmentedUrl = getUrl(token);
     const viz = new window.tableau.Viz(tableauRef.current, augmentedUrl, options);
     return viz;
-  }, [getUrl, options]);
+  }, [getUrl]);
 
   // Initialize tableau Viz and fetch token
   useEffect(() => {
-    setIsLoading(true);
-    AnalyticsApiService.fetchTableauToken({ enterpriseId })
-      .then((response) => {
-        setIsLoading(false);
+    const getTableauToken = async () => {
+      setIsLoading(true);
+      try {
+        const response = await AnalyticsApiService.fetchTableauToken({ enterpriseId });
         setTokenUsedOnce(false);
         initViz(response.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         logError(err);
-        setIsLoading(false);
         setError(err);
-      });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getTableauToken();
   }, [enterpriseId, initViz]);
 
   if (isLoading) {
