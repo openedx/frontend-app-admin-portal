@@ -25,7 +25,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
 
   const [loading, setLoading] = useState(true);
 
-  const loadCustomerAgreementData = (page = 1) => {
+  const loadCustomerAgreementData = useCallback((page = 1) => {
     const fetchData = async () => {
       try {
         const response = await LicenseManagerApiService.fetchCustomerAgreementData({
@@ -63,11 +63,11 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
       }
     };
     fetchData();
-  };
+  }, [enterpriseId, errors, setErrors]);
 
-  const forceRefresh = () => {
+  const forceRefresh = useCallback(() => {
     loadCustomerAgreementData();
-  };
+  }, [loadCustomerAgreementData]);
 
   useEffect(loadCustomerAgreementData, [enterpriseId]);
 
@@ -76,6 +76,13 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
     forceRefresh,
     loading,
   };
+};
+
+const initialSubscriptionUsersOverview = {
+  all: 0,
+  activated: 0,
+  assigned: 0,
+  revoked: 0,
 };
 
 /*
@@ -89,12 +96,6 @@ export const useSubscriptionUsersOverview = ({
   setErrors,
   isDisabled = false,
 }) => {
-  const initialSubscriptionUsersOverview = {
-    all: 0,
-    activated: 0,
-    assigned: 0,
-    revoked: 0,
-  };
   const [subscriptionUsersOverview, setSubscriptionUsersOverview] = useState(initialSubscriptionUsersOverview);
 
   const loadSubscriptionUsersOverview = useCallback(() => {
@@ -124,11 +125,11 @@ export const useSubscriptionUsersOverview = ({
       }
     };
     fetchOverview();
-  }, [errors, initialSubscriptionUsersOverview, search, setErrors, subscriptionUUID]);
+  }, [errors, search, setErrors, subscriptionUUID]);
 
-  const forceRefresh = () => {
+  const forceRefresh = useCallback(() => {
     loadSubscriptionUsersOverview();
-  };
+  }, [loadSubscriptionUsersOverview]);
 
   useEffect(
     () => {
@@ -188,9 +189,9 @@ export const useSubscriptionUsers = ({
     fetchUsers();
   }, [currentPage, errors, searchQuery, setErrors, subscriptionUUID, userStatusFilter]);
 
-  const forceRefresh = () => {
+  const forceRefresh = useCallback(() => {
     loadSubscriptionUsers();
-  };
+  }, [loadSubscriptionUsers]);
 
   useEffect(
     () => {
