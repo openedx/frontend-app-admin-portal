@@ -51,44 +51,8 @@ const SubsidyRequestsContextProvider = ({ enterpriseUUID, children }) => {
   );
 };
 
-const SubsidyRequestsContextProviderWrapper = ({ enableBrowseAndRequest, enterpriseUUID, children }) => {
-  const noop = () => {};
-  const contextValueForDisabledBrowseAndRequest = useMemo(() => ({
-    subsidyRequestConfiguration: {
-      enterpriseCustomerUuid: enterpriseUUID,
-      subsidyRequestsEnabled: false,
-      subsidyType: null,
-    },
-    updateSubsidyRequestConfiguration: noop,
-    subsidyRequestsCounts: {},
-    refreshsubsidyRequestsCounts: noop,
-    decrementLicenseRequestCount: noop,
-    decrementCouponCodeRequestCount: noop,
-  }), [enterpriseUUID]);
-
-  if (enableBrowseAndRequest) {
-    return (
-      <SubsidyRequestsContextProvider enterpriseUUID={enterpriseUUID}>
-        {children}
-      </SubsidyRequestsContextProvider>
-    );
-  }
-
-  return (
-    <SubsidyRequestsContext.Provider value={contextValueForDisabledBrowseAndRequest}>
-      {children}
-    </SubsidyRequestsContext.Provider>
-  );
-};
-
 SubsidyRequestsContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  enterpriseUUID: PropTypes.string,
-};
-
-SubsidyRequestsContextProviderWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-  enableBrowseAndRequest: PropTypes.bool,
   enterpriseUUID: PropTypes.string,
 };
 
@@ -96,9 +60,4 @@ SubsidyRequestsContextProvider.defaultProps = {
   enterpriseUUID: undefined,
 };
 
-SubsidyRequestsContextProviderWrapper.defaultProps = {
-  enableBrowseAndRequest: false,
-  enterpriseUUID: undefined,
-};
-
-export default SubsidyRequestsContextProviderWrapper;
+export default SubsidyRequestsContextProvider;

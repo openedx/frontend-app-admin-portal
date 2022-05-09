@@ -29,7 +29,6 @@ const store = mockStore({
   portalConfiguration: {
     enterpriseId: ENTERPRISE_ID,
     enterpriseSlug: ENTERPRISE_SLUG,
-    enableBrowseAndRequest: true,
   },
 });
 

@@ -15,7 +15,7 @@ import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBan
 import { features } from '../../config';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
+const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -30,7 +30,7 @@ const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
   );
 
   let backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions`;
-  if (features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest) {
+  if (features.FEATURE_BROWSE_AND_REQUEST) {
     backToSubscriptionsPath += `/${MANAGE_LEARNERS_TAB}`;
   }
 
@@ -104,12 +104,10 @@ const SubscriptionDetails = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
 SubscriptionDetails.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionDetails);

@@ -10,8 +10,8 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 import { features } from '../../config';
 
-const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
+  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   const multipleSubsCreateActions = (subscription) => {
     const now = moment();
@@ -68,12 +68,10 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
 SubscriptionPlanRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(SubscriptionPlanRoutes);

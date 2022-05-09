@@ -8,20 +8,9 @@ jest.mock('../data/hooks');
 
 describe('SubsidyRequestsContextProvider', () => {
   const basicProps = {
-    enableBrowseAndRequest: true,
     enterpriseUUID: TEST_ENTERPRISE_UUID,
     children: 'children',
   };
-
-  it('should not call useSubsidyRequestConfiguration or useSubsidyRequestsOverview if enableBrowseAndRequest = false', () => {
-    render(
-      <SubsidyRequestsContextProvider {...basicProps} enableBrowseAndRequest={false} />,
-    );
-
-    expect(hooks.useSubsidyRequestConfiguration).not.toHaveBeenCalled();
-    expect(hooks.useSubsidyRequestsOverview).not.toHaveBeenCalled();
-    expect(screen.getByText('children'));
-  });
 
   it('should call useSubsidyRequestConfiguration and useSubsidyRequestsOverview, then render children', () => {
     hooks.useSubsidyRequestConfiguration.mockReturnValue({

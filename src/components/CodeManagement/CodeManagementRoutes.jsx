@@ -16,8 +16,8 @@ import {
   COUPON_CODES_PARAM_MATCH,
 } from './data/constants';
 
-const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
-  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST && enableBrowseAndRequest;
+const CodeManagementRoutes = ({ enterpriseSlug }) => {
+  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   if (isTabsFeatureEnabled) {
     return (
@@ -49,12 +49,10 @@ const CodeManagementRoutes = ({ enterpriseSlug, enableBrowseAndRequest }) => {
 
 CodeManagementRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enableBrowseAndRequest: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
 });
 
 export default connect(mapStateToProps)(CodeManagementRoutes);

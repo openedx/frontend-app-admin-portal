@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
   return {
     enterprises: enterpriseListState.data,
     error: state.portalConfiguration.error,
-    enableBrowseAndRequest: state.portalConfiguration.enableBrowseAndRequest,
     enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
     enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
     enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,

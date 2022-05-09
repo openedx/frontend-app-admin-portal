@@ -41,7 +41,6 @@ const initialStore = {
     enterpriseSlug: 'sluggy',
     enableLearnerPortal: true,
     enableLmsConfigurationsScreen: true,
-    enableBrowseAndRequest: false,
     enableIntegratedCustomerLearnerPortalSearch: true,
     enableSamlConfigurationScreen: false,
     enableUniversalLink: false,

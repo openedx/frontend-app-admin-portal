@@ -39,7 +39,6 @@ const initialStore = {
     enterpriseId,
     enterpriseSlug,
     enableLearnerPortal: false,
-    enableBrowseAndRequest: false,
   },
 };
 
@@ -87,7 +86,6 @@ describe('<SubscriptionRoutes />', () => {
         ...initialStore,
         portalConfiguration: {
           ...initialStore.portalConfiguration,
-          enableBrowseAndRequest: true,
         },
       });
       features.FEATURE_BROWSE_AND_REQUEST = true;

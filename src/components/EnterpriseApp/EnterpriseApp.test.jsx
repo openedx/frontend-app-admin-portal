@@ -15,17 +15,23 @@ jest.mock('react-router-dom', () => ({
   // eslint-disable-next-line react/prop-types
   Route: (props) => <span>{props.path}</span>,
   Switch: (props) => props.children,
-  Redirect: () => 'redirect',
+  Redirect: () => 'Redirect',
 }));
 
 jest.mock('../ProductTours/BrowseAndRequestTour', () => ({
   __esModule: true,
-  default: () => 'BNR Product Tour',
+  default: () => 'BrowseAndRequestTour',
+}));
+
+jest.mock('../subsidy-requests/SubsidyRequestsContextProvider', () => ({
+  __esModule: true,
+  ...jest.requireActual('../subsidy-requests/SubsidyRequestsContextProvider'),
+  default: ({ children }) => children,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
   __esModule: true,
-  default: () => 'Side bar',
+  default: () => 'Sidebar',
 }));
 
 describe('<EnterpriseApp />', () => {

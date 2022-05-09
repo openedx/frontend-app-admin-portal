@@ -39,7 +39,6 @@ const initialStore = {
     enterpriseId,
     enterpriseSlug,
     enableLearnerPortal: false,
-    enableBrowseAndRequest: false,
   },
 };
 
@@ -83,13 +82,7 @@ describe('<CodeManagementRoutes />', () => {
   describe('with tabs enabled', () => {
     let newStore;
     beforeEach(() => {
-      newStore = getMockStore({
-        ...initialStore,
-        portalConfiguration: {
-          ...initialStore.portalConfiguration,
-          enableBrowseAndRequest: true,
-        },
-      });
+      newStore = getMockStore(initialStore);
       features.FEATURE_BROWSE_AND_REQUEST = true;
     });
 
