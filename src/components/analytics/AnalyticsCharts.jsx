@@ -1,6 +1,4 @@
-import React, {
-  useState, useRef, useEffect, useCallback,
-} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
 import url from 'url';
@@ -9,12 +7,6 @@ import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
-
-const options = {
-  height: 900,
-  width: 1250,
-  hideToolbar: true,
-};
 
 export default function AnalyticsCharts({ enterpriseId }) {
   const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
@@ -25,7 +17,12 @@ export default function AnalyticsCharts({ enterpriseId }) {
   if (configuration.TABLEAU_URL) {
     tableauUrl = `${configuration.TABLEAU_URL}/views/enterpriseadminanalytics/enroll_dash`;
   }
-  const getUrl = useCallback((token) => {
+  const options = {
+    height: 900,
+    width: 1250,
+    hideToolbar: true,
+  };
+  const getUrl = (token) => {
     const parsed = url.parse(tableauUrl, true);
     const { protocol, host, pathname } = parsed;
     const query = '?:embed=yes&:comments=no&:toolbar=no&:refresh=yes';
@@ -34,31 +31,28 @@ export default function AnalyticsCharts({ enterpriseId }) {
       return `${protocol}//${host}/trusted/${token}${pathname}${query}`;
     }
     return `${protocol}//${host}${pathname}${query}`;
-  }, [tableauUrl, tokenUsedOnce]);
-
-  const initViz = useCallback((token) => {
+  };
+  const initViz = (token) => {
     const augmentedUrl = getUrl(token);
     const viz = new window.tableau.Viz(tableauRef.current, augmentedUrl, options);
     return viz;
-  }, [getUrl]);
+  };
 
   // Initialize tableau Viz and fetch token
   useEffect(() => {
-    const getTableauToken = async () => {
-      setIsLoading(true);
-      try {
-        const response = await AnalyticsApiService.fetchTableauToken({ enterpriseId });
+    setIsLoading(true);
+    AnalyticsApiService.fetchTableauToken({ enterpriseId })
+      .then((response) => {
+        setIsLoading(false);
         setTokenUsedOnce(false);
         initViz(response.data);
-      } catch (err) {
+      })
+      .catch((err) => {
         logError(err);
-        setError(err);
-      } finally {
         setIsLoading(false);
-      }
-    };
-    getTableauToken();
-  }, [enterpriseId, initViz]);
+        setError(err);
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <LoadingMessage className="analytics" />;
