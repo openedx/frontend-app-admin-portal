@@ -208,7 +208,12 @@ export default function SettingsLMSTab({
       )}
       {config && (
         <span>
-          <LMSConfigPage LMSType={config} onClick={onClick} existingConfigFormData={existingConfigFormData} />
+          <LMSConfigPage
+            LMSType={config}
+            onClick={onClick}
+            existingConfigFormData={existingConfigFormData}
+            existingConfigs={existingConfigsData}
+          />
         </span>
       )}
       {toastMessage && (

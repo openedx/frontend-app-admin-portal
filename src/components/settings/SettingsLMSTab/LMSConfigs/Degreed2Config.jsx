@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const Degreed2Config = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
@@ -87,7 +89,7 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -212,5 +214,6 @@ Degreed2Config.propTypes = {
     degreedBaseUrl: PropTypes.string,
     degreedFetchUrl: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default Degreed2Config;

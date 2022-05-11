@@ -20,7 +20,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const CanvasConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [clientId, setClientId] = React.useState('');
@@ -179,7 +181,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -323,5 +325,6 @@ CanvasConfig.propTypes = {
     refreshToken: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default CanvasConfig;

@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const SAPConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [sapsfBaseUrl, setSapsfBaseUrl] = React.useState('');
@@ -88,7 +90,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -229,5 +231,6 @@ SAPConfig.propTypes = {
     secret: PropTypes.string,
     userType: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default SAPConfig;

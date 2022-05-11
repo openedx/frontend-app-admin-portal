@@ -28,6 +28,11 @@ mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
+const noConfigs = [];
+const existingConfig = [
+  {
+    displayName: 'name',
+  }];
 // Freshly creating a config will have an empty existing data object
 const noExistingData = {};
 // Existing config data that has been authorized
@@ -59,6 +64,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -70,6 +76,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -81,6 +88,10 @@ describe('<BlackboardConfig />', () => {
 
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
+
+    // test duplicate display name
+    userEvent.type(screen.getByLabelText('Display Name'), 'name');
+    expect(screen.queryByText(INVALID_NAME));
   });
   test('test validation and button enable', async () => {
     render(
@@ -88,6 +99,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -104,6 +116,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -131,6 +144,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -162,6 +176,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -189,6 +204,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -210,6 +226,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     act(() => {
@@ -238,6 +255,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -258,6 +276,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -269,6 +288,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

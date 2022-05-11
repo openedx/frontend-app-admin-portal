@@ -12,6 +12,11 @@ jest.mock('../../../../data/services/LmsApiService');
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
+const noConfigs = [];
+const existingConfig = [
+  {
+    displayName: 'name',
+  }];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
@@ -35,6 +40,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -51,6 +57,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -92,6 +99,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
@@ -133,6 +141,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
@@ -175,6 +184,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -196,6 +206,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -207,6 +218,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const MoodleConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [moodleBaseUrl, setMoodleBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [serviceShortName, setServiceShortName] = React.useState('');
@@ -97,7 +99,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -233,5 +235,6 @@ MoodleConfig.propTypes = {
     moodleBaseUrl: PropTypes.string,
     serviceShortName: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default MoodleConfig;

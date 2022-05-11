@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const CornerstoneConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
@@ -75,7 +77,7 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -148,5 +150,6 @@ CornerstoneConfig.propTypes = {
     cornerstoneBaseUrl: PropTypes.string,
     displayName: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default CornerstoneConfig;

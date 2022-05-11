@@ -19,7 +19,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const BlackboardConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
@@ -37,6 +39,12 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     displayName,
     blackboardBaseUrl,
   };
+  // console.log("HARRIS");
+  // console.log(existingData);
+  // console.log("HARRY");
+
+  // console.log(existingConfigs);
+  // //   // const displayNames = [];
 
   // Polling method to determine if the user has authorized their config
   useInterval(async () => {
@@ -197,7 +205,7 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
@@ -302,5 +310,6 @@ BlackboardConfig.propTypes = {
     refreshToken: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default BlackboardConfig;
