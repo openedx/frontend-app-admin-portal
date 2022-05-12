@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -69,7 +69,7 @@ const CornerstoneConfig = ({
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Cornerstone Base URL':
         setCornerstoneBaseUrl(input);
@@ -82,14 +82,14 @@ const CornerstoneConfig = ({
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('Cornerstone Base URL', existingData.cornerstoneBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>

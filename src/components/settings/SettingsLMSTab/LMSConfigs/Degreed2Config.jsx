@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -77,7 +77,7 @@ const Degreed2Config = ({
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Degreed Token Fetch Base Url':
         setDegreedFetchUrl(input);
@@ -94,7 +94,7 @@ const Degreed2Config = ({
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
@@ -102,7 +102,7 @@ const Degreed2Config = ({
       validateField('Display Name', existingData.displayName);
       validateField('Degreed Token Fetch Base Url', existingData.degreedFetchUrl);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>

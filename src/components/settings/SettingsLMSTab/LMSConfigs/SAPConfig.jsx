@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
@@ -82,7 +82,7 @@ const SAPConfig = ({
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'SAP Base URL':
         setSapsfBaseUrl(input);
@@ -95,14 +95,14 @@ const SAPConfig = ({
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('SAP Base URL', existingData.sapsfBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
