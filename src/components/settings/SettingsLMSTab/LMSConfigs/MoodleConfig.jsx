@@ -235,6 +235,6 @@ MoodleConfig.propTypes = {
     moodleBaseUrl: PropTypes.string,
     serviceShortName: PropTypes.string,
   }).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default MoodleConfig;

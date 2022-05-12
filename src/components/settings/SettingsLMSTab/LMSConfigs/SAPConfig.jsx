@@ -231,6 +231,6 @@ SAPConfig.propTypes = {
     secret: PropTypes.string,
     userType: PropTypes.string,
   }).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default SAPConfig;

@@ -105,20 +105,7 @@ LMSConfigPage.propTypes = {
   LMSType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
-  existingConfigs: PropTypes.arrayOf(
-    PropTypes.shape({
-      active: PropTypes.bool,
-      isValid: PropTypes.arrayOf(
-        PropTypes.shape({
-          missing: PropTypes.arrayOf(PropTypes.string),
-          incorrect: PropTypes.arrayOf(PropTypes.string),
-        }),
-      ),
-      channelCode: PropTypes.string,
-      id: PropTypes.number,
-      displayName: PropTypes.string,
-    }),
-  ),
+  existingConfigs: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default connect(mapStateToProps)(LMSConfigPage);

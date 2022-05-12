@@ -150,6 +150,6 @@ CornerstoneConfig.propTypes = {
     cornerstoneBaseUrl: PropTypes.string,
     displayName: PropTypes.string,
   }).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default CornerstoneConfig;

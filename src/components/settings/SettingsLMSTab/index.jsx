@@ -42,6 +42,7 @@ export default function SettingsLMSTab({
   const [configsExist, setConfigsExist] = useState(false);
   const [showNewConfigButtons, setShowNewConfigButtons] = useState(true);
   const [configsLoading, setConfigsLoading] = useState(true);
+  const [displayNames, setDisplayNames] = useState([]);
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
@@ -132,6 +133,13 @@ export default function SettingsLMSTab({
     setDisplayNeedsSSOAlert(enableSamlConfigurationScreen && !identityProvider);
   }, [enableSamlConfigurationScreen, identityProvider]);
 
+  useEffect(() => {
+    // update list of used display names to prevent duplicates
+    if (existingConfigsData[0]) {
+      setDisplayNames(existingConfigsData?.map((existingConfig) => existingConfig.displayName));
+    }
+  }, [existingConfigsData]);
+
   return (
     <div>
       <div className="d-flex">
@@ -219,7 +227,7 @@ export default function SettingsLMSTab({
             LMSType={config}
             onClick={onClick}
             existingConfigFormData={existingConfigFormData}
-            existingConfigs={existingConfigsData}
+            existingConfigs={displayNames}
           />
         </span>
       )}

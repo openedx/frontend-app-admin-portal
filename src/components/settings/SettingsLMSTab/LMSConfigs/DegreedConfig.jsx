@@ -236,6 +236,6 @@ DegreedConfig.propTypes = {
     degreedUserId: PropTypes.string,
     degreedUserPassword: PropTypes.string,
   }).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default DegreedConfig;

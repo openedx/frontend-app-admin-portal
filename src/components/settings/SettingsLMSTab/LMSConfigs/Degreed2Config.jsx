@@ -214,6 +214,6 @@ Degreed2Config.propTypes = {
     degreedBaseUrl: PropTypes.string,
     degreedFetchUrl: PropTypes.string,
   }).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default Degreed2Config;
