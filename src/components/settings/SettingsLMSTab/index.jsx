@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
-
+import Skeleton from 'react-loading-skeleton';
 import { camelCaseDictArray } from '../../../utils';
 import LMSCard from './LMSCard';
 import LMSConfigPage from './LMSConfigPage';
@@ -41,6 +41,7 @@ export default function SettingsLMSTab({
   const [existingConfigsData, setExistingConfigsData] = useState({});
   const [configsExist, setConfigsExist] = useState(false);
   const [showNewConfigButtons, setShowNewConfigButtons] = useState(true);
+  const [configsLoading, setConfigsLoading] = useState(true);
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
@@ -48,6 +49,7 @@ export default function SettingsLMSTab({
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
+    setConfigsLoading(false);
     // Set the form data to the card's
     setExistingConfigFormData(configData);
     // Set the config type to the card's type
@@ -62,6 +64,8 @@ export default function SettingsLMSTab({
     const options = { enterprise_customer: enterpriseId };
     LmsApiService.fetchEnterpriseCustomerIntegrationConfigs(options)
       .then((response) => {
+        setShowNewConfigButtons(true);
+        setConfigsLoading(false);
         // If the enterprise has existing configs
         if (response.data.length !== 0) {
           // Save all existing configs
@@ -73,7 +77,8 @@ export default function SettingsLMSTab({
         }
       })
       .catch((error) => {
-        // We can ignore errors here as user will se the banner in the next page refresh.
+        setConfigsLoading(false);
+        // We can ignore errors here as user will see the banner in the next page refresh.
         logError(error);
       });
   }, [enterpriseId]);
@@ -106,6 +111,7 @@ export default function SettingsLMSTab({
     } else {
       // Otherwise the user has clicked a create card and we need to set existing config bool to
       // false and set the config type to the card that was clicked type
+      setShowNewConfigButtons(false);
       setConfigsExist(false);
       setConfig(input);
     }
@@ -170,7 +176,8 @@ export default function SettingsLMSTab({
           />
         </span>
       )}
-      {!showNewConfigButtons && (
+      {configsLoading && (<span data-testid="skeleton"><Skeleton data-testid="skeleton" className="mb-4" count={2} height={20} /></span>)}
+      {!showNewConfigButtons && !configsLoading && !config && (
         <Button
           variant="primary"
           className="mr-6"
@@ -183,7 +190,7 @@ export default function SettingsLMSTab({
           New configuration
         </Button>
       )}
-      {showNewConfigButtons && !config && (
+      {showNewConfigButtons && !configsLoading && (
         <span>
           <h4 className="mt-5">New configurations</h4>
           <p className="mb-4">Click on a card to start a new configuration</p>

@@ -39,12 +39,6 @@ const BlackboardConfig = ({
     displayName,
     blackboardBaseUrl,
   };
-  // console.log("HARRIS");
-  // console.log(existingData);
-  // console.log("HARRY");
-
-  // console.log(existingConfigs);
-  // //   // const displayNames = [];
 
   // Polling method to determine if the user has authorized their config
   useInterval(async () => {
