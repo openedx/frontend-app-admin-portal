@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { CheckCircle, Error } from '@edx/paragon/icons';
@@ -19,7 +19,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const BlackboardConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
@@ -189,7 +191,7 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Blackboard Base URL':
         setBlackboardBaseUrl(input);
@@ -197,19 +199,19 @@ const BlackboardConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => 
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('Blackboard Base URL', existingData.blackboardBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -302,5 +304,6 @@ BlackboardConfig.propTypes = {
     refreshToken: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default BlackboardConfig;

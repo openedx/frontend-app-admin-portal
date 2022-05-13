@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const SAPConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [sapsfBaseUrl, setSapsfBaseUrl] = React.useState('');
@@ -80,7 +82,7 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'SAP Base URL':
         setSapsfBaseUrl(input);
@@ -88,19 +90,19 @@ const SAPConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('SAP Base URL', existingData.sapsfBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -229,5 +231,6 @@ SAPConfig.propTypes = {
     secret: PropTypes.string,
     userType: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default SAPConfig;

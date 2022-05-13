@@ -49,6 +49,12 @@ const existingConfigDataNoAuth = {
   canvasAccountId: 10,
 };
 
+const noConfigs = [];
+const existingConfig = [
+  {
+    displayName: 'name',
+  }];
+
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -60,6 +66,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -74,11 +81,12 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'reallyreallyreallyreallyreallylongname');
+    userEvent.type(screen.getByLabelText('Display Name'), 'name');
     userEvent.type(screen.getByLabelText('Canvas Base URL'), 'test4');
     userEvent.type(screen.getByLabelText('API Client ID'), 'test3');
     userEvent.type(screen.getByLabelText('Canvas Account Number'), '23');
@@ -106,6 +114,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     await act(async () => {
@@ -155,6 +164,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -187,6 +197,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -221,6 +232,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -244,6 +256,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     act(() => {
@@ -273,6 +286,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -292,6 +306,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -303,6 +318,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { CheckCircle, Error } from '@edx/paragon/icons';
@@ -20,7 +20,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const CanvasConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [clientId, setClientId] = React.useState('');
@@ -171,7 +173,7 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Canvas Base URL':
         setCanvasBaseUrl(input);
@@ -179,19 +181,19 @@ const CanvasConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('Canvas Base URL', existingData.canvasBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -323,5 +325,6 @@ CanvasConfig.propTypes = {
     refreshToken: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default CanvasConfig;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  fireEvent, screen,
+  fireEvent, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import configureMockStore from 'redux-mock-store';
@@ -23,6 +23,12 @@ import { channelMapping } from '../../../../utils';
 
 import SettingsLMSTab from '../index';
 import buttonBool from '../utils';
+
+jest.mock('react-loading-skeleton', () => ({
+  __esModule: true,
+  // eslint-disable-next-line react/prop-types
+  default: (props = {}) => <div data-testid={props['data-testid']} />,
+}));
 
 const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const enterpriseSlug = 'test-slug';
@@ -61,19 +67,25 @@ const SettingsLMSWrapper = () => (
 );
 
 describe('<SettingsLMSTab />', () => {
-  it('Renders with all LMS cards present', () => {
+  it('Renders with all LMS cards present', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    expect(screen.queryByText(channelMapping[BLACKBOARD_TYPE].displayName)).toBeTruthy();
-    expect(screen.queryByText(channelMapping[CANVAS_TYPE].displayName)).toBeTruthy();
-    expect(screen.queryByText(channelMapping[CORNERSTONE_TYPE].displayName)).toBeTruthy();
-    expect(screen.queryByText(channelMapping[DEGREED2_TYPE].displayName)).toBeTruthy();
-    expect(screen.queryByText(channelMapping[MOODLE_TYPE].displayName)).toBeTruthy();
-    expect(screen.queryByText(channelMapping[SAP_TYPE].displayName)).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.queryByText(channelMapping[BLACKBOARD_TYPE].displayName)).toBeTruthy();
+      expect(screen.queryByText(channelMapping[CANVAS_TYPE].displayName)).toBeTruthy();
+      expect(screen.queryByText(channelMapping[CORNERSTONE_TYPE].displayName)).toBeTruthy();
+      expect(screen.queryByText(channelMapping[DEGREED2_TYPE].displayName)).toBeTruthy();
+      expect(screen.queryByText(channelMapping[MOODLE_TYPE].displayName)).toBeTruthy();
+      expect(screen.queryByText(channelMapping[SAP_TYPE].displayName)).toBeTruthy();
+    });
   });
   test('Blackboard card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
-    fireEvent.click(blackboardCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
+    });
+    fireEvent.click(screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName));
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
@@ -87,6 +99,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('Canvas card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
+    });
     const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
     fireEvent.click(canvasCard);
     expect(screen.queryByText('Connect Canvas')).toBeTruthy();
@@ -102,6 +119,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('Cornerstone card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[CORNERSTONE_TYPE].displayName));
+    });
     const cornerstoneCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
     fireEvent.click(cornerstoneCard);
     expect(screen.queryByText('Connect Cornerstone')).toBeTruthy();
@@ -117,6 +139,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('Degreed card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
+    });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
     fireEvent.click(degreedCard);
     expect(screen.queryByText('Connect Degreed')).toBeTruthy();
@@ -132,6 +159,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('Moodle card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
+    });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
     fireEvent.click(moodleCard);
     expect(screen.queryByText('Connect Moodle')).toBeTruthy();
@@ -147,6 +179,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('SAP card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[SAP_TYPE].displayName));
+    });
     const sapCard = screen.getByText(channelMapping[SAP_TYPE].displayName);
     fireEvent.click(sapCard);
     expect(screen.queryByText('Connect SAP')).toBeTruthy();
@@ -162,8 +199,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Moodle card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
+    });
+    const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
+    fireEvent.click(moodleCard);
     expect(screen.queryByText('Connect Moodle')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -172,8 +214,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Degreed2 card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
+    });
+    const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
+    fireEvent.click(degreedCard);
     expect(screen.queryByText('Connect Degreed')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -182,8 +229,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Degreed card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[DEGREED_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[DEGREED_TYPE].displayName));
+    });
+    const degreedCard = screen.getByText(channelMapping[DEGREED_TYPE].displayName);
+    fireEvent.click(degreedCard);
     expect(screen.queryByText('Connect Degreed')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -192,8 +244,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Cornerstone card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[CORNERSTONE_TYPE].displayName));
+    });
+    const cornerstoneCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
+    fireEvent.click(cornerstoneCard);
     expect(screen.queryByText('Connect Cornerstone')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -202,8 +259,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Canvas card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
+    });
+    const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
+    fireEvent.click(canvasCard);
     expect(screen.queryByText('Connect Canvas')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -212,8 +274,13 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action Blackboard card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    const sapCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
-    fireEvent.click(sapCard);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
+    });
+    const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
+    fireEvent.click(blackboardCard);
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -222,6 +289,11 @@ describe('<SettingsLMSTab />', () => {
   });
   test('No action SAP card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => {
+      expect(screen.findByText(channelMapping[SAP_TYPE].displayName));
+    });
     const sapCard = screen.getByText(channelMapping[SAP_TYPE].displayName);
     fireEvent.click(sapCard);
     expect(screen.queryByText('Connect SAP')).toBeTruthy();

@@ -13,6 +13,11 @@ jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
+const noConfigs = [];
+const existingConfig = [
+  {
+    displayName: 'name',
+  }];
 const noExistingData = {};
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
@@ -36,6 +41,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -47,6 +53,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -60,6 +67,12 @@ describe('<CornerstoneConfig />', () => {
     expect(screen.getByText('Submit')).toBeDisabled();
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
+    // duplicate display name not able to be submitted
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'name' },
+    });
+    expect(screen.queryByText(INVALID_NAME));
+
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'test1' },
     });
@@ -74,6 +87,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -98,6 +112,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -123,6 +138,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -143,6 +159,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -154,6 +171,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

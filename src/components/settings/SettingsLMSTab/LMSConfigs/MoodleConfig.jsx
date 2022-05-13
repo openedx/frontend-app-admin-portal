@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const MoodleConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [moodleBaseUrl, setMoodleBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [serviceShortName, setServiceShortName] = React.useState('');
@@ -89,7 +91,7 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Moodle Base URL':
         setMoodleBaseUrl(input);
@@ -97,19 +99,19 @@ const MoodleConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('Moodle Base URL', existingData.moodleBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -233,5 +235,6 @@ MoodleConfig.propTypes = {
     moodleBaseUrl: PropTypes.string,
     serviceShortName: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default MoodleConfig;

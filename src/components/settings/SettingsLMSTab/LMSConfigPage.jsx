@@ -26,6 +26,7 @@ const LMSConfigPage = ({
   onClick,
   enterpriseCustomerUuid,
   existingConfigFormData,
+  existingConfigs,
 }) => (
   <span>
     <h3 className="mt-4.5 mb-3.5">
@@ -37,6 +38,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === CANVAS_TYPE && (
@@ -44,6 +46,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === CORNERSTONE_TYPE && (
@@ -51,6 +54,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === DEGREED2_TYPE && (
@@ -58,6 +62,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === DEGREED_TYPE && (
@@ -65,6 +70,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === MOODLE_TYPE && (
@@ -72,6 +78,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
     {LMSType === SAP_TYPE && (
@@ -79,6 +86,7 @@ const LMSConfigPage = ({
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
+        existingConfigs={existingConfigs}
       />
     )}
   </span>
@@ -88,11 +96,16 @@ const mapStateToProps = (state) => ({
   enterpriseCustomerUuid: state.portalConfiguration.enterpriseId,
 });
 
+LMSConfigPage.defaultProps = {
+  existingConfigs: [],
+};
+
 LMSConfigPage.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   LMSType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default connect(mapStateToProps)(LMSConfigPage);

@@ -12,6 +12,11 @@ jest.mock('../../../../data/services/LmsApiService');
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
+const noConfigs = [];
+const existingConfig = [
+  {
+    displayName: 'name',
+  }];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
@@ -37,6 +42,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -50,6 +56,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -73,6 +80,13 @@ describe('<Degreed2Config />', () => {
     expect(screen.queryByText(INVALID_NAME));
     const linkText = screen.queryAllByText(INVALID_LINK);
     expect(linkText.length).toBe(2);
+
+    // duplicate display name not able to be submitted
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: 'name' },
+    });
+    expect(screen.queryByText(INVALID_NAME));
+
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'test1' },
     });
@@ -90,6 +104,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('API Client ID'), {
@@ -126,6 +141,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('API Client ID'), {
@@ -159,6 +175,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
+        existingConfigs={noConfigs}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -179,6 +196,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -190,6 +208,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const Degreed2Config = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
@@ -75,7 +77,7 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Degreed Token Fetch Base Url':
         setDegreedFetchUrl(input);
@@ -87,12 +89,12 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
@@ -100,7 +102,7 @@ const Degreed2Config = ({ enterpriseCustomerUuid, onClick, existingData }) => {
       validateField('Display Name', existingData.displayName);
       validateField('Degreed Token Fetch Base Url', existingData.degreedFetchUrl);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -212,5 +214,6 @@ Degreed2Config.propTypes = {
     degreedBaseUrl: PropTypes.string,
     degreedFetchUrl: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default Degreed2Config;

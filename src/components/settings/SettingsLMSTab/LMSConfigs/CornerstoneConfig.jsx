@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -10,7 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) => {
+const CornerstoneConfig = ({
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
@@ -67,7 +69,7 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
     }
   };
 
-  const validateField = (field, input) => {
+  const validateField = useCallback((field, input) => {
     switch (field) {
       case 'Cornerstone Base URL':
         setCornerstoneBaseUrl(input);
@@ -75,19 +77,19 @@ const CornerstoneConfig = ({ enterpriseCustomerUuid, onClick, existingData }) =>
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20);
+        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
         break;
       default:
         break;
     }
-  };
+  }, [existingConfigs]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
       validateField('Cornerstone Base URL', existingData.cornerstoneBaseUrl);
       validateField('Display Name', existingData.displayName);
     }
-  }, [existingData]);
+  }, [existingConfigs, existingData, validateField]);
 
   return (
     <span>
@@ -148,5 +150,6 @@ CornerstoneConfig.propTypes = {
     cornerstoneBaseUrl: PropTypes.string,
     displayName: PropTypes.string,
   }).isRequired,
+  existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default CornerstoneConfig;
