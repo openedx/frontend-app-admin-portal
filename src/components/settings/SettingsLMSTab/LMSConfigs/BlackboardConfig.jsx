@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
-import { CheckCircle, Error } from '@edx/paragon/icons';
+import { Error } from '@edx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
 import buttonBool from '../utils';
 import handleErrors from '../../utils';
@@ -158,6 +158,12 @@ const BlackboardConfig = ({
     }
   };
 
+  useEffect(() => {
+    if (authorized) {
+      onClick(SUCCESS_LABEL);
+    }
+  }, [authorized, onClick]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // format config data for the backend
@@ -199,12 +205,17 @@ const BlackboardConfig = ({
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        // on edit, we don't want to count the existing displayname as a duplicate
+        if (Object.values(existingConfigs).includes(input) && input === existingData.displayName) {
+          setNameValid(input?.length <= 20);
+        } else {
+          setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        }
         break;
       default:
         break;
     }
-  }, [existingConfigs]);
+  }, [existingConfigs, existingData.displayName]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
@@ -255,12 +266,6 @@ const BlackboardConfig = ({
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        {authorized && (
-          <div className="mb-4">
-            <CheckCircle className="mr-1.5 text-success-500" />
-            Authorized
-          </div>
-        )}
         {oauthTimeout && (
           <div className="mb-4">
             <Error className="mr-1.5 text-danger-500" />

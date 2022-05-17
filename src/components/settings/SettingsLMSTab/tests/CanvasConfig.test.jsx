@@ -178,7 +178,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     const expectedConfig = {
       active: false,
@@ -210,7 +210,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     userEvent.click(screen.getByText('Cancel'));
     userEvent.click(screen.getByText('Save'));
@@ -245,7 +245,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -274,7 +274,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
@@ -294,7 +294,7 @@ describe('<CanvasConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();

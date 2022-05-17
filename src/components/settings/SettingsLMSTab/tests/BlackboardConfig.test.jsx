@@ -160,7 +160,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     const expectedConfig = {
       active: false,
@@ -185,7 +185,7 @@ describe('<BlackboardConfig />', () => {
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     userEvent.click(screen.getByText('Cancel'));
     userEvent.click(screen.getByText('Save'));
@@ -214,9 +214,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
-
-    await screen.findByText('Display Name');
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
   });
@@ -242,9 +240,8 @@ describe('<BlackboardConfig />', () => {
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
-    await waitFor(() => screen.getByText('Submit'));
 
-    await screen.findByText('Display Name');
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
     expect(window.open).toHaveBeenCalled();
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -263,9 +260,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
-    expect(screen.getByText('Display Name')).toBeInTheDocument();
-
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);

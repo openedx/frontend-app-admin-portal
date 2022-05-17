@@ -89,12 +89,16 @@ const Degreed2Config = ({
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        if (Object.values(existingConfigs).includes(input) && input === existingData.displayName) {
+          setNameValid(input?.length <= 20);
+        } else {
+          setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        }
         break;
       default:
         break;
     }
-  }, [existingConfigs]);
+  }, [existingConfigs, existingData.displayName]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {
