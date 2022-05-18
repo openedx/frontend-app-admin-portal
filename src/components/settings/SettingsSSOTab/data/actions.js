@@ -10,6 +10,7 @@ export const SET_PROVIDER_CONFIG = 'set_provider_config';
 export const UPDATE_CURRENT_ERROR = 'update_current_error';
 export const CLEAR_PROVIDER_CONFIG = 'clear_provider_config';
 export const UPDATE_INFO_MESSAGE = 'update_info_message';
+export const UPDATE_REFRESH_BOOL = 'update_refresh_bool';
 export const UPDATE_CONNECT_START_TIME = 'update_connect_start_time';
 
 // Use this action to update IDP metadata URL in client state
@@ -72,6 +73,11 @@ export const updateCurrentError = error => ({
 export const updateInfoMessage = infoMessage => ({
   type: UPDATE_INFO_MESSAGE,
   infoMessage,
+});
+
+export const updateRefreshBool = refreshBool => ({
+  type: UPDATE_REFRESH_BOOL,
+  refreshBool,
 });
 
 // Use this action to update connect.startTime

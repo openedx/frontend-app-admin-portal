@@ -11,7 +11,7 @@ import { updateSamlProviderData } from './utils';
 
 const useIdpState = () => {
   const {
-    ssoState, dispatchSsoState, setProviderConfig, setCurrentError,
+    ssoState, dispatchSsoState, setProviderConfig, currentError, setCurrentError,
   } = useContext(SSOConfigContext);
   const {
     idp: {
@@ -31,7 +31,7 @@ const useIdpState = () => {
     providerConfig = null,
     onSuccess,
   }) => {
-    if (!isDirty) {
+    if (!isDirty && currentError === null) {
       dispatchSsoState(updateIdpDirtyState(false));
       onSuccess();
       return;
@@ -88,7 +88,13 @@ const useIdpState = () => {
       onSuccess();
     } catch (error) {
       const { message, customAttributes } = error;
-      setCurrentError(`${message } Details: ${JSON.stringify(customAttributes)}`);
+      if (error.customAttributes?.httpErrorStatus === 406) {
+        setCurrentError(
+          ': Unable to verify provided metadata URL, please check your information and try again.',
+        );
+      } else {
+        setCurrentError(`${message} Details: ${JSON.stringify(customAttributes)}`);
+      }
     }
     dispatchSsoState(updateIdpDirtyState(false)); // we must reset dirty state
   };
@@ -122,6 +128,8 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
         if (err.customAttributes?.httpErrorStatus !== 404) {
           // nothing found is okay for this fetcher.
           setError(err);
+        } else {
+          setSsoConfigs([]);
         }
       });
     }

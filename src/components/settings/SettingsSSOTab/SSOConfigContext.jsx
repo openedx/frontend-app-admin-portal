@@ -9,6 +9,7 @@ import {
   updateInfoMessage,
   updateProviderConfig,
   updateStartTime,
+  updateRefreshBool,
 } from './data/actions';
 
 const SSOConfigContext = createContext({});
@@ -17,6 +18,7 @@ export const SSO_INITIAL_STATE = {
   currentStep: 'idp',
   currentError: null,
   infoMessage: '',
+  refreshBool: false,
   idp: {
     stepLabel: 'Identity Provider',
     isComplete: false,
@@ -53,6 +55,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
   const setInfoMessage = message => dispatchSsoState(updateInfoMessage(message));
+  const setRefreshBool = refresh => dispatchSsoState(updateRefreshBool(refresh));
   const setStartTime = timeVal => dispatchSsoState(updateStartTime(timeVal));
 
   return (
@@ -64,6 +67,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
       setCurrentStep,
       setIsSsoValid,
       setInfoMessage,
+      setRefreshBool,
       setStartTime,
     }}
     >

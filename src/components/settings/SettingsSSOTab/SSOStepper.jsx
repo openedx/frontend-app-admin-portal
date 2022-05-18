@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
 import isEmpty from 'validator/lib/isEmpty';
 import isURL from 'validator/lib/isURL';
-import { useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateCurrentStep } from './data/actions';
 import { useIdpState } from './hooks';
@@ -18,11 +18,18 @@ import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
-  const { ssoState, dispatchSsoState } = useContext(SSOConfigContext);
-  const { currentStep, providerConfig } = ssoState;
+  const {
+    ssoState,
+    dispatchSsoState,
+    setProviderConfig,
+    setRefreshBool,
+  } = useContext(SSOConfigContext);
+  const { currentStep, providerConfig, refreshBool } = ssoState;
   const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const [configValues, setConfigValues] = useState(null);
   const [connectError, setConnectError] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [formUpdated, setFormUpdated] = React.useState(false);
 
   const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
 
@@ -31,21 +38,44 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     [metadataURL, entityID],
   );
 
-  const updateConfig = async () => {
+  const handleCancel = () => {
+    setCurrentStep('idp');
+    setProviderConfig(null);
+    setRefreshBool(!refreshBool);
+  };
+
+  const saveOnQuit = async () => {
+    let err;
     if (configValues !== null) {
       configValues.append('enterprise_customer_uuid', enterpriseId);
-      let err;
       try {
         await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
       } catch (error) {
         err = handleErrors(error);
-      }
-      if (err) {
-        // TODO - what do we want to do on error??
+        setConnectError(true);
       }
     }
-    setCurrentStep('connect');
+    if (!err) {
+      handleCancel();
+    }
   };
+
+  const updateConfig = async () => {
+    let err;
+    if (configValues !== null) {
+      configValues.append('enterprise_customer_uuid', enterpriseId);
+      try {
+        await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+      } catch (error) {
+        err = handleErrors(error);
+        setConnectError(true);
+      }
+    }
+    if (!err) {
+      setCurrentStep('connect');
+    }
+  };
+
   const { serviceprovider: { isSPConfigured } } = ssoState;
 
   return (
@@ -63,7 +93,18 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
           </Stepper.Step>
 
           <Stepper.Step eventKey="configure" title="Configure">
-            <SSOConfigConfigureStep setConfigValues={setConfigValues} connectError={connectError} />
+            <SSOConfigConfigureStep
+              setConfigValues={setConfigValues}
+              connectError={connectError}
+              saveOnQuit={saveOnQuit}
+              setProviderConfig={setProviderConfig}
+              showExitModal={showExitModal}
+              closeExitModal={() => { setShowExitModal(false); }}
+              existingConfigData={providerConfig}
+              refreshBool={refreshBool}
+              setRefreshBool={setRefreshBool}
+              setFormUpdated={setFormUpdated}
+            />
           </Stepper.Step>
 
           <Stepper.Step eventKey="connect" title="Connect">
@@ -73,6 +114,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
 
         <div className="py-3">
           <Stepper.ActionRow eventKey="idp">
+            { providerConfig != null && (
+              <Button onClick={() => handleCancel()}>
+                Cancel
+              </Button>
+            )}
             <Stepper.ActionRow.Spacer />
             <Button
               disabled={!isIdpStepComplete}
@@ -94,6 +140,9 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
             <Button variant="outline-primary" onClick={() => setCurrentStep('idp')}>
               <ArrowBack />
             </Button>
+            <Button onClick={() => { handleCancel(); }}>
+              Cancel
+            </Button>
             <Stepper.ActionRow.Spacer />
             <Button disabled={!isSPConfigured} onClick={() => setCurrentStep('configure')}>
               Next
@@ -105,12 +154,26 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
             <Button variant="outline-primary" onClick={() => setCurrentStep('serviceprovider')}>
               <ArrowBack />
             </Button>
+            <Button
+              onClick={() => {
+                if (formUpdated) {
+                  setShowExitModal(true);
+                } else {
+                  handleCancel();
+                }
+              }}
+            >
+              Cancel
+            </Button>
             <Stepper.ActionRow.Spacer />
             <Button onClick={() => updateConfig()}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey="connect">
             <Button variant="outline-primary" onClick={() => setCurrentStep('configure')}>
               <ArrowBack />
+            </Button>
+            <Button onClick={() => { handleCancel(); }}>
+              Cancel
             </Button>
             <Stepper.ActionRow.Spacer />
           </Stepper.ActionRow>
