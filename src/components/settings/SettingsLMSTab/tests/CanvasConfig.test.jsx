@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import CanvasConfig from '../LMSConfigs/CanvasConfig';
-import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 jest.mock('../../data/constants', () => ({
@@ -53,6 +53,10 @@ const noConfigs = [];
 const existingConfig = [
   {
     displayName: 'name',
+  }];
+const existingConfig2 = [
+  {
+    displayName: 'foobar',
   }];
 
 afterEach(() => {
@@ -114,7 +118,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     await act(async () => {
@@ -226,7 +230,7 @@ describe('<CanvasConfig />', () => {
     };
     expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
   });
-  test('Authorizing a config will initial backend polling', async () => {
+  test('Authorizing a config will initiate backend polling', async () => {
     render(
       <CanvasConfig
         enterpriseCustomerUuid={enterpriseId}
@@ -256,7 +260,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     act(() => {
@@ -275,7 +279,7 @@ describe('<CanvasConfig />', () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
-
+    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -286,7 +290,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -295,7 +299,7 @@ describe('<CanvasConfig />', () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
-
+    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -318,7 +322,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

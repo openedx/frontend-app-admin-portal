@@ -15,7 +15,11 @@ const mockOnClick = jest.fn();
 const noConfigs = [];
 const existingConfig = [
   {
-    displayName: 'name',
+    displayName: 'foobar',
+  }];
+const existingConfigInvalid = [
+  {
+    displayName: 'fooooooooobaaaaaaaaar',
   }];
 const noExistingData = {};
 const existingConfigData = {
@@ -99,7 +103,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     fireEvent.change(screen.getByLabelText('SAP Company ID'), {
@@ -206,7 +210,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -218,7 +222,7 @@ describe('<SAPConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

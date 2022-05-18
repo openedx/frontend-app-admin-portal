@@ -18,6 +18,10 @@ const existingConfig = [
   {
     displayName: 'name',
   }];
+const existingConfigInvalid = [
+  {
+    displayName: 'fooooooooobaaaaaaaaar',
+  }];
 const noExistingData = {};
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
@@ -53,7 +57,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -87,7 +91,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -159,7 +163,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfigInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -171,7 +175,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
