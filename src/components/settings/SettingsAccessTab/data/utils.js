@@ -6,7 +6,7 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyReque
 /**
  *
  * @param {string} configuredRequestSubsidyType The configured request subsidy type (e.g., subscription license, code)
- * @param {*} enterpriseSlug The slug for an enterprise customer
+ * @param {string} enterpriseSlug The slug for an enterprise customer
  * @returns {object} Object containing a human-readable label of the configured request subsidy type and a path to the
  *  appropriate subsidy tab route.
  */
