@@ -26,8 +26,8 @@ const SettingsAccessTabSection = ({
   };
 
   return (
-    <div className="mb-4">
-      <div className="d-flex justify-content-end mb-3">
+    <div>
+      <div className="d-flex justify-content-end">
         {loading && (
         <Spinner
           screenReaderText="Processing Feature Toggle"
@@ -47,8 +47,8 @@ const SettingsAccessTabSection = ({
           Enable
         </Form.Switch>
       </div>
-      <div>
-        {children ? (
+      {children && (
+        <div className="mt-4">
           <Collapsible
             open={isExpanded}
             onToggle={handleToggle}
@@ -57,12 +57,8 @@ const SettingsAccessTabSection = ({
           >
             {children}
           </Collapsible>
-        ) : (
-          <p className="card rounded-0 p-2">
-            <strong>{title}</strong>
-          </p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
