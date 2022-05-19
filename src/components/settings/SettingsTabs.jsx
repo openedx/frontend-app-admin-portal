@@ -69,6 +69,7 @@ const SettingsTabs = ({
           <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
             <SettingsAccessTab
               enterpriseId={enterpriseId}
+              enterpriseSlug={enterpriseSlug}
               enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
               identityProvider={identityProvider}
               enableLearnerPortal={enableLearnerPortal}
