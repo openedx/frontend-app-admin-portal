@@ -3,6 +3,8 @@ import {
   render,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+
 import SettingsAccessTab from '../index';
 import { SettingsContext } from '../../SettingsContext';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
@@ -87,7 +89,7 @@ const SettingsAccessTabWrapper = ({
 
 describe('<SettingsAccessTab />', () => {
   it('should render <SettingsAccessSSOManagement/> if sso is configured', () => {
-    render(<SettingsAccessTabWrapper props={{ identityProvider: 'idp' }} />);
+    renderWithRouter(<SettingsAccessTabWrapper props={{ identityProvider: 'idp' }} />);
     expect(screen.getByText('SettingsAccessSSOManagement'));
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessSubsidyRequestManagement')).not.toBeInTheDocument();
@@ -95,7 +97,7 @@ describe('<SettingsAccessTab />', () => {
 
   it('should render <SettingsAccessLinkManagement/> if universal link feature flag is enabled and learner portal is enabled', () => {
     config.features.SETTINGS_UNIVERSAL_LINK = 'true';
-    render(<SettingsAccessTabWrapper props={{ enableLearnerPortal: true }} />);
+    renderWithRouter(<SettingsAccessTabWrapper props={{ enableLearnerPortal: true }} />);
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessLinkManagement'));
     expect(screen.queryByText('SettingsAccessSubsidyRequestManagement')).not.toBeInTheDocument();
@@ -103,7 +105,7 @@ describe('<SettingsAccessTab />', () => {
 
   it('should render <SettingsAccessSubsidyRequestManagement/> if browse and request is enabled', () => {
     config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
-    render(<SettingsAccessTabWrapper />);
+    renderWithRouter(<SettingsAccessTabWrapper />);
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessSubsidyRequestManagement'));
@@ -111,7 +113,7 @@ describe('<SettingsAccessTab />', () => {
 
   it('should disable <SettingsAccessSubsidyRequestManagement/> if neither universal link or sso are configured', () => {
     config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         props={{ enableUniversalLink: false, identityProvider: null }}
       />,
@@ -130,7 +132,7 @@ describe('<SettingsAccessTab />', () => {
         subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
       },
     };
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
         props={{ enableUniversalLink: false, identityProvider: null }}
@@ -148,7 +150,7 @@ describe('<SettingsAccessTab />', () => {
       },
       updateSubsidyRequestConfiguration: jest.fn(),
     };
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
         props={{ enableUniversalLink: false, identityProvider: null }}
@@ -166,7 +168,7 @@ describe('<SettingsAccessTab />', () => {
       },
       updateSubsidyRequestConfiguration: jest.fn(),
     };
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
         props={{ enableUniversalLink: false, identityProvider: null }}
@@ -184,7 +186,7 @@ describe('<SettingsAccessTab />', () => {
       },
       updateSubsidyRequestConfiguration: jest.fn(),
     };
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         subsidyRequestConfigurationContextValue={subsidyRequestConfigurationContextValue}
         props={{ enableUniversalLink: false, identityProvider: null }}
@@ -194,7 +196,7 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should render <SettingsAccessSubsidyTypeSelection/> if enterprise has multiple subsidy types and subsidy type is not configured', () => {
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         settingsContextValue={
           {
@@ -220,7 +222,7 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should render <SettingsAccessConfiguredSubsidyType/> if subsidy type is configured', () => {
-    render(
+    renderWithRouter(
       <SettingsAccessTabWrapper
         settingsContextValue={
           {
