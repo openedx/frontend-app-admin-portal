@@ -110,16 +110,19 @@ const SettingsAccessTab = ({
 
           {isBrowseAndRequestEnabled && (
             <div>
-              <h3>Manage course requests</h3>
+              <div className="d-flex justify-content-between">
+                <h3>Manage course requests</h3>
+                <SettingsAccessSubsidyRequestManagement
+                  subsidyRequestConfiguration={subsidyRequestConfiguration}
+                  updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+                  disabled={!hasActiveAccessChannel}
+                />
+              </div>
               <p>
                 Allow learners to request subsidy to courses. You will see the requests under subsidy tab.
                 Disabling this feature will not affect learners&apos; browsing capability.
               </p>
-              <SettingsAccessSubsidyRequestManagement
-                subsidyRequestConfiguration={subsidyRequestConfiguration}
-                updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-                disabled={!hasActiveAccessChannel}
-              />
+
             </div>
           )}
         </>

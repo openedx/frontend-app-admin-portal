@@ -173,6 +173,7 @@ const SettingsAccessLinkManagement = ({
               ),
             },
           ]}
+          disableElevation
         >
           <DataTable.TableControlBar />
           <DataTable.Table />
