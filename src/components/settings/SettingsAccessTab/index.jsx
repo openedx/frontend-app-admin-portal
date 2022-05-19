@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Col, Row } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { features } from '../../../config';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
@@ -13,9 +14,11 @@ import { SettingsContext } from '../SettingsContext';
 import SettingsAccessConfiguredSubsidyType from './SettingsAccessConfiguredSubsidyType';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+import { getSubsidyTypeLabelAndRoute } from './data/utils';
 
 const SettingsAccessTab = ({
   enterpriseId,
+  enterpriseSlug,
   enableIntegratedCustomerLearnerPortalSearch,
   enableLearnerPortal,
   enableUniversalLink,
@@ -32,7 +35,8 @@ const SettingsAccessTab = ({
     enterpriseSubsidyTypes,
   } = useContext(SettingsContext);
 
-  const hasConfiguredSubsidyType = !!subsidyRequestConfiguration?.subsidyType;
+  const configuredRequestSubsidyType = subsidyRequestConfiguration?.subsidyType;
+  const hasConfiguredSubsidyType = !!configuredRequestSubsidyType;
   const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
@@ -40,14 +44,21 @@ const SettingsAccessTab = ({
 
   const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
 
+  const isNoAvailableCodesBannerVisible = (
+    configuredRequestSubsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
+    && subsidyRequestConfiguration?.subsidyRequestsEnabled
+  );
+  const isNoAvailableLicensesBannerVisible = (
+    configuredRequestSubsidyType === SUPPORTED_SUBSIDY_TYPES.license
+    && subsidyRequestConfiguration?.subsidyRequestsEnabled
+  );
+
+  const subsidyTypeLabelAndRoute = getSubsidyTypeLabelAndRoute(configuredRequestSubsidyType, enterpriseSlug);
+
   return (
     <div className="settings-access-tab mt-4">
-      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
-       && subsidyRequestConfiguration?.subsidyRequestsEnabled
-        && <NoAvailableCodesBanner coupons={coupons} /> }
-      {subsidyRequestConfiguration?.subsidyType === SUPPORTED_SUBSIDY_TYPES.license
-       && subsidyRequestConfiguration?.subsidyRequestsEnabled
-        && <NoAvailableLicensesBanner subscriptions={subscriptions} /> }
+      {isNoAvailableCodesBannerVisible && <NoAvailableCodesBanner coupons={coupons} />}
+      {isNoAvailableLicensesBannerVisible && <NoAvailableLicensesBanner subscriptions={subscriptions} />}
       <Row>
         <Col>
           <h2>Enable browsing on-demand</h2>
@@ -66,23 +77,21 @@ const SettingsAccessTab = ({
           </ContactCustomerSupportButton>
         </Col>
       </Row>
-
       {enterpriseSubsidyTypes.length > 1 && (
         <div className="mb-4">
           <h3>Subsidy type</h3>
-          {hasConfiguredSubsidyType
-            ? <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
-            : (
-              <SettingsAccessSubsidyTypeSelection
-                subsidyRequestConfiguration={subsidyRequestConfiguration}
-                subsidyTypes={enterpriseSubsidyTypes}
-                disabled={hasConfiguredSubsidyType}
-                updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-              />
-            )}
+          {hasConfiguredSubsidyType ? (
+            <SettingsAccessConfiguredSubsidyType subsidyType={subsidyRequestConfiguration.subsidyType} />
+          ) : (
+            <SettingsAccessSubsidyTypeSelection
+              subsidyRequestConfiguration={subsidyRequestConfiguration}
+              subsidyTypes={enterpriseSubsidyTypes}
+              disabled={hasConfiguredSubsidyType}
+              updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+            />
+          )}
         </div>
       )}
-
       {hasConfiguredSubsidyType && (
         <>
           <div className="mb-5">
@@ -91,13 +100,11 @@ const SettingsAccessTab = ({
               Channels determine how learners access the catalog(s).
               You can select one or both and change your selection at any time.
             </p>
-
             {isUniversalLinkEnabled && (
               <div className="mb-4">
                 <SettingsAccessLinkManagement />
               </div>
             )}
-
             {identityProvider && (
               <SettingsAccessSSOManagement
                 enterpriseId={enterpriseId}
@@ -107,8 +114,7 @@ const SettingsAccessTab = ({
               />
             )}
           </div>
-
-          {isBrowseAndRequestEnabled && (
+          {isBrowseAndRequestEnabled && subsidyTypeLabelAndRoute && (
             <div>
               <div className="d-flex justify-content-between">
                 <h3>Manage course requests</h3>
@@ -119,10 +125,11 @@ const SettingsAccessTab = ({
                 />
               </div>
               <p>
-                Allow learners to request subsidy to courses. You will see the requests under subsidy tab.
-                Disabling this feature will not affect learners&apos; browsing capability.
+                Allow learners to request a {subsidyTypeLabelAndRoute.label} to access courses. You
+                will see the requests under{' '}
+                <Link to={subsidyTypeLabelAndRoute.route.path}>{subsidyTypeLabelAndRoute.route.label}</Link>.
+                Disabling this feature will not affect learners&apos; ability to browse.
               </p>
-
             </div>
           )}
         </>
@@ -133,6 +140,7 @@ const SettingsAccessTab = ({
 
 SettingsAccessTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableIntegratedCustomerLearnerPortalSearch: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
