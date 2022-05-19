@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
-import buttonBool from '../utils';
+import buttonBool, { isExistingConfig } from '../utils';
 import handleErrors from '../../utils';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -187,7 +187,7 @@ const CanvasConfig = ({
         break;
       case 'Display Name':
         setDisplayName(input);
-        if (Object.values(existingConfigs).includes(input) && input === existingData.displayName) {
+        if (isExistingConfig(existingConfigs, input, existingData.displayName)) {
           setNameValid(input?.length <= 20);
         } else {
           setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));

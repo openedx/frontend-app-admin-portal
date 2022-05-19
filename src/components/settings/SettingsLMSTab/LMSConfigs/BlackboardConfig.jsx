@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import isEmpty from 'lodash/isEmpty';
-import buttonBool from '../utils';
+import buttonBool, { isExistingConfig } from '../utils';
 import handleErrors from '../../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
@@ -206,7 +206,7 @@ const BlackboardConfig = ({
       case 'Display Name':
         setDisplayName(input);
         // on edit, we don't want to count the existing displayname as a duplicate
-        if (Object.values(existingConfigs).includes(input) && input === existingData.displayName) {
+        if (isExistingConfig(existingConfigs, input, existingData.displayName)) {
           setNameValid(input?.length <= 20);
         } else {
           setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));

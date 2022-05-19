@@ -50,14 +50,12 @@ const existingConfigDataNoAuth = {
 };
 
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
-const existingConfig2 = [
-  {
-    displayName: 'foobar',
-  }];
+const existingConfig = [{
+  displayName: 'name',
+}];
+const existingConfig2 = [{
+  displayName: 'foobar',
+}];
 
 afterEach(() => {
   jest.clearAllMocks();

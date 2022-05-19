@@ -29,14 +29,12 @@ mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
-const existingConfig2 = [
-  {
-    displayName: 'foobar',
-  }];
+const existingConfig = [{
+  displayName: 'name',
+}];
+const existingConfig2 = [{
+  displayName: 'foobar',
+}];
 // Freshly creating a config will have an empty existing data object
 const noExistingData = {};
 // Existing config data that has been authorized

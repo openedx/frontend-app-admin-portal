@@ -14,14 +14,12 @@ const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
-const existingConfigInvalid = [
-  {
-    displayName: 'fooooooooobaaaaaaaaar',
-  }];
+const existingConfig = [{
+  displayName: 'name',
+}];
+const existingConfigInvalid = [{
+  displayName: 'fooooooooobaaaaaaaaar',
+}];
 const noExistingData = {};
 // Existing invalid data that will be validated on load
 const invalidExistingData = {

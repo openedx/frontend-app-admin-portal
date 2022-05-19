@@ -13,14 +13,12 @@ jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'foobar',
-  }];
-const existingConfigInvalid = [
-  {
-    displayName: 'fooooooooobaaaaaaaaar',
-  }];
+const existingConfig = [{
+  displayName: 'foobar',
+}];
+const existingConfigInvalid = [{
+  displayName: 'fooooooooobaaaaaaaaar',
+}];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
