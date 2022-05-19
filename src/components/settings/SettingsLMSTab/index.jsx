@@ -56,7 +56,7 @@ export default function SettingsLMSTab({
     // Set the config type to the card's type
     setConfig(configType);
     // Hide the create new configs button
-    setShowNewConfigButtons(true);
+    setShowNewConfigButtons(false);
     // Since the user is editing, hide the existing config cards
     setConfigsExist(false);
   };

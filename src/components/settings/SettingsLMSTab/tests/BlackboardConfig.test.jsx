@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import BlackboardConfig from '../LMSConfigs/BlackboardConfig';
-import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 jest.mock('../../data/constants', () => ({
@@ -29,10 +29,12 @@ mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
+const existingConfig = [{
+  displayName: 'name',
+}];
+const existingConfig2 = [{
+  displayName: 'foobar',
+}];
 // Freshly creating a config will have an empty existing data object
 const noExistingData = {};
 // Existing config data that has been authorized
@@ -116,7 +118,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -160,7 +162,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     const expectedConfig = {
       active: false,
@@ -185,7 +187,7 @@ describe('<BlackboardConfig />', () => {
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     userEvent.click(screen.getByText('Cancel'));
     userEvent.click(screen.getByText('Save'));
@@ -198,7 +200,7 @@ describe('<BlackboardConfig />', () => {
     };
     expect(mockPostConfigApi).toHaveBeenCalledWith(expectedConfig);
   });
-  test('Authorizing a config will initial backend polling', async () => {
+  test('Authorizing a config will initiate backend polling', async () => {
     render(
       <BlackboardConfig
         enterpriseCustomerUuid={enterpriseId}
@@ -214,9 +216,8 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
-
-    await screen.findByText('Display Name');
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
+    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
   });
@@ -226,7 +227,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     act(() => {
@@ -242,9 +243,9 @@ describe('<BlackboardConfig />', () => {
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
     userEvent.click(screen.getByText('Authorize'));
-    await waitFor(() => screen.getByText('Submit'));
 
-    await screen.findByText('Display Name');
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
+    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(window.open).toHaveBeenCalled();
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
@@ -255,7 +256,7 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig2}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -263,9 +264,8 @@ describe('<BlackboardConfig />', () => {
     userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
-    expect(screen.getByText('Display Name')).toBeInTheDocument();
-
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
+    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);

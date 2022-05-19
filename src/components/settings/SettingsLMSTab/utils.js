@@ -9,3 +9,12 @@ export default function buttonBool(config) {
   });
   return returnVal;
 }
+
+export const isExistingConfig = (configs, value, existingInput) => {
+  for (let i = 0; i < configs.length; i++) {
+    if (String(Object.values(configs[i])) === value && existingInput === value) {
+      return true;
+    }
+  }
+  return false;
+};

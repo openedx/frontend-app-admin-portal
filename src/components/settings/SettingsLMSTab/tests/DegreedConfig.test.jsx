@@ -13,10 +13,12 @@ jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
+const existingConfig = [{
+  displayName: 'test ayylmao',
+}];
+const existingConfigInvalid = [{
+  displayName: 'fooooooooobaaaaaaaaar',
+}];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
@@ -57,7 +59,7 @@ describe('<DegreedConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -107,7 +109,7 @@ describe('<DegreedConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     fireEvent.change(screen.getByLabelText('API Client ID'), {
@@ -219,7 +221,7 @@ describe('<DegreedConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -231,7 +233,7 @@ describe('<DegreedConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, useToggle } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
-import buttonBool from '../utils';
+import buttonBool, { isExistingConfig } from '../utils';
 import handleErrors from '../../utils';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -91,12 +91,16 @@ const DegreedConfig = ({
         break;
       case 'Display Name':
         setDisplayName(input);
-        setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        if (isExistingConfig(existingConfigs, input, existingData.displayName)) {
+          setNameValid(input?.length <= 20);
+        } else {
+          setNameValid(input?.length <= 20 && !Object.values(existingConfigs).includes(input));
+        }
         break;
       default:
         break;
     }
-  }, [existingConfigs]);
+  }, [existingConfigs, existingData.displayName]);
 
   useEffect(() => {
     if (!isEmpty(existingData)) {

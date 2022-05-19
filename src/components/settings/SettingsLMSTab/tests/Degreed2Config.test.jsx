@@ -13,10 +13,12 @@ jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
+const existingConfig = [{
+  displayName: 'test ayylmao',
+}];
+const existingConfigInvalid = [{
+  displayName: 'fooooooooobaaaaaaaaar',
+}];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
@@ -104,7 +106,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     fireEvent.change(screen.getByLabelText('API Client ID'), {
@@ -196,7 +198,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -208,7 +210,7 @@ describe('<Degreed2Config />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();

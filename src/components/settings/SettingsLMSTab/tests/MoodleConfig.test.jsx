@@ -13,10 +13,12 @@ jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [
-  {
-    displayName: 'name',
-  }];
+const existingConfig = [{
+  displayName: 'foobar',
+}];
+const existingConfigInvalid = [{
+  displayName: 'fooooooooobaaaaaaaaar',
+}];
 const noExistingData = {};
 const existingConfigData = {
   id: 1,
@@ -53,7 +55,7 @@ describe('<MoodleConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={noConfigs}
       />,
     );
     expect(screen.getByText('Submit')).toBeDisabled();
@@ -93,7 +95,7 @@ describe('<MoodleConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={noConfigs}
+        existingConfigs={existingConfig}
       />,
     );
     fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
@@ -181,7 +183,7 @@ describe('<MoodleConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
