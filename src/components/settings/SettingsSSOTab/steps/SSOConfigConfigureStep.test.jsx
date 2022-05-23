@@ -21,7 +21,17 @@ describe('SSO Config Configure step', () => {
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfigureStep setConfigValues={jest.fn()} connectError={false} />
+          <SSOConfigConfigureStep
+            showExitModal={false}
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+            setFormUpdated={jest.fn()}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );
@@ -40,6 +50,12 @@ describe('SSO Config Configure step', () => {
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
+            showExitModal={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
             setConfigValues={jest.fn()}
             connectError={false}
             setFormUpdated={mockSetFormUpdated}
@@ -61,6 +77,12 @@ describe('SSO Config Configure step', () => {
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
+            showExitModal={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
             setConfigValues={jest.fn()}
             connectError={false}
             setFormUpdated={jest.fn()}
@@ -77,7 +99,17 @@ describe('SSO Config Configure step', () => {
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfigureStep setConfigValues={jest.fn()} connectError />
+          <SSOConfigConfigureStep
+            connectError
+            setConfigValues={jest.fn()}
+            setFormUpdated={jest.fn()}
+            showExitModal={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );

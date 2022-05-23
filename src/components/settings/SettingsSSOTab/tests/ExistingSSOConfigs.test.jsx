@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
@@ -7,7 +7,9 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import ExistingSSOConfigs from '../ExistingSSOConfigs';
+import handleErrors from '../../utils';
 
+jest.mock('../../utils');
 jest.mock('../../../../data/services/LmsApiService');
 const enterpriseId = 'test-enterprise-id';
 const mockSetRefreshBool = jest.fn();
@@ -52,8 +54,15 @@ const incompleteConfig = [
   },
 ];
 
+const providerData = {
+  id: 10,
+};
+
 describe('<ExistingSSOConfigs />', () => {
-  it('renders active config card', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('renders active config card', async () => {
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -61,6 +70,7 @@ describe('<ExistingSSOConfigs />', () => {
           refreshBool
           setRefreshBool={mockSetRefreshBool}
           enterpriseId={enterpriseId}
+          providerData={providerData}
         />
       </Provider>,
     );
@@ -68,6 +78,7 @@ describe('<ExistingSSOConfigs />', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
 
     userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${activeConfig[0].id}`));
+
     expect(screen.getByText('Disable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
 
@@ -75,7 +86,9 @@ describe('<ExistingSSOConfigs />', () => {
     const data = new FormData();
     data.append('enabled', false);
     data.append('enterprise_customer_uuid', enterpriseId);
-    expect(LmsApiService.updateProviderConfig).toHaveBeenCalledWith(data, activeConfig[0].id);
+    await waitFor(() => {
+      expect(LmsApiService.updateProviderConfig).toHaveBeenCalledWith(data, activeConfig[0].id);
+    });
   });
   it('renders inactive config card', () => {
     render(
@@ -85,6 +98,7 @@ describe('<ExistingSSOConfigs />', () => {
           refreshBool
           setRefreshBool={mockSetRefreshBool}
           enterpriseId={enterpriseId}
+          providerData={providerData}
         />
       </Provider>,
     );
@@ -101,7 +115,7 @@ describe('<ExistingSSOConfigs />', () => {
     data.append('enterprise_customer_uuid', enterpriseId);
     expect(LmsApiService.updateProviderConfig).toHaveBeenCalledWith(data, inactiveConfig[0].id);
   });
-  it('renders incomplete config card', () => {
+  it('renders incomplete config card', async () => {
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -109,14 +123,17 @@ describe('<ExistingSSOConfigs />', () => {
           refreshBool
           setRefreshBool={mockSetRefreshBool}
           enterpriseId={enterpriseId}
+          providerData={providerData}
         />
       </Provider>,
     );
     expect(screen.getByText('bbq')).toBeInTheDocument();
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    expect(screen.getByText('Delete')).toBeInTheDocument();
-    expect(screen.getByText('Edit')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Delete')).toBeInTheDocument();
+      expect(screen.getByText('Edit')).toBeInTheDocument();
+    });
   });
   it('renders multiple config cards', () => {
     render(
@@ -126,6 +143,7 @@ describe('<ExistingSSOConfigs />', () => {
           refreshBool
           setRefreshBool={mockSetRefreshBool}
           enterpriseId={enterpriseId}
+          providerData={providerData}
         />
       </Provider>,
     );
@@ -140,11 +158,77 @@ describe('<ExistingSSOConfigs />', () => {
           refreshBool
           setRefreshBool={mockSetRefreshBool}
           enterpriseId={enterpriseId}
+          providerData={providerData}
         />
       </Provider>,
     );
     userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
     userEvent.click(screen.getByText('Delete'));
     expect(LmsApiService.deleteProviderConfig).toHaveBeenCalledWith(incompleteConfig[0].id, enterpriseId);
+  });
+  it('properly handles errors when deleting provider data', () => {
+    const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderData');
+    mockDeleteProviderData.mockImplementation(() => {
+      throw new Error({ response: { data: 'foobar' } });
+    });
+    render(
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={incompleteConfig}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+          providerData={providerData}
+        />
+      </Provider>,
+    );
+    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    userEvent.click(screen.getByText('Delete'));
+    expect(handleErrors).toHaveBeenCalled();
+  });
+  it('properly handles errors when deleting provider configs', () => {
+    const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderConfig');
+    mockDeleteProviderData.mockImplementation(() => {
+      throw new Error({ response: { data: 'foobar' } });
+    });
+    render(
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={incompleteConfig}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+          providerData={providerData}
+        />
+      </Provider>,
+    );
+    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    userEvent.click(screen.getByText('Delete'));
+    expect(handleErrors).toHaveBeenCalled();
+  });
+  it('properly displays error message when deleting provider configs', async () => {
+    const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderData');
+    mockDeleteProviderData.mockImplementation(() => {
+      throw new Error({ response: { data: 'foobar' } });
+    });
+    handleErrors.mockResolvedValue('ayylmao');
+    render(
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={incompleteConfig}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+          providerData={providerData}
+        />
+      </Provider>,
+    );
+    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    userEvent.click(screen.getByText('Delete'));
+    await waitFor(() => {
+      expect(screen.getByText(
+        'We were unable to delete your configuration. Please try removing again or contact support for help.',
+      )).toBeInTheDocument();
+    }, []);
   });
 });

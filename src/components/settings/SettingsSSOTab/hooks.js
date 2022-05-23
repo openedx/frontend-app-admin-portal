@@ -1,13 +1,15 @@
 /* eslint-disable import/prefer-default-export */
-import { useEffect, useState, useContext } from 'react';
+import {
+  useEffect, useState, useContext, useCallback,
+} from 'react';
 import { logInfo } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
-  updateIdpDirtyState,
+  updateIdpDirtyState, updateSsoUrlAction, updatePublicKeyAction,
 } from './data/actions';
-import { updateSamlProviderData } from './utils';
+import { updateSamlProviderData, deleteSamlProviderData } from './utils';
 
 const useIdpState = () => {
   const {
@@ -19,17 +21,34 @@ const useIdpState = () => {
       entityID,
       entryType,
       isDirty,
+      publicKey,
+      ssoUrl,
     },
   } = ssoState;
-  const handleMetadataURLUpdate = event => dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
-  const handleMetadataEntryTypeUpdate = event => dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
-  const handleEntityIDUpdate = event => dispatchSsoState(updateEntityIDAction(event.target.value));
+  const handleMetadataURLUpdate = useCallback((event) => {
+    dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handleMetadataEntryTypeUpdate = useCallback((event) => {
+    dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handleEntityIDUpdate = useCallback((event) => {
+    dispatchSsoState(updateEntityIDAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handleSsoUrlUpdate = useCallback((event) => {
+    dispatchSsoState(updateSsoUrlAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handlePublicKeyUpdate = useCallback((event) => {
+    dispatchSsoState(updatePublicKeyAction(event.target.value));
+  }, [dispatchSsoState]);
   const createOrUpdateIdpRecord = async ({
     enterpriseName,
     enterpriseSlug,
     enterpriseId,
     providerConfig = null,
     onSuccess,
+    existingIdpDataEntityId,
+    existingIdpDataId,
+    existingMetadataUrl,
   }) => {
     if (!isDirty && currentError === null) {
       dispatchSsoState(updateIdpDirtyState(false));
@@ -50,7 +69,13 @@ const useIdpState = () => {
     formData.append('slug', enterpriseSlug);
     formData.append('enabled', true);
     formData.append('enterprise_customer_uuid', enterpriseId);
-    formData.append('metadata_source', metadataURL);
+    if (entryType === 'url') {
+      formData.append('metadata_source', metadataURL);
+    } else {
+      // Direct entry of idp data won't include a metadata source so use a placeholder instead
+      const formattedName = enterpriseName.replace(/\s+/g, '-').toLowerCase();
+      formData.append('metadata_source', `${formattedName}-placeholder.com/saml/fake.xml`);
+    }
     formData.append('entity_id', entityID);
     formData.append('skip_hinted_login_dialog', true);
     formData.append('skip_registration_form', true);
@@ -75,14 +100,26 @@ const useIdpState = () => {
       // but we need to update this support the case when the correct sso config must be updated
       setProviderConfig(response.data);
 
-      // also get samlproviderdata updated from remote metadata url
-      const providerdataResponse = await updateSamlProviderData({
-        enterpriseId,
-        metadataURL,
-        entityID,
-      });
-      logInfo(providerdataResponse);
+      // If the user already has a provider data entry with a different entityID, remove it before
+      // creating a new one
+      if (existingIdpDataId && (existingIdpDataEntityId !== entityID)) {
+        await deleteSamlProviderData(existingIdpDataId, enterpriseId);
+      }
 
+      if (
+        entryType === 'direct' || (existingMetadataUrl !== metadataURL || existingIdpDataEntityId !== entityID)
+      ) {
+        // also get samlproviderdata updated from remote metadata url
+        const providerdataResponse = await updateSamlProviderData({
+          enterpriseId,
+          metadataURL,
+          entityID,
+          ssoUrl,
+          publicKey,
+          entryType,
+        });
+        logInfo(providerdataResponse);
+      }
       setCurrentError(null);
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
@@ -102,11 +139,44 @@ const useIdpState = () => {
     metadataURL,
     entryType,
     entityID,
+    ssoUrl,
+    publicKey,
     handleMetadataURLUpdate,
     handleMetadataEntryTypeUpdate,
     handleEntityIDUpdate,
+    handlePublicKeyUpdate,
+    handleSsoUrlUpdate,
     createOrUpdateIdpRecord,
   };
+};
+
+const useExistingProviderData = (enterpriseUuid, refreshBool) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [samlData, setSamlData] = useState({});
+
+  useEffect(() => {
+    if (enterpriseUuid) {
+      const fetchData = async () => {
+        const response = await LmsApiService.getProviderData(enterpriseUuid);
+        return response.data.results[0];
+      };
+      fetchData().then(data => {
+        setSamlData(data);
+        setLoading(false);
+      }).catch(err => {
+        setLoading(false);
+        if (err.customAttributes?.httpErrorStatus !== 404) {
+          // nothing found is okay for this fetcher.
+          setError(err);
+        } else {
+          setSamlData({});
+        }
+      });
+    }
+  }, [enterpriseUuid, refreshBool]);
+
+  return [samlData, error, loading];
 };
 
 const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
@@ -116,11 +186,11 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
 
   useEffect(() => {
     if (enterpriseUuid) {
-      const fetchData = async () => {
+      const fetchConfig = async () => {
         const response = await LmsApiService.getProviderConfig(enterpriseUuid);
         return response.data.results;
       };
-      fetchData().then(configs => {
+      fetchConfig().then(configs => {
         setSsoConfigs(configs);
         setLoading(false);
       }).catch(err => {
@@ -134,10 +204,12 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
       });
     }
   }, [enterpriseUuid, refreshBool]);
+
   return [ssoConfigs, error, loading];
 };
 
 export {
   useExistingSSOConfigs,
+  useExistingProviderData,
   useIdpState,
 };

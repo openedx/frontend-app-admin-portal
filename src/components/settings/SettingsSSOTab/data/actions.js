@@ -1,6 +1,8 @@
 export const UPDATE_IDP_METADATA_URL = 'update_idp_metadata_url';
 export const UPDATE_IDP_ENTRY_TYPE = 'update_idp_entry_type';
 export const UPDATE_IDP_ENTITYID = 'update_idp_entityid';
+export const UPDATE_IDP_SSO_URL = 'update_sso_url';
+export const UPDATE_IDP_PUBLIC_KEY = 'update_public_key';
 export const UPDATE_IDP_DIRTYSTATE = 'update_idp_dirtystate';
 export const UPDATE_CURRENT_STEP = 'update_current_step';
 export const UPDATE_SP_CONFIGURED = 'update_sp_configured';
@@ -27,6 +29,16 @@ export const updateIdpEntryTypeAction = entryType => ({
 export const updateEntityIDAction = entityID => ({
   type: UPDATE_IDP_ENTITYID,
   entityID,
+});
+
+export const updateSsoUrlAction = ssoUrl => ({
+  type: UPDATE_IDP_SSO_URL,
+  ssoUrl,
+});
+
+export const updatePublicKeyAction = publicKey => ({
+  type: UPDATE_IDP_PUBLIC_KEY,
+  publicKey,
 });
 
 export const updateIdpDirtyState = dirtyState => ({

@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { createContext, useReducer } from 'react';
+import {
+  createContext, useReducer, useCallback, useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import SSOStateReducer from './data/reducer';
 import {
@@ -24,7 +26,9 @@ export const SSO_INITIAL_STATE = {
     isComplete: false,
     metadataURL: '',
     entityID: '',
-    entryType: 'url', // vs directEntry
+    entryType: null, // url vs direct
+    publicKey: '',
+    ssoUrl: '',
     isDirty: false,
   },
   serviceprovider: {
@@ -50,27 +54,45 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
   const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, initialState);
 
   // setter shortcuts
-  const setProviderConfig = config => dispatchSsoState(updateProviderConfig(config));
-  const setCurrentError = error => dispatchSsoState(updateCurrentError(error));
-  const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
-  const setIsSsoValid = valid => dispatchSsoState(updateConnectIsSsoValid(valid));
-  const setInfoMessage = message => dispatchSsoState(updateInfoMessage(message));
-  const setRefreshBool = refresh => dispatchSsoState(updateRefreshBool(refresh));
-  const setStartTime = timeVal => dispatchSsoState(updateStartTime(timeVal));
+  const setProviderConfig = useCallback((config) => {
+    dispatchSsoState(updateProviderConfig(config));
+  }, []);
+  const setCurrentError = useCallback((error) => {
+    dispatchSsoState(updateCurrentError(error));
+  }, []);
+  const setCurrentStep = useCallback((step) => {
+    dispatchSsoState(updateCurrentStep(step));
+  }, []);
+  const setIsSsoValid = useCallback((valid) => {
+    dispatchSsoState(updateConnectIsSsoValid(valid));
+  }, []);
+  const setInfoMessage = useCallback((message) => {
+    dispatchSsoState(updateInfoMessage(message));
+  }, []);
+  const setRefreshBool = useCallback((refresh) => {
+    dispatchSsoState(updateRefreshBool(refresh));
+  }, []);
+  const setStartTime = useCallback((timeVal) => {
+    dispatchSsoState(updateStartTime(timeVal));
+  }, []);
+
+  const ssoProviderValue = useMemo(() => ({
+    ssoState,
+    dispatchSsoState,
+    setProviderConfig,
+    setCurrentError,
+    setCurrentStep,
+    setIsSsoValid,
+    setInfoMessage,
+    setRefreshBool,
+    setStartTime,
+  }), [
+    ssoState, dispatchSsoState, setProviderConfig, setCurrentError, setCurrentStep, setIsSsoValid,
+    setInfoMessage, setRefreshBool, setStartTime,
+  ]);
 
   return (
-    <SSOConfigContext.Provider value={{
-      ssoState,
-      dispatchSsoState,
-      setProviderConfig,
-      setCurrentError,
-      setCurrentStep,
-      setIsSsoValid,
-      setInfoMessage,
-      setRefreshBool,
-      setStartTime,
-    }}
-    >
+    <SSOConfigContext.Provider value={ssoProviderValue}>
       {children}
     </SSOConfigContext.Provider>
   );
