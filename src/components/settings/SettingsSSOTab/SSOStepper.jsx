@@ -29,14 +29,33 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const [configValues, setConfigValues] = useState(null);
   const [connectError, setConnectError] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [formUpdated, setFormUpdated] = React.useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
+  const [existingIdpDataEntityId, setExistingIdpDataEntityId] = useState(null);
+  const [existingIdpDataId, setExistingIdpDataId] = useState(null);
+  const [existingMetadataUrl, setExistingMetadataUrl] = useState(null);
 
-  const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
+  const {
+    entryType,
+    metadataURL,
+    entityID,
+    publicKey,
+    ssoUrl,
+    createOrUpdateIdpRecord,
+  } = useIdpState();
 
-  const isIdpStepComplete = useMemo(
-    () => (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID)),
-    [metadataURL, entityID],
-  );
+  const isIdpStepComplete = useMemo(() => {
+    if (entryType === 'url') {
+      return (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID));
+    }
+    if (entryType === 'direct') {
+      return (
+        (publicKey && !isEmpty(publicKey))
+        && (entityID && !isEmpty(entityID))
+        && (ssoUrl && isURL(ssoUrl))
+      );
+    }
+    return false;
+  }, [metadataURL, entityID, publicKey, ssoUrl, entryType]);
 
   const handleCancel = () => {
     setCurrentStep('idp');
@@ -65,7 +84,8 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     if (configValues !== null) {
       configValues.append('enterprise_customer_uuid', enterpriseId);
       try {
-        await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+        const response = await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+        setProviderConfig(response.data);
       } catch (error) {
         err = handleErrors(error);
         setConnectError(true);
@@ -85,7 +105,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
 
         <Container size="lg" className="py-3">
           <Stepper.Step eventKey="idp" title="Identity Provider">
-            <SSOConfigIDPStep />
+            <SSOConfigIDPStep
+              setExistingIdpDataEntityId={setExistingIdpDataEntityId}
+              setExistingIdpDataId={setExistingIdpDataId}
+              setExistingMetadataUrl={setExistingMetadataUrl}
+            />
           </Stepper.Step>
 
           <Stepper.Step eventKey="serviceprovider" title="Service Provider">
@@ -128,6 +152,9 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
                   enterpriseSlug,
                   enterpriseId,
                   providerConfig,
+                  existingIdpDataEntityId,
+                  existingIdpDataId,
+                  existingMetadataUrl,
                   onSuccess: () => setCurrentStep('serviceprovider'),
                 });
               }}

@@ -16,11 +16,20 @@ describe('SSOConfigCard', () => {
         slug: 'slug-provider',
       },
     };
-    const config = { name: 'name-config', slug: 'slug', entity_id: 'entityId' };
+    const config = {
+      name: 'name-config',
+      slug: 'slug',
+      entity_id: 'entityId',
+      id: 1,
+    };
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfiguredCard config={config} testLink="http://test" />
+          <SSOConfigConfiguredCard
+            config={config}
+            testLink="http://test"
+            setConnectError={jest.fn()}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );
@@ -36,11 +45,20 @@ describe('SSOConfigCard', () => {
       },
       connect: { ...SSO_INITIAL_STATE.connect, isSsoValid: true },
     };
-    const config = { name: 'name-config', slug: 'slug', entity_id: 'entityId' };
+    const config = {
+      name: 'name-config',
+      slug: 'slug',
+      entity_id: 'entityId',
+      id: 1,
+    };
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfiguredCard config={config} testLink="http://test" />
+          <SSOConfigConfiguredCard
+            config={config}
+            testLink="http://test"
+            setConnectError={jest.fn()}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );

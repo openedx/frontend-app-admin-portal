@@ -2,7 +2,8 @@ import {
   UPDATE_CURRENT_STEP, UPDATE_IDP_ENTRY_TYPE, UPDATE_IDP_METADATA_URL, UPDATE_SP_CONFIGURED,
   SET_PROVIDER_CONFIG, UPDATE_IDP_ENTITYID, UPDATE_CURRENT_ERROR, CLEAR_PROVIDER_CONFIG,
   UPDATE_IDP_DIRTYSTATE, UPDATE_CONNECT_IN_PROGRESS, UPDATE_CONNECT_IS_SSO_VALID,
-  UPDATE_INFO_MESSAGE, UPDATE_CONNECT_START_TIME, UPDATE_REFRESH_BOOL,
+  UPDATE_INFO_MESSAGE, UPDATE_CONNECT_START_TIME, UPDATE_REFRESH_BOOL, UPDATE_IDP_SSO_URL,
+  UPDATE_IDP_PUBLIC_KEY,
 } from './actions';
 
 const SSOStateReducer = (state, action) => {
@@ -21,6 +22,12 @@ const SSOStateReducer = (state, action) => {
     }
     case UPDATE_IDP_ENTITYID: {
       return { ...state, idp: { ...state.idp, entityID: action.entityID, isDirty: true } };
+    }
+    case UPDATE_IDP_SSO_URL: {
+      return { ...state, idp: { ...state.idp, ssoUrl: action.ssoUrl, isDirty: true } };
+    }
+    case UPDATE_IDP_PUBLIC_KEY: {
+      return { ...state, idp: { ...state.idp, publicKey: action.publicKey, isDirty: true } };
     }
     case UPDATE_IDP_DIRTYSTATE: {
       return { ...state, idp: { ...state.idp, isDirty: action.dirtyState } };

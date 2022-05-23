@@ -271,7 +271,7 @@ SSOConfigConfigureStep.defaultProps = {
     lastName: '',
     max_session_length: undefined,
     emailAddress: '',
-    saml_configuration: '',
+    saml_configuration: -1,
   },
 };
 

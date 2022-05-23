@@ -13,10 +13,11 @@ import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
+const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
+const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
 
 const ExistingSSOConfigs = ({
-  configs, refreshBool, setRefreshBool, enterpriseId,
+  configs, refreshBool, setRefreshBool, enterpriseId, providerData,
 }) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [errorModalText, setErrorModalText] = useState();
@@ -28,6 +29,22 @@ const ExistingSSOConfigs = ({
     setCurrentStep('idp');
   };
 
+  const deleteProviderData = async (pdid) => {
+    let err;
+    try {
+      await (LmsApiService.deleteProviderData(pdid, enterpriseId));
+    } catch (error) {
+      err = handleErrors(error);
+    }
+    if (err) {
+      setErrorModalText(errorDeleteDataModalText);
+      openError();
+    } else {
+      // changing this variable triggers the refresh
+      setRefreshBool(!refreshBool);
+    }
+  };
+
   const deleteConfig = async (id) => {
     let err;
     try {
@@ -36,7 +53,7 @@ const ExistingSSOConfigs = ({
       err = handleErrors(error);
     }
     if (err) {
-      setErrorModalText(errorDeleteModalText);
+      setErrorModalText(errorDeleteConfigModalText);
       openError();
     } else {
       // changing this variable triggers the refresh
@@ -126,7 +143,10 @@ const ExistingSSOConfigs = ({
                       {!config.was_valid_at && (
                         <div className="d-flex">
                           <Dropdown.Item
-                            onClick={() => deleteConfig(config.id)}
+                            onClick={() => {
+                              deleteProviderData(providerData.id);
+                              deleteConfig(config.id);
+                            }}
                             data-testid="dropdown-delete-item"
                           >
                             <Delete /> Delete
@@ -159,6 +179,9 @@ const ExistingSSOConfigs = ({
 
 ExistingSSOConfigs.propTypes = {
   configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  providerData: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
   refreshBool: PropTypes.bool.isRequired,
   setRefreshBool: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,

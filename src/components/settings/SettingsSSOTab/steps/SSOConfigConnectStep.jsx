@@ -14,9 +14,10 @@ const SSOConfigConnectStep = ({
   // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
-  const { ssoState: { providerConfig }, setProviderConfig } = useContext(SSOConfigContext);
+  const { ssoState, setProviderConfig } = useContext(SSOConfigContext);
+  const { providerConfig, refreshBool } = ssoState;
+  const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
   const { slug: idpSlug } = providerConfig;
-  const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId);
 
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
