@@ -78,13 +78,11 @@ const SettingsTabs = ({
             />
           </Tab>
         )}
-
         {FEATURE_SSO_SETTINGS_TAB && (
           <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
             <SettingsSSOTab enterpriseId={enterpriseId} />
           </Tab>
         )}
-
         {EXTERNAL_LMS_CONFIGURATION && SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen && (
           <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
             <SettingsLMSTab
