@@ -9,7 +9,17 @@
     width: auto;
 
     &.has-shadow {
-      box-shadow: 6px 0 10px -6px rgba(0, 0, 0, 0.25);
+      @include pgn-box-shadow(1, 'right');
+    }
+  }
+
+  &:not(.expanded) {
+    .nav-link {
+      // TODO: using a hardcoded pixel value isn't ideal, but it's a temporary fix while we have
+      // both Font Awesome and Paragon icons in the sidebar navigation, each having slightly different
+      // styles and DOM structures, making styling difficult. 44px is the height of each nav link when
+      // the sidebar is expanded, so this forces it to be the same height when not expanded as well.
+      height: 44px;
     }
   }
 

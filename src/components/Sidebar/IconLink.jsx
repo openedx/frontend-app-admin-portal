@@ -2,7 +2,6 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Bubble } from '@edx/paragon';
 
 const BUBBLE_MARGIN_LEFT = 5;
@@ -20,8 +19,8 @@ const BaseNavLink = ({
   const [notificationBubbleMarginLeft, setNotificationBubbleMarginLeft] = useState(0);
 
   useLayoutEffect(() => {
-    const iconRect = iconRef.current?.getBoundingClientRect();
-    const titleRect = titleRef.current?.getBoundingClientRect();
+    const iconRect = iconRef.current?.getBoundingClientRect?.();
+    const titleRect = titleRef.current?.getBoundingClientRect?.();
 
     if (isExpanded && iconRect && titleRect) {
       setNotificationBubbleMarginLeft(iconRect.width + titleRect.width + BUBBLE_MARGIN_LEFT);
@@ -31,16 +30,23 @@ const BaseNavLink = ({
     if (iconRect) {
       setNotificationBubbleMarginLeft(iconRect.width + BUBBLE_MARGIN_LEFT);
     }
-  }, [iconRef, titleRef, isExpanded]);
+  }, [isExpanded]);
+
+  const IconElement = React.cloneElement(icon, {
+    className: classNames(
+      icon.props.className,
+      { 'mr-2': isExpanded },
+    ),
+  });
 
   return (
     <NavLink
-      className="nav-link text-left rounded-0"
+      className="nav-link text-left rounded-0 d-flex align-items-center"
       {...rest}
     >
-      <div className="position-relative">
-        <span ref={iconRef}>
-          <FontAwesomeIcon icon={icon} className={classNames({ 'mr-2': isExpanded })} />
+      <div className="position-relative d-flex align-items-center">
+        <span ref={iconRef} className="d-flex align-items-center">
+          {IconElement}
         </span>
         {!isExpanded && <span className="sr-only">{title}</span>}
         {isExpanded && <span ref={titleRef}>{title}</span>}
@@ -65,7 +71,7 @@ const BaseNavLink = ({
 
 const commonPropTypes = {
   title: PropTypes.string.isRequired,
-  icon: PropTypes.shape().isRequired,
+  icon: PropTypes.node.isRequired,
   isExpanded: PropTypes.bool,
   notification: PropTypes.bool,
 };

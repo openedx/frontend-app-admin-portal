@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
 } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from '@edx/paragon';
+import { MoneyOutline } from '@edx/paragon/icons';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import IconLink from './IconLink';
 
@@ -70,58 +74,64 @@ class Sidebar extends React.Component {
       {
         title: 'Learner Progress Report',
         to: `${baseUrl}/admin/learners`,
-        icon: faChartLine,
-      },
-      {
-        title: 'Code Management',
-        to: `${baseUrl}/admin/coupons`,
-        icon: faTags,
-        hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
-        notification: !!subsidyRequestsCounts.couponCodes,
-      },
-      {
-        title: 'Reporting Configurations',
-        to: `${baseUrl}/admin/reporting`,
-        icon: faFile,
-        hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
-      },
-      {
-        title: 'Subscription Management',
-        to: `${baseUrl}/admin/subscriptions`,
-        icon: faCreditCard,
-        hidden: !enableSubscriptionManagementScreen,
-        notification: !!subsidyRequestsCounts.subscriptionLicenses,
+        icon: <span><FontAwesomeIcon icon={faChartLine} fixedWidth /></span>,
       },
       {
         title: 'Analytics',
         to: `${baseUrl}/admin/analytics`,
-        icon: faChartBar,
+        icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
         hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+      },
+      {
+        title: 'Code Management',
+        to: `${baseUrl}/admin/coupons`,
+        icon: <FontAwesomeIcon icon={faTags} fixedWidth />,
+        hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+        notification: !!subsidyRequestsCounts.couponCodes,
+      },
+      {
+        title: 'Subscription Management',
+        to: `${baseUrl}/admin/subscriptions`,
+        icon: <FontAwesomeIcon icon={faCreditCard} fixedWidth />,
+        hidden: !enableSubscriptionManagementScreen,
+        notification: !!subsidyRequestsCounts.subscriptionLicenses,
+      },
+      {
+        title: 'Learner Credit Management',
+        to: `${baseUrl}/admin/learner-credit`,
+        icon: <Icon src={MoneyOutline} className="d-inline-block" />,
+        hidden: !getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT,
+      },
+      {
+        title: 'Reporting Configurations',
+        to: `${baseUrl}/admin/reporting`,
+        icon: <FontAwesomeIcon icon={faFile} fixedWidth />,
+        hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
       },
       {
         title: 'SAML Configuration',
         to: `${baseUrl}/admin/samlconfiguration`,
-        icon: faIdCard,
+        icon: <FontAwesomeIcon icon={faIdCard} fixedWidth />,
         hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
       },
       {
         title: 'LMS Integration Configuration',
         to: `${baseUrl}/admin/lmsintegrations`,
-        icon: faUniversity,
+        icon: <FontAwesomeIcon icon={faUniversity} fixedWidth />,
         hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
       },
       {
         title: 'Settings',
         id: TOUR_TARGETS.SETTINGS_SIDEBAR,
         to: `${baseUrl}/admin/${ROUTE_NAMES.settings}/`,
-        icon: faCog,
+        icon: <FontAwesomeIcon icon={faCog} fixedWidth />,
         hidden: !shouldShowSettingsLink,
       },
       // NOTE: keep "Support" link the last nav item
       {
         title: 'Support',
         to: configuration.ENTERPRISE_SUPPORT_URL,
-        icon: faLifeRing,
+        icon: <FontAwesomeIcon icon={faLifeRing} fixedWidth />,
         hidden: !features.SUPPORT,
         external: true,
       },

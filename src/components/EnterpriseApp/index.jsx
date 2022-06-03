@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import AdminPage from '../../containers/AdminPage';
@@ -25,6 +26,7 @@ import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
 import SubsidyRequestsContextProvider from '../subsidy-requests';
+import LearnerCreditManagement from '../learner-credit-management';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -193,55 +195,54 @@ class EnterpriseApp extends React.Component {
                       />,
                     ]}
                     {features.REPORTING_CONFIGURATIONS && (
-                    <Route
-                      key="reporting-config"
-                      exact
-                      path={`${baseUrl}/admin/reporting`}
-                      render={routeProps => (this.props.enterpriseId
-                        ? <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
-                        : <LoadingMessage className="overview" />
-                      )}
-                    />
+                      <Route
+                        key="reporting-config"
+                        exact
+                        path={`${baseUrl}/admin/reporting`}
+                        render={routeProps => (this.props.enterpriseId
+                          ? <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
+                          : <LoadingMessage className="overview" />
+                        )}
+                      />
                     )}
                     {enableSubscriptionManagementScreen && (
-                    <Route
-                      key="subscription-management"
-                      path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
-                      render={routeProps => <SubscriptionManagementPage {...routeProps} />}
-                    />
+                      <Route
+                        key="subscription-management"
+                        path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
+                        render={routeProps => <SubscriptionManagementPage {...routeProps} />}
+                      />
                     )}
                     {features.ANALYTICS && enableAnalyticsScreen && (
-                    <Route
-                      key="analytics"
-                      exact
-                      path={`${baseUrl}/admin/analytics`}
-                      render={routeProps => (
-                        <AnalyticsPage
-                          {...routeProps}
-                        />
-                      )}
-                    />
+                      <Route
+                        key="analytics"
+                        exact
+                        path={`${baseUrl}/admin/analytics`}
+                        render={routeProps => (
+                          <AnalyticsPage
+                            {...routeProps}
+                          />
+                        )}
+                      />
                     )}
                     {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
-                    <Route
-                      key="saml-configuration"
-                      exact
-                      path={`${baseUrl}/admin/samlconfiguration`}
-                      render={routeProps => (
-                        <SamlProviderConfiguration
-                          {...routeProps}
-                        />
-                      )}
-                    />
+                      <Route
+                        key="saml-configuration"
+                        exact
+                        path={`${baseUrl}/admin/samlconfiguration`}
+                        render={routeProps => (
+                          <SamlProviderConfiguration
+                            {...routeProps}
+                          />
+                        )}
+                      />
                     )}
-                    {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen
-                    && (
-                    <Route
-                      key="lms-integrations"
-                      exact
-                      path={`${baseUrl}/admin/lmsintegrations`}
-                      render={routeProps => <LmsConfigurations {...routeProps} />}
-                    />
+                    {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
+                      <Route
+                        key="lms-integrations"
+                        exact
+                        path={`${baseUrl}/admin/lmsintegrations`}
+                        render={routeProps => <LmsConfigurations {...routeProps} />}
+                      />
                     )}
                     <Route
                       exact
@@ -252,6 +253,13 @@ class EnterpriseApp extends React.Component {
                       <Route
                         path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
                         component={SettingsPage}
+                      />
+                    )}
+                    {getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT && (
+                      <Route
+                        exact
+                        path={`${baseUrl}/admin/learner-credit`}
+                        component={LearnerCreditManagement}
                       />
                     )}
                     <Route path="" component={NotFoundPage} />

@@ -3,6 +3,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUniversity } from '@fortawesome/free-solid-svg-icons';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -27,7 +28,7 @@ describe('<IconLink />', () => {
     const defaultProps = {
       title: 'Internal Route',
       to: 'admin/test',
-      icon: faUniversity,
+      icon: <FontAwesomeIcon icon={faUniversity} />,
     };
     render(<IconLinkWrapper {...defaultProps} />);
     expect(screen.getByText('Internal Route').closest('a')).toHaveAttribute('href', '/admin/test');
@@ -37,7 +38,7 @@ describe('<IconLink />', () => {
     const defaultProps = {
       title: 'External Route',
       to: 'http://helpcenter.edx.org/us',
-      icon: faUniversity,
+      icon: <FontAwesomeIcon icon={faUniversity} />,
       external: true,
     };
 
