@@ -74,7 +74,7 @@ class Sidebar extends React.Component {
       {
         title: 'Learner Progress Report',
         to: `${baseUrl}/admin/learners`,
-        icon: <span><FontAwesomeIcon icon={faChartLine} fixedWidth /></span>,
+        icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
       },
       {
         title: 'Analytics',
