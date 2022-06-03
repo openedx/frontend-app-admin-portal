@@ -8,7 +8,7 @@ import isURL from 'validator/lib/isURL';
 import React, { useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateCurrentStep } from './data/actions';
-import { useIdpState } from './hooks';
+import { useExistingProviderData, useIdpState } from './hooks';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
@@ -30,32 +30,19 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const [connectError, setConnectError] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [formUpdated, setFormUpdated] = useState(false);
-  const [existingIdpDataEntityId, setExistingIdpDataEntityId] = useState(null);
-  const [existingIdpDataId, setExistingIdpDataId] = useState(null);
-  const [existingMetadataUrl, setExistingMetadataUrl] = useState(null);
+  const [existingProviderData] = useExistingProviderData(enterpriseId, refreshBool);
+  const [showValidatedText, setShowValidatedText] = useState(false);
+  const [idpNextButtonDisabled, setIdpNextButtonDisabled] = useState(false);
 
   const {
-    entryType,
     metadataURL,
     entityID,
-    publicKey,
-    ssoUrl,
     createOrUpdateIdpRecord,
   } = useIdpState();
 
-  const isIdpStepComplete = useMemo(() => {
-    if (entryType === 'url') {
-      return (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID));
-    }
-    if (entryType === 'direct') {
-      return (
-        (publicKey && !isEmpty(publicKey))
-        && (entityID && !isEmpty(entityID))
-        && (ssoUrl && isURL(ssoUrl))
-      );
-    }
-    return false;
-  }, [metadataURL, entityID, publicKey, ssoUrl, entryType]);
+  const isIdpStepComplete = useMemo(() => (
+    (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID))
+  ), [metadataURL, entityID]);
 
   const handleCancel = () => {
     setCurrentStep('idp');
@@ -105,11 +92,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
 
         <Container size="lg" className="py-3">
           <Stepper.Step eventKey="idp" title="Identity Provider">
-            <SSOConfigIDPStep
-              setExistingIdpDataEntityId={setExistingIdpDataEntityId}
-              setExistingIdpDataId={setExistingIdpDataId}
-              setExistingMetadataUrl={setExistingMetadataUrl}
-            />
+            <SSOConfigIDPStep />
           </Stepper.Step>
 
           <Stepper.Step eventKey="serviceprovider" title="Service Provider">
@@ -132,7 +115,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
           </Stepper.Step>
 
           <Stepper.Step eventKey="connect" title="Connect">
-            <SSOConfigConnectStep setConnectError={setConnectError} />
+            <SSOConfigConnectStep
+              setConnectError={setConnectError}
+              showValidatedText={showValidatedText}
+              setShowValidatedText={setShowValidatedText}
+            />
           </Stepper.Step>
         </Container>
 
@@ -145,17 +132,19 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
             )}
             <Stepper.ActionRow.Spacer />
             <Button
-              disabled={!isIdpStepComplete}
+              disabled={!isIdpStepComplete || idpNextButtonDisabled}
               onClick={() => {
+                setIdpNextButtonDisabled(true);
                 createOrUpdateIdpRecord({
                   enterpriseName,
                   enterpriseSlug,
                   enterpriseId,
                   providerConfig,
-                  existingIdpDataEntityId,
-                  existingIdpDataId,
-                  existingMetadataUrl,
-                  onSuccess: () => setCurrentStep('serviceprovider'),
+                  existingProviderData,
+                  onSuccess: () => {
+                    setCurrentStep('serviceprovider');
+                    setIdpNextButtonDisabled(false);
+                  },
                 });
               }}
             >
@@ -203,6 +192,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               Cancel
             </Button>
             <Stepper.ActionRow.Spacer />
+            {showValidatedText && (
+              <Button onClick={() => { handleCancel(); }}>
+                Submit
+              </Button>
+            )}
           </Stepper.ActionRow>
         </div>
       </Stepper>

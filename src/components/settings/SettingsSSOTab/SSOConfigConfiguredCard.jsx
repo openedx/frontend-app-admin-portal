@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-import { Badge, Card, Hyperlink } from '@edx/paragon';
-import { useContext, useEffect, useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { logInfo } from '@edx/frontend-platform/logging';
+import {
+  Form, Icon, OverlayTrigger, Popover, Button,
+} from '@edx/paragon';
+import { AddCircle, CheckCircle } from '@edx/paragon/icons';
+import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';
 import { updateConnectInProgress, updateCurrentStep } from './data/actions';
@@ -14,19 +15,16 @@ import LmsApiService from '../../../data/services/LmsApiService';
  * This is the clickable card that is used to test the SSO config before we complete the config creation process.
  */
 const SSOConfigConfiguredCard = ({
-  config, testLink, enterpriseId, setConnectError,
+  config, testLink, enterpriseId, setConnectError, setShowValidatedText, showValidatedText,
 }) => {
   const {
     ssoState, dispatchSsoState,
     setProviderConfig, setCurrentError, setIsSsoValid,
-    setInfoMessage, setStartTime,
+    setInfoMessage, setStartTime, setRefreshBool,
   } = useContext(SSOConfigContext);
   const {
-    connect: {
-      startTime,
-      inProgress,
-      isSsoValid,
-    },
+    connect: { startTime },
+    refreshBool,
   } = ssoState;
   const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const [interval, setInterval] = useState(null);
@@ -47,92 +45,106 @@ const SSOConfigConfiguredCard = ({
         // at this point we want to take users to the listing page showing this config
         // setting providerConfig to null will do that!
         // because the SettingsSSOTab/index.jsx is looking for that value
-        setConnectError(true);
         setProviderConfig(null);
         setCurrentError(null);
+        setCurrentStep('idp');
+        setRefreshBool(!refreshBool);
       } else if (performance.now() - startTime > SSO_CONFIG_POLLING_TIMEOUT) {
+        // We've run out of time
         setInterval(null); // disable the polling
         setIsSsoValid(false);
         setInfoMessage(null);
         dispatchSsoState(updateConnectInProgress(false));
         setConnectError(true);
-        setCurrentStep('configure');
       }
     } catch (error) { setCurrentError(error); setInterval(null); }
   }, interval);
   const initiateValidation = () => {
-    if (inProgress) {
-      // make no op in case click happens again during prior progress.
-      return;
-    }
     setStartTime(performance.now());
     dispatchSsoState(updateConnectInProgress(true));
-    window.open(testLink);
     setInterval(SSO_CONFIG_POLLING_INTERVAL);
   };
-  // until isValid is false, keep checking server state (after about 3 minutes, reset and message customer)
-  useEffect(() => {
-    if (isSsoValid) {
-      setInterval(null); // just in case, disable the timer
-      dispatchSsoState(updateConnectInProgress(false));
-      logInfo('SSO successfully validated');
-    } else {
-      // nothing to do right now
-      logInfo('Waiting for SSO valid to become true');
-    }
-    return function cleanup() {
-      setInterval(null); // so that when we unload, the timer is stopped
-      dispatchSsoState(updateConnectInProgress(false));
-    };
-  }, [isSsoValid, dispatchSsoState]);
 
-  const handleTestClick = () => {
-    initiateValidation();
-    return true;
-  };
+  useEffect(() => {
+    if (!config?.was_valid_at) {
+      initiateValidation();
+    } else {
+      setShowValidatedText(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      {!inProgress && (
-        <p>
-          Lastly, let us test your configuration. Click on a card below to connect to edX via your SSO.
-          (or visit <Hyperlink destination={testLink} target="_blank">this link</Hyperlink> in a separate browser/incognito window).
+      <p>
+        Lastly, let us test your configuration. Copy the link below and paste into a separate browser/incognito
+        window to connect to edX via your SSO.
+      </p>
+      <div>
+        <Form.Group>
+          <Form.Control
+            className="float-left w-75 mr-0 sso-connect-step-copy-form"
+            readOnly
+            value={testLink}
+          />
+          <OverlayTrigger
+            trigger="focus"
+            placement="top"
+            overlay={(
+              <Popover id="popover-positioned-top">
+                <Popover.Content>
+                  <strong>Copied!</strong>
+                </Popover.Content>
+              </Popover>
+            )}
+          >
+            <Button
+              className="sso-connect-step-copy-button"
+              onClick={() => { navigator.clipboard.writeText(testLink); }}
+            >
+              <Icon src={AddCircle} />
+            </Button>
+          </OverlayTrigger>
+        </Form.Group>
+      </div>
+      { !showValidatedText && (
+        <p className="mt-4">
+          Once you&apos;ve successfully logged in,
+          use this page to verify that your configuration is completed and validated.
         </p>
       )}
-      {inProgress && (
-      <p>
-        Please connect via SSO in the newly opened window
-        (or visit <Hyperlink destination={testLink} target="_blank">this link</Hyperlink> in a separate browser/incognito window).
-        Checking for successful SSO connection...
-      </p>
+      { showValidatedText && (
+        <div>
+          <CheckCircle className="float-left mr-2 sso-connect-success-icon" />
+          <p className="mt-4">
+            You&apos;ve successfully logged in with your SSO configuration, feel free to use the
+            link above in a private browser to test your configuration again or click Submit to finish.
+          </p>
+        </div>
       )}
-      {!inProgress ? (
-        <>
-          <Card onClick={handleTestClick} style={{ maxWidth: '400px' }} isClickable>
-            <Card.Header
-              size="sm"
-              title={config.name}
-            />
-            <Card.Section>
-              {!isSsoValid && <Badge variant="warning">configured</Badge>}{' '}
-              {isSsoValid && <Badge variant="success">completed</Badge>}{' '}
-            </Card.Section>
-          </Card>
-        </>
-      ) : <Skeleton>Testing of SSO in progress...Please wait a bit or reload page at a different time.</Skeleton>}
     </>
   );
 };
 
 SSOConfigConfiguredCard.propTypes = {
   config: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    slug: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    entity_id: PropTypes.string.isRequired,
-  }).isRequired,
+    name: PropTypes.string,
+    slug: PropTypes.string,
+    id: PropTypes.number,
+    entity_id: PropTypes.string,
+    was_valid_at: PropTypes.string,
+  }),
   testLink: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   setConnectError: PropTypes.func.isRequired,
+  setShowValidatedText: PropTypes.func.isRequired,
+  showValidatedText: PropTypes.bool.isRequired,
+};
+
+SSOConfigConfiguredCard.defaultProps = {
+  config: {
+    was_valid_at: '', name: '', slug: '', id: -1, entity_id: '',
+  },
 };
 
 const mapStateToProps = state => ({

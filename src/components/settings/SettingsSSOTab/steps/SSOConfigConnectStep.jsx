@@ -9,7 +9,7 @@ import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
 const SSOConfigConnectStep = ({
-  enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError,
+  enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError, setShowValidatedText, showValidatedText,
 }) => {
   // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
@@ -17,12 +17,15 @@ const SSOConfigConnectStep = ({
   const { ssoState, setProviderConfig } = useContext(SSOConfigContext);
   const { providerConfig, refreshBool } = ssoState;
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
-  const { slug: idpSlug } = providerConfig;
+  const idpSlug = ssoState.providerConfig?.slug;
 
   useEffect(() => {
     if (isLoading) { return; } // don't want to do anything unless isLoading is done
-    const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id).shift();
-    setProviderConfig(updatedProviderConfig);
+    if (existingConfigs.length > 0 && providerConfig) {
+      const updatedProviderConfig = existingConfigs.filter(config => config.id === providerConfig.id)
+        .shift();
+      setProviderConfig(updatedProviderConfig);
+    }
   }, [isLoading, existingConfigs, setProviderConfig, providerConfig]);
 
   const configuration = getConfig();
@@ -43,6 +46,8 @@ const SSOConfigConnectStep = ({
               config={providerConfig}
               testLink={testLink}
               setConnectError={setConnectError}
+              setShowValidatedText={setShowValidatedText}
+              showValidatedText={showValidatedText}
             />
           </div>
         </>
@@ -63,6 +68,8 @@ SSOConfigConnectStep.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   learnerPortalEnabled: PropTypes.bool.isRequired,
   setConnectError: PropTypes.func.isRequired,
+  setShowValidatedText: PropTypes.func.isRequired,
+  showValidatedText: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -23,7 +23,7 @@ describe('SSO Config IDP step, with no available providerConfig', () => {
       </Provider>,
     );
     await waitFor(() => {
-      expect(screen.getByText('Provide URL')).toBeInTheDocument();
+      expect(screen.getByText('Metadata Source Information:')).toBeInTheDocument();
       expect(screen.getByText('Identity Provider Metadata URL')).toBeInTheDocument();
       expect(screen.getByTestId('url-entry-entity-id')).toBeInTheDocument();
     });

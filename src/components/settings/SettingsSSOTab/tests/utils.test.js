@@ -25,24 +25,6 @@ describe('update saml provider data', () => {
     expect(value).toStrictEqual({ lepard: 'def' });
     expect(LmsApiService.syncProviderData).toBeCalledWith(formData);
   });
-  test('calls syncProviderData with correct data under direct entry', async () => {
-    const enterpriseId = 'a-id';
-    const entityID = 'anId';
-    const ssoUrl = 'https://foobar.com';
-    const publicKey = '123abc';
-    const entryType = 'direct';
-    const formData = new FormData();
-    formData.append('enterprise_customer_uuid', enterpriseId);
-    formData.append('entity_id', entityID);
-    formData.append('sso_url', ssoUrl);
-    formData.append('public_key', publicKey);
-    LmsApiService.syncProviderData.mockResolvedValue({ lepard: 'def' });
-    const value = await updateSamlProviderData({
-      enterpriseId, entityID, ssoUrl, publicKey, entryType,
-    });
-    expect(value).toStrictEqual({ lepard: 'def' });
-    expect(LmsApiService.syncProviderData).toBeCalledWith(formData);
-  });
 });
 describe('delete saml provider data', () => {
   test('calls deleteProviderData', async () => {
