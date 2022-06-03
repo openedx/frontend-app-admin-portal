@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
@@ -6,7 +7,6 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { AppContext } from '@edx/frontend-platform/react';
 import {
   render, screen,
 } from '@testing-library/react';
@@ -44,29 +44,20 @@ const initialSubsidyRequestsContextValue = {
   },
 };
 
-const initialAppContextValue = {
-  configuration: {},
-};
-
 const SidebarWrapper = ({
-  /* eslint-disable react/prop-types */
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
-  appContextValue = initialAppContextValue,
-  /* eslint-enable react/prop-types */
   ...props
 }) => (
-  <AppContext.Provider value={appContextValue}>
-    <MemoryRouter>
-      <Provider store={props.store}>
-        <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-          <Sidebar
-            baseUrl="/test-enterprise-slug"
-            {...props}
-          />
-        </SubsidyRequestsContext.Provider>
-      </Provider>
-    </MemoryRouter>
-  </AppContext.Provider>
+  <MemoryRouter>
+    <Provider store={props.store}>
+      <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+        <Sidebar
+          baseUrl="/test-enterprise-slug"
+          {...props}
+        />
+      </SubsidyRequestsContext.Provider>
+    </Provider>
+  </MemoryRouter>
 );
 
 SidebarWrapper.defaultProps = {
