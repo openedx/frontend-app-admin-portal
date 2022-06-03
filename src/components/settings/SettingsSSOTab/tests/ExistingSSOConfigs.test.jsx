@@ -54,9 +54,9 @@ const incompleteConfig = [
   },
 ];
 
-const providerData = {
+const providerData = [{
   id: 10,
-};
+}];
 
 describe('<ExistingSSOConfigs />', () => {
   afterEach(() => {

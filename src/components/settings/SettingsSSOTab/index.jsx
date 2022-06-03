@@ -58,7 +58,14 @@ const SettingsSSOTab = ({ enterpriseId }) => {
             An error occurred loading the SAML data: <p>{pdError?.message}</p>
           </Alert>
           )}
-          {infoMessage && (<Toast onClose={() => setInfoMessage(null)}>{infoMessage}</Toast>)}
+          {infoMessage && (
+            <Toast
+              onClose={() => setInfoMessage(null)}
+              show={infoMessage.length > 0}
+            >
+              {infoMessage}
+            </Toast>
+          )}
         </div>
       )}
       {(isLoading || pdIsLoading) && <Skeleton count={5} height={10} />}

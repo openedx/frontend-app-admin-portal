@@ -69,7 +69,7 @@ export const BLACKBOARD_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/blac
 export const CANVAS_OAUTH_REDIRECT_URL = `${configuration.LMS_BASE_URL}/canvas/oauth-complete`;
 export const LMS_CONFIG_OAUTH_POLLING_TIMEOUT = 60000;
 export const LMS_CONFIG_OAUTH_POLLING_INTERVAL = 1000;
-export const SSO_CONFIG_POLLING_TIMEOUT = 120000;
+export const SSO_CONFIG_POLLING_TIMEOUT = 240000;
 export const SSO_CONFIG_POLLING_INTERVAL = 1000;
 
 export const SUBSIDY_TYPE_LABELS = {

@@ -144,7 +144,13 @@ const ExistingSSOConfigs = ({
                         <div className="d-flex">
                           <Dropdown.Item
                             onClick={() => {
-                              deleteProviderData(providerData.id);
+                              // loop through provider data and delete each one
+                              providerData.forEach((data) => {
+                                // double check that we're deleting provider data for the current config
+                                if (data.entity_id === config.entity_id) {
+                                  deleteProviderData(data.id);
+                                }
+                              });
                               deleteConfig(config.id);
                             }}
                             data-testid="dropdown-delete-item"
@@ -179,9 +185,7 @@ const ExistingSSOConfigs = ({
 
 ExistingSSOConfigs.propTypes = {
   configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  providerData: PropTypes.shape({
-    id: PropTypes.number,
-  }).isRequired,
+  providerData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   refreshBool: PropTypes.bool.isRequired,
   setRefreshBool: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,

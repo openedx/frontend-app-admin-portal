@@ -7,7 +7,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
 import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
-  updateIdpDirtyState, updateSsoUrlAction, updatePublicKeyAction,
+  updateIdpDirtyState,
 } from './data/actions';
 import { updateSamlProviderData, deleteSamlProviderData } from './utils';
 
@@ -34,21 +34,13 @@ const useIdpState = () => {
   const handleEntityIDUpdate = useCallback((event) => {
     dispatchSsoState(updateEntityIDAction(event.target.value));
   }, [dispatchSsoState]);
-  const handleSsoUrlUpdate = useCallback((event) => {
-    dispatchSsoState(updateSsoUrlAction(event.target.value));
-  }, [dispatchSsoState]);
-  const handlePublicKeyUpdate = useCallback((event) => {
-    dispatchSsoState(updatePublicKeyAction(event.target.value));
-  }, [dispatchSsoState]);
   const createOrUpdateIdpRecord = async ({
     enterpriseName,
     enterpriseSlug,
     enterpriseId,
     providerConfig = null,
+    existingProviderData,
     onSuccess,
-    existingIdpDataEntityId,
-    existingIdpDataId,
-    existingMetadataUrl,
   }) => {
     if (!isDirty && currentError === null) {
       dispatchSsoState(updateIdpDirtyState(false));
@@ -69,13 +61,7 @@ const useIdpState = () => {
     formData.append('slug', enterpriseSlug);
     formData.append('enabled', true);
     formData.append('enterprise_customer_uuid', enterpriseId);
-    if (entryType === 'url') {
-      formData.append('metadata_source', metadataURL);
-    } else {
-      // Direct entry of idp data won't include a metadata source so use a placeholder instead
-      const formattedName = enterpriseName.replace(/\s+/g, '-').toLowerCase();
-      formData.append('metadata_source', `${formattedName}-placeholder.com/saml/fake.xml`);
-    }
+    formData.append('metadata_source', metadataURL);
     formData.append('entity_id', entityID);
     formData.append('skip_hinted_login_dialog', true);
     formData.append('skip_registration_form', true);
@@ -102,24 +88,15 @@ const useIdpState = () => {
 
       // If the user already has a provider data entry with a different entityID, remove it before
       // creating a new one
-      if (existingIdpDataId && (existingIdpDataEntityId !== entityID)) {
-        await deleteSamlProviderData(existingIdpDataId, enterpriseId);
-      }
+      existingProviderData.forEach(async (idpData) => {
+        if (idpData.entity_id !== entityID) {
+          await deleteSamlProviderData(idpData.id, enterpriseId);
+        }
+      });
 
-      if (
-        entryType === 'direct' || (existingMetadataUrl !== metadataURL || existingIdpDataEntityId !== entityID)
-      ) {
-        // also get samlproviderdata updated from remote metadata url
-        const providerdataResponse = await updateSamlProviderData({
-          enterpriseId,
-          metadataURL,
-          entityID,
-          ssoUrl,
-          publicKey,
-          entryType,
-        });
-        logInfo(providerdataResponse);
-      }
+      // Make sure samlproviderdata is updated from remote metadata url
+      const providerdataResponse = await updateSamlProviderData({ enterpriseId, metadataURL, entityID });
+      logInfo(providerdataResponse);
       setCurrentError(null);
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
@@ -144,8 +121,6 @@ const useIdpState = () => {
     handleMetadataURLUpdate,
     handleMetadataEntryTypeUpdate,
     handleEntityIDUpdate,
-    handlePublicKeyUpdate,
-    handleSsoUrlUpdate,
     createOrUpdateIdpRecord,
   };
 };
@@ -153,27 +128,34 @@ const useIdpState = () => {
 const useExistingProviderData = (enterpriseUuid, refreshBool) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [samlData, setSamlData] = useState({});
+  const [samlData, setSamlData] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     if (enterpriseUuid) {
       const fetchData = async () => {
         const response = await LmsApiService.getProviderData(enterpriseUuid);
-        return response.data.results[0];
+        // SAML provider data is returned as a list as there can be multiple per configuration
+        return response.data.results;
       };
       fetchData().then(data => {
-        setSamlData(data);
-        setLoading(false);
+        if (isMounted) {
+          setSamlData(data);
+          setLoading(false);
+        }
       }).catch(err => {
-        setLoading(false);
-        if (err.customAttributes?.httpErrorStatus !== 404) {
-          // nothing found is okay for this fetcher.
-          setError(err);
-        } else {
-          setSamlData({});
+        if (isMounted) {
+          setLoading(false);
+          if (err.customAttributes?.httpErrorStatus !== 404) {
+            // nothing found is okay for this fetcher.
+            setError(err);
+          } else {
+            setSamlData([]);
+          }
         }
       });
     }
+    return () => { isMounted = false; };
   }, [enterpriseUuid, refreshBool]);
 
   return [samlData, error, loading];

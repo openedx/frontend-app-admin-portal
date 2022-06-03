@@ -11,13 +11,11 @@ import handleErrors from '../../utils';
 
 jest.mock('../../utils');
 const entryType = 'direct';
-const metadataURL = '';
+const metadataURL = 'https://foobar.com';
 const entityID = 'foobar';
-const publicKey = '123abc';
+const publicKey = 'abc123';
 const ssoUrl = 'https://foobar.com';
 const mockCreateOrUpdateIdpRecord = jest.fn();
-const mockHandlePublicKeyUpdate = jest.fn();
-const mockHandleSsoUrlUpdate = jest.fn();
 const mockHandleEntityIDUpdate = jest.fn();
 const mockHandleMetadataEntryTypeUpdate = jest.fn();
 jest.mock('../hooks', () => {
@@ -31,8 +29,6 @@ jest.mock('../hooks', () => {
       publicKey,
       ssoUrl,
       createOrUpdateIdpRecord: mockCreateOrUpdateIdpRecord,
-      handleSsoUrlUpdate: mockHandleSsoUrlUpdate,
-      handlePublicKeyUpdate: mockHandlePublicKeyUpdate,
       handleEntityIDUpdate: mockHandleEntityIDUpdate,
       handleMetadataEntryTypeUpdate: mockHandleMetadataEntryTypeUpdate,
     }),
@@ -268,7 +264,7 @@ describe('SAML Config Tab', () => {
     userEvent.click(screen.getByText('Next'));
     await waitFor(() => expect(mockSetProviderConfig).toHaveBeenCalled());
   });
-  test('idp completed check for direct entry', async () => {
+  test('idp completed check for url entry', async () => {
     // Setup
     contextValue.ssoState.currentStep = 'idp';
     render(
@@ -286,7 +282,7 @@ describe('SAML Config Tab', () => {
       expect(screen.getByText('Next')).not.toBeDisabled();
     }, []);
   });
-  test('idp step fetches existing idp data fields', async () => {
+  test('idp step fetches and displays existing idp data fields', async () => {
     // Setup
     const mockGetProviderData = jest.spyOn(LmsApiService, 'getProviderData');
     mockGetProviderData.mockResolvedValue(
@@ -304,32 +300,8 @@ describe('SAML Config Tab', () => {
         + 'allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await waitFor(() => expect(mockHandleEntityIDUpdate).toHaveBeenCalledWith({ target: { value: 'ayylmao!' } }));
-    await waitFor(() => expect(mockHandlePublicKeyUpdate).toHaveBeenCalledWith({ target: { value: '123abc!' } }));
-    await waitFor(() => expect(mockHandleSsoUrlUpdate).toHaveBeenCalledWith({ target: { value: 'https://ayylmao.com' } }));
-  });
-  test('idp step handles no existing idp data', async () => {
-    // Setup
-    const mockGetProviderData = jest.spyOn(LmsApiService, 'getProviderData');
-    const providerDataNotFoundError = new Error('provider data not found');
-    providerDataNotFoundError.customAttributes = { httpErrorStatus: 404 };
-    mockGetProviderData.mockImplementation(() => {
-      throw providerDataNotFoundError;
-    });
-    contextValue.ssoState.currentStep = 'idp';
-    render(
-      <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
-      </SSOConfigContext.Provider>,
-    );
-    expect(
-      screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
-      ),
-    ).toBeInTheDocument();
-    await waitFor(() => expect(mockHandleEntityIDUpdate).toHaveBeenCalledWith({ target: { value: undefined } }));
-    await waitFor(() => expect(mockHandlePublicKeyUpdate).toHaveBeenCalledWith({ target: { value: undefined } }));
-    await waitFor(() => expect(mockHandleSsoUrlUpdate).toHaveBeenCalledWith({ target: { value: undefined } }));
+    await waitFor(() => expect(screen.getByText('123abc!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByDisplayValue('ayylmao!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByDisplayValue('https://ayylmao.com')).toBeInTheDocument());
   });
 });
