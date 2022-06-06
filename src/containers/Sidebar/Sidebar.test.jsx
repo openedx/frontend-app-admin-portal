@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
@@ -44,7 +45,6 @@ const initialSubsidyRequestsContextValue = {
 };
 
 const SidebarWrapper = ({
-  // eslint-disable-next-line react/prop-types
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
   ...props
 }) => (

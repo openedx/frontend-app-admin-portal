@@ -21,17 +21,19 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-chart-line fa-w-16 "
+                className="svg-inline--fa fa-chart-line fa-w-16 fa-fw "
                 data-icon="chart-line"
                 data-prefix="fas"
                 focusable="false"
@@ -60,17 +62,19 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-tags fa-w-20 "
+                className="svg-inline--fa fa-tags fa-w-20 fa-fw "
                 data-icon="tags"
                 data-prefix="fas"
                 focusable="false"
@@ -99,17 +103,19 @@ exports[`<Sidebar /> renders correctly 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-credit-card fa-w-18 "
+                className="svg-inline--fa fa-credit-card fa-w-18 fa-fw "
                 data-icon="credit-card"
                 data-prefix="fas"
                 focusable="false"
@@ -159,17 +165,19 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-chart-line fa-w-16 "
+                className="svg-inline--fa fa-chart-line fa-w-16 fa-fw "
                 data-icon="chart-line"
                 data-prefix="fas"
                 focusable="false"
@@ -219,17 +227,19 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-chart-line fa-w-16 mr-2"
+                className="svg-inline--fa fa-chart-line fa-w-16 fa-fw mr-2"
                 data-icon="chart-line"
                 data-prefix="fas"
                 focusable="false"
@@ -256,17 +266,19 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-tags fa-w-20 mr-2"
+                className="svg-inline--fa fa-tags fa-w-20 fa-fw mr-2"
                 data-icon="tags"
                 data-prefix="fas"
                 focusable="false"
@@ -293,17 +305,19 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-credit-card fa-w-18 mr-2"
+                className="svg-inline--fa fa-credit-card fa-w-18 fa-fw mr-2"
                 data-icon="credit-card"
                 data-prefix="fas"
                 focusable="false"
@@ -351,17 +365,19 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-chart-line fa-w-16 mr-2"
+                className="svg-inline--fa fa-chart-line fa-w-16 fa-fw mr-2"
                 data-icon="chart-line"
                 data-prefix="fas"
                 focusable="false"
@@ -388,17 +404,19 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-tags fa-w-20 mr-2"
+                className="svg-inline--fa fa-tags fa-w-20 fa-fw mr-2"
                 data-icon="tags"
                 data-prefix="fas"
                 focusable="false"
@@ -425,17 +443,19 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
       >
         <a
           aria-current={null}
-          className="nav-link text-left rounded-0"
+          className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
         >
           <div
-            className="position-relative"
+            className="position-relative d-flex align-items-center"
           >
-            <span>
+            <span
+              className="d-flex align-items-center"
+            >
               <svg
                 aria-hidden="true"
-                className="svg-inline--fa fa-credit-card fa-w-18 mr-2"
+                className="svg-inline--fa fa-credit-card fa-w-18 fa-fw mr-2"
                 data-icon="credit-card"
                 data-prefix="fas"
                 focusable="false"
