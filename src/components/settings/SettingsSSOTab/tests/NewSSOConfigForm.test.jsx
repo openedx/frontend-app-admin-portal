@@ -118,6 +118,7 @@ describe('SAML Config Tab', () => {
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
     userEvent.click(screen.getByText('Save'));
     await expect(handleErrors).toHaveBeenCalled();
+    expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling configure step without making changes', async () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
@@ -160,6 +161,7 @@ describe('SAML Config Tab', () => {
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
     userEvent.click(screen.getByText('Next'));
     await expect(handleErrors).toHaveBeenCalled();
+    expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling without saving configure form', async () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
