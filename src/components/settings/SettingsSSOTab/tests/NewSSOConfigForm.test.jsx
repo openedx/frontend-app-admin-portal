@@ -10,10 +10,28 @@ import { getMockStore, initialStore } from '../testutils';
 import handleErrors from '../../utils';
 
 jest.mock('../../utils');
+const entryType = 'direct';
+const metadataURL = 'https://foobar.com';
+const entityID = 'foobar';
+const publicKey = 'abc123';
+const ssoUrl = 'https://foobar.com';
+const mockCreateOrUpdateIdpRecord = jest.fn();
+const mockHandleEntityIDUpdate = jest.fn();
+const mockHandleMetadataEntryTypeUpdate = jest.fn();
 jest.mock('../hooks', () => {
   const originalModule = jest.requireActual('../hooks');
   return {
     ...originalModule,
+    useIdpState: () => ({
+      entryType,
+      metadataURL,
+      entityID,
+      publicKey,
+      ssoUrl,
+      createOrUpdateIdpRecord: mockCreateOrUpdateIdpRecord,
+      handleEntityIDUpdate: mockHandleEntityIDUpdate,
+      handleMetadataEntryTypeUpdate: mockHandleMetadataEntryTypeUpdate,
+    }),
     useExistingSSOConfigs: () => [[{ hehe: 'haha' }], null, true],
   };
 });
@@ -21,7 +39,7 @@ jest.mock('../hooks', () => {
 const enterpriseId = 'an-id-1';
 const store = getMockStore({ ...initialStore });
 
-const mockSetPRovderConfig = jest.fn();
+const mockSetProviderConfig = jest.fn();
 const contextValue = {
   ...SSO_INITIAL_STATE,
   setCurrentError: jest.fn(),
@@ -42,7 +60,7 @@ const contextValue = {
       id: 1337,
     },
   },
-  setProviderConfig: mockSetPRovderConfig,
+  setProviderConfig: mockSetProviderConfig,
   setRefreshBool: jest.fn(),
 };
 
@@ -71,7 +89,7 @@ describe('SAML Config Tab', () => {
       screen.queryByText('Loading SSO Configurations...'),
     ).toBeInTheDocument();
     userEvent.click(screen.getByText('Cancel'));
-    await waitFor(() => expect(mockSetPRovderConfig).toHaveBeenCalledWith(null));
+    await waitFor(() => expect(mockSetProviderConfig).toHaveBeenCalledWith(null));
   });
   test('canceling service provider step', async () => {
     contextValue.ssoState.currentStep = 'serviceprovider';
@@ -92,7 +110,7 @@ describe('SAML Config Tab', () => {
       screen.queryByText('I have added edX as a Service Provider in my SAML configuration'),
     ).toBeInTheDocument();
     userEvent.click(screen.getByText('Cancel'));
-    expect(mockSetPRovderConfig).toHaveBeenCalledWith(null);
+    expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
   });
   test('error while configure step updating config from cancel button', async () => {
     // Setup
@@ -137,7 +155,7 @@ describe('SAML Config Tab', () => {
     ).toBeInTheDocument();
     userEvent.click(screen.getByText('Cancel'));
     expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
-    expect(mockSetPRovderConfig).toHaveBeenCalledWith(null);
+    expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
   });
   test('error while configure step updating config from next button', async () => {
     // Setup
@@ -227,5 +245,65 @@ describe('SAML Config Tab', () => {
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
     userEvent.click(screen.getByText('Save'));
     await expect(mockUpdateProviderConfig).toHaveBeenCalled();
+  });
+  test('configure step calls set provider config after updating', async () => {
+    // Setup
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
+        + 'allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
+    userEvent.click(screen.getByText('Next'));
+    await waitFor(() => expect(mockSetProviderConfig).toHaveBeenCalled());
+  });
+  test('idp completed check for url entry', async () => {
+    // Setup
+    contextValue.ssoState.currentStep = 'idp';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
+          + 'allow quick access to your organization\'s learning catalog.',
+        ),
+      ).toBeInTheDocument();
+      expect(screen.getByText('Next')).not.toBeDisabled();
+    }, []);
+  });
+  test('idp step fetches and displays existing idp data fields', async () => {
+    // Setup
+    const mockGetProviderData = jest.spyOn(LmsApiService, 'getProviderData');
+    mockGetProviderData.mockResolvedValue(
+      { data: { results: [{ entity_id: 'ayylmao!', public_key: '123abc!', sso_url: 'https://ayylmao.com' }] } },
+    );
+    contextValue.ssoState.currentStep = 'idp';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
+        + 'allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('123abc!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByDisplayValue('ayylmao!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByDisplayValue('https://ayylmao.com')).toBeInTheDocument());
   });
 });

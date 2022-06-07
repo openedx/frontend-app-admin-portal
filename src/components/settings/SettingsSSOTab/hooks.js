@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { useEffect, useState, useContext } from 'react';
+import {
+  useEffect, useState, useContext, useCallback,
+} from 'react';
 import { logInfo } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SSOConfigContext } from './SSOConfigContext';
@@ -7,7 +9,7 @@ import {
   updateIdpMetadataURLAction, updateIdpEntryTypeAction, updateEntityIDAction,
   updateIdpDirtyState,
 } from './data/actions';
-import { updateSamlProviderData } from './utils';
+import { updateSamlProviderData, deleteSamlProviderData } from './utils';
 
 const useIdpState = () => {
   const {
@@ -19,16 +21,25 @@ const useIdpState = () => {
       entityID,
       entryType,
       isDirty,
+      publicKey,
+      ssoUrl,
     },
   } = ssoState;
-  const handleMetadataURLUpdate = event => dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
-  const handleMetadataEntryTypeUpdate = event => dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
-  const handleEntityIDUpdate = event => dispatchSsoState(updateEntityIDAction(event.target.value));
+  const handleMetadataURLUpdate = useCallback((event) => {
+    dispatchSsoState(updateIdpMetadataURLAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handleMetadataEntryTypeUpdate = useCallback((event) => {
+    dispatchSsoState(updateIdpEntryTypeAction(event.target.value));
+  }, [dispatchSsoState]);
+  const handleEntityIDUpdate = useCallback((event) => {
+    dispatchSsoState(updateEntityIDAction(event.target.value));
+  }, [dispatchSsoState]);
   const createOrUpdateIdpRecord = async ({
     enterpriseName,
     enterpriseSlug,
     enterpriseId,
     providerConfig = null,
+    existingProviderData,
     onSuccess,
   }) => {
     if (!isDirty && currentError === null) {
@@ -75,14 +86,17 @@ const useIdpState = () => {
       // but we need to update this support the case when the correct sso config must be updated
       setProviderConfig(response.data);
 
-      // also get samlproviderdata updated from remote metadata url
-      const providerdataResponse = await updateSamlProviderData({
-        enterpriseId,
-        metadataURL,
-        entityID,
+      // If the user already has a provider data entry with a different entityID, remove it before
+      // creating a new one
+      existingProviderData.forEach(async (idpData) => {
+        if (idpData.entity_id !== entityID) {
+          await deleteSamlProviderData(idpData.id, enterpriseId);
+        }
       });
-      logInfo(providerdataResponse);
 
+      // Make sure samlproviderdata is updated from remote metadata url
+      const providerdataResponse = await updateSamlProviderData({ enterpriseId, metadataURL, entityID });
+      logInfo(providerdataResponse);
       setCurrentError(null);
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
@@ -102,11 +116,49 @@ const useIdpState = () => {
     metadataURL,
     entryType,
     entityID,
+    ssoUrl,
+    publicKey,
     handleMetadataURLUpdate,
     handleMetadataEntryTypeUpdate,
     handleEntityIDUpdate,
     createOrUpdateIdpRecord,
   };
+};
+
+const useExistingProviderData = (enterpriseUuid, refreshBool) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [samlData, setSamlData] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (enterpriseUuid) {
+      const fetchData = async () => {
+        const response = await LmsApiService.getProviderData(enterpriseUuid);
+        // SAML provider data is returned as a list as there can be multiple per configuration
+        return response.data.results;
+      };
+      fetchData().then(data => {
+        if (isMounted) {
+          setSamlData(data);
+          setLoading(false);
+        }
+      }).catch(err => {
+        if (isMounted) {
+          setLoading(false);
+          if (err.customAttributes?.httpErrorStatus !== 404) {
+            // nothing found is okay for this fetcher.
+            setError(err);
+          } else {
+            setSamlData([]);
+          }
+        }
+      });
+    }
+    return () => { isMounted = false; };
+  }, [enterpriseUuid, refreshBool]);
+
+  return [samlData, error, loading];
 };
 
 const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
@@ -116,11 +168,11 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
 
   useEffect(() => {
     if (enterpriseUuid) {
-      const fetchData = async () => {
+      const fetchConfig = async () => {
         const response = await LmsApiService.getProviderConfig(enterpriseUuid);
         return response.data.results;
       };
-      fetchData().then(configs => {
+      fetchConfig().then(configs => {
         setSsoConfigs(configs);
         setLoading(false);
       }).catch(err => {
@@ -134,10 +186,12 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
       });
     }
   }, [enterpriseUuid, refreshBool]);
+
   return [ssoConfigs, error, loading];
 };
 
 export {
   useExistingSSOConfigs,
+  useExistingProviderData,
   useIdpState,
 };

@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import { Alert, Hyperlink, Toast } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
-import { useExistingSSOConfigs } from './hooks';
+import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
 import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
@@ -16,6 +16,7 @@ const SettingsSSOTab = ({ enterpriseId }) => {
     setRefreshBool,
   } = useContext(SSOConfigContext);
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
+  const [existingProviderData, pdError, pdIsLoading] = useExistingProviderData(enterpriseId, refreshBool);
 
   return (
     <div>
@@ -29,13 +30,14 @@ const SettingsSSOTab = ({ enterpriseId }) => {
           Help Center
         </Hyperlink>
       </div>
-      {!isLoading && (
+      {(!isLoading || !pdIsLoading) && (
         <div>
           {/* providerConfig represents the currently selected config to edit/create, if there are
           existing configs but no providerConfig then we can safely render the listings page */}
           {existingConfigs?.length > 0 && (providerConfig === null)
             && (
             <ExistingSSOConfigs
+              providerData={existingProviderData}
               configs={existingConfigs}
               refreshBool={refreshBool}
               setRefreshBool={setRefreshBool}
@@ -47,17 +49,26 @@ const SettingsSSOTab = ({ enterpriseId }) => {
           render the create/edit form */}
           {existingConfigs?.length > 0 && (providerConfig !== null) && <NewSSOConfigForm />}
           {error && (
-          <Alert
-            variant="warning"
-            icon={WarningFilled}
-          >
+          <Alert variant="warning" icon={WarningFilled}>
             An error occurred loading the SAML configs: <p>{error?.message}</p>
           </Alert>
           )}
-          {infoMessage && (<Toast onClose={() => setInfoMessage(null)}>{infoMessage}</Toast>)}
+          {pdError && (
+          <Alert variant="warning" icon={WarningFilled}>
+            An error occurred loading the SAML data: <p>{pdError?.message}</p>
+          </Alert>
+          )}
+          {infoMessage && (
+            <Toast
+              onClose={() => setInfoMessage(null)}
+              show={infoMessage.length > 0}
+            >
+              {infoMessage}
+            </Toast>
+          )}
         </div>
       )}
-      {isLoading && <Skeleton count={5} height={10} />}
+      {(isLoading || pdIsLoading) && <Skeleton count={5} height={10} />}
     </div>
   );
 };

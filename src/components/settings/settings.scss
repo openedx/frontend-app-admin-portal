@@ -70,3 +70,17 @@
 .sso-create-form-control {
   width: 100%;
 }
+
+.sso-connect-step-copy-form > .form-control {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.sso-connect-step-copy-button {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.sso-connect-success-icon {
+  color: green;
+}

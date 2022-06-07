@@ -9,26 +9,48 @@ import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 
 describe('SSOConfigCard', () => {
   const store = getMockStore({ ...initialStore });
-  test('render default card state when isSsoValid is false', () => {
+  test('render landing text when config isnt validated', () => {
     const INITIAL_SSO_STATE = {
       ...SSO_INITIAL_STATE,
       providerConfig: {
         slug: 'slug-provider',
       },
     };
-    const config = { name: 'name-config', slug: 'slug', entity_id: 'entityId' };
+    const config = {
+      name: 'name-config',
+      slug: 'slug',
+      entity_id: 'entityId',
+      id: 1,
+    };
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfiguredCard config={config} testLink="http://test" />
+          <SSOConfigConfiguredCard
+            config={config}
+            testLink="http://test"
+            setConnectError={jest.fn()}
+            setShowValidatedText={jest.fn()}
+            showValidatedText={false}
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );
-    expect(screen.getByText('name-config')).toBeInTheDocument();
-    expect(screen.getByText('configured')).toBeInTheDocument();
-    expect(screen.queryByText('completed')).not.toBeInTheDocument();
+    expect(screen.getByText(
+      'Once you\'ve successfully logged in, use this page to verify that your configuration is completed and validated.',
+    )).toBeInTheDocument();
+    expect(screen.getByDisplayValue('http://test')).toBeInTheDocument();
   });
-  test('render completed card state when inProgress is false and isSsoValid true', () => {
+  test('setting completed state when wav valid at is set on render', () => {
+    const configName = 'name-config';
+    const configEntityId = 'entityId';
+    const config = {
+      name: configName,
+      slug: 'slug',
+      entity_id: configEntityId,
+      id: 1,
+      was_valid_at: '10/10/2020',
+    };
+    const mockSetShowValidatedText = jest.fn();
     const INITIAL_SSO_STATE = {
       ...SSO_INITIAL_STATE,
       providerConfig: {
@@ -36,16 +58,19 @@ describe('SSOConfigCard', () => {
       },
       connect: { ...SSO_INITIAL_STATE.connect, isSsoValid: true },
     };
-    const config = { name: 'name-config', slug: 'slug', entity_id: 'entityId' };
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigConfiguredCard config={config} testLink="http://test" />
+          <SSOConfigConfiguredCard
+            config={config}
+            testLink="http://test"
+            setConnectError={jest.fn()}
+            setShowValidatedText={mockSetShowValidatedText}
+            showValidatedText
+          />
         </SSOConfigContextProvider>
       </Provider>,
     );
-    expect(screen.getByText('name-config')).toBeInTheDocument();
-    expect(screen.queryByText('configured')).not.toBeInTheDocument();
-    expect(screen.queryByText('completed')).toBeInTheDocument();
+    expect(mockSetShowValidatedText).toHaveBeenCalledWith(true);
   });
 });

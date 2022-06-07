@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
@@ -7,7 +7,7 @@ import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext
 import { getMockStore, initialStore } from '../testutils';
 
 describe('SSO Config IDP step, with no available providerConfig', () => {
-  test('renders page with metadata link', () => {
+  test('renders page with metadata link', async () => {
     const store = getMockStore({ ...initialStore });
     const INITIAL_SSO_STATE = {
       ...SSO_INITIAL_STATE,
@@ -18,12 +18,14 @@ describe('SSO Config IDP step, with no available providerConfig', () => {
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
-          <SSOConfigIDPStep />
+          <SSOConfigIDPStep setExistingMetadataUrl={jest.fn()} />
         </SSOConfigContextProvider>
       </Provider>,
     );
-    expect(screen.getByText('Provide URL')).toBeInTheDocument();
-    expect(screen.getByText('Identity Provider Metadata URL')).toBeInTheDocument();
-    expect(screen.getByText('Identity Provider EntityID')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Metadata Source Information:')).toBeInTheDocument();
+      expect(screen.getByText('Identity Provider Metadata URL')).toBeInTheDocument();
+      expect(screen.getByTestId('url-entry-entity-id')).toBeInTheDocument();
+    });
   });
 });

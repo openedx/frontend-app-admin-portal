@@ -8,7 +8,7 @@ import isURL from 'validator/lib/isURL';
 import React, { useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateCurrentStep } from './data/actions';
-import { useIdpState } from './hooks';
+import { useExistingProviderData, useIdpState } from './hooks';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOConfigConfigureStep from './steps/SSOConfigConfigureStep';
 import SSOConfigIDPStep from './steps/SSOConfigIDPStep';
@@ -29,14 +29,20 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const [configValues, setConfigValues] = useState(null);
   const [connectError, setConnectError] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [formUpdated, setFormUpdated] = React.useState(false);
+  const [formUpdated, setFormUpdated] = useState(false);
+  const [existingProviderData] = useExistingProviderData(enterpriseId, refreshBool);
+  const [showValidatedText, setShowValidatedText] = useState(false);
+  const [idpNextButtonDisabled, setIdpNextButtonDisabled] = useState(false);
 
-  const { metadataURL, entityID, createOrUpdateIdpRecord } = useIdpState();
+  const {
+    metadataURL,
+    entityID,
+    createOrUpdateIdpRecord,
+  } = useIdpState();
 
-  const isIdpStepComplete = useMemo(
-    () => (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID)),
-    [metadataURL, entityID],
-  );
+  const isIdpStepComplete = useMemo(() => (
+    (metadataURL && isURL(metadataURL)) && (entityID && !isEmpty(entityID))
+  ), [metadataURL, entityID]);
 
   const handleCancel = () => {
     setCurrentStep('idp');
@@ -65,7 +71,8 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     if (configValues !== null) {
       configValues.append('enterprise_customer_uuid', enterpriseId);
       try {
-        await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+        const response = await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
+        setProviderConfig(response.data);
       } catch (error) {
         err = handleErrors(error);
         setConnectError(true);
@@ -108,7 +115,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
           </Stepper.Step>
 
           <Stepper.Step eventKey="connect" title="Connect">
-            <SSOConfigConnectStep setConnectError={setConnectError} />
+            <SSOConfigConnectStep
+              setConnectError={setConnectError}
+              showValidatedText={showValidatedText}
+              setShowValidatedText={setShowValidatedText}
+            />
           </Stepper.Step>
         </Container>
 
@@ -121,14 +132,19 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
             )}
             <Stepper.ActionRow.Spacer />
             <Button
-              disabled={!isIdpStepComplete}
+              disabled={!isIdpStepComplete || idpNextButtonDisabled}
               onClick={() => {
+                setIdpNextButtonDisabled(true);
                 createOrUpdateIdpRecord({
                   enterpriseName,
                   enterpriseSlug,
                   enterpriseId,
                   providerConfig,
-                  onSuccess: () => setCurrentStep('serviceprovider'),
+                  existingProviderData,
+                  onSuccess: () => {
+                    setCurrentStep('serviceprovider');
+                    setIdpNextButtonDisabled(false);
+                  },
                 });
               }}
             >
@@ -176,6 +192,11 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               Cancel
             </Button>
             <Stepper.ActionRow.Spacer />
+            {showValidatedText && (
+              <Button onClick={() => { handleCancel(); }}>
+                Submit
+              </Button>
+            )}
           </Stepper.ActionRow>
         </div>
       </Stepper>
