@@ -84,7 +84,7 @@ class CouponDetails extends React.Component {
 
   getNewColumns(selectedToggle) {
     const selectColumn = {
-      label: (
+      Header: (
         <CheckBox
           id="select-all-codes"
           name="select all codes"
@@ -98,7 +98,7 @@ class CouponDetails extends React.Component {
           ref={this.selectAllCheckBoxRef}
         />
       ),
-      key: 'select',
+      accessor: 'select',
     };
 
     switch (selectedToggle) {

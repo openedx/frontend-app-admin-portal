@@ -80,8 +80,8 @@ const handleTableColumns = (searchQuery) => {
   } else if (isValidEmail(searchQuery) !== undefined && assignedToColumnIndex === -1) {
     // Add "Assigned To" column if it doesn't already exist
     tableColumns.splice(4, 0, {
-      label: 'Assigned To',
-      key: 'assignedTo',
+      Header: 'Assigned To',
+      accessor: 'assignedTo',
     });
   }
   return tableColumns;

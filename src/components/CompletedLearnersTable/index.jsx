@@ -6,13 +6,13 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const CompletedLearnersTable = () => {
   const tableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Total Course Completed Count',
-      key: 'completed_courses',
+      Header: 'Total Course Completed Count',
+      accessor: 'completed_courses',
       columnSortable: true,
     },
   ];

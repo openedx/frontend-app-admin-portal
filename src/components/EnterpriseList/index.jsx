@@ -103,8 +103,8 @@ class EnterpriseList extends React.Component {
     const { error, loading, enterpriseList } = this.props;
     const columns = [
       {
-        label: 'Enterprise',
-        key: 'link',
+        Header: 'Enterprise',
+        accessor: 'link',
       },
     ];
 

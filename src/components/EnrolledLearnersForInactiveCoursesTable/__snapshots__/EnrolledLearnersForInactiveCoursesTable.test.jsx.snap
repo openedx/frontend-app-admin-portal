@@ -44,222 +44,224 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
+        <div
+          className="pgn__data-table-layout-wrapper"
         >
-          <thead
-            className=""
+          <div
+            className="pgn__data-table-layout-main"
           >
-            <tr
-              className=""
+            <div
+              className="pgn__data-table-wrapper"
             >
-              <th
-                className="sortable"
-                scope="col"
+              <div
+                className="pgn__data-table-status-bar"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="pgn__data-table-status"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
                     >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
+                      Showing 
+                      3
+                       of 
+                      3
+                      .
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
                     />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
                 >
-                  <span>
-                    Total Course Enrollment Count
-                    <span
-                      className="sr-only"
+                  <thead>
+                    <tr
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Total Completed Courses Count
-                    <span
-                      className="sr-only"
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Total Course Enrollment Count
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Total Completed Courses Count
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          test_user_1@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        2
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        1
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        June 23, 2017
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          test_user_2@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        5
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        5
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        January 15, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          test_user_3@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        6
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        4
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        November 18, 2017
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
               >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_1@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                2
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                1
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                June 23, 2017
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_2@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                5
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                5
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                January 15, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_3@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                6
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                4
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                November 18, 2017
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div>
+                  Showing 
+                  3
+                   of 
+                  3
+                  .
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -7,48 +7,48 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const EnrollmentsTable = () => {
   const enrollmentTableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Course Title',
-      key: 'course_title',
+      Header: 'Course Title',
+      accessor: 'course_title',
       columnSortable: true,
     },
     {
-      label: 'Course Price',
-      key: 'course_list_price',
+      Header: 'Course Price',
+      accessor: 'course_list_price',
       columnSortable: true,
     },
     {
-      label: 'Start Date',
-      key: 'course_start_date',
+      Header: 'Start Date',
+      accessor: 'course_start_date',
       columnSortable: true,
     },
     {
-      label: 'End Date',
-      key: 'course_end_date',
+      Header: 'End Date',
+      accessor: 'course_end_date',
       columnSortable: true,
     },
     {
-      label: 'Passed Date',
-      key: 'passed_date',
+      Header: 'Passed Date',
+      accessor: 'passed_date',
       columnSortable: true,
     },
     {
-      label: 'Current Grade',
-      key: 'current_grade',
+      Header: 'Current Grade',
+      accessor: 'current_grade',
       columnSortable: true,
     },
     {
-      label: 'Progress Status',
-      key: 'progress_status',
+      Header: 'Progress Status',
+      accessor: 'progress_status',
       columnSortable: true,
     },
     {
-      label: 'Last Activity Date',
-      key: 'last_activity_date',
+      Header: 'Last Activity Date',
+      accessor: 'last_activity_date',
       columnSortable: true,
     },
   ];

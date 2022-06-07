@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { Pagination, Table } from '@edx/paragon';
+import { Pagination, DataTable } from '@edx/paragon';
 import 'font-awesome/css/font-awesome.css';
 
 import TableLoadingSkeleton from './TableLoadingSkeleton';
@@ -86,7 +86,7 @@ class TableComponent extends React.Component {
           <div className="col">
             {loading && <TableLoadingOverlay />}
             <div className="table-responsive">
-              <Table
+              <DataTable
                 id={id}
                 className="table-sm table-striped"
                 columns={columnConfig}
@@ -94,6 +94,7 @@ class TableComponent extends React.Component {
                 tableSortable={tableSortable}
                 defaultSortedColumn={sortColumn}
                 defaultSortDirection={sortDirection}
+                itemCount={data.length}
               />
             </div>
           </div>

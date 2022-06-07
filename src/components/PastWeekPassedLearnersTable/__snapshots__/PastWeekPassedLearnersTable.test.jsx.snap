@@ -13,152 +13,167 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
+        <div
+          className="pgn__data-table-layout-wrapper"
         >
-          <thead
-            className=""
+          <div
+            className="pgn__data-table-layout-main"
           >
-            <tr
-              className=""
+            <div
+              className="pgn__data-table-wrapper"
             >
-              <th
-                className="sortable"
-                scope="col"
+              <div
+                className="pgn__data-table-status-bar"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="pgn__data-table-status"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
                     >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
+                      Showing 
+                      2
+                       of 
+                      2
+                      .
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
                     />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
+                  <thead>
+                    <tr
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Passed Date
-                    <span
-                      className="sr-only"
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
               >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 23, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div>
+                  Showing 
+                  2
+                   of 
+                  2
+                  .
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

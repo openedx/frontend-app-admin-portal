@@ -13,380 +13,311 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
+        <div
+          className="pgn__data-table-layout-wrapper"
         >
-          <thead
-            className=""
+          <div
+            className="pgn__data-table-layout-main"
           >
-            <tr
-              className=""
+            <div
+              className="pgn__data-table-wrapper"
             >
-              <th
-                className="sortable"
-                scope="col"
+              <div
+                className="pgn__data-table-status-bar"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="pgn__data-table-status"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
                     >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
+                      Showing 
+                      2
+                       of 
+                      2
+                      .
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
                     />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
+                  <thead>
+                    <tr
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Passed Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 23, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div>
+                  Showing 
+                  2
+                   of 
+                  2
+                  .
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -532,342 +463,311 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
+        <div
+          className="pgn__data-table-layout-wrapper"
         >
-          <thead
-            className=""
+          <div
+            className="pgn__data-table-layout-main"
           >
-            <tr
-              className=""
+            <div
+              className="pgn__data-table-wrapper"
             >
-              <th
-                className="sortable"
-                scope="col"
+              <div
+                className="pgn__data-table-status-bar"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="pgn__data-table-status"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
                     >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
+                      Showing 
+                      2
+                       of 
+                      2
+                      .
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
                     />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
+                  <thead>
+                    <tr
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div>
+                  Showing 
+                  2
+                   of 
+                  2
+                  .
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -982,342 +882,311 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
+        <div
+          className="pgn__data-table-layout-wrapper"
         >
-          <thead
-            className=""
+          <div
+            className="pgn__data-table-layout-main"
           >
-            <tr
-              className=""
+            <div
+              className="pgn__data-table-wrapper"
             >
-              <th
-                className="sortable"
-                scope="col"
+              <div
+                className="pgn__data-table-status-bar"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <div
+                  className="pgn__data-table-status"
                 >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
                     >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
+                      Showing 
+                      2
+                       of 
+                      2
+                      .
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
                     />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
                 >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
+                  <thead>
+                    <tr
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        role="columnheader"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
                     >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 22, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div>
+                  Showing 
+                  2
+                   of 
+                  2
+                  .
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

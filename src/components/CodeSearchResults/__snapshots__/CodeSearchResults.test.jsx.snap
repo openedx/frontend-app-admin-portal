@@ -48,7 +48,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon6"
+              id="Icon4"
             />
             Close search results
           </button>
@@ -71,7 +71,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
               <span
                 aria-hidden={true}
                 className="fa fa-exclamation-circle"
-                id="Icon7"
+                id="Icon5"
               />
             </div>
             <div
@@ -135,7 +135,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             <span
               aria-hidden={true}
               className="fa fa-times mr-2"
-              id="Icon8"
+              id="Icon6"
             />
             Close search results
           </button>
@@ -158,7 +158,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
               <span
                 aria-hidden={true}
                 className="fa fa-times-circle"
-                id="Icon9"
+                id="Icon7"
               />
             </div>
             <div

@@ -196,7 +196,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 className="pgn__data-table-cell-wrap"
                 role="cell"
               >
-                December 3, 2019
+                December 4, 2019
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
@@ -265,7 +265,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 className="pgn__data-table-cell-wrap"
                 role="cell"
               >
-                December 3, 2020
+                December 4, 2020
               </td>
               <td
                 className="pgn__data-table-cell-wrap"
@@ -334,7 +334,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 className="pgn__data-table-cell-wrap"
                 role="cell"
               >
-                December 3, 2021
+                December 4, 2021
               </td>
               <td
                 className="pgn__data-table-cell-wrap"

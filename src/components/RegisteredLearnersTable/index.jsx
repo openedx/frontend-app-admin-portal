@@ -8,13 +8,13 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const RegisteredLearnersTable = () => {
   const tableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Account Created',
-      key: 'lms_user_created',
+      Header: 'Account Created',
+      accessor: 'lms_user_created',
       columnSortable: true,
     },
   ];
