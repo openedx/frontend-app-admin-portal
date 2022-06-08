@@ -7,18 +7,18 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const EnrolledLearnersTable = () => {
   const tableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Account Created',
-      key: 'lms_user_created',
+      Header: 'Account Created',
+      accessor: 'lms_user_created',
       columnSortable: true,
     },
     {
-      label: 'Total Course Enrollment Count',
-      key: 'enrollment_count',
+      Header: 'Total Course Enrollment Count',
+      accessor: 'enrollment_count',
       columnSortable: true,
     },
   ];

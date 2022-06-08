@@ -157,8 +157,8 @@ describe('CouponDetails component', () => {
   it('renders the unassigned table by default', () => {
     renderWithRouter(<CouponDetailsWrapper {...defaultProps} />);
     expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
-    DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+    DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ Header }) => {
+      expect(screen.getByText(Header)).toBeInTheDocument();
     });
   });
   it('renders with error state', () => {

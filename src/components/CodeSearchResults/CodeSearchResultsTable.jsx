@@ -13,28 +13,28 @@ import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 const tableColumns = [
   {
-    label: 'Coupon Batch',
-    key: 'couponName',
+    Header: 'Coupon Batch',
+    accessor: 'couponName',
   },
   {
-    label: 'Code',
-    key: 'code',
+    Header: 'Code',
+    accessor: 'code',
   },
   {
-    label: 'Redeemed',
-    key: 'isRedeemed',
+    Header: 'Redeemed',
+    accessor: 'isRedeemed',
   },
   {
-    label: 'Redemption Date',
-    key: 'redemptionDate',
+    Header: 'Redemption Date',
+    accessor: 'redemptionDate',
   },
   {
-    label: 'Course Title',
-    key: 'courseTitle',
+    Header: 'Course Title',
+    accessor: 'courseTitle',
   },
   {
-    label: 'Actions',
-    key: 'actions',
+    Header: 'Actions',
+    accessor: 'actions',
   },
 ];
 

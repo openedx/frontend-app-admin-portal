@@ -81,36 +81,36 @@ export const DETAILS_TEXT = {
 
 export const COLUMNS = {
   redemptions: {
-    label: 'Redemptions',
-    key: 'redemptions',
+    Header: 'Redemptions',
+    accessor: 'redemptions',
   },
   code: {
-    label: 'Code',
-    key: 'code',
+    Header: 'Code',
+    accessor: 'code',
   },
   assignmentsRemaining: {
-    label: 'Assignments remaining',
-    key: 'assignments_remaining',
+    Header: 'Assignments remaining',
+    accessor: 'assignments_remaining',
   },
   actions: {
-    label: 'Actions',
-    key: 'actions',
+    Header: 'Actions',
+    accessor: 'actions',
   },
   lastReminderDate: {
-    label: 'Last reminder date',
-    key: 'last_reminder_date',
+    Header: 'Last reminder date',
+    accessor: 'last_reminder_date',
   },
   assignmentDate: {
-    label: 'Assignment date',
-    key: 'assignment_date',
+    Header: 'Assignment date',
+    accessor: 'assignment_date',
   },
   assignedTo: {
-    label: 'Assigned to',
-    key: 'assigned_to',
+    Header: 'Assigned to',
+    accessor: 'assigned_to',
   },
   redeemedBy: {
-    label: 'Redeemed by',
-    key: 'assigned_to',
+    Header: 'Redeemed by',
+    accessor: 'assigned_to',
   },
 };
 

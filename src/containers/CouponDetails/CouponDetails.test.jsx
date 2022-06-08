@@ -183,8 +183,8 @@ describe('CouponDetails container', () => {
       });
       renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
-      DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
-        expect(screen.getByText(label)).toBeInTheDocument();
+      DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ Header }) => {
+        expect(screen.getByText(Header)).toBeInTheDocument();
       });
     });
 
@@ -203,8 +203,8 @@ describe('CouponDetails container', () => {
       renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
 
-      DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
-        expect(screen.getByText(label)).toBeInTheDocument();
+      DEFAULT_TABLE_COLUMNS[filterType].forEach(({ Header }) => {
+        expect(screen.getByText(Header)).toBeInTheDocument();
       });
     });
 
@@ -390,14 +390,14 @@ describe('CouponDetails container', () => {
   describe('modals', () => {
     let spy;
 
-    const openModalByActionButton = ({ key }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
+    const openModalByActionButton = ({ accessor }) => {
+      const actionButton = wrapper.find('table').find('button').find(`.${accessor}-btn`);
       actionButton.simulate('click');
     };
 
-    const testModalActionButton = ({ key, label }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
-      expect(actionButton.text()).toEqual(label);
+    const testModalActionButton = ({ accessor, Header }) => {
+      const actionButton = wrapper.find('table').find('button').find(`.${accessor}-btn`);
+      expect(actionButton.text()).toEqual(Header);
       actionButton.simulate('click');
     };
 
@@ -424,22 +424,22 @@ describe('CouponDetails container', () => {
 
     it('sets remind modal state on Remind button click', () => {
       testModalActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
     });
 
     it('sets revoke modal state on Revoke button click', () => {
       testModalActionButton({
-        key: 'revoke',
-        label: 'Revoke',
+        accessor: 'revoke',
+        Header: 'Revoke',
       });
     });
 
     it('sets assignment modal state on Assign button click', () => {
       testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
       // TODO: The remind/revoke buttons now manage their modal state in their
       // own components, so we only need to worry about the `assign` action now.
@@ -449,8 +449,8 @@ describe('CouponDetails container', () => {
 
     it('shows correct remaining uses on assignment modal', () => {
       testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
 
       expect(wrapper.find('.assignment-details .code-remaining-uses').text()).toEqual('Remaining Uses: 85');
@@ -495,8 +495,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code assignment from modal', () => {
       openModalByActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
 
       // fake successful code assignment
@@ -520,8 +520,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code revoke from modal', () => {
       openModalByActionButton({
-        key: 'revoke',
-        label: 'Revoke',
+        accessor: 'revoke',
+        Header: 'Revoke',
       });
 
       // fake successful code assignment
@@ -540,8 +540,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code remind from modal', () => {
       openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
 
       // fake successful code assignment
@@ -559,8 +559,8 @@ describe('CouponDetails container', () => {
 
     it('handles errors in response data for code reminder ', () => {
       openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
 
       // fake code assignment 200 status with error in response data.

@@ -234,7 +234,7 @@ class CouponDetails extends React.Component {
 
     const selectColumn = tableColumns.shift();
 
-    selectColumn.label = React.cloneElement(selectColumn.label, {
+    selectColumn.Header = React.cloneElement(selectColumn.Header, {
       checked: allCodesForPageSelected,
       className: hasPartialSelection ? ['mixed'] : [],
     });
@@ -244,7 +244,7 @@ class CouponDetails extends React.Component {
     // attribute appropriately.
     //
     // TODO: Paragon now has an IndeterminateCheckbox that can be used here.
-    const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
+    const selectAllCheckBoxRef = selectColumn.Header.ref && selectColumn.Header.ref.current;
     const selectAllCheckBoxDOM = (
       selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
     );
