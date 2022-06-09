@@ -2,29 +2,37 @@
 
 exports[`CompletedLearnersTable renders empty state correctly 1`] = `
 <div
-  className="alert fade alert-warning show"
-  hidden={false}
+  className="fade alert-content alert alert-warning show"
+  open={true}
   role="alert"
 >
-  <div
-    className="alert-dialog"
+  <span
+    className="pgn__icon alert-icon"
   >
     <div
-      className="d-flex"
+      className="icon"
+    >
+      <span
+        aria-hidden={true}
+        className="fa fa-exclamation-circle"
+        id="Icon1"
+      />
+    </div>
+  </span>
+  <div
+    className="pgn__alert-message-wrapper"
+  >
+    <div
+      className="alert-message-content"
     >
       <div
-        className="icon mr-2"
+        className="alert-dialog"
       >
-        <span
-          aria-hidden={true}
-          className="fa fa-exclamation-circle"
-          id="Icon1"
-        />
-      </div>
-      <div
-        className="message"
-      >
-        There are no results.
+        <div
+          className="message"
+        >
+          There are no results.
+        </div>
       </div>
     </div>
   </div>

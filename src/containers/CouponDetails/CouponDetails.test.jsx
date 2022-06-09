@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { StatusAlert } from '@edx/paragon';
+import { Alert as StatusAlert } from '@edx/paragon';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
@@ -338,7 +338,7 @@ describe('CouponDetails container', () => {
       />
     ));
 
-    expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('danger');
+    expect(wrapper.find(StatusAlert).prop('variant')).toEqual('danger');
     wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
 
     expect(spy).toBeCalledTimes(1);
@@ -505,7 +505,7 @@ describe('CouponDetails container', () => {
 
       // success status alert
       const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
       statusAlert.find('.alert-dialog .btn').simulate('click');
 
@@ -530,7 +530,7 @@ describe('CouponDetails container', () => {
 
       // success status alert
       const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
 
       // fetches overview data for coupon
@@ -550,7 +550,7 @@ describe('CouponDetails container', () => {
 
       // success status alert
       const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
 
       // does not fetch overview data for coupon

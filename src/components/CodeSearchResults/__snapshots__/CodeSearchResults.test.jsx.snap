@@ -55,29 +55,37 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
         </div>
       </div>
       <div
-        className="alert fade alert-warning show"
-        hidden={false}
+        className="fade alert-content alert alert-warning show"
+        open={true}
         role="alert"
       >
-        <div
-          className="alert-dialog"
+        <span
+          className="pgn__icon alert-icon"
         >
           <div
-            className="d-flex"
+            className="icon"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-exclamation-circle"
+              id="Icon7"
+            />
+          </div>
+        </span>
+        <div
+          className="pgn__alert-message-wrapper"
+        >
+          <div
+            className="alert-message-content"
           >
             <div
-              className="icon mr-2"
+              className="alert-dialog"
             >
-              <span
-                aria-hidden={true}
-                className="fa fa-exclamation-circle"
-                id="Icon7"
-              />
-            </div>
-            <div
-              className="message"
-            >
-              There are no results.
+              <div
+                className="message"
+              >
+                There are no results.
+              </div>
             </div>
           </div>
         </div>
@@ -142,34 +150,42 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
         </div>
       </div>
       <div
-        className="alert fade alert-danger show"
-        hidden={false}
+        className="fade alert-content alert alert-danger show"
+        open={true}
         role="alert"
       >
-        <div
-          className="alert-dialog"
+        <span
+          className="pgn__icon alert-icon"
         >
           <div
-            className="d-flex"
+            className="icon"
+          >
+            <span
+              aria-hidden={true}
+              className="fa fa-times-circle"
+              id="Icon9"
+            />
+          </div>
+        </span>
+        <div
+          className="pgn__alert-message-wrapper"
+        >
+          <div
+            className="alert-message-content"
           >
             <div
-              className="icon mr-2"
+              className="alert-dialog"
             >
-              <span
-                aria-hidden={true}
-                className="fa fa-times-circle"
-                id="Icon9"
-              />
-            </div>
-            <div
-              className="message"
-            >
-              <span
-                className="title"
+              <div
+                className="message"
               >
-                Unable to load data
-              </span>
-              Try refreshing your screen (Network Error)
+                <span
+                  className="title"
+                >
+                  Unable to load data
+                </span>
+                Try refreshing your screen (Network Error)
+              </div>
             </div>
           </div>
         </div>
