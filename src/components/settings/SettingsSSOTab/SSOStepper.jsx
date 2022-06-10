@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { ArrowBack, ArrowForward } from '@edx/paragon/icons';
 import isEmpty from 'validator/lib/isEmpty';
 import isURL from 'validator/lib/isURL';
-import React, { useContext, useMemo, useState } from 'react';
+import React, {
+  useContext, useMemo, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { updateCurrentStep } from './data/actions';
 import { useExistingProviderData, useIdpState } from './hooks';
@@ -33,6 +35,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const [existingProviderData] = useExistingProviderData(enterpriseId, refreshBool);
   const [showValidatedText, setShowValidatedText] = useState(false);
   const [idpNextButtonDisabled, setIdpNextButtonDisabled] = useState(false);
+  const [configNextButtonDisabled, setConfigNextButtonDisabled] = useState(false);
 
   const {
     metadataURL,
@@ -50,16 +53,26 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     setRefreshBool(!refreshBool);
   };
 
+  async function sendData(type) {
+    const configFormData = new FormData();
+    Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));
+    configFormData.append('enterprise_customer_uuid', enterpriseId);
+    try {
+      const response = await LmsApiService.updateProviderConfig(configFormData, providerConfig.id);
+      if (type === 'update') {
+        setProviderConfig(response.data);
+      }
+      return null;
+    } catch (error) {
+      setConnectError(true);
+      return handleErrors(error);
+    }
+  }
+
   const saveOnQuit = async () => {
     let err;
     if (configValues !== null) {
-      configValues.append('enterprise_customer_uuid', enterpriseId);
-      try {
-        await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
-      } catch (error) {
-        err = handleErrors(error);
-        setConnectError(true);
-      }
+      err = sendData('save');
     }
     if (!err) {
       handleCancel();
@@ -69,14 +82,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const updateConfig = async () => {
     let err;
     if (configValues !== null) {
-      configValues.append('enterprise_customer_uuid', enterpriseId);
-      try {
-        const response = await LmsApiService.updateProviderConfig(configValues, providerConfig.id);
-        setProviderConfig(response.data);
-      } catch (error) {
-        err = handleErrors(error);
-        setConnectError(true);
-      }
+      err = sendData('update');
     }
     if (!err) {
       setCurrentStep('connect');
@@ -111,6 +117,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               refreshBool={refreshBool}
               setRefreshBool={setRefreshBool}
               setFormUpdated={setFormUpdated}
+              setConfigNextButtonDisabled={setConfigNextButtonDisabled}
             />
           </Stepper.Step>
 
@@ -182,7 +189,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               Cancel
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button onClick={() => updateConfig()}>Next<ArrowForward className="ml-2" /></Button>
+            <Button disabled={configNextButtonDisabled} onClick={() => updateConfig()}>Next<ArrowForward className="ml-2" /></Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey="connect">
             <Button variant="outline-primary" onClick={() => setCurrentStep('configure')}>
