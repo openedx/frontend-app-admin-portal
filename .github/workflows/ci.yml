@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         node: [16]
+        npm: [8.5.x]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -19,6 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }}
+    - run: npm install -g npm@${{ matrix.npm }}
     - name: Validate no uncommitted package-lock changes
       run: make validate-no-uncommitted-package-lock-changes
     - name: Install dependencies
