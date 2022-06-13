@@ -7,6 +7,8 @@ class EnterpriseCatalogApiService {
 
   static apiClient = getAuthenticatedHttpClient;
 
+  static enterpriseCustomerCatalogsUrl = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/`;
+
   static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
@@ -22,6 +24,10 @@ class EnterpriseCatalogApiService {
         useCache: configuration.USE_API_CACHE,
       },
     ).get(url);
+  }
+
+  static fetchEnterpriseCustomerCatalogs(enterpriseId) {
+    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
   }
 }
 
