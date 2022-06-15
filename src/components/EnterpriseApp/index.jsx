@@ -49,9 +49,7 @@ class EnterpriseApp extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      location: { pathname },
-    } = this.props;
+    const { location: { pathname } } = this.props;
 
     if (pathname !== prevProps.location.pathname) {
       this.handleSidebarMenuItemClick();
