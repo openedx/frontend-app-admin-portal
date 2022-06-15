@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -16,11 +17,21 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
 import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
+import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 
-jest.mock('../../components/subsidy-requests', () => ({
+const EnterpriseSubsidiesContextProvider = ({ children }) => (
+  <EnterpriseSubsidiesContext.Provider value={{
+    canManageLearnerCredit: true,
+  }}
+  >
+    {children}
+  </EnterpriseSubsidiesContext.Provider>
+);
+
+jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,
   // eslint-disable-next-line react/prop-types
-  default: ({ children }) => <div>{children}</div>,
+  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
 }));
 
 jest.mock('../Sidebar', () => ({
@@ -29,9 +40,9 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-features.CODE_MANAGEMENT = true;
-
 jest.mock('../../components/ProductTours/BrowseAndRequestTour', () => () => null);
+
+features.CODE_MANAGEMENT = true;
 
 getAuthenticatedUser.mockReturnValue({
   isActive: true,
@@ -47,6 +58,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise-slug',
+    enterpriseName: 'test-enterpris',
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,

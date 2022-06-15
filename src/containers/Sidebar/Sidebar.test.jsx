@@ -14,6 +14,7 @@ import '@testing-library/jest-dom';
 
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
+import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 
 import { features } from '../../config';
 
@@ -44,18 +45,25 @@ const initialSubsidyRequestsContextValue = {
   },
 };
 
+const initialEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
 const SidebarWrapper = ({
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
+  enterpriseSubsidiesContextValue = initialEnterpriseSubsidiesContextValue,
   ...props
 }) => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-        <Sidebar
-          baseUrl="/test-enterprise-slug"
-          {...props}
-        />
-      </SubsidyRequestsContext.Provider>
+      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+        <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+          <Sidebar
+            baseUrl="/test-enterprise-slug"
+            {...props}
+          />
+        </SubsidyRequestsContext.Provider>
+      </EnterpriseSubsidiesContext.Provider>
     </Provider>
   </MemoryRouter>
 );
@@ -282,6 +290,35 @@ describe('<Sidebar />', () => {
 
     render(<SidebarWrapper store={store} />);
     expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
+  it('renders manage learner credit link if the canManageLearnerCredit = true.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: true,
+      },
+    });
+
+    render(<SidebarWrapper store={store} />);
+    expect(screen.getByRole('link', { name: 'Learner Credit Management' })).toBeInTheDocument();
+  });
+
+  it('hides manage learner credit link if the canManageLearnerCredit = false.', () => {
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enableLearnerPortal: false,
+      },
+    });
+
+    render(<SidebarWrapper
+      store={store}
+      enterpriseSubsidiesContextValue={{
+        canManageLearnerCredit: false,
+      }}
+    />);
+    expect(screen.queryByRole('link', { name: 'Learner Credit Management' })).not.toBeInTheDocument();
   });
 
   describe('notifications', () => {

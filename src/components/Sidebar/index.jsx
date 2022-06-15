@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useRef, useContext, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
@@ -8,7 +10,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '@edx/paragon';
 import { MoneyOutline } from '@edx/paragon/icons';
-import { getConfig } from '@edx/frontend-platform/config';
 
 import IconLink from './IconLink';
 
@@ -16,52 +17,56 @@ import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
+import { useOnMount } from '../../hooks';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
-class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.element = React.createRef();
-  }
+const Sidebar = ({
+  baseUrl,
+  expandSidebar,
+  collapseSidebar,
+  isExpanded,
+  isExpandedByToggle,
+  enableCodeManagementScreen,
+  enableReportingConfigScreen,
+  enableSubscriptionManagementScreen,
+  enableAnalyticsScreen,
+  enableSamlConfigurationScreen,
+  enableLearnerPortal,
+  enableLmsConfigurationsScreen,
+  onWidthChange,
+  isMobile,
+}) => {
+  const navRef = useRef();
+  const widthRef = useRef();
+  const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
+  const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
 
-  componentDidMount() {
-    const { isExpandedByToggle } = this.props;
+  const getSidebarWidth = useCallback(() => {
+    if (navRef && navRef.current) {
+      const { width } = navRef.current.getBoundingClientRect();
+      return width;
+    }
+    return null;
+  }, []);
 
+  useOnMount(() => {
     if (isExpandedByToggle) {
       // If sidebar is already expanded via the toggle on mount
-      const width = this.getSidebarWidth();
-      this.props.onWidthChange(width);
+      const sideBarWidth = getSidebarWidth();
+      widthRef.current = sideBarWidth;
+      onWidthChange(sideBarWidth);
     }
-  }
+  });
 
-  componentDidUpdate(prevProps) {
-    const { isExpandedByToggle, isMobile } = this.props;
-
-    // Pass new width up to parent component if `isExpandedByToggle` or `isMobile` props change
-    const shouldUpdateSidebarWidth = (
-      isExpandedByToggle !== prevProps.isExpandedByToggle
-      || isMobile !== prevProps.isMobile
-    );
-
-    if (shouldUpdateSidebarWidth) {
-      const width = this.getSidebarWidth();
-      this.props.onWidthChange(width);
+  useEffect(() => {
+    const sideBarWidth = getSidebarWidth();
+    if (widthRef.current !== sideBarWidth) {
+      onWidthChange(sideBarWidth);
+      widthRef.current = sideBarWidth;
     }
-  }
+  }, [getSidebarWidth, isExpandedByToggle, isMobile, onWidthChange]);
 
-  getMenuItems() {
-    const {
-      baseUrl,
-      enableCodeManagementScreen,
-      enableReportingConfigScreen,
-      enableSubscriptionManagementScreen,
-      enableSamlConfigurationScreen,
-      enableAnalyticsScreen,
-      enableLearnerPortal,
-      enableLmsConfigurationsScreen,
-    } = this.props;
-
-    const { subsidyRequestsCounts } = this.context;
-
+  const getMenuItems = () => {
     // Hide Settings link if there are no visible tabs
     const shouldShowSettingsLink = (
       features.SETTINGS_PAGE && (
@@ -100,7 +105,7 @@ class Sidebar extends React.Component {
         title: 'Learner Credit Management',
         to: `${baseUrl}/admin/learner-credit`,
         icon: <Icon src={MoneyOutline} className="d-inline-block" />,
-        hidden: !getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT,
+        hidden: !canManageLearnerCredit,
       },
       {
         title: 'Reporting Configurations',
@@ -136,83 +141,58 @@ class Sidebar extends React.Component {
         external: true,
       },
     ];
-  }
+  };
 
-  getSidebarWidth() {
-    if (this.element && this.element.current) {
-      const { width } = this.element.current.getBoundingClientRect();
-      return width;
-    }
-    return null;
-  }
+  const isSidebarExpanded = isExpanded || isExpandedByToggle;
+  // Only collapse sidebar if it's already expanded and wasn't expanded by the toggle
+  const shouldSidebarCollapse = isSidebarExpanded && !isExpandedByToggle;
+  const hasMobileShadow = isMobile && isSidebarExpanded;
 
-  isSidebarExpanded() {
-    const { isExpanded, isExpandedByToggle } = this.props;
-    return isExpanded || isExpandedByToggle;
-  }
-
-  shouldSidebarCollapse() {
-    // Only collapse sidebar if it's already expanded and wasn't expanded by the toggle
-    return this.isSidebarExpanded() && !this.props.isExpandedByToggle;
-  }
-
-  render() {
-    const {
-      expandSidebar,
-      collapseSidebar,
-      isExpandedByToggle,
-      isMobile,
-    } = this.props;
-
-    const hasMobileShadow = isMobile && this.isSidebarExpanded();
-
-    return (
-      <nav
-        id="sidebar"
-        aria-label="sidebar"
-        className={classNames([
-          'sidebar',
-          'border-right',
-          'h-100',
-          'd-none',
-          'd-lg-flex',
-          {
-            'd-flex': this.isSidebarExpanded(),
-            expanded: this.isSidebarExpanded(),
-            'has-shadow': !isExpandedByToggle || hasMobileShadow,
-          },
-        ])}
-        onMouseOver={() => !this.isSidebarExpanded() && expandSidebar()}
-        onFocus={() => !this.isSidebarExpanded() && expandSidebar()}
-        onMouseLeave={() => this.shouldSidebarCollapse() && collapseSidebar()}
-        onBlur={() => this.shouldSidebarCollapse() && collapseSidebar()}
-        ref={this.element}
-      >
-        <div className="sidebar-content py-2">
-          <ul className="nav nav-pills flex-column m-0">
-            {this.getMenuItems().filter(item => !item.hidden).map(({
-              id, to, title, icon, notification, external,
-            }) => (
-              <li key={to} className="nav-item">
-                <IconLink
-                  id={id}
-                  to={to}
-                  title={title}
-                  icon={icon}
-                  notification={notification}
-                  external={external}
-                  isExpanded={this.isSidebarExpanded()}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
-    );
-  }
-}
-
-Sidebar.contextType = SubsidyRequestsContext;
+  return (
+    <nav
+      id="sidebar"
+      aria-label="sidebar"
+      className={classNames([
+        'sidebar',
+        'border-right',
+        'h-100',
+        'd-none',
+        'd-lg-flex',
+        {
+          'd-flex': isSidebarExpanded,
+          expanded: isSidebarExpanded,
+          'has-shadow': !isExpandedByToggle || hasMobileShadow,
+        },
+      ])}
+      onMouseOver={() => !isSidebarExpanded && expandSidebar()}
+      onFocus={() => !isSidebarExpanded && expandSidebar()}
+      onMouseLeave={() => shouldSidebarCollapse && collapseSidebar()}
+      onBlur={() => shouldSidebarCollapse && collapseSidebar()}
+      ref={navRef}
+    >
+      <div className="sidebar-content py-2">
+        <ul className="nav nav-pills flex-column m-0">
+          {getMenuItems().filter(item => !item.hidden).map(({
+            id, to, title, icon, notification, external,
+          }) => (
+            <li key={to} className="nav-item">
+              <IconLink
+                id={id}
+                to={to}
+                title={title}
+                icon={icon}
+                notification={notification}
+                external={external}
+                isExpanded={isSidebarExpanded}
+                onClick={collapseSidebar}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+};
 
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,
