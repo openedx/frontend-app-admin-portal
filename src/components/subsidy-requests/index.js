@@ -1,4 +1,2 @@
-import SubsidyRequestsContextProvider, { SubsidyRequestsContext } from './SubsidyRequestsContextProvider';
-
-export default SubsidyRequestsContextProvider;
-export { SubsidyRequestsContext };
+// eslint-disable-next-line import/prefer-default-export
+export { SubsidyRequestsContext } from './SubsidyRequestsContext';
