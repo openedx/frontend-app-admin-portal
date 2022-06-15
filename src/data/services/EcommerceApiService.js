@@ -86,6 +86,16 @@ class EcommerceApiService {
     }
     return EcommerceApiService.apiClient().post(url, options);
   }
+
+  static fetchEnterpriseOffers(options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/${enterpriseId}/enterprise-admin-offers/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      url += `?${queryParams.toString()}`;
+    }
+    return EcommerceApiService.apiClient().get(url);
+  }
 }
 
 export default EcommerceApiService;

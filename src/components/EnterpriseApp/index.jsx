@@ -1,32 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
-import { getConfig } from '@edx/frontend-platform/config';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import AdminPage from '../../containers/AdminPage';
-import CodeManagementPage from '../CodeManagement';
-import RequestCodesPage from '../RequestCodesPage';
 import Sidebar from '../../containers/Sidebar';
-import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
-import ReportingConfig from '../ReportingConfig';
-import NotFoundPage from '../NotFoundPage';
 import ErrorPage from '../ErrorPage';
-import LoadingMessage from '../LoadingMessage';
-import SettingsPage from '../settings';
-import { SubscriptionManagementPage } from '../subscriptions';
-import { AnalyticsPage } from '../analytics';
-import { removeTrailingSlash } from '../../utils';
 import { features } from '../../config';
-import LmsConfigurations from '../../containers/LmsConfigurations';
-import { ROUTE_NAMES } from './constants';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
-import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
-import SubsidyRequestsContextProvider from '../subsidy-requests';
-import LearnerCreditManagement from '../learner-credit-management';
+import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
+import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -96,6 +81,7 @@ class EnterpriseApp extends React.Component {
       enableLearnerPortal,
       enableLmsConfigurationsScreen,
       enterpriseId,
+      enterpriseName,
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
@@ -111,7 +97,7 @@ class EnterpriseApp extends React.Component {
     const isUserMissingJWTRoles = !roles?.length;
 
     // Hide Settings page if there are no visible tabs
-    const shouldShowSettingsPage = (
+    const enableSettingsPage = (
       features.SETTINGS_PAGE && (
         enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
        || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
@@ -133,9 +119,7 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <SubsidyRequestsContextProvider
-        enterpriseUUID={enterpriseId}
-      >
+      <EnterpriseAppContextProvider enterpriseId={enterpriseId}>
         <div className="enterprise-app">
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
@@ -162,112 +146,25 @@ class EnterpriseApp extends React.Component {
                   }}
                 >
                   <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  <Switch>
-                    <Redirect
-                      exact
-                      from={baseUrl}
-                      to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
-                    />
-                    <Route
-                      exact
-                      path={`${baseUrl}/admin/learners/:actionSlug?`}
-                      render={routeProps => <AdminPage {...routeProps} />}
-                    />
-                    {features.CODE_MANAGEMENT && enableCodeManagementScreen && [
-                      <Route
-                        key="request-codes"
-                        exact
-                        path={`${baseUrl}/admin/coupons/request-codes`}
-                        render={routeProps => (
-                          <RequestCodesPage
-                            {...routeProps}
-                            emailAddress={email}
-                            enterpriseName={this.props.enterpriseName}
-                          />
-                        )}
-                      />,
-                      <Route
-                        key="code-management"
-                        path={`${baseUrl}/admin/coupons`}
-                        component={CodeManagementPage}
-                      />,
-                    ]}
-                    {features.REPORTING_CONFIGURATIONS && (
-                      <Route
-                        key="reporting-config"
-                        exact
-                        path={`${baseUrl}/admin/reporting`}
-                        render={routeProps => (this.props.enterpriseId
-                          ? <ReportingConfig {...routeProps} enterpriseId={this.props.enterpriseId} />
-                          : <LoadingMessage className="overview" />
-                        )}
-                      />
-                    )}
-                    {enableSubscriptionManagementScreen && (
-                      <Route
-                        key="subscription-management"
-                        path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
-                        render={routeProps => <SubscriptionManagementPage {...routeProps} />}
-                      />
-                    )}
-                    {features.ANALYTICS && enableAnalyticsScreen && (
-                      <Route
-                        key="analytics"
-                        exact
-                        path={`${baseUrl}/admin/analytics`}
-                        render={routeProps => (
-                          <AnalyticsPage
-                            {...routeProps}
-                          />
-                        )}
-                      />
-                    )}
-                    {features.SAML_CONFIGURATION && enableSamlConfigurationScreen && (
-                      <Route
-                        key="saml-configuration"
-                        exact
-                        path={`${baseUrl}/admin/samlconfiguration`}
-                        render={routeProps => (
-                          <SamlProviderConfiguration
-                            {...routeProps}
-                          />
-                        )}
-                      />
-                    )}
-                    {features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen && (
-                      <Route
-                        key="lms-integrations"
-                        exact
-                        path={`${baseUrl}/admin/lmsintegrations`}
-                        render={routeProps => <LmsConfigurations {...routeProps} />}
-                      />
-                    )}
-                    <Route
-                      exact
-                      path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
-                      component={BulkEnrollmentResultsDownloadPage}
-                    />
-                    {shouldShowSettingsPage && (
-                      <Route
-                        path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
-                        component={SettingsPage}
-                      />
-                    )}
-                    {getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT && (
-                      <Route
-                        exact
-                        path={`${baseUrl}/admin/learner-credit`}
-                        component={LearnerCreditManagement}
-                      />
-                    )}
-                    <Route path="" component={NotFoundPage} />
-                  </Switch>
+                  <EnterpriseAppRoutes
+                    baseUrl={baseUrl}
+                    email={email}
+                    enterpriseId={enterpriseId}
+                    enterpriseName={enterpriseName}
+                    enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
+                    enableReportingPage={features.REPORTING_CONFIGURATIONS}
+                    enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
+                    enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                    enableSamlConfigurationPage={features.SAML_CONFIGURATION && enableSamlConfigurationScreen}
+                    enableLmsConfigurationPage={features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen}
+                    enableSettingsPage={enableSettingsPage}
+                  />
                 </div>
               </>
             )}
           </MediaQuery>
         </div>
-      </SubsidyRequestsContextProvider>
+      </EnterpriseAppContextProvider>
     );
   }
 }

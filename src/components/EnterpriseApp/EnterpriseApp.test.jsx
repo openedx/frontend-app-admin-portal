@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   render, screen,
 } from '@testing-library/react';
@@ -7,6 +8,7 @@ import { mount } from 'enzyme';
 
 import EnterpriseApp from './index';
 import { features } from '../../config';
+import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 features.SETTINGS_PAGE = true;
 features.REPORTING_CONFIGURATIONS = true;
@@ -14,6 +16,15 @@ features.CODE_MANAGEMENT = true;
 features.ANALYTICS = true;
 features.SAML_CONFIGURATION = true;
 features.EXTERNAL_LMS_CONFIGURATION = true;
+
+const EnterpriseSubsidiesContextProvider = ({ children }) => (
+  <EnterpriseSubsidiesContext.Provider value={{
+    canManageLearnerCredit: true,
+  }}
+  >
+    {children}
+  </EnterpriseSubsidiesContext.Provider>
+);
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -29,10 +40,9 @@ jest.mock('../ProductTours/BrowseAndRequestTour', () => ({
   default: () => 'BrowseAndRequestTour',
 }));
 
-jest.mock('../subsidy-requests/SubsidyRequestsContextProvider', () => ({
+jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  ...jest.requireActual('../subsidy-requests/SubsidyRequestsContextProvider'),
-  default: ({ children }) => children,
+  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{ children }</EnterpriseSubsidiesContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
@@ -64,6 +74,7 @@ describe('<EnterpriseApp />', () => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
       roles: ['enterprise_learner:*'],
+      email: 'edx@example.com',
     });
   });
 

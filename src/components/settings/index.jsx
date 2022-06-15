@@ -15,7 +15,7 @@ import {
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
 // eslint-disable-next-line import/no-named-as-default
-import SettingsContext from './SettingsContext';
+import SettingsContextProvider from './SettingsContext';
 
 const PAGE_TILE = 'Settings';
 
@@ -26,7 +26,7 @@ const PAGE_TILE = 'Settings';
 const SettingsPage = () => {
   const { path } = useRouteMatch();
   return (
-    <SettingsContext>
+    <SettingsContextProvider>
       <Helmet title={PAGE_TILE} />
       <Hero title={PAGE_TILE} />
       <Switch>
@@ -42,7 +42,7 @@ const SettingsPage = () => {
         />
         <Route path="" component={NotFoundPage} />
       </Switch>
-    </SettingsContext>
+    </SettingsContextProvider>
   );
 };
 
