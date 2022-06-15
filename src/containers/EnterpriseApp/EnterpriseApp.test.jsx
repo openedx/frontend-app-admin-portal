@@ -40,7 +40,7 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/BrowseAndRequestTour', () => () => null);
+jest.mock('../../components/ProductTours/ProductTours', () => () => null);
 
 features.CODE_MANAGEMENT = true;
 

@@ -10,9 +10,9 @@ import ErrorPage from '../ErrorPage';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
-import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
+import ProductTours from '../ProductTours/ProductTours';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -131,7 +131,7 @@ class EnterpriseApp extends React.Component {
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>
-                <BrowseAndRequestTour />
+                <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
                   wrappedComponentRef={(node) => {

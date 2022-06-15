@@ -146,6 +146,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
           aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
+          id="learner-credit-link"
           onClick={[Function]}
         >
           <div
@@ -251,6 +252,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
           aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
+          id="learner-credit-link"
           onClick={[Function]}
         >
           <div
@@ -432,6 +434,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
           aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
+          id="learner-credit-link"
           onClick={[Function]}
         >
           <div
@@ -611,6 +614,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
           aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
+          id="learner-credit-link"
           onClick={[Function]}
         >
           <div
