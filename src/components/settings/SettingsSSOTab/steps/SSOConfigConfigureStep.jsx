@@ -18,25 +18,36 @@ const SSOConfigConfigureStep = ({
   setRefreshBool,
   refreshBool,
   setFormUpdated,
+  setConfigNextButtonDisabled,
 }) => {
-  const configData = new FormData();
   const [nameValid, setNameValid] = React.useState(true);
   const [lengthValid, setLengthValid] = React.useState(true);
 
+  const addConfigVal = (key, value) => {
+    setConfigValues((configValues) => ({
+      ...configValues,
+      [key]: value,
+    }));
+  };
+
   const validateField = (field, input) => {
+    let inputValid;
     switch (field) {
       case 'seconds':
-        configData.set('max_session_length', input);
-        setLengthValid(input <= 1210000);
+        inputValid = (input <= 1210000);
+        addConfigVal('max_session_length', input);
+        setLengthValid(inputValid);
+        setConfigNextButtonDisabled(!inputValid);
         break;
       case 'name':
-        configData.set('display_name', input);
-        setNameValid(input?.length <= 20);
+        inputValid = (input?.length <= 20);
+        addConfigVal('display_name', input);
+        setNameValid(inputValid);
+        setConfigNextButtonDisabled(!inputValid);
         break;
       default:
         break;
     }
-    setConfigValues(configData);
     setFormUpdated(true);
   };
 
@@ -61,7 +72,7 @@ const SSOConfigConfigureStep = ({
         <Hyperlink destination={HELP_CENTER_SAML_LINK} target="_blank">
           Help Center
         </Hyperlink>{' '}
-        article
+        article.
       </p>
       <ModalDialog
         onClose={closeExitModal}
@@ -168,8 +179,7 @@ const SSOConfigConfigureStep = ({
           <Form.Control
             type="text"
             onChange={(e) => {
-              configData.set('attr_user_permanent_id', e.target.value);
-              setConfigValues(configData);
+              addConfigVal('attr_user_permanent_id', e.target.value);
               setFormUpdated(true);
             }}
             maxLength={128}
@@ -184,9 +194,8 @@ const SSOConfigConfigureStep = ({
           <Form.Control
             type="text"
             onChange={(e) => {
-              configData.set('attr_full_name', e.target.value);
+              addConfigVal('attr_full_name', e.target.value);
               setFormUpdated(true);
-              setConfigValues(configData);
             }}
             maxLength={255}
             floatingLabel="Full Name Attribute"
@@ -200,8 +209,7 @@ const SSOConfigConfigureStep = ({
           <Form.Control
             type="text"
             onChange={(e) => {
-              configData.set('attr_first_name', e.target.value);
-              setConfigValues(configData);
+              addConfigVal('attr_first_name', e.target.value);
               setFormUpdated(true);
             }}
             maxLength={128}
@@ -216,8 +224,7 @@ const SSOConfigConfigureStep = ({
           <Form.Control
             type="text"
             onChange={(e) => {
-              configData.set('attr_last_name', e.target.value);
-              setConfigValues(configData);
+              addConfigVal('attr_last_name', e.target.value);
               setFormUpdated(true);
             }}
             maxLength={128}
@@ -233,8 +240,7 @@ const SSOConfigConfigureStep = ({
           <Form.Control
             type="text"
             onChange={(e) => {
-              configData.set('attr_email', e.target.value);
-              setConfigValues(configData);
+              addConfigVal('attr_email', e.target.value);
               setFormUpdated(true);
             }}
             maxLength={128}
@@ -243,18 +249,6 @@ const SSOConfigConfigureStep = ({
           />
           <Form.Text>
             URN of SAML attribute containing the user&apos;s email address[es]. Leave blank for default.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Control
-            type="text"
-            readOnly
-            floatingLabel="SAML Configuration"
-            defaultValue={(connectError ? errorData.samlConfig : existingConfigData?.saml_configuration)}
-          />
-          <Form.Text>
-            We use the default SAML certificate for all configurations.
           </Form.Text>
         </Form.Group>
       </div>
@@ -295,6 +289,7 @@ SSOConfigConfigureStep.propTypes = {
   setRefreshBool: PropTypes.func.isRequired,
   refreshBool: PropTypes.bool.isRequired,
   setFormUpdated: PropTypes.func.isRequired,
+  setConfigNextButtonDisabled: PropTypes.func.isRequired,
 };
 
 export default SSOConfigConfigureStep;
