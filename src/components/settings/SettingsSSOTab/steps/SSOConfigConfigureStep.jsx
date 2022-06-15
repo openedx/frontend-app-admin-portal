@@ -31,16 +31,19 @@ const SSOConfigConfigureStep = ({
   };
 
   const validateField = (field, input) => {
+    let inputValid;
     switch (field) {
       case 'seconds':
+        inputValid = (input <= 1210000);
         addConfigVal('max_session_length', input);
-        setLengthValid(input <= 1210000);
-        setConfigNextButtonDisabled(!(input <= 1210000));
+        setLengthValid(inputValid);
+        setConfigNextButtonDisabled(!inputValid);
         break;
       case 'name':
+        inputValid = (input?.length <= 20);
         addConfigVal('display_name', input);
-        setNameValid(input?.length <= 20);
-        setConfigNextButtonDisabled(!(input?.length <= 20));
+        setNameValid(inputValid);
+        setConfigNextButtonDisabled(!inputValid);
         break;
       default:
         break;
