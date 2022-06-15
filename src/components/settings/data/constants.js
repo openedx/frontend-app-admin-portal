@@ -25,7 +25,7 @@ export const SAP_TYPE = 'SAP';
 
 export const INVALID_LINK = 'Link must be properly formatted and start with http or https';
 export const INVALID_NAME = 'Display name must be unique and cannot be over 20 characters';
-export const INVALID_LENGTH = 'Max length cannot be over 2 weeks (1210000 seconds)';
+export const INVALID_LENGTH = 'Max length must be a number, but cannot be over 2 weeks (1210000 seconds)';
 
 /**
  * Used as tab values and in router params

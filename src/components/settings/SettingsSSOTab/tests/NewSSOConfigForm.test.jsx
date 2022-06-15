@@ -196,6 +196,7 @@ describe('SAML Config Tab', () => {
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
+    expect(screen.getByText('Next')).toBeDisabled();
     userEvent.click(screen.getByText('Cancel'));
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
     userEvent.click(screen.getByText('Exit without saving'));
@@ -241,6 +242,7 @@ describe('SAML Config Tab', () => {
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
+    expect(screen.getByText('Next')).toBeDisabled();
     userEvent.click(screen.getByText('Cancel'));
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
     userEvent.click(screen.getByText('Save'));
@@ -264,7 +266,7 @@ describe('SAML Config Tab', () => {
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
     userEvent.click(screen.getByText('Next'));
-    await waitFor(() => expect(mockSetProviderConfig).toHaveBeenCalled());
+    await expect(mockUpdateProviderConfig).toHaveBeenCalled();
   });
   test('idp completed check for url entry', async () => {
     // Setup

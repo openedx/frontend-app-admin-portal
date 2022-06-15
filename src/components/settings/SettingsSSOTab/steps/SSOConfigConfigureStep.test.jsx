@@ -23,6 +23,7 @@ describe('SSO Config Configure step', () => {
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
             showExitModal={false}
+            configValues={null}
             setConfigValues={jest.fn()}
             connectError={false}
             setProviderConfig={jest.fn()}
@@ -31,6 +32,7 @@ describe('SSO Config Configure step', () => {
             setRefreshBool={jest.fn()}
             refreshBool={false}
             setFormUpdated={jest.fn()}
+            setConfigNextButtonDisabled={jest.fn()}
           />
         </SSOConfigContextProvider>
       </Provider>,
@@ -42,15 +44,16 @@ describe('SSO Config Configure step', () => {
     screen.getByLabelText('First Name Attribute');
     screen.getByLabelText('Last Name Attribute');
     screen.getByLabelText('Email Address Attribute');
-    screen.getByLabelText('SAML Configuration');
   });
-  test('updating fields fires setFormUpdated', () => {
+  test('updating fields fires setFormUpdated', async () => {
     const mockSetFormUpdated = jest.fn();
+    const configValues = null;
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
             showExitModal={false}
+            configValues={configValues}
             setProviderConfig={jest.fn()}
             saveOnQuit={jest.fn()}
             closeExitModal={jest.fn()}
@@ -59,12 +62,14 @@ describe('SSO Config Configure step', () => {
             setConfigValues={jest.fn()}
             connectError={false}
             setFormUpdated={mockSetFormUpdated}
+            setConfigNextButtonDisabled={jest.fn()}
           />
         </SSOConfigContextProvider>
       </Provider>,
     );
+    expect(configValues).toBeNull();
     userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
-    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), 'f');
+    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '1');
     userEvent.type(screen.getByLabelText('User ID Attribute'), 'f');
     userEvent.type(screen.getByLabelText('Full Name Attribute'), 'f');
     userEvent.type(screen.getByLabelText('First Name Attribute'), 'f');
@@ -73,11 +78,13 @@ describe('SSO Config Configure step', () => {
     expect(mockSetFormUpdated).toHaveBeenCalledTimes(7);
   });
   test('page form validation', () => {
+    const mockSetConfigNextButtonDisabled = jest.fn();
     render(
       <Provider store={store}>
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
             showExitModal={false}
+            configValues={null}
             setProviderConfig={jest.fn()}
             saveOnQuit={jest.fn()}
             closeExitModal={jest.fn()}
@@ -86,6 +93,7 @@ describe('SSO Config Configure step', () => {
             setConfigValues={jest.fn()}
             connectError={false}
             setFormUpdated={jest.fn()}
+            setConfigNextButtonDisabled={mockSetConfigNextButtonDisabled}
           />
         </SSOConfigContextProvider>
       </Provider>,
@@ -94,6 +102,7 @@ describe('SSO Config Configure step', () => {
     userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '2000000');
     expect(screen.queryByText(INVALID_NAME));
     expect(screen.queryByText(INVALID_LENGTH));
+    expect(mockSetConfigNextButtonDisabled).toHaveBeenCalled();
   });
   test('error with default values', () => {
     render(
@@ -101,6 +110,7 @@ describe('SSO Config Configure step', () => {
         <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
           <SSOConfigConfigureStep
             connectError
+            configValues={null}
             setConfigValues={jest.fn()}
             setFormUpdated={jest.fn()}
             showExitModal={false}
@@ -109,6 +119,7 @@ describe('SSO Config Configure step', () => {
             closeExitModal={jest.fn()}
             setRefreshBool={jest.fn()}
             refreshBool={false}
+            setConfigNextButtonDisabled={jest.fn()}
           />
         </SSOConfigContextProvider>
       </Provider>,
