@@ -26,7 +26,7 @@
     "@edx/frontend-enterprise-logistration": "1.1.2",
     "@edx/frontend-enterprise-utils": "^2.0.1",
     "@edx/frontend-platform": "1.15.6",
-    "@edx/paragon": "19.23.1",
+    "@edx/paragon": "19.25.3",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
@@ -92,6 +92,7 @@
     "identity-obj-proxy": "3.0.0",
     "postcss": "8.1.0",
     "react-dev-utils": "11.0.4",
-    "react-test-renderer": "16.13.1"
+    "react-test-renderer": "16.13.1",
+    "resize-observer-polyfill": "1.5.1"
   }
 }
