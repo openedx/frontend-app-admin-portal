@@ -3,11 +3,17 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { mount } from 'enzyme';
 
 import EnterpriseApp from './index';
 import { features } from '../../config';
 
 features.SETTINGS_PAGE = true;
+features.REPORTING_CONFIGURATIONS = true;
+features.CODE_MANAGEMENT = true;
+features.ANALYTICS = true;
+features.SAML_CONFIGURATION = true;
+features.EXTERNAL_LMS_CONFIGURATION = true;
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -70,4 +76,47 @@ describe('<EnterpriseApp />', () => {
     render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
     expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
   });
+  it('should test sidebar click on props change', () => {
+    const wrapper = mount(<EnterpriseApp {...basicProps} />);
+    const instance = wrapper.instance();
+    jest.spyOn(instance, 'handleSidebarMenuItemClick');
+    wrapper.setProps({ location: { pathname: '/admin/lmsintegrations' } });
+    expect(instance.handleSidebarMenuItemClick).toBeCalled();
+  });
+  it('should display error', () => {
+    const error = Error('error');
+    render(<EnterpriseApp {...basicProps} error={error} />);
+    expect(screen.queryByText('Error')).toBeInTheDocument();
+  });
+  it('should display loading', () => {
+    render(<EnterpriseApp {...basicProps} loading />);
+    expect(screen.queryByText('Loading...')).toBeInTheDocument();
+  });
+  it('should enable code management screen', () => {
+    render(<EnterpriseApp {...basicProps} enableCodeManagementScreen />);
+    expect(screen.getByText('/admin/coupons/request-codes')).toBeInTheDocument();
+  });
+  it('should enable code reporting screen', () => {
+    render(<EnterpriseApp {...basicProps} />);
+    expect(screen.getByText('/admin/reporting')).toBeInTheDocument();
+  });
+  it('should enable code subscriptions screen', () => {
+    render(<EnterpriseApp {...basicProps} enableSubscriptionManagementScreen />);
+    expect(screen.getByText('/admin/subscriptions')).toBeInTheDocument();
+  });
+  it('should enable code analytics screen', () => {
+    render(<EnterpriseApp {...basicProps} enableAnalyticsScreen />);
+    expect(screen.getByText('/admin/analytics')).toBeInTheDocument();
+  });
+  it('should enable code samlconfiguration screen', () => {
+    render(<EnterpriseApp {...basicProps} enableSamlConfigurationScreen />);
+    expect(screen.getByText('/admin/samlconfiguration')).toBeInTheDocument();
+  });
+  it('should enable code lmsintegrations screen', () => {
+    render(<EnterpriseApp {...basicProps} enableLmsConfigurationsScreen />);
+    expect(screen.getByText('/admin/lmsintegrations')).toBeInTheDocument();
+  });
 });
+
+// describe('Test Integrations', () => {
+// });

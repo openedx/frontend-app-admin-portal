@@ -13,16 +13,11 @@ const StatusAlert = (props) => {
     onClose,
   } = props;
 
-  const showIcon = () => {
-    if (iconClassName) {
-      return (
-        <div className="icon">
-          <Icon className={iconClassName} />
-        </div>
-      );
-    }
-    return null;
-  };
+  const showIcon = () => (
+    <div className="icon">
+      <Icon className={iconClassName} />
+    </div>
+  );
 
   return (
     <Alert
