@@ -30,6 +30,6 @@ jobs:
     - name: Test
       run: npm run test
     - name: Coverage
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
     - name: Build
       run: npm run build
