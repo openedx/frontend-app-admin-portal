@@ -25,7 +25,7 @@ const StatusAlert = (props) => {
       variant={alertType}
       dismissible={dismissible}
       onClose={onClose}
-      open
+      show
       {...iconClassName && { icon: showIcon }}
     >
       <div className="alert-dialog">
