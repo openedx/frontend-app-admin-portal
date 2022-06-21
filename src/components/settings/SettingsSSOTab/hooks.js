@@ -106,6 +106,13 @@ const useIdpState = () => {
         setCurrentError(
           ': Unable to verify provided metadata URL, please check your information and try again.',
         );
+      } else if (error.customAttributes?.httpErrorResponseData) {
+        const errorResponseData = JSON.parse(error.customAttributes.httpErrorResponseData);
+        if (errorResponseData.non_field_errors[0].includes('Entity ID:')) {
+          setCurrentError(': Entity ID already in use.');
+        } else {
+          setCurrentError(`${message} Details: ${JSON.stringify(customAttributes)}`);
+        }
       } else {
         setCurrentError(`${message} Details: ${JSON.stringify(customAttributes)}`);
       }
