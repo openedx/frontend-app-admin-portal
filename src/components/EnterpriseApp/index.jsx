@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -80,6 +81,7 @@ class EnterpriseApp extends React.Component {
       enableSamlConfigurationScreen,
       enableLearnerPortal,
       enableLmsConfigurationsScreen,
+      enableReportingConfigurationsScreen,
       enterpriseId,
       enterpriseName,
       loading,
@@ -118,6 +120,9 @@ class EnterpriseApp extends React.Component {
       return <EnterpriseAppSkeleton />;
     }
 
+    const mutedBackgroundRoutePaths = ['learner-credit'];
+    const hasMutedBackground = mutedBackgroundRoutePaths.some(path => this.props.location.pathname.includes(path));
+
     return (
       <EnterpriseAppContextProvider enterpriseId={enterpriseId}>
         <div className="enterprise-app">
@@ -138,7 +143,7 @@ class EnterpriseApp extends React.Component {
                   isMobile={!matchesMediaQ}
                 />
                 <div
-                  className="content-wrapper full-page"
+                  className={classNames('content-wrapper full-page', { 'bg-light-200': hasMutedBackground })}
                   tabIndex="-1"
                   ref={this.contentWrapperRef}
                   style={{
@@ -152,7 +157,7 @@ class EnterpriseApp extends React.Component {
                     enterpriseId={enterpriseId}
                     enterpriseName={enterpriseName}
                     enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
-                    enableReportingPage={features.REPORTING_CONFIGURATIONS}
+                    enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
                     enableSamlConfigurationPage={features.SAML_CONFIGURATION && enableSamlConfigurationScreen}
@@ -179,6 +184,7 @@ EnterpriseApp.defaultProps = {
   enableAnalyticsScreen: false,
   enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
+  enableReportingConfigurationsScreen: false,
   loading: true,
 };
 
@@ -205,6 +211,7 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
+  enableReportingConfigurationsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };

@@ -95,7 +95,7 @@ class Admin extends React.Component {
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
-            { learner_activity: 'active_past_week' },
+            { learnerActivity: 'active_past_week' },
             { csv: true },
           )
         ),
@@ -108,7 +108,7 @@ class Admin extends React.Component {
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
-            { learner_activity: 'inactive_past_week' },
+            { learnerActivity: 'inactive_past_week' },
             { csv: true },
           )
         ),
@@ -121,7 +121,7 @@ class Admin extends React.Component {
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
-            { learner_activity: 'inactive_past_month' },
+            { learnerActivity: 'inactive_past_month' },
             { csv: true },
           )
         ),
@@ -142,7 +142,7 @@ class Admin extends React.Component {
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
-            { passed_date: 'last_week' },
+            { passedDate: 'last_week' },
             { csv: true },
           )
         ),

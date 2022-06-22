@@ -91,7 +91,7 @@ class LearnerActivityTable extends React.Component {
         fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
           enterpriseId,
           {
-            learner_activity: activity,
+            learnerActivity: activity,
             ...options,
           },
         )}
