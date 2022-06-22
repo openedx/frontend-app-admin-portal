@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import useHotjar from 'react-use-hotjar';
+import useHotjar from '@edx/frontend-enterprise-hotjar';
 
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
