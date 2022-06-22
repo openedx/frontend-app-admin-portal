@@ -1,4 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
+
 import { configuration } from '../../config';
 
 class EnterpriseDataApiService {
@@ -17,14 +19,47 @@ class EnterpriseDataApiService {
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
-      ...options,
+      ...snakeCaseObject(options),
     });
+
     if (csv) {
       queryParams.set('no_page', csv);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseOfferUtilization(enterpriseUUID, offerId, options = {}) {
+    const queryParams = new URLSearchParams({
+      ...snakeCaseObject(options),
+    });
+    // eslint-disable-next-line no-unused-vars
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/offers/${offerId}/?${queryParams.toString()}`;
+
+    // mocked api response
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const maxDiscount = 38000;
+        const amountSpent = 1200;
+        const remainingBalance = maxDiscount - amountSpent;
+        const percentSpent = amountSpent / maxDiscount;
+
+        resolve({
+          data: {
+            offer_id: offerId,
+            status: 'Open',
+            enterprise_customer_uuid: enterpriseUUID,
+            amount_of_offer_spent: amountSpent,
+            max_discount: maxDiscount,
+            percent_utilized: percentSpent,
+            remaining_balance: remainingBalance,
+          },
+        });
+      }, 2000);
+    });
+
+    // return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {

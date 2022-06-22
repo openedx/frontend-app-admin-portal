@@ -3,6 +3,7 @@ import axios from 'axios';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MockAdapter from 'axios-mock-adapter';
+import ResizeObserverPolyfill from 'resize-observer-polyfill';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -35,6 +36,8 @@ global.IntersectionObserver = class IntersectionObserver {
     return null;
   }
 };
+
+global.ResizeObserver = ResizeObserverPolyfill;
 
 // TODO: Once there are no more console errors in tests, uncomment the code below
 // const { error } = global.console;
