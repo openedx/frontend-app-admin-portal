@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import { Form, Icon } from '@edx/paragon';
 import { Search } from '@edx/paragon/icons';
 
+const formatHeaderForLabel = (Header) => {
+  if (typeof Header === 'function') {
+    return Header();
+  }
+  if (typeof Header === 'string') {
+    return Header.toLowerCase();
+  }
+  return Header;
+};
+
 const TableTextFilter = ({
   column: {
     filterValue, setFilter, Header,
   },
 }) => {
-  const inputText = `Search by ${Header.toLowerCase()}`;
+  const inputText = `Search by ${formatHeaderForLabel(Header)}`;
   return (
     <Form.Group>
       <Form.Control

@@ -10,7 +10,7 @@ import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
 
 export const PAGE_SIZE = 20;
-export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
 const LearnerCreditAllocationTable = ({ enterpriseUUID, offerId }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
@@ -60,7 +60,7 @@ const LearnerCreditAllocationTable = ({ enterpriseUUID, offerId }) => {
       }}
       initialState={{
         pageSize: PAGE_SIZE,
-        pageIndex: DEFAULT_PAGE - 1, // `DataTable` uses zero-indexed array
+        pageIndex: DEFAULT_PAGE,
         sortBy: [
           { id: 'enrollmentDate', desc: true },
         ],

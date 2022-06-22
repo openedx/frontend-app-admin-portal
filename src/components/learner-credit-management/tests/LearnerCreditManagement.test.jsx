@@ -142,7 +142,7 @@ describe('<LearnerCreditManagement />', () => {
     });
 
     describe('status badge', () => {
-      it('non-current offer', () => {
+      it('with non-current offer', () => {
         const subsidiesContextValue = {
           offers: [{
             id: mockEnterpriseOfferId,
@@ -157,7 +157,7 @@ describe('<LearnerCreditManagement />', () => {
         expect(screen.getByText('Ended'));
       });
 
-      it('current offer', () => {
+      it('with current offer', () => {
         const subsidiesContextValue = {
           offers: [{
             id: mockEnterpriseOfferId,

@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useMemo,
+  useContext, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
@@ -18,8 +18,7 @@ import { useOfferUtilization } from './data/hooks';
 
 const LearnerCreditManagement = ({ enterpriseUUID }) => {
   const { offers } = useContext(EnterpriseSubsidiesContext);
-
-  const enterpriseOffer = useMemo(() => [...offers].shift(), [offers]);
+  const enterpriseOffer = offers[0];
 
   /**
    * Log error only once when no offer exists.
