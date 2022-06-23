@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -74,7 +74,7 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
     expect(screen.getByText('foobar')).toBeInTheDocument();
   });
-  it('renders incomplete config card', () => {
+  it('renders incomplete config card', async () => {
     render(
       <ExistingLMSCardDeck
         configData={incompleteConfigData}
@@ -85,7 +85,7 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     expect(screen.getByText('barfoo')).toBeInTheDocument();
-    userEvent.hover(screen.getByText('Incomplete'));
+    await waitFor(() => userEvent.hover(screen.getByText('Incomplete')));
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
     expect(screen.getByText('2 fields')).toBeInTheDocument();
   });
@@ -157,7 +157,7 @@ describe('<ExistingLMSCardDeck />', () => {
     };
     expect(LmsApiService.updateBlackboardConfig).toHaveBeenCalledWith(expectedConfigOptions, configData[0].id);
   });
-  it('renders correct single field incomplete config hover text', () => {
+  it('renders correct single field incomplete config hover text', async () => {
     render(
       <ExistingLMSCardDeck
         configData={singleInvalidFieldConfigData}
@@ -166,12 +166,12 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    expect(screen.getByText('Incomplete')).toBeInTheDocument();
-    userEvent.hover(screen.getByText('Incomplete'));
+    await waitFor(() => expect(screen.getByText('Incomplete')).toBeInTheDocument());
+    await waitFor(() => userEvent.hover(screen.getByText('Incomplete')));
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
     expect(screen.getByText('1 field')).toBeInTheDocument();
   });
-  it('renders correct refresh token needed hover text', () => {
+  it('renders correct refresh token needed hover text', async () => {
     render(
       <ExistingLMSCardDeck
         configData={needsRefreshTokenConfigData}
@@ -180,9 +180,11 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    expect(screen.getByText('Incomplete')).toBeInTheDocument();
-    userEvent.hover(screen.getByText('Incomplete'));
-    expect(screen.getByText('Next Steps')).toBeInTheDocument();
-    expect(screen.getByText('authorize your LMS')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Incomplete')).toBeInTheDocument());
+    await waitFor(() => userEvent.hover(screen.getByText('Incomplete')));
+    expect(screen.getByText('Next Steps'))
+      .toBeInTheDocument();
+    expect(screen.getByText('authorize your LMS'))
+      .toBeInTheDocument();
   });
 });

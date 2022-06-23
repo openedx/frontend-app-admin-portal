@@ -51,7 +51,7 @@ export default function SettingsLMSTab({
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
     setConfigsLoading(false);
-    // Set the form data to the card's
+    // Set the form data to the card's associated config data
     setExistingConfigFormData(configData);
     // Set the config type to the card's type
     setConfig(configType);

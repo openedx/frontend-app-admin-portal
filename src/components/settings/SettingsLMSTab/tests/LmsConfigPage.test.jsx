@@ -205,12 +205,13 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
     });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
-    fireEvent.click(moodleCard);
-    expect(screen.queryByText('Connect Moodle')).toBeTruthy();
+
+    await waitFor(() => fireEvent.click(moodleCard));
+    await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeTruthy());
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
-    expect(screen.queryByText('Exit without saving')).toBeFalsy();
-    expect(screen.queryByText('Connect Moodle')).toBeFalsy();
+    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => expect(screen.queryByText('Exit without saving')).toBeFalsy());
+    await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeFalsy());
   });
   test('No action Degreed2 card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
@@ -220,10 +221,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
-    fireEvent.click(degreedCard);
+    await waitFor(() => fireEvent.click(degreedCard));
     expect(screen.queryByText('Connect Degreed')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    await waitFor(() => fireEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Degreed')).toBeFalsy();
   });
@@ -235,10 +236,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[DEGREED_TYPE].displayName));
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED_TYPE].displayName);
-    fireEvent.click(degreedCard);
+    await waitFor(() => fireEvent.click(degreedCard));
     expect(screen.queryByText('Connect Degreed')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    await waitFor(() => fireEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Degreed')).toBeFalsy();
   });
@@ -250,10 +251,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CORNERSTONE_TYPE].displayName));
     });
     const cornerstoneCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
-    fireEvent.click(cornerstoneCard);
+    await waitFor(() => fireEvent.click(cornerstoneCard));
     expect(screen.queryByText('Connect Cornerstone')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    await waitFor(() => fireEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Cornerstone')).toBeFalsy();
   });
@@ -265,10 +266,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
     });
     const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
-    fireEvent.click(canvasCard);
+    await waitFor(() => fireEvent.click(canvasCard));
     expect(screen.queryByText('Connect Canvas')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    await waitFor(() => fireEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Canvas')).toBeFalsy();
   });
@@ -280,10 +281,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
     });
     const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
-    fireEvent.click(blackboardCard);
+    await waitFor(() => fireEvent.click(blackboardCard));
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    await waitFor(() => fireEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Blackbard')).toBeFalsy();
   });
@@ -329,12 +330,12 @@ describe('<SettingsLMSTab />', () => {
     expect(history.location.pathname).toEqual('/');
     await screen.findByText('No SSO configured');
     const configureSSOButton = screen.getByText('Configure SSO');
-    fireEvent.click(configureSSOButton);
+    await waitFor(() => fireEvent.click(configureSSOButton));
     expect(history.location.pathname).toEqual(`/${enterpriseSlug}/admin/settings/sso`);
   });
   test('Expected behavior when customer has IDP configured', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
-    expect(screen.queryByText('No SSO configured')).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText('No SSO configured')).not.toBeInTheDocument());
   });
   test('test button text', () => {
     expect(!buttonBool(draftConfig));

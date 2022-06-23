@@ -50,12 +50,8 @@ const existingConfigDataNoAuth = {
 };
 
 const noConfigs = [];
-const existingConfig = [{
-  displayName: 'name',
-}];
-const existingConfig2 = [{
-  displayName: 'foobar',
-}];
+const existingConfigDisplayNames = ['name'];
+const existingConfigDisplayNames2 = ['foobar'];
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -83,7 +79,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigDisplayNames}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -116,7 +112,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
       />,
     );
     await act(async () => {
@@ -143,9 +139,9 @@ describe('<CanvasConfig />', () => {
     userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
     userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
 
-    expect(screen.getByText('Submit')).not.toBeDisabled();
+    expect(screen.getByText('Authorize')).not.toBeDisabled();
 
-    userEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => screen.getByText('Submit'));
@@ -258,7 +254,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
       />,
     );
     act(() => {
@@ -277,10 +273,10 @@ describe('<CanvasConfig />', () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
-    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    await waitFor(() => expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL));
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
     render(
@@ -288,7 +284,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -320,7 +316,7 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
