@@ -52,6 +52,14 @@ const initialStore = {
     remind: { ...emailDefaults },
     revoke: { ...emailDefaults },
   },
+  form: {
+    'code-reminder-modal-form': {
+      initial: {},
+    },
+    'code-revoke-modal-form': {
+      initial: {},
+    },
+  },
 };
 
 describe('<CodeSearchResults />', () => {
