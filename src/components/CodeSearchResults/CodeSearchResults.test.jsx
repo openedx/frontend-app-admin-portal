@@ -56,6 +56,9 @@ const initialStore = {
     'code-reminder-modal-form': {
       initial: {},
     },
+    'code-revoke-modal-form': {
+      initial: {},
+    },
   },
 };
 
