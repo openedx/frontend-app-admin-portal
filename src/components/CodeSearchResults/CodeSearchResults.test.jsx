@@ -275,7 +275,7 @@ describe('<CodeSearchResults />', () => {
   describe('action buttons', () => {
     const flushPromises = () => new Promise(setImmediate);
 
-    it.only('should handle remind button', async () => {
+    it('should handle remind button', async () => {
       const store = getMockStore({
         ...initialStore,
         table: {
