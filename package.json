@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "10.0.0",
+    "@edx/frontend-build": "11.0.2",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.7",

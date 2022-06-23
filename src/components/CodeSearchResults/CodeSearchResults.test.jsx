@@ -52,6 +52,11 @@ const initialStore = {
     remind: { ...emailDefaults },
     revoke: { ...emailDefaults },
   },
+  form: {
+    'code-reminder-modal-form': {
+      initial: {},
+    },
+  },
 };
 
 describe('<CodeSearchResults />', () => {
@@ -270,7 +275,7 @@ describe('<CodeSearchResults />', () => {
   describe('action buttons', () => {
     const flushPromises = () => new Promise(setImmediate);
 
-    it('should handle remind button', async () => {
+    it.only('should handle remind button', async () => {
       const store = getMockStore({
         ...initialStore,
         table: {

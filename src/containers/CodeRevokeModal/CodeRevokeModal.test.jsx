@@ -45,6 +45,11 @@ const initialState = {
     enterpriseSlug,
     enableLearnerPortal: true,
   },
+  form: {
+    'code-revoke-modal-form': {
+      initial: {},
+    },
+  },
 };
 
 const couponId = 1;

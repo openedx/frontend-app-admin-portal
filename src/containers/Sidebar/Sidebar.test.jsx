@@ -175,7 +175,7 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find(Sidebar).simulate('mouseover');
+      wrapper.find('Sidebar').simulate('mouseover');
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -185,7 +185,7 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find(Sidebar).simulate('focus');
+      wrapper.find('Sidebar').simulate('focus');
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -207,7 +207,7 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find(Sidebar).simulate('mouseleave');
+      wrapper.find('Sidebar').simulate('mouseleave');
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -229,7 +229,7 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find(Sidebar).simulate('blur');
+      wrapper.find('Sidebar').simulate('blur');
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
