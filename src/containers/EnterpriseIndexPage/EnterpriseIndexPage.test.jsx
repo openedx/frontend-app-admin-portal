@@ -2,6 +2,7 @@ import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
+import EnterpriseList from '../../components/EnterpriseList';
 
 import EnterpriseIndexPage from './index';
 
@@ -43,18 +44,19 @@ describe('<EnterpriseIndexPage />', () => {
   });
 
   it('sets the appropriate props', () => {
-    expect(wrapper.props().loading).toEqual(false);
-    expect(wrapper.props().error).toEqual(null);
-    expect(wrapper.props().enterpriseList).toEqual(initialState.table['enterprise-list'].data);
+    const el = wrapper.find(EnterpriseList);
+    expect(el.props().loading).toEqual(false);
+    expect(el.props().error).toEqual(null);
+    expect(el.props().enterpriseList).toEqual(initialState.table['enterprise-list'].data);
   });
 
   it('searchEnterpriseList dispatches searchEnterpriseList action', () => {
-    wrapper.props().searchEnterpriseList();
+    wrapper.find(EnterpriseList).props().searchEnterpriseList();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
   it('clearPortalConfiguration dispatches clearPortalConfiguration action', () => {
-    wrapper.props().clearPortalConfiguration();
+    wrapper.find(EnterpriseList).props().clearPortalConfiguration();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });
