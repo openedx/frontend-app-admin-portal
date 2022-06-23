@@ -14,12 +14,9 @@ const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [{
-  displayName: 'name',
-}];
-const existingConfigInvalid = [{
-  displayName: 'fooooooooobaaaaaaaaar',
-}];
+const existingConfigDisplayNames = ['name'];
+const existingConfigDisplayNamesInvalid = ['fooooooooobaaaaaaaaar'];
+
 const noExistingData = {};
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
@@ -89,7 +86,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigDisplayNames}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -161,7 +158,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={invalidExistingData}
-        existingConfigs={existingConfigInvalid}
+        existingConfigs={existingConfigDisplayNamesInvalid}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -173,7 +170,7 @@ describe('<CornerstoneConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigDisplayNamesInvalid}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
