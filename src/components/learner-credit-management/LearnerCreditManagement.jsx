@@ -14,7 +14,7 @@ import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import OfferDates from './OfferDates';
 import OfferNameHeading from './OfferNameHeading';
-import { useOfferUtilization } from './data/hooks';
+import { useOfferSummary } from './data/hooks';
 
 const LearnerCreditManagement = ({ enterpriseUUID }) => {
   const { offers } = useContext(EnterpriseSubsidiesContext);
@@ -29,7 +29,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
     }
   }, [offers, enterpriseUUID]);
 
-  const { isLoading, offerUtilization } = useOfferUtilization(enterpriseUUID, enterpriseOffer);
+  const { isLoading, offerSummary } = useOfferSummary(enterpriseUUID, enterpriseOffer);
 
   if (!enterpriseOffer) {
     return <NotFound />;
@@ -59,10 +59,10 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
         <div className="mb-4.5 d-flex flex-wrap mx-n3">
           <LearnerCreditAggregateCards
             isLoading={isLoading}
-            totalFunds={offerUtilization?.totalFunds}
-            redeemedFunds={offerUtilization?.redeemedFunds}
-            remainingFunds={offerUtilization?.remainingFunds}
-            percentUtilized={offerUtilization?.percentUtilized}
+            totalFunds={offerSummary?.totalFunds}
+            redeemedFunds={offerSummary?.redeemedFunds}
+            remainingFunds={offerSummary?.remainingFunds}
+            percentUtilized={offerSummary?.percentUtilized}
           />
         </div>
         <div>
