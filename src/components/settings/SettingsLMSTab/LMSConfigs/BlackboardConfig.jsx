@@ -53,6 +53,8 @@ const BlackboardConfig = ({
           setOauthPollingInterval(null);
           setOauthPollingTimeout(null);
           setOauthTimeout(false);
+          // trigger a success call which will redirect the user back to the landing page
+          onClick(SUCCESS_LABEL);
         }
       } catch (error) {
         err = handleErrors(error);
@@ -158,12 +160,6 @@ const BlackboardConfig = ({
     }
   };
 
-  useEffect(() => {
-    if (authorized) {
-      onClick(SUCCESS_LABEL);
-    }
-  }, [authorized, onClick]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     // format config data for the backend
@@ -254,6 +250,7 @@ const BlackboardConfig = ({
             maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
+              setAuthorized(false);
               setEdited(true);
               validateField('Blackboard Base URL', e.target.value);
             }}
