@@ -11,12 +11,12 @@ import '@testing-library/jest-dom/extend-expect';
 
 import LearnerCreditManagement from '../LearnerCreditManagement';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
-import { useOfferUtilization } from '../data/hooks';
+import { useOfferSummary } from '../data/hooks';
 
 jest.mock('../data/hooks');
-useOfferUtilization.mockReturnValue({
+useOfferSummary.mockReturnValue({
   isLoading: false,
-  offerUtilization: null,
+  offerSummary: null,
 });
 
 jest.mock('../../NotFoundPage', () => ({
@@ -80,7 +80,7 @@ const defaultEnterpriseSubsidiesContextValue = {
 };
 
 const mockOfferDisplayName = 'Test Enterprise Offer';
-const mockUtilization = {
+const mockOfferSummary = {
   totalFunds: 5000,
   redeemedFunds: 200,
   remainingFunds: 4800,
@@ -119,9 +119,9 @@ describe('<LearnerCreditManagement />', () => {
       const subsidiesContextValue = {
         offers: [mockOffer],
       };
-      useOfferUtilization.mockReturnValue({
+      useOfferSummary.mockReturnValue({
         isLoading: false,
-        offerUtilization: mockUtilization,
+        offerSummary: mockOfferSummary,
       });
       render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
       expect(screen.queryByTestId('404-page-not-found')).toBeFalsy();
@@ -149,9 +149,9 @@ describe('<LearnerCreditManagement />', () => {
             isCurrent: false,
           }],
         };
-        useOfferUtilization.mockReturnValue = {
+        useOfferSummary.mockReturnValue = {
           isLoading: false,
-          offerUtilization: mockUtilization,
+          offerSummary: mockOfferSummary,
         };
         render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
         expect(screen.getByText('Ended'));
@@ -164,9 +164,9 @@ describe('<LearnerCreditManagement />', () => {
             isCurrent: true,
           }],
         };
-        useOfferUtilization.mockReturnValue = {
+        useOfferSummary.mockReturnValue = {
           isLoading: false,
-          offerUtilization: mockUtilization,
+          offerSummary: mockOfferSummary,
         };
         render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
         expect(screen.getByText('Active'));

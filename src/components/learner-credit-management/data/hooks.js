@@ -8,41 +8,43 @@ import debounce from 'lodash.debounce';
 
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import {
-  transformOfferUtilization,
+  transformOfferSummary,
   transformUtilizationTableResults,
 } from './utils';
 import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from './constants';
 
-export const useOfferUtilization = (enterpriseUUID, enterpriseOffer) => {
-  const [isOfferUtilizationLoading, setIsOfferUtilizationLoading] = useState(true);
-  const [offerUtilization, setOfferUtilization] = useState();
+export const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [offerSummary, setOfferSummary] = useState();
 
   useEffect(() => {
     if (!enterpriseOffer) {
-      setIsOfferUtilizationLoading(false);
+      setIsLoading(false);
       return;
     }
+
     const fetchData = async () => {
       try {
-        setIsOfferUtilizationLoading(true);
-        const response = await EnterpriseDataApiService.fetchEnterpriseOfferUtilization(
+        setIsLoading(true);
+        const response = await EnterpriseDataApiService.fetchEnterpriseOfferSummary(
           enterpriseUUID, enterpriseOffer.id,
         );
-        const utilization = camelCaseObject(response.data);
-        const transformedUtilization = transformOfferUtilization(utilization);
-        setOfferUtilization(transformedUtilization);
+        const data = camelCaseObject(response.data);
+        const transformedOfferSummary = transformOfferSummary(data);
+        setOfferSummary(transformedOfferSummary);
       } catch (error) {
         logError(error);
       } finally {
-        setIsOfferUtilizationLoading(false);
+        setIsLoading(false);
       }
     };
+
     fetchData();
   }, [enterpriseUUID, enterpriseOffer]);
 
   return {
-    isLoading: isOfferUtilizationLoading,
-    offerUtilization,
+    isLoading,
+    offerSummary,
   };
 };
 

@@ -1,16 +1,16 @@
 /**
- * Transforms utilization data from API for display in the UI.
+ * Transforms offer summary from API for display in the UI.
  *
- * @param {object} offerUtilization Object containing metadata about utilization for an offer.
- * @returns Object transformed metadata about an enterprise offer.
+ * @param {object} offerSummary Object containing summary about an offer.
+ * @returns Object containing transformed summary about an enterprise offer.
  */
-export const transformOfferUtilization = (offerUtilization) => {
-  if (!offerUtilization) { return null; }
+export const transformOfferSummary = (offerSummary) => {
+  if (!offerSummary) { return null; }
 
-  const totalFunds = parseFloat(offerUtilization.maxDiscount);
-  const redeemedFunds = parseFloat(offerUtilization.amountOfOfferSpent);
-  const remainingFunds = parseFloat(offerUtilization.remainingBalance);
-  const percentUtilized = parseFloat(offerUtilization.percentUtilized);
+  const totalFunds = parseFloat(offerSummary.maxDiscount);
+  const redeemedFunds = parseFloat(offerSummary.amountOfOfferSpent);
+  const remainingFunds = parseFloat(offerSummary.remainingBalance);
+  const percentUtilized = parseFloat(offerSummary.percentOfOfferSpent);
 
   return {
     totalFunds,
