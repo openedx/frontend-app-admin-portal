@@ -57,7 +57,12 @@ const SSOConfigConfiguredCard = ({
         dispatchSsoState(updateConnectInProgress(false));
         setConnectError(true);
       }
-    } catch (error) { setCurrentError(error); setInterval(null); }
+    } catch (error) {
+      setCurrentError(
+        'Our system experienced an error. If this persists, please consult our help center.',
+      );
+      setInterval(null);
+    }
   }, interval);
   const initiateValidation = () => {
     setStartTime(performance.now());

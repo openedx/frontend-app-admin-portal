@@ -32,7 +32,7 @@ const NewSSOConfigForm = () => {
       >
         <Alert.Heading>Something went wrong.</Alert.Heading>
         <p className="my-3">
-          Our system experienced an error. If this persists, please consult our help center.
+          {currentError}
         </p>
       </Alert>
       )}
