@@ -1,3 +1,5 @@
+import { LEARNER_CREDIT_UTILIZATION_THRESHOLDS } from './constants';
+
 /**
  * Transforms offer summary from API for display in the UI.
  *
@@ -35,3 +37,23 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
 }));
+
+/**
+ * Gets appropriate color variant for the annotated progress bar.
+ *
+ * @param {Number} percentUtilized A float (0.0 - 1.0) of percentage funds utilized for an offer.
+ *
+ * @returns Appropriate color variant for annotated progress bar.
+ */
+export const getProgressBarVariant = (percentUtilized) => {
+  let variant = 'success'; // default to green
+  if (
+    percentUtilized > LEARNER_CREDIT_UTILIZATION_THRESHOLDS.warning
+    && percentUtilized < LEARNER_CREDIT_UTILIZATION_THRESHOLDS.error
+  ) {
+    variant = 'danger'; // yellow
+  } else if (percentUtilized > LEARNER_CREDIT_UTILIZATION_THRESHOLDS.error) {
+    variant = 'error'; // red
+  }
+  return variant;
+};

@@ -34,9 +34,11 @@ class EnterpriseDataApiService {
     const queryParams = new URLSearchParams({
       ...snakeCaseObject(options),
     });
-
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/offers/${offerId}/?${queryParams.toString()}`;
-
+    let url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/offers/${offerId}/`;
+    // append query params, if applicable
+    if (Array.from(queryParams).length) {
+      url += `?${queryParams.toString()}`;
+    }
     return EnterpriseDataApiService.apiClient().get(url);
   }
 

@@ -15,6 +15,7 @@ import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import OfferDates from './OfferDates';
 import OfferNameHeading from './OfferNameHeading';
 import { useOfferSummary } from './data/hooks';
+import OfferUtilizationAlerts from './OfferUtilizationAlerts';
 
 const LearnerCreditManagement = ({ enterpriseUUID }) => {
   const { offers } = useContext(EnterpriseSubsidiesContext);
@@ -42,6 +43,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
       </Helmet>
       <Hero title="Learner Credit Management" />
       <Container className="py-4">
+        <OfferUtilizationAlerts className="mb-4.5" percentUtilized={offerSummary?.percentUtilized} />
         <OfferNameHeading name={enterpriseOffer.displayName} />
         <div className="d-flex flex-wrap align-items-center mb-4">
           <Stack direction="horizontal" gap={3}>
