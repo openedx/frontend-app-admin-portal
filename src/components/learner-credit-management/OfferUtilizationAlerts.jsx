@@ -36,7 +36,7 @@ const OfferUtilizationAlerts = ({
           <ContactCustomerSupportButton variant="primary" />,
         ]}
       >
-        <Alert.Heading>Remaining funds low</Alert.Heading>
+        <Alert.Heading>Low remaining funds</Alert.Heading>
         <p>
           Your learning credit is over {(LEARNER_CREDIT_UTILIZATION_THRESHOLDS.warning * 100).toFixed(1)}% utilized. To
           add additional funds and avoid downtime for your learners, reach out to customer support.
