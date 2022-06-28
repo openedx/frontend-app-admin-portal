@@ -7,6 +7,7 @@ import {
   initialize, APP_INIT_ERROR, APP_READY, subscribe, mergeConfig,
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
+import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
 
 import App from './components/App';
 
@@ -31,7 +32,7 @@ initialize({
         MAINTENANCE_ALERT_MESSAGE: process.env.MAINTENANCE_ALERT_MESSAGE || null,
         MAINTENANCE_ALERT_START_TIMESTAMP: process.env.MAINTENANCE_ALERT_START_TIMESTAMP || null,
         ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL || null,
-        FEATURE_LEARNER_CREDIT_MANAGEMENT: process.env.FEATURE_LEARNER_CREDIT_MANAGEMENT || null,
+        FEATURE_LEARNER_CREDIT_MANAGEMENT: process.env.FEATURE_LEARNER_CREDIT_MANAGEMENT || hasFeatureFlagEnabled('LEARNER_CREDIT_MANAGEMENT') || null,
       });
     },
   },
