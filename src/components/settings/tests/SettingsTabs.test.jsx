@@ -72,15 +72,12 @@ describe('<SettingsTabs />', () => {
   });
 
   test.each([
-    [false, true, true],
-    [true, false, true],
-    [true, true, false],
-  ])('LMS tab is not rendered if any of EXTERNAL_LMS_CONFIGURATION, SETTINGS_PAGE_LMS_TAB, enableLmsConfigurationsScreen = false', (
-    enableExternalLmsConfiguration,
+    [false, true],
+    [true, false],
+  ])('LMS tab is not rendered if either SETTINGS_PAGE_LMS_TAB or enableLmsConfigurationsScreen = false', (
     enableSettingsPageLmsTab,
     enableLmsConfigurationsScreen,
   ) => {
-    features.EXTERNAL_LMS_CONFIGURATION = enableExternalLmsConfiguration;
     features.SETTINGS_PAGE_LMS_TAB = enableSettingsPageLmsTab;
 
     render(
