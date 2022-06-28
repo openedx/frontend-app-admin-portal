@@ -4,10 +4,15 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  initialize, APP_INIT_ERROR, APP_READY, subscribe, mergeConfig,
+  initialize,
+  APP_INIT_ERROR,
+  APP_READY,
+  subscribe,
+  mergeConfig,
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
 import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
+import { messages as paragonMessages } from '@edx/paragon';
 
 import App from './components/App';
 
@@ -36,7 +41,9 @@ initialize({
       });
     },
   },
-  messages: [],
+  messages: [
+    paragonMessages,
+  ],
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });
