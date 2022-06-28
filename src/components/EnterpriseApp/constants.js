@@ -5,4 +5,5 @@ export const ROUTE_NAMES = {
   subscriptionManagement: 'subscriptions',
   settings: 'settings',
   codeManagement: 'coupons',
+  learnerCredit: 'learner-credit',
 };

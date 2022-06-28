@@ -29,9 +29,9 @@ jest.mock('react-router-dom', () => ({
   Redirect: () => 'Redirect',
 }));
 
-jest.mock('../ProductTours/BrowseAndRequestTour', () => ({
+jest.mock('../ProductTours/ProductTours', () => ({
   __esModule: true,
-  default: () => 'BrowseAndRequestTour',
+  default: () => 'ProductTours',
 }));
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
