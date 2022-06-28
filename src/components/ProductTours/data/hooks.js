@@ -23,7 +23,9 @@ export const useBrowseAndRequestTour = () => {
   // hide cookie is undefined or false, not in settings page, and subsidy requests are not already enabled
   const showBrowseAndRequestTour = isBrowseAndRequestEnabledForEnterprise
     && !dismissedBrowseAndRequestTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
-  return useState(showBrowseAndRequestTour);
+
+  const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useState(showBrowseAndRequestTour);
+  return [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled];
 };
 
 export const useLearnerCreditTour = () => {
@@ -36,5 +38,7 @@ export const useLearnerCreditTour = () => {
   // hide cookie is undefined or false, not in learner credit page
   const showLearnerCreditTour = isLearnerCreditEnabled && canManageLearnerCredit
     && !dismissedLearnerCreditTourCookie && !inLearnerCreditPage;
-  return useState(showLearnerCreditTour);
+
+  const [learnerCreditTourEnabled, setBrowseAndRequestTourEnabled] = useState(showLearnerCreditTour);
+  return [learnerCreditTourEnabled, setBrowseAndRequestTourEnabled];
 };

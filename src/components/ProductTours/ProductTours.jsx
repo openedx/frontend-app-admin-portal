@@ -12,21 +12,21 @@ import { useBrowseAndRequestTour, useLearnerCreditTour } from './data/hooks';
  * All actual tour specific logic/content should live within the separate tour files.
  */
 const ProductTours = ({ enterpriseSlug }) => {
-  const [showBrowseAndRequestTour, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour();
-  const [showLearnerCreditTour, setLearnerCreditTourEnabled] = useLearnerCreditTour();
+  const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour();
+  const [learnerCreditTourEnabled, setLearnerCreditTourEnabled] = useLearnerCreditTour();
 
   const history = useHistory();
   const tours = [
     browseAndRequestTour({
       enterpriseSlug,
-      tourEnabled: showBrowseAndRequestTour,
+      tourEnabled: browseAndRequestTourEnabled,
       history,
       onDismiss: () => setBrowseAndRequestTourEnabled(false),
       onEnd: () => setBrowseAndRequestTourEnabled(false),
     }),
     learnerCreditTour({
       enterpriseSlug,
-      tourEnabled: showLearnerCreditTour,
+      tourEnabled: learnerCreditTourEnabled,
       history,
       onDismiss: () => setLearnerCreditTourEnabled(false),
       onEnd: () => setLearnerCreditTourEnabled(false),
