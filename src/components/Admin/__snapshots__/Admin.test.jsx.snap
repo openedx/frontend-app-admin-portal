@@ -6119,21 +6119,26 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       >
         <div
           className="fade alert-content alert alert-danger show"
-          open={true}
           role="alert"
         >
           <span
             className="pgn__icon alert-icon"
           >
-            <div
-              className="icon"
+            <svg
+              aria-hidden={true}
+              fill="none"
+              focusable={false}
+              height={24}
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <span
-                aria-hidden={true}
-                className="fa fa-times-circle"
-                id="Icon109"
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                fill="currentColor"
               />
-            </div>
+            </svg>
           </span>
           <div
             className="pgn__alert-message-wrapper"
@@ -6142,19 +6147,11 @@ exports[`<Admin /> renders correctly with error state 1`] = `
               className="alert-message-content"
             >
               <div
-                className="alert-dialog"
+                className="alert-heading h4"
               >
-                <div
-                  className="message"
-                >
-                  <span
-                    className="title"
-                  >
-                    Unable to load overview
-                  </span>
-                  Try refreshing your screen (Network Error)
-                </div>
+                Unable to load overview
               </div>
+              Try refreshing your screen (Network Error)
             </div>
           </div>
         </div>

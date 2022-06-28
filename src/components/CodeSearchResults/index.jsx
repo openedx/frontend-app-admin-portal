@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TransitionReplace } from '@edx/paragon';
+import { TransitionReplace, Alert } from '@edx/paragon';
+import { CheckCircle } from '@edx/paragon/icons';
 
 import { updateUrl } from '../../utils';
 
-import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
 import CodeSearchResultsTable from './CodeSearchResultsTable';
 
@@ -58,21 +58,14 @@ class CodeSearchResults extends React.Component {
   };
 
   renderSuccessMessage = options => (
-    <StatusAlert
-      alertType="success"
-      iconClassName="fa fa-check"
+    <Alert
+      variant="success"
+      icon={CheckCircle}
       onClose={this.resetCodeActionMessages}
       dismissible
-      {...options}
-    />
-  );
-
-  renderErrorMessage = options => (
-    <StatusAlert
-      alertType="danger"
-      iconClassName="fa fa-exclamation-circle"
-      {...options}
-    />
+    >
+      {options.message}
+    </Alert>
   );
 
   render() {

@@ -38,9 +38,9 @@ describe('<SuccessFactorsIntegrationConfigForm />', () => {
     expect(spyUpdate).toHaveBeenCalledWith(formData, config.id);
   });
 
-  it('show StatusAlert on errors', () => {
+  it('show Alert on errors', () => {
     const wrapper = mount((<SuccessFactorsIntegrationConfigForm enterpriseId="testing123" />));
     wrapper.setState({ error: 'error occurred.' });
-    expect(wrapper.find('StatusAlert').first().props().message).toEqual('error occurred.');
+    expect(wrapper.find('Alert').find('AlertHeading').first().text()).toEqual('Unable to submit config form:');
   });
 });

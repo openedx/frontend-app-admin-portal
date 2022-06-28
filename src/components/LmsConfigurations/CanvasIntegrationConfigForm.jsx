@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  ValidationFormGroup, Input, StatefulButton, Icon, Alert,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
+
 import { snakeCaseFormData } from '../../utils';
-import StatusAlert from '../StatusAlert';
 import LmsApiService from '../../data/services/LmsApiService';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 import { handleErrors, validateLmsConfigForm } from './common';
@@ -96,12 +97,15 @@ class CanvasIntegrationConfigForm extends React.Component {
     if (error) {
       errorAlert = (
         <div className="form-group is-invalid align-items-left">
-          <StatusAlert
-            alertType="danger"
-            iconClassName="fa fa-times-circle"
-            title="Unable to submit config form:"
-            message={error}
-          />
+          <Alert
+            variant="danger"
+            icon={Error}
+          >
+            <Alert.Heading>
+              Unable to submit config form:
+            </Alert.Heading>
+            <p>{error}</p>
+          </Alert>
         </div>
       );
     }

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  ValidationFormGroup, Input, StatefulButton, Icon, Alert,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
+
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
-import StatusAlert from '../StatusAlert';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 import { handleErrors, validateLmsConfigForm } from './common';
 
@@ -157,13 +158,14 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
   if (state.error) {
     errorAlert = (
       <div className="form-group is-invalid align-items-left">
-        <StatusAlert
-          alertType="danger"
-          iconClassName="fa fa-times-circle"
-          title="Unable to submit config form:"
-          message={state.error}
+        <Alert
+          variant="danger"
+          icon={Error}
           dismissible
-        />
+        >
+          <Alert.Heading>Unable to submit config form:</Alert.Heading>
+          <p>{state.error}</p>
+        </Alert>
       </div>
     );
   }

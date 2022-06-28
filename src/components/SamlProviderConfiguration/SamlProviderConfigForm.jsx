@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+  ValidationFormGroup, Input, StatefulButton, Icon, Button, Alert,
 } from '@edx/paragon';
-import StatusAlert from '../StatusAlert';
+import { Error } from '@edx/paragon/icons';
 import SamlConfiguration from '../SamlConfiguration';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
@@ -89,12 +89,13 @@ class SamlProviderConfigForm extends React.Component {
     if (error) {
       errorAlert = (
         <div className="form-group is-invalid align-items-left">
-          <StatusAlert
-            alertType="danger"
-            iconClassName="fa fa-times-circle"
-            title="Unable to submit config form:"
-            message={error}
-          />
+          <Alert
+            variant="danger"
+            icon={Error}
+          >
+            <Alert.Heading>Unable to submit config form:</Alert.Heading>
+            <p>{error}</p>
+          </Alert>
         </div>
       );
     }
