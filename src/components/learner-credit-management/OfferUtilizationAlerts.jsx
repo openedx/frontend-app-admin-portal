@@ -31,6 +31,7 @@ const OfferUtilizationAlerts = ({
   }
 
   const isErrorAlertShown = remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD;
+
   const handleOnCloseWarningAlert = () => {
     sendEnterpriseTrackEvent(
       enterpriseUUID,
