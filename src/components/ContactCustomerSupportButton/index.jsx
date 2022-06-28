@@ -14,7 +14,8 @@ const ContactCustomerSupportButton = ({
   const destinationUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
   // intercept click behavior, if `onClick` prop is provided, to give enough time for
-  // asynchronous event to dispatch since the hyperlink is to an external URL.
+  // `onClick` behavior to resolve (e.g., dispatching asynchronous Segment event) since
+  // the hyperlink is for an external URL.
   const handleClick = (e) => {
     if (!onClick) {
       return;
