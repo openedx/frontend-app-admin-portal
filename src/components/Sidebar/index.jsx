@@ -103,6 +103,7 @@ const Sidebar = ({
       },
       {
         title: 'Learner Credit Management',
+        id: TOUR_TARGETS.LEARNER_CREDIT,
         to: `${baseUrl}/admin/learner-credit`,
         icon: <Icon src={MoneyOutline} className="d-inline-block" />,
         hidden: !canManageLearnerCredit,
