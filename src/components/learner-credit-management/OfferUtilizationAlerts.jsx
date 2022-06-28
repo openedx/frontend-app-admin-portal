@@ -32,10 +32,14 @@ const OfferUtilizationAlerts = ({
 
   const isErrorAlertShown = remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD;
 
+  const handleContactSupportCTAClick = (eventName) => {
+    sendEnterpriseTrackEvent(enterpriseUUID, eventName);
+  };
+
   const handleOnCloseWarningAlert = () => {
     sendEnterpriseTrackEvent(
       enterpriseUUID,
-      'edx.ui.enterprise.admin-portal.learner-credit-management.alerts.low-balance-remaining.dismissed',
+      'edx.ui.enterprise.admin-portal.learner-credit-management.alerts.low-remaining-funds.dismissed',
     );
     setIsWarningAlertShown(false);
   };
@@ -50,7 +54,12 @@ const OfferUtilizationAlerts = ({
         dismissible
         onClose={handleOnCloseWarningAlert}
         actions={[
-          <ContactCustomerSupportButton variant="primary" />,
+          <ContactCustomerSupportButton
+            variant="primary"
+            onClick={() => handleContactSupportCTAClick(
+              'edx.ui.admin-portal.learner-credit-management.alerts.low-remaining-funds.contact-support.clicked',
+            )}
+          />,
         ]}
       >
         <Alert.Heading>Low remaining funds</Alert.Heading>
@@ -65,7 +74,12 @@ const OfferUtilizationAlerts = ({
         icon={Info}
         className={className}
         actions={[
-          <ContactCustomerSupportButton variant="primary" />,
+          <ContactCustomerSupportButton
+            variant="primary"
+            onClick={() => handleContactSupportCTAClick(
+              'edx.ui.admin-portal.learner-credit-management.alerts.no-remaining-funds.contact-support.clicked',
+            )}
+          />,
         ]}
       >
         <Alert.Heading>No remaining funds</Alert.Heading>
