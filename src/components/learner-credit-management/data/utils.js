@@ -45,6 +45,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
  * Gets appropriate color variant for the annotated progress bar.
  *
  * @param {Number} percentUtilized A float (0.0 - 1.0) of percentage funds utilized for an offer.
+ * @param {Number} remainingFunds A number representing remaining funds for an offer.
  *
  * @returns Appropriate color variant for annotated progress bar.
  */
