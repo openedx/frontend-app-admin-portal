@@ -35,7 +35,7 @@ const SettingsTabs = ({
   identityProvider,
   updatePortalConfiguration,
 }) => {
-  const { FEATURE_SSO_SETTINGS_TAB, EXTERNAL_LMS_CONFIGURATION, SETTINGS_PAGE_LMS_TAB } = features;
+  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -78,12 +78,12 @@ const SettingsTabs = ({
             />
           </Tab>
         )}
-        {FEATURE_SSO_SETTINGS_TAB && (
+        {FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen && (
           <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
             <SettingsSSOTab enterpriseId={enterpriseId} />
           </Tab>
         )}
-        {EXTERNAL_LMS_CONFIGURATION && SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen && (
+        {SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen && (
           <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
             <SettingsLMSTab
               enterpriseId={enterpriseId}
