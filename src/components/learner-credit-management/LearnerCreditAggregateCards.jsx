@@ -49,7 +49,9 @@ const LearnerCreditAggregateCards = ({
   }
 
   if (totalFunds || totalFunds === 0) {
-    const progressBarVariant = getProgressBarVariant(percentUtilized);
+    const progressBarVariant = getProgressBarVariant({
+      percentUtilized, remainingFunds,
+    });
 
     return (
       <>

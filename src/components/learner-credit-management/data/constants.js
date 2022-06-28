@@ -5,7 +5,10 @@ export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   courseListPrice: 'course_list_price',
 };
 
-export const LEARNER_CREDIT_UTILIZATION_THRESHOLDS = {
-  warning: 0.75,
-  error: 0.9,
-};
+// Percentage where messaging (e.g., Alert) on low remaining balance will begin appearing
+export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
+
+// Dollar amount remaining where messaging (e.g., Alert) on no remaining balance will begin
+// appearing, as learners may not be able to redeem learning credit once the organization's
+// balance reaches this threshold.
+export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;

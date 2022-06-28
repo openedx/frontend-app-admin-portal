@@ -1,4 +1,7 @@
-import { LEARNER_CREDIT_UTILIZATION_THRESHOLDS } from './constants';
+import {
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+} from './constants';
 
 /**
  * Transforms offer summary from API for display in the UI.
@@ -45,14 +48,14 @@ export const transformUtilizationTableResults = results => results.map(result =>
  *
  * @returns Appropriate color variant for annotated progress bar.
  */
-export const getProgressBarVariant = (percentUtilized) => {
+export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
   let variant = 'success'; // default to green
   if (
-    percentUtilized > LEARNER_CREDIT_UTILIZATION_THRESHOLDS.warning
-    && percentUtilized < LEARNER_CREDIT_UTILIZATION_THRESHOLDS.error
+    percentUtilized > LOW_REMAINING_BALANCE_PERCENT_THRESHOLD
+    && remainingFunds > NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
   ) {
     variant = 'danger'; // yellow
-  } else if (percentUtilized > LEARNER_CREDIT_UTILIZATION_THRESHOLDS.error) {
+  } else if (remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD) {
     variant = 'error'; // red
   }
   return variant;

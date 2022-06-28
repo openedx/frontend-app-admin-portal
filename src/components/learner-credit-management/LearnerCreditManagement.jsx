@@ -43,7 +43,12 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
       </Helmet>
       <Hero title="Learner Credit Management" />
       <Container className="py-4">
-        <OfferUtilizationAlerts className="mb-4.5" percentUtilized={offerSummary?.percentUtilized} />
+        <OfferUtilizationAlerts
+          className="mb-4.5"
+          percentUtilized={offerSummary?.percentUtilized}
+          remainingFunds={offerSummary?.remainingFunds}
+          enterpriseUUID={enterpriseUUID}
+        />
         <OfferNameHeading name={enterpriseOffer.displayName} />
         <div className="d-flex flex-wrap align-items-center mb-4">
           <Stack direction="horizontal" gap={3}>

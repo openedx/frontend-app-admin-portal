@@ -2,26 +2,42 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from '@edx/paragon';
 import { Info, WarningFilled } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
-import { LEARNER_CREDIT_UTILIZATION_THRESHOLDS } from './data/constants';
+import {
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+} from './data/constants';
 
 const OfferUtilizationAlerts = ({
   className,
   percentUtilized,
+  remainingFunds,
+  enterpriseUUID,
 }) => {
   const [isWarningAlertShown, setIsWarningAlertShown] = useState(false);
 
   useEffect(() => {
-    const isWarningTheshold = percentUtilized > LEARNER_CREDIT_UTILIZATION_THRESHOLDS.warning && percentUtilized < 1;
+    const isWarningTheshold = (
+      percentUtilized > LOW_REMAINING_BALANCE_PERCENT_THRESHOLD
+      && remainingFunds > NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
+    );
     setIsWarningAlertShown(isWarningTheshold);
-  }, [percentUtilized]);
+  }, [percentUtilized, remainingFunds]);
 
-  if (!percentUtilized) {
+  if (percentUtilized === undefined || remainingFunds === undefined) {
     return null;
   }
 
-  const isErrorAlertShown = percentUtilized >= 1;
+  const isErrorAlertShown = remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD;
+  const handleOnCloseWarningAlert = () => {
+    sendEnterpriseTrackEvent(
+      enterpriseUUID,
+      'edx.ui.enterprise.admin-portal.learner-credit-management.alerts.low-balance-remaining.dismissed',
+    );
+    setIsWarningAlertShown(false);
+  };
 
   return (
     <>
@@ -31,14 +47,14 @@ const OfferUtilizationAlerts = ({
         icon={WarningFilled}
         className={className}
         dismissible
-        onClose={() => { setIsWarningAlertShown(false); }}
+        onClose={handleOnCloseWarningAlert}
         actions={[
           <ContactCustomerSupportButton variant="primary" />,
         ]}
       >
         <Alert.Heading>Low remaining funds</Alert.Heading>
         <p>
-          Your learning credit is over {(LEARNER_CREDIT_UTILIZATION_THRESHOLDS.warning * 100).toFixed(1)}% utilized. To
+          Your learning credit is over {(LOW_REMAINING_BALANCE_PERCENT_THRESHOLD * 100).toFixed(1)}% utilized. To
           add additional funds and avoid downtime for your learners, reach out to customer support.
         </p>
       </Alert>
@@ -62,13 +78,16 @@ const OfferUtilizationAlerts = ({
 };
 
 OfferUtilizationAlerts.propTypes = {
+  enterpriseUUID: PropTypes.string.isRequired,
   className: PropTypes.string,
   percentUtilized: PropTypes.number,
+  remainingFunds: PropTypes.number,
 };
 
 OfferUtilizationAlerts.defaultProps = {
   className: undefined,
-  percentUtilized: 0.0,
+  percentUtilized: undefined,
+  remainingFunds: undefined,
 };
 
 export default OfferUtilizationAlerts;
