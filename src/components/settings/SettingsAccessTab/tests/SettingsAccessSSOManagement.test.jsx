@@ -5,6 +5,8 @@ import {
   waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import SettingsAccessSSOManagement from '../SettingsAccessSSOManagement';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
@@ -26,6 +28,12 @@ jest.mock('../SettingsAccessTabSection', () => ({
   )),
 }));
 
+const SettingsAccessSSOManagementWrapper = (props) => (
+  <IntlProvider locale="en">
+    <SettingsAccessSSOManagement {...props} />
+  </IntlProvider>
+);
+
 describe('<SettingsAccessSSOManagement />', () => {
   const basicProps = {
     enterpriseId: 'test-enterprise-uuid',
@@ -36,7 +44,12 @@ describe('<SettingsAccessSSOManagement />', () => {
 
   it('display current configuration value and handle form switch change', async () => {
     const mockUpdatePortalConfiguration = jest.fn();
-    render(<SettingsAccessSSOManagement {...basicProps} updatePortalConfiguration={mockUpdatePortalConfiguration} />);
+    render((
+      <SettingsAccessSSOManagementWrapper
+        {...basicProps}
+        updatePortalConfiguration={mockUpdatePortalConfiguration}
+      />
+    ));
 
     const checkbox = screen.getByLabelText('Checkbox');
     const { enableIntegratedCustomerLearnerPortalSearch } = basicProps;
@@ -55,7 +68,7 @@ describe('<SettingsAccessSSOManagement />', () => {
 
   it('should show alert if an error occured', async () => {
     LmsApiService.updateEnterpriseCustomer.mockRejectedValue(new Error());
-    render(<SettingsAccessSSOManagement {...basicProps} />);
+    render(<SettingsAccessSSOManagementWrapper {...basicProps} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
     fireEvent.click(checkbox);

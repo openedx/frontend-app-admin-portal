@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 import Skeleton from 'react-loading-skeleton';
 import { Alert } from '@edx/paragon';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
@@ -80,13 +81,15 @@ const refinements = {};
 // eslint-disable-next-line react/prop-types
 const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) => (
   <Provider store={mockStore()}>
-    <SearchContext.Provider value={value}>
-      <BulkEnrollContextProvider>
-        <BaseCourseSearchResults
-          {...props}
-        />
-      </BulkEnrollContextProvider>
-    </SearchContext.Provider>
+    <IntlProvider locale="en">
+      <SearchContext.Provider value={value}>
+        <BulkEnrollContextProvider>
+          <BaseCourseSearchResults
+            {...props}
+          />
+        </BulkEnrollContextProvider>
+      </SearchContext.Provider>
+    </IntlProvider>
   </Provider>
 );
 
