@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   screen,
 } from '@testing-library/react';
@@ -5,12 +6,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import React from 'react';
 import { renderWithRouter } from '../../test/testUtils';
 import { SubscriptionContext } from '../SubscriptionData';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
-
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
 
 const fakeSlug = 'sluggo';
@@ -66,14 +66,16 @@ const mockStore = configureMockStore([thunk]);
 // eslint-disable-next-line react/prop-types
 const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions, ...props }) => (
   <Provider store={mockStore(fakeStore)}>
-    <SubscriptionContext.Provider value={subscriptions}>
-      <MultipleSubscriptionsPage {...props} />
-    </SubscriptionContext.Provider>
+    <IntlProvider locale="en">
+      <SubscriptionContext.Provider value={subscriptions}>
+        <MultipleSubscriptionsPage {...props} />
+      </SubscriptionContext.Provider>
+    </IntlProvider>
   </Provider>
 );
 
 describe('MultipleSubscriptionsPage', () => {
-  it('displays a the MultipleSubscriptionPicker when there are multiple subscriptions', () => {
+  it('displays the MultipleSubscriptionPicker when there are multiple subscriptions', () => {
     renderWithRouter(<MultipleSubscriptionsPageWrapper {...defaultProps} />, {
       route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
       path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,

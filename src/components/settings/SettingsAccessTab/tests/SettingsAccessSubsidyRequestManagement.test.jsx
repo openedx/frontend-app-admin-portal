@@ -5,6 +5,8 @@ import {
   waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequestManagement';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 
@@ -17,6 +19,12 @@ jest.mock('../SettingsAccessTabSection', () => ({
     </div>
   )),
 }));
+
+const SettingsAccessSubsidyRequestManagementWrapper = (props) => (
+  <IntlProvider locale="en">
+    <SettingsAccessSubsidyRequestManagement {...props} />
+  </IntlProvider>
+);
 
 describe('<SettingsAccessSubsidyRequestManagement />', () => {
   const basicProps = {
@@ -34,11 +42,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
       updateSubsidyRequestConfiguration: mockUpdateSubsidyRequestConfiguration,
     };
 
-    render(
-      <SettingsAccessSubsidyRequestManagement
-        {...props}
-      />,
-    );
+    render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
     expect(checkbox.checked).toBe(props.subsidyRequestConfiguration.subsidyRequestsEnabled);
@@ -61,20 +65,9 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
       disabled: true,
     };
 
-    const { rerender } = render(
-      <SettingsAccessSubsidyRequestManagement
-        {...props}
-      />,
-    );
+    const { rerender } = render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
-    rerender(
-      <SettingsAccessSubsidyRequestManagement
-        {...{
-          ...props,
-          disabled: false,
-        }}
-      />,
-    );
+    rerender(<SettingsAccessSubsidyRequestManagementWrapper {...{ ...props, disabled: false }} />);
 
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
@@ -91,11 +84,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
       disabled: true,
     };
 
-    render(
-      <SettingsAccessSubsidyRequestManagement
-        {...props}
-      />,
-    );
+    render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
@@ -111,11 +100,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
       updateSubsidyRequestConfiguration: mockUpdateSubsidyRequestConfiguration,
     };
 
-    render(
-      <SettingsAccessSubsidyRequestManagement
-        {...props}
-      />,
-    );
+    render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
     fireEvent.click(checkbox);
