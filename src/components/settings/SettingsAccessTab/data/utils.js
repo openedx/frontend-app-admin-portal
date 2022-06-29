@@ -1,4 +1,4 @@
-import { logError } from '@edx/frontend-platform/logging';
+import { logInfo } from '@edx/frontend-platform/logging';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
 
 /* eslint-disable import/prefer-default-export */
@@ -29,7 +29,7 @@ export const getSubsidyTypeLabelAndRoute = (configuredRequestSubsidyType, enterp
       },
     };
   } else {
-    logError(`Invalid request subsidy type provided: ${configuredRequestSubsidyType}`);
+    logInfo(`Invalid request subsidy type provided: ${configuredRequestSubsidyType}`);
   }
   return subsidyTypeLabelAndRoute;
 };
