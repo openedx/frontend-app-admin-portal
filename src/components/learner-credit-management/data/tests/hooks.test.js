@@ -32,7 +32,7 @@ const mockEnterpriseOffer = {
 const mockOfferEnrollments = [{
   user_email: 'edx@example.com',
   course_title: 'Test Course Title',
-  course_list_price: '100.00',
+  course_list_price: 100.0,
   enrollment_date: '2022-01-01',
 }];
 

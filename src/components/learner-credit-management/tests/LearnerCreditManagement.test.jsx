@@ -138,7 +138,7 @@ describe('<LearnerCreditManagement />', () => {
       expect(screen.getByTestId('learner-credit-aggregate-cards--total-funds')).toHaveTextContent('5000');
       expect(screen.getByTestId('learner-credit-aggregate-cards--redeemed-funds')).toHaveTextContent('200');
       expect(screen.getByTestId('learner-credit-aggregate-cards--remaining-funds')).toHaveTextContent('4800');
-      expect(screen.getByTestId('learner-credit-aggregate-cards--percent-utilized')).toHaveTextContent('0.04');
+      expect(screen.getByTestId('learner-credit-aggregate-cards--percent-utilized')).toHaveTextContent('4');
     });
 
     describe('status badge', () => {
