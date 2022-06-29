@@ -18,14 +18,14 @@ describe('<LearnerCreditAggregateCards />', () => {
   it('renders with non-zero total funds', () => {
     const props = {
       totalFunds: 5000,
-      percentUtilized: 0.04,
+      percentUtilized: 4,
       remainingFunds: 4800,
       redeemedFunds: 200,
     };
     render(<LearnerCreditAggregateCards {...props} />);
 
     expect(screen.getByText('Percentage Utilized'));
-    expect(screen.getByText(`${(props.percentUtilized * 100).toFixed(1)}%`, {
+    expect(screen.getByText(`${(props.percentUtilized).toFixed(1)}%`, {
       exact: false,
     }));
 

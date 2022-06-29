@@ -84,7 +84,7 @@ const mockOfferSummary = {
   totalFunds: 5000,
   redeemedFunds: 200,
   remainingFunds: 4800,
-  percentUtilized: 0.04,
+  percentUtilized: 4,
 };
 
 const LearnerCreditManagementWrapper = ({

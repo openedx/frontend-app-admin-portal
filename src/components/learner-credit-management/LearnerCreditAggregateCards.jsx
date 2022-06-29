@@ -54,7 +54,7 @@ const LearnerCreditAggregateCards = ({
             <Card.Section className="d-flex align-items-center">
               <div>
                 <div className="small text-uppercase mb-2.5">Percentage Utilized</div>
-                <div className="h1">{(percentUtilized * 100).toFixed(1)}%</div>
+                <div className="h1">{percentUtilized.toFixed(1)}%</div>
               </div>
             </Card.Section>
           </Card>
@@ -74,7 +74,7 @@ const LearnerCreditAggregateCards = ({
             <Card.Section className="d-flex align-items-center justify-content-center">
               <div style={{ width: '90%' }}>
                 <ProgressBar.Annotated
-                  now={percentUtilized * 100}
+                  now={percentUtilized}
                   label={`$${redeemedFunds.toLocaleString()}`}
                   progressHint="Redeemed Funds"
                   variant="success"
