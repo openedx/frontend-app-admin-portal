@@ -41,15 +41,17 @@ const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
       });
   }, [enterpriseSlug]);
 
+  if (isRead || !enterpriseNotificationBanner.text || !enterpriseNotificationBanner.title) {
+    return null;
+  }
+
   return (
-    isRead || !enterpriseNotificationBanner.text || !enterpriseNotificationBanner.title ? null : (
-      <div>
-        <Alert variant="info" dismissible onClose={markAsRead}>
-          <Alert.Heading>{enterpriseNotificationBanner.title}</Alert.Heading>
-          <ReactMarkdown linkTarget="_blank">{enterpriseNotificationBanner.text}</ReactMarkdown>
-        </Alert>
-      </div>
-    )
+    <div>
+      <Alert variant="info" dismissible onClose={markAsRead}>
+        <Alert.Heading>{enterpriseNotificationBanner.title}</Alert.Heading>
+        <ReactMarkdown linkTarget="_blank">{enterpriseNotificationBanner.text}</ReactMarkdown>
+      </Alert>
+    </div>
   );
 };
 

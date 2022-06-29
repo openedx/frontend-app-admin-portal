@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ManageCodesTab from '../ManageCodesTab';
 
@@ -48,21 +49,20 @@ const initialState = {
 const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props }) => (
   <MemoryRouter>
     <Provider store={store}>
-      <SubsidyRequestsContext.Provider value={{
-        subsidyRequestConfiguration,
-      }}
-      >
-        <ManageCodesTab
-          location={{}}
-          match={{
-            path: '/test-page',
-          }}
-          history={{
-            replace: () => {},
-          }}
-          {...props}
-        />
-      </SubsidyRequestsContext.Provider>
+      <IntlProvider locale="en">
+        <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+          <ManageCodesTab
+            location={{}}
+            match={{
+              path: '/test-page',
+            }}
+            history={{
+              replace: () => {},
+            }}
+            {...props}
+          />
+        </SubsidyRequestsContext.Provider>
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

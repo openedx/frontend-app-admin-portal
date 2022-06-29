@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { ADD_COURSES_TITLE, WARNING_ALERT_TITLE_TEXT } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
@@ -25,10 +26,13 @@ const StepperWrapper = (props) => {
     emails: [selectedEmails, () => {}],
     subscription: [{}, () => {}],
   };
+
   return (
-    <BulkEnrollContext.Provider value={value}>
-      <AddCoursesStep {...props} />
-    </BulkEnrollContext.Provider>
+    <IntlProvider locale="en">
+      <BulkEnrollContext.Provider value={value}>
+        <AddCoursesStep {...props} />
+      </BulkEnrollContext.Provider>
+    </IntlProvider>
   );
 };
 

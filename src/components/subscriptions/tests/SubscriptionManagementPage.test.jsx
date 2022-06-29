@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import moment from 'moment';
 import { screen, waitFor } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
 import {
@@ -62,7 +63,9 @@ describe('SubscriptionManagementPage', () => {
 
       return (
         <Provider store={mockStore}>
-          <SubscriptionManagementPage />
+          <IntlProvider locale="en">
+            <SubscriptionManagementPage />
+          </IntlProvider>
         </Provider>
       );
     };

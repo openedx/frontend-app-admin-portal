@@ -7,6 +7,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ActionsTableCell from '../ActionsTableCell';
 
@@ -22,6 +23,12 @@ jest.mock('@edx/frontend-platform/config', () => ({
 
 const TEST_INVITE_KEY_UUID = 'test-uuid-1';
 
+const ActionsTableCellWrapper = (props) => (
+  <IntlProvider locale="en">
+    <ActionsTableCell {...props} />
+  </IntlProvider>
+);
+
 describe('ActionsTableCell', () => {
   jest.spyOn(navigator.clipboard, 'writeText');
 
@@ -32,7 +39,7 @@ describe('ActionsTableCell', () => {
 
   test('renders no actions if invite key is invalid', () => {
     render(
-      <ActionsTableCell
+      <ActionsTableCellWrapper
         row={{
           original: {
             isValid: false,
@@ -47,7 +54,7 @@ describe('ActionsTableCell', () => {
 
   test('copies invite URL to clipboard', async () => {
     render(
-      <ActionsTableCell
+      <ActionsTableCellWrapper
         row={{
           original: {
             isValid: true,
@@ -72,7 +79,7 @@ describe('ActionsTableCell', () => {
       },
     };
     render(
-      <ActionsTableCell
+      <ActionsTableCellWrapper
         row={row}
         onDeactivateLink={handleDeactivateLink}
       />,
