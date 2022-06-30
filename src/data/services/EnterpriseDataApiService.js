@@ -31,12 +31,11 @@ class EnterpriseDataApiService {
   }
 
   static fetchEnterpriseOfferSummary(enterpriseId, offerId, options = {}) {
-    const queryParams = new URLSearchParams({
-      ...snakeCaseObject(options),
-    });
     let url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/offers/${offerId}/`;
-    // append query params, if applicable
-    if (Array.from(queryParams).length) {
+    if (Object.keys(options).length) {
+      const queryParams = new URLSearchParams({
+        ...snakeCaseObject(options),
+      });
       url += `?${queryParams.toString()}`;
     }
     return EnterpriseDataApiService.apiClient().get(url);

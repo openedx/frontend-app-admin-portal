@@ -8,31 +8,16 @@ import { configuration } from '../../config';
 const ContactCustomerSupportButton = ({
   variant,
   children,
-  onClick,
   ...rest
 }) => {
   const destinationUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
-  // intercept click behavior, if `onClick` prop is provided, to give enough time for
-  // `onClick` behavior to resolve (e.g., dispatching asynchronous Segment event) since
-  // the hyperlink is for an external URL.
-  const handleClick = (e) => {
-    if (!onClick) {
-      return;
-    }
-    e.preventDefault();
-    onClick();
-    setTimeout(() => {
-      global.location.href = destinationUrl;
-    }, 300);
-  };
   return (
     <Hyperlink
       {...rest}
       target="_blank"
       className={classNames('btn', `btn-${variant}`)}
       destination={destinationUrl}
-      onClick={handleClick}
     >
       {children}
     </Hyperlink>
@@ -42,13 +27,11 @@ const ContactCustomerSupportButton = ({
 ContactCustomerSupportButton.propTypes = {
   children: PropTypes.node,
   variant: PropTypes.string,
-  onClick: PropTypes.func,
 };
 
 ContactCustomerSupportButton.defaultProps = {
   children: 'Contact support',
   variant: 'outline-primary',
-  onClick: undefined,
 };
 
 export default ContactCustomerSupportButton;

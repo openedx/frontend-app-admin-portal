@@ -19,11 +19,11 @@ const OfferUtilizationAlerts = ({
   const [isWarningAlertShown, setIsWarningAlertShown] = useState(false);
 
   useEffect(() => {
-    const isWarningTheshold = (
+    const isWarningThesholdReached = (
       percentUtilized > LOW_REMAINING_BALANCE_PERCENT_THRESHOLD
       && remainingFunds > NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
     );
-    setIsWarningAlertShown(isWarningTheshold);
+    setIsWarningAlertShown(isWarningThesholdReached);
   }, [percentUtilized, remainingFunds]);
 
   if (percentUtilized === undefined || remainingFunds === undefined) {
