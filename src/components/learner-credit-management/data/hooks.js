@@ -92,6 +92,7 @@ export const useLearnerCreditAllocations = (enterpriseUUID, offerId) => {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
           pageSize: args.pageSize,
           offerId,
+          ignoreNullCourseListPrice: true,
         };
         if (args.sortBy?.length > 0) {
           applySortByToOptions(args.sortBy, options);
