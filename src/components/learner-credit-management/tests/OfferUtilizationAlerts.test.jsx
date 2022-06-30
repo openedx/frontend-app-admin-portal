@@ -1,5 +1,6 @@
 import React from 'react';
 import { ALERT_CLOSE_LABEL_TEXT } from '@edx/paragon';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -12,10 +13,16 @@ import {
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
+const OfferUtilizationAlertsWrapper = (props) => (
+  <IntlProvider locale="en">
+    <OfferUtilizationAlerts {...props} />
+  </IntlProvider>
+);
+
 describe('<OfferUtilizationAlerts />', () => {
   it('does not render any alerts if percent utilized and/or remaining funds is undefined', () => {
     const { container } = render(
-      <OfferUtilizationAlerts
+      <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}
       />,
     );
@@ -24,7 +31,7 @@ describe('<OfferUtilizationAlerts />', () => {
 
   it('does not render any alerts if conditions are not met', () => {
     const { container } = render(
-      <OfferUtilizationAlerts
+      <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}
         percentUtilized={LOW_REMAINING_BALANCE_PERCENT_THRESHOLD - 0.1}
         remainingFunds={5000}
@@ -35,7 +42,7 @@ describe('<OfferUtilizationAlerts />', () => {
 
   it('renders low balance alert', async () => {
     const { container } = render(
-      <OfferUtilizationAlerts
+      <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}
         percentUtilized={LOW_REMAINING_BALANCE_PERCENT_THRESHOLD + 0.1}
         remainingFunds={2500}
@@ -55,7 +62,7 @@ describe('<OfferUtilizationAlerts />', () => {
 
   it('renders no balance alert', () => {
     render(
-      <OfferUtilizationAlerts
+      <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}
         percentUtilized={0.99}
         remainingFunds={NO_BALANCE_REMAINING_DOLLAR_THRESHOLD}
