@@ -64,7 +64,7 @@ const OfferUtilizationAlerts = ({
       >
         <Alert.Heading>Low remaining funds</Alert.Heading>
         <p>
-          Your learning credit is over {(LOW_REMAINING_BALANCE_PERCENT_THRESHOLD * 100).toFixed(1)}% utilized. To
+          Your learner credit is over {(LOW_REMAINING_BALANCE_PERCENT_THRESHOLD * 100).toFixed(1)}% utilized. To
           add additional funds and avoid downtime for your learners, reach out to customer support.
         </p>
       </Alert>
@@ -84,7 +84,7 @@ const OfferUtilizationAlerts = ({
       >
         <Alert.Heading>No remaining funds</Alert.Heading>
         <p>
-          Your learning credit no longer has funds remaining. To add additional funds and
+          Your learner credit no longer has funds remaining. To add additional funds and
           avoid downtime for your learners, reach out to customer support.
         </p>
       </Alert>
