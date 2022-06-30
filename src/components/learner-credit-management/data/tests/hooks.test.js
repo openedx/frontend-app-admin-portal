@@ -117,9 +117,10 @@ describe('useLearnerCreditAllocations', () => {
       page: 1,
       pageSize: 20,
       offerId: mockEnterpriseOffer.id,
-      ordering: '-enrollment_date',
+      ordering: '-enrollment_date', // default sort order
       search: mockOfferEnrollments[0].user_email,
       searchCourse: mockOfferEnrollments[0].course_title,
+      ignoreNullCourseListPrice: true,
     };
     expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
       TEST_ENTERPRISE_UUID,
