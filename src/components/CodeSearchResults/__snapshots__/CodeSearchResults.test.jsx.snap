@@ -614,7 +614,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                             Showing 
                             4
                              of 
-                            4
+                            0
                             .
                           </div>
                         </div>
@@ -904,113 +904,102 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                     <div
                       className="pgn__data-table-footer"
                     >
-                      <div>
-                        Showing 
-                        4
-                         of 
-                        4
-                        .
+                      <div
+                        className="col d-flex justify-content-center"
+                      >
+                        <nav
+                          aria-label="code-search-results-pagination"
+                          className="pagination-default"
+                        >
+                          <div
+                            aria-atomic={true}
+                            aria-live="polite"
+                            aria-relevant="text"
+                            className="sr-only"
+                          >
+                            Page 1, Current Page, of 1
+                          </div>
+                          <ul
+                            className="pagination"
+                          >
+                            <li
+                              className="page-item disabled"
+                            >
+                              <button
+                                aria-label="Previous"
+                                className="previous page-link btn btn-primary"
+                                disabled={true}
+                                onClick={[Function]}
+                                tabIndex="-1"
+                                type="button"
+                              >
+                                <div>
+                                  <span
+                                    className="pgn__icon"
+                                  >
+                                    <svg
+                                      aria-hidden={true}
+                                      fill="none"
+                                      focusable={false}
+                                      height={24}
+                                      role="img"
+                                      viewBox="0 0 24 24"
+                                      width={24}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  Previous
+                                </div>
+                              </button>
+                            </li>
+                            <li
+                              className="page-item disabled"
+                            >
+                              <button
+                                aria-label="Next"
+                                className="next page-link btn btn-primary"
+                                disabled={true}
+                                onClick={[Function]}
+                                tabIndex="-1"
+                                type="button"
+                              >
+                                <div>
+                                  Next
+                                  <span
+                                    className="pgn__icon"
+                                  >
+                                    <svg
+                                      aria-hidden={true}
+                                      fill="none"
+                                      focusable={false}
+                                      height={24}
+                                      role="img"
+                                      viewBox="0 0 24 24"
+                                      width={24}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="row mt-2"
-        >
-          <div
-            className="col d-flex justify-content-center"
-          >
-            <nav
-              aria-label="code-search-results-pagination"
-              className="pagination-default"
-            >
-              <div
-                aria-atomic={true}
-                aria-live="polite"
-                aria-relevant="text"
-                className="sr-only"
-              >
-                Page 1, Current Page, of 1
-              </div>
-              <ul
-                className="pagination"
-              >
-                <li
-                  className="page-item disabled"
-                >
-                  <button
-                    aria-label="Previous"
-                    className="previous page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
-                  </button>
-                </li>
-                <li
-                  className="page-item disabled"
-                >
-                  <button
-                    aria-label="Next"
-                    className="next page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>
@@ -1109,7 +1098,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                             Showing 
                             1
                              of 
-                            1
+                            0
                             .
                           </div>
                         </div>
@@ -1292,113 +1281,102 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                     <div
                       className="pgn__data-table-footer"
                     >
-                      <div>
-                        Showing 
-                        1
-                         of 
-                        1
-                        .
+                      <div
+                        className="col d-flex justify-content-center"
+                      >
+                        <nav
+                          aria-label="code-search-results-pagination"
+                          className="pagination-default"
+                        >
+                          <div
+                            aria-atomic={true}
+                            aria-live="polite"
+                            aria-relevant="text"
+                            className="sr-only"
+                          >
+                            Page 1, Current Page, of 1
+                          </div>
+                          <ul
+                            className="pagination"
+                          >
+                            <li
+                              className="page-item disabled"
+                            >
+                              <button
+                                aria-label="Previous"
+                                className="previous page-link btn btn-primary"
+                                disabled={true}
+                                onClick={[Function]}
+                                tabIndex="-1"
+                                type="button"
+                              >
+                                <div>
+                                  <span
+                                    className="pgn__icon"
+                                  >
+                                    <svg
+                                      aria-hidden={true}
+                                      fill="none"
+                                      focusable={false}
+                                      height={24}
+                                      role="img"
+                                      viewBox="0 0 24 24"
+                                      width={24}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                  Previous
+                                </div>
+                              </button>
+                            </li>
+                            <li
+                              className="page-item disabled"
+                            >
+                              <button
+                                aria-label="Next"
+                                className="next page-link btn btn-primary"
+                                disabled={true}
+                                onClick={[Function]}
+                                tabIndex="-1"
+                                type="button"
+                              >
+                                <div>
+                                  Next
+                                  <span
+                                    className="pgn__icon"
+                                  >
+                                    <svg
+                                      aria-hidden={true}
+                                      fill="none"
+                                      focusable={false}
+                                      height={24}
+                                      role="img"
+                                      viewBox="0 0 24 24"
+                                      width={24}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                              </button>
+                            </li>
+                          </ul>
+                        </nav>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="row mt-2"
-        >
-          <div
-            className="col d-flex justify-content-center"
-          >
-            <nav
-              aria-label="code-search-results-pagination"
-              className="pagination-default"
-            >
-              <div
-                aria-atomic={true}
-                aria-live="polite"
-                aria-relevant="text"
-                className="sr-only"
-              >
-                Page 1, Current Page, of 1
-              </div>
-              <ul
-                className="pagination"
-              >
-                <li
-                  className="page-item disabled"
-                >
-                  <button
-                    aria-label="Previous"
-                    className="previous page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
-                  </button>
-                </li>
-                <li
-                  className="page-item disabled"
-                >
-                  <button
-                    aria-label="Next"
-                    className="next page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>

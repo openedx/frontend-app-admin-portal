@@ -16,7 +16,7 @@ const TableComponent = ({
 }) => {
   const sortByColumn = useCallback(args => {
     const { sortBy } = args;
-    if (sortBy.length > 0) {
+    if (sortBy && sortBy.length > 0) {
       const column = sortBy[0];
       const ordering = `${column.desc ? '-' : ''}${column.id}`;
       updateUrl({

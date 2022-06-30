@@ -77,7 +77,11 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
             <div
               className="pgn__smart-status"
             >
-              Showing 3 of 24.
+              Showing 
+              3
+               of 
+              24
+              .
             </div>
           </div>
           <div
@@ -354,7 +358,11 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
         className="pgn__data-table-footer"
       >
         <div>
-          Showing 3 of 24.
+          Showing 
+          3
+           of 
+          24
+          .
         </div>
         <div
           className="dropdown"

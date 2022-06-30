@@ -64,7 +64,14 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                     >
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -72,11 +79,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Email
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -84,11 +122,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Course Title
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -96,11 +165,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Course Price
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -108,11 +208,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Start Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -120,11 +251,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             End Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -132,11 +294,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Passed Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -144,11 +337,42 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Current Grade
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -156,17 +380,72 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                           <span>
                             Progress Status
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
                         >
                           <span>
                             Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </span>
                         </span>
                       </th>
@@ -307,113 +586,102 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
               <div
                 className="pgn__data-table-footer"
               >
-                <div>
-                  Showing 
-                  2
-                   of 
-                  2
-                  .
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="active-week-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="active-week-pagination"
-        className="pagination-default"
-      >
-        <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
-        >
-          Page 1, Current Page, of 1
-        </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>
@@ -523,7 +791,14 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                     >
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -531,11 +806,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Email
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -543,11 +849,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Course Title
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -555,11 +892,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Course Price
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -567,11 +935,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Start Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -579,11 +978,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             End Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -591,11 +1021,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Passed Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -603,11 +1064,42 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Current Grade
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -615,17 +1107,72 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                           <span>
                             Progress Status
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
                         >
                           <span>
                             Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </span>
                         </span>
                       </th>
@@ -766,113 +1313,102 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
               <div
                 className="pgn__data-table-footer"
               >
-                <div>
-                  Showing 
-                  2
-                   of 
-                  2
-                  .
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="inactive-month-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-month-pagination"
-        className="pagination-default"
-      >
-        <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
-        >
-          Page 1, Current Page, of 1
-        </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>
@@ -942,7 +1478,14 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                     >
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -950,11 +1493,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Email
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -962,11 +1536,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Course Title
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -974,11 +1579,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Course Price
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -986,11 +1622,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Start Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -998,11 +1665,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             End Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -1010,11 +1708,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Passed Date
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -1022,11 +1751,42 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Current Grade
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
@@ -1034,17 +1794,72 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                           <span>
                             Progress Status
                           </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
                         </span>
                       </th>
                       <th
                         colSpan={1}
+                        onClick={[Function]}
                         role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
                       >
                         <span
                           className="d-flex align-items-center"
                         >
                           <span>
                             Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
                           </span>
                         </span>
                       </th>
@@ -1185,113 +2000,102 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
               <div
                 className="pgn__data-table-footer"
               >
-                <div>
-                  Showing 
-                  2
-                   of 
-                  2
-                  .
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="inactive-week-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-week-pagination"
-        className="pagination-default"
-      >
-        <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
-        >
-          Page 1, Current Page, of 1
-        </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>
