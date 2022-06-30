@@ -1,3 +1,8 @@
+import {
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+} from './constants';
+
 /**
  * Transforms offer summary from API for display in the UI.
  *
@@ -35,3 +40,24 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
 }));
+
+/**
+ * Gets appropriate color variant for the annotated progress bar.
+ *
+ * @param {Number} percentUtilized A float (0.0 - 1.0) of percentage funds utilized for an offer.
+ * @param {Number} remainingFunds A number representing remaining funds for an offer.
+ *
+ * @returns Appropriate color variant for annotated progress bar.
+ */
+export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
+  let variant = 'success'; // default to green
+  if (
+    percentUtilized > LOW_REMAINING_BALANCE_PERCENT_THRESHOLD
+    && remainingFunds > NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
+  ) {
+    variant = 'danger'; // yellow
+  } else if (remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD) {
+    variant = 'error'; // red
+  }
+  return variant;
+};

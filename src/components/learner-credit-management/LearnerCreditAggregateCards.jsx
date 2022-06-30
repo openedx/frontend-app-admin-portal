@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Col, Card, ProgressBar } from '@edx/paragon';
 import Skeleton from 'react-loading-skeleton';
 
+import { getProgressBarVariant } from './data/utils';
+
 const LoadingCards = () => (
   <>
     <Col lg={6} xl={3} className="d-flex flex-column mb-4 mb-xl-0">
@@ -47,6 +49,10 @@ const LearnerCreditAggregateCards = ({
   }
 
   if (totalFunds || totalFunds === 0) {
+    const progressBarVariant = getProgressBarVariant({
+      percentUtilized, remainingFunds,
+    });
+
     return (
       <>
         <Col lg={6} xl={3} className="d-flex flex-column mb-4 mb-xl-0">
@@ -54,7 +60,9 @@ const LearnerCreditAggregateCards = ({
             <Card.Section className="d-flex align-items-center">
               <div>
                 <div className="small text-uppercase mb-2.5">Percentage Utilized</div>
-                <div className="h1">{(percentUtilized * 100).toFixed(1)}%</div>
+                <div className="h1">
+                  {(percentUtilized * 100).toFixed(1)}%
+                </div>
               </div>
             </Card.Section>
           </Card>
@@ -64,7 +72,9 @@ const LearnerCreditAggregateCards = ({
             <Card.Section className="d-flex align-items-center">
               <div>
                 <div className="small text-uppercase mb-2.5">Remaining Funds</div>
-                <div className="h1">${remainingFunds.toLocaleString()}</div>
+                <div className="h1">
+                  ${remainingFunds.toLocaleString()}
+                </div>
               </div>
             </Card.Section>
           </Card>
@@ -77,7 +87,7 @@ const LearnerCreditAggregateCards = ({
                   now={percentUtilized * 100}
                   label={`$${redeemedFunds.toLocaleString()}`}
                   progressHint="Redeemed Funds"
-                  variant="success"
+                  variant={progressBarVariant}
                   threshold={100}
                   thresholdLabel={`$${totalFunds.toLocaleString()}`}
                   thresholdVariant="dark"
