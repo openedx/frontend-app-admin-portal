@@ -5,16 +5,24 @@ import classNames from 'classnames';
 
 import { configuration } from '../../config';
 
-const ContactCustomerSupportButton = ({ variant, children, ...rest }) => (
-  <Hyperlink
-    {...rest}
-    target="_blank"
-    className={classNames('btn', `btn-${variant}`)}
-    destination={configuration.ENTERPRISE_SUPPORT_URL}
-  >
-    {children}
-  </Hyperlink>
-);
+const ContactCustomerSupportButton = ({
+  variant,
+  children,
+  ...rest
+}) => {
+  const destinationUrl = configuration.ENTERPRISE_SUPPORT_URL;
+
+  return (
+    <Hyperlink
+      {...rest}
+      target="_blank"
+      className={classNames('btn', `btn-${variant}`)}
+      destination={destinationUrl}
+    >
+      {children}
+    </Hyperlink>
+  );
+};
 
 ContactCustomerSupportButton.propTypes = {
   children: PropTypes.node,
