@@ -34,11 +34,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                     <div
                       className="pgn__smart-status"
                     >
-                      Showing 
-                      2
-                       of 
-                      2
-                      .
+                      Showing 2 of 2.
                     </div>
                   </div>
                   <div
@@ -761,11 +757,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                     <div
                       className="pgn__smart-status"
                     >
-                      Showing 
-                      2
-                       of 
-                      2
-                      .
+                      Showing 2 of 2.
                     </div>
                   </div>
                   <div
@@ -1448,11 +1440,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                     <div
                       className="pgn__smart-status"
                     >
-                      Showing 
-                      2
-                       of 
-                      2
-                      .
+                      Showing 2 of 2.
                     </div>
                   </div>
                   <div

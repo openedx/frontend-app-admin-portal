@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import '@testing-library/jest-dom/extend-expect';
 import { Alert } from '@edx/paragon';
@@ -96,10 +97,12 @@ const initialCouponData = {
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CouponDetails
-        couponData={initialCouponData}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CouponDetails
+          couponData={initialCouponData}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -507,7 +510,7 @@ describe('CouponDetails container', () => {
       const statusAlert = wrapper.find(Alert);
       expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
-      statusAlert.find({ children: 'Dismiss' }).simulate('click');
+      statusAlert.find('.btn-tertiary').simulate('click');
 
       // after alert is dismissed
       expect(wrapper.find(Alert)).toHaveLength(0);

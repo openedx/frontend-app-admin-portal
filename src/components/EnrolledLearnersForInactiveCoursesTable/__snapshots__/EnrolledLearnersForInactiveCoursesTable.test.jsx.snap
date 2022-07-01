@@ -74,11 +74,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                     <div
                       className="pgn__smart-status"
                     >
-                      Showing 
-                      3
-                       of 
-                      3
-                      .
+                      Showing 3 of 3.
                     </div>
                   </div>
                   <div

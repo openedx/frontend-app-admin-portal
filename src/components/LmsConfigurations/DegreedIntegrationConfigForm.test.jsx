@@ -4,6 +4,12 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import snakeCase from 'lodash/snakeCase';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import DegreedIntegrationConfigForm from './DegreedIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
 
@@ -13,10 +19,22 @@ jest.mock('../../data/services/LmsApiService', () => ({
 }));
 
 const enterpriseId = 'test-enterprise';
+const mockStore = configureMockStore([thunk]);
+const store = mockStore({});
+
+const DegreedIntegrationConfigFormWrapper = props => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <DegreedIntegrationConfigForm {...props} />
+      </IntlProvider>
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<DegreedIntegrationConfigForm />', () => {
   test('renders Degreed Config Form', () => {
-    render(<DegreedIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<DegreedIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     // Verify all expected fields are present.
     screen.getByLabelText('Active');
     screen.getByLabelText('Degreed User ID');
@@ -37,7 +55,7 @@ describe('<DegreedIntegrationConfigForm />', () => {
       key: 'initial_key',
       secret: 'initial_secret',
     };
-    render(<DegreedIntegrationConfigForm enterpriseId={enterpriseId} config={initialConfig} />);
+    render(<DegreedIntegrationConfigFormWrapper enterpriseId={enterpriseId} config={initialConfig} />);
     expect(screen.getByLabelText('Active')).toBeChecked();
     expect(screen.getByLabelText('Degreed User ID')).toHaveValue('initial_id');
     expect(screen.getByLabelText('Degreed User Password')).toHaveValue('initial_pass');
@@ -48,7 +66,7 @@ describe('<DegreedIntegrationConfigForm />', () => {
   });
 
   test('required fields show as invalid when not filled in', () => {
-    render(<DegreedIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<DegreedIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     fireEvent.click(screen.getByText('Submit'));
 
     expect(screen.getByLabelText('Degreed User ID')).toHaveClass('is-invalid');
@@ -74,7 +92,7 @@ describe('<DegreedIntegrationConfigForm />', () => {
       enterprise_customer: enterpriseId,
     };
 
-    render(<DegreedIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<DegreedIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     fireEvent.change(screen.getByLabelText('Degreed User ID'), {
       target: { value: 'testuserid' },
     });
@@ -111,7 +129,7 @@ describe('<DegreedIntegrationConfigForm />', () => {
       secret: 'testsecret',
     };
 
-    render(<DegreedIntegrationConfigForm enterpriseId={enterpriseId} config={initialConfig} />);
+    render(<DegreedIntegrationConfigFormWrapper enterpriseId={enterpriseId} config={initialConfig} />);
     fireEvent.change(screen.getByLabelText('Degreed User ID'), {
       target: { value: 'changedUserId' },
     });

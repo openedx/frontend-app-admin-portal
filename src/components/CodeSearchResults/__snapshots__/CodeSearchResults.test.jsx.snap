@@ -611,11 +611,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                           <div
                             className="pgn__smart-status"
                           >
-                            Showing 
-                            4
-                             of 
-                            0
-                            .
+                            Showing 4 of 0.
                           </div>
                         </div>
                         <div
@@ -1095,11 +1091,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                           <div
                             className="pgn__smart-status"
                           >
-                            Showing 
-                            1
-                             of 
-                            0
-                            .
+                            Showing 1 of 0.
                           </div>
                         </div>
                         <div

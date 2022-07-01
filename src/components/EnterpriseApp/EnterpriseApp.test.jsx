@@ -108,7 +108,7 @@ describe('<EnterpriseApp />', () => {
     expect(screen.getByText('/admin/coupons/request-codes')).toBeInTheDocument();
   });
   it('should enable code reporting screen', () => {
-    render(<EnterpriseApp {...basicProps} />);
+    render(<EnterpriseApp {...basicProps} enableReportingConfigurationsScreen />);
     expect(screen.getByText('/admin/reporting')).toBeInTheDocument();
   });
   it('should enable code subscriptions screen', () => {

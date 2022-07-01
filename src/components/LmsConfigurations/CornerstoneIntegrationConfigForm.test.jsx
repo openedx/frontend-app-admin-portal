@@ -4,6 +4,12 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import snakeCase from 'lodash/snakeCase';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import CornerstoneIntegrationConfigForm from './CornerstoneIntegrationConfigForm';
 import LmsApiService from '../../data/services/LmsApiService';
 
@@ -13,10 +19,22 @@ jest.mock('../../data/services/LmsApiService', () => ({
 }));
 
 const enterpriseId = 'test-enterprise';
+const mockStore = configureMockStore([thunk]);
+const store = mockStore({});
+
+const CornerstoneIntegrationConfigFormWrapper = props => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <CornerstoneIntegrationConfigForm {...props} />
+      </IntlProvider>
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<CornerstoneIntegrationConfigForm />', () => {
   test('renders Cornerstone Config Form', () => {
-    render(<CornerstoneIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<CornerstoneIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     // Verify all expected fields are present.
     screen.getByLabelText('Active');
     screen.getByLabelText('Cornerstone Instance URL');
@@ -27,13 +45,13 @@ describe('<CornerstoneIntegrationConfigForm />', () => {
       active: true,
       cornerstoneBaseUrl: 'initial_url',
     };
-    render(<CornerstoneIntegrationConfigForm enterpriseId={enterpriseId} config={initialConfig} />);
+    render(<CornerstoneIntegrationConfigFormWrapper enterpriseId={enterpriseId} config={initialConfig} />);
     expect(screen.getByLabelText('Active')).toBeChecked();
     expect(screen.getByLabelText('Cornerstone Instance URL')).toHaveValue('initial_url');
   });
 
   test('required fields show as invalid when not filled in', () => {
-    render(<CornerstoneIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<CornerstoneIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     fireEvent.click(screen.getByText('Submit'));
 
     expect(screen.getByLabelText('Cornerstone Instance URL')).toHaveClass('is-invalid');
@@ -49,7 +67,7 @@ describe('<CornerstoneIntegrationConfigForm />', () => {
       enterprise_customer: enterpriseId,
     };
 
-    render(<CornerstoneIntegrationConfigForm enterpriseId={enterpriseId} />);
+    render(<CornerstoneIntegrationConfigFormWrapper enterpriseId={enterpriseId} />);
     fireEvent.change(screen.getByLabelText('Cornerstone Instance URL'), {
       target: { value: 'testinstance' },
     });
@@ -66,7 +84,7 @@ describe('<CornerstoneIntegrationConfigForm />', () => {
       cornerstoneBaseUrl: 'testinstance',
     };
 
-    render(<CornerstoneIntegrationConfigForm enterpriseId={enterpriseId} config={initialConfig} />);
+    render(<CornerstoneIntegrationConfigFormWrapper enterpriseId={enterpriseId} config={initialConfig} />);
     fireEvent.change(screen.getByLabelText('Cornerstone Instance URL'), {
       target: { value: 'changedURL' },
     });

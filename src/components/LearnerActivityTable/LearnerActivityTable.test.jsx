@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import LearnerActivityTable from '.';
 
@@ -84,9 +85,11 @@ const learnerActivityStore = mockStore({
 const LearnerActivityEmptyTableWrapper = props => (
   <MemoryRouter>
     <Provider store={learnerActivityEmptyStore}>
-      <LearnerActivityTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <LearnerActivityTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -94,9 +97,11 @@ const LearnerActivityEmptyTableWrapper = props => (
 const LearnerActivityTableWrapper = props => (
   <MemoryRouter>
     <Provider store={learnerActivityStore}>
-      <LearnerActivityTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <LearnerActivityTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
