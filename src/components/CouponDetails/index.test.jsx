@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
@@ -164,6 +165,16 @@ describe('CouponDetails component', () => {
     DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ Header }) => {
       expect(screen.getByText(Header)).toBeInTheDocument();
     });
+  });
+  it('test unredeemed codes success', () => {
+    const wrapper = shallow(<CouponDetailsWrapper {...defaultProps} />).childAt(0).childAt(0).childAt(0)
+      .dive();
+    const instance = wrapper.instance();
+    jest.spyOn(instance, 'resetCodeActionStatus');
+    instance.setState({ isCodeAssignmentSuccessful: true });
+    wrapper.update();
+    wrapper.find('#unredeemed-codes').simulate('click');
+    expect(instance.resetCodeActionStatus).toBeCalled();
   });
   it('renders with error state', () => {
     renderWithRouter(<CouponDetailsWrapper

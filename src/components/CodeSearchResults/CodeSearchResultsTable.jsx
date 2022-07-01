@@ -72,7 +72,7 @@ const searchParameter = (searchQuery) => {
 };
 
 const handleTableColumns = (searchQuery) => {
-  const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assignedTo');
+  const assignedToColumnIndex = tableColumns.findIndex(column => column.accessor === 'assignedTo');
   // If search is made by email, no need to show "Assigned To" field
   if (isValidEmail(searchQuery) === undefined && assignedToColumnIndex > -1) {
     // Remove "Assigned To" column if it already exists

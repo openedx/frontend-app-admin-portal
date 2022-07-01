@@ -645,6 +645,7 @@ class CouponDetails extends React.Component {
                           <Button
                             variant="link"
                             className="p-0 pl-1 border-0"
+                            id="unredeemed-codes"
                             onClick={() => {
                               this.setState({
                                 selectedToggle: 'unredeemed',

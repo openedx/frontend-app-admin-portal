@@ -36,7 +36,6 @@ function AnalyticsPage({ enterpriseId }) {
         </Alert.Heading>
         {status.message}
       </Alert>
-
     )
   );
 
