@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Tabs,
@@ -35,6 +35,7 @@ const SettingsTabs = ({
   identityProvider,
   updatePortalConfiguration,
 }) => {
+  const [hasSSOConfig, setHasSSOConfig] = useState(false);
   const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB } = features;
 
   const tab = useCurrentSettingsTab();
@@ -80,7 +81,10 @@ const SettingsTabs = ({
         )}
         {FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen && (
           <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
-            <SettingsSSOTab enterpriseId={enterpriseId} />
+            <SettingsSSOTab
+              enterpriseId={enterpriseId}
+              setHasSSOConfig={setHasSSOConfig}
+            />
           </Tab>
         )}
         {SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen && (
@@ -90,6 +94,7 @@ const SettingsTabs = ({
               enterpriseSlug={enterpriseSlug}
               enableSamlConfigurationScreen={enableSamlConfigurationScreen}
               identityProvider={identityProvider}
+              hasSSOConfig={hasSSOConfig}
             />
           </Tab>
         )}
