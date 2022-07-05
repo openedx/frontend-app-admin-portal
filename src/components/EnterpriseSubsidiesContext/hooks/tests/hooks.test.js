@@ -33,7 +33,9 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen: true }));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
+      enablePortalLearnerCreditManagementScreen: true,
+    }));
 
     await waitForNextUpdate();
 
@@ -57,7 +59,9 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen: true }));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
+      enablePortalLearnerCreditManagementScreen: true,
+    }));
 
     await waitForNextUpdate();
 
