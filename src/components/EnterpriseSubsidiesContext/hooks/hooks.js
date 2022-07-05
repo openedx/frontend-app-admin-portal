@@ -6,7 +6,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 
 // eslint-disable-next-line import/prefer-default-export
-export const useEnterpriseOffers = () => {
+export const useEnterpriseOffers = ({ enableLearnerPortalOffers }) => {
   const [offers, setOffers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [canManageLearnerCredit, setCanManageLearnerCredit] = useState(false);
@@ -14,7 +14,9 @@ export const useEnterpriseOffers = () => {
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await EcommerceApiService.fetchEnterpriseOffers();
+        const response = await EcommerceApiService.fetchEnterpriseOffers({
+          isCurrent: true,
+        });
         const { results } = camelCaseObject(response.data);
         setOffers(results);
 
@@ -28,12 +30,12 @@ export const useEnterpriseOffers = () => {
       }
     };
 
-    if (getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT) {
+    if (getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT && enableLearnerPortalOffers) {
       fetchOffers();
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [enableLearnerPortalOffers]);
 
   return {
     isLoading,

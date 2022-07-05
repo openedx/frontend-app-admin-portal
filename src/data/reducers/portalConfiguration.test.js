@@ -23,6 +23,7 @@ const initialState = {
   enableAnalyticsScreen: false,
   enableLmsConfigurationsScreen: false,
   enableUniversalLink: false,
+  enableLearnerPortalOffers: false,
 };
 
 const enterpriseData = {
@@ -76,6 +77,7 @@ describe('portalConfiguration reducer', () => {
       enableLearnerPortal: enterpriseData.enable_learner_portal,
       enableLmsConfigurationsScreen: enterpriseData.enable_portal_lms_configurations_screen,
       enableUniversalLink: enterpriseData.enable_universal_link,
+      enableLearnerPortalOffers: enterpriseData.enable_learner_portal_offers,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,

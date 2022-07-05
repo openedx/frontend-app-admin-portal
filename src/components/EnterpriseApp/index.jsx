@@ -83,6 +83,7 @@ class EnterpriseApp extends React.Component {
       enableLearnerPortal,
       enableLmsConfigurationsScreen,
       enableReportingConfigurationsScreen,
+      enableLearnerPortalOffers,
       enterpriseId,
       enterpriseName,
       loading,
@@ -122,7 +123,10 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <EnterpriseAppContextProvider enterpriseId={enterpriseId}>
+      <EnterpriseAppContextProvider
+        enterpriseId={enterpriseId}
+        enableLearnerPortalOffers={enableLearnerPortalOffers}
+      >
         <div className="enterprise-app">
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
@@ -183,6 +187,7 @@ EnterpriseApp.defaultProps = {
   enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
   enableReportingConfigurationsScreen: false,
+  enableLearnerPortalOffers: false,
   loading: true,
 };
 
@@ -210,6 +215,7 @@ EnterpriseApp.propTypes = {
   enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
+  enableLearnerPortalOffers: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };

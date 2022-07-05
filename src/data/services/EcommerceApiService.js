@@ -1,4 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
 import store from '../store';
@@ -91,7 +92,7 @@ class EcommerceApiService {
     const { enterpriseId } = store.getState().portalConfiguration;
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/${enterpriseId}/enterprise-admin-offers/`;
     if (options) {
-      const queryParams = new URLSearchParams(options);
+      const queryParams = new URLSearchParams(snakeCaseObject(options));
       url += `?${queryParams.toString()}`;
     }
     return EcommerceApiService.apiClient().get(url);
