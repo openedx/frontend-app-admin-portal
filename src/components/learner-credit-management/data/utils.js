@@ -12,10 +12,11 @@ import {
 export const transformOfferSummary = (offerSummary) => {
   if (!offerSummary) { return null; }
 
+  // Guard against potential bad data
   const totalFunds = parseFloat(offerSummary.maxDiscount);
-  const redeemedFunds = parseFloat(offerSummary.amountOfOfferSpent);
-  const remainingFunds = parseFloat(offerSummary.remainingBalance);
-  const percentUtilized = parseFloat(offerSummary.percentOfOfferSpent);
+  const redeemedFunds = Math.min(parseFloat(offerSummary.amountOfOfferSpent), totalFunds);
+  const remainingFunds = Math.max(parseFloat(offerSummary.remainingBalance), 0.0);
+  const percentUtilized = Math.min(parseFloat(offerSummary.percentOfOfferSpent), 1.0);
 
   return {
     totalFunds,
