@@ -21,10 +21,10 @@ const mockOfferSummary = {
   offer_id: TEST_ENTERPRISE_OFFER_ID,
   status: 'Open',
   enterprise_customer_uuid: TEST_ENTERPRISE_UUID,
-  amount_of_offer_spent: '200.00',
-  max_discount: '5000.00',
-  percent_of_offer_spent: '0.04',
-  remaining_balance: '4800.00',
+  amount_of_offer_spent: 200.00,
+  max_discount: 5000.00,
+  percent_of_offer_spent: 0.04,
+  remaining_balance: 4800.00,
 };
 const mockEnterpriseOffer = {
   id: TEST_ENTERPRISE_OFFER_ID,
