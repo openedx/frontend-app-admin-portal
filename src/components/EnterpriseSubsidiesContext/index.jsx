@@ -3,12 +3,12 @@ import { useEnterpriseOffers } from './hooks/hooks';
 
 export const EnterpriseSubsidiesContext = createContext();
 
-export const useEnterpriseSubsidiesContext = ({ enableLearnerPortalOffers }) => {
+export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagementScreen }) => {
   const {
     offers,
     canManageLearnerCredit,
     isLoading,
-  } = useEnterpriseOffers({ enableLearnerPortalOffers });
+  } = useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen });
 
   const context = useMemo(() => ({
     offers,

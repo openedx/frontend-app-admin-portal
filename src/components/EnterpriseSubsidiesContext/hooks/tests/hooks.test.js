@@ -11,8 +11,8 @@ jest.mock('@edx/frontend-platform/config', () => ({
 jest.mock('../../../../data/services/EcommerceApiService');
 
 describe('useEnterpriseOffers', () => {
-  it('should not fetch enterprise offers if enableLearnerPortalOffers is false', async () => {
-    const { result } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: false }));
+  it('should not fetch enterprise offers if enablePortalLearnerCreditManagementScreen is false', async () => {
+    const { result } = renderHook(() => useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen: false }));
 
     expect(EcommerceApiService.fetchEnterpriseOffers).not.toHaveBeenCalled();
     expect(result.current).toEqual({
@@ -33,7 +33,7 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: true }));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen: true }));
 
     await waitForNextUpdate();
 
@@ -57,7 +57,7 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: true }));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen: true }));
 
     await waitForNextUpdate();
 
