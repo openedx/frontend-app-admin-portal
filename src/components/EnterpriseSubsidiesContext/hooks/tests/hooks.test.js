@@ -10,9 +10,18 @@ jest.mock('@edx/frontend-platform/config', () => ({
 }));
 jest.mock('../../../../data/services/EcommerceApiService');
 
-const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
-
 describe('useEnterpriseOffers', () => {
+  it('should not fetch enterprise offers if enableLearnerPortalOffers is false', async () => {
+    const { result } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: false }));
+
+    expect(EcommerceApiService.fetchEnterpriseOffers).not.toHaveBeenCalled();
+    expect(result.current).toEqual({
+      offers: [],
+      isLoading: false,
+      canManageLearnerCredit: false,
+    });
+  });
+
   it('should fetch enterprise offers for the enterprise', async () => {
     const mockOffers = [
       {
@@ -24,7 +33,7 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers(TEST_ENTERPRISE_UUID));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: true }));
 
     await waitForNextUpdate();
 
@@ -48,7 +57,7 @@ describe('useEnterpriseOffers', () => {
         results: mockOffers,
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers(TEST_ENTERPRISE_UUID));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({ enableLearnerPortalOffers: true }));
 
     await waitForNextUpdate();
 
