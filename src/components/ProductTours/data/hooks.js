@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { getConfig } from '@edx/frontend-platform/config';
+import { useParams } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import {
@@ -14,8 +13,9 @@ import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 const cookies = new Cookies();
 
 export const useBrowseAndRequestTour = () => {
-  const history = useHistory();
-  const inSettingsPage = history.location.pathname.includes(ROUTE_NAMES.settings);
+  const { enterpriseAppPage } = useParams();
+  const inSettingsPage = enterpriseAppPage === ROUTE_NAMES.settings;
+
   const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
   const isBrowseAndRequestEnabledForEnterprise = features.FEATURE_BROWSE_AND_REQUEST;
   const dismissedBrowseAndRequestTourCookie = cookies.get(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
@@ -29,14 +29,14 @@ export const useBrowseAndRequestTour = () => {
 };
 
 export const useLearnerCreditTour = () => {
-  const history = useHistory();
-  const inLearnerCreditPage = history.location.pathname.includes(ROUTE_NAMES.learnerCredit);
+  const { enterpriseAppPage } = useParams();
+
+  const inLearnerCreditPage = enterpriseAppPage === ROUTE_NAMES.learnerCredit;
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-  const isLearnerCreditEnabled = getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT;
   const dismissedLearnerCreditTourCookie = cookies.get(LEARNER_CREDIT_COOKIE_NAME);
   // Only show tour if feature is enabled, the enterprise is eligible for the feature,
   // hide cookie is undefined or false, not in learner credit page
-  const showLearnerCreditTour = isLearnerCreditEnabled && canManageLearnerCredit
+  const showLearnerCreditTour = canManageLearnerCredit
     && !dismissedLearnerCreditTourCookie && !inLearnerCreditPage;
 
   const [learnerCreditTourEnabled, setBrowseAndRequestTourEnabled] = useState(showLearnerCreditTour);

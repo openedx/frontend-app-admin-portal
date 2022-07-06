@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
@@ -18,6 +18,7 @@ import { ToastsProvider, Toasts } from '../Toasts';
 import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
@@ -87,9 +88,23 @@ const AppWrapper = () => {
           />
           <PageRoute
             path="/:enterpriseSlug"
-            component={AuthenticatedEnterpriseApp}
             authenticatedAPIClient={apiClient}
             redirect={process.env.BASE_URL}
+            render={({
+              match: {
+                url: baseUrl,
+              },
+            }) => (
+              <Switch>
+                <Route
+                  path="/:enterpriseSlug/admin/:enterpriseAppPage"
+                  component={AuthenticatedEnterpriseApp}
+                />
+                <Redirect
+                  to={`${baseUrl}/admin/${ROUTE_NAMES.learners}`}
+                />
+              </Switch>
+            )}
           />
           <AuthenticatedPageRoute
             path="/"
