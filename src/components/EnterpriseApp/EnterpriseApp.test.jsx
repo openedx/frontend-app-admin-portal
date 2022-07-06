@@ -50,6 +50,7 @@ describe('<EnterpriseApp />', () => {
       url: '',
       params: {
         enterpriseSlug: 'foo',
+        page: 'settings',
       },
     },
     location: {
@@ -62,6 +63,8 @@ describe('<EnterpriseApp />', () => {
     toggleSidebarToggle: jest.fn(),
     loading: false,
     enableLearnerPortal: true,
+    enterpriseId: 'uuid',
+    enterpriseName: 'test-enterprise',
   };
 
   beforeEach(() => {

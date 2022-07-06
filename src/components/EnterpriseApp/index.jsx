@@ -89,10 +89,10 @@ class EnterpriseApp extends React.Component {
     } = this.props;
     const { sidebarWidth } = this.state;
     const {
-      url: baseUrl,
+      url,
       params: { enterpriseSlug },
     } = match;
-
+    const baseUrl = url.split('/').slice(0, 2).join('/');
     const defaultContentPadding = 10; // 10px for appropriate padding
     const { isActive, roles, email } = getAuthenticatedUser() || {};
     // checking for undefined tells if if the user's info is hydrated
@@ -191,6 +191,7 @@ EnterpriseApp.propTypes = {
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
+      page: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
