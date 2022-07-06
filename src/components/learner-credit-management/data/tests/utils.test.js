@@ -1,7 +1,7 @@
 import { transformOfferSummary } from '../utils';
 
 describe('transformOfferSummary', () => {
-  it('should return null if there no offerSummary', () => {
+  it('should return null if there is no offerSummary', () => {
     expect(transformOfferSummary()).toBeNull();
   });
 
@@ -18,6 +18,22 @@ describe('transformOfferSummary', () => {
       redeemedFunds: 1,
       remainingFunds: 0.0,
       percentUtilized: 1.0,
+    });
+  });
+
+  it('should handle when no maxDiscount is not set', () => {
+    const offerSummary = {
+      maxDiscount: null,
+      amountOfOfferSpent: 100,
+      remainingBalance: null,
+      percentOfOfferSpent: null,
+    };
+
+    expect(transformOfferSummary(offerSummary)).toEqual({
+      totalFunds: null,
+      redeemedFunds: 100,
+      remainingFunds: null,
+      percentUtilized: null,
     });
   });
 });
