@@ -21,7 +21,7 @@ import {
 } from '../../data/constants';
 
 const CanvasConfig = ({
-  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
 }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
@@ -98,6 +98,19 @@ const CanvasConfig = ({
     }
   };
 
+  const formatConfigResponseData = (responseData) => {
+    const formattedConfig = {};
+    formattedConfig.canvasAccountId = responseData.canvas_account_id;
+    formattedConfig.canvasBaseUrl = responseData.canvas_base_url;
+    formattedConfig.displayName = responseData.display_name;
+    formattedConfig.clientId = responseData.client_id;
+    formattedConfig.clientSecret = responseData.client_secret;
+    formattedConfig.id = responseData.id;
+    formattedConfig.active = responseData.active;
+    formattedConfig.uuid = responseData.uuid;
+    return formattedConfig;
+  };
+
   const handleAuthorization = async (event) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
@@ -114,6 +127,7 @@ const CanvasConfig = ({
         const response = await LmsApiService.updateCanvasConfig(transformedConfig, existingData.id);
         fetchedConfigUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
@@ -124,6 +138,7 @@ const CanvasConfig = ({
         const response = await LmsApiService.postNewCanvasConfig(transformedConfig);
         fetchedConfigUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
@@ -306,14 +321,6 @@ const CanvasConfig = ({
               Authorize
             </Button>
           )}
-          {authorized && (
-            <Button
-              onClick={handleSubmit}
-              disabled={!buttonBool(config) || !urlValid || !nameValid}
-            >
-              Submit
-            </Button>
-          )}
         </span>
       </Form>
     </span>
@@ -335,5 +342,6 @@ CanvasConfig.propTypes = {
     uuid: PropTypes.string,
   }).isRequired,
   existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setExistingConfigFormData: PropTypes.func.isRequired,
 };
 export default CanvasConfig;

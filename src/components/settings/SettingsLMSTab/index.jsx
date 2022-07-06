@@ -228,6 +228,7 @@ export default function SettingsLMSTab({
             onClick={onClick}
             existingConfigFormData={existingConfigFormData}
             existingConfigs={displayNames}
+            setExistingConfigFormData={setExistingConfigFormData}
           />
         </span>
       )}

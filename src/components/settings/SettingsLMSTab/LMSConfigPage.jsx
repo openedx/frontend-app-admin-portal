@@ -27,6 +27,7 @@ const LMSConfigPage = ({
   enterpriseCustomerUuid,
   existingConfigFormData,
   existingConfigs,
+  setExistingConfigFormData,
 }) => (
   <span>
     <h3 className="mt-4.5 mb-3.5">
@@ -39,6 +40,7 @@ const LMSConfigPage = ({
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
+        setExistingConfigFormData={setExistingConfigFormData}
       />
     )}
     {LMSType === CANVAS_TYPE && (
@@ -47,6 +49,7 @@ const LMSConfigPage = ({
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
+        setExistingConfigFormData={setExistingConfigFormData}
       />
     )}
     {LMSType === CORNERSTONE_TYPE && (
@@ -106,6 +109,7 @@ LMSConfigPage.propTypes = {
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
   existingConfigs: PropTypes.arrayOf(PropTypes.string),
+  setExistingConfigFormData: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(LMSConfigPage);
