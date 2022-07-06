@@ -18,15 +18,22 @@ const OfferUtilizationAlerts = ({
 }) => {
   const [isWarningAlertShown, setIsWarningAlertShown] = useState(false);
 
+  const hasPercentUtilizedAndRemainingFunds = (
+    (percentUtilized || percentUtilized === 0) && (remainingFunds || remainingFunds === 0)
+  );
+
   useEffect(() => {
+    if (!hasPercentUtilizedAndRemainingFunds) {
+      return;
+    }
     const isWarningThesholdReached = (
       percentUtilized > LOW_REMAINING_BALANCE_PERCENT_THRESHOLD
       && remainingFunds > NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
     );
     setIsWarningAlertShown(isWarningThesholdReached);
-  }, [percentUtilized, remainingFunds]);
+  }, [hasPercentUtilizedAndRemainingFunds, percentUtilized, remainingFunds]);
 
-  if (percentUtilized === undefined || remainingFunds === undefined) {
+  if (!hasPercentUtilizedAndRemainingFunds) {
     return null;
   }
 

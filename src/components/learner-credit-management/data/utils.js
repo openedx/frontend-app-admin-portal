@@ -4,7 +4,8 @@ import {
 } from './constants';
 
 /**
- * Transforms offer summary from API for display in the UI.
+ * Transforms offer summary from API for display in the UI, guarding
+ * against bad data (e.g., accounting for refunds).
  *
  * @param {object} offerSummary Object containing summary about an offer.
  * @returns Object containing transformed summary about an enterprise offer.
@@ -12,11 +13,26 @@ import {
 export const transformOfferSummary = (offerSummary) => {
   if (!offerSummary) { return null; }
 
-  // Guard against potential bad data
-  const totalFunds = parseFloat(offerSummary.maxDiscount);
-  const redeemedFunds = Math.min(parseFloat(offerSummary.amountOfOfferSpent), totalFunds);
-  const remainingFunds = Math.max(parseFloat(offerSummary.remainingBalance), 0.0);
-  const percentUtilized = Math.min(parseFloat(offerSummary.percentOfOfferSpent), 1.0);
+  const totalFunds = offerSummary.maxDiscount && parseFloat(offerSummary.maxDiscount);
+  let redeemedFunds = offerSummary.amountOfOfferSpent && parseFloat(offerSummary.amountOfOfferSpent);
+
+  // cap redeemed funds at the maximum funds available (`maxDiscount`), if applicable, so we
+  // don't display redeemed funds > funds available.
+  if (totalFunds) {
+    redeemedFunds = Math.min(redeemedFunds, totalFunds);
+  }
+
+  let remainingFunds = offerSummary.remainingBalance && parseFloat(offerSummary.remainingBalance);
+  // prevent remaining funds from going below $0, if applicable.
+  if (remainingFunds) {
+    remainingFunds = Math.max(remainingFunds, 0.0);
+  }
+
+  let percentUtilized = offerSummary.percentOfOfferSpent && parseFloat(offerSummary.percentOfOfferSpent);
+  // prevent percent utilized from going over 1.0, if applicable.
+  if (percentUtilized) {
+    percentUtilized = Math.min(percentUtilized, 1.0);
+  }
 
   return {
     totalFunds,
