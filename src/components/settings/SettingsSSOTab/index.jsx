@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import { Alert, Hyperlink, Toast } from '@edx/paragon';
@@ -9,7 +9,7 @@ import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
-const SettingsSSOTab = ({ enterpriseId }) => {
+const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const {
     ssoState: { providerConfig, infoMessage, refreshBool },
     setInfoMessage,
@@ -17,6 +17,16 @@ const SettingsSSOTab = ({ enterpriseId }) => {
   } = useContext(SSOConfigContext);
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
   const [existingProviderData, pdError, pdIsLoading] = useExistingProviderData(enterpriseId, refreshBool);
+
+  useEffect(() => {
+    let validConfigExists = false;
+    existingConfigs.forEach(config => {
+      if (config.was_valid_at) {
+        validConfigExists = true;
+      }
+    });
+    setHasSSOConfig(validConfigExists);
+  }, [existingConfigs, setHasSSOConfig]);
 
   return (
     <div>
@@ -75,16 +85,18 @@ const SettingsSSOTab = ({ enterpriseId }) => {
 
 SettingsSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  setHasSSOConfig: PropTypes.func.isRequired,
 };
 
-const WrappedSSOTab = ({ enterpriseId }) => (
+const WrappedSSOTab = ({ enterpriseId, setHasSSOConfig }) => (
   <SSOConfigContextProvider>
-    <SettingsSSOTab enterpriseId={enterpriseId} />
+    <SettingsSSOTab enterpriseId={enterpriseId} setHasSSOConfig={setHasSSOConfig} />
   </SSOConfigContextProvider>
 );
 
 WrappedSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  setHasSSOConfig: PropTypes.func.isRequired,
 };
 
 export default WrappedSSOTab;

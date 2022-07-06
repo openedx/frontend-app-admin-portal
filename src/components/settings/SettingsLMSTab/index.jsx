@@ -34,6 +34,7 @@ export default function SettingsLMSTab({
   enterpriseSlug,
   enableSamlConfigurationScreen,
   identityProvider,
+  hasSSOConfig,
 }) {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
@@ -156,7 +157,7 @@ export default function SettingsLMSTab({
         Enabling a learning management system for your edX account allows quick
         access to the catalog
       </p>
-      {displayNeedsSSOAlert && (
+      {displayNeedsSSOAlert && !hasSSOConfig && (
         <Alert
           className="mr-6 sso-alert-modal-margin"
           variant="danger"
@@ -192,7 +193,7 @@ export default function SettingsLMSTab({
           iconBefore={Add}
           size="lg"
           block
-          disabled={displayNeedsSSOAlert}
+          disabled={displayNeedsSSOAlert && !hasSSOConfig}
           onClick={showCreateConfigCards}
         >
           New configuration
@@ -252,4 +253,5 @@ SettingsLMSTab.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
+  hasSSOConfig: PropTypes.bool.isRequired,
 };
