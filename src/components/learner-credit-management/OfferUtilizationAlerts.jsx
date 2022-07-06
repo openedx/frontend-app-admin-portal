@@ -37,9 +37,7 @@ const OfferUtilizationAlerts = ({
     return null;
   }
 
-  const isErrorAlertShown = (
-    hasPercentUtilizedAndRemainingFunds && remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD
-  );
+  const isErrorAlertShown = remainingFunds <= NO_BALANCE_REMAINING_DOLLAR_THRESHOLD;
 
   const handleContactSupportCTAClick = (eventName) => {
     sendEnterpriseTrackEvent(enterpriseUUID, eventName);
