@@ -25,14 +25,22 @@ const SSOConfigServiceProviderStep = ({ enterpriseSlug, learnerPortalEnabled }) 
   return (
     <>
       <p>
-        Next step is configuring your SAML Identity Provider service to recognize edX as a SAML Service Provider.
-        In your SAML Identity Provider service, use the SAML metadata obtained from the edX service provider{' '}
-        <Hyperlink destination={spMetadataLink} target="_blank">metadata file</Hyperlink> to add edX to your whitelist of authorized SAML service providers.
+        The next step is to add edX as a SAML Service Provider in your SAML Identity Provider&apos;s service.
       </p>
       <p>
-        Once this is done, confirm that you&apos;ve successfully added edX as a Service Provider
-        by checking the box below.
+        Follow this process to do so:
       </p>
+      <ul>
+        <li>
+          Save this edX Service Provider <Hyperlink destination={spMetadataLink} target="_blank">metadata file</Hyperlink> as an XML file
+        </li>
+        <li>
+          Upload or add the XML file to your Identity Provider’s list of authorized SAML Service Providers
+        </li>
+        <li>
+          Check the box below once edX has been successfully added as a Service Provider
+        </li>
+      </ul>
       <Form.Checkbox className="mt-4" checked={isSPConfigured} onChange={handleChange}>
         I have added edX as a Service Provider in my SAML configuration
       </Form.Checkbox>

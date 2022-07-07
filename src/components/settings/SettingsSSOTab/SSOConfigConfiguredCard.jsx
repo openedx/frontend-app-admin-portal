@@ -115,7 +115,7 @@ const SSOConfigConfiguredCard = ({
       { !showValidatedText && (
         <p className="mt-4">
           Once you&apos;ve successfully logged in,
-          use this page to verify that your configuration is completed and validated.
+          this page will navigate to the SSO existing configuration screen and the connection will be marked active.
         </p>
       )}
       { showValidatedText && (
