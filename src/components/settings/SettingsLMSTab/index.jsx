@@ -213,12 +213,12 @@ export default function SettingsLMSTab({
               xl: 3,
             }}
           >
-            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
             <LMSCard LMSType={BLACKBOARD_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
           </CardGrid>
         </span>
       )}

@@ -81,8 +81,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     await expect(
@@ -102,8 +102,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     await expect(
@@ -127,8 +127,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
@@ -149,8 +149,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.click(screen.getByText('Cancel'));
@@ -172,8 +172,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
@@ -191,8 +191,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
@@ -237,8 +237,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
@@ -260,8 +260,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
@@ -279,8 +279,8 @@ describe('SAML Config Tab', () => {
     await waitFor(() => {
       expect(
         screen.queryByText(
-          'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-          + 'allow quick access to your organization\'s learning catalog.',
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
         ),
       ).toBeInTheDocument();
       expect(screen.getByText('Next')).not.toBeDisabled();
@@ -300,8 +300,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('123abc!')).toBeInTheDocument());

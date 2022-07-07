@@ -91,8 +91,18 @@ const ExistingLMSCardDeck = ({
     return INACTIVE;
   };
 
+  const alphabetizeList = (list) => list.sort((listA, listB) => {
+    if (listA.displayName < listB.displayName) {
+      return -1;
+    }
+    if (listA.displayName > listB.displayName) {
+      return 1;
+    }
+    return 0;
+  });
+
   // Map the existing config data to individual cards
-  const listItems = configData.map((config) => (
+  const listItems = alphabetizeList(configData).map((config) => (
     <Card
       tabIndex="0"
       className="p-2.5 existing-lms-card-width"
