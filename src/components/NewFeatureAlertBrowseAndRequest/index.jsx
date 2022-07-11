@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
-import { features } from '../../config';
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
   BROWSE_AND_REQUEST_ALERT_TEXT,
@@ -25,9 +24,7 @@ export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROW
 
 const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
-  const foundCookie = cookies.get(browseAndRequestAlertCookieName);
-  const isFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST;
-  const hideAlert = !isFeatureEnabled || foundCookie;
+  const hideAlert = cookies.get(browseAndRequestAlertCookieName);
 
   const [showAlert, setShowAlert] = useState(!hideAlert);
 

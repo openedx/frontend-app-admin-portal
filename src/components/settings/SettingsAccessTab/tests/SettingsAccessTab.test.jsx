@@ -6,7 +6,6 @@ import SettingsAccessTab from '../index';
 import { SettingsContext } from '../../SettingsContext';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
-import * as config from '../../../../config';
 
 jest.mock('../SettingsAccessSubsidyTypeSelection', () => ({
   __esModule: true, // this property makes it work
@@ -51,6 +50,7 @@ const mockSubsidyRequestConfiguration = {
 
 const basicProps = {
   enterpriseId: 'test-enterprise-uuid',
+  enterpriseSlug: 'test-enterprise',
   enableIntegratedCustomerLearnerPortalSearch: false,
   enableUniversalLink: false,
   enableLearnerPortal: false,
@@ -87,21 +87,19 @@ const SettingsAccessTabWrapper = ({
 describe('<SettingsAccessTab />', () => {
   it('should render <SettingsAccessSSOManagement/> if sso is configured', () => {
     renderWithRouter(<SettingsAccessTabWrapper props={{ identityProvider: 'idp' }} />);
-    expect(screen.getByText('SettingsAccessSSOManagement'));
+    expect(screen.getByText('SettingsAccessSSOManagement')).toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
-    expect(screen.queryByText('SettingsAccessSubsidyRequestManagement')).not.toBeInTheDocument();
+    expect(screen.getByText('SettingsAccessSubsidyRequestManagement')).toBeInTheDocument();
   });
 
-  it('should render <SettingsAccessLinkManagement/> if universal link feature flag is enabled and learner portal is enabled', () => {
-    config.features.SETTINGS_UNIVERSAL_LINK = 'true';
+  it('should render <SettingsAccessLinkManagement/> if learner portal is enabled', () => {
     renderWithRouter(<SettingsAccessTabWrapper props={{ enableLearnerPortal: true }} />);
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.getByText('SettingsAccessLinkManagement'));
-    expect(screen.queryByText('SettingsAccessSubsidyRequestManagement')).not.toBeInTheDocument();
+    expect(screen.getByText('SettingsAccessSubsidyRequestManagement')).toBeInTheDocument();
   });
 
-  it('should render <SettingsAccessSubsidyRequestManagement/> if browse and request is enabled', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
+  it('should render <SettingsAccessSubsidyRequestManagement/>', () => {
     renderWithRouter(<SettingsAccessTabWrapper />);
     expect(screen.queryByText('SettingsAccessSSOManagement')).not.toBeInTheDocument();
     expect(screen.queryByText('SettingsAccessLinkManagement')).not.toBeInTheDocument();
@@ -109,7 +107,6 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should disable <SettingsAccessSubsidyRequestManagement/> if neither universal link or sso are configured', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = 'true';
     renderWithRouter(
       <SettingsAccessTabWrapper
         props={{ enableUniversalLink: false, identityProvider: null }}
@@ -122,7 +119,6 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should render NoAvailableCodesBanner when subsidy type is SUPPORTED_SUBSIDY_TYPES.coupon', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = true;
     const subsidyRequestConfigurationContextValue = {
       subsidyRequestConfiguration: {
         subsidyRequestsEnabled: true,
@@ -138,8 +134,7 @@ describe('<SettingsAccessTab />', () => {
     expect(screen.getByText('NoAvailableCodesBanner')).toBeInTheDocument();
   });
 
-  it('should not render NoAvailableCodesBanner when swhen B&R is disabled', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = true;
+  it('should not render NoAvailableCodesBanner when when B&R is disabled', () => {
     const subsidyRequestConfigurationContextValue = {
       subsidyRequestConfiguration: {
         subsidyRequestsEnabled: false,
@@ -157,7 +152,6 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should render NoAvailableLicensesBanner when subsidy type is SUPPORTED_SUBSIDY_TYPES.license', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = true;
     const subsidyRequestConfigurationContextValue = {
       subsidyRequestConfiguration: {
         subsidyRequestsEnabled: true,
@@ -175,7 +169,6 @@ describe('<SettingsAccessTab />', () => {
   });
 
   it('should not render NoAvailableLicensesBanner when B&R is disabled', () => {
-    config.features.FEATURE_BROWSE_AND_REQUEST = true;
     const subsidyRequestConfigurationContextValue = {
       subsidyRequestConfiguration: {
         subsidyRequestsEnabled: false,

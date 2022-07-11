@@ -7,45 +7,27 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ManageCodesTab from './ManageCodesTab';
 import NotFoundPage from '../NotFoundPage';
 import CouponCodeTabs from './CouponCodeTabs';
-import { features } from '../../config';
 import {
   DEFAULT_TAB,
   COUPON_CODES_PARAM_MATCH,
 } from './data/constants';
 
-const CodeManagementRoutes = ({ enterpriseSlug }) => {
-  const isTabsFeatureEnabled = features.FEATURE_BROWSE_AND_REQUEST;
-
-  if (isTabsFeatureEnabled) {
-    return (
-      <Switch>
-        <Redirect
-          exact
-          from={`/${enterpriseSlug}/admin/coupons`}
-          to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
-        />
-        <Route
-          path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
-          component={CouponCodeTabs}
-        />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
-    );
-  }
-
-  return (
-    <Switch>
-      <Route
-        path="/:enterpriseSlug/admin/coupons"
-        component={ManageCodesTab}
-        exact
-      />
-    </Switch>
-  );
-};
+const CodeManagementRoutes = ({ enterpriseSlug }) => (
+  <Switch>
+    <Redirect
+      exact
+      from={`/${enterpriseSlug}/admin/coupons`}
+      to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
+    />
+    <Route
+      path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
+      component={CouponCodeTabs}
+    />
+    <Route path="" component={NotFoundPage} />
+  </Switch>
+);
 
 CodeManagementRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

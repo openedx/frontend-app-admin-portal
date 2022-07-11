@@ -3,7 +3,6 @@ import { Col, Row } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { features } from '../../../config';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy-request-management-alerts';
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
@@ -37,12 +36,10 @@ const SettingsAccessTab = ({
 
   const configuredRequestSubsidyType = subsidyRequestConfiguration?.subsidyType;
   const hasConfiguredSubsidyType = !!configuredRequestSubsidyType;
-  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
   const hasActiveAccessChannel = enableUniversalLink || isLearnerPortalSearchEnabled;
-
-  const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
+  const isUniversalLinkEnabled = enableLearnerPortal;
 
   const isNoAvailableCodesBannerVisible = (
     configuredRequestSubsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
@@ -114,7 +111,7 @@ const SettingsAccessTab = ({
               />
             )}
           </div>
-          {isBrowseAndRequestEnabled && subsidyTypeLabelAndRoute && (
+          {subsidyTypeLabelAndRoute && (
             <div>
               <div className="d-flex justify-content-between">
                 <h3>Manage course requests</h3>
