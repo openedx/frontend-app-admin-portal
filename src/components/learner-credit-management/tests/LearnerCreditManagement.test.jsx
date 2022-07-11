@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
+import moment from 'moment';
 import {
   screen,
   render,
@@ -11,6 +12,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import LearnerCreditManagement from '../LearnerCreditManagement';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { DATE_FORMAT } from '../data/constants';
 import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
 
 jest.mock('../data/hooks');
@@ -161,6 +163,8 @@ describe('<LearnerCreditManagement />', () => {
 
       expect(screen.getByText(mockOffer.startDatetime));
       expect(screen.getByText(mockOffer.endDatetime));
+
+      expect(screen.getByText(`Data last updated on ${moment(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
 
       expect(screen.getByTestId('learner-credit-allocation--is-loading')).toHaveTextContent('is NOT loading');
       expect(screen.getByTestId('learner-credit-allocation--table-data')).toHaveTextContent(mockOfferRedemption.enterpriseEnrollmentId);
