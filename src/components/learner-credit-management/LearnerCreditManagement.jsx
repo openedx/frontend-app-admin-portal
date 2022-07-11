@@ -51,6 +51,9 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
     return <NotFound />;
   }
 
+  // The LPR data is synced once per day, and all its data is fresh, meaning we can
+  // deduce when the data was last updated based on when any of the offer redemptions
+  // records were created.
   const offerDataLastUpdatedTimestamp = offerRedemptions.results[0]?.created;
 
   return (
