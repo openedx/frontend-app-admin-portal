@@ -18,9 +18,6 @@ import {
 } from './data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
-import { features } from '../../config';
-
-features.FEATURE_BROWSE_AND_REQUEST = true;
 
 const mockStore = configureMockStore([thunk]);
 
@@ -79,16 +76,5 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
     expect(useHistoryPush).toHaveBeenCalledWith({
       pathname: SETTINGS_PAGE_LOCATION,
     });
-  });
-
-  it('banner not showed when feature is off', async () => {
-    features.FEATURE_BROWSE_AND_REQUEST = false;
-    const cookieName = generateBrowseAndRequestAlertCookieName(ENTERPRISE_ID);
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: `${cookieName}=true`,
-    });
-    render(<NewFeatureAlertBrowseAndRequestWrapper />);
-    expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeFalsy();
   });
 });

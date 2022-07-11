@@ -12,7 +12,6 @@ import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
-import { features } from '../../config';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
@@ -29,10 +28,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     hasLicensesAllocatedOrRevoked && subscription.daysUntilExpiration > 0
   );
 
-  let backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions`;
-  if (features.FEATURE_BROWSE_AND_REQUEST) {
-    backToSubscriptionsPath += `/${MANAGE_LEARNERS_TAB}`;
-  }
+  const backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
   return (
     <>

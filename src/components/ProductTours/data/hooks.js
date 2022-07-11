@@ -6,7 +6,6 @@ import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
 } from '../constants';
-import { features } from '../../../config';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
@@ -17,12 +16,11 @@ export const useBrowseAndRequestTour = () => {
   const inSettingsPage = enterpriseAppPage === ROUTE_NAMES.settings;
 
   const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
-  const isBrowseAndRequestEnabledForEnterprise = features.FEATURE_BROWSE_AND_REQUEST;
   const dismissedBrowseAndRequestTourCookie = cookies.get(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
-  // Only show tour if feature is enabled, the enterprise is eligible for the feature,
-  // hide cookie is undefined or false, not in settings page, and subsidy requests are not already enabled
-  const showBrowseAndRequestTour = isBrowseAndRequestEnabledForEnterprise
-    && !dismissedBrowseAndRequestTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  // Only show tour if the enterprise is eligible for the feature, browse and request tour cookie is undefined or false,
+  // not in settings page, and subsidy requests are not already enabled
+  const showBrowseAndRequestTour = !dismissedBrowseAndRequestTourCookie
+   && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
   const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useState(showBrowseAndRequestTour);
   return [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled];

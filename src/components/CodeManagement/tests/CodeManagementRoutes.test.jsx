@@ -5,13 +5,11 @@ import thunk from 'redux-thunk';
 import {
   screen,
   render,
-  cleanup,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import CodeManagementRoutes from '../CodeManagementRoutes';
-import { features } from '../../../config';
 
 const COUPON_CODE_TABS_MOCK_CONTENT = 'coupon code tabs';
 const MANAGE_CODES_MOCK_CONTENT = 'manage codes';
@@ -73,29 +71,10 @@ CodeManagementRoutesWithRouter.defaultProps = {
 };
 
 describe('<CodeManagementRoutes />', () => {
-  afterEach(() => {
-    cleanup();
-    jest.clearAllMocks();
-    features.FEATURE_BROWSE_AND_REQUEST = false;
-  });
+  it('redirects to default tab', () => {
+    const newStore = getMockStore(initialStore);
 
-  describe('with tabs enabled', () => {
-    let newStore;
-    beforeEach(() => {
-      newStore = getMockStore(initialStore);
-      features.FEATURE_BROWSE_AND_REQUEST = true;
-    });
-
-    it('redirects to default tab', () => {
-      render(<CodeManagementRoutesWithRouter store={newStore} />);
-      expect(screen.getByText(COUPON_CODE_TABS_MOCK_CONTENT));
-    });
-  });
-
-  describe('without tabs enabled', () => {
-    it('renders coupon codes content', () => {
-      render(<CodeManagementRoutesWithRouter />);
-      expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT));
-    });
+    render(<CodeManagementRoutesWithRouter store={newStore} />);
+    expect(screen.getByText(COUPON_CODE_TABS_MOCK_CONTENT));
   });
 });
