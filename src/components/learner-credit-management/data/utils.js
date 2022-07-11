@@ -51,6 +51,7 @@ export const transformOfferSummary = (offerSummary) => {
  * @returns List of transformed results for display in table.
  */
 export const transformUtilizationTableResults = results => results.map(result => ({
+  created: result.created,
   enterpriseEnrollmentId: result.enterpriseEnrollmentId,
   userEmail: result.userEmail,
   courseTitle: result.courseTitle,

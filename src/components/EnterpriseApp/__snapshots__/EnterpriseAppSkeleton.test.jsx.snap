@@ -7,9 +7,12 @@ Array [
   >
     Loading...
   </div>,
-  <span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
     <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      className="react-loading-skeleton"
       style={
         Object {
           "height": "8rem",
@@ -18,10 +21,14 @@ Array [
     >
       ‌
     </span>
+    <br />
   </span>,
-  <span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
     <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      className="react-loading-skeleton"
       style={
         Object {
           "height": "70vh",
@@ -30,6 +37,7 @@ Array [
     >
       ‌
     </span>
+    <br />
   </span>,
 ]
 `;

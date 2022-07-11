@@ -3,7 +3,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import {
   useOfferSummary,
-  useLearnerCreditAllocations,
+  useOfferRedemptions,
 } from '../hooks';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
@@ -80,25 +80,25 @@ describe('useOfferSummary', () => {
   });
 });
 
-describe('useLearnerCreditAllocations', () => {
+describe('useOfferRedemptions', () => {
   it('should fetch enrollment/redemptions metadata for enterprise offer', async () => {
     EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValueOnce({ data: mockOfferEnrollmentsResponse });
-    const { result, waitForNextUpdate } = renderHook(() => useLearnerCreditAllocations(
+    const { result, waitForNextUpdate } = renderHook(() => useOfferRedemptions(
       TEST_ENTERPRISE_UUID,
       mockEnterpriseOffer.id,
     ));
 
     expect(result.current).toMatchObject({
-      tableData: {
+      offerRedemptions: {
         itemCount: 0,
         pageCount: 0,
         results: [],
       },
       isLoading: true,
-      fetchTableData: expect.any(Function),
+      fetchOfferRedemptions: expect.any(Function),
     });
     act(() => {
-      result.current.fetchTableData({
+      result.current.fetchOfferRedemptions({
         pageIndex: 0, // `DataTable` uses zero-based indexing
         pageSize: 20,
         sortBy: [
@@ -127,13 +127,13 @@ describe('useLearnerCreditAllocations', () => {
       expectedApiOptions,
     );
     expect(result.current).toMatchObject({
-      tableData: {
+      offerRedemptions: {
         itemCount: 100,
         pageCount: 5,
         results: camelCaseObject(mockOfferEnrollments),
       },
       isLoading: false,
-      fetchTableData: expect.any(Function),
+      fetchOfferRedemptions: expect.any(Function),
     });
   });
 });

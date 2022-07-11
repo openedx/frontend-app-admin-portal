@@ -4,8 +4,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
-import Skeleton from 'react-loading-skeleton';
-import { DataTable } from '@edx/paragon';
+import { DataTable, Skeleton } from '@edx/paragon';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
 import StatusAlert from '../StatusAlert';

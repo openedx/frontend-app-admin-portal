@@ -7,10 +7,10 @@ import {
   Form,
   StatefulButton,
   Alert,
+  Skeleton,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import Skeleton from 'react-loading-skeleton';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import { useApplicableSubscriptions } from './data/hooks';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';

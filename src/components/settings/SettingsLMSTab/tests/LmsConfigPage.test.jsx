@@ -24,12 +24,6 @@ import { channelMapping } from '../../../../utils';
 import SettingsLMSTab from '../index';
 import buttonBool from '../utils';
 
-jest.mock('react-loading-skeleton', () => ({
-  __esModule: true,
-  // eslint-disable-next-line react/prop-types
-  default: (props = {}) => <div data-testid={props['data-testid']} />,
-}));
-
 const enterpriseId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const enterpriseSlug = 'test-slug';
 const enableSamlConfigurationScreen = false;

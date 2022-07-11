@@ -5,7 +5,8 @@ import {
 } from '@testing-library/react';
 import moment from 'moment';
 
-import OfferDates, { DATE_FORMAT } from '../OfferDates';
+import OfferDates from '../OfferDates';
+import { DATE_FORMAT } from '../data/constants';
 
 describe('<OfferDates />', () => {
   it('with no dates provided, nothing is rendered', () => {

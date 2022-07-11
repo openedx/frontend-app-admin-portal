@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Alert, Button, Hyperlink, CardGrid, Toast,
+  Alert, Button, Hyperlink, CardGrid, Toast, Skeleton,
 } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
-import Skeleton from 'react-loading-skeleton';
 import { camelCaseDictArray } from '../../../utils';
 import LMSCard from './LMSCard';
 import LMSConfigPage from './LMSConfigPage';
@@ -185,7 +184,7 @@ export default function SettingsLMSTab({
           />
         </span>
       )}
-      {configsLoading && (<span data-testid="skeleton"><Skeleton data-testid="skeleton" className="mb-4" count={2} height={20} /></span>)}
+      {configsLoading && (<span data-testid="skeleton"><Skeleton className="mb-4" count={2} height={20} /></span>)}
       {!showNewConfigButtons && !configsLoading && !config && (
         <Button
           variant="primary"

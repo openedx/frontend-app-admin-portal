@@ -12,3 +12,5 @@ export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
 // appearing, as learners may not be able to redeem learner credit once the organization's
 // balance reaches this threshold.
 export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;
+
+export const DATE_FORMAT = 'MMMM DD, YYYY';
