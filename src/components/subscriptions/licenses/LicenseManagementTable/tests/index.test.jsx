@@ -197,7 +197,7 @@ describe('<LicenseManagementTable />', () => {
     });
     it('when typing in to email filter', async () => {
       render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
-      const emailInput = screen.getByPlaceholderText('Search Email address');
+      const emailInput = screen.getByPlaceholderText('Search email address');
       // type in 'foo' to email input
       fireEvent.change(emailInput, { target: { value: 'foo' } });
 

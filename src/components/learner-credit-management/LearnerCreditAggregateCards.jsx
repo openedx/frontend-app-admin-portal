@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Card, ProgressBar } from '@edx/paragon';
-import Skeleton from 'react-loading-skeleton';
+import {
+  Col, Card, ProgressBar, Skeleton,
+} from '@edx/paragon';
 
 import { getProgressBarVariant } from './data/utils';
 

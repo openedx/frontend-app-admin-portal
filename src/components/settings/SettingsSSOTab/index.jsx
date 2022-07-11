@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import Skeleton from 'react-loading-skeleton';
-import { Alert, Hyperlink, Toast } from '@edx/paragon';
+import {
+  Alert, Hyperlink, Toast, Skeleton,
+} from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';

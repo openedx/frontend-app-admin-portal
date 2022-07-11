@@ -75,19 +75,19 @@ const applyFiltersToOptions = (filters, options) => {
   }
 };
 
-export const useLearnerCreditAllocations = (enterpriseUUID, offerId) => {
+export const useOfferRedemptions = (enterpriseUUID, offerId) => {
   const shouldTrackFetchEvents = useRef(false);
-  const [isLoadingTableData, setIsLoadingTableData] = useState(true);
-  const [tableData, setTableData] = useState({
+  const [isLoading, setIsLoading] = useState(true);
+  const [offerRedemptions, setOfferRedemptions] = useState({
     itemCount: 0,
     pageCount: 0,
     results: [],
   });
 
-  const fetchTableData = useCallback((args) => {
+  const fetchOfferRedemptions = useCallback((args) => {
     const fetch = async () => {
       try {
-        setIsLoadingTableData(true);
+        setIsLoading(true);
         const options = {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
           pageSize: args.pageSize,
@@ -106,7 +106,7 @@ export const useLearnerCreditAllocations = (enterpriseUUID, offerId) => {
         );
         const data = camelCaseObject(response.data);
         const transformedTableResults = transformUtilizationTableResults(data.results);
-        setTableData({
+        setOfferRedemptions({
           itemCount: data.count,
           pageCount: data.numPages,
           results: transformedTableResults,
@@ -127,17 +127,19 @@ export const useLearnerCreditAllocations = (enterpriseUUID, offerId) => {
       } catch (error) {
         logError(error);
       } finally {
-        setIsLoadingTableData(false);
+        setIsLoading(false);
       }
     };
-    fetch();
+    if (offerId) {
+      fetch();
+    }
   }, [enterpriseUUID, offerId, shouldTrackFetchEvents]);
 
-  const debouncedFetchTableData = useMemo(() => debounce(fetchTableData, 300), [fetchTableData]);
+  const debouncedFetchOfferRedemptions = useMemo(() => debounce(fetchOfferRedemptions, 300), [fetchOfferRedemptions]);
 
   return {
-    isLoading: isLoadingTableData,
-    tableData,
-    fetchTableData: debouncedFetchTableData,
+    isLoading,
+    offerRedemptions,
+    fetchOfferRedemptions: debouncedFetchOfferRedemptions,
   };
 };

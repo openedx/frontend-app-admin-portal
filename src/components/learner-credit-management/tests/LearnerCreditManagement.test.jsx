@@ -11,12 +11,21 @@ import '@testing-library/jest-dom/extend-expect';
 
 import LearnerCreditManagement from '../LearnerCreditManagement';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
-import { useOfferSummary } from '../data/hooks';
+import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
 
 jest.mock('../data/hooks');
 useOfferSummary.mockReturnValue({
   isLoading: false,
   offerSummary: null,
+});
+useOfferRedemptions.mockReturnValue({
+  isLoading: false,
+  offerRedemptions: {
+    itemCount: 0,
+    pageCount: 0,
+    results: [],
+  },
+  fetchOfferRedemptions: jest.fn(),
 });
 
 jest.mock('../../NotFoundPage', () => ({
@@ -41,10 +50,14 @@ jest.mock('../OfferDates', () => ({
 
 jest.mock('../LearnerCreditAllocationTable', () => ({
   __esModule: true,
-  default: ({ enterpriseUUID, offerId }) => (
+  default: ({
+    enterpriseUUID, isLoading, tableData, fetchTableData,
+  }) => (
     <>
+      <span data-testid="learner-credit-allocation--is-loading">{isLoading ? 'is loading' : 'is NOT loading'}</span>
+      <span data-testid="learner-credit-allocation--table-data">{tableData?.results[0]?.enterpriseEnrollmentId}</span>
+      <span data-testid="learner-credit-allocation--fetch-table-data">{typeof fetchTableData}</span>
       <span data-testid="learner-credit-allocation--enterprise-uuid">{enterpriseUUID}</span>
-      <span data-testid="learner-credit-allocation--offer-id">{offerId}</span>
     </>
   ),
 }));
@@ -75,6 +88,7 @@ const initialStore = {
 const store = getMockStore({ ...initialStore });
 
 const mockEnterpriseOfferId = 123;
+const mockEnterpriseOfferEnrollmentId = 456;
 const defaultEnterpriseSubsidiesContextValue = {
   offers: [],
 };
@@ -116,12 +130,29 @@ describe('<LearnerCreditManagement />', () => {
         startDatetime: '2022-01-01',
         endDatetime: '2023-01-01',
       };
+      const mockOfferRedemption = {
+        created: '2022-02-01',
+        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
+        userEmail: 'test@example.com',
+        courseTitle: 'edX Demonstration Course',
+        courseListPrice: 100,
+        enrollmentDate: '2022-01-01',
+      };
       const subsidiesContextValue = {
         offers: [mockOffer],
       };
       useOfferSummary.mockReturnValue({
         isLoading: false,
         offerSummary: mockOfferSummary,
+      });
+      useOfferRedemptions.mockReturnValue({
+        isLoading: false,
+        offerRedemptions: {
+          results: [mockOfferRedemption],
+          itemCount: 1,
+          pageCount: 1,
+        },
+        fetchOfferRedemptions: jest.fn(),
       });
       render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
       expect(screen.queryByTestId('404-page-not-found')).toBeFalsy();
@@ -131,8 +162,10 @@ describe('<LearnerCreditManagement />', () => {
       expect(screen.getByText(mockOffer.startDatetime));
       expect(screen.getByText(mockOffer.endDatetime));
 
+      expect(screen.getByTestId('learner-credit-allocation--is-loading')).toHaveTextContent('is NOT loading');
+      expect(screen.getByTestId('learner-credit-allocation--table-data')).toHaveTextContent(mockOfferRedemption.enterpriseEnrollmentId);
+      expect(screen.getByTestId('learner-credit-allocation--fetch-table-data')).toHaveTextContent('function');
       expect(screen.getByTestId('learner-credit-allocation--enterprise-uuid')).toHaveTextContent(enterpriseId);
-      expect(screen.getByTestId('learner-credit-allocation--offer-id')).toHaveTextContent(mockOffer.id);
 
       expect(screen.getByTestId('learner-credit-aggregate-cards--loading')).toHaveTextContent('is NOT loading');
       expect(screen.getByTestId('learner-credit-aggregate-cards--total-funds')).toHaveTextContent('5000');

@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import thunk from 'redux-thunk';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
-import Skeleton from 'react-loading-skeleton';
+import { Skeleton } from '@edx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import StatusAlert from '../StatusAlert';

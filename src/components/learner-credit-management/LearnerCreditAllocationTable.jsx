@@ -5,20 +5,19 @@ import {
 } from '@edx/paragon';
 import moment from 'moment';
 
-import { useLearnerCreditAllocations } from './data/hooks';
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
 
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
-const LearnerCreditAllocationTable = ({ enterpriseUUID, offerId }) => {
+const LearnerCreditAllocationTable = ({
+  isLoading,
+  tableData,
+  fetchTableData,
+  enterpriseUUID,
+}) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
-  const {
-    isLoading,
-    tableData,
-    fetchTableData,
-  } = useLearnerCreditAllocations(enterpriseUUID, offerId);
 
   return (
     <DataTable
@@ -83,7 +82,18 @@ const LearnerCreditAllocationTable = ({ enterpriseUUID, offerId }) => {
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  offerId: PropTypes.number.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  tableData: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.shape({
+      userEmail: PropTypes.string.isRequired,
+      courseTitle: PropTypes.string.isRequired,
+      courseListPrice: PropTypes.number.isRequired,
+      enrollmentDate: PropTypes.string.isRequired,
+    })),
+    itemCount: PropTypes.number.isRequired,
+    pageCount: PropTypes.number.isRequired,
+  }).isRequired,
+  fetchTableData: PropTypes.func.isRequired,
 };
 
 export default LearnerCreditAllocationTable;
