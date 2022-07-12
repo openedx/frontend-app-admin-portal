@@ -25,15 +25,11 @@ import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+import { SUBSIDY_TYPES } from '../../../data/constants/subsidyTypes';
 
 const mockStore = configureMockStore([thunk]);
 
 const ENTERPRISE_SLUG = 'sluggy';
-const store = mockStore({
-  portalConfiguration: {
-    enterpriseSlug: ENTERPRISE_SLUG,
-  },
-});
 
 const useHistoryPush = jest.fn();
 
@@ -52,34 +48,42 @@ const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
+  enableLearnerPortal = true,
+  EnterpriseSubsidiesContextValue = {
+    canManageLearnerCredit,
+    enterpriseSubsidyTypes: [SUBSIDY_TYPES.coupon],
+  },
+  subsidyRequestContextValue = {
+    subsidyRequestConfiguration: {
+      subsidyType,
+      subsidyRequestsEnabled,
+    },
+    enterpriseSubsidyTypesForRequests: [SUBSIDY_TYPES.coupon],
+  },
+  store = mockStore({
+    portalConfiguration: {
+      enterpriseSlug: ENTERPRISE_SLUG,
+      enableLearnerPortal,
+    },
+  }),
 }) => (
   <Provider store={store}>
-
     <Router history={historyMock(pathname)}>
       <Route
         path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
         render={
-        () => (
-          <EnterpriseSubsidiesContext.Provider value={{
-            canManageLearnerCredit,
-          }}
-          >
-            <SubsidyRequestsContext.Provider value={{
-              subsidyRequestConfiguration: {
-                subsidyType,
-                subsidyRequestsEnabled,
-              },
-            }}
-            >
-              <>
-                <ProductTours />
-                <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
-                <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
-              </>
-            </SubsidyRequestsContext.Provider>
-          </EnterpriseSubsidiesContext.Provider>
-        )
-    }
+          () => (
+            <EnterpriseSubsidiesContext.Provider value={EnterpriseSubsidiesContextValue}>
+              <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
+                <>
+                  <ProductTours />
+                  <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
+                  <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
+                </>
+              </SubsidyRequestsContext.Provider>
+            </EnterpriseSubsidiesContext.Provider>
+          )
+        }
       />
     </Router>
   </Provider>
@@ -130,6 +134,21 @@ describe('<ProductTours/>', () => {
 
     it('not shown in settings page', () => {
       render(<ToursWithContext pathname={SETTINGS_PAGE_LOCATION} />);
+      expect(screen.queryByText('New Feature')).toBeFalsy();
+    });
+
+    it('is not shown if enterprise does not have subsidies that can be used for browse and request', () => {
+      render(
+        <ToursWithContext
+          subsidyRequestContextValue={{
+            subsidyRequestConfiguration: {
+              subsidyType: null,
+              subsidyRequestsEnabled: false,
+            },
+            enterpriseSubsidyTypesForRequests: [],
+          }}
+        />,
+      );
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
   });

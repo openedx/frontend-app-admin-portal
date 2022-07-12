@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   screen,
@@ -35,8 +36,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 const mockRefreshLinks = jest.fn();
 
 const SettingsAccessLinkManagementWrapper = ({
-  // eslint-disable-next-line react/prop-types
-  store = generateStore({}), links = [], loadingLinks = false, subscriptions = [],
+  store = generateStore({}),
+  links = [],
+  loadingLinks = false,
+  enterpriseSubsidiesContextValue = {
+    coupons: [],
+    customerAgreement: undefined,
+  },
 }) => {
   jest.spyOn(hooks, 'useLinkManagement').mockImplementation(
     () => ({
@@ -45,17 +51,12 @@ const SettingsAccessLinkManagementWrapper = ({
       refreshLinks: mockRefreshLinks,
     }),
   );
-  jest.spyOn(hooks, 'useCustomerAgreementData').mockImplementation(
-    () => ({
-      customerAgreement: {
-        subscriptions,
-      },
-      loadingCustomerAgreement: false,
-    }),
-  );
 
   return (
-    <MockSettingsContext store={store}>
+    <MockSettingsContext
+      store={store}
+      enterpriseSubsidiesContextValue={enterpriseSubsidiesContextValue}
+    >
       <SettingsAccessLinkManagement />
     </MockSettingsContext>
   );
@@ -112,13 +113,13 @@ describe('<SettingsAccessLinkManagement/>', () => {
       <SettingsAccessLinkManagementWrapper
         store={generateStore({
           portalConfiguration: { enableUniversalLink: false },
-          coupons: {
-            data: {
-              results: [{ endDate: couponExpirationDate }],
-            },
-          },
         })}
-        subscriptions={[{ expirationDate: subExpirationDate }]}
+        enterpriseSubsidiesContextValue={{
+          coupons: [{ endDate: couponExpirationDate }],
+          customerAgreement: {
+            subscriptions: [{ expirationDate: subExpirationDate }],
+          },
+        }}
       />,
     );
 
@@ -144,5 +145,47 @@ describe('<SettingsAccessLinkManagement/>', () => {
       SETTINGS_ACCESS_EVENTS.UNIVERSAL_LINK_TOGGLE,
       { toggle_to: true },
     );
+  });
+
+  test('Generate link button is disabled if there are no coupons or subscriptions', async () => {
+    render(
+      <SettingsAccessLinkManagementWrapper
+        store={generateStore({
+          portalConfiguration: { enableUniversalLink: true },
+        })}
+        enterpriseSubsidiesContextValue={{
+          coupons: [],
+          customerAgreement: {
+            subscriptions: [],
+          },
+        }}
+      />,
+    );
+
+    const button = screen.queryByText('Generate link').closest('button');
+    expect(button).toBeTruthy();
+    expect(button).toHaveProperty('disabled', true);
+  });
+
+  test('Generate link button is disabled if link expiration date is in the past', async () => {
+    const subExpirationDate = moment().subtract(1, 'days').format();
+
+    render(
+      <SettingsAccessLinkManagementWrapper
+        store={generateStore({
+          portalConfiguration: { enableUniversalLink: true },
+        })}
+        enterpriseSubsidiesContextValue={{
+          coupons: [],
+          customerAgreement: {
+            subscriptions: [{ expirationDate: subExpirationDate }],
+          },
+        }}
+      />,
+    );
+
+    const button = screen.queryByText('Generate link').closest('button');
+    expect(button).toBeTruthy();
+    expect(button).toHaveProperty('disabled', true);
   });
 });

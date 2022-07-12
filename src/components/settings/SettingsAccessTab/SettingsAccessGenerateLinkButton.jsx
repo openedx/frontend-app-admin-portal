@@ -32,6 +32,9 @@ const SettingsAccessGenerateLinkButton = ({
   const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);
     try {
+      if (!formattedLinkExpirationDate) {
+        throw new Error('Attempted to generate universal link without an expiration date');
+      }
       const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseUUID, formattedLinkExpirationDate);
       onSuccess(response);
     } catch (error) {
@@ -57,10 +60,15 @@ const SettingsAccessGenerateLinkButton = ({
 
 SettingsAccessGenerateLinkButton.defaultProps = {
   disabled: false,
+  formattedLinkExpirationDate: null,
 };
 SettingsAccessGenerateLinkButton.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  formattedLinkExpirationDate: PropTypes.string.isRequired,
+  formattedLinkExpirationDate: (props) => {
+    if (!props.disabled && !props.formattedLinkExpirationDate) {
+      throw new Error('Please provide a formattedLinkExpirationDate if the button is not disabled!');
+    }
+  },
   disabled: PropTypes.bool,
   onSuccess: PropTypes.func.isRequired,
 };
