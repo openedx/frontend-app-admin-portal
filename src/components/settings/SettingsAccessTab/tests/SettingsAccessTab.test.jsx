@@ -3,9 +3,9 @@ import '@testing-library/jest-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import SettingsAccessTab from '../index';
-import { SettingsContext } from '../../SettingsContext';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
+import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 
 jest.mock('../SettingsAccessSubsidyTypeSelection', () => ({
   __esModule: true, // this property makes it work
@@ -63,23 +63,23 @@ const SettingsAccessTabWrapper = ({
   subsidyRequestConfigurationContextValue = {
     subsidyRequestConfiguration: mockSubsidyRequestConfiguration,
     updateSubsidyRequestConfiguration: jest.fn(),
+    enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon],
   },
-  settingsContextValue = {
+  enterpriseSubsidiesContextValue = {
+    offers: [],
     customerAgreement: {
       netDaysUntilExpiration: 0,
       subscriptions: [],
     },
-    couponsData: {
-      results: [],
-    },
+    coupons: [],
     enterpriseSubsidyTypes: [SUPPORTED_SUBSIDY_TYPES.coupon],
   },
   props = {},
 }) => (
   <SubsidyRequestsContext.Provider value={subsidyRequestConfigurationContextValue}>
-    <SettingsContext.Provider value={settingsContextValue}>
+    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
       <SettingsAccessTab {...{ ...basicProps, ...props }} />
-    </SettingsContext.Provider>
+    </EnterpriseSubsidiesContext.Provider>
   </SubsidyRequestsContext.Provider>
 );
 /* eslint-enable react/prop-types */
@@ -124,6 +124,7 @@ describe('<SettingsAccessTab />', () => {
         subsidyRequestsEnabled: true,
         subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
       },
+      enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon],
     };
     renderWithRouter(
       <SettingsAccessTabWrapper
@@ -141,6 +142,7 @@ describe('<SettingsAccessTab />', () => {
         subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
       },
       updateSubsidyRequestConfiguration: jest.fn(),
+      enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon],
     };
     renderWithRouter(
       <SettingsAccessTabWrapper
@@ -158,6 +160,7 @@ describe('<SettingsAccessTab />', () => {
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
       },
       updateSubsidyRequestConfiguration: jest.fn(),
+      enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.license],
     };
     renderWithRouter(
       <SettingsAccessTabWrapper
@@ -175,6 +178,7 @@ describe('<SettingsAccessTab />', () => {
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
       },
       updateSubsidyRequestConfiguration: jest.fn(),
+      enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.license],
     };
     renderWithRouter(
       <SettingsAccessTabWrapper
@@ -188,21 +192,21 @@ describe('<SettingsAccessTab />', () => {
   it('should render <SettingsAccessSubsidyTypeSelection/> if enterprise has multiple subsidy types and subsidy type is not configured', () => {
     renderWithRouter(
       <SettingsAccessTabWrapper
-        settingsContextValue={
+        enterpriseSubsidiesContextValue={
           {
+            offers: [],
             customerAgreement: {
               netDaysUntilExpiration: 0,
               subscriptions: [],
             },
-            couponsData: {
-              results: [],
-            },
+            coupons: [],
             enterpriseSubsidyTypes: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
           }
         }
         subsidyRequestConfigurationContextValue={
           {
             subsidyType: null,
+            enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
           }
         }
       />,
@@ -214,17 +218,16 @@ describe('<SettingsAccessTab />', () => {
   it('should render <SettingsAccessConfiguredSubsidyType/> if subsidy type is configured', () => {
     renderWithRouter(
       <SettingsAccessTabWrapper
-        settingsContextValue={
-          {
-            customerAgreement: {
-              netDaysUntilExpiration: 0,
-              subscriptions: [],
-            },
-            couponsData: {
-              results: [],
-            },
-            enterpriseSubsidyTypes: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
-          }
+        enterpriseSubsidiesContextValue={
+        {
+          offers: [],
+          customerAgreement: {
+            netDaysUntilExpiration: 0,
+            subscriptions: [],
+          },
+          coupons: [],
+          enterpriseSubsidyTypes: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
+        }
         }
         subsidyRequestConfigurationContextValue={
           {
@@ -232,6 +235,7 @@ describe('<SettingsAccessTab />', () => {
               ...mockSubsidyRequestConfiguration,
               subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
             },
+            enterpriseSubsidyTypesForRequests: [SUPPORTED_SUBSIDY_TYPES.coupon, SUPPORTED_SUBSIDY_TYPES.license],
           }
         }
       />,

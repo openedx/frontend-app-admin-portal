@@ -11,16 +11,18 @@ import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 const cookies = new Cookies();
 
-export const useBrowseAndRequestTour = () => {
+export const useBrowseAndRequestTour = ({
+  enableLearnerPortal,
+}) => {
   const { enterpriseAppPage } = useParams();
   const inSettingsPage = enterpriseAppPage === ROUTE_NAMES.settings;
 
-  const { subsidyRequestConfiguration } = useContext(SubsidyRequestsContext);
+  const { subsidyRequestConfiguration, enterpriseSubsidyTypesForRequests } = useContext(SubsidyRequestsContext);
   const dismissedBrowseAndRequestTourCookie = cookies.get(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
   // Only show tour if the enterprise is eligible for the feature, browse and request tour cookie is undefined or false,
   // not in settings page, and subsidy requests are not already enabled
-  const showBrowseAndRequestTour = !dismissedBrowseAndRequestTourCookie
-   && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const showBrowseAndRequestTour = enableLearnerPortal && enterpriseSubsidyTypesForRequests.length > 0
+   && !dismissedBrowseAndRequestTourCookie && !inSettingsPage && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
   const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useState(showBrowseAndRequestTour);
   return [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled];

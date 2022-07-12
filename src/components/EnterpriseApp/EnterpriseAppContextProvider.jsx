@@ -10,10 +10,15 @@ const EnterpriseAppContextProvider = ({
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
-  const subsidyRequestsContext = useSubsidyRequestsContext(enterpriseId);
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
+    enterpriseId,
     enablePortalLearnerCreditManagementScreen,
   });
+
+  const {
+    enterpriseSubsidyTypes,
+  } = enterpriseSubsidiesContext;
+  const subsidyRequestsContext = useSubsidyRequestsContext({ enterpriseId, enterpriseSubsidyTypes });
 
   const isLoading = subsidyRequestsContext.isLoading || enterpriseSubsidiesContext.isLoading;
 

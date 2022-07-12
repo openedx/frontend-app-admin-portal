@@ -21,8 +21,8 @@ import ActionsTableCell from './ActionsTableCell';
 import DisableLinkManagementAlertModal from './DisableLinkManagementAlertModal';
 import { updatePortalConfigurationEvent } from '../../../data/actions/portalConfiguration';
 import LmsApiService from '../../../data/services/LmsApiService';
-import { SettingsContext } from '../SettingsContext';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
@@ -36,9 +36,9 @@ const SettingsAccessLinkManagement = ({
   } = useLinkManagement(enterpriseUUID);
 
   const {
-    customerAgreement: { subscriptions },
-    couponsData: { results: coupons },
-  } = useContext(SettingsContext);
+    customerAgreement,
+    coupons,
+  } = useContext(EnterpriseSubsidiesContext);
 
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
   const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
@@ -48,12 +48,17 @@ const SettingsAccessLinkManagement = ({
     () => {
       const expirationDates = [
         ...coupons.map(coupon => moment(coupon.endDate)),
-        ...subscriptions.map(subscription => moment(subscription.expirationDate).startOf('day')),
+        ...(customerAgreement?.subscriptions ?? []).map(subscription => moment(subscription.expirationDate).startOf('day')),
       ];
+
+      if (expirationDates.length === 0 || moment.max(expirationDates) < moment()) {
+        return null;
+      }
+
       const furthestExpirationDate = moment.max(expirationDates);
       return furthestExpirationDate.format();
     },
-    [coupons, subscriptions],
+    [coupons, customerAgreement],
   );
 
   const toggleUniversalLink = async (newEnableUniversalLink) => {
@@ -63,7 +68,7 @@ const SettingsAccessLinkManagement = ({
       enableUniversalLink: newEnableUniversalLink,
     };
 
-    if (newEnableUniversalLink) {
+    if (newEnableUniversalLink && formattedLinkExpirationDate) {
       args.expirationDate = formattedLinkExpirationDate;
     }
 
@@ -135,7 +140,7 @@ const SettingsAccessLinkManagement = ({
               enterpriseUUID={enterpriseUUID}
               formattedLinkExpirationDate={formattedLinkExpirationDate}
               onSuccess={handleGenerateLinkSuccess}
-              disabled={!isUniversalLinkEnabled || loadingLinks}
+              disabled={!isUniversalLinkEnabled || !formattedLinkExpirationDate || loadingLinks}
             />,
           ]}
           columns={[
