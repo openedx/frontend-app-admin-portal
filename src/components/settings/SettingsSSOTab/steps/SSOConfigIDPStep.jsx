@@ -44,7 +44,7 @@ const SSOConfigIDPStep = ({ enterpriseId }) => {
             value={entityID || ''}
           />
           <p className="mt-0 form-text text-muted">
-            You can find the URL in your Identiity Provider portal or on your IDP website.
+            You can find the URL in your Identity Provider portal or on your IDP website.
           </p>
           { existingProviderData.length > 0 && (
             <>

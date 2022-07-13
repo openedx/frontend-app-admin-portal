@@ -57,34 +57,33 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     const configFormData = new FormData();
     Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));
     configFormData.append('enterprise_customer_uuid', enterpriseId);
+    configFormData.append('enabled', true);
     try {
-      const response = await LmsApiService.updateProviderConfig(configFormData, providerConfig.id);
-      if (type === 'update') {
-        setProviderConfig(response.data);
-      }
-      return null;
+      await LmsApiService.updateProviderConfig(configFormData, providerConfig.id).then((response) => {
+        if (type === 'update') {
+          setProviderConfig(response.data);
+        }
+      });
     } catch (error) {
       setConnectError(true);
       return handleErrors(error);
     }
+    return null;
   }
 
   const saveOnQuit = async () => {
-    let err;
-    if (configValues !== null) {
-      err = sendData('save');
-    }
-    if (!err) {
-      handleCancel();
-    }
+    await sendData('save').then((err) => {
+      if (!err) { handleCancel(); }
+    });
+    return null;
   };
 
   const updateConfig = async () => {
-    let err;
     if (configValues !== null) {
-      err = sendData('update');
-    }
-    if (!err) {
+      await sendData('update').then((err) => {
+        if (!err) { setCurrentStep('connect'); }
+      });
+    } else {
       setCurrentStep('connect');
     }
   };

@@ -37,7 +37,7 @@ const SSOConfigConfiguredCard = ({
         aProviderConfig => (aProviderConfig.name === config.name) && (aProviderConfig.entity_id === config.entity_id),
       ).shift();
       if (theProvider) { setProviderConfig(theProvider); }
-      if (theProvider?.was_valid_at !== null) {
+      if (theProvider && theProvider.was_valid_at !== null) {
         dispatchSsoState(updateConnectInProgress(false));
         setIsSsoValid(true);
         setInfoMessage('SSO connected successfully');
