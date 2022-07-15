@@ -3,18 +3,17 @@ import { Col, Row } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { features } from '../../../config';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { NoAvailableCodesBanner, NoAvailableLicensesBanner } from '../../subsidy-request-management-alerts';
 import SettingsAccessLinkManagement from './SettingsAccessLinkManagement';
 import SettingsAccessSSOManagement from './SettingsAccessSSOManagement';
 import SettingsAccessSubsidyRequestManagement from './SettingsAccessSubsidyRequestManagement';
 import SettingsAccessSubsidyTypeSelection from './SettingsAccessSubsidyTypeSelection';
-import { SettingsContext } from '../SettingsContext';
 import SettingsAccessConfiguredSubsidyType from './SettingsAccessConfiguredSubsidyType';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import { getSubsidyTypeLabelAndRoute } from './data/utils';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 const SettingsAccessTab = ({
   enterpriseId,
@@ -28,21 +27,21 @@ const SettingsAccessTab = ({
   const {
     subsidyRequestConfiguration,
     updateSubsidyRequestConfiguration,
+    enterpriseSubsidyTypesForRequests,
   } = useContext(SubsidyRequestsContext);
+
   const {
-    couponsData: { results: coupons },
-    customerAgreement: { subscriptions },
-    enterpriseSubsidyTypes,
-  } = useContext(SettingsContext);
+    coupons,
+    customerAgreement,
+  } = useContext(EnterpriseSubsidiesContext);
+  const subscriptions = customerAgreement?.subscriptions ?? [];
 
   const configuredRequestSubsidyType = subsidyRequestConfiguration?.subsidyType;
   const hasConfiguredSubsidyType = !!configuredRequestSubsidyType;
-  const isBrowseAndRequestEnabled = features.FEATURE_BROWSE_AND_REQUEST;
 
   const isLearnerPortalSearchEnabled = identityProvider && enableIntegratedCustomerLearnerPortalSearch;
   const hasActiveAccessChannel = enableUniversalLink || isLearnerPortalSearchEnabled;
-
-  const isUniversalLinkEnabled = features.SETTINGS_UNIVERSAL_LINK && enableLearnerPortal;
+  const isUniversalLinkEnabled = enableLearnerPortal;
 
   const isNoAvailableCodesBannerVisible = (
     configuredRequestSubsidyType === SUPPORTED_SUBSIDY_TYPES.coupon
@@ -77,7 +76,7 @@ const SettingsAccessTab = ({
           </ContactCustomerSupportButton>
         </Col>
       </Row>
-      {enterpriseSubsidyTypes.length > 1 && (
+      {enterpriseSubsidyTypesForRequests.length > 1 && (
         <div className="mb-4">
           <h3>Subsidy type</h3>
           {hasConfiguredSubsidyType ? (
@@ -85,7 +84,7 @@ const SettingsAccessTab = ({
           ) : (
             <SettingsAccessSubsidyTypeSelection
               subsidyRequestConfiguration={subsidyRequestConfiguration}
-              subsidyTypes={enterpriseSubsidyTypes}
+              subsidyTypes={enterpriseSubsidyTypesForRequests}
               disabled={hasConfiguredSubsidyType}
               updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
             />
@@ -114,7 +113,7 @@ const SettingsAccessTab = ({
               />
             )}
           </div>
-          {isBrowseAndRequestEnabled && subsidyTypeLabelAndRoute && (
+          {subsidyTypeLabelAndRoute && (
             <div>
               <div className="d-flex justify-content-between">
                 <h3>Manage course requests</h3>

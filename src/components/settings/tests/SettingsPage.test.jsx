@@ -11,12 +11,6 @@ import SettingsPage from '../index';
 
 jest.mock('../SettingsTabs');
 
-jest.mock('../SettingsContext', () => ({
-  __esModule: true,
-  // eslint-disable-next-line react/prop-types
-  default: ({ children }) => <div>{ children }</div>,
-}));
-
 const mockStore = configureMockStore();
 const store = mockStore({
   portalConfiguration: {

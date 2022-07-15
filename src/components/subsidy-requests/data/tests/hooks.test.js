@@ -45,7 +45,10 @@ describe('useSubsidyRequestConfiguration', () => {
   });
 
   it('should not fetch subsidy request configuration if there is no enterpriseUUID', async () => {
-    renderHook(() => useSubsidyRequestConfiguration(undefined));
+    renderHook(() => useSubsidyRequestConfiguration({
+      enterpriseId: undefined,
+      enterpriseSubsidyTypesForRequests: [],
+    }));
     expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).not.toHaveBeenCalled();
   });
 
@@ -53,7 +56,10 @@ describe('useSubsidyRequestConfiguration', () => {
     EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValue(
       TEST_CONFIGURATION_RESPONSE,
     );
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+    const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+      enterpriseId: TEST_ENTERPRISE_UUID,
+      enterpriseSubsidyTypesForRequests: [],
+    }));
 
     await waitForNextUpdate();
 
@@ -68,7 +74,10 @@ describe('useSubsidyRequestConfiguration', () => {
   it('should handle non-404 errors', async () => {
     const error = new Error('Error fetching subsidy request configuration');
     EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockRejectedValue(error);
-    const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+    const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+      enterpriseId: TEST_ENTERPRISE_UUID,
+      enterpriseSubsidyTypesForRequests: [],
+    }));
 
     await waitForNextUpdate();
 
@@ -97,7 +106,10 @@ describe('useSubsidyRequestConfiguration', () => {
       LicenseManagerApiService.fetchSubscriptions.mockResolvedValue({ data: { results: [{ uuid: 'test-sub-uuid' }] } });
       EnterpriseAccessApiService.createSubsidyRequestConfiguration.mockResolvedValue(expectedConfigurationResponse);
 
-      const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitFor(() => {
         expect(EnterpriseAccessApiService.createSubsidyRequestConfiguration).toHaveBeenCalledWith({
@@ -122,7 +134,10 @@ describe('useSubsidyRequestConfiguration', () => {
       LicenseManagerApiService.fetchSubscriptions.mockResolvedValue({ data: { results: [{ uuid: 'test-sub-uuid' }] } });
       EnterpriseAccessApiService.createSubsidyRequestConfiguration.mockResolvedValue(expectedConfigurationResponse);
 
-      const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitFor(() => {
         expect(EnterpriseAccessApiService.createSubsidyRequestConfiguration).toHaveBeenCalledWith({
@@ -147,7 +162,10 @@ describe('useSubsidyRequestConfiguration', () => {
       LicenseManagerApiService.fetchSubscriptions.mockResolvedValue({ data: { results: [] } });
       EnterpriseAccessApiService.createSubsidyRequestConfiguration.mockResolvedValue(expectedConfigurationResponse);
 
-      const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitFor(() => {
         expect(EnterpriseAccessApiService.createSubsidyRequestConfiguration).toHaveBeenCalledWith({
@@ -165,7 +183,10 @@ describe('useSubsidyRequestConfiguration', () => {
       const error = new Error('Error fetching coupon orders');
       EcommerceApiService.fetchCouponOrders.mockRejectedValue(error);
 
-      const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitForNextUpdate();
 
@@ -189,7 +210,10 @@ describe('useSubsidyRequestConfiguration', () => {
         }),
       );
 
-      const { result } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitFor(() => {
         expect(result.current.subsidyRequestConfiguration.subsidyRequestsEnabled).toEqual(false);
@@ -214,7 +238,10 @@ describe('useSubsidyRequestConfiguration', () => {
       const error = new Error('Error updating subsidy request configuration');
       EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockRejectedValue(error);
 
-      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration(TEST_ENTERPRISE_UUID));
+      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypesForRequests: [],
+      }));
 
       await waitForNextUpdate();
 
@@ -225,6 +252,42 @@ describe('useSubsidyRequestConfiguration', () => {
       })).rejects.toThrowError(error);
 
       expect(logging.logError).toHaveBeenCalledWith(error);
+    });
+  });
+
+  it('updates configuration if the enterprise adds a new subsidy and previously had none', async () => {
+    EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValueOnce(
+      createSubsidyRequestConfigurationResponse({
+        subsidyType: null,
+        subsidyRequestsEnabled: false,
+      }),
+    ).mockResolvedValueOnce(
+      createSubsidyRequestConfigurationResponse({
+        subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+        subsidyRequestsEnabled: false,
+      }),
+    );
+
+    EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockResolvedValueOnce(
+      createSubsidyRequestConfigurationResponse({
+        subsidyType: SUPPORTED_SUBSIDY_TYPES.coupon,
+        subsidyRequestsEnabled: false,
+      }),
+    );
+
+    const enterpriseSubsidyTypesForRequests = [SUPPORTED_SUBSIDY_TYPES.coupon];
+    renderHook(() => useSubsidyRequestConfiguration({
+      enterpriseId: TEST_ENTERPRISE_UUID,
+      enterpriseSubsidyTypesForRequests,
+    }));
+
+    await waitFor(() => {
+      expect(EnterpriseAccessApiService.updateSubsidyRequestConfiguration).toHaveBeenCalledWith(
+        TEST_ENTERPRISE_UUID, {
+          subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
+          subsidy_requests_enabled: undefined,
+        },
+      );
     });
   });
 });

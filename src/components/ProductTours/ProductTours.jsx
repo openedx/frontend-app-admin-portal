@@ -11,8 +11,13 @@ import { useBrowseAndRequestTour, useLearnerCreditTour } from './data/hooks';
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
  */
-const ProductTours = ({ enterpriseSlug }) => {
-  const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour();
+const ProductTours = ({
+  enterpriseSlug,
+  enableLearnerPortal,
+}) => {
+  const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour({
+    enableLearnerPortal,
+  });
   const [learnerCreditTourEnabled, setLearnerCreditTourEnabled] = useLearnerCreditTour();
 
   const history = useHistory();
@@ -42,10 +47,12 @@ const ProductTours = ({ enterpriseSlug }) => {
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
 });
 
 export default connect(mapStateToProps)(ProductTours);

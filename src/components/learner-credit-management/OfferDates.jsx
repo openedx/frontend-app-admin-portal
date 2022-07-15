@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-export const DATE_FORMAT = 'MMMM D, YYYY';
+import { DATE_FORMAT } from './data/constants';
 
 /**
  * Determines whether a timestamp is in the past based on the current date and time.

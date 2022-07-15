@@ -48,37 +48,53 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           >
             Loading...
           </div>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
         </div>
       </div>
@@ -6251,37 +6267,53 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           >
             Loading...
           </div>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
-          <span>
+          <span
+            aria-busy={true}
+            aria-live="polite"
+          >
             <span
-              className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+              className="react-loading-skeleton"
               style={Object {}}
             >
               ‌
             </span>
+            <br />
           </span>
         </div>
       </div>
@@ -6342,9 +6374,12 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
   >
     Loading...
   </div>
-  <span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
     <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      className="react-loading-skeleton"
       style={
         Object {
           "height": "8rem",
@@ -6353,10 +6388,14 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
     >
       ‌
     </span>
+    <br />
   </span>
-  <span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
     <span
-      className="react-loading-skeleton css-1eg0sfo-skeletonStyles-Skeleton"
+      className="react-loading-skeleton"
       style={
         Object {
           "height": "70vh",
@@ -6365,6 +6404,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
     >
       ‌
     </span>
+    <br />
   </span>
 </main>
 `;

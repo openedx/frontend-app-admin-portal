@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Alert, Button, Hyperlink, CardGrid, Toast,
+  Alert, Button, Hyperlink, CardGrid, Toast, Skeleton,
 } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
-import Skeleton from 'react-loading-skeleton';
 import { camelCaseDictArray } from '../../../utils';
 import LMSCard from './LMSCard';
 import LMSConfigPage from './LMSConfigPage';
@@ -34,6 +33,7 @@ export default function SettingsLMSTab({
   enterpriseSlug,
   enableSamlConfigurationScreen,
   identityProvider,
+  hasSSOConfig,
 }) {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
@@ -156,7 +156,7 @@ export default function SettingsLMSTab({
         Enabling a learning management system for your edX account allows quick
         access to the catalog
       </p>
-      {displayNeedsSSOAlert && (
+      {displayNeedsSSOAlert && !hasSSOConfig && (
         <Alert
           className="mr-6 sso-alert-modal-margin"
           variant="danger"
@@ -184,7 +184,7 @@ export default function SettingsLMSTab({
           />
         </span>
       )}
-      {configsLoading && (<span data-testid="skeleton"><Skeleton data-testid="skeleton" className="mb-4" count={2} height={20} /></span>)}
+      {configsLoading && (<span data-testid="skeleton"><Skeleton className="mb-4" count={2} height={20} /></span>)}
       {!showNewConfigButtons && !configsLoading && !config && (
         <Button
           variant="primary"
@@ -192,7 +192,7 @@ export default function SettingsLMSTab({
           iconBefore={Add}
           size="lg"
           block
-          disabled={displayNeedsSSOAlert}
+          disabled={displayNeedsSSOAlert && !hasSSOConfig}
           onClick={showCreateConfigCards}
         >
           New configuration
@@ -212,12 +212,12 @@ export default function SettingsLMSTab({
               xl: 3,
             }}
           >
-            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
             <LMSCard LMSType={BLACKBOARD_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
+            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
           </CardGrid>
         </span>
       )}
@@ -228,6 +228,7 @@ export default function SettingsLMSTab({
             onClick={onClick}
             existingConfigFormData={existingConfigFormData}
             existingConfigs={displayNames}
+            setExistingConfigFormData={setExistingConfigFormData}
           />
         </span>
       )}
@@ -252,4 +253,5 @@ SettingsLMSTab.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
+  hasSSOConfig: PropTypes.bool.isRequired,
 };

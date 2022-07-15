@@ -36,7 +36,8 @@ describe('SSOConfigCard', () => {
       </Provider>,
     );
     expect(screen.getByText(
-      'Once you\'ve successfully logged in, use this page to verify that your configuration is completed and validated.',
+      'Once you\'ve successfully logged in, this page will navigate to the SSO existing '
+      + 'configuration screen and the connection will be marked active.',
     )).toBeInTheDocument();
     expect(screen.getByDisplayValue('http://test')).toBeInTheDocument();
   });

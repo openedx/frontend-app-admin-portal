@@ -33,13 +33,13 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                     htmlFor="form-field2"
                     id="text-filter-label-header_email-1"
                   >
-                    Search Email address
+                    Search email address
                   </label>
                   <input
                     aria-labelledby="text-filter-label-header_email-1"
                     className="form-control"
                     onChange={[Function]}
-                    placeholder="Search Email address"
+                    placeholder="Search email address"
                     type="text"
                     value=""
                   />

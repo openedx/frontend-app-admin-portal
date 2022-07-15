@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Skeleton from 'react-loading-skeleton';
 import {
   OverlayTrigger,
   Popover,
   Button,
   Hyperlink,
+  Skeleton,
 } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 

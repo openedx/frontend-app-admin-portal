@@ -7,11 +7,11 @@ import {
   Alert,
   Form,
   StatefulButton,
+  Skeleton,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import Skeleton from 'react-loading-skeleton';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { useApplicableCoupons } from './data/hooks';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';

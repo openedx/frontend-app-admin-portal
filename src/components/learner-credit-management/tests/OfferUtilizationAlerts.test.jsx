@@ -20,7 +20,7 @@ const OfferUtilizationAlertsWrapper = (props) => (
 );
 
 describe('<OfferUtilizationAlerts />', () => {
-  it('does not render any alerts if percent utilized and/or remaining funds is undefined', () => {
+  it('does not render any alerts if percent utilized and/or remaining funds is missing', () => {
     const { container } = render(
       <OfferUtilizationAlertsWrapper
         enterpriseUUID={TEST_ENTERPRISE_UUID}

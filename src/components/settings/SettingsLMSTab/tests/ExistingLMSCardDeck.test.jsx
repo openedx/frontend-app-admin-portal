@@ -61,6 +61,30 @@ const needsRefreshTokenConfigData = [
   },
 ];
 
+const multipleConfigData = [
+  {
+    channelCode: 'BLACKBOARD',
+    id: 2,
+    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
+    active: false,
+    displayName: 'barfoo',
+  },
+  {
+    channelCode: 'BLACKBOARD',
+    id: 2,
+    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
+    active: false,
+    displayName: 'foobar',
+  },
+  {
+    channelCode: 'BLACKBOARD',
+    id: 2,
+    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
+    active: false,
+    displayName: 'ayylmao',
+  },
+];
+
 describe('<ExistingLMSCardDeck />', () => {
   it('renders active config card', () => {
     render(
@@ -186,5 +210,24 @@ describe('<ExistingLMSCardDeck />', () => {
       .toBeInTheDocument();
     expect(screen.getByText('authorize your LMS'))
       .toBeInTheDocument();
+  });
+  it('alphabetizes existing LMS config cards by display name', async () => {
+    render(
+      <ExistingLMSCardDeck
+        configData={multipleConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    await waitFor(() => {
+      const html = document.body.innerHTML;
+      const a = html.search('ayylmao');
+      const b = html.search('barfoo');
+      const c = html.search('foobar');
+      expect(a).toBeLessThan(b);
+      expect(a).toBeLessThan(c);
+      expect(b).toBeLessThan(c);
+    });
   });
 });
