@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "10.0.0",
+    "@edx/frontend-build": "^12.0.0",
     "@intervolga/optimize-cssnano-plugin": "1.0.6",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "5.11.9",
