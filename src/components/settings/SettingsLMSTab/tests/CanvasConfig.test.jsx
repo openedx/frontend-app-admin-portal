@@ -15,10 +15,20 @@ jest.mock('../../data/constants', () => ({
 }));
 window.open = jest.fn();
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateCanvasConfig');
-mockUpdateConfigApi.mockResolvedValue({ data: { uuid: 'foobar', id: 1 } });
+const mockConfigResponseData = {
+  uuid: 'foobar',
+  id: 1,
+  display_name: 'display name',
+  canvas_base_url: 'https://foobar.com',
+  canvas_account_id: 1,
+  client_id: '123abc',
+  client_secret: 'asdhfahsdf',
+  active: false,
+};
+mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
 
 const mockPostConfigApi = jest.spyOn(LmsApiService, 'postNewCanvasConfig');
-mockPostConfigApi.mockResolvedValue({ data: { uuid: 'foobar', id: 1 } });
+mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
 
 const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleCanvasConfig');
 mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
@@ -50,16 +60,14 @@ const existingConfigDataNoAuth = {
 };
 
 const noConfigs = [];
-const existingConfig = [{
-  displayName: 'name',
-}];
-const existingConfig2 = [{
-  displayName: 'foobar',
-}];
+const existingConfigDisplayNames = ['name'];
+const existingConfigDisplayNames2 = ['foobar'];
 
 afterEach(() => {
   jest.clearAllMocks();
 });
+
+const mockSetExistingConfigFormData = jest.fn();
 
 describe('<CanvasConfig />', () => {
   test('renders Canvas Config Form', () => {
@@ -69,6 +77,7 @@ describe('<CanvasConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -83,7 +92,8 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigDisplayNames}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -116,7 +126,8 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     await act(async () => {
@@ -143,12 +154,12 @@ describe('<CanvasConfig />', () => {
     userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
     userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
 
-    expect(screen.getByText('Submit')).not.toBeDisabled();
+    expect(screen.getByText('Authorize')).not.toBeDisabled();
 
-    userEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Authorize'));
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => screen.getByText('Submit'));
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
 
     const expectedConfig = {
       canvas_base_url: 'https://www.test4.com',
@@ -167,6 +178,7 @@ describe('<CanvasConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -200,6 +212,7 @@ describe('<CanvasConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -235,6 +248,7 @@ describe('<CanvasConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -258,7 +272,8 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     act(() => {
@@ -277,10 +292,10 @@ describe('<CanvasConfig />', () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
-    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    await waitFor(() => expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL));
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
     render(
@@ -288,7 +303,8 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
@@ -309,6 +325,7 @@ describe('<CanvasConfig />', () => {
         onClick={mockOnClick}
         existingData={invalidExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -320,10 +337,38 @@ describe('<CanvasConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
+  });
+  test('it calls setExistingConfigFormData after authorization', async () => {
+    render(
+      <CanvasConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigDataNoAuth}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
+      />,
+    );
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
+    expect(screen.getByText('Authorize')).not.toBeDisabled();
+    userEvent.click(screen.getByText('Authorize'));
+
+    // Await a find by text in order to account for state changes in the button callback
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
+    expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
+      uuid: 'foobar',
+      id: 1,
+      displayName: 'display name',
+      canvasBaseUrl: 'https://foobar.com',
+      canvasAccountId: 1,
+      clientId: '123abc',
+      clientSecret: 'asdhfahsdf',
+      active: false,
+    });
   });
 });

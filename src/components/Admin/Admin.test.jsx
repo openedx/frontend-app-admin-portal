@@ -347,15 +347,15 @@ describe('<Admin />', () => {
       },
       'learners-active-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learner_activity: 'active_past_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learnerActivity: 'active_past_week' }, { csv: true }],
       },
       'learners-inactive-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learner_activity: 'inactive_past_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learnerActivity: 'inactive_past_week' }, { csv: true }],
       },
       'learners-inactive-month': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learner_activity: 'inactive_past_month' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { learnerActivity: 'inactive_past_month' }, { csv: true }],
       },
       'completed-learners': {
         csvFetchMethod: 'fetchCompletedLearners',
@@ -363,7 +363,7 @@ describe('<Admin />', () => {
       },
       'completed-learners-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { passed_date: 'last_week' }, { csv: true }],
+        csvFetchParams: [enterpriseId, { passedDate: 'last_week' }, { csv: true }],
       },
     };
 

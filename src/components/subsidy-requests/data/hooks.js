@@ -13,16 +13,20 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
  * @param {string} enterpriseUUID UUID of the enterprise
  * @returns {Object} {customerConfiguration: Object, isLoading: bool}
  */
-export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
+export const useSubsidyRequestConfiguration = ({
+  enterpriseId,
+  enterpriseSubsidyTypesForRequests,
+}) => {
   const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   const createSubsidyRequestConfiguration = useCallback(async () => {
     try {
+      // TODO: these calls can be removed
       const [couponsData, subscriptionsData] = await Promise.all([
         EcommerceApiService.fetchCouponOrders(),
         LicenseManagerApiService.fetchSubscriptions({
-          enterprise_customer_uuid: enterpriseUUID,
+          enterprise_customer_uuid: enterpriseId,
         }),
       ]);
       const hasCoupons = couponsData.data.results.length > 0;
@@ -41,7 +45,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       }
 
       const response = await EnterpriseAccessApiService.createSubsidyRequestConfiguration({
-        enterpriseId: enterpriseUUID,
+        enterpriseId,
         subsidyType,
       });
 
@@ -51,14 +55,14 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
       // log error and do nothing
       logError(error);
     }
-  }, [enterpriseUUID]);
+  }, [enterpriseId]);
 
   const loadSubsidyRequestConfiguration = useCallback(
     async ({ clearCacheEntry = false } = { clearCacheEntry: false },
     ) => {
       try {
         const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(
-          { enterpriseId: enterpriseUUID, clearCacheEntry },
+          { enterpriseId, clearCacheEntry },
         );
         const customerConfiguration = camelCaseObject(response.data);
         setSubsidyRequestConfiguration(customerConfiguration);
@@ -66,11 +70,11 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
         logError(error);
         throw error;
       }
-    }, [enterpriseUUID],
+    }, [enterpriseId],
   );
 
   useEffect(() => {
-    if (!enterpriseUUID) {
+    if (!enterpriseId) {
       return;
     }
 
@@ -91,7 +95,7 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
     };
 
     loadConfiguration();
-  }, [enterpriseUUID, loadSubsidyRequestConfiguration, createSubsidyRequestConfiguration]);
+  }, [enterpriseId, loadSubsidyRequestConfiguration, createSubsidyRequestConfiguration]);
 
   const updateSubsidyRequestConfiguration = useCallback(async ({
     subsidyType,
@@ -103,19 +107,29 @@ export const useSubsidyRequestConfiguration = (enterpriseUUID) => {
     };
 
     try {
-      const response = await EnterpriseAccessApiService.updateSubsidyRequestConfiguration(
-        enterpriseUUID,
+      await EnterpriseAccessApiService.updateSubsidyRequestConfiguration(
+        enterpriseId,
         options,
       );
-      const config = camelCaseObject(response.data);
-
-      setSubsidyRequestConfiguration(config);
       loadSubsidyRequestConfiguration({ clearCacheEntry: true });
     } catch (err) {
       logError(err);
       throw err;
     }
-  }, [enterpriseUUID, loadSubsidyRequestConfiguration]);
+  }, [enterpriseId, loadSubsidyRequestConfiguration]);
+
+  useEffect(() => {
+    if (!subsidyRequestConfiguration || enterpriseSubsidyTypesForRequests.length === 0) {
+      return;
+    }
+
+    if (subsidyRequestConfiguration.subsidyType === null && enterpriseSubsidyTypesForRequests.length === 1) {
+      // The enterprise customer added a new subsidy type, update the configuration
+      updateSubsidyRequestConfiguration({
+        subsidyType: enterpriseSubsidyTypesForRequests[0],
+      });
+    }
+  }, [subsidyRequestConfiguration, enterpriseSubsidyTypesForRequests, updateSubsidyRequestConfiguration]);
 
   return {
     subsidyRequestConfiguration,

@@ -1,4 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
+
 import { configuration } from '../../config';
 
 class EnterpriseDataApiService {
@@ -17,13 +19,25 @@ class EnterpriseDataApiService {
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
-      ...options,
+      ...snakeCaseObject(options),
     });
+
     if (csv) {
       queryParams.set('no_page', csv);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseOfferSummary(enterpriseId, offerId, options = {}) {
+    let url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/offers/${offerId}/`;
+    if (Object.keys(options).length) {
+      const queryParams = new URLSearchParams({
+        ...snakeCaseObject(options),
+      });
+      url += `?${queryParams.toString()}`;
+    }
     return EnterpriseDataApiService.apiClient().get(url);
   }
 

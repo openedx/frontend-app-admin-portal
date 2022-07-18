@@ -21,7 +21,7 @@ import {
 } from '../../data/constants';
 
 const CanvasConfig = ({
-  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
 }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
@@ -59,6 +59,8 @@ const CanvasConfig = ({
           setOauthPollingInterval(null);
           setOauthPollingTimeout(null);
           setOauthTimeout(false);
+          // trigger a success call which will redirect the user back to the landing page
+          onClick(SUCCESS_LABEL);
         }
       } catch (error) {
         err = handleErrors(error);
@@ -96,6 +98,19 @@ const CanvasConfig = ({
     }
   };
 
+  const formatConfigResponseData = (responseData) => {
+    const formattedConfig = {};
+    formattedConfig.canvasAccountId = responseData.canvas_account_id;
+    formattedConfig.canvasBaseUrl = responseData.canvas_base_url;
+    formattedConfig.displayName = responseData.display_name;
+    formattedConfig.clientId = responseData.client_id;
+    formattedConfig.clientSecret = responseData.client_secret;
+    formattedConfig.id = responseData.id;
+    formattedConfig.active = responseData.active;
+    formattedConfig.uuid = responseData.uuid;
+    return formattedConfig;
+  };
+
   const handleAuthorization = async (event) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
@@ -103,12 +118,16 @@ const CanvasConfig = ({
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err;
     let fetchedConfigId;
+    let fetchedConfigUuid;
     // First either submit the new config or update the existing one before attempting to authorize
     // If the config exists but has been edited, update it
     if (!isEmpty(existingData) && edited) {
       try {
+        transformedConfig.active = existingData.active;
         const response = await LmsApiService.updateCanvasConfig(transformedConfig, existingData.id);
+        fetchedConfigUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
@@ -117,12 +136,15 @@ const CanvasConfig = ({
       try {
         transformedConfig.active = false;
         const response = await LmsApiService.postNewCanvasConfig(transformedConfig);
+        fetchedConfigUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
     // else we can retrieve the unedited, existing form's UUID and ID
     } else {
+      fetchedConfigUuid = existingData.uuid;
       fetchedConfigId = existingData.id;
     }
     if (err) {
@@ -137,19 +159,13 @@ const CanvasConfig = ({
       setOauthPollingTimeout(LMS_CONFIG_OAUTH_POLLING_TIMEOUT);
 
       const oauthUrl = `${canvasBaseUrl}/login/oauth2/auth?client_id=${clientId}&`
-      + `state=${fetchedConfigId}&response_type=code&`
+      + `state=${fetchedConfigUuid}&response_type=code&`
       + `redirect_uri=${CANVAS_OAUTH_REDIRECT_URL}`;
 
       // Open the oauth window for the user
       window.open(oauthUrl);
     }
   };
-
-  useEffect(() => {
-    if (authorized) {
-      onClick(SUCCESS_LABEL);
-    }
-  }, [authorized, onClick]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -234,6 +250,7 @@ const CanvasConfig = ({
             type="text"
             maxLength={255}
             onChange={(e) => {
+              setAuthorized(false);
               setEdited(true);
               setClientId(e.target.value);
             }}
@@ -247,6 +264,7 @@ const CanvasConfig = ({
             type="password"
             maxLength={255}
             onChange={(e) => {
+              setAuthorized(false);
               setEdited(true);
               setClientSecret(e.target.value);
             }}
@@ -261,6 +279,7 @@ const CanvasConfig = ({
             maxLength={255}
             onChange={(e) => {
               setEdited(true);
+              setAuthorized(false);
               setCanvasAccountId(e.target.value);
             }}
             floatingLabel="Canvas Account Number"
@@ -274,6 +293,7 @@ const CanvasConfig = ({
             isInvalid={!urlValid}
             onChange={(e) => {
               setEdited(true);
+              setAuthorized(false);
               validateField('Canvas Base URL', e.target.value);
             }}
             floatingLabel="Canvas Base URL"
@@ -301,14 +321,6 @@ const CanvasConfig = ({
               Authorize
             </Button>
           )}
-          {authorized && (
-            <Button
-              onClick={handleSubmit}
-              disabled={!buttonBool(config) || !urlValid || !nameValid}
-            >
-              Submit
-            </Button>
-          )}
         </span>
       </Form>
     </span>
@@ -330,5 +342,6 @@ CanvasConfig.propTypes = {
     uuid: PropTypes.string,
   }).isRequired,
   existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setExistingConfigFormData: PropTypes.func.isRequired,
 };
 export default CanvasConfig;

@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import PropTypes from 'prop-types';
-
-import SettingsContextProvider from '../../SettingsContext';
+import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 
 const mockStore = configureMockStore();
 
@@ -42,12 +42,15 @@ export const generateStore = ({
   },
 }));
 
-// eslint-disable-next-line react/prop-types
-const MockSettingsContext = ({ store, children }) => (
+const MockSettingsContext = ({
+  store,
+  enterpriseSubsidiesContextValue,
+  children,
+}) => (
   <Provider store={store}>
-    <SettingsContextProvider>
+    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
       {children}
-    </SettingsContextProvider>
+    </EnterpriseSubsidiesContext.Provider>
   </Provider>
 );
 

@@ -9,6 +9,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import {
   TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -58,10 +59,12 @@ const expiredSubscriptionPlan = (
 };
 
 // eslint-disable-next-line react/prop-types
-const tableWithContext = ({ subscriptionPlan }) => (
-  <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
-    <LicenseManagementTable />
-  </MockSubscriptionContext>
+const LicenseManagementTableWrapper = ({ subscriptionPlan, ...props }) => (
+  <IntlProvider locale="en">
+    <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
+      <LicenseManagementTable {...props} />
+    </MockSubscriptionContext>
+  </IntlProvider>
 );
 
 const singleUserSetup = (status = 'assigned') => {
@@ -76,7 +79,7 @@ const singleUserSetup = (status = 'assigned') => {
     subscriptionPlan,
     [generateSubscriptionUser({ status })],
   );
-  render(tableWithContext({ subscriptionPlan }));
+  render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
   return refreshFunctions;
 };
 
@@ -90,9 +93,7 @@ describe('<LicenseManagementTable />', () => {
     it('renders initially loading state', () => {
       const subscriptionPlan = generateSubscriptionPlan();
       mockSubscriptionHooks(subscriptionPlan, [], true);
-      render(tableWithContext({
-        subscriptionPlan,
-      }));
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
       // assert that the spinner is shown (`isLoading` is properly passed to `DataTable`)
       // expect(screen.getByRole('Status'));
     });
@@ -102,9 +103,7 @@ describe('<LicenseManagementTable />', () => {
     it('renders zero state message', () => {
       const subscriptionPlan = generateSubscriptionPlan();
       mockSubscriptionHooks(subscriptionPlan, []);
-      render(tableWithContext({
-        subscriptionPlan,
-      }));
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
       expect(screen.getByText('Get Started'));
       expect(screen.getByText('No results found'));
     });
@@ -136,9 +135,7 @@ describe('<LicenseManagementTable />', () => {
       });
 
       it('does not allow selection of table rows', () => {
-        render(tableWithContext({
-          subscriptionPlan,
-        }));
+        render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
         expect(screen.queryByTitle('Toggle Row Selected')).toBeFalsy();
       });
     });
@@ -158,9 +155,7 @@ describe('<LicenseManagementTable />', () => {
       });
 
       it('allows selection of table rows', () => {
-        render(tableWithContext({
-          subscriptionPlan,
-        }));
+        render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
         expect(screen.getByTitle('Toggle Row Selected'));
       });
     });
@@ -184,9 +179,7 @@ describe('<LicenseManagementTable />', () => {
       mockSubscriptionHooks(subscriptionPlan, users);
     });
     it('when clicking status filters', async () => {
-      render(tableWithContext({
-        subscriptionPlan,
-      }));
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
 
       // click status checkbox
       const activeCheckBox = screen.getByText('Active');
@@ -203,10 +196,8 @@ describe('<LicenseManagementTable />', () => {
       );
     });
     it('when typing in to email filter', async () => {
-      render(tableWithContext({
-        subscriptionPlan,
-      }));
-      const emailInput = screen.getByPlaceholderText('Search Email address');
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
+      const emailInput = screen.getByPlaceholderText('Search email address');
       // type in 'foo' to email input
       fireEvent.change(emailInput, { target: { value: 'foo' } });
 
@@ -221,9 +212,7 @@ describe('<LicenseManagementTable />', () => {
     });
 
     it('when changing to the page', async () => {
-      render(tableWithContext({
-        subscriptionPlan,
-      }));
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
       const nextPageButton = screen.getByLabelText('next', { exact: false });
       await act(async () => {
         userEvent.click(nextPageButton);

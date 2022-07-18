@@ -9,6 +9,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import NewFeatureAlertBrowseAndRequest, { generateBrowseAndRequestAlertCookieName } from './index';
 import {
@@ -17,9 +18,6 @@ import {
 } from './data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
-import { features } from '../../config';
-
-features.FEATURE_BROWSE_AND_REQUEST = true;
 
 const mockStore = configureMockStore([thunk]);
 
@@ -38,10 +36,12 @@ const historyMock = { push: useHistoryPush, location: {}, listen: jest.fn() };
 
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
 
-const alertWithContext = () => (
+const NewFeatureAlertBrowseAndRequestWrapper = () => (
   <Router history={historyMock}>
     <Provider store={store}>
-      <NewFeatureAlertBrowseAndRequest />
+      <IntlProvider locale="en">
+        <NewFeatureAlertBrowseAndRequest />
+      </IntlProvider>
     </Provider>
   </Router>
 );
@@ -55,7 +55,7 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
       writable: true,
       value: `${cookieName}=true`,
     });
-    render(alertWithContext());
+    render(<NewFeatureAlertBrowseAndRequestWrapper />);
     expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeFalsy();
   });
 
@@ -65,27 +65,16 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
       writable: true,
       value: `${wrongCookieName}=true`,
     });
-    render(alertWithContext());
+    render(<NewFeatureAlertBrowseAndRequestWrapper />);
     expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeTruthy();
   });
 
   it(`redirects to settings page at ${SETTINGS_PAGE_LOCATION}`, async () => {
-    render(alertWithContext());
+    render(<NewFeatureAlertBrowseAndRequestWrapper />);
     const button = screen.getByText(REDIRECT_SETTINGS_BUTTON_TEXT);
     await act(async () => { userEvent.click(button); });
     expect(useHistoryPush).toHaveBeenCalledWith({
       pathname: SETTINGS_PAGE_LOCATION,
     });
-  });
-
-  it('banner not showed when feature is off', async () => {
-    features.FEATURE_BROWSE_AND_REQUEST = false;
-    const cookieName = generateBrowseAndRequestAlertCookieName(ENTERPRISE_ID);
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: `${cookieName}=true`,
-    });
-    render(alertWithContext());
-    expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeFalsy();
   });
 });

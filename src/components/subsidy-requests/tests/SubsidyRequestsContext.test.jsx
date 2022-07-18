@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
 import { useSubsidyRequestsContext } from '../SubsidyRequestsContext';
 import * as hooks from '../data/hooks';
+import { SUBSIDY_TYPES } from '../../../data/constants/subsidyTypes';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
@@ -28,8 +29,12 @@ describe('useSubsidyRequestsContext', () => {
       decrementCouponCodeRequestCount: noop,
     });
 
-    const { result } = renderHook(() => useSubsidyRequestsContext(TEST_ENTERPRISE_UUID));
-    expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    const { result } = renderHook(
+      () => useSubsidyRequestsContext({ enterpriseId: TEST_ENTERPRISE_UUID, enterpriseSubsidyTypes: [] }),
+    );
+    expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith({
+      enterpriseId: TEST_ENTERPRISE_UUID, enterpriseSubsidyTypesForRequests: [],
+    });
     expect(hooks.useSubsidyRequestsOverview).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
 
     const { isLoading, subsidyRequestConfiguration, subsidyRequestsCounts } = result.current;
@@ -48,12 +53,30 @@ describe('useSubsidyRequestsContext', () => {
       isLoading: false,
     });
 
-    const { result } = renderHook(() => useSubsidyRequestsContext(TEST_ENTERPRISE_UUID));
-    expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    const { result } = renderHook(
+      () => useSubsidyRequestsContext({ enterpriseId: TEST_ENTERPRISE_UUID, enterpriseSubsidyTypes: [] }),
+    );
+    expect(hooks.useSubsidyRequestConfiguration).toHaveBeenCalledWith(
+      { enterpriseId: TEST_ENTERPRISE_UUID, enterpriseSubsidyTypesForRequests: [] },
+    );
     expect(hooks.useSubsidyRequestsOverview).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
 
     const { isLoading } = result.current;
 
     expect(isLoading).toEqual(true);
+  });
+
+  it('should return the correct enterpriseSubsidyTypesForRequests', () => {
+    const { result } = renderHook(
+      () => useSubsidyRequestsContext({
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        enterpriseSubsidyTypes: [
+          SUBSIDY_TYPES.offer, SUBSIDY_TYPES.license,
+        ],
+      }),
+    );
+    expect(result.current.enterpriseSubsidyTypesForRequests).toEqual([
+      SUBSIDY_TYPES.license,
+    ]);
   });
 });

@@ -36,7 +36,7 @@ const PastWeekPassedLearnersTable = () => {
       fetchMethod={(enterpriseId, options) => EnterpriseDataApiService.fetchCourseEnrollments(
         enterpriseId,
         {
-          passed_date: 'last_week',
+          passedDate: 'last_week',
           ...options,
         },
       )}

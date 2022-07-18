@@ -1,6 +1,7 @@
 import {
   render,
   waitFor,
+  screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
@@ -18,6 +19,10 @@ describe('<EnterpriseAppContextProvider />', () => {
     isLoadingEnterpriseSubsidies: true,
     isLoadingSubsidyRequests: false,
   },
+  {
+    isLoadingEnterpriseSubsidies: false,
+    isLoadingSubsidyRequests: false,
+  },
   ])('renders <EnterpriseAppSkeleton /> if loading', async ({
     isLoadingEnterpriseSubsidies,
     isLoadingSubsidyRequests,
@@ -30,8 +35,12 @@ describe('<EnterpriseAppContextProvider />', () => {
         isLoading: isLoadingSubsidyRequests,
       },
     );
+
     render(
-      <EnterpriseAppContextProvider enterpriseId={TEST_ENTERPRISE_UUID}>
+      <EnterpriseAppContextProvider
+        enterpriseId={TEST_ENTERPRISE_UUID}
+        enablePortalLearnerCreditManagementScreen
+      >
         children
       </EnterpriseAppContextProvider>,
     );
@@ -39,6 +48,12 @@ describe('<EnterpriseAppContextProvider />', () => {
     await waitFor(() => {
       expect(mockUseSubsidyRequestsContext).toHaveBeenCalled();
       expect(mockUseEnterpriseSubsidiesContext).toHaveBeenCalled();
+
+      if (isLoadingEnterpriseSubsidies || isLoadingSubsidyRequests) {
+        expect(screen.getByText('Loading...'));
+      } else {
+        expect(screen.getByText('children'));
+      }
     });
   });
 });

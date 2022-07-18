@@ -4,19 +4,27 @@ import {
   fireEvent,
   waitFor,
 } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import NoAvailableLicensesBanner from '../NoAvailableLicensesBanner';
+
+const NoAvailableLicensesBannerWrapper = (props) => (
+  <IntlProvider locale="en">
+    <NoAvailableLicensesBanner {...props} />
+  </IntlProvider>
+);
 
 describe('<NoAvailableLicensesBanner />', () => {
   it('should render null if there are no subscriptions', () => {
     const { container } = render(
-      <NoAvailableLicensesBanner subscriptions={[]} />,
+      <NoAvailableLicensesBannerWrapper subscriptions={[]} />,
     );
     expect(container.childElementCount).toEqual(0);
   });
 
   it('should render alert if all subscriptions have expired', () => {
     const { getByText } = render(
-      <NoAvailableLicensesBanner
+      <NoAvailableLicensesBannerWrapper
         subscriptions={[
           {
             daysUntilExpiration: 0,
@@ -29,7 +37,7 @@ describe('<NoAvailableLicensesBanner />', () => {
 
   it('should render alert if all licenses in active subscriptions have been assigned', () => {
     const { getByText } = render(
-      <NoAvailableLicensesBanner
+      <NoAvailableLicensesBannerWrapper
         subscriptions={[
           {
             daysUntilExpiration: 1,
@@ -51,7 +59,7 @@ describe('<NoAvailableLicensesBanner />', () => {
 
   it('should render null if there are available licenses', () => {
     const { container } = render(
-      <NoAvailableLicensesBanner
+      <NoAvailableLicensesBannerWrapper
         subscriptions={[
           {
             daysUntilExpiration: 1,
@@ -67,7 +75,7 @@ describe('<NoAvailableLicensesBanner />', () => {
 
   it('should dimiss banner', async () => {
     const { getByText, container } = render(
-      <NoAvailableLicensesBanner
+      <NoAvailableLicensesBannerWrapper
         subscriptions={[
           {
             daysUntilExpiration: 0,

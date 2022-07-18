@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
 import moment from 'moment';
 import { screen, waitFor } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
 import {
@@ -11,6 +13,8 @@ import SubscriptionManagementPage from '../SubscriptionManagementPage';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import { renderWithRouter } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
+import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
 
 describe('SubscriptionManagementPage', () => {
   describe('multiple subscriptions', () => {
@@ -45,9 +49,19 @@ describe('SubscriptionManagementPage', () => {
         showExpirationNotifications: true,
       },
     ];
+    const defaultSubsidyRequestsState = {
+      subsidyRequestConfiguration: {
+        subsidyType: SUBSIDY_REQUESTS_TYPES.licenses,
+        subsidyRequestsEnabled: false,
+      },
+      subsidyRequestsCounts: { subscriptionLicenses: 0 },
 
-    // eslint-disable-next-line react/prop-types
-    const SubscriptionManagementPageWrapper = ({ subscriptions = defaultSubscriptions }) => {
+    };
+
+    const SubscriptionManagementPageWrapper = ({
+      subscriptions = defaultSubscriptions,
+      subsidyRequestsState = defaultSubsidyRequestsState,
+    }) => {
       jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => ({
         subscriptions: {
           count: 1,
@@ -62,7 +76,11 @@ describe('SubscriptionManagementPage', () => {
 
       return (
         <Provider store={mockStore}>
-          <SubscriptionManagementPage />
+          <IntlProvider locale="en">
+            <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
+              <SubscriptionManagementPage />
+            </SubsidyRequestsContext.Provider>
+          </IntlProvider>
         </Provider>
       );
     };

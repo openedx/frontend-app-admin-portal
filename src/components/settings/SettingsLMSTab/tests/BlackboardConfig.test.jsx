@@ -15,10 +15,18 @@ jest.mock('../../data/constants', () => ({
 }));
 window.open = jest.fn();
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateBlackboardConfig');
-mockUpdateConfigApi.mockResolvedValue({ data: { uuid: 'foobar', id: 1 } });
+const mockConfigResponseData = {
+  uuid: 'foobar',
+  id: 1,
+  display_name: 'display name',
+  blackboard_base_url: 'https://foobar.com',
+  client_id: '123abc',
+  active: false,
+};
+mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
 
 const mockPostConfigApi = jest.spyOn(LmsApiService, 'postNewBlackboardConfig');
-mockPostConfigApi.mockResolvedValue({ data: { uuid: 'foobar', id: 1 } });
+mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
 
 const mockFetchGlobalConfig = jest.spyOn(LmsApiService, 'fetchBlackboardGlobalConfig');
 mockFetchGlobalConfig.mockResolvedValue({ data: { results: [{ app_key: 'ayylmao' }] } });
@@ -29,12 +37,9 @@ mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 const noConfigs = [];
-const existingConfig = [{
-  displayName: 'name',
-}];
-const existingConfig2 = [{
-  displayName: 'foobar',
-}];
+const existingConfigDisplayNames = ['name'];
+const existingConfigDisplayNames2 = ['foobar'];
+
 // Freshly creating a config will have an empty existing data object
 const noExistingData = {};
 // Existing config data that has been authorized
@@ -59,6 +64,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+const mockSetExistingConfigFormData = jest.fn();
+
 describe('<BlackboardConfig />', () => {
   test('renders Blackboard Config Form', () => {
     render(
@@ -67,6 +74,7 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     screen.getByLabelText('Display Name');
@@ -78,7 +86,8 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={noExistingData}
-        existingConfigs={existingConfig}
+        existingConfigs={existingConfigDisplayNames}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -102,6 +111,7 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText('Authorize')).toBeDisabled();
@@ -118,7 +128,8 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigData}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -130,10 +141,11 @@ describe('<BlackboardConfig />', () => {
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test.com');
 
-    expect(screen.getByText('Submit')).not.toBeDisabled();
+    expect(screen.getByText('Authorize')).not.toBeDisabled();
 
-    userEvent.click(screen.getByText('Submit'));
+    await waitFor(() => userEvent.click(screen.getByText('Authorize')));
     const expectedConfig = {
+      active: false,
       blackboard_base_url: 'https://www.test.com',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
@@ -147,6 +159,7 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -179,6 +192,7 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -207,13 +221,14 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={noExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test.com');
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
-    userEvent.click(screen.getByText('Authorize'));
+    await waitFor(() => userEvent.click(screen.getByText('Authorize')));
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
@@ -227,7 +242,8 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     act(() => {
@@ -242,7 +258,7 @@ describe('<BlackboardConfig />', () => {
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test.com');
 
     expect(screen.getByText('Authorize')).not.toBeDisabled();
-    userEvent.click(screen.getByText('Authorize'));
+    await waitFor(() => userEvent.click(screen.getByText('Authorize')));
 
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
     expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
@@ -256,12 +272,13 @@ describe('<BlackboardConfig />', () => {
         enterpriseCustomerUuid={enterpriseId}
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
-        existingConfigs={existingConfig2}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText('Authorize')).not.toBeDisabled();
 
-    userEvent.click(screen.getByText('Authorize'));
+    await waitFor(() => userEvent.click(screen.getByText('Authorize')));
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
@@ -277,6 +294,7 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={invalidExistingData}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
@@ -289,9 +307,36 @@ describe('<BlackboardConfig />', () => {
         onClick={mockOnClick}
         existingData={existingConfigDataNoAuth}
         existingConfigs={noConfigs}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
       />,
     );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
+  });
+  test('it calls setExistingConfigFormData after authorization', async () => {
+    render(
+      <BlackboardConfig
+        enterpriseCustomerUuid={enterpriseId}
+        onClick={mockOnClick}
+        existingData={existingConfigDataNoAuth}
+        existingConfigs={existingConfigDisplayNames2}
+        setExistingConfigFormData={mockSetExistingConfigFormData}
+      />,
+    );
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
+    expect(screen.getByText('Authorize')).not.toBeDisabled();
+    userEvent.click(screen.getByText('Authorize'));
+
+    // Await a find by text in order to account for state changes in the button callback
+    await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
+
+    expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
+      blackboardBaseUrl: 'https://foobar.com',
+      displayName: 'display name',
+      id: 1,
+      active: false,
+      clientId: '123abc',
+      uuid: 'foobar',
+    });
   });
 });

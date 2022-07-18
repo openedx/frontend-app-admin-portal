@@ -4,7 +4,6 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { SETTINGS_TAB_PARAM } from './constants';
-import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 /**
@@ -57,52 +56,7 @@ export const useLinkManagement = (enterpriseUUID) => {
   };
 };
 
-const initialCustomerAgreementState = {
-  netDaysUntilExpiration: 0,
-  subscriptions: [],
-};
-/**
- * @param {Object {enterpriseId: string}}
- * @returns {customerAgreement: Object, loadingCustomerAgreement: bool}
- * customerAgreement:{
- *  netDaysUntilExpiration: number
- * }
- */
-export const useCustomerAgreementData = ({ enterpriseId }) => {
-  const [customerAgreement, setCustomerAgreement] = useState(initialCustomerAgreementState);
-  const [loadingCustomerAgreement, setLoadingCustomerAgreement] = useState(true);
-
-  const loadCustomerAgreementData = (page = 1, agreement = 0) => {
-    const fetchCustomerAgreementData = async () => {
-      setLoadingCustomerAgreement(true);
-      try {
-        const response = await LicenseManagerApiService.fetchCustomerAgreementData({
-          enterprise_customer_uuid: enterpriseId,
-          page,
-        });
-        const { data: customerAgreementData } = camelCaseObject(response);
-        if (customerAgreementData.results && customerAgreementData.count) {
-          setCustomerAgreement(customerAgreementData.results[agreement]);
-        }
-      } catch (error) {
-        logError(error);
-      } finally {
-        setLoadingCustomerAgreement(false);
-      }
-    };
-    fetchCustomerAgreementData();
-  };
-
-  useEffect(loadCustomerAgreementData, [enterpriseId]);
-
-  return {
-    customerAgreement,
-    loadingCustomerAgreement,
-  };
-};
-
 export default {
-  useCustomerAgreementData,
   useCurrentSettingsTab,
   useLinkManagement,
 };

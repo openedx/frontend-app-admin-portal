@@ -6,32 +6,43 @@ import {
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import DisableLinkManagementAlertModal from '../DisableLinkManagementAlertModal';
 
-describe('<DisableLinkManagementAlertModal/>', () => {
+const DisableLinkManagementAlertModalWrapper = (props) => (
+  <IntlProvider locale="en">
+    <DisableLinkManagementAlertModal {...props} />
+  </IntlProvider>
+);
+
+describe('<DisableLinkManagementAlertModal />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
   });
 
   test('Error message is displayed', () => {
-    render(<DisableLinkManagementAlertModal
-      isOpen
-      onClose={() => {}}
-      onDisable={() => {}}
-      error
-    />);
+    render((
+      <DisableLinkManagementAlertModalWrapper
+        isOpen
+        onClose={() => {}}
+        onDisable={() => {}}
+        error
+      />
+    ));
     const cancelButton = screen.getByText('Something went wrong');
     expect(cancelButton).toBeTruthy();
   });
   test('Buttons disabled if `isLoadingDisable`', () => {
-    render(<DisableLinkManagementAlertModal
-      isOpen
-      onClose={() => {}}
-      onDisable={() => {}}
-      isLoading
-    />);
+    render((
+      <DisableLinkManagementAlertModalWrapper
+        isOpen
+        onClose={() => {}}
+        onDisable={() => {}}
+        isLoading
+      />
+    ));
     const disableButton = screen.queryByText('Disabling...').closest('button');
     expect(disableButton).toBeTruthy();
     expect(disableButton).toHaveProperty('disabled', true);
@@ -42,11 +53,13 @@ describe('<DisableLinkManagementAlertModal/>', () => {
   });
   test('`Disable` button calls `onDisable`', async () => {
     const onDisableMock = jest.fn();
-    render(<DisableLinkManagementAlertModal
-      isOpen
-      onClose={() => {}}
-      onDisable={onDisableMock}
-    />);
+    render((
+      <DisableLinkManagementAlertModalWrapper
+        isOpen
+        onClose={() => {}}
+        onDisable={onDisableMock}
+      />
+    ));
     const disableButton = screen.getByText('Disable');
     await act(async () => { userEvent.click(disableButton); });
     expect(onDisableMock).toHaveBeenCalledTimes(1);

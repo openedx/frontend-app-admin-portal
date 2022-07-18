@@ -20,7 +20,7 @@ import {
 } from '../../data/constants';
 
 const BlackboardConfig = ({
-  enterpriseCustomerUuid, onClick, existingData, existingConfigs,
+  enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
 }) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
@@ -53,6 +53,8 @@ const BlackboardConfig = ({
           setOauthPollingInterval(null);
           setOauthPollingTimeout(null);
           setOauthTimeout(false);
+          // trigger a success call which will redirect the user back to the landing page
+          onClick(SUCCESS_LABEL);
         }
       } catch (error) {
         err = handleErrors(error);
@@ -89,6 +91,17 @@ const BlackboardConfig = ({
     }
   };
 
+  const formatConfigResponseData = (responseData) => {
+    const formattedConfig = {};
+    formattedConfig.blackboardBaseUrl = responseData.blackboard_base_url;
+    formattedConfig.displayName = responseData.display_name;
+    formattedConfig.id = responseData.id;
+    formattedConfig.active = responseData.active;
+    formattedConfig.clientId = responseData.client_id;
+    formattedConfig.uuid = responseData.uuid;
+    return formattedConfig;
+  };
+
   const handleAuthorization = async (event) => {
     event.preventDefault();
     const transformedConfig = snakeCaseDict(config);
@@ -105,6 +118,7 @@ const BlackboardConfig = ({
         const response = await LmsApiService.updateBlackboardConfig(transformedConfig, existingData.id);
         configUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
@@ -114,6 +128,7 @@ const BlackboardConfig = ({
         const response = await LmsApiService.postNewBlackboardConfig(transformedConfig);
         configUuid = response.data.uuid;
         fetchedConfigId = response.data.id;
+        setExistingConfigFormData(formatConfigResponseData(response.data));
       } catch (error) {
         err = handleErrors(error);
       }
@@ -132,7 +147,7 @@ const BlackboardConfig = ({
       if (!appKey) {
         try {
           const response = await LmsApiService.fetchBlackboardGlobalConfig();
-          appKey = response.data.results[0].app_key;
+          appKey = response.data.results[response.data.results.length - 1].app_key;
         } catch (error) {
           err = handleErrors(error);
         }
@@ -157,12 +172,6 @@ const BlackboardConfig = ({
       }
     }
   };
-
-  useEffect(() => {
-    if (authorized) {
-      onClick(SUCCESS_LABEL);
-    }
-  }, [authorized, onClick]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -254,6 +263,7 @@ const BlackboardConfig = ({
             maxLength={255}
             isInvalid={!urlValid}
             onChange={(e) => {
+              setAuthorized(false);
               setEdited(true);
               validateField('Blackboard Base URL', e.target.value);
             }}
@@ -282,14 +292,6 @@ const BlackboardConfig = ({
               Authorize
             </Button>
           )}
-          {authorized && (
-            <Button
-              onClick={handleSubmit}
-              disabled={!buttonBool(config) || !urlValid || !nameValid}
-            >
-              Submit
-            </Button>
-          )}
         </span>
       </Form>
     </span>
@@ -310,5 +312,6 @@ BlackboardConfig.propTypes = {
     uuid: PropTypes.string,
   }).isRequired,
   existingConfigs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setExistingConfigFormData: PropTypes.func.isRequired,
 };
 export default BlackboardConfig;

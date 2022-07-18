@@ -29,9 +29,9 @@ jest.mock('react-router-dom', () => ({
   Redirect: () => 'Redirect',
 }));
 
-jest.mock('../ProductTours/BrowseAndRequestTour', () => ({
+jest.mock('../ProductTours/ProductTours', () => ({
   __esModule: true,
-  default: () => 'BrowseAndRequestTour',
+  default: () => 'ProductTours',
 }));
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
@@ -50,6 +50,7 @@ describe('<EnterpriseApp />', () => {
       url: '',
       params: {
         enterpriseSlug: 'foo',
+        page: 'settings',
       },
     },
     location: {
@@ -62,6 +63,8 @@ describe('<EnterpriseApp />', () => {
     toggleSidebarToggle: jest.fn(),
     loading: false,
     enableLearnerPortal: true,
+    enterpriseId: 'uuid',
+    enterpriseName: 'test-enterprise',
   };
 
   beforeEach(() => {

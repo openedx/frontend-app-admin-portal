@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import AdminPage from '../../containers/AdminPage';
@@ -12,7 +12,6 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
-import { removeTrailingSlash } from '../../utils';
 import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
@@ -36,23 +35,17 @@ const EnterpriseAppRoutes = ({
 
   return (
     <Switch>
-      <Redirect
-        exact
-        from={baseUrl}
-        to={`${removeTrailingSlash(baseUrl)}/admin/learners`}
-      />
-
       <Route
         exact
         path={`${baseUrl}/admin/learners/:actionSlug?`}
-        render={routeProps => <AdminPage {...routeProps} />}
+        component={AdminPage}
       />
 
       {enableCodeManagementPage && [
         <Route
           key="request-codes"
           exact
-          path={`${baseUrl}/admin/coupons/request-codes`}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.codeManagement}/request-codes`}
           render={routeProps => (
             <RequestCodesPage
               {...routeProps}
@@ -63,7 +56,7 @@ const EnterpriseAppRoutes = ({
         />,
         <Route
           key="code-management"
-          path={`${baseUrl}/admin/coupons`}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`}
           component={CodeManagementPage}
         />,
       ]}
@@ -72,7 +65,7 @@ const EnterpriseAppRoutes = ({
         <Route
           key="reporting-config"
           exact
-          path={`${baseUrl}/admin/reporting`}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.reporting}`}
           render={routeProps => (enterpriseId
             ? <ReportingConfig {...routeProps} enterpriseId={enterpriseId} />
             : <LoadingMessage className="overview" />
@@ -84,7 +77,7 @@ const EnterpriseAppRoutes = ({
         <Route
           key="subscription-management"
           path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
-          render={routeProps => <SubscriptionManagementPage {...routeProps} />}
+          component={SubscriptionManagementPage}
         />
       )}
 
@@ -92,12 +85,8 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analytics"
           exact
-          path={`${baseUrl}/admin/analytics`}
-          render={routeProps => (
-            <AnalyticsPage
-              {...routeProps}
-            />
-          )}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
+          component={AnalyticsPage}
         />
       )}
 
@@ -105,12 +94,8 @@ const EnterpriseAppRoutes = ({
         <Route
           key="saml-configuration"
           exact
-          path={`${baseUrl}/admin/samlconfiguration`}
-          render={routeProps => (
-            <SamlProviderConfiguration
-              {...routeProps}
-            />
-          )}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.samlConfiguration}`}
+          component={SamlProviderConfiguration}
         />
       )}
 
@@ -118,14 +103,14 @@ const EnterpriseAppRoutes = ({
         <Route
           key="lms-integrations"
           exact
-          path={`${baseUrl}/admin/lmsintegrations`}
-          render={routeProps => <LmsConfigurations {...routeProps} />}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.lmsIntegrations}`}
+          component={LmsConfigurations}
         />
       )}
 
       <Route
         exact
-        path={`${baseUrl}/admin/bulk-enrollment-results/:bulkEnrollmentJobId`}
+        path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollmentResults}/:bulkEnrollmentJobId`}
         component={BulkEnrollmentResultsDownloadPage}
       />
 
@@ -139,7 +124,7 @@ const EnterpriseAppRoutes = ({
       {canManageLearnerCredit && (
         <Route
           exact
-          path={`${baseUrl}/admin/learner-credit`}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`}
           component={LearnerCreditManagement}
         />
       )}

@@ -7,8 +7,10 @@ import NewSSOConfigForm from '../NewSSOConfigForm';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { getMockStore, initialStore } from '../testutils';
+import { updateCurrentStep } from '../data/actions';
 import handleErrors from '../../utils';
 
+jest.mock('../data/actions');
 jest.mock('../../utils');
 const entryType = 'direct';
 const metadataURL = 'https://foobar.com';
@@ -81,8 +83,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     await expect(
@@ -102,21 +104,25 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await expect(
-      screen.queryByText('I have added edX as a Service Provider in my SAML configuration'),
-    ).toBeInTheDocument();
-    userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => {
+      expect(
+        screen.queryByText('I have added edX as a Service Provider in my SAML configuration'),
+      ).toBeInTheDocument();
+    }, []);
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Cancel'));
+    }, []);
     expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
   });
   test('error while configure step updating config from cancel button', async () => {
     // Setup
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockImplementation(() => {
-      throw new Error({ response: { data: 'foobar' } });
+      throw new Error();
     });
     contextValue.ssoState.currentStep = 'configure';
 
@@ -127,15 +133,19 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    userEvent.click(screen.getByText('Cancel'));
-    await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Save'));
-    await expect(handleErrors).toHaveBeenCalled();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Cancel'));
+    }, []);
+    expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Save'));
+    }, []);
+    expect(handleErrors).toHaveBeenCalled();
     expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling configure step without making changes', async () => {
@@ -149,13 +159,35 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Cancel'));
+    }, []);
     expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
     expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
+  });
+  test('update config method does not make api call if form is not updated', async () => {
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
+    expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
+    expect(updateCurrentStep).toHaveBeenCalledWith('connect');
   });
   test('error while configure step updating config from next button', async () => {
     // Setup
@@ -164,7 +196,6 @@ describe('SAML Config Tab', () => {
       throw new Error({ response: { data: 'foobar' } });
     });
     contextValue.ssoState.currentStep = 'configure';
-
     render(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
@@ -172,13 +203,15 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    userEvent.click(screen.getByText('Next'));
-    await expect(handleErrors).toHaveBeenCalled();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
+    await waitFor(() => (expect(handleErrors).toHaveBeenCalled()), []);
     expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling without saving configure form', async () => {
@@ -191,15 +224,19 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
     expect(screen.getByText('Next')).toBeDisabled();
-    userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Cancel'));
+    }, []);
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Exit without saving'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Exit without saving'));
+    }, []);
     await expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
   });
   test('saving while canceling configure form updates config', async () => {
@@ -237,15 +274,19 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
     expect(screen.getByText('Next')).toBeDisabled();
-    userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Cancel'));
+    }, []);
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Save'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Save'));
+    }, []);
     await expect(mockUpdateProviderConfig).toHaveBeenCalled();
   });
   test('configure step calls set provider config after updating', async () => {
@@ -260,12 +301,14 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    userEvent.click(screen.getByText('Next'));
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
     await expect(mockUpdateProviderConfig).toHaveBeenCalled();
   });
   test('idp completed check for url entry', async () => {
@@ -279,8 +322,8 @@ describe('SAML Config Tab', () => {
     await waitFor(() => {
       expect(
         screen.queryByText(
-          'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-          + 'allow quick access to your organization\'s learning catalog.',
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
         ),
       ).toBeInTheDocument();
       expect(screen.getByText('Next')).not.toBeDisabled();
@@ -300,8 +343,8 @@ describe('SAML Config Tab', () => {
     );
     expect(
       screen.queryByText(
-        'Connect to SAML identity provider for single sign-on, such as Okta or OneLogin to '
-        + 'allow quick access to your organization\'s learning catalog.',
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('123abc!')).toBeInTheDocument());

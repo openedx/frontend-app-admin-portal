@@ -101,13 +101,22 @@ const useIdpState = () => {
       // then save samlproviderdata before running onSuccess callback
       onSuccess();
     } catch (error) {
-      const { message, customAttributes } = error;
       if (error.customAttributes?.httpErrorStatus === 406) {
         setCurrentError(
-          ': Unable to verify provided metadata URL, please check your information and try again.',
+          'Unable to verify provided metadata URL, please check your information and try again.',
         );
+      } else if (error.customAttributes?.httpErrorStatus === 400) {
+        if (error.customAttributes.httpErrorResponseData?.includes('Entity ID:')) {
+          setCurrentError('Entity ID already in use.');
+        } else {
+          setCurrentError(
+            'Our system experienced an error. If this persists, please consult our help center.',
+          );
+        }
       } else {
-        setCurrentError(`${message} Details: ${JSON.stringify(customAttributes)}`);
+        setCurrentError(
+          'Our system experienced an error. If this persists, please consult our help center.',
+        );
       }
     }
     dispatchSsoState(updateIdpDirtyState(false)); // we must reset dirty state

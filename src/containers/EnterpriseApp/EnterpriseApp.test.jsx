@@ -6,9 +6,8 @@ import { MemoryRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
-import { breakpoints } from '@edx/paragon';
+import { breakpoints, Skeleton } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import Skeleton from 'react-loading-skeleton';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -40,7 +39,7 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/BrowseAndRequestTour', () => () => null);
+jest.mock('../../components/ProductTours/ProductTours', () => () => null);
 
 features.CODE_MANAGEMENT = true;
 

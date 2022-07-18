@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import useHotjar from 'react-use-hotjar';
-
+import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
+import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
 
@@ -18,17 +18,25 @@ import { ToastsProvider, Toasts } from '../Toasts';
 import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
+import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
-  const { initHotjar } = useHotjar();
 
   useEffect(() => {
     if (process.env.HOTJAR_APP_ID) {
-      initHotjar(process.env.HOTJAR_APP_ID, process.env.HOTJAR_VERSION, process.env.HOTJAR_DEBUG);
+      try {
+        initializeHotjar({
+          hotjarId: process.env.HOTJAR_APP_ID,
+          hotjarVersion: process.env.HOTJAR_VERSION,
+          hotjarDebug: !!process.env.HOTJAR_DEBUG,
+        });
+      } catch (error) {
+        logError(error);
+      }
     }
-  }, [initHotjar]);
+  }, []);
 
   const isMaintenanceAlertOpen = useMemo(() => {
     if (!config) {
@@ -80,9 +88,23 @@ const AppWrapper = () => {
           />
           <PageRoute
             path="/:enterpriseSlug"
-            component={AuthenticatedEnterpriseApp}
             authenticatedAPIClient={apiClient}
             redirect={process.env.BASE_URL}
+            render={({
+              match: {
+                url: baseUrl,
+              },
+            }) => (
+              <Switch>
+                <Route
+                  path="/:enterpriseSlug/admin/:enterpriseAppPage"
+                  component={AuthenticatedEnterpriseApp}
+                />
+                <Redirect
+                  to={`${baseUrl}/admin/${ROUTE_NAMES.learners}`}
+                />
+              </Switch>
+            )}
           />
           <AuthenticatedPageRoute
             path="/"

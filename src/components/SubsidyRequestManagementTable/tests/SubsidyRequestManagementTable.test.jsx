@@ -1,3 +1,4 @@
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
@@ -50,10 +51,16 @@ const defaultProps = {
   },
 };
 
+const SubsidyRequestManagementTableWrapper = (props) => (
+  <IntlProvider locale="en">
+    <SubsidyRequestManagementTable {...props} />
+  </IntlProvider>
+);
+
 describe('SubsidyRequestManagementTable', () => {
   test('renders data in a table as expected', () => {
     const tree = renderer
-      .create(<SubsidyRequestManagementTable {...defaultProps} />)
+      .create(<SubsidyRequestManagementTableWrapper {...defaultProps} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });

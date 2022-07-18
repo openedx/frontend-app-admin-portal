@@ -9,9 +9,9 @@ import ErrorPage from '../ErrorPage';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
-import BrowseAndRequestTour from '../ProductTours/BrowseAndRequestTour';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
+import ProductTours from '../ProductTours/ProductTours';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -82,16 +82,18 @@ class EnterpriseApp extends React.Component {
       enableSamlConfigurationScreen,
       enableLearnerPortal,
       enableLmsConfigurationsScreen,
+      enableReportingConfigurationsScreen,
+      enablePortalLearnerCreditManagementScreen,
       enterpriseId,
       enterpriseName,
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
     const {
-      url: baseUrl,
+      url,
       params: { enterpriseSlug },
     } = match;
-
+    const baseUrl = url.split('/').slice(0, 2).join('/');
     const defaultContentPadding = 10; // 10px for appropriate padding
     const { isActive, roles, email } = getAuthenticatedUser() || {};
     // checking for undefined tells if if the user's info is hydrated
@@ -121,12 +123,15 @@ class EnterpriseApp extends React.Component {
     }
 
     return (
-      <EnterpriseAppContextProvider enterpriseId={enterpriseId}>
+      <EnterpriseAppContextProvider
+        enterpriseId={enterpriseId}
+        enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
+      >
         <div className="enterprise-app">
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>
-                <BrowseAndRequestTour />
+                <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
                   wrappedComponentRef={(node) => {
@@ -154,7 +159,7 @@ class EnterpriseApp extends React.Component {
                     enterpriseId={enterpriseId}
                     enterpriseName={enterpriseName}
                     enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
-                    enableReportingPage={features.REPORTING_CONFIGURATIONS}
+                    enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
                     enableSamlConfigurationPage={features.SAML_CONFIGURATION && enableSamlConfigurationScreen}
@@ -181,6 +186,8 @@ EnterpriseApp.defaultProps = {
   enableAnalyticsScreen: false,
   enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
+  enableReportingConfigurationsScreen: false,
+  enablePortalLearnerCreditManagementScreen: false,
   loading: true,
 };
 
@@ -189,6 +196,7 @@ EnterpriseApp.propTypes = {
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
+      page: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
@@ -207,6 +215,8 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
+  enableReportingConfigurationsScreen: PropTypes.bool,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };

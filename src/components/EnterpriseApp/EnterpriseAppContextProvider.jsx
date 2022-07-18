@@ -7,10 +7,18 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
 const EnterpriseAppContextProvider = ({
   enterpriseId,
+  enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
-  const subsidyRequestsContext = useSubsidyRequestsContext(enterpriseId);
-  const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext(enterpriseId);
+  const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
+    enterpriseId,
+    enablePortalLearnerCreditManagementScreen,
+  });
+
+  const {
+    enterpriseSubsidyTypes,
+  } = enterpriseSubsidiesContext;
+  const subsidyRequestsContext = useSubsidyRequestsContext({ enterpriseId, enterpriseSubsidyTypes });
 
   const isLoading = subsidyRequestsContext.isLoading || enterpriseSubsidiesContext.isLoading;
 
@@ -29,6 +37,7 @@ const EnterpriseAppContextProvider = ({
 
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
 

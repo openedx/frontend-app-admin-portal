@@ -11,18 +11,15 @@ import { useSubscriptionFromParams } from './data/contextHooks';
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
-import { features } from '../../config';
 
 const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
 
   if (!subscription && !loadingSubscription) {
-    let to = `/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`;
-    if (features.FEATURE_BROWSE_AND_REQUEST) {
-      to += `/${MANAGE_LEARNERS_TAB}`;
-    }
     return (
-      <Redirect to={to} />
+      <Redirect
+        to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`}
+      />
     );
   }
 

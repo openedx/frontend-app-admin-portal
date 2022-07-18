@@ -3,8 +3,9 @@ import {
   screen, render, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
+
 import SubscriptionExpirationBanner from '../../expiration/SubscriptionExpirationBanner';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
@@ -27,10 +28,12 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types
-const ExpirationBannerWithContext = ({ detailState, isSubscriptionPlanDetails = false }) => (
-  <SubscriptionManagementContext detailState={detailState}>
-    <SubscriptionExpirationBanner isSubscriptionPlanDetails={isSubscriptionPlanDetails} />
-  </SubscriptionManagementContext>
+const ExpirationBannerWrapper = ({ detailState, isSubscriptionPlanDetails = false }) => (
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={detailState}>
+      <SubscriptionExpirationBanner isSubscriptionPlanDetails={isSubscriptionPlanDetails} />
+    </SubscriptionManagementContext>
+  </IntlProvider>
 );
 
 describe('<SubscriptionExpirationBanner />', () => {
@@ -41,7 +44,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
       agreementNetDaysUntilExpiration: 240,
     };
-    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
@@ -54,7 +57,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
       agreementNetDaysUntilExpiration: threshold,
     };
-    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
   });
 
@@ -66,7 +69,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
       agreementNetDaysUntilExpiration: threshold,
     };
-    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
     userEvent.click(screen.getByText('Dismiss'));
     await waitForElementToBeRemoved(screen.queryByRole('alert'));
@@ -87,7 +90,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       agreementNetDaysUntilExpiration: SUBSCRIPTION_DAYS_REMAINING_MODERATE,
       showExpirationNotifications: false,
     };
-    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
@@ -100,7 +103,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       agreementNetDaysUntilExpiration: 0,
       daysUntilExpiration: 0,
     };
-    render(<ExpirationBannerWithContext
+    render(<ExpirationBannerWrapper
       detailState={detailStateCopy}
       isSubscriptionPlanDetails={isSubscriptionPlanDetails}
     />);
@@ -121,7 +124,7 @@ describe('<SubscriptionExpirationBanner />', () => {
       agreementNetDaysUntilExpiration,
     };
 
-    render(<ExpirationBannerWithContext detailState={detailStateCopy} />);
+    render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     userEvent.click(screen.getByText('Contact support'));
     expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

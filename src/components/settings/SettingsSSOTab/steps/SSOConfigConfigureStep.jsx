@@ -67,12 +67,11 @@ const SSOConfigConfigureStep = ({
   return (
     <>
       <p>
-        Next, enter additional information to customize SAML attributes if
-        needed. We, by default, expect attributes as documented at the{' '}
+        If necessary, enter any customized or unique SAML attributes as needed.
+        If no custom action is required, we will use{' '}
         <Hyperlink destination={HELP_CENTER_SAML_LINK} target="_blank">
-          Help Center
+          these default attributes
         </Hyperlink>{' '}
-        article.
       </p>
       <ModalDialog
         onClose={closeExitModal}

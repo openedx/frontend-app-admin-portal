@@ -10,8 +10,8 @@ const NewSSOConfigForm = () => {
   return (
     <div className="sso-create-form mt-4.5">
       <span>
-        Connect to SAML identity provider for single sign-on,
-        such as Okta or OneLogin to allow quick access to your organization&apos;s learning catalog.
+        Connect to a SAML identity provider for single sign-on
+        to allow quick access to your organization&apos;s learning catalog.
       </span>
       <SSOStepper />
       {currentError && (
@@ -32,7 +32,7 @@ const NewSSOConfigForm = () => {
       >
         <Alert.Heading>Something went wrong.</Alert.Heading>
         <p className="my-3">
-          Our system experienced an error. If this persists, please consult our help center.
+          {currentError}
         </p>
       </Alert>
       )}

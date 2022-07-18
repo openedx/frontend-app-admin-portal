@@ -83,6 +83,11 @@ const initialState = {
     enterpriseSlug,
     enableLearnerPortal: true,
   },
+  form: {
+    'code-reminder-modal-form': {
+      initial: {},
+    },
+  },
 };
 
 const couponId = 1;

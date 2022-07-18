@@ -5,13 +5,11 @@ import thunk from 'redux-thunk';
 import {
   screen,
   render,
-  cleanup,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import SubscriptionRoutes from '../SubscriptionRoutes';
-import { features } from '../../../config';
 
 const SUBSCRIPTION_TABS_MOCK_CONTENT = 'subcription tabs';
 const SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT = 'subscription plan routes';
@@ -73,34 +71,14 @@ SubscriptionRoutesWithRouter.defaultProps = {
 };
 
 describe('<SubscriptionRoutes />', () => {
-  afterEach(() => {
-    cleanup();
-    jest.clearAllMocks();
-    features.FEATURE_BROWSE_AND_REQUEST = false;
-  });
-
-  describe('with tabs enabled', () => {
-    let newStore;
-    beforeEach(() => {
-      newStore = getMockStore({
-        ...initialStore,
-        portalConfiguration: {
-          ...initialStore.portalConfiguration,
-        },
-      });
-      features.FEATURE_BROWSE_AND_REQUEST = true;
+  it('redirects to default tab', () => {
+    const newStore = getMockStore({
+      ...initialStore,
+      portalConfiguration: {
+        ...initialStore.portalConfiguration,
+      },
     });
-
-    it('redirects to default tab', () => {
-      render(<SubscriptionRoutesWithRouter store={newStore} />);
-      expect(screen.getByText(SUBSCRIPTION_TABS_MOCK_CONTENT));
-    });
-  });
-
-  describe('without tabs enabled', () => {
-    it('renders subscription plan routes', () => {
-      render(<SubscriptionRoutesWithRouter />);
-      expect(screen.getByText(SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT));
-    });
+    render(<SubscriptionRoutesWithRouter store={newStore} />);
+    expect(screen.getByText(SUBSCRIPTION_TABS_MOCK_CONTENT));
   });
 });
