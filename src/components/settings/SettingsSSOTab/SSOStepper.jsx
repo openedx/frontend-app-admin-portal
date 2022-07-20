@@ -66,7 +66,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
       configFormData.append('identity_provider_type', 'sap_success_factors');
       configFormData.set('max_session_length', '');
       delete newConfigValues.max_session_length;
-      configFormData.set('attr_user_permanent_id', '');
+      configFormData.set('attr_user_permanent_id', 'loggedinuserid');
       delete newConfigValues.attr_user_permanent_id;
       configFormData.set('attr_full_name', '');
       delete newConfigValues.attr_full_name;
@@ -74,8 +74,10 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
       delete newConfigValues.attr_first_name;
       configFormData.set('attr_last_name', '');
       delete newConfigValues.attr_last_name;
-      configFormData.set('attr_email', '');
+      configFormData.set('attr_email', 'NameID');
       delete newConfigValues.attr_email;
+      configFormData.set('attr_username', 'loggedinuserid');
+      delete newConfigValues.attr_username;
     } else {
       configFormData.append('identity_provider_type', 'standard_saml_provider');
       configFormData.set('other_settings', '');
