@@ -389,30 +389,33 @@ describe('SAML Config Tab', () => {
       enterprise_customer_uuid: enterpriseId,
       identity_provider_type: 'sap_success_factors',
       max_session_length: '',
-      attr_user_permanent_id: '',
+      attr_user_permanent_id: 'loggedinuserid',
       attr_full_name: '',
       attr_first_name: '',
       attr_last_name: '',
-      attr_email: '',
+      attr_email: 'NameID',
       enabled: 'true',
+      attr_username: 'loggedinuserid',
       other_settings: {
         odata_api_root_url: 'foobar.com',
         odata_company_id: '2',
         odata_client_id: '2',
-        odata_api_timeout_interval: '2',
+        odata_api_timeout_interval: 2,
         sapsf_oauth_root_url: 'foobar.com',
         oauth_user_id: '2',
         sapsf_private_key: '2',
       },
     };
-    [mockUpdateProviderConfig.mock.calls[0][0].entries()].forEach(pair => {
-      if (pair[0] === 'other_settings') {
-        const otherSettings = JSON.parse(pair[1]);
-        Object.keys(otherSettings).forEach(key => {
-          expect(otherSettings[key]).toEqual(expectedConfigFormData.other_settings[key]);
+    mockUpdateProviderConfig.mock.calls[0][0].forEach((value, key) => {
+      if (key === 'other_settings') {
+        const otherSettings = JSON.parse(value);
+        Object.keys(otherSettings).forEach(otherSettingsKey => {
+          expect(otherSettings[otherSettingsKey]).toEqual(
+            expectedConfigFormData.other_settings[otherSettingsKey],
+          );
         });
       } else {
-        expect(expectedConfigFormData[pair[0]]).toEqual(pair[1]);
+        expect(expectedConfigFormData[key]).toEqual(value);
       }
     });
     expect(mockUpdateProviderConfig.mock.calls[0][1]).toEqual(1337);
@@ -444,5 +447,40 @@ describe('SAML Config Tab', () => {
     expect(screen.getByText(INVALID_ODATA_API_TIMEOUT_INTERVAL)).toBeInTheDocument();
     expect(screen.getByText(INVALID_SAPSF_OAUTH_ROOT_URL)).toBeInTheDocument();
     expect(screen.getByText(INVALID_API_ROOT_URL)).toBeInTheDocument();
+  });
+  test('configure step handling attr_username', async () => {
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+
+    await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
+    userEvent.type(screen.getByText('Username Hint Attribute'), 'foobar');
+    expect(screen.getByText('Next')).not.toBeDisabled();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
+
+    const expectedConfigFormData = {
+      enterprise_customer_uuid: enterpriseId,
+      identity_provider_type: 'standard_saml_provider',
+      attr_username: 'foobar',
+      other_settings: '',
+      enabled: 'true',
+    };
+    mockUpdateProviderConfig.mock.calls[0][0].forEach((value, key) => {
+      expect(expectedConfigFormData[key]).toEqual(value);
+    });
+    expect(mockUpdateProviderConfig.mock.calls[0][1]).toEqual(1337);
   });
 });

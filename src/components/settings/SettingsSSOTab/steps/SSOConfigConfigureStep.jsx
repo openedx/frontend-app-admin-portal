@@ -119,7 +119,7 @@ const SSOConfigConfigureStep = ({
         break;
       case 'odata_api_timeout_interval':
         inputValid = (!Number.isNaN(Number(input)) && Number(input) <= 30);
-        updateAdvanceSettings('odata_api_timeout_interval', input);
+        updateAdvanceSettings('odata_api_timeout_interval', Number(input));
         setODataApiTimeoutIntervalValid(inputValid);
         setConfigNextButtonDisabled(!inputValid);
         break;
@@ -140,6 +140,7 @@ const SSOConfigConfigureStep = ({
     maxSessionLength: undefined,
     emailAddress: 'mail',
     samlConfig: '',
+    attr_username: 'userid',
   };
 
   return (
@@ -153,7 +154,7 @@ const SSOConfigConfigureStep = ({
       </p>
       <p>
         <strong>Please note</strong> that if you are using SAP Success Factors as an identity provider
-        <strong>you must check the box</strong> at the top of the form and fill out the appropriate
+        <strong> you must check the box</strong> at the top of the form and fill out the appropriate
         custom SAP attributes.
       </p>
       <ModalDialog
@@ -344,6 +345,22 @@ const SSOConfigConfigureStep = ({
               URN of SAML attribute containing the user&apos;s email address[es]. Leave blank for default.
             </Form.Text>
           </Form.Group>
+
+          <Form.Group>
+            <Form.Control
+              type="text"
+              onChange={(e) => {
+                addConfigVal('attr_username', e.target.value);
+                setFormUpdated(true);
+              }}
+              maxLength={128}
+              floatingLabel="Username Hint Attribute"
+              defaultValue={(connectError ? errorData.attr_username : existingConfigData?.attr_username)}
+            />
+            <Form.Text>
+              URN of SAML attribute to use as a suggested username for this user. Leave blank for default.
+            </Form.Text>
+          </Form.Group>
         </>
         )}
         {isUsingSap && (
@@ -532,6 +549,7 @@ SSOConfigConfigureStep.propTypes = {
     max_session_length: PropTypes.number,
     other_settings: PropTypes.string,
     identity_provider_type: PropTypes.string,
+    attr_username: PropTypes.string,
   }),
   setRefreshBool: PropTypes.func.isRequired,
   refreshBool: PropTypes.bool.isRequired,
