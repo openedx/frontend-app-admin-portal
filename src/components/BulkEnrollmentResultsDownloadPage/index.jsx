@@ -8,7 +8,7 @@ import { ToastsContext } from '../Toasts';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
-const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
+function BulkEnrollmentResultsDownloadPage({ enterpriseId }) {
   const { enterpriseSlug, bulkEnrollmentJobId } = useParams();
   const { addToast } = useContext(ToastsContext);
   const [isLoading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
   }
   global.location.href = redirectUrl;
   return <h1>redirecting...</h1>;
-};
+}
 
 BulkEnrollmentResultsDownloadPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

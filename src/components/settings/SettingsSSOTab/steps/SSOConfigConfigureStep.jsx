@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HELP_CENTER_SAML_LINK, INVALID_LENGTH, INVALID_NAME } from '../../data/constants';
 
-const SSOConfigConfigureStep = ({
+function SSOConfigConfigureStep({
   setConfigValues,
   connectError,
   showExitModal,
@@ -19,7 +19,7 @@ const SSOConfigConfigureStep = ({
   refreshBool,
   setFormUpdated,
   setConfigNextButtonDisabled,
-}) => {
+}) {
   const [nameValid, setNameValid] = React.useState(true);
   const [lengthValid, setLengthValid] = React.useState(true);
 
@@ -253,7 +253,7 @@ const SSOConfigConfigureStep = ({
       </div>
     </>
   );
-};
+}
 
 SSOConfigConfigureStep.defaultProps = {
   existingConfigData: {

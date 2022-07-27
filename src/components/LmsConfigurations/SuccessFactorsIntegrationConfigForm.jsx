@@ -26,7 +26,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
     active: this.props.config?.active,
     error: null,
     transmitTotalHours: this.props.config?.transmitTotalHours,
-  }
+  };
 
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
@@ -42,7 +42,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   updateSuccessFactorsConfig = async (formData, configId) => {
     const transformedData = snakeCaseFormData(formData);
@@ -53,7 +53,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   /**
    * attempt to submit the form data and show any error states or invalid fields.
@@ -97,7 +97,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
         this.setState({ submitState: SUBMIT_STATES.COMPLETE });
       }
     }
-  }
+  };
 
   render() {
     const {

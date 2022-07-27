@@ -30,34 +30,36 @@ import { ToastsContext } from '../../Toasts';
 import { clearSelectionAction } from '../data/actions';
 import { configuration } from '../../../config';
 
-export const BulkEnrollmentAlertModal = ({
+export function BulkEnrollmentAlertModal({
   isOpen, toggleClose, enterpriseSlug, error, enterpriseId,
-}) => (
-  <AlertModal
-    title={ALERT_MODAL_TITLE_TEXT}
-    isOpen={isOpen}
-    onClose={toggleClose}
-    footerNode={(
-      <ActionRow>
-        <Button variant="primary" onClick={toggleClose}>OK</Button>
-      </ActionRow>
+}) {
+  return (
+    <AlertModal
+      title={ALERT_MODAL_TITLE_TEXT}
+      isOpen={isOpen}
+      onClose={toggleClose}
+      footerNode={(
+        <ActionRow>
+          <Button variant="primary" onClick={toggleClose}>OK</Button>
+        </ActionRow>
     )}
-  >
-    <p>
-      {ALERT_MODAL_BODY_TEXT}
-      <MailtoLink
-        to={configuration.CUSTOMER_SUPPORT_EMAIL}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-testid={CUSTOMER_SUPPORT_HYPERLINK_TEST_ID}
-        subject={SUPPORT_EMAIL_SUBJECT + enterpriseSlug}
-        body={`enterprise UUID: ${enterpriseId}\n${ SUPPORT_EMAIL_BODY }${error}`}
-      >
-        {SUPPORT_HYPERLINK_TEXT}
-      </MailtoLink>
-    </p>
-  </AlertModal>
-);
+    >
+      <p>
+        {ALERT_MODAL_BODY_TEXT}
+        <MailtoLink
+          to={configuration.CUSTOMER_SUPPORT_EMAIL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-testid={CUSTOMER_SUPPORT_HYPERLINK_TEST_ID}
+          subject={SUPPORT_EMAIL_SUBJECT + enterpriseSlug}
+          body={`enterprise UUID: ${enterpriseId}\n${ SUPPORT_EMAIL_BODY }${error}`}
+        >
+          {SUPPORT_HYPERLINK_TEXT}
+        </MailtoLink>
+      </p>
+    </AlertModal>
+  );
+}
 
 BulkEnrollmentAlertModal.defaultProps = {
   error: 'Unknown error',
@@ -77,9 +79,9 @@ export const generateSuccessMessage = numEmails => {
   return 'No learners have been enrolled.';
 };
 
-const BulkEnrollmentSubmit = ({
+function BulkEnrollmentSubmit({
   enterpriseId, enterpriseSlug, subscription, onEnrollComplete,
-}) => {
+}) {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(true);
   const [error, setError] = useState('');
@@ -150,7 +152,7 @@ const BulkEnrollmentSubmit = ({
       </Stack>
     </>
   );
-};
+}
 
 BulkEnrollmentSubmit.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

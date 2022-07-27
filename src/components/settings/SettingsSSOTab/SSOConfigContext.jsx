@@ -50,7 +50,7 @@ export const SSO_INITIAL_STATE = {
   providerConfig: null, // the provider config we are working with currently
 };
 
-const SSOConfigContextProvider = ({ children, initialState }) => {
+function SSOConfigContextProvider({ children, initialState }) {
   const [ssoState, dispatchSsoState] = useReducer(SSOStateReducer, initialState);
 
   // setter shortcuts
@@ -96,7 +96,7 @@ const SSOConfigContextProvider = ({ children, initialState }) => {
       {children}
     </SSOConfigContext.Provider>
   );
-};
+}
 
 SSOConfigContextProvider.defaultProps = {
   initialState: SSO_INITIAL_STATE,

@@ -3,7 +3,7 @@ import React from 'react';
 import TableContainer from '../../containers/TableContainer';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const CompletedLearnersTable = () => {
+function CompletedLearnersTable() {
   const tableColumns = [
     {
       label: 'Email',
@@ -32,6 +32,6 @@ const CompletedLearnersTable = () => {
       tableSortable
     />
   );
-};
+}
 
 export default CompletedLearnersTable;

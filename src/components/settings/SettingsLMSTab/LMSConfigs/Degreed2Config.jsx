@@ -10,9 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const Degreed2Config = ({
+function Degreed2Config({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) => {
+}) {
   const [displayName, setDisplayName] = React.useState('');
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
@@ -204,7 +204,7 @@ const Degreed2Config = ({
       </Form>
     </span>
   );
-};
+}
 
 Degreed2Config.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

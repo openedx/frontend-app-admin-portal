@@ -9,7 +9,7 @@ import { isEnterpriseUser, ENTERPRISE_ADMIN } from '@edx/frontend-enterprise-uti
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LmsApiService from '../../data/services/LmsApiService';
 
-const AdminRegisterPage = ({ match }) => {
+function AdminRegisterPage({ match }) {
   const user = getAuthenticatedUser();
   const { enterpriseSlug } = match.params;
   const history = useHistory();
@@ -55,7 +55,7 @@ const AdminRegisterPage = ({ match }) => {
   }
 
   return <EnterpriseAppSkeleton />;
-};
+}
 
 AdminRegisterPage.propTypes = {
   match: PropTypes.shape({

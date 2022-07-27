@@ -30,46 +30,44 @@ describe('<DeclineSubsidyRequestModal />', () => {
   }, {
     shouldNotifyLearner: false,
     shouldUnlinkLearnerFromEnterprise: true,
-  }])(
-    'should call Enterprise Access API to decline the request and call onSuccess afterwards', async (
-      { shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise },
-    ) => {
-      const mockHandleSuccess = jest.fn();
-      const mockDeclineRequestFn = jest.fn();
+  }])('should call Enterprise Access API to decline the request and call onSuccess afterwards', async (
+    { shouldNotifyLearner, shouldUnlinkLearnerFromEnterprise },
+  ) => {
+    const mockHandleSuccess = jest.fn();
+    const mockDeclineRequestFn = jest.fn();
 
-      const { getByTestId } = render(
-        <DeclineSubsidyRequestModal
-          {...basicProps}
-          onSuccess={mockHandleSuccess}
-          declineRequestFn={mockDeclineRequestFn}
-        />,
-      );
+    const { getByTestId } = render(
+      <DeclineSubsidyRequestModal
+        {...basicProps}
+        onSuccess={mockHandleSuccess}
+        declineRequestFn={mockDeclineRequestFn}
+      />,
+    );
 
-      if (!shouldNotifyLearner) {
-        const notifyLearnerCheckbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
-        fireEvent.click(notifyLearnerCheckbox);
-      }
+    if (!shouldNotifyLearner) {
+      const notifyLearnerCheckbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
+      fireEvent.click(notifyLearnerCheckbox);
+    }
 
-      if (shouldUnlinkLearnerFromEnterprise) {
-        const unlinkLearnerCheckbox = getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox');
-        fireEvent.click(unlinkLearnerCheckbox);
-      }
+    if (shouldUnlinkLearnerFromEnterprise) {
+      const unlinkLearnerCheckbox = getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox');
+      fireEvent.click(unlinkLearnerCheckbox);
+    }
 
-      const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');
+    const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');
 
-      fireEvent.click(declineBtn);
-      await waitFor(() => {
-        expect(mockDeclineRequestFn).toHaveBeenCalledWith({
-          subsidyRequestUUIDS: [TEST_REQUEST_UUID],
-          sendNotification: shouldNotifyLearner,
-          enterpriseId: TEST_ENTERPRISE_UUID,
-          unlinkUsersFromEnterprise: shouldUnlinkLearnerFromEnterprise,
-        });
-
-        expect(mockHandleSuccess).toHaveBeenCalled();
+    fireEvent.click(declineBtn);
+    await waitFor(() => {
+      expect(mockDeclineRequestFn).toHaveBeenCalledWith({
+        subsidyRequestUUIDS: [TEST_REQUEST_UUID],
+        sendNotification: shouldNotifyLearner,
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        unlinkUsersFromEnterprise: shouldUnlinkLearnerFromEnterprise,
       });
-    },
-  );
+
+      expect(mockHandleSuccess).toHaveBeenCalled();
+    });
+  });
 
   it('should call onClose', async () => {
     const mockHandleClose = jest.fn();

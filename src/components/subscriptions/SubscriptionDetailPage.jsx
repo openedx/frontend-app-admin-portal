@@ -12,7 +12,7 @@ import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
+function SubscriptionDetailPage({ enterpriseSlug, match }) {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
 
   if (!subscription && !loadingSubscription) {
@@ -35,7 +35,7 @@ const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
       <LicenseAllocationDetails />
     </SubscriptionDetailContextProvider>
   );
-};
+}
 
 SubscriptionDetailPage.propTypes = {
   match: PropTypes.shape({

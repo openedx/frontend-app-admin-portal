@@ -24,15 +24,19 @@ export const TABLE_HEADERS = {
   enroll: '',
 };
 
-const AddCoursesSelectionStatus = (props) => {
+function AddCoursesSelectionStatus(props) {
   const { courses: [selectedCourses, dispatch] } = useContext(BulkEnrollContext);
 
   return <BaseSelectionStatus selectedRows={selectedCourses} dispatch={dispatch} {...props} />;
-};
+}
 
-const SelectWithContext = (props) => <BaseSelectWithContext contextKey="courses" {...props} />;
+function SelectWithContext(props) {
+  return <BaseSelectWithContext contextKey="courses" {...props} />;
+}
 
-const SelectWithContextHeader = (props) => <BaseSelectWithContextHeader contextKey="courses" {...props} />;
+function SelectWithContextHeader(props) {
+  return <BaseSelectWithContextHeader contextKey="courses" {...props} />;
+}
 
 const selectColumn = {
   id: 'selection',
@@ -41,7 +45,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-export const BaseCourseSearchResults = (props) => {
+export function BaseCourseSearchResults(props) {
   const {
     searchResults,
     // algolia recommends this prop instead of searching
@@ -114,31 +118,29 @@ export const BaseCourseSearchResults = (props) => {
   }
 
   return (
-    <>
-      <div className="data-table-selector-column-wrapper">
-        <DataTable
-          columns={columns}
-          data={searchResults?.hits || []}
-          itemCount={searchResults?.nbHits}
-          SelectionStatusComponent={AddCoursesSelectionStatus}
-          pageCount={searchResults?.nbPages || 1}
-          pageSize={searchResults?.hitsPerPage || 0}
-          selectedFlatRows={selectedCourses}
-          initialTableOptions={{
-            getRowId: (row) => row.key,
-          }}
-        >
-          <DataTable.TableControlBar />
-          <DataTable.Table />
-          <DataTable.TableFooter>
-            <DataTable.RowStatus />
-            <SearchPagination defaultRefinement={page} />
-          </DataTable.TableFooter>
-        </DataTable>
-      </div>
-    </>
+    <div className="data-table-selector-column-wrapper">
+      <DataTable
+        columns={columns}
+        data={searchResults?.hits || []}
+        itemCount={searchResults?.nbHits}
+        SelectionStatusComponent={AddCoursesSelectionStatus}
+        pageCount={searchResults?.nbPages || 1}
+        pageSize={searchResults?.hitsPerPage || 0}
+        selectedFlatRows={selectedCourses}
+        initialTableOptions={{
+          getRowId: (row) => row.key,
+        }}
+      >
+        <DataTable.TableControlBar />
+        <DataTable.Table />
+        <DataTable.TableFooter>
+          <DataTable.RowStatus />
+          <SearchPagination defaultRefinement={page} />
+        </DataTable.TableFooter>
+      </DataTable>
+    </div>
   );
-};
+}
 
 BaseCourseSearchResults.defaultProps = {
   searchResults: { nbHits: 0, hits: [] },

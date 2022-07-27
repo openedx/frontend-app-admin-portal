@@ -16,7 +16,7 @@ const initialState = {
   couponOverviewError: null,
 };
 
-const couponsReducer = (state = initialState, action) => {
+const couponsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     // Handle actions for all coupons (i.e., all coupons on Code Management page)
     case COUPONS_REQUEST:

@@ -8,11 +8,13 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import NoAvailableLicensesBanner from '../NoAvailableLicensesBanner';
 
-const NoAvailableLicensesBannerWrapper = (props) => (
-  <IntlProvider locale="en">
-    <NoAvailableLicensesBanner {...props} />
-  </IntlProvider>
-);
+function NoAvailableLicensesBannerWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <NoAvailableLicensesBanner {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('<NoAvailableLicensesBanner />', () => {
   it('should render null if there are no subscriptions', () => {

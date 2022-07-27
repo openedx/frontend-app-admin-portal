@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const licenseRevoke = (state = initialState, action) => {
+const licenseRevoke = (state = initialState, action = {}) => {
   switch (action.type) {
     case LICENSE_REVOKE_REQUEST:
       return {

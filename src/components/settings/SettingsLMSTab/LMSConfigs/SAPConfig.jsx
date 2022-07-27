@@ -10,9 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const SAPConfig = ({
+function SAPConfig({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) => {
+}) {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [sapsfBaseUrl, setSapsfBaseUrl] = React.useState('');
@@ -219,7 +219,7 @@ const SAPConfig = ({
       </Form>
     </span>
   );
-};
+}
 
 SAPConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

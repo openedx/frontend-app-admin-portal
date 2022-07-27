@@ -132,15 +132,17 @@ const defaultProps = {
   isExpanded: true,
 };
 
-const CouponDetailsWrapper = props => (
-  <MemoryRouter>
-    <Provider store={mockStore(reduxState)}>
-      <CouponDetails
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CouponDetailsWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={mockStore(reduxState)}>
+        <CouponDetails
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 // NOTE: Further integration testing can be found in src/containers/CouponDetails.test.jsx
 

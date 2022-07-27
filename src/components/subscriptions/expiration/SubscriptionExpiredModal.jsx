@@ -10,11 +10,11 @@ import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 
 export const EXPIRED_MODAL_TITLE = 'This subscription cohort is expired';
 
-const SubscriptionExpiredModal = ({
+function SubscriptionExpiredModal({
   onClose,
   isOpen,
   onAction,
-}) => {
+}) {
   const { subscription: { expirationDate } } = useContext(SubscriptionDetailContext);
 
   return (
@@ -42,7 +42,7 @@ const SubscriptionExpiredModal = ({
       </ModalDialog.Footer>
     </ModalDialog>
   );
-};
+}
 
 SubscriptionExpiredModal.propTypes = {
   onClose: PropTypes.func.isRequired,

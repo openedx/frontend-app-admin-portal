@@ -7,7 +7,7 @@ import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 import { updateServiceProviderConfigured } from '../data/actions';
 import { SSOConfigContext } from '../SSOConfigContext';
 
-const SSOConfigServiceProviderStep = ({ enterpriseSlug, learnerPortalEnabled }) => {
+function SSOConfigServiceProviderStep({ enterpriseSlug, learnerPortalEnabled }) {
   const {
     ssoState,
     dispatchSsoState,
@@ -46,7 +46,7 @@ const SSOConfigServiceProviderStep = ({ enterpriseSlug, learnerPortalEnabled }) 
       </Form.Checkbox>
     </>
   );
-};
+}
 
 SSOConfigServiceProviderStep.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

@@ -20,7 +20,7 @@ const COURSES = {
   removal: 'Remove course',
 };
 
-const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
+function ReviewStep({ returnToLearnerSelection, returnToCourseSelection }) {
   const {
     emails: [selectedEmails, emailsDispatch],
     courses: [selectedCourses, coursesDispatch],
@@ -54,7 +54,7 @@ const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
       </Row>
     </>
   );
-};
+}
 
 ReviewStep.propTypes = {
   /* Function to return to prior step */

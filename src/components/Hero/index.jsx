@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { configuration } from '../../config';
 
-const Hero = ({ title }) => {
+function Hero({ title }) {
   const edxWhiteSemiTransparentLogo = configuration.LOGO_WHITE_URL;
   return (
     <div className="hero">
@@ -15,7 +15,7 @@ const Hero = ({ title }) => {
       </div>
     </div>
   );
-};
+}
 
 Hero.propTypes = {
   title: PropTypes.string.isRequired,

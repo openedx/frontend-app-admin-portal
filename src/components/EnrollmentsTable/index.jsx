@@ -4,7 +4,7 @@ import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const EnrollmentsTable = () => {
+function EnrollmentsTable() {
   const enrollmentTableColumns = [
     {
       label: 'Email',
@@ -81,6 +81,6 @@ const EnrollmentsTable = () => {
       tableSortable
     />
   );
-};
+}
 
 export default EnrollmentsTable;

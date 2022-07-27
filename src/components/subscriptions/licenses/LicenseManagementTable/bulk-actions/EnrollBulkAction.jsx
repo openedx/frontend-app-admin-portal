@@ -22,13 +22,13 @@ import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
  */
 const calculateTotalToEnroll = ({ selectedEnrollableRows }) => selectedEnrollableRows.length;
 
-const EnrollBulkAction = ({
+function EnrollBulkAction({
   selectedFlatRows,
   tableInstance,
   isEntireTableSelected,
   subscription,
   onEnrollSuccess,
-}) => {
+}) {
   const [showBulkEnrollWarning, setShowBulkEnrollWarning] = useState(false);
   const [showBulkEnrollModal, setShowBulkEnrollModal] = useState(false);
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
@@ -133,7 +133,7 @@ const EnrollBulkAction = ({
       />
     </>
   );
-};
+}
 
 EnrollBulkAction.defaultProps = {
   selectedFlatRows: [],

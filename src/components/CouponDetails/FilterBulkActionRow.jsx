@@ -7,22 +7,24 @@ import { COUPON_FILTER_TYPES } from './constants';
 
 // Display component to handle layout
 
-const FilterBulkActionRow = ({ couponFilterProps, couponBulkActionProps, ...sharedProps }) => (
-  <div className="d-flex justify-content-between mt-3">
-    <div className="toggles">
-      <CouponFilters
-        {...couponFilterProps}
-        {...sharedProps}
-      />
+function FilterBulkActionRow({ couponFilterProps, couponBulkActionProps, ...sharedProps }) {
+  return (
+    <div className="d-flex justify-content-between mt-3">
+      <div className="toggles">
+        <CouponFilters
+          {...couponFilterProps}
+          {...sharedProps}
+        />
+      </div>
+      <div className="bulk-actions m-md-0 d-flex justify-content-end">
+        <CouponBulkActions
+          {...couponBulkActionProps}
+          {...sharedProps}
+        />
+      </div>
     </div>
-    <div className="bulk-actions m-md-0 d-flex justify-content-end">
-      <CouponBulkActions
-        {...couponBulkActionProps}
-        {...sharedProps}
-      />
-    </div>
-  </div>
-);
+  );
+}
 
 FilterBulkActionRow.propTypes = {
   // specific PropTypes are defined on the CouponFilters and CouponBulkActions components, respectively

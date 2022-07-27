@@ -15,20 +15,22 @@ const initialHistory = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
 });
 
-const UserActivationPageWrapper = ({
+function UserActivationPageWrapper({
   history,
   ...rest
-}) => (
-  <Router history={history}>
-    <ToastsContext.Provider value={{ addToast: () => {} }}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/register/activate"
-        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-      />
-    </ToastsContext.Provider>
-  </Router>
-);
+}) {
+  return (
+    <Router history={history}>
+      <ToastsContext.Provider value={{ addToast: () => {} }}>
+        <Route
+          exact
+          path="/:enterpriseSlug/admin/register/activate"
+          render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
+        />
+      </ToastsContext.Provider>
+    </Router>
+  );
+}
 
 UserActivationPageWrapper.defaultProps = {
   history: initialHistory,

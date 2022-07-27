@@ -2,8 +2,8 @@ import React from 'react';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
 import LicenseManagementTable from './LicenseManagementTable';
 
-const LicenseAllocationDetails = () => (
-  <>
+function LicenseAllocationDetails() {
+  return (
     <div className="row mb-3">
       <div className="col">
         <div className="mb-3">
@@ -12,7 +12,7 @@ const LicenseAllocationDetails = () => (
         <LicenseManagementTable />
       </div>
     </div>
-  </>
-);
+  );
+}
 
 export default LicenseAllocationDetails;

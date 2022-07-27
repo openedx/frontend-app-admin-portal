@@ -5,7 +5,7 @@ import selectedRowsReducer from './data/reducer';
 
 export const BulkEnrollContext = createContext({});
 
-const BulkEnrollContextProvider = ({ children, initialEmailsList }) => {
+function BulkEnrollContextProvider({ children, initialEmailsList }) {
   const [selectedCourses, coursesDispatch] = useReducer(selectedRowsReducer, []);
   // this format is to make this consistent with the format used by ReviewStep components
   // similar to DataTable row objects, but not exactly
@@ -25,7 +25,7 @@ const BulkEnrollContextProvider = ({ children, initialEmailsList }) => {
   };
 
   return <BulkEnrollContext.Provider value={value}>{children}</BulkEnrollContext.Provider>;
-};
+}
 
 BulkEnrollContextProvider.defaultProps = {
   initialEmailsList: [],

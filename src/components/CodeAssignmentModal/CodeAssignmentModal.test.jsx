@@ -123,16 +123,18 @@ const initialState = {
 };
 
 /* eslint-disable react/prop-types */
-const CodeAssignmentModalWrapper = (props) => (
-  <MemoryRouter>
-    <Provider store={mockStore(initialState)}>
-      <CodeAssignmentModal
-        {...initialProps}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CodeAssignmentModalWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={mockStore(initialState)}>
+        <CodeAssignmentModal
+          {...initialProps}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 /* eslint-enable react/prop-types */
 
 describe('CodeAssignmentModal component', () => {

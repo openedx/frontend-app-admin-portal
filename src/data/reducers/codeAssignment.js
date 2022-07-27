@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const codeAssignment = (state = initialState, action) => {
+const codeAssignment = (state = initialState, action = {}) => {
   switch (action.type) {
     case CODE_ASSIGNMENT_REQUEST:
       return {

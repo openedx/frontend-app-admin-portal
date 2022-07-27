@@ -24,11 +24,11 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
-const SettingsAccessLinkManagement = ({
+function SettingsAccessLinkManagement({
   enterpriseUUID,
   isUniversalLinkEnabled,
   updatePortalConfiguration,
-}) => {
+}) {
   const {
     links,
     loadingLinks,
@@ -194,7 +194,7 @@ const SettingsAccessLinkManagement = ({
       />
     </>
   );
-};
+}
 
 const mapStateToProps = (state) => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,

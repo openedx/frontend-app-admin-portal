@@ -15,7 +15,7 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 import { getSubsidyTypeLabelAndRoute } from './data/utils';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
-const SettingsAccessTab = ({
+function SettingsAccessTab({
   enterpriseId,
   enterpriseSlug,
   enableIntegratedCustomerLearnerPortalSearch,
@@ -23,7 +23,7 @@ const SettingsAccessTab = ({
   enableUniversalLink,
   identityProvider,
   updatePortalConfiguration,
-}) => {
+}) {
   const {
     subsidyRequestConfiguration,
     updateSubsidyRequestConfiguration,
@@ -135,7 +135,7 @@ const SettingsAccessTab = ({
       )}
     </div>
   );
-};
+}
 
 SettingsAccessTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

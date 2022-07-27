@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const userSubscription = (state = initialState, action) => {
+const userSubscription = (state = initialState, action = {}) => {
   switch (action.type) {
     case USER_SUBSCRIPTION_REQUEST:
       return {

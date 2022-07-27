@@ -18,11 +18,13 @@ const defaultDataTableInfo = {
   itemCount: 3,
   rows: [{ id: 'foo' }, { id: 'bar' }, { id: 'baz' }],
 };
-const SelectionStatusWrapper = ({ dataTableInfo, ...props }) => (
-  <DataTableContext.Provider value={dataTableInfo}>
-    <BaseSelectionStatus {...props} />
-  </DataTableContext.Provider>
-);
+function SelectionStatusWrapper({ dataTableInfo, ...props }) {
+  return (
+    <DataTableContext.Provider value={dataTableInfo}>
+      <BaseSelectionStatus {...props} />
+    </DataTableContext.Provider>
+  );
+}
 
 describe('BaseSelectionStatus', () => {
   beforeEach(() => {

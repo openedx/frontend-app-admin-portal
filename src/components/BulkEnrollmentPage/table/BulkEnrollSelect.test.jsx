@@ -21,11 +21,13 @@ const defaultBulkEnrollInfo = {
   emails: [[], emailsDispatch],
   courses: [[], coursesDispatch],
 };
-const SelectWithContextWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, children }) => (
-  <BulkEnrollContext.Provider value={bulkEnrollInfo}>
-    {children}
-  </BulkEnrollContext.Provider>
-);
+function SelectWithContextWrapper({ bulkEnrollInfo = defaultBulkEnrollInfo, children }) {
+  return (
+    <BulkEnrollContext.Provider value={bulkEnrollInfo}>
+      {children}
+    </BulkEnrollContext.Provider>
+  );
+}
 
 describe('BaseSelectWithContext', () => {
   beforeEach(() => {

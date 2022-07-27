@@ -49,16 +49,18 @@ const completeConfig = {
 
 const mockStore = configureMockStore([thunk]);
 
-const SettingsLMSWrapper = () => (
-  <Provider store={mockStore({ ...initialState })}>
-    <SettingsLMSTab
-      enterpriseId={enterpriseId}
-      enterpriseSlug={enterpriseSlug}
-      enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-      identityProvider={identityProvider}
-    />
-  </Provider>
-);
+function SettingsLMSWrapper() {
+  return (
+    <Provider store={mockStore({ ...initialState })}>
+      <SettingsLMSTab
+        enterpriseId={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
+        enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+        identityProvider={identityProvider}
+      />
+    </Provider>
+  );
+}
 
 describe('<SettingsLMSTab />', () => {
   it('Renders with all LMS cards present', async () => {
@@ -308,18 +310,20 @@ describe('<SettingsLMSTab />', () => {
         enableSamlConfigurationScreen: samlConfigurationScreenEnabled,
       },
     };
-    const NeedsSSOConfigLMSWrapper = () => (
-      <Router history={history}>
-        <Provider store={mockStore({ ...needsSSOState })}>
-          <SettingsLMSTab
-            enterpriseId={enterpriseId}
-            enterpriseSlug={enterpriseSlug}
-            identityProvider={identityProvider}
-            enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
-          />
-        </Provider>
-      </Router>
-    );
+    function NeedsSSOConfigLMSWrapper() {
+      return (
+        <Router history={history}>
+          <Provider store={mockStore({ ...needsSSOState })}>
+            <SettingsLMSTab
+              enterpriseId={enterpriseId}
+              enterpriseSlug={enterpriseSlug}
+              identityProvider={identityProvider}
+              enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
+            />
+          </Provider>
+        </Router>
+      );
+    }
     renderWithRouter(<NeedsSSOConfigLMSWrapper />);
     expect(history.location.pathname).toEqual('/');
     await screen.findByText('No SSO configured');

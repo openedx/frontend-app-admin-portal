@@ -21,7 +21,7 @@ import {
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
-const CouponCodeTabs = ({ enterpriseSlug }) => {
+function CouponCodeTabs({ enterpriseSlug }) {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
@@ -91,7 +91,7 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
       )}
     </Tabs>
   );
-};
+}
 
 CouponCodeTabs.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

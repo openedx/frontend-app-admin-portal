@@ -57,7 +57,7 @@ const generateRevokeModalSubmitLabel = (totalToRevoke) => {
   };
 };
 
-const LicenseManagementRevokeModal = ({
+function LicenseManagementRevokeModal({
   isOpen,
   onClose,
   onSuccess,
@@ -67,7 +67,7 @@ const LicenseManagementRevokeModal = ({
   revokeAllUsers,
   totalToRevoke,
   activeFilters,
-}) => {
+}) {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const buttonLabels = generateRevokeModalSubmitLabel(totalToRevoke);
@@ -203,7 +203,7 @@ const LicenseManagementRevokeModal = ({
       </ModalDialog.Footer>
     </ModalDialog>
   );
-};
+}
 
 LicenseManagementRevokeModal.defaultProps = {
   revokeAllUsers: false,

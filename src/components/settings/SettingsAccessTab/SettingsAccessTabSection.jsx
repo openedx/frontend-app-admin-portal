@@ -6,7 +6,7 @@ import {
   Spinner,
 } from '@edx/paragon';
 
-const SettingsAccessTabSection = ({
+function SettingsAccessTabSection({
   title,
   checked,
   onFormSwitchChange,
@@ -15,7 +15,7 @@ const SettingsAccessTabSection = ({
   children,
   loading,
   disabled,
-}) => {
+}) {
   const [isExpanded, setExpanded] = useState(true);
 
   const handleToggle = (isOpen) => {
@@ -61,7 +61,7 @@ const SettingsAccessTabSection = ({
       )}
     </div>
   );
-};
+}
 
 SettingsAccessTabSection.propTypes = {
   title: PropTypes.string.isRequired,

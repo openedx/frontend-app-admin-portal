@@ -12,7 +12,7 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
 export const SELECT_ONE_TEST_ID = 'selectOne';
 export const SELECT_ALL_TEST_ID = 'selectAll';
 
-export const BaseSelectWithContext = ({ row, contextKey }) => {
+export function BaseSelectWithContext({ row, contextKey }) {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
 
   const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows, row]);
@@ -34,7 +34,7 @@ export const BaseSelectWithContext = ({ row, contextKey }) => {
       />
     </div>
   );
-};
+}
 
 BaseSelectWithContext.propTypes = {
   row: PropTypes.shape({
@@ -44,9 +44,9 @@ BaseSelectWithContext.propTypes = {
   contextKey: PropTypes.string.isRequired,
 };
 
-export const BaseSelectWithContextHeader = ({
+export function BaseSelectWithContextHeader({
   rows, contextKey,
-}) => {
+}) {
   const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
 
   const selectedRowIds = selectedRows.map(row => row.id);
@@ -68,7 +68,7 @@ export const BaseSelectWithContextHeader = ({
       />
     </div>
   );
-};
+}
 
 BaseSelectWithContextHeader.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.shape({

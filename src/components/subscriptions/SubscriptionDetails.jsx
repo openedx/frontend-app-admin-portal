@@ -14,7 +14,7 @@ import { ToastsContext } from '../Toasts';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-const SubscriptionDetails = ({ enterpriseSlug }) => {
+function SubscriptionDetails({ enterpriseSlug }) {
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -96,7 +96,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
       </Row>
     </>
   );
-};
+}
 
 SubscriptionDetails.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

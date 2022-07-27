@@ -6,45 +6,47 @@ import {
 
 import { getProgressBarVariant } from './data/utils';
 
-const LoadingCards = () => (
-  <>
-    <Col lg={6} xl={3} className="d-flex flex-column mb-4 mb-xl-0">
-      <Card className="h-100">
-        <Card.Section className="d-flex align-items-center">
-          <div className="w-100" data-testid="loading-skeleton-card-1">
-            <Skeleton />
-          </div>
-        </Card.Section>
-      </Card>
-    </Col>
-    <Col lg={6} xl={4} className="d-flex flex-column mb-4 mb-xl-0">
-      <Card className="h-100">
-        <Card.Section className="d-flex align-items-center">
-          <div className="w-100" data-testid="loading-skeleton-card-2">
-            <Skeleton />
-          </div>
-        </Card.Section>
-      </Card>
-    </Col>
-    <Col className="d-flex flex-column">
-      <Card className="h-100">
-        <Card.Section className="d-flex align-items-center">
-          <div className="w-100" data-testid="loading-skeleton-card-3">
-            <Skeleton height={60} />
-          </div>
-        </Card.Section>
-      </Card>
-    </Col>
-  </>
-);
+function LoadingCards() {
+  return (
+    <>
+      <Col lg={6} xl={3} className="d-flex flex-column mb-4 mb-xl-0">
+        <Card className="h-100">
+          <Card.Section className="d-flex align-items-center">
+            <div className="w-100" data-testid="loading-skeleton-card-1">
+              <Skeleton />
+            </div>
+          </Card.Section>
+        </Card>
+      </Col>
+      <Col lg={6} xl={4} className="d-flex flex-column mb-4 mb-xl-0">
+        <Card className="h-100">
+          <Card.Section className="d-flex align-items-center">
+            <div className="w-100" data-testid="loading-skeleton-card-2">
+              <Skeleton />
+            </div>
+          </Card.Section>
+        </Card>
+      </Col>
+      <Col className="d-flex flex-column">
+        <Card className="h-100">
+          <Card.Section className="d-flex align-items-center">
+            <div className="w-100" data-testid="loading-skeleton-card-3">
+              <Skeleton height={60} />
+            </div>
+          </Card.Section>
+        </Card>
+      </Col>
+    </>
+  );
+}
 
-const LearnerCreditAggregateCards = ({
+function LearnerCreditAggregateCards({
   isLoading,
   totalFunds,
   redeemedFunds,
   remainingFunds,
   percentUtilized,
-}) => {
+}) {
   if (isLoading) {
     return <LoadingCards />;
   }
@@ -119,7 +121,7 @@ const LearnerCreditAggregateCards = ({
 
   // don't have enough data to display any meaningful metrics
   return null;
-};
+}
 
 LearnerCreditAggregateCards.propTypes = {
   redeemedFunds: PropTypes.number,

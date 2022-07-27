@@ -9,12 +9,12 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-const LinkDeactivationAlertModal = ({
+function LinkDeactivationAlertModal({
   isOpen,
   onClose,
   onDeactivateLink,
   inviteKeyUUID,
-}) => {
+}) {
   const [deactivationState, setDeactivationState] = useState('default');
 
   const handleClose = () => {
@@ -68,7 +68,7 @@ const LinkDeactivationAlertModal = ({
       <p>If you disable a link, it cannot be reactivated.</p>
     </AlertModal>
   );
-};
+}
 
 LinkDeactivationAlertModal.propTypes = {
   isOpen: PropTypes.bool,

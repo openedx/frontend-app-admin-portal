@@ -93,16 +93,18 @@ const initialCouponData = {
   available: true,
 };
 
-const CouponDetailsWrapper = props => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <CouponDetails
-        couponData={initialCouponData}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CouponDetailsWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <CouponDetails
+          couponData={initialCouponData}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 CouponDetailsWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

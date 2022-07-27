@@ -20,7 +20,7 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
-const AppWrapper = () => {
+function AppWrapper() {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
 
@@ -118,6 +118,6 @@ const AppWrapper = () => {
       </ToastsProvider>
     </AppProvider>
   );
-};
+}
 
 export default AppWrapper;

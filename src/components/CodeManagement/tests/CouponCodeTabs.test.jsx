@@ -24,12 +24,16 @@ const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
 
 jest.mock(
   '../ManageCodesTab',
-  () => () => (<div>{MANAGE_CODES_MOCK_CONTENT}</div>),
+  () => function () {
+    return <div>{MANAGE_CODES_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../ManageRequestsTab',
-  () => () => (<div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>),
+  () => function () {
+    return <div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';
@@ -47,18 +51,20 @@ const store = getMockStore({ ...initialStore });
 
 const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TAB}`;
 
-const CouponCodeTabsWrapper = ({
+function CouponCodeTabsWrapper({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
-}) => (
-  <Provider store={store}>
-    <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
-      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
-        <CouponCodeTabs />
-      </SubsidyRequestsContext.Provider>
-    </Route>
-  </Provider>
-);
+}) {
+  return (
+    <Provider store={store}>
+      <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
+        <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
+          <CouponCodeTabs />
+        </SubsidyRequestsContext.Provider>
+      </Route>
+    </Provider>
+  );
+}
 
 CouponCodeTabsWrapper.defaultProps = {
   subsidyRequestConfiguration: {

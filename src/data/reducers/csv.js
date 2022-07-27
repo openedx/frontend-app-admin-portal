@@ -15,7 +15,7 @@ const updateCsv = (state, csvId, updatedCsvState) => ({
   },
 });
 
-const csv = (state = {}, action) => {
+const csv = (state = {}, action = {}) => {
   switch (action.type) {
     case FETCH_CSV_REQUEST:
       return updateCsv(state, action.payload.csvId, {

@@ -59,7 +59,7 @@ const basicProps = {
 };
 
 /* eslint-disable react/prop-types */
-const SettingsAccessTabWrapper = ({
+function SettingsAccessTabWrapper({
   subsidyRequestConfigurationContextValue = {
     subsidyRequestConfiguration: mockSubsidyRequestConfiguration,
     updateSubsidyRequestConfiguration: jest.fn(),
@@ -75,13 +75,15 @@ const SettingsAccessTabWrapper = ({
     enterpriseSubsidyTypes: [SUPPORTED_SUBSIDY_TYPES.coupon],
   },
   props = {},
-}) => (
-  <SubsidyRequestsContext.Provider value={subsidyRequestConfigurationContextValue}>
-    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-      <SettingsAccessTab {...{ ...basicProps, ...props }} />
-    </EnterpriseSubsidiesContext.Provider>
-  </SubsidyRequestsContext.Provider>
-);
+}) {
+  return (
+    <SubsidyRequestsContext.Provider value={subsidyRequestConfigurationContextValue}>
+      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+        <SettingsAccessTab {...{ ...basicProps, ...props }} />
+      </EnterpriseSubsidiesContext.Provider>
+    </SubsidyRequestsContext.Provider>
+  );
+}
 /* eslint-enable react/prop-types */
 
 describe('<SettingsAccessTab />', () => {

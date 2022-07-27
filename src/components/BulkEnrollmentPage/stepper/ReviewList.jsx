@@ -7,9 +7,9 @@ import ReviewItem from './ReviewItem';
 
 export const MAX_ITEMS_DISPLAYED = 25;
 
-export const ShowHideButton = ({
+export function ShowHideButton({
   isShowingAll, showAll, show25, numRows, subject, ...props
-}) => {
+}) {
   if (numRows < MAX_ITEMS_DISPLAYED) {
     return null;
   }
@@ -18,7 +18,7 @@ export const ShowHideButton = ({
   }
 
   return <Button variant="link" size="inline" onClick={show25} {...props}>Hide {numRows - 25} {subject.plural}</Button>;
-};
+}
 
 ShowHideButton.propTypes = {
   /* User-facing words for the thing being displayed */
@@ -33,9 +33,9 @@ ShowHideButton.propTypes = {
   numRows: PropTypes.number.isRequired,
 };
 
-const ReviewList = ({
+function ReviewList({
   rows, accessor, dispatch, subject, returnToSelection,
-}) => {
+}) {
   const [isShowingAll, showAll, show25] = useToggle(false);
   const displayRows = useMemo(() => {
     if (isShowingAll) {
@@ -76,7 +76,7 @@ const ReviewList = ({
       />
     </div>
   );
-};
+}
 
 ReviewList.propTypes = {
   /* Selected rows from a DataTable instance */

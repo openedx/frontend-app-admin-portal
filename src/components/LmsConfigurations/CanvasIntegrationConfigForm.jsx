@@ -37,7 +37,7 @@ class CanvasIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   updateCanvasConfig = async (formData, uuid) => {
     const transformedData = snakeCaseFormData(formData);
@@ -51,7 +51,7 @@ class CanvasIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   handleSubmit = async (formData, config) => {
     await this.setState({ submitState: SUBMIT_STATES.PENDING, error: null, invalidFields: {} });
@@ -81,7 +81,7 @@ class CanvasIntegrationConfigForm extends React.Component {
       return;
     }
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-  }
+  };
 
   render() {
     const {

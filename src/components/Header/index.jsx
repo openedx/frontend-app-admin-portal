@@ -15,7 +15,7 @@ import { configuration } from '../../config';
 
 import './Header.scss';
 
-export const Logo = ({ enterpriseLogo, enterpriseName }) => {
+export function Logo({ enterpriseLogo, enterpriseName }) {
   const logo = configuration.LOGO_URL;
 
   return (
@@ -25,7 +25,7 @@ export const Logo = ({ enterpriseLogo, enterpriseName }) => {
       onError={(e) => { e.target.src = logo; }}
     />
   );
-};
+}
 
 Logo.defaultProps = {
   enterpriseLogo: configuration.LOGO_URL,
@@ -37,7 +37,7 @@ Logo.propTypes = {
   enterpriseName: PropTypes.string,
 };
 
-export const HeaderDropdown = ({ user, enterpriseSlug }) => {
+export function HeaderDropdown({ user, enterpriseSlug }) {
   const { profileImage, username } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
   const avatarScreenReaderText = `Profile image for ${username}`;
@@ -62,7 +62,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug }) => {
       </Dropdown.Menu>
     </Dropdown>
   );
-};
+}
 
 HeaderDropdown.defaultProps = {
   enterpriseSlug: null,
@@ -79,9 +79,9 @@ HeaderDropdown.propTypes = {
   enterpriseSlug: PropTypes.string,
 };
 
-const Header = ({
+function Header({
   hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
-}) => {
+}) {
   const user = getAuthenticatedUser();
   return (
     <header className="container-fluid border-bottom">
@@ -103,7 +103,7 @@ const Header = ({
       </Navbar>
     </header>
   );
-};
+}
 
 Header.propTypes = {
   enterpriseLogo: PropTypes.string,

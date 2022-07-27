@@ -214,35 +214,33 @@ export class BaseCodeReminderModal extends React.Component {
     } = this.state;
 
     return (
-      <>
-        <Modal
-          ref={this.modalRef}
-          dialogClassName="code-reminder"
-          title={this.renderTitle()}
-          body={this.renderBody()}
-          buttons={[
-            <Button
-              key="remind-submit-btn"
-              disabled={submitting}
-              className="code-remind-save-btn"
-              onClick={handleSubmit(this.handleModalSubmit)}
-            >
-              <>
-                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Remind
-              </>
-            </Button>,
-            <SaveTemplateButton
-              key="save-remind-template-btn"
-              templateType={REMIND_MODE}
-              setMode={this.setMode}
-              handleSubmit={handleSubmit}
-            />,
-          ]}
-          onClose={onClose}
-          open
-        />
-      </>
+      <Modal
+        ref={this.modalRef}
+        dialogClassName="code-reminder"
+        title={this.renderTitle()}
+        body={this.renderBody()}
+        buttons={[
+          <Button
+            key="remind-submit-btn"
+            disabled={submitting}
+            className="code-remind-save-btn"
+            onClick={handleSubmit(this.handleModalSubmit)}
+          >
+            <>
+              {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              Remind
+            </>
+          </Button>,
+          <SaveTemplateButton
+            key="save-remind-template-btn"
+            templateType={REMIND_MODE}
+            setMode={this.setMode}
+            handleSubmit={handleSubmit}
+          />,
+        ]}
+        onClose={onClose}
+        open
+      />
     );
   }
 }

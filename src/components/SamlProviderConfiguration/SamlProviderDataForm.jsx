@@ -18,7 +18,7 @@ class SamlProviderDataForm extends React.Component {
     invalidFields: {},
     submitState: SUBMIT_STATES.DEFAULT,
     error: undefined,
-  }
+  };
 
   /**
    * Validates this form. If the form is invalid, it will return the fields
@@ -31,7 +31,7 @@ class SamlProviderDataForm extends React.Component {
       .filter(field => !formData.get(field))
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
     return invalidFields;
-  }
+  };
 
   /**
    * attempt to submit the form data and show any error states or invalid fields.
@@ -59,14 +59,14 @@ class SamlProviderDataForm extends React.Component {
     if (err) {
       this.setState({ submitState: SUBMIT_STATES.ERROR, error: err });
     }
-  }
+  };
 
   handleDelete = async (providerDataId) => {
     const err = await this.props.deleteProviderData(providerDataId);
     if (err) {
       this.setState({ error: err });
     }
-  }
+  };
 
   render() {
     const { pData, entityId, deleteEnabled } = this.props;

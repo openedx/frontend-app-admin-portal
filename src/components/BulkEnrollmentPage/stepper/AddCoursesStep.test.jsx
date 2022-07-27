@@ -18,7 +18,7 @@ const defaultProps = {
   enterpriseId: 'fancyEnt',
 };
 
-const StepperWrapper = (props) => {
+function StepperWrapper(props) {
   const selectedCourses = [...Array(8).keys()].map(n => `course-${n}`);
   const selectedEmails = [];
   const value = {
@@ -34,7 +34,7 @@ const StepperWrapper = (props) => {
       </BulkEnrollContext.Provider>
     </IntlProvider>
   );
-};
+}
 
 describe('AddCoursesStep', () => {
   it('displays a title', () => {

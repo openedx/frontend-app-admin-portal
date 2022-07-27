@@ -8,12 +8,12 @@ import {
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-const SettingsAccessSSOManagement = ({
+function SettingsAccessSSOManagement({
   enterpriseId,
   enableIntegratedCustomerLearnerPortalSearch,
   identityProvider,
   updatePortalConfiguration,
-}) => {
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -54,7 +54,7 @@ const SettingsAccessSSOManagement = ({
       </SettingsAccessTabSection>
     </>
   );
-};
+}
 
 SettingsAccessSSOManagement.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

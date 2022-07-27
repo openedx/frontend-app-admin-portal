@@ -43,7 +43,7 @@ const historyMock = (pathname = SUBSCRIPTION_PAGE_LOCATION) => ({
   listen: jest.fn(),
 });
 
-const ToursWithContext = ({
+function ToursWithContext({
   pathname = undefined,
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
@@ -66,12 +66,13 @@ const ToursWithContext = ({
       enableLearnerPortal,
     },
   }),
-}) => (
-  <Provider store={store}>
-    <Router history={historyMock(pathname)}>
-      <Route
-        path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
-        render={
+}) {
+  return (
+    <Provider store={store}>
+      <Router history={historyMock(pathname)}>
+        <Route
+          path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
+          render={
           () => (
             <EnterpriseSubsidiesContext.Provider value={EnterpriseSubsidiesContextValue}>
               <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
@@ -84,10 +85,11 @@ const ToursWithContext = ({
             </EnterpriseSubsidiesContext.Provider>
           )
         }
-      />
-    </Router>
-  </Provider>
-);
+        />
+      </Router>
+    </Provider>
+  );
+}
 
 const deleteCookie = (name) => {
   document.cookie = `${name}=; Path=/;  Domain=${window.location.host};`

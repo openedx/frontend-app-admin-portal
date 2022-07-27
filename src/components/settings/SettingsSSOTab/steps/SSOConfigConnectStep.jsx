@@ -8,9 +8,9 @@ import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
 
-const SSOConfigConnectStep = ({
+function SSOConfigConnectStep({
   enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError, setShowValidatedText, showValidatedText,
-}) => {
+}) {
   // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
@@ -40,17 +40,15 @@ const SSOConfigConnectStep = ({
     <>
       {isLoading && <span>Loading SSO Configurations...</span>}
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
-        <>
-          <div>
-            <SSOConfigConfiguredCard
-              config={providerConfig}
-              testLink={testLink}
-              setConnectError={setConnectError}
-              setShowValidatedText={setShowValidatedText}
-              showValidatedText={showValidatedText}
-            />
-          </div>
-        </>
+        <div>
+          <SSOConfigConfiguredCard
+            config={providerConfig}
+            testLink={testLink}
+            setConnectError={setConnectError}
+            setShowValidatedText={setShowValidatedText}
+            showValidatedText={showValidatedText}
+          />
+        </div>
       )}
       {!isLoading && existingConfigs && existingConfigs.length === 0 && (
         <Alert variant="warning">
@@ -61,7 +59,7 @@ const SSOConfigConnectStep = ({
       {error && !isLoading && <Alert variant="warning">{error}</Alert>}
     </>
   );
-};
+}
 
 SSOConfigConnectStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

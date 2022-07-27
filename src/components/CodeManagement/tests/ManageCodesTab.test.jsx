@@ -46,26 +46,28 @@ const initialState = {
   },
 };
 
-const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props }) => (
-  <MemoryRouter>
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
-          <ManageCodesTab
-            location={{}}
-            match={{
-              path: '/test-page',
-            }}
-            history={{
-              replace: () => {},
-            }}
-            {...props}
-          />
-        </SubsidyRequestsContext.Provider>
-      </IntlProvider>
-    </Provider>
-  </MemoryRouter>
-);
+function ManageCodesTabWrapper({ store, subsidyRequestConfiguration, ...props }) {
+  return (
+    <MemoryRouter>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+            <ManageCodesTab
+              location={{}}
+              match={{
+                path: '/test-page',
+              }}
+              history={{
+                replace: () => {},
+              }}
+              {...props}
+            />
+          </SubsidyRequestsContext.Provider>
+        </IntlProvider>
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 ManageCodesTabWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

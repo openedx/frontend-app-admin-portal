@@ -120,19 +120,21 @@ const codeReminderRequestData = (numCodes, selectedToggle) => {
   return options;
 };
 
-const CodeReminderModalWrapper = props => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <CodeReminderModal
-        couponId={couponId}
-        title="AABBCC"
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CodeReminderModalWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <CodeReminderModal
+          couponId={couponId}
+          title="AABBCC"
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 const store = mockStore({ ...initialState });
 CodeReminderModalWrapper.defaultProps = {

@@ -9,11 +9,11 @@ import {
 } from '../data/actions';
 
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
-const BaseSelectionStatus = ({
+function BaseSelectionStatus({
   className,
   selectedRows,
   dispatch,
-}) => {
+}) {
   const { rows } = useContext(DataTableContext);
   const selectedRowIds = selectedRows.map((row) => row.id);
   const areAllDisplayedRowsSelected = checkForSelectedRows(selectedRowIds, rows);
@@ -43,7 +43,7 @@ const BaseSelectionStatus = ({
       )}
     </div>
   );
-};
+}
 
 BaseSelectionStatus.defaultProps = {
   className: undefined,

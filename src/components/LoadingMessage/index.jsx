@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const LoadingMessage = (props) => {
+function LoadingMessage(props) {
   const { className } = props;
   return (
     <div
@@ -15,7 +15,7 @@ const LoadingMessage = (props) => {
       <span className="sr-only">Loading</span>
     </div>
   );
-};
+}
 
 LoadingMessage.propTypes = {
   className: PropTypes.string.isRequired,

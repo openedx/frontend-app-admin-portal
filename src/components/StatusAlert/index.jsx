@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { StatusAlert as Alert, Icon } from '@edx/paragon';
 
-const StatusAlert = (props) => {
+function StatusAlert(props) {
   const {
     alertType,
     className,
@@ -43,7 +43,7 @@ const StatusAlert = (props) => {
       open
     />
   );
-};
+}
 
 StatusAlert.propTypes = {
   alertType: PropTypes.string.isRequired,

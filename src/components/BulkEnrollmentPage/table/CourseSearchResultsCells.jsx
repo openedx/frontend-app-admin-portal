@@ -8,36 +8,38 @@ import { configuration } from '../../../config';
 
 const HREF_TITLE = 'Learn more about this course';
 
-export const CourseNameCell = ({ value, row, enterpriseSlug }) => (
-  <OverlayTrigger
-    trigger="click"
-    rootClose
-    key="top"
-    placement="top"
-    overlay={(
-      <Popover id="popover-positioned-top">
-        <Popover.Title>{value}</Popover.Title>
-        <Popover.Content>
-          <div
-            className="desc"
+export function CourseNameCell({ value, row, enterpriseSlug }) {
+  return (
+    <OverlayTrigger
+      trigger="click"
+      rootClose
+      key="top"
+      placement="top"
+      overlay={(
+        <Popover id="popover-positioned-top">
+          <Popover.Title>{value}</Popover.Title>
+          <Popover.Content>
+            <div
+              className="desc"
             /* eslint-disable-next-line */
             dangerouslySetInnerHTML={{ __html: row?.original?.short_description }}
-          />
-          <hr />
-          <a
-            href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {HREF_TITLE}
-          </a>
-        </Popover.Content>
-      </Popover>
+            />
+            <hr />
+            <a
+              href={`${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row?.original?.key}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {HREF_TITLE}
+            </a>
+          </Popover.Content>
+        </Popover>
       )}
-  >
-    <Button variant="link">{value}</Button>
-  </OverlayTrigger>
-);
+    >
+      <Button variant="link">{value}</Button>
+    </OverlayTrigger>
+  );
+}
 
 CourseNameCell.propTypes = {
   value: PropTypes.string.isRequired,
@@ -49,11 +51,13 @@ CourseNameCell.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
-export const FormattedDateCell = ({ startValue, endValue }) => (
-  <span>
-    {moment(startValue).format('MMM D, YYYY')} - {moment(endValue).format('MMM D, YYYY')}
-  </span>
-);
+export function FormattedDateCell({ startValue, endValue }) {
+  return (
+    <span>
+      {moment(startValue).format('MMM D, YYYY')} - {moment(endValue).format('MMM D, YYYY')}
+    </span>
+  );
+}
 
 FormattedDateCell.propTypes = {
   startValue: PropTypes.string.isRequired,

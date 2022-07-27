@@ -10,7 +10,7 @@ import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 
-const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
+function SettingsSSOTab({ enterpriseId, setHasSSOConfig }) {
   const {
     ssoState: { providerConfig, infoMessage, refreshBool },
     setInfoMessage,
@@ -82,18 +82,20 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
       {(isLoading || pdIsLoading) && <Skeleton count={5} height={10} />}
     </div>
   );
-};
+}
 
 SettingsSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   setHasSSOConfig: PropTypes.func.isRequired,
 };
 
-const WrappedSSOTab = ({ enterpriseId, setHasSSOConfig }) => (
-  <SSOConfigContextProvider>
-    <SettingsSSOTab enterpriseId={enterpriseId} setHasSSOConfig={setHasSSOConfig} />
-  </SSOConfigContextProvider>
-);
+function WrappedSSOTab({ enterpriseId, setHasSSOConfig }) {
+  return (
+    <SSOConfigContextProvider>
+      <SettingsSSOTab enterpriseId={enterpriseId} setHasSSOConfig={setHasSSOConfig} />
+    </SSOConfigContextProvider>
+  );
+}
 
 WrappedSSOTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

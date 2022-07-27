@@ -11,12 +11,12 @@ import EmailAddressTableCell from './EmailAddressTableCell';
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
-const LearnerCreditAllocationTable = ({
+function LearnerCreditAllocationTable({
   isLoading,
   tableData,
   fetchTableData,
   enterpriseUUID,
-}) => {
+}) {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
 
   return (
@@ -78,7 +78,7 @@ const LearnerCreditAllocationTable = ({
       }
     />
   );
-};
+}
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,

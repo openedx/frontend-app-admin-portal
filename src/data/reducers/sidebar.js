@@ -10,7 +10,7 @@ const initialState = {
   hasSidebarToggle: false,
 };
 
-const sidebarReducer = (state = initialState, action) => {
+const sidebarReducer = (state = initialState, action = {}) => {
   const getStateKey = () => {
     const { payload: { usingToggle } } = action;
     return usingToggle ? 'isExpandedByToggle' : 'isExpanded';

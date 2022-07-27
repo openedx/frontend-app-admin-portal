@@ -43,11 +43,13 @@ const initialStore = mockStore({
 });
 
 // eslint-disable-next-line react/prop-types
-const RemindBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
-  <Provider store={store}>
-    <RemindBulkAction {...rest} />
-  </Provider>
-);
+function RemindBulkActionWithProvider({ store = initialStore, ...rest }) {
+  return (
+    <Provider store={store}>
+      <RemindBulkAction {...rest} />
+    </Provider>
+  );
+}
 
 const mockOnRemindSuccess = jest.fn();
 const basicProps = {

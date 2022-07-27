@@ -58,10 +58,10 @@ describe('SubscriptionManagementPage', () => {
 
     };
 
-    const SubscriptionManagementPageWrapper = ({
+    function SubscriptionManagementPageWrapper({
       subscriptions = defaultSubscriptions,
       subsidyRequestsState = defaultSubsidyRequestsState,
-    }) => {
+    }) {
       jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => ({
         subscriptions: {
           count: 1,
@@ -83,7 +83,7 @@ describe('SubscriptionManagementPage', () => {
           </IntlProvider>
         </Provider>
       );
-    };
+    }
 
     it('renders the correct button text on subscription cards', () => {
       renderWithRouter(<SubscriptionManagementPageWrapper />, {

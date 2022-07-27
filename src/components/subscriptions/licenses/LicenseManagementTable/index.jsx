@@ -53,7 +53,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const LicenseManagementTable = () => {
+function LicenseManagementTable() {
   const { addToast } = useContext(ToastsContext);
 
   const { width } = useWindowSize();
@@ -300,6 +300,6 @@ const LicenseManagementTable = () => {
       />
     </>
   );
-};
+}
 
 export default LicenseManagementTable;

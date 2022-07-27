@@ -22,17 +22,19 @@ const mockEnterpriseCustomer = {
 const history = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register`],
 });
-const AdminRegisterPageWrapper = ({
+function AdminRegisterPageWrapper({
   ...rest
-}) => (
-  <Router history={history}>
-    <Route
-      exact
-      path="/:enterpriseSlug/admin/register"
-      render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
-    />
-  </Router>
-);
+}) {
+  return (
+    <Router history={history}>
+      <Route
+        exact
+        path="/:enterpriseSlug/admin/register"
+        render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
+      />
+    </Router>
+  );
+}
 
 describe('<AdminRegisterPage />', () => {
   beforeEach(() => {

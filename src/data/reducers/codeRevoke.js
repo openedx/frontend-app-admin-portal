@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const codeRevoke = (state = initialState, action) => {
+const codeRevoke = (state = initialState, action = {}) => {
   switch (action.type) {
     case CODE_REVOKE_REQUEST:
       return {

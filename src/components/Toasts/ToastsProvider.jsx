@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export const ToastsContext = createContext();
 
-const ToastsProvider = ({ children }) => {
+function ToastsProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
   const addToast = (message) => {
@@ -30,7 +30,7 @@ const ToastsProvider = ({ children }) => {
       {children}
     </ToastsContext.Provider>
   );
-};
+}
 
 ToastsProvider.propTypes = {
   children: PropTypes.node.isRequired,

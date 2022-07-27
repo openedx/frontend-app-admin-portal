@@ -81,25 +81,29 @@ const learnerActivityStore = mockStore({
   },
 });
 
-const LearnerActivityEmptyTableWrapper = props => (
-  <MemoryRouter>
-    <Provider store={learnerActivityEmptyStore}>
-      <LearnerActivityTable
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function LearnerActivityEmptyTableWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={learnerActivityEmptyStore}>
+        <LearnerActivityTable
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
-const LearnerActivityTableWrapper = props => (
-  <MemoryRouter>
-    <Provider store={learnerActivityStore}>
-      <LearnerActivityTable
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function LearnerActivityTableWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={learnerActivityStore}>
+        <LearnerActivityTable
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {
   const wrapper = mount((

@@ -14,20 +14,22 @@ import {
   COUPON_CODES_PARAM_MATCH,
 } from './data/constants';
 
-const CodeManagementRoutes = ({ enterpriseSlug }) => (
-  <Switch>
-    <Redirect
-      exact
-      from={`/${enterpriseSlug}/admin/coupons`}
-      to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
-    />
-    <Route
-      path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
-      component={CouponCodeTabs}
-    />
-    <Route path="" component={NotFoundPage} />
-  </Switch>
-);
+function CodeManagementRoutes({ enterpriseSlug }) {
+  return (
+    <Switch>
+      <Redirect
+        exact
+        from={`/${enterpriseSlug}/admin/coupons`}
+        to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
+      />
+      <Route
+        path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
+        component={CouponCodeTabs}
+      />
+      <Route path="" component={NotFoundPage} />
+    </Switch>
+  );
+}
 
 CodeManagementRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

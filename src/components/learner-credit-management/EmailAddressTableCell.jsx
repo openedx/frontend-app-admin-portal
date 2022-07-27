@@ -6,7 +6,7 @@ import {
 import { InfoOutline } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-const EmailAddressTableCell = ({ row, enterpriseUUID }) => {
+function EmailAddressTableCell({ row, enterpriseUUID }) {
   if (row.original.userEmail) {
     return <span data-hj-suppress>{row.original.userEmail}</span>;
   }
@@ -53,7 +53,7 @@ const EmailAddressTableCell = ({ row, enterpriseUUID }) => {
       </OverlayTrigger>
     </Stack>
   );
-};
+}
 
 EmailAddressTableCell.propTypes = {
   row: PropTypes.shape({

@@ -37,32 +37,34 @@ const store = mockStore({
   },
 });
 
-const AdminWrapper = props => (
-  <MemoryRouter>
-    <Provider store={store}>
-      <Admin
-        enterpriseId="test-enterprise"
-        enterpriseSlug="test-enterprise"
-        clearDashboardAnalytics={() => {}}
-        fetchDashboardAnalytics={() => {}}
-        fetchPortalConfiguration={() => {}}
-        fetchCsv={() => {}}
-        searchEnrollmentsList={() => {}}
-        tableData={[
-          {
-            course_title: 'Bears 101',
-            course_start: Date.now(),
-          },
-        ]}
-        match={{
-          params: {},
-          url: '/',
-        }}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function AdminWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={store}>
+        <Admin
+          enterpriseId="test-enterprise"
+          enterpriseSlug="test-enterprise"
+          clearDashboardAnalytics={() => {}}
+          fetchDashboardAnalytics={() => {}}
+          fetchPortalConfiguration={() => {}}
+          fetchCsv={() => {}}
+          searchEnrollmentsList={() => {}}
+          tableData={[
+            {
+              course_title: 'Bears 101',
+              course_start: Date.now(),
+            },
+          ]}
+          match={{
+            params: {},
+            url: '/',
+          }}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 describe('<Admin />', () => {
   const baseProps = {
@@ -397,9 +399,7 @@ describe('<Admin />', () => {
         ));
         wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
-        expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
-          enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, { csvId: key },
-        );
+        expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, { csvId: key });
       });
     });
   });

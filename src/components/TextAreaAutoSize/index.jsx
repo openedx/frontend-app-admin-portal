@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
-const TextAreaAutoSize = ({
+function TextAreaAutoSize({
   input,
   label,
   description,
@@ -10,7 +10,7 @@ const TextAreaAutoSize = ({
   required,
   meta: { touched, error },
   descriptionTestId,
-}) => {
+}) {
   const hasError = !!(touched && error);
 
   return (
@@ -31,7 +31,7 @@ const TextAreaAutoSize = ({
       {description && <Form.Text id={descriptionTestId}>{description}</Form.Text>}
     </Form.Group>
   );
-};
+}
 
 TextAreaAutoSize.defaultProps = {
   description: null,

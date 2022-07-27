@@ -26,7 +26,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
     submitState: SUBMIT_STATES.DEFAULT,
     active: this.props.config?.active,
     error: undefined,
-  }
+  };
 
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
@@ -43,7 +43,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   updateBlackboardConfig = async (formData, configUuid) => {
     const transformedData = snakeCaseFormData(formData);
@@ -55,7 +55,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   /**
    * attempt to submit the form data and show any error states or invalid fields.
@@ -90,7 +90,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
       return;
     }
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-  }
+  };
 
   render() {
     const {

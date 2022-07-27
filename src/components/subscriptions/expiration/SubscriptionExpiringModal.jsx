@@ -10,13 +10,13 @@ import { formatTimestamp } from '../../../utils';
 
 export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';
 
-const SubscriptionExpiringModal = ({
+function SubscriptionExpiringModal({
   onClose,
   isOpen,
   expirationThreshold,
   enterpriseId,
   onAction,
-}) => {
+}) {
   const { subscription: { agreementNetDaysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
 
   const handleClose = () => {
@@ -72,7 +72,7 @@ const SubscriptionExpiringModal = ({
       </ModalDialog.Footer>
     </ModalDialog>
   );
-};
+}
 
 SubscriptionExpiringModal.propTypes = {
   onClose: PropTypes.func.isRequired,

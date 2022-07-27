@@ -5,7 +5,7 @@ import {
   UPDATE_INFO_MESSAGE, UPDATE_CONNECT_START_TIME, UPDATE_REFRESH_BOOL,
 } from './actions';
 
-const SSOStateReducer = (state, action) => {
+const SSOStateReducer = (state, action = {}) => {
   switch (action.type) {
     case UPDATE_INFO_MESSAGE: {
       return { ...state, infoMessage: action.infoMessage };

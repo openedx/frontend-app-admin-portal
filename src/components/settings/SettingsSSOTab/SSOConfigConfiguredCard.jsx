@@ -14,9 +14,9 @@ import LmsApiService from '../../../data/services/LmsApiService';
 /**
  * This is the clickable card that is used to test the SSO config before we complete the config creation process.
  */
-const SSOConfigConfiguredCard = ({
+function SSOConfigConfiguredCard({
   config, testLink, enterpriseId, setConnectError, setShowValidatedText, showValidatedText,
-}) => {
+}) {
   const {
     ssoState, dispatchSsoState,
     setProviderConfig, setCurrentError, setIsSsoValid,
@@ -129,7 +129,7 @@ const SSOConfigConfiguredCard = ({
       )}
     </>
   );
-};
+}
 
 SSOConfigConfiguredCard.propTypes = {
   config: PropTypes.shape({

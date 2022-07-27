@@ -5,7 +5,7 @@ import { SubscriptionContext } from './SubscriptionData';
 import { ToastsContext } from '../Toasts';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 
-const SubscriptionZeroStateMessage = () => {
+function SubscriptionZeroStateMessage() {
   const { addToast } = useContext(ToastsContext);
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
@@ -32,6 +32,6 @@ const SubscriptionZeroStateMessage = () => {
       </Card.Section>
     </Card>
   );
-};
+}
 
 export default SubscriptionZeroStateMessage;

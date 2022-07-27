@@ -9,14 +9,14 @@ import BulkEnrollContextProvider from './BulkEnrollmentContext';
 * @param {object} props Props
 * @param {array<string>} props.learners learner email list to enroll
 */
-const BulkEnrollDialog = (props) => {
+function BulkEnrollDialog(props) {
   const { learners } = props;
   return (
     <BulkEnrollContextProvider initialEmailsList={learners}>
       <BulkEnrollmentStepper {...props} />
     </BulkEnrollContextProvider>
   );
-};
+}
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,

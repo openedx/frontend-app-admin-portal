@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 
-const NoAvailableLicensesBanner = ({ subscriptions }) => {
+function NoAvailableLicensesBanner({ subscriptions }) {
   const [showBanner, setShowBanner] = useState(true);
 
   const dismissBanner = () => {
@@ -53,7 +53,7 @@ const NoAvailableLicensesBanner = ({ subscriptions }) => {
   }
 
   return null;
-};
+}
 
 NoAvailableLicensesBanner.propTypes = {
   subscriptions: PropTypes.arrayOf(

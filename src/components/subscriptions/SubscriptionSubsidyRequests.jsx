@@ -15,7 +15,7 @@ import { SubscriptionContext } from './SubscriptionData';
 import LoadingMessage from '../LoadingMessage';
 import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 
-const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
+function SubscriptionSubsidyRequests({ enterpriseId }) {
   const {
     isLoading,
     requests,
@@ -102,7 +102,7 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
       )}
     </Stack>
   );
-};
+}
 
 SubscriptionSubsidyRequests.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

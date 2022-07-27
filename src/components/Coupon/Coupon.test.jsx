@@ -44,16 +44,18 @@ const initialCouponData = {
   usage_limitation: MULTI_USE,
 };
 
-const CouponWrapper = props => (
-  <MemoryRouter>
-    <Provider store={store}>
-      <Coupon
-        data={initialCouponData}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CouponWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={store}>
+        <Coupon
+          data={initialCouponData}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 describe('<Coupon />', () => {
   let wrapper;

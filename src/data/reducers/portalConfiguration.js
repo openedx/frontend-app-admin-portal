@@ -27,7 +27,7 @@ const initialState = {
   enablePortalLearnerCreditManagementScreen: false,
 };
 
-const portalConfiguration = (state = initialState, action) => {
+const portalConfiguration = (state = initialState, action = {}) => {
   switch (action.type) {
     case FETCH_PORTAL_CONFIGURATION_REQUEST:
       return {

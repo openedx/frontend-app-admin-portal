@@ -7,7 +7,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 
 export const INVITE_LEARNERS_BUTTON_TEXT = 'Invite learners';
 
-const InviteLearnersButton = ({ onSuccess, onClose, disabled }) => {
+function InviteLearnersButton({ onSuccess, onClose, disabled }) {
   const { overview, subscription } = useContext(SubscriptionDetailContext);
   return (
     <ActionButtonWithModal
@@ -30,7 +30,7 @@ const InviteLearnersButton = ({ onSuccess, onClose, disabled }) => {
       disabled={disabled}
     />
   );
-};
+}
 
 InviteLearnersButton.propTypes = {
   onSuccess: PropTypes.func.isRequired,

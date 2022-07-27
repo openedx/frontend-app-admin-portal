@@ -17,54 +17,64 @@ const fakeHits = [
   { objectID: '2', title: 'blp', advertised_course_run, key: 'Wasps200' },
 ];
 
-MockReactInstantSearch.connectStateResults = Component => (props) => (
-  <Component
-    searchResults={{
-      hits: fakeHits,
-      hitsPerPage: 25,
-      nbHits: 2,
-      nbPages: 1,
-      page: 1,
-    }}
-    isSearchStalled={false}
-    searchState={{
-      page: 1,
-    }}
-    {...props}
-  />
-);
+MockReactInstantSearch.connectStateResults = Component => function (props) {
+  return (
+    <Component
+      searchResults={{
+        hits: fakeHits,
+        hitsPerPage: 25,
+        nbHits: 2,
+        nbPages: 1,
+        page: 1,
+      }}
+      isSearchStalled={false}
+      searchState={{
+        page: 1,
+      }}
+      {...props}
+    />
+  );
+};
 
-MockReactInstantSearch.connectPagination = Component => (props) => (
-  <Component nbPages={2} maxPagesDisplayed={2} {...props} />
-);
+MockReactInstantSearch.connectPagination = Component => function (props) {
+  return <Component nbPages={2} maxPagesDisplayed={2} {...props} />;
+};
 
-MockReactInstantSearch.InstantSearch = ({ children }) => <div>{children}</div>;
+MockReactInstantSearch.InstantSearch = function ({ children }) {
+  return <div>{children}</div>;
+};
 
-MockReactInstantSearch.connectCurrentRefinements = Component => (props) => (
-  <Component items={[]} {...props} />
-);
+MockReactInstantSearch.connectCurrentRefinements = Component => function (props) {
+  return <Component items={[]} {...props} />;
+};
 
-MockReactInstantSearch.connectRefinementList = Component => (props) => (
-  <Component
-    attribute="subjects"
-    currentRefinement={[]}
-    items={[]}
-    refinements={{}}
-    title="Foo"
-    searchForItems={() => {}}
-    {...props}
-  />
-);
+MockReactInstantSearch.connectRefinementList = Component => function (props) {
+  return (
+    <Component
+      attribute="subjects"
+      currentRefinement={[]}
+      items={[]}
+      refinements={{}}
+      title="Foo"
+      searchForItems={() => {}}
+      {...props}
+    />
+  );
+};
 
-MockReactInstantSearch.connectSearchBox = Component => (props) => (
-  <Component {...props} />
-);
+MockReactInstantSearch.connectSearchBox = Component => function (props) {
+  return <Component {...props} />;
+};
 
-MockReactInstantSearch.connectPagination = Component => (props) => (
-  <Component nbPages={1} {...props} />
-);
+MockReactInstantSearch.connectPagination = Component => function (props) {
+  return <Component nbPages={1} {...props} />;
+};
 
-MockReactInstantSearch.InstantSearch = ({ children }) => <>{children}</>;
-MockReactInstantSearch.Configure = () => <div>CONFIGURED</div>;
+MockReactInstantSearch.InstantSearch = function ({ children }) {
+  return <>{children}</>;
+};
+MockReactInstantSearch.Configure = function () {
+  return <div>CONFIGURED</div>;
+};
 
 module.exports = MockReactInstantSearch;

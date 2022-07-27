@@ -20,7 +20,7 @@ class SamlProviderConfigForm extends React.Component {
     enabled: this.props.config?.enabled,
     syncLearnerProfileData: this.props.config?.syncLearnerProfileData,
     error: undefined,
-  }
+  };
 
   /**
    * Validates this form. If the form is invalid, it will return the fields
@@ -33,7 +33,7 @@ class SamlProviderConfigForm extends React.Component {
       .filter(field => !formData.get(field))
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
     return invalidFields;
-  }
+  };
 
   /**
    * attempt to submit the form data and show any error states or invalid fields.
@@ -74,7 +74,7 @@ class SamlProviderConfigForm extends React.Component {
         });
       }
     }
-  }
+  };
 
   render() {
     const { config, deleteEnabled } = this.props;

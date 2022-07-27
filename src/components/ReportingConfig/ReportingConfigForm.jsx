@@ -44,7 +44,7 @@ class ReportingConfigForm extends React.Component {
     invalidFields: {},
     active: this.props.config ? this.props.config.active : false,
     submitState: SUBMIT_STATES.DEFAULT,
-  }
+  };
 
   /**
    * Validates this form. If the form is invalid, it will return the fields
@@ -130,7 +130,7 @@ class ReportingConfigForm extends React.Component {
       }
     }
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
-  }
+  };
 
   render() {
     const { config, availableCatalogs, reportingConfigTypes } = this.props;

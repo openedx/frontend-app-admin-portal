@@ -12,7 +12,7 @@ import RequestStatusCell from './RequestStatusCell';
 import CourseTitleCell from './CourseTitleCell';
 import ActionCell from './ActionCell';
 
-const SubsidyRequestManagementTable = ({
+function SubsidyRequestManagementTable({
   onApprove,
   onDecline,
   data,
@@ -25,7 +25,7 @@ const SubsidyRequestManagementTable = ({
   initialState,
   disableApproveButton,
   ...rest
-}) => {
+}) {
   const columns = useMemo(
     () => ([
       {
@@ -94,7 +94,7 @@ const SubsidyRequestManagementTable = ({
       <DataTable.TableFooter />
     </DataTable>
   );
-};
+}
 
 SubsidyRequestManagementTable.propTypes = {
   fetchData: PropTypes.func.isRequired,

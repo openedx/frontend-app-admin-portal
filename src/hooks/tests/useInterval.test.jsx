@@ -9,15 +9,15 @@ describe('useInterval hook', () => {
   // I could not get jest to properly reset the function between tests
   const callback1 = jest.fn();
   const callback2 = jest.fn();
-  const FakeComponent = () => {
+  function FakeComponent() {
     useInterval(callback1, interval);
     return <div />;
-  };
+  }
 
-  const FakeComponentNullInterval = () => {
+  function FakeComponentNullInterval() {
     useInterval(callback2);
     return <div />;
-  };
+  }
 
   beforeAll(() => {
     jest.useFakeTimers();

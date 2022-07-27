@@ -6,13 +6,13 @@ import { Bubble } from '@edx/paragon';
 
 const BUBBLE_MARGIN_LEFT = 5;
 
-const BaseNavLink = ({
+function BaseNavLink({
   icon,
   isExpanded,
   title,
   notification,
   ...rest
-}) => {
+}) {
   const iconRef = useRef();
   const titleRef = useRef();
 
@@ -67,7 +67,7 @@ const BaseNavLink = ({
       </div>
     </NavLink>
   );
-};
+}
 
 const commonPropTypes = {
   title: PropTypes.string.isRequired,
@@ -83,7 +83,7 @@ const commonDefaultProps = {
 BaseNavLink.propTypes = commonPropTypes;
 BaseNavLink.defaultProps = commonDefaultProps;
 
-const IconLink = (props) => {
+function IconLink(props) {
   const { external, to, ...rest } = props;
 
   if (external) {
@@ -97,7 +97,7 @@ const IconLink = (props) => {
     );
   }
   return <BaseNavLink to={to} {...rest} />;
-};
+}
 
 IconLink.defaultProps = {
   ...commonDefaultProps,

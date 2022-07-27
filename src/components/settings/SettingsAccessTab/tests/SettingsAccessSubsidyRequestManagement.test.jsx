@@ -20,11 +20,13 @@ jest.mock('../SettingsAccessTabSection', () => ({
   )),
 }));
 
-const SettingsAccessSubsidyRequestManagementWrapper = (props) => (
-  <IntlProvider locale="en">
-    <SettingsAccessSubsidyRequestManagement {...props} />
-  </IntlProvider>
-);
+function SettingsAccessSubsidyRequestManagementWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <SettingsAccessSubsidyRequestManagement {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('<SettingsAccessSubsidyRequestManagement />', () => {
   const basicProps = {

@@ -8,7 +8,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 
 import './FeatureAnnouncementBanner.scss';
 
-const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
+function FeatureAnnouncementBanner({ enterpriseSlug }) {
   const [enterpriseNotificationBanner, setEnterpriseNotificationBanner] = useState({
     title: null,
     text: null,
@@ -53,7 +53,7 @@ const FeatureAnnouncementBanner = ({ enterpriseSlug }) => {
       </Alert>
     </div>
   );
-};
+}
 
 FeatureAnnouncementBanner.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

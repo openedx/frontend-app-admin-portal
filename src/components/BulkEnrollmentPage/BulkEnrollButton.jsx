@@ -11,17 +11,19 @@ import { BookOpen } from '@edx/paragon/icons';
  * @param {Function} args.handleEnrollment function to invoke to enroll
  * @param {string} args.buttonType type (to distinguish buttons in the dom)
  */
-const BulkEnrollButton = ({ learners, handleEnrollment, buttonType }) => (
-  <Button
-    variant="primary"
-    onClick={handleEnrollment}
-    iconBefore={BookOpen}
-    disabled={learners.length < 1}
-    data-testid={buttonType}
-  >
-    Enroll ({learners.length })
-  </Button>
-);
+function BulkEnrollButton({ learners, handleEnrollment, buttonType }) {
+  return (
+    <Button
+      variant="primary"
+      onClick={handleEnrollment}
+      iconBefore={BookOpen}
+      disabled={learners.length < 1}
+      data-testid={buttonType}
+    >
+      Enroll ({learners.length })
+    </Button>
+  );
+}
 
 BulkEnrollButton.defaultProps = {
   buttonType: 'BULK_ENROLL_DEFAULT',

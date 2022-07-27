@@ -145,15 +145,17 @@ const defaultStore = getMockStore({ ...initialStore });
 
 const mockDecrementCouponCodeRequestCount = jest.fn();
 
-const ManageRequestsTabWithRouter = ({
+function ManageRequestsTabWithRouter({
   store: storeProp,
-}) => (
-  <Provider store={storeProp}>
-    <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
-      <ManageRequestsTab />
-    </SubsidyRequestsContext.Provider>
-  </Provider>
-);
+}) {
+  return (
+    <Provider store={storeProp}>
+      <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
+        <ManageRequestsTab />
+      </SubsidyRequestsContext.Provider>
+    </Provider>
+  );
+}
 
 ManageRequestsTabWithRouter.propTypes = {
   store: PropTypes.shape(),

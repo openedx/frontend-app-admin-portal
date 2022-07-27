@@ -10,7 +10,7 @@ const initialState = {
   data: null,
 };
 
-const licenseRemind = (state = initialState, action) => {
+const licenseRemind = (state = initialState, action = {}) => {
   switch (action.type) {
     case LICENSE_REMIND_REQUEST:
       return {

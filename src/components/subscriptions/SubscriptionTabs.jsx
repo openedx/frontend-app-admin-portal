@@ -21,7 +21,7 @@ import {
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
-const SubscriptionTabs = ({ enterpriseSlug }) => {
+function SubscriptionTabs({ enterpriseSlug }) {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
 
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
@@ -89,7 +89,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
       )}
     </Tabs>
   );
-};
+}
 
 SubscriptionTabs.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

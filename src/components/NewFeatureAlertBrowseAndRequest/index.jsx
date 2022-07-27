@@ -22,7 +22,7 @@ const cookies = new Cookies();
  */
 export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX}-${enterpriseId}`;
 
-const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
+function NewFeatureAlertBrowseAndRequest({ enterpriseId, enterpriseSlug }) {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
   const hideAlert = cookies.get(browseAndRequestAlertCookieName);
 
@@ -63,7 +63,7 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
       {BROWSE_AND_REQUEST_ALERT_TEXT}
     </Alert>
   );
-};
+}
 
 NewFeatureAlertBrowseAndRequest.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

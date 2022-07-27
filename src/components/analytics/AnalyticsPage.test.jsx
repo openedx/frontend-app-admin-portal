@@ -26,19 +26,21 @@ const initialState = {
 const store = mockStore({
   ...initialState,
 });
-const AnalyticsPageWrapper = ({
+function AnalyticsPageWrapper({
   ...rest
-}) => (
-  <Router history={history}>
-    <ToastsContext.Provider value={{ addToast: () => {} }}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/analytics"
-        render={routeProps => <AnalyticsPage {...routeProps} {...rest} />}
-      />
-    </ToastsContext.Provider>
-  </Router>
-);
+}) {
+  return (
+    <Router history={history}>
+      <ToastsContext.Provider value={{ addToast: () => {} }}>
+        <Route
+          exact
+          path="/:enterpriseSlug/admin/analytics"
+          render={routeProps => <AnalyticsPage {...routeProps} {...rest} />}
+        />
+      </ToastsContext.Provider>
+    </Router>
+  );
+}
 
 describe('<AnalyticsPage />', () => {
   beforeEach(() => {

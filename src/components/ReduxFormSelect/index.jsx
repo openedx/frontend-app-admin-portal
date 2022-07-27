@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
-const ReduxFormSelect = ({
+function ReduxFormSelect({
   input, label: formLabel, disabled, options, description, meta: { touched, error },
-}) => {
+}) {
   const hasError = !!(touched && error);
   return (
     <Form.Group>
@@ -16,7 +16,7 @@ const ReduxFormSelect = ({
       {description && <Form.Text>{description}</Form.Text>}
     </Form.Group>
   );
-};
+}
 
 ReduxFormSelect.defaultProps = {
   disabled: false,

@@ -99,9 +99,7 @@ describe('getErrors', () => {
   };
   it('returns an invalid email message for text area emails', () => {
     const result = getErrors(sampleInputTextArea);
-    const errorMessage = getInvalidEmailMessage(
-      sampleInputTextArea.invalidTextAreaEmails, sampleInputTextArea.textAreaEmails,
-    );
+    const errorMessage = getInvalidEmailMessage(sampleInputTextArea.invalidTextAreaEmails, sampleInputTextArea.textAreaEmails);
     const expected = {
       [EMAIL_ADDRESS_TEXT_FORM_DATA]: errorMessage,
       _error: [errorMessage],

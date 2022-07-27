@@ -59,13 +59,15 @@ const expiredSubscriptionPlan = (
 };
 
 // eslint-disable-next-line react/prop-types
-const LicenseManagementTableWrapper = ({ subscriptionPlan, ...props }) => (
-  <IntlProvider locale="en">
-    <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
-      <LicenseManagementTable {...props} />
-    </MockSubscriptionContext>
-  </IntlProvider>
-);
+function LicenseManagementTableWrapper({ subscriptionPlan, ...props }) {
+  return (
+    <IntlProvider locale="en">
+      <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
+        <LicenseManagementTable {...props} />
+      </MockSubscriptionContext>
+    </IntlProvider>
+  );
+}
 
 const singleUserSetup = (status = 'assigned') => {
   const subscriptionPlan = generateSubscriptionPlan({

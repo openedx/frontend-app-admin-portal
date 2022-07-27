@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ValidationFormGroup } from '@edx/paragon';
 
-const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
+function SFTPDeliveryMethodForm({ invalidFields, config, handleBlur }) {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -110,7 +110,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
       </div>
     </>
   );
-};
+}
 
 SFTPDeliveryMethodForm.defaultProps = {
   invalidFields: {},

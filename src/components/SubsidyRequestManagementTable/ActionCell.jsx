@@ -5,9 +5,9 @@ import {
   Button,
 } from '@edx/paragon';
 
-const ActionCell = ({
+function ActionCell({
   row, onApprove, onDecline, disableApproveButton,
-}) => {
+}) {
   if (row.original.requestStatus !== 'requested') {
     return null;
   }
@@ -30,7 +30,7 @@ const ActionCell = ({
       </Button>
     </ActionRow>
   );
-};
+}
 
 ActionCell.propTypes = {
   row: PropTypes.shape({

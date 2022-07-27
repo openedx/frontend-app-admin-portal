@@ -27,15 +27,17 @@ const store = mockStore({
   },
 });
 
-const EnrolledLearnersWrapper = props => (
-  <MemoryRouter>
-    <Provider store={store}>
-      <EnrolledLearnersTable
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function EnrolledLearnersWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={store}>
+        <EnrolledLearnersTable
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 describe('EnrolledLearnersTable', () => {
   it('renders empty state correctly', () => {

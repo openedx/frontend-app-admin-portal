@@ -38,7 +38,7 @@ const calculateTotalToRevoke = ({
   return revokableUsersCount;
 };
 
-const RevokeBulkAction = ({
+function RevokeBulkAction({
   selectedFlatRows,
   isEntireTableSelected,
   tableInstance,
@@ -47,7 +47,7 @@ const RevokeBulkAction = ({
   activatedUsersCount,
   assignedUsersCount,
   revokedUsersCount,
-}) => {
+}) {
   const [revokeModal, setRevokeModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
   const selectedRevocableRows = selectedRows.filter(row => canRevokeLicense(row.status));
@@ -131,7 +131,7 @@ const RevokeBulkAction = ({
       />
     </>
   );
-};
+}
 
 RevokeBulkAction.defaultProps = {
   selectedFlatRows: [],

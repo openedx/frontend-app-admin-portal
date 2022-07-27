@@ -38,11 +38,13 @@ const fakeSubscription = {
   uuid: 'fake-subscription-uuid',
 };
 
-const SubscriptionDetailPageWrapper = (props) => (
-  <SubscriptionManagementContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE}>
-    <SubscriptionDetailPage {...props} />
-  </SubscriptionManagementContext>
-);
+function SubscriptionDetailPageWrapper(props) {
+  return (
+    <SubscriptionManagementContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE}>
+      <SubscriptionDetailPage {...props} />
+    </SubscriptionManagementContext>
+  );
+}
 
 describe('<SubscriptionDetailPage />', () => {
   it('renders the subscription detail page children components', () => {

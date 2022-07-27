@@ -21,7 +21,7 @@ const PAGE_TILE = 'Settings';
  * Behaves as the router for settings page
  * When browsing to {path} (../admin/settings) redirect to default tab
  */
-const SettingsPage = () => {
+function SettingsPage() {
   const { path } = useRouteMatch();
   return (
     <>
@@ -42,6 +42,6 @@ const SettingsPage = () => {
       </Switch>
     </>
   );
-};
+}
 
 export default SettingsPage;

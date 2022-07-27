@@ -22,19 +22,21 @@ const initialState = {
   },
 };
 
-const InviteLearnersModalWrapper = props => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <InviteLearnersModal
-        availableSubscriptionCount={10}
-        onClose={() => {}}
-        onSuccess={() => {}}
-        subscriptionUUID="foo"
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function InviteLearnersModalWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <InviteLearnersModal
+          availableSubscriptionCount={10}
+          onClose={() => {}}
+          onSuccess={() => {}}
+          subscriptionUUID="foo"
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 InviteLearnersModalWrapper.defaultProps = {
   store: mockStore(initialState),

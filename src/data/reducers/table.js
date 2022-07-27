@@ -18,7 +18,7 @@ const updateTable = (state, tableId, updatedTableState) => ({
   },
 });
 
-const tableReducer = (state = {}, action) => {
+const tableReducer = (state = {}, action = {}) => {
   switch (action.type) {
     case PAGINATION_REQUEST:
       return updateTable(state, action.payload.tableId, {

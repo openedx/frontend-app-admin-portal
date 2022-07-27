@@ -10,9 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const CornerstoneConfig = ({
+function CornerstoneConfig({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) => {
+}) {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
@@ -143,7 +143,7 @@ const CornerstoneConfig = ({
       </Form>
     </span>
   );
-};
+}
 
 CornerstoneConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

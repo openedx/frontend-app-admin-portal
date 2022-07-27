@@ -24,7 +24,7 @@ import { useOfferSummary, useOfferRedemptions } from './data/hooks';
 import { DATE_FORMAT } from './data/constants';
 import OfferUtilizationAlerts from './OfferUtilizationAlerts';
 
-const LearnerCreditManagement = ({ enterpriseUUID }) => {
+function LearnerCreditManagement({ enterpriseUUID }) {
   const { offers } = useContext(EnterpriseSubsidiesContext);
   const enterpriseOffer = offers[0];
 
@@ -113,7 +113,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
       </Container>
     </>
   );
-};
+}
 
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,

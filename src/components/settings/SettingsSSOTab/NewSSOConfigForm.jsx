@@ -5,7 +5,7 @@ import { SSOConfigContext } from './SSOConfigContext';
 import SSOStepper from './SSOStepper';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 
-const NewSSOConfigForm = () => {
+function NewSSOConfigForm() {
   const { ssoState: { currentError } } = useContext(SSOConfigContext);
   return (
     <div className="sso-create-form mt-4.5">
@@ -38,5 +38,5 @@ const NewSSOConfigForm = () => {
       )}
     </div>
   );
-};
+}
 export default NewSSOConfigForm;

@@ -13,7 +13,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 import { formatTimestamp } from '../../../utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 
-const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
+function SubscriptionExpirationBanner({ isSubscriptionPlanDetails }) {
   const {
     subscription: {
       agreementNetDaysUntilExpiration: daysUntilContractExpiration,
@@ -130,7 +130,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       {isSubscriptionPlanDetails ? renderPlanDetailsMessage() : renderContractDetailsMessage()}
     </Alert>
   );
-};
+}
 
 SubscriptionExpirationBanner.propTypes = {
   isSubscriptionPlanDetails: PropTypes.bool,

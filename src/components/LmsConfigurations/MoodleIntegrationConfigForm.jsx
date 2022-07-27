@@ -21,7 +21,7 @@ class MoodleIntegrationConfigForm extends React.Component {
     submitState: SUBMIT_STATES.DEFAULT,
     active: this.props.config?.active,
     error: null,
-  }
+  };
 
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
@@ -38,7 +38,7 @@ class MoodleIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   updateMoodleConfig = async (formData, configId) => {
     const transformedData = snakeCaseFormData(formData);
@@ -50,7 +50,7 @@ class MoodleIntegrationConfigForm extends React.Component {
     } catch (error) {
       return handleErrors(error);
     }
-  }
+  };
 
   /**
    * attempt to submit the form data and show any error states or invalid fields.
@@ -102,7 +102,7 @@ class MoodleIntegrationConfigForm extends React.Component {
         this.setState({ submitState: SUBMIT_STATES.COMPLETE });
       }
     }
-  }
+  };
 
   render() {
     const {

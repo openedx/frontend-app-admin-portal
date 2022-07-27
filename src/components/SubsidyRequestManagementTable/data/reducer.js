@@ -16,7 +16,7 @@ export const initialSubsidyRequestsState = {
   isLoading: false,
 };
 
-export const subsidyRequestsReducer = (state = initialSubsidyRequestsState, action) => {
+export const subsidyRequestsReducer = (state = initialSubsidyRequestsState, action = {}) => {
   switch (action.type) {
     case SET_IS_LOADING_SUBSIDY_REQUESTS:
       return { ...state, isLoading: action.payload.isLoading };

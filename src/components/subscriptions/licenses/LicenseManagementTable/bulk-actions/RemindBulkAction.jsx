@@ -41,7 +41,7 @@ const calculateTotalToRemind = ({
   return remindableUsersCount;
 };
 
-const RemindBulkAction = ({
+function RemindBulkAction({
   selectedFlatRows,
   tableInstance,
   isEntireTableSelected,
@@ -50,7 +50,7 @@ const RemindBulkAction = ({
   assignedUsersCount,
   revokedUsersCount,
   onRemindSuccess,
-}) => {
+}) {
   const [remindModal, setRemindModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
   const selectedRemindableRows = selectedRows.filter(row => canRemindLicense(row.status));
@@ -134,7 +134,7 @@ const RemindBulkAction = ({
       />
     </>
   );
-};
+}
 
 RemindBulkAction.defaultProps = {
   selectedFlatRows: [],

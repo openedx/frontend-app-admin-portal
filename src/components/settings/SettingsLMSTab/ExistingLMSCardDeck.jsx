@@ -18,12 +18,12 @@ const INCOMPLETE = 'incomplete';
 const ACTIVE = 'active';
 const INACTIVE = 'inactive';
 
-const ExistingLMSCardDeck = ({
+function ExistingLMSCardDeck({
   configData,
   editExistingConfig,
   enterpriseCustomerUuid,
   onClick,
-}) => {
+}) {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [errorModalText, setErrorModalText] = useState();
 
@@ -227,7 +227,7 @@ const ExistingLMSCardDeck = ({
       </CardGrid>
     </span>
   );
-};
+}
 
 ExistingLMSCardDeck.propTypes = {
   onClick: PropTypes.func.isRequired,

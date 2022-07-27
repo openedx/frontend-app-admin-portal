@@ -7,18 +7,20 @@ import NumberCard from './index';
 
 const getNumberCard = wrapper => wrapper.find('NumberCard');
 
-const NumberCardWrapper = props => (
-  <MemoryRouter>
-    <NumberCard
-      id="test-id"
-      className="test-class"
-      title={10}
-      description="This describes the data!"
-      iconClassName="fa fa-users"
-      {...props}
-    />
-  </MemoryRouter>
-);
+function NumberCardWrapper(props) {
+  return (
+    <MemoryRouter>
+      <NumberCard
+        id="test-id"
+        className="test-class"
+        title={10}
+        description="This describes the data!"
+        iconClassName="fa fa-users"
+        {...props}
+      />
+    </MemoryRouter>
+  );
+}
 
 describe('<NumberCard />', () => {
   let wrapper;

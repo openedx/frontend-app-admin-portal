@@ -117,16 +117,18 @@ const initialState = {
 };
 
 /* eslint-disable react/prop-types */
-const CodeRevokeModalWrapper = (props) => (
-  <MemoryRouter>
-    <Provider store={mockStore(initialState)}>
-      <CodeRevokeModal
-        {...initialProps}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CodeRevokeModalWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={mockStore(initialState)}>
+        <CodeRevokeModal
+          {...initialProps}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 /* eslint-enable react/prop-types */
 
 describe('CodeRevokeModal component', () => {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { configuration } from '../../config';
 
-const SurveyPage = () => {
+function SurveyPage() {
   useEffect(() => {
     const widget = document.createElement('script');
     widget.src = configuration.SURVEY_MONKEY_URL;
@@ -10,6 +10,6 @@ const SurveyPage = () => {
   }, []);
 
   return <div id="smcx-sdk" />;
-};
+}
 
 export default SurveyPage;

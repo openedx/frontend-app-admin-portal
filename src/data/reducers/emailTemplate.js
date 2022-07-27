@@ -83,7 +83,7 @@ export const initialState = {
   },
 };
 
-const emailTemplate = (state = initialState, action) => {
+const emailTemplate = (state = initialState, action = {}) => {
   switch (action.type) {
     case EMAIL_TEMPLATE_REQUEST:
       return {

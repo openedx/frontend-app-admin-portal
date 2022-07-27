@@ -7,35 +7,37 @@ const MODAL_TEXT = 'Your changes will be lost without saving.';
 
 // will have to pass in individual saveDraft method and config when
 // drafting is allowed
-const ConfigModal = ({
+function ConfigModal({
   isOpen, close, onClick, saveDraft,
-}) => (
-  <ModalDialog
-    title="Cancel Modal"
-    isOpen={isOpen}
-    onClose={close}
-    variant="default"
-  >
-    <ModalDialog.Header>
-      <ModalDialog.Title>
-        {MODAL_TITLE}
-      </ModalDialog.Title>
-    </ModalDialog.Header>
-    <ModalDialog.Body>
-      {MODAL_TEXT}
-    </ModalDialog.Body>
-    <ModalDialog.Footer>
-      <ActionRow>
-        <Button onClick={() => onClick('')} variant="outline-primary">
-          Exit without saving
-        </Button>
-        <Button onClick={saveDraft} variant="primary">
-          Save
-        </Button>
-      </ActionRow>
-    </ModalDialog.Footer>
-  </ModalDialog>
-);
+}) {
+  return (
+    <ModalDialog
+      title="Cancel Modal"
+      isOpen={isOpen}
+      onClose={close}
+      variant="default"
+    >
+      <ModalDialog.Header>
+        <ModalDialog.Title>
+          {MODAL_TITLE}
+        </ModalDialog.Title>
+      </ModalDialog.Header>
+      <ModalDialog.Body>
+        {MODAL_TEXT}
+      </ModalDialog.Body>
+      <ModalDialog.Footer>
+        <ActionRow>
+          <Button onClick={() => onClick('')} variant="outline-primary">
+            Exit without saving
+          </Button>
+          <Button onClick={saveDraft} variant="primary">
+            Save
+          </Button>
+        </ActionRow>
+      </ModalDialog.Footer>
+    </ModalDialog>
+  );
+}
 
 ConfigModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

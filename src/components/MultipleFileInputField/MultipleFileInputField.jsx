@@ -8,7 +8,7 @@ import * as FontAwesome from '@fortawesome/free-solid-svg-icons/faTimes';
 import { getSizeInBytes, formatBytes } from './utils';
 import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';
 
-const MultipleFileInputField = ({
+function MultipleFileInputField({
   input,
   label,
   type,
@@ -19,7 +19,7 @@ const MultipleFileInputField = ({
   id,
   meta: { touched, error },
   ...props
-}) => {
+}) {
   const hasError = !!(touched && error);
   const [size, setSize] = useState('0');
   const [filesSizeError, setFilesSizeError] = useState(null);
@@ -97,7 +97,7 @@ const MultipleFileInputField = ({
       }
     </Form.Group>
   );
-};
+}
 
 MultipleFileInputField.defaultProps = {
   disabled: false,

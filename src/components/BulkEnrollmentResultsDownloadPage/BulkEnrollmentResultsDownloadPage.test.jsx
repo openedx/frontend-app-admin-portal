@@ -32,22 +32,24 @@ jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-const BulkEnrollmentResultsDownloadPageWrapper = ({
+function BulkEnrollmentResultsDownloadPageWrapper({
   history,
   ...rest
-}) => (
-  <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
-    <Router history={history}>
-      <ToastsContext.Provider value={{ addToast: mockAddToast }}>
-        <Route
-          exact
-          path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
-          render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
-        />
-      </ToastsContext.Provider>
-    </Router>
-  </Provider>
-);
+}) {
+  return (
+    <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
+      <Router history={history}>
+        <ToastsContext.Provider value={{ addToast: mockAddToast }}>
+          <Route
+            exact
+            path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
+            render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
+          />
+        </ToastsContext.Provider>
+      </Router>
+    </Provider>
+  );
+}
 
 BulkEnrollmentResultsDownloadPageWrapper.defaultProps = {
   history: initialHistory,

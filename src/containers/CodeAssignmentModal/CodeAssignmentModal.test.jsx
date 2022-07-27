@@ -64,19 +64,21 @@ const initialState = {
   },
 };
 
-const CodeAssignmentModalWrapper = props => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <CodeAssignmentModal
-        couponId={1}
-        title="AABBCC"
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function CodeAssignmentModalWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <CodeAssignmentModal
+          couponId={1}
+          title="AABBCC"
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 const store = mockStore({ ...initialState });
 

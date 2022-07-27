@@ -5,7 +5,7 @@ import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvi
 import SubscriptionExpirationBanner from './SubscriptionExpirationBanner';
 import SubscriptionExpirationModals from './SubscriptionExpirationModals';
 
-const SubscriptionExpiration = () => {
+function SubscriptionExpiration() {
   const { data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
 
@@ -21,6 +21,6 @@ const SubscriptionExpiration = () => {
       <SubscriptionExpirationModals />
     </SubscriptionDetailContextProvider>
   );
-};
+}
 
 export default SubscriptionExpiration;

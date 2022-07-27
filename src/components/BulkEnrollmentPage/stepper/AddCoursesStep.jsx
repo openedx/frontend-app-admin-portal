@@ -19,9 +19,9 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const AddCoursesStep = ({
+function AddCoursesStep({
   enterpriseId, enterpriseSlug, subscription,
-}) => {
+}) {
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
   return (
     <>
@@ -47,7 +47,7 @@ const AddCoursesStep = ({
       </SearchData>
     </>
   );
-};
+}
 
 AddCoursesStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

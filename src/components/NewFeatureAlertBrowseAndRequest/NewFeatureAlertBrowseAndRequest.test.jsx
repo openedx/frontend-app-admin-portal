@@ -36,15 +36,17 @@ const historyMock = { push: useHistoryPush, location: {}, listen: jest.fn() };
 
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
 
-const NewFeatureAlertBrowseAndRequestWrapper = () => (
-  <Router history={historyMock}>
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <NewFeatureAlertBrowseAndRequest />
-      </IntlProvider>
-    </Provider>
-  </Router>
-);
+function NewFeatureAlertBrowseAndRequestWrapper() {
+  return (
+    <Router history={historyMock}>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <NewFeatureAlertBrowseAndRequest />
+        </IntlProvider>
+      </Provider>
+    </Router>
+  );
+}
 
 describe('<NewFeatureAlertBrowseAndRequest/>', () => {
   afterEach(() => { cleanup(); });

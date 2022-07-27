@@ -16,10 +16,12 @@ axios.patch = jest.fn();
 
 describe('LmsApiService', () => {
   test('updateEnterpriseCustomer calls the LMS to update the enterprise customer', () => {
-    LmsApiService.updateEnterpriseCustomer(mockEnterpriseUUID,
+    LmsApiService.updateEnterpriseCustomer(
+      mockEnterpriseUUID,
       {
         slug: 'test-slug',
-      });
+      },
+    );
 
     expect(axios.patch).toBeCalledWith(
         `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer/${mockEnterpriseUUID}/`,

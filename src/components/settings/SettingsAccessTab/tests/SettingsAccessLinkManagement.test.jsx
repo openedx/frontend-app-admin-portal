@@ -35,7 +35,7 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 const mockRefreshLinks = jest.fn();
 
-const SettingsAccessLinkManagementWrapper = ({
+function SettingsAccessLinkManagementWrapper({
   store = generateStore({}),
   links = [],
   loadingLinks = false,
@@ -43,7 +43,7 @@ const SettingsAccessLinkManagementWrapper = ({
     coupons: [],
     customerAgreement: undefined,
   },
-}) => {
+}) {
   jest.spyOn(hooks, 'useLinkManagement').mockImplementation(
     () => ({
       links,
@@ -60,7 +60,7 @@ const SettingsAccessLinkManagementWrapper = ({
       <SettingsAccessLinkManagement />
     </MockSettingsContext>
   );
-};
+}
 
 describe('<SettingsAccessLinkManagement/>', () => {
   beforeEach(() => couponActions.fetchCouponOrders.mockReturnValue({

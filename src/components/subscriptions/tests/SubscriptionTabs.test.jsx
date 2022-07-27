@@ -24,12 +24,16 @@ const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
 
 jest.mock(
   '../SubscriptionPlanRoutes',
-  () => () => (<div>{MANAGE_LEARNERS_MOCK_CONTENT}</div>),
+  () => function () {
+    return <div>{MANAGE_LEARNERS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../SubscriptionSubsidyRequests',
-  () => () => (<div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>),
+  () => function () {
+    return <div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';
@@ -47,18 +51,20 @@ const store = getMockStore({ ...initialStore });
 
 const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
 
-const SubscriptionTabsWrapper = ({
+function SubscriptionTabsWrapper({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
-}) => (
-  <Provider store={store}>
-    <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
-      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
-        <SubscriptionTabs />
-      </SubsidyRequestsContext.Provider>
-    </Route>
-  </Provider>
-);
+}) {
+  return (
+    <Provider store={store}>
+      <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
+        <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
+          <SubscriptionTabs />
+        </SubsidyRequestsContext.Provider>
+      </Route>
+    </Provider>
+  );
+}
 
 SubscriptionTabsWrapper.defaultProps = {
   subsidyRequestConfiguration: {

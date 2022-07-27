@@ -8,15 +8,17 @@ import Header, { Logo } from './index';
 import { configuration } from '../../config';
 import Img from '../Img';
 
-const HeaderWrapper = props => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <Header
-        {...props}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function HeaderWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <Header
+          {...props}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),

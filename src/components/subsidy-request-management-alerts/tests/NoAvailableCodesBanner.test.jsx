@@ -9,11 +9,13 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { NoAvailableCodesBanner } from '../NoAvailableCodesBanner';
 
-const NoAvailableCodesBannerWrapper = (props) => (
-  <IntlProvider locale="en">
-    <NoAvailableCodesBanner {...props} />
-  </IntlProvider>
-);
+function NoAvailableCodesBannerWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <NoAvailableCodesBanner {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('<NoAvailableCodesBanner />', () => {
   it('should render null if there are no coupons', () => {

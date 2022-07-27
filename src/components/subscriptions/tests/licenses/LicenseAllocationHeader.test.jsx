@@ -23,16 +23,18 @@ const mockSubscription = {
 };
 const mockSubsidyRequestConfiguration = {};
 
-const LicenseAllocationHeaderWrapper = ({
+function LicenseAllocationHeaderWrapper({
   subscription = mockSubscription,
   subsidyRequestConfiguration = mockSubsidyRequestConfiguration,
-}) => (
-  <SubscriptionDetailContext.Provider value={{ subscription }}>
-    <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
-      <LicenseAllocationHeader />
-    </SubsidyRequestsContext.Provider>
-  </SubscriptionDetailContext.Provider>
-);
+}) {
+  return (
+    <SubscriptionDetailContext.Provider value={{ subscription }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+        <LicenseAllocationHeader />
+      </SubsidyRequestsContext.Provider>
+    </SubscriptionDetailContext.Provider>
+  );
+}
 
 describe('<LicenseAllocationHeader />', () => {
   it('should render license allocation', () => {

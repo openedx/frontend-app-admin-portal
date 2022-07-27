@@ -19,9 +19,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const BlackboardConfig = ({
+function BlackboardConfig({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
-}) => {
+}) {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
@@ -296,7 +296,7 @@ const BlackboardConfig = ({
       </Form>
     </span>
   );
-};
+}
 
 BlackboardConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

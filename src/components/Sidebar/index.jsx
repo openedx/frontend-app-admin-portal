@@ -20,7 +20,7 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
-const Sidebar = ({
+function Sidebar({
   baseUrl,
   expandSidebar,
   collapseSidebar,
@@ -35,7 +35,7 @@ const Sidebar = ({
   enableLmsConfigurationsScreen,
   onWidthChange,
   isMobile,
-}) => {
+}) {
   const navRef = useRef();
   const widthRef = useRef();
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
@@ -193,7 +193,7 @@ const Sidebar = ({
       </div>
     </nav>
   );
-};
+}
 
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,

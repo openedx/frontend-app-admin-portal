@@ -64,7 +64,7 @@ export class SamlProviderConfigurationCore extends React.Component {
     } catch (error) {
       return this.handleErrors(error);
     }
-  }
+  };
 
   /**
    * Updates existing provider configuration, then updates this list with the response.
@@ -84,7 +84,7 @@ export class SamlProviderConfigurationCore extends React.Component {
     } catch (error) {
       return this.handleErrors(error);
     }
-  }
+  };
 
   /**
    * Permanently deletes a provider configuration, then updates this list with the response.
@@ -99,7 +99,7 @@ export class SamlProviderConfigurationCore extends React.Component {
     } catch (error) {
       return this.handleErrors(error);
     }
-  }
+  };
 
   /**
    * Creates new third party provider data entry in db and refreshes list with the result.
@@ -117,7 +117,7 @@ export class SamlProviderConfigurationCore extends React.Component {
     } catch (error) {
       return this.handleErrors(error);
     }
-  }
+  };
 
   /**
    * Deletes a provider data entry in db and refreshes list with the result.
@@ -132,7 +132,7 @@ export class SamlProviderConfigurationCore extends React.Component {
     } catch (error) {
       return this.handleErrors(error);
     }
-  }
+  };
 
   handleErrors(error) {
     const errorMsg = error.message || error.response?.status === 500
@@ -171,119 +171,117 @@ export class SamlProviderConfigurationCore extends React.Component {
     return (
       <main role="main">
         <div>
-          <>
-            {providerConfig && (
-              <div
-                key={id}
-                className="mb-3"
-              >
-                <Collapsible
-                  styling="card"
-                  className="shadow"
-                  title={(
-                    <div className="row justify-content-around flex-fill">
-                      <Icon
-                        className={classNames(
-                          'col-1',
-                          {
-                            'fa fa-check text-success-300': providerConfig.enabled,
-                            'fa fa-times text-danger-300': !providerConfig.enabled,
-                          },
-                        )}
-                      />
-                      <div className="col">
-                        <h3 className="h6">Entity ID:</h3>
-                        <p>{providerConfig.entity_id}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">Metadata Source:</h3>
-                        <p>{metadata_source}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">SP Metadata</h3>
-                        <p><a target="_blank" rel="noopener noreferrer" href={spMetadataLink}>{spMetadataLink}</a></p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">Test link</h3>
-                        <p><a target="_blank" rel="noopener noreferrer" href={testLink}>{testLink}</a></p>
-                      </div>
-                    </div>
-                  )}
-                >
-                  <SamlProviderConfigForm
-                    config={camelCaseObject(providerConfig)}
-                    updateProviderConfig={this.updateProviderConfig}
-                    createProviderConfig={this.createProviderConfig}
-                    deleteProviderConfig={this.deleteProviderConfig}
-                    deleteEnabled={deleteEnabled}
+          {providerConfig && (
+          <div
+            key={id}
+            className="mb-3"
+          >
+            <Collapsible
+              styling="card"
+              className="shadow"
+              title={(
+                <div className="row justify-content-around flex-fill">
+                  <Icon
+                    className={classNames(
+                      'col-1',
+                      {
+                        'fa fa-check text-success-300': providerConfig.enabled,
+                        'fa fa-times text-danger-300': !providerConfig.enabled,
+                      },
+                    )}
                   />
-                </Collapsible>
-              </div>
-            )}
-            {providerData && (
-              <div
-                key={providerData.id}
-                className="mb-3"
-              >
-                <Collapsible
-                  styling="card"
-                  className="shadow"
-                  title={(
-                    <div className="row justify-content-around flex-fill">
-                      <div className="col">
-                        <h3 className="h6">Fetched At:</h3>
-                        <p>{providerData.fetched_at}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">Entity ID:</h3>
-                        <p>{providerData.entity_id}</p>
-                      </div>
-                      <div className="col">
-                        <h3 className="h6">SSO URL:</h3>
-                        <p>{providerData.sso_url}</p>
-                      </div>
-                    </div>
+                  <div className="col">
+                    <h3 className="h6">Entity ID:</h3>
+                    <p>{providerConfig.entity_id}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">Metadata Source:</h3>
+                    <p>{metadata_source}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">SP Metadata</h3>
+                    <p><a target="_blank" rel="noopener noreferrer" href={spMetadataLink}>{spMetadataLink}</a></p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">Test link</h3>
+                    <p><a target="_blank" rel="noopener noreferrer" href={testLink}>{testLink}</a></p>
+                  </div>
+                </div>
                   )}
-                >
-                  <SamlProviderDataForm
-                    pData={camelCaseObject(providerData)}
-                    deleteProviderData={this.deleteProviderData}
-                    deleteEnabled={deleteEnabled}
-                  />
+            >
+              <SamlProviderConfigForm
+                config={camelCaseObject(providerConfig)}
+                updateProviderConfig={this.updateProviderConfig}
+                createProviderConfig={this.createProviderConfig}
+                deleteProviderConfig={this.deleteProviderConfig}
+                deleteEnabled={deleteEnabled}
+              />
+            </Collapsible>
+          </div>
+          )}
+          {providerData && (
+          <div
+            key={providerData.id}
+            className="mb-3"
+          >
+            <Collapsible
+              styling="card"
+              className="shadow"
+              title={(
+                <div className="row justify-content-around flex-fill">
+                  <div className="col">
+                    <h3 className="h6">Fetched At:</h3>
+                    <p>{providerData.fetched_at}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">Entity ID:</h3>
+                    <p>{providerData.entity_id}</p>
+                  </div>
+                  <div className="col">
+                    <h3 className="h6">SSO URL:</h3>
+                    <p>{providerData.sso_url}</p>
+                  </div>
+                </div>
+                  )}
+            >
+              <SamlProviderDataForm
+                pData={camelCaseObject(providerData)}
+                deleteProviderData={this.deleteProviderData}
+                deleteEnabled={deleteEnabled}
+              />
 
-                </Collapsible>
-              </div>
-            )}
-            {!providerConfig && (
-              <Collapsible
-                styling="basic"
-                title="Add a SAML Provider Configuration"
-                className="col justify-content-center align-items-center"
-              >
-                <div>
-                  <SamlProviderConfigForm
-                    createProviderConfig={this.createProviderConfig}
-                    deleteEnabled={deleteEnabled}
-                  />
-                </div>
-              </Collapsible>
-            )}
-            {(providerConfig && !providerData) && (
-              <Collapsible
-                styling="basic"
-                title="Add SAML Provider Data"
-                className="col justify-content-center align-items-center"
-              >
-                <div>
-                  <SamlProviderDataForm
-                    entityId={providerConfig.entity_id}
-                    createProviderData={this.createProviderData}
-                    deleteEnabled={deleteEnabled}
-                  />
-                </div>
-              </Collapsible>
-            )}
-          </>
+            </Collapsible>
+          </div>
+          )}
+          {!providerConfig && (
+          <Collapsible
+            styling="basic"
+            title="Add a SAML Provider Configuration"
+            className="col justify-content-center align-items-center"
+          >
+            <div>
+              <SamlProviderConfigForm
+                createProviderConfig={this.createProviderConfig}
+                deleteEnabled={deleteEnabled}
+              />
+            </div>
+          </Collapsible>
+          )}
+          {(providerConfig && !providerData) && (
+          <Collapsible
+            styling="basic"
+            title="Add SAML Provider Data"
+            className="col justify-content-center align-items-center"
+          >
+            <div>
+              <SamlProviderDataForm
+                entityId={providerConfig.entity_id}
+                createProviderData={this.createProviderData}
+                deleteEnabled={deleteEnabled}
+              />
+            </div>
+          </Collapsible>
+          )}
         </div>
       </main>
     );

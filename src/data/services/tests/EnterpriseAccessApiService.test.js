@@ -112,13 +112,11 @@ describe('EnterpriseAccessApiService', () => {
       enterpriseId: mockEnterpriseUUID,
       subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
     });
-    expect(axios.post).toBeCalledWith(
-        `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/`, {
-          enterprise_customer_uuid: mockEnterpriseUUID,
-          subsidy_requests_enabled: false,
-          subsidy_type: SUPPORTED_SUBSIDY_TYPES.license,
-        },
-    );
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/customer-configurations/`, {
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      subsidy_requests_enabled: false,
+      subsidy_type: SUPPORTED_SUBSIDY_TYPES.license,
+    });
   });
 
   test('updateSubsidyRequestConfiguration calls enterprise-access to update a subsidy request configuration', () => {
@@ -129,11 +127,9 @@ describe('EnterpriseAccessApiService', () => {
         subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
       },
     );
-    expect(axios.patch).toBeCalledWith(
-        `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`, {
-          subsidy_requests_enabled: true,
-          subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
-        },
-    );
+    expect(axios.patch).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`, {
+      subsidy_requests_enabled: true,
+      subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
+    });
   });
 });

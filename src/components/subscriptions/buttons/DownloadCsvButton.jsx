@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
-const DownloadCsvButton = () => {
+function DownloadCsvButton() {
   const { subscription } = useContext(SubscriptionDetailContext);
   const [buttonState, setButtonState] = useState('default');
 
@@ -56,6 +56,6 @@ const DownloadCsvButton = () => {
       onClick={handleClick}
     />
   );
-};
+}
 
 export default DownloadCsvButton;

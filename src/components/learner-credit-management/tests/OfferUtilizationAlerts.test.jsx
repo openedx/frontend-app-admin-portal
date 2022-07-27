@@ -13,11 +13,13 @@ import {
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
-const OfferUtilizationAlertsWrapper = (props) => (
-  <IntlProvider locale="en">
-    <OfferUtilizationAlerts {...props} />
-  </IntlProvider>
-);
+function OfferUtilizationAlertsWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <OfferUtilizationAlerts {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('<OfferUtilizationAlerts />', () => {
   it('does not render any alerts if percent utilized and/or remaining funds is missing', () => {

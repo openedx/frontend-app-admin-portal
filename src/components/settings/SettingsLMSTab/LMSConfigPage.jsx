@@ -21,20 +21,21 @@ import Degreed2Config from './LMSConfigs/Degreed2Config';
 import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
 
-const LMSConfigPage = ({
+function LMSConfigPage({
   LMSType,
   onClick,
   enterpriseCustomerUuid,
   existingConfigFormData,
   existingConfigs,
   setExistingConfigFormData,
-}) => (
-  <span>
-    <h3 className="mt-4.5 mb-3.5">
-      <Image className="lms-icon" src={channelMapping[LMSType].icon} />
-      <span className="ml-2">Connect {channelMapping[LMSType].displayName}</span>
-    </h3>
-    {LMSType === BLACKBOARD_TYPE && (
+}) {
+  return (
+    <span>
+      <h3 className="mt-4.5 mb-3.5">
+        <Image className="lms-icon" src={channelMapping[LMSType].icon} />
+        <span className="ml-2">Connect {channelMapping[LMSType].displayName}</span>
+      </h3>
+      {LMSType === BLACKBOARD_TYPE && (
       <BlackboardConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
@@ -42,8 +43,8 @@ const LMSConfigPage = ({
         existingConfigs={existingConfigs}
         setExistingConfigFormData={setExistingConfigFormData}
       />
-    )}
-    {LMSType === CANVAS_TYPE && (
+      )}
+      {LMSType === CANVAS_TYPE && (
       <CanvasConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
@@ -51,49 +52,50 @@ const LMSConfigPage = ({
         existingConfigs={existingConfigs}
         setExistingConfigFormData={setExistingConfigFormData}
       />
-    )}
-    {LMSType === CORNERSTONE_TYPE && (
+      )}
+      {LMSType === CORNERSTONE_TYPE && (
       <CornerstoneConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === DEGREED2_TYPE && (
+      )}
+      {LMSType === DEGREED2_TYPE && (
       <Degreed2Config
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === DEGREED_TYPE && (
+      )}
+      {LMSType === DEGREED_TYPE && (
       <DegreedConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === MOODLE_TYPE && (
+      )}
+      {LMSType === MOODLE_TYPE && (
       <MoodleConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === SAP_TYPE && (
+      )}
+      {LMSType === SAP_TYPE && (
       <SAPConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-  </span>
-);
+      )}
+    </span>
+  );
+}
 
 const mapStateToProps = (state) => ({
   enterpriseCustomerUuid: state.portalConfiguration.enterpriseId,

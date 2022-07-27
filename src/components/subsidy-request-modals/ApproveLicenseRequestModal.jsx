@@ -16,7 +16,7 @@ import { useApplicableSubscriptions } from './data/hooks';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import { formatTimestamp } from '../../utils';
 
-export const ApproveLicenseRequestModal = ({
+export function ApproveLicenseRequestModal({
   licenseRequest: {
     uuid,
     courseId,
@@ -25,7 +25,7 @@ export const ApproveLicenseRequestModal = ({
   isOpen,
   onSuccess,
   onClose,
-}) => {
+}) {
   const { data: subscriptions } = useContext(SubscriptionContext);
   const {
     applicableSubscriptions,
@@ -179,7 +179,7 @@ export const ApproveLicenseRequestModal = ({
       </Form>
     </ModalDialog>
   );
-};
+}
 
 ApproveLicenseRequestModal.propTypes = {
   licenseRequest: PropTypes.shape({

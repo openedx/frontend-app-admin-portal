@@ -10,14 +10,16 @@ import Footer from './index';
 
 const mockStore = configureMockStore([thunk]);
 
-const FooterWrapper = props => (
-  <MemoryRouter>
-    <Footer
-      store={props.store}
-      {...props}
-    />
-  </MemoryRouter>
-);
+function FooterWrapper(props) {
+  return (
+    <MemoryRouter>
+      <Footer
+        store={props.store}
+        {...props}
+      />
+    </MemoryRouter>
+  );
+}
 
 FooterWrapper.propTypes = {
   store: PropTypes.shape({}).isRequired,

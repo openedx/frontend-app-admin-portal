@@ -20,9 +20,9 @@ import {
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-const CanvasConfig = ({
+function CanvasConfig({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
-}) => {
+}) {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [clientId, setClientId] = React.useState('');
@@ -325,7 +325,7 @@ const CanvasConfig = ({
       </Form>
     </span>
   );
-};
+}
 
 CanvasConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

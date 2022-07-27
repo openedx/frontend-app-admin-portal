@@ -15,10 +15,10 @@ import classNames from 'classnames';
 import { getSubscriptionStatus } from './data/utils';
 import { ACTIVE, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP } from './data/constants';
 
-const SubscriptionCard = ({
+function SubscriptionCard({
   subscription,
   createActions,
-}) => {
+}) {
   const {
     title,
     startDate,
@@ -136,7 +136,7 @@ const SubscriptionCard = ({
       </Card.Body>
     </Card>
   );
-};
+}
 
 SubscriptionCard.defaultProps = {
   createActions: null,

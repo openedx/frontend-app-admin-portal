@@ -80,13 +80,15 @@ const bulkEnrollWithCoursesSelectedRows = {
 const addToast = jest.fn();
 
 // eslint-disable-next-line react/prop-types
-const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) => (
-  <ToastsContext.Provider value={{ addToast }}>
-    <BulkEnrollContext.Provider value={bulkEnrollInfo}>
-      <BulkEnrollmentSubmit {...props} />
-    </BulkEnrollContext.Provider>
-  </ToastsContext.Provider>
-);
+function BulkEnrollmentSubmitWrapper({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) {
+  return (
+    <ToastsContext.Provider value={{ addToast }}>
+      <BulkEnrollContext.Provider value={bulkEnrollInfo}>
+        <BulkEnrollmentSubmit {...props} />
+      </BulkEnrollContext.Provider>
+    </ToastsContext.Provider>
+  );
+}
 
 describe('generateSuccessMessage', () => {
   it('renders correct message based on enrollment count', () => {

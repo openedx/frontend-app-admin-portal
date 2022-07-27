@@ -51,11 +51,13 @@ const defaultProps = {
   },
 };
 
-const SubsidyRequestManagementTableWrapper = (props) => (
-  <IntlProvider locale="en">
-    <SubsidyRequestManagementTable {...props} />
-  </IntlProvider>
-);
+function SubsidyRequestManagementTableWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <SubsidyRequestManagementTable {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('SubsidyRequestManagementTable', () => {
   test('renders data in a table as expected', () => {

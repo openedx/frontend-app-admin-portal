@@ -10,9 +10,9 @@ import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
 import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
 
-const MoodleConfig = ({
+function MoodleConfig({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) => {
+}) {
   const [moodleBaseUrl, setMoodleBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [serviceShortName, setServiceShortName] = React.useState('');
@@ -224,7 +224,7 @@ const MoodleConfig = ({
       </Form>
     </span>
   );
-};
+}
 
 MoodleConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

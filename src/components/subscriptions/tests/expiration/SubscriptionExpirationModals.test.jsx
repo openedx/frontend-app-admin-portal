@@ -30,11 +30,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types
-const ExpirationModalsWithContext = ({ detailState }) => (
-  <SubscriptionManagementContext detailState={detailState}>
-    <SubscriptionExpirationModals enterpriseId="fake-uuid" />
-  </SubscriptionManagementContext>
-);
+function ExpirationModalsWithContext({ detailState }) {
+  return (
+    <SubscriptionManagementContext detailState={detailState}>
+      <SubscriptionExpirationModals enterpriseId="fake-uuid" />
+    </SubscriptionManagementContext>
+  );
+}
 
 describe('<SubscriptionExpirationModals />', () => {
   afterEach(() => jest.clearAllMocks());

@@ -14,20 +14,22 @@ import {
 } from './data/constants';
 import NotFoundPage from '../NotFoundPage';
 
-const SubscriptionRoutes = ({ enterpriseSlug }) => (
-  <Switch>
-    <Redirect
-      exact
-      from={`/${enterpriseSlug}/admin/subscriptions`}
-      to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`}
-    />
-    <Route
-      path={`/${enterpriseSlug}/admin/subscriptions/${SUBSCRIPTIONS_PARAM_MATCH}`}
-      component={SubscriptionTabs}
-    />
-    <Route path="" component={NotFoundPage} />
-  </Switch>
-);
+function SubscriptionRoutes({ enterpriseSlug }) {
+  return (
+    <Switch>
+      <Redirect
+        exact
+        from={`/${enterpriseSlug}/admin/subscriptions`}
+        to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`}
+      />
+      <Route
+        path={`/${enterpriseSlug}/admin/subscriptions/${SUBSCRIPTIONS_PARAM_MATCH}`}
+        component={SubscriptionTabs}
+      />
+      <Route path="" component={NotFoundPage} />
+    </Switch>
+  );
+}
 
 SubscriptionRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

@@ -11,10 +11,10 @@ import { useBrowseAndRequestTour, useLearnerCreditTour } from './data/hooks';
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
  */
-const ProductTours = ({
+function ProductTours({
   enterpriseSlug,
   enableLearnerPortal,
-}) => {
+}) {
   const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour({
     enableLearnerPortal,
   });
@@ -43,7 +43,7 @@ const ProductTours = ({
       tours={tours}
     />
   );
-};
+}
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
