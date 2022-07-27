@@ -1,6 +1,6 @@
 {
   "extends": "@edx/eslint-config",
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "rules": {
     //babel-eslint parser is breaking on template literals right now
     "template-curly-spacing": "off",
@@ -52,7 +52,8 @@
       "ImportDeclaration": 1,
       "flatTernaryExpressions": false,
       "ignoredNodes": ["TemplateLiteral", "JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXFragment", "JSXOpeningFragment", "JSXClosingFragment", "JSXText", "JSXEmptyExpression", "JSXSpreadChild"]
-    }]
+    }],
+    "import/no-import-module-exports": 0
   },
   "env": {
     "jest": true
