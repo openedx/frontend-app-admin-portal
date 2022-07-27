@@ -112,7 +112,7 @@ function ManageRequestsTab({
 ManageRequestsTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   couponsData: PropTypes.shape({
-    results: PropTypes.array,
+    results: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   fetchCoupons: PropTypes.func.isRequired,

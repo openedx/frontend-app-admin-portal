@@ -5,11 +5,11 @@ import { EnterpriseSubsidiesContext, useEnterpriseSubsidiesContext } from '../En
 import { SubsidyRequestsContext, useSubsidyRequestsContext } from '../subsidy-requests/SubsidyRequestsContext';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
-const EnterpriseAppContextProvider = ({
+function EnterpriseAppContextProvider({
   enterpriseId,
   enablePortalLearnerCreditManagementScreen,
   children,
-}) => {
+}) {
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
@@ -33,7 +33,7 @@ const EnterpriseAppContextProvider = ({
       </SubsidyRequestsContext.Provider>
     </EnterpriseSubsidiesContext.Provider>
   );
-};
+}
 
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

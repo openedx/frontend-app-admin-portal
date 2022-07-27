@@ -45,12 +45,25 @@ class Coupon extends React.Component {
     }
   }
 
+  handleCouponKeyDown(event) {
+    const { isExpanded } = this.state;
+    if (!isExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
+      event.preventDefault();
+      this.toggleCouponDetails();
+    } else if (isExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
+      event.preventDefault();
+      this.toggleCouponDetails();
+    }
+  }
+
+  // eslint-disable-next-line react/no-unused-class-component-methods
   setCouponOpacity(dimmedStatus) {
     this.setState({
       dimmed: dimmedStatus,
     });
   }
 
+  // eslint-disable-next-line react/no-unused-class-component-methods
   closeCouponDetails() {
     this.setState({
       isExpanded: false,
@@ -68,17 +81,6 @@ class Coupon extends React.Component {
       this.props.onExpand();
     } else {
       this.props.onCollapse();
-    }
-  }
-
-  handleCouponKeyDown(event) {
-    const { isExpanded } = this.state;
-    if (!isExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
-      event.preventDefault();
-      this.toggleCouponDetails();
-    } else if (isExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
-      event.preventDefault();
-      this.toggleCouponDetails();
     }
   }
 

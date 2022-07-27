@@ -67,14 +67,6 @@ class CodeSearchResults extends React.Component {
     />
   );
 
-  renderErrorMessage = options => (
-    <StatusAlert
-      alertType="danger"
-      iconClassName="fa fa-exclamation-circle"
-      {...options}
-    />
-  );
-
   render() {
     const { isOpen, searchQuery, onClose } = this.props;
     const {

@@ -99,7 +99,10 @@ describe('getErrors', () => {
   };
   it('returns an invalid email message for text area emails', () => {
     const result = getErrors(sampleInputTextArea);
-    const errorMessage = getInvalidEmailMessage(sampleInputTextArea.invalidTextAreaEmails, sampleInputTextArea.textAreaEmails);
+    const errorMessage = getInvalidEmailMessage(
+      sampleInputTextArea.invalidTextAreaEmails,
+      sampleInputTextArea.textAreaEmails,
+    );
     const expected = {
       [EMAIL_ADDRESS_TEXT_FORM_DATA]: errorMessage,
       _error: [errorMessage],
@@ -177,6 +180,7 @@ describe('getErrors', () => {
     expect(result).toEqual({ _error: [BOTH_TEXT_AREA_AND_CSV_ERROR] });
   });
   it('returns a maximum email address error if email address are more than MAX_EMAIL_ADDRESS_ALLOWED', () => {
+    // eslint-disable-next-line no-import-assign
     constants.MAX_EMAIL_ADDRESS_ALLOWED = 3;
     const result = getErrors({
       validTextAreaEmails: ['foo@bar.com', 'sue@bear.com', 'test@test.com', 'test1@test.com'],

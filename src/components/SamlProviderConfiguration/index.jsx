@@ -47,6 +47,13 @@ export class SamlProviderConfigurationCore extends React.Component {
       });
   }
 
+  handleErrors(error) {
+    const errorMsg = error.message || error.response?.status === 500
+      ? error.message : JSON.stringify(error.response.data);
+    logError(errorMsg);
+    return errorMsg;
+  }
+
   /**
    * Creates a new third party provider configuration, then updates this list with the response.
    * Returns if there is an error.
@@ -133,13 +140,6 @@ export class SamlProviderConfigurationCore extends React.Component {
       return this.handleErrors(error);
     }
   };
-
-  handleErrors(error) {
-    const errorMsg = error.message || error.response?.status === 500
-      ? error.message : JSON.stringify(error.response.data);
-    logError(errorMsg);
-    return errorMsg;
-  }
 
   render() {
     const {

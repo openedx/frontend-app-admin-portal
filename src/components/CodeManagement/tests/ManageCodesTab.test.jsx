@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
@@ -51,7 +51,10 @@ function ManageCodesTabWrapper({ store, subsidyRequestConfiguration, ...props })
     <MemoryRouter>
       <Provider store={store}>
         <IntlProvider locale="en">
-          <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+          <SubsidyRequestsContext.Provider value={
+            useMemo(() => ({ subsidyRequestConfiguration }), [subsidyRequestConfiguration])
+            }
+          >
             <ManageCodesTab
               location={{}}
               match={{

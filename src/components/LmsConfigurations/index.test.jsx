@@ -98,7 +98,7 @@ REQUIRED_CORNERSTONE_CONFIG_FIELDS.forEach((field) => {
   cornerstoneResponse.data.results[0][field] = 'testdata';
 });
 
-const waitForAsync = () => new Promise(resolve => setImmediate(resolve));
+const waitForAsync = () => new Promise(resolve => { setImmediate(resolve); });
 
 describe('<LmsConfigurations /> ', () => {
   it('gets list of forms when all configs return 404s', async () => {

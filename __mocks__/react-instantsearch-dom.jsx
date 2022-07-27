@@ -71,7 +71,7 @@ MockReactInstantSearch.connectPagination = Component => function (props) {
 };
 
 MockReactInstantSearch.InstantSearch = function ({ children }) {
-  return <>{children}</>;
+  return children;
 };
 MockReactInstantSearch.Configure = function () {
   return <div>CONFIGURED</div>;

@@ -75,29 +75,6 @@ export class BaseCodeReminderModal extends React.Component {
     }
   }
 
-  getNumberOfSelectedCodes() {
-    const {
-      data: { selectedCodes },
-      couponDetailsTable: { data: tableData },
-    } = this.props;
-    let numberOfSelectedCodes = 0;
-    if (selectedCodes && selectedCodes.length) {
-      numberOfSelectedCodes = selectedCodes.length;
-    } else if (tableData && tableData.count) {
-      numberOfSelectedCodes = tableData.count;
-    }
-    return numberOfSelectedCodes;
-  }
-
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  hasIndividualRemindData() {
-    const { data } = this.props;
-    return ['code', 'email'].every(key => key in data);
-  }
-
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -163,6 +140,29 @@ export class BaseCodeReminderModal extends React.Component {
         });
       });
     /* eslint-enable no-underscore-dangle */
+  }
+
+  getNumberOfSelectedCodes() {
+    const {
+      data: { selectedCodes },
+      couponDetailsTable: { data: tableData },
+    } = this.props;
+    let numberOfSelectedCodes = 0;
+    if (selectedCodes && selectedCodes.length) {
+      numberOfSelectedCodes = selectedCodes.length;
+    } else if (tableData && tableData.count) {
+      numberOfSelectedCodes = tableData.count;
+    }
+    return numberOfSelectedCodes;
+  }
+
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
+  hasIndividualRemindData() {
+    const { data } = this.props;
+    return ['code', 'email'].every(key => key in data);
   }
 
   renderBody() {

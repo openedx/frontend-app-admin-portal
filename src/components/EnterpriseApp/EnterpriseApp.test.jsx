@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useMemo } from 'react';
 import {
   render, screen,
 } from '@testing-library/react';
@@ -11,10 +12,13 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 features.SETTINGS_PAGE = true;
 
+// eslint-disable-next-line react/function-component-definition
 const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
-    canManageLearnerCredit: true,
-  }}
+  <EnterpriseSubsidiesContext.Provider value={
+    useMemo(() => ({
+      canManageLearnerCredit: true,
+    }), [])
+  }
   >
     {children}
   </EnterpriseSubsidiesContext.Provider>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {
   render, screen, act, cleanup,
@@ -82,7 +82,7 @@ const addToast = jest.fn();
 // eslint-disable-next-line react/prop-types
 function BulkEnrollmentSubmitWrapper({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) {
   return (
-    <ToastsContext.Provider value={{ addToast }}>
+    <ToastsContext.Provider value={useMemo(() => ({ addToast }), [])}>
       <BulkEnrollContext.Provider value={bulkEnrollInfo}>
         <BulkEnrollmentSubmit {...props} />
       </BulkEnrollContext.Provider>
