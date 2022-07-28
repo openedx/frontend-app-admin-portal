@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup,
-  Input,
+  Form,
   StatefulButton,
   Icon,
   Hyperlink,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
@@ -18,6 +18,33 @@ export const REQUIRED_BLACKBOARD_CONFIG_FIELDS = [
   'blackboardBaseUrl',
   'clientId',
   'clientSecret',
+];
+
+const BLACKBOARD_FIELDS = [
+  {
+    key: 'blackboardBaseUrl',
+    invalidMessage: 'Blackboard Instance URL is required.',
+    helpText: 'Your Blackboard instance URL. Make sure to include the protocol (ie https/http)',
+    label: 'Blackboard Instance URL',
+  },
+  {
+    key: 'clientId',
+    invalidMessage: 'Blackboard client ID is required.',
+    helpText: 'This should match the API Client ID found on Blackboard.',
+    label: 'Blackboard Client ID',
+  },
+  {
+    key: 'clientSecret',
+    invalidMessage: 'Blackboard client secret is required.',
+    helpText: 'This should match the API Client secret found on Blackboard.',
+    label: 'Blackboard Client Secret',
+  },
+  {
+    key: 'refreshToken',
+    helpText: "The Blackboard API's refresh token token. This should be automatically propagated once you visit the oauth complete endpoint.",
+    label: 'Blackboard API Refresh Token',
+
+  },
 ];
 
 class BlackboardIntegrationConfigForm extends React.Component {
@@ -126,95 +153,46 @@ class BlackboardIntegrationConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="active"
+            <Form.Group
+              controlId="active"
             >
-              <label htmlFor="active">Active</label>
-              <Input
-                type="checkbox"
+              <Form.Label htmlFor="active">Active</Form.Label>
+              <Form.Checkbox
                 id="active"
                 name="active"
                 className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+                isInline
               />
-            </ValidationFormGroup>
+            </Form.Group>
           </div>
         </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="blackboardBaseUrl"
-              invalid={invalidFields.blackboardBaseUrl}
-              invalidMessage="Blackboard Instance URL is required."
-              helpText="Your Blackboard instance URL. Make sure to include the protocol (ie https/http)"
-            >
-              <label htmlFor="blackboardBaseUrl">Blackboard Instance URL</label>
-              <Input
-                type="text"
-                id="blackboardBaseUrl"
-                name="blackboardBaseUrl"
-                defaultValue={config ? config.blackboardBaseUrl : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
+        {BLACKBOARD_FIELDS.map(backgroundField => (
+          <div className="row" key={backgroundField.key}>
+            <div className="col col-4">
+              <Form.Group
+                controlId={backgroundField.key}
+                isInvalid={invalidFields[backgroundField.key]}
+              >
+                <Form.Label htmlFor={backgroundField.key}>{backgroundField.label}</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={backgroundField.key}
+                  name={backgroundField.key}
+                  defaultValue={config ? config[backgroundField.key] : null}
+                  data-hj-suppress
+                />
+                <Form.Text>{backgroundField.helpText}</Form.Text>
+                {invalidFields[backgroundField.key] && backgroundField.invalidMessage && (
+                  <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                    {backgroundField.invalidMessage}
+                  </Form.Control.Feedback>
+                )}
+              </Form.Group>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="clientId"
-              invalid={invalidFields.clientId}
-              invalidMessage="Blackboard client ID is required."
-              helpText="This should match the API Client ID found on Blackboard."
-            >
-              <label htmlFor="clientId">Blackboard Client ID</label>
-              <Input
-                type="text"
-                id="clientId"
-                name="clientId"
-                defaultValue={config ? config.clientId : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="clientSecret"
-              invalid={invalidFields.clientSecret}
-              invalidMessage="Blackboard client secret is required."
-              helpText="This should match the API Client secret found on Blackboard."
-            >
-              <label htmlFor="clientSecret">Blackboard Client Secret</label>
-              <Input
-                type="text"
-                id="clientSecret"
-                name="clientSecret"
-                defaultValue={config ? config.clientSecret : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="refreshToken"
-              helpText="The Blackboard API's refresh token token. This should be automatically propagated once you visit the oauth complete endpoint."
-            >
-              <label htmlFor="refreshToken">Blackboard API Refresh Token</label>
-              <Input
-                type="text"
-                id="refreshToken"
-                name="refreshToken"
-                defaultValue={config ? config.refreshToken : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        ))}
 
         <div className="row">
           <div className="col col-4">
