@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  Form, StatefulButton, Icon,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
+
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
@@ -17,6 +19,40 @@ export const REQUIRED_SUCCESS_FACTOR_CONFIG_FIELDS = [
   'key',
   'secret',
   'userType',
+];
+
+const SUCCESS_FACTOR_FIELDS = [
+  {
+    key: 'sapsfBaseUrl',
+    invalidMessage: 'SAP Success Factors Instance URL is required.',
+    helpText: 'Your SAP Success Factors instance URL. Make sure to include the protocol (ie https/http)',
+    label: 'SAP Success Factors Instance URL',
+  },
+  {
+    key: 'sapsfCompanyId',
+    invalidMessage: 'SAP Success Factors Company Id field is required.',
+    helpText: 'This should match the Company Id as found in SAP Success Factors.',
+    label: 'SAP Success Factors Company Id',
+  },
+  {
+    key: 'key',
+    invalidMessage: 'Success Factors\' Client Id is required.',
+    helpText: 'Oauth client identifier.',
+    label: 'Client Id',
+  },
+  {
+    key: 'secret',
+    invalidMessage: 'Success Factors\' Client Secret is required.',
+    helpText: 'OAuth client secret.',
+    label: 'Client Secret',
+    type: 'password',
+  },
+  {
+    key: 'sapsfUserId',
+    invalidMessage: 'Success Factors\' User Id is required.',
+    helpText: 'Success Factors user identifier',
+    label: 'SAP Success Factors User Id',
+  },
 ];
 
 class SuccessFactorsIntegrationConfigForm extends React.Component {
@@ -99,6 +135,37 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
     }
   }
 
+  renderField = data => {
+    const { invalidFields } = this.state;
+    const { config } = this.props;
+    return (
+      <div className="row" key={data.key}>
+        <div className="col col-4">
+          <Form.Group
+            controlId={data.key}
+            isInvalid={invalidFields[data.key]}
+          >
+            <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+            <Form.Control
+              type={data.type || 'text'}
+              id={data.key}
+              name={data.key}
+              // eslint-disable-next-line no-nested-ternary
+              defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
+              data-hj-suppress
+            />
+            <Form.Text>{data.helpText}</Form.Text>
+            {invalidFields[data.key] && data.invalidMessage && (
+              <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                {data.invalidMessage}
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
       invalidFields,
@@ -108,6 +175,16 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
       transmitTotalHours,
     } = this.state;
     const { config } = this.props;
+
+    const userTypeOptions = [
+      { value: 'admin', label: 'Admin' },
+      { value: 'user', label: 'User' },
+      { value: null, label: 'blank', hidden: true },
+    ].map(userType => (
+      <option value={userType.value} key={userType.value} hidden={userType.hidden}>
+        {userType.label}
+      </option>
+    ));
 
     return (
       <form
@@ -120,174 +197,70 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="active"
-            >
-              <label htmlFor="active">Active</label>
-              <Input
-                type="checkbox"
+            <Form.Group controlId="active">
+              <Form.Label htmlFor="active">Active</Form.Label>
+              <Form.Checkbox
                 id="active"
                 name="active"
                 className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+                isInline
               />
-            </ValidationFormGroup>
+            </Form.Group>
           </div>
         </div>
+
+        {SUCCESS_FACTOR_FIELDS.map(this.renderField)}
+
         <div className="row">
           <div className="col col-4">
-            <ValidationFormGroup
-              for="sapsfBaseUrl"
-              invalid={invalidFields.sapsfBaseUrl}
-              invalidMessage="SAP Success Factors Instance URL is required."
-              helpText="Your SAP Success Factors instance URL. Make sure to include the protocol (ie https/http)"
-            >
-              <label htmlFor="sapsfBaseUrl">SAP Success Factors Instance URL</label>
-              <Input
-                type="text"
-                id="sapsfBaseUrl"
-                name="sapsfBaseUrl"
-                defaultValue={config ? config.sapsfBaseUrl : null}
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="sapsfCompanyId"
-              invalid={invalidFields.sapsfCompanyId}
-              invalidMessage="SAP Success Factors Company Id field is required."
-              helpText="This should match the Company Id as found in SAP Success Factors."
-            >
-              <label htmlFor="sapsfCompanyId">SAP Success Factors Company Id</label>
-              <Input
-                type="text"
-                id="sapsfCompanyId"
-                name="sapsfCompanyId"
-                defaultValue={config ? config.sapsfCompanyId : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="key"
-              invalid={invalidFields.key}
-              invalidMessage="Success Factors' Client Id is required."
-              helpText="Oauth client identifier."
-            >
-              <label htmlFor="key">Client Id</label>
-              <Input
-                type="text"
-                id="key"
-                name="key"
-                defaultValue={config ? config.key : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="secret"
-              invalid={invalidFields.key}
-              invalidMessage="Success Factors' Client Secret is required."
-              helpText="OAuth client secret."
-            >
-              <label htmlFor="secret">Client Secret</label>
-              <Input
-                type="password"
-                id="secret"
-                name="secret"
-                defaultValue={config ? config.secret : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="sapsfUserId"
-              invalid={invalidFields.sapsfUserId}
-              invalidMessage="Success Factors' User Id is required."
-              helpText="Success Factors user identifier"
-            >
-              <label htmlFor="secret">SAP Success Factors User Id</label>
-              <Input
-                type="text"
-                id="sapsfUserId"
-                name="sapsfUserId"
-                defaultValue={config ? config.sapsfUserId : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="userType"
-              invalid={invalidFields.userType}
-              invalidMessage="Success Factors' User Type is required."
-              helpText="Type of SAP User (admin or user)."
+            <Form.Group
+              controlId="userType"
+              isInvalid={invalidFields.userType}
+              invalidMessage=""
+              helpText=""
             >
               <label htmlFor="userType">SAP Success Factors User Type</label>
-              <Input
-                type="select"
+              <Form.Control
+                as="select"
                 id="userType"
                 name="userType"
                 defaultValue={config ? config.userType : null}
-                options={[
-                  { value: 'admin', label: 'Admin' },
-                  { value: 'user', label: 'User' },
-                  { value: null, label: 'blank', hidden: true },
-                ]}
-              />
-            </ValidationFormGroup>
+              >
+                {userTypeOptions}
+              </Form.Control>
+              <Form.Text>Type of SAP User (admin or user).</Form.Text>
+              {invalidFields.userType && (
+                <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                  Success Factors&apos; User Type is required.
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
           </div>
         </div>
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="transmitTotalHours"
-              helpText="Include totalHours in the transmitted completion data"
-            >
-              <label htmlFor="transmitTotalHours">Transmit Total Hours?</label>
-              <Input
-                type="checkbox"
+            <Form.Group controlId="transmitTotalHours">
+              <Form.Label htmlFor="transmitTotalHours">Transmit Total Hours?</Form.Label>
+              <Form.Checkbox
                 id="transmitTotalHours"
                 name="transmitTotalHours"
                 className="ml-3"
                 checked={transmitTotalHours}
                 onChange={() => this.setState(prevState => ({ transmitTotalHours: !prevState.transmitTotalHours }))}
                 data-hj-suppress
+                isInline
               />
-            </ValidationFormGroup>
+              <Form.Text>Include totalHours in the transmitted completion data.</Form.Text>
+            </Form.Group>
           </div>
         </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="additionalLocales"
-              helpText="A comma separated list of any additional locales used in SAP (such as 'Dutch' or 'English Canadian'). See SAP's documentation for more examples."
-            >
-              <label htmlFor="additionalLocales">Additional Locales</label>
-              <Input
-                type="text"
-                id="additionalLocales"
-                name="additionalLocales"
-                defaultValue={config ? config.additionalLocales : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        {this.renderField({
+          key: 'additionalLocales',
+          helpText: "A comma separated list of any additional locales used in SAP (such as 'Dutch' or 'English Canadian'). See SAP's documentation for more examples.",
+          label: 'Additional Locales',
+        })}
 
         <div className="row">
           <div className="col col-2">

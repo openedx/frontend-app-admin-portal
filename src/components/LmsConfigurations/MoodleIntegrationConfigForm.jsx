@@ -16,7 +16,7 @@ export const REQUIRED_MOODLE_CONFIG_FIELDS = [
   'serviceShortName',
 ];
 
-const MOODL_FIELDS = [
+const MOODLE_FIELDS = [
   {
     key: 'moodleBaseUrl',
     invalidMessage: 'Moodle Instance URL is required.',
@@ -194,7 +194,7 @@ class MoodleIntegrationConfigForm extends React.Component {
           </div>
         </div>
 
-        {MOODL_FIELDS.map(moodleField => (
+        {MOODLE_FIELDS.map(moodleField => (
           <div className="row" key={moodleField.key}>
             <div className="col col-4">
               <Form.Group
