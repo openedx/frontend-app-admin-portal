@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  Form, StatefulButton, Icon,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import { snakeCaseFormData } from '../../utils';
 import StatusAlert from '../StatusAlert';
 import LmsApiService from '../../data/services/LmsApiService';
@@ -17,6 +18,28 @@ export const REQUIRED_CANVAS_CONFIG_FIELDS = [
   'canvasBaseUrl',
 ];
 
+const CANVAS_FIELDS = [
+  {
+    key: 'clientId',
+    invalidMessage: 'Required. Client Id must not be blank',
+    label: 'API Client Id',
+  },
+  {
+    key: 'clientSecret',
+    invalidMessage: 'Required. Client Secret must not be blank',
+    label: 'API Client Secret',
+  },
+  {
+    key: 'canvasAccountId',
+    invalidMessage: 'Required. Canvas Account Id must not be blank',
+    label: 'Canvas Account Id',
+  },
+  {
+    key: 'canvasBaseUrl',
+    invalidMessage: 'Required. Canvas Base URL must not be blank',
+    label: 'Canvas Base URL',
+  },
+];
 class CanvasIntegrationConfigForm extends React.Component {
   state = {
     invalidFields: {},
@@ -117,11 +140,9 @@ class CanvasIntegrationConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="active"
-            >
-              <label htmlFor="active">Active</label>
-              <Input
+            <Form.Group controlId="active">
+              <Form.Label htmlFor="active">Active</Form.Label>
+              <Form.Checkbox
                 type="checkbox"
                 id="active"
                 name="active"
@@ -129,90 +150,38 @@ class CanvasIntegrationConfigForm extends React.Component {
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
                 data-hj-suppress
+                isInline
               />
-            </ValidationFormGroup>
+            </Form.Group>
           </div>
         </div>
-        <div className="row">
-          <div className="col col-6">
-            <ValidationFormGroup
-              for="clientId"
-              invalid={invalidFields.clientId}
-              invalidMessage="Required. Client Id must not be blank"
-            >
-              <label htmlFor="clientId">API Client Id</label>
-              <Input
-                type="text"
-                id="clientId"
-                name="clientId"
-                className="ml-3"
-                defaultValue={config ? config.clientId : ''}
-                onChange={() => this.setState(prevState => ({ clientId: !prevState.clientId }))}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
+        {CANVAS_FIELDS.map(canvasField => (
+          <div className="row" key={canvasField.key}>
+            <div className="col col-4">
+              <Form.Group
+                controlId={canvasField.key}
+                isInvalid={invalidFields[canvasField.key]}
+              >
+                <Form.Label htmlFor={canvasField.key}>{canvasField.label}</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={canvasField.key}
+                  name={canvasField.key}
+                  defaultValue={config ? config[canvasField.key] : ''}
+                  onChange={() => this.setState(
+                    prevState => ({ [canvasField.key]: !prevState[canvasField.key] }),
+                  )}
+                  data-hj-suppress
+                />
+                {invalidFields[canvasField.key] && canvasField.invalidMessage && (
+                  <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                    {canvasField.invalidMessage}
+                  </Form.Control.Feedback>
+                )}
+              </Form.Group>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col col-6">
-            <ValidationFormGroup
-              for="clientSecret"
-              invalid={invalidFields.clientSecret}
-              invalidMessage="Required. Client Secret must not be blank"
-            >
-              <label htmlFor="clientSecret">API Client Secret</label>
-              <Input
-                type="text"
-                id="clientSecret"
-                name="clientSecret"
-                className="ml-3"
-                defaultValue={config ? config.clientSecret : ''}
-                onChange={() => this.setState(prevState => ({ clientSecret: !prevState.clientSecret }))}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-6">
-            <ValidationFormGroup
-              for="canvasAccountId"
-              invalid={invalidFields.canvasAccountId}
-              invalidMessage="Required. Canvas Account Id must not be blank"
-            >
-              <label htmlFor="canvasAccountId">Canvas Account Id</label>
-              <Input
-                type="number"
-                id="canvasAccountId"
-                name="canvasAccountId"
-                className="ml-3"
-                defaultValue={config ? config.canvasAccountId : null}
-                onChange={() => this.setState(prevState => ({ canvasAccountId: !prevState.canvasAccountId }))}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-6">
-            <ValidationFormGroup
-              for="canvasBaseUrl"
-              invalid={invalidFields.canvasBaseUrl}
-              invalidMessage="Required. Canvas Base URL must not be blank"
-            >
-              <label htmlFor="canvasBaseUrl">Canvas Base URL</label>
-              <Input
-                type="text"
-                id="canvasBaseUrl"
-                name="canvasBaseUrl"
-                className="ml-3"
-                defaultValue={config ? config.canvasBaseUrl : null}
-                onChange={() => this.setState(prevState => ({ canvasBaseUrl: !prevState.canvasBaseUrl }))}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        ))}
 
         <div className="row">
           <div className="col col-2">
