@@ -111,7 +111,7 @@ MultipleFileInputField.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.array,
+    value: PropTypes.shape([]),
   }).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   type: PropTypes.string.isRequired,

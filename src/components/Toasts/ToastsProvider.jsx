@@ -26,6 +26,7 @@ function ToastsProvider({ children }) {
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <ToastsContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
     </ToastsContext.Provider>

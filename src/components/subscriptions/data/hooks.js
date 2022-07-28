@@ -69,7 +69,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
     loadCustomerAgreementData();
   }, [loadCustomerAgreementData]);
 
-  useEffect(loadCustomerAgreementData, [enterpriseId]);
+  useEffect(loadCustomerAgreementData, [loadCustomerAgreementData, enterpriseId]);
 
   return {
     subscriptions,

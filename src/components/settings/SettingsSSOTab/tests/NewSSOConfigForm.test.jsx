@@ -243,6 +243,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     const configureContextValue = {
       setCurrentError: jest.fn(),
       currentError: null,

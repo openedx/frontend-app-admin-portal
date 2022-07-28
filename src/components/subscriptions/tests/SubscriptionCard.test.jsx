@@ -50,6 +50,7 @@ describe('SubscriptionCard', () => {
     [moment().add(3, 'hours').toISOString(), '3 hours'],
   ])('displays days until plan starts text if there are no actions and the plan is scheduled', (startDate, expectedText) => {
     renderWithRouter(
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       <ResponsiveContext.Provider value={{ width: breakpoints.extraSmall.maxWidth }}>
         <SubscriptionCard
           {...defaultProps}

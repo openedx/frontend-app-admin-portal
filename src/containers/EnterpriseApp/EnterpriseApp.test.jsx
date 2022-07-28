@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -18,11 +18,9 @@ import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 
+// eslint-disable-next-line react/function-component-definition
 const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
-    canManageLearnerCredit: true,
-  }}
-  >
+  <EnterpriseSubsidiesContext.Provider value={useMemo(() => ({ canManageLearnerCredit: true }), [])}>
     {children}
   </EnterpriseSubsidiesContext.Provider>
 );
@@ -39,7 +37,9 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/ProductTours', () => () => null);
+jest.mock('../../components/ProductTours/ProductTours', () => function () {
+  return null;
+});
 
 features.CODE_MANAGEMENT = true;
 
@@ -74,16 +74,18 @@ const initialState = {
 };
 
 // eslint-disable-next-line react/prop-types
-const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
-  <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
-    <Provider store={store}>
-      <Route
-        path="/:enterpriseSlug"
-        render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
-      />
-    </Provider>
-  </MemoryRouter>
-);
+function EnterpriseAppWrapper({ store, initialEntries, ...props }) {
+  return (
+    <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
+      <Provider store={store}>
+        <Route
+          path="/:enterpriseSlug"
+          render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
+        />
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 EnterpriseAppWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

@@ -65,7 +65,7 @@ NoAvailableCodesBanner.propTypes = {
 };
 
 NoAvailableCodesBanner.defaultProps = {
-  couponsData: null,
+  coupons: [],
 };
 
 export default NoAvailableCodesBanner;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -160,7 +160,7 @@ export function SubscriptionManagementContext({ children, detailState, store }) 
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={{ addToast: () => {} }}>
+        <ToastsContext.Provider value={useMemo(() => ({ addToast: () => {} }), [])}>
           <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
             <SubscriptionDetailContextProvider
               subscription={testSubscriptionPlanGenerator(detailState)}
@@ -361,7 +361,7 @@ export function MockSubscriptionContext({
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={{ addToast: () => {} }}>
+        <ToastsContext.Provider value={useMemo(() => ({ addToast: () => {} }), [])}>
           <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
             <SubscriptionDetailContextProvider
               subscription={subscriptionPlan}

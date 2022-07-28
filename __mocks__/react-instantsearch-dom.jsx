@@ -7,14 +7,14 @@ const MockReactInstantSearch = jest.genMockFromModule(
 );
 
 // eslint-disable-next-line camelcase
-const advertised_course_run = {
+const advertisedCourseRun = {
   start: '2020-09-09T04:00:00Z',
   key: 'course-v1:edX+Bee101+3T2020',
 };
 
 const fakeHits = [
-  { objectID: '1', title: 'bla', advertised_course_run, key: 'Bees101' },
-  { objectID: '2', title: 'blp', advertised_course_run, key: 'Wasps200' },
+  { objectID: '1', title: 'bla', advertised_course_run: advertisedCourseRun, key: 'Bees101' },
+  { objectID: '2', title: 'blp', advertised_course_run: advertisedCourseRun, key: 'Wasps200' },
 ];
 
 MockReactInstantSearch.connectStateResults = Component => function (props) {

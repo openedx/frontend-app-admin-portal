@@ -91,9 +91,7 @@ function SubscriptionCard({
         title={title}
         subtitle={subtitle}
         actions={(
-          <>
-            {renderActions() || renderDaysUntilPlanStartText('mt-4')}
-          </>
+          renderActions() || renderDaysUntilPlanStartText('mt-4')
         )}
       />
     );
