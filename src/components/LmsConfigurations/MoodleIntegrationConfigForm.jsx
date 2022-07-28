@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  Form, StatefulButton, Icon,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
@@ -13,6 +14,48 @@ import { handleErrors, validateLmsConfigForm } from './common';
 export const REQUIRED_MOODLE_CONFIG_FIELDS = [
   'moodleBaseUrl',
   'serviceShortName',
+];
+
+const MOODL_FIELDS = [
+  {
+    key: 'moodleBaseUrl',
+    invalidMessage: 'Moodle Instance URL is required.',
+    helpText: 'Your Moodle instance URL. Make sure to include the protocol (ie https/http)',
+    label: 'Moodle Instance URL',
+  },
+  {
+    key: 'serviceShortName',
+    invalidMessage: 'Webservice name is required.',
+    helpText: 'This should match the webservice\'s short name in Moodle.',
+    label: 'Webservice\'s Short Name',
+  },
+  {
+    key: 'categoryId',
+    helpText: 'The category id all edX courses will be added under. Default is 1 (Miscellaneous)',
+    type: 'number',
+    label: 'Moodle Category ID',
+  },
+  {
+    key: 'username',
+    invalidMessage: 'A username and password must be provided when a token is not. However, you should not provide both user credentials and token.',
+    helpText: 'The Webservice\'s username in Moodle. You must provide this and password or a token',
+    label: 'Webservice Username',
+    invalidAdditionalCondition: 'duplicateCreds',
+  },
+  {
+    key: 'password',
+    invalidMessage: 'A username and password must be provided when a token is not. However, you should not provide both user credentials and token.',
+    helpText: 'The Webservice\'s password in Moodle. You must provide this and username or a token',
+    label: 'Webservice Password',
+    invalidAdditionalCondition: 'duplicateCreds',
+  },
+  {
+    key: 'token',
+    invalidMessage: 'A token must be provided when username/password is not. However, you should not provide both user credentials and token.',
+    helpText: 'The Webservice user\'s auth token. Use this in place of a username/password.',
+    label: 'Webservice Auth Token',
+    invalidAdditionalCondition: 'duplicateCreds',
+  },
 ];
 
 class MoodleIntegrationConfigForm extends React.Component {
@@ -137,133 +180,47 @@ class MoodleIntegrationConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="active"
-            >
-              <label htmlFor="active">Active</label>
-              <Input
-                type="checkbox"
+            <Form.Group controlId="active">
+              <Form.Label htmlFor="active">Active</Form.Label>
+              <Form.Checkbox
                 id="active"
                 name="active"
                 className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+                isInline
               />
-            </ValidationFormGroup>
+            </Form.Group>
           </div>
         </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="moodleBaseUrl"
-              invalid={invalidFields.moodleBaseUrl}
-              invalidMessage="Moodle Instance URL is required."
-              helpText="Your Moodle instance URL. Make sure to include the protocol (ie https/http)"
-            >
-              <label htmlFor="moodleBaseUrl">Moodle Instance URL</label>
-              <Input
-                type="text"
-                id="moodleBaseUrl"
-                name="moodleBaseUrl"
-                defaultValue={config ? config.moodleBaseUrl : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
+
+        {MOODL_FIELDS.map(moodleField => (
+          <div className="row" key={moodleField.key}>
+            <div className="col col-4">
+              <Form.Group
+                controlId={moodleField.key}
+                isInvalid={invalidFields[moodleField.key] || invalidFields[moodleField.invalidAdditionalCondition]}
+              >
+                <Form.Label htmlFor={moodleField.key}>{moodleField.label}</Form.Label>
+                <Form.Control
+                  type={moodleField.type || 'text'}
+                  id={moodleField.key}
+                  name={moodleField.key}
+                  // eslint-disable-next-line no-nested-ternary
+                  defaultValue={config ? config[moodleField.key] : moodleField.type === 'number' ? 1 : ''}
+                  data-hj-suppress
+                />
+                <Form.Text>{moodleField.helpText}</Form.Text>
+                {(invalidFields[moodleField.key] || invalidFields[moodleField.invalidAdditionalCondition])
+                  && moodleField.invalidMessage && (
+                  <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                    {moodleField.invalidMessage}
+                  </Form.Control.Feedback>
+                )}
+              </Form.Group>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="serviceShortName"
-              invalid={invalidFields.serviceShortName}
-              invalidMessage="Webservice name is required."
-              helpText="This should match the webservice's short name in Moodle."
-            >
-              <label htmlFor="serviceShortName">Webservice&apos;s Short Name</label>
-              <Input
-                type="text"
-                id="serviceShortName"
-                name="serviceShortName"
-                defaultValue={config ? config.serviceShortName : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="categoryId"
-              helpText="The category id all edX courses will be added under. Default is 1 (Miscellaneous)"
-            >
-              <label htmlFor="categoryId">Moodle Category ID</label>
-              <Input
-                type="number"
-                id="categoryId"
-                name="categoryId"
-                defaultValue={config ? config.categoryId : 1}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="username"
-              helpText="The Webservice's username in Moodle. You must provide this and password or a token"
-              invalid={invalidFields.username || invalidFields.duplicateCreds}
-              invalidMessage="A username and password must be provided when a token is not. However, you should not provide both user credentials and token."
-            >
-              <label htmlFor="username">Webservice Username</label>
-              <Input
-                type="text"
-                id="username"
-                name="username"
-                defaultValue={config ? config.username : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="password"
-              helpText="The Webservice's password in Moodle. You must provide this and username or a token"
-              invalid={invalidFields.password || invalidFields.duplicateCreds}
-              invalidMessage="A username and password must be provided when a token is not. However, you should not provide both user credentials and token."
-            >
-              <label htmlFor="password">Webservice Password</label>
-              <Input
-                type="text"
-                id="password"
-                name="password"
-                defaultValue={config ? config.password : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="token"
-              helpText="The Webservice user's auth token. Use this in place of a username/password."
-              invalid={invalidFields.token || invalidFields.duplicateCreds}
-              invalidMessage="A token must be provided when username/password is not. However, you should not provide both user credentials and token."
-            >
-              <label htmlFor="token">Webservice Auth Token</label>
-              <Input
-                type="text"
-                id="token"
-                name="token"
-                defaultValue={config ? config.token : null}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        ))}
 
         <div className="row">
           <div className="col col-2">
