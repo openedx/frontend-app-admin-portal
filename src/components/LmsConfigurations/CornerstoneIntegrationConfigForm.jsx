@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon,
+  Form, StatefulButton, Icon,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import { snakeCaseFormData } from '../../utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import StatusAlert from '../StatusAlert';
@@ -179,38 +180,39 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
       </div>
       <div className="row">
         <div className="col col-6">
-          <ValidationFormGroup
-            for="active"
-          >
-            <label htmlFor="active">Active</label>
-            <Input
-              type="checkbox"
+          <Form.Group controlId="active">
+            <Form.Label htmlFor="active">Active</Form.Label>
+            <Form.Checkbox
               id="active"
               name="active"
               className="ml-3"
               checked={active}
               onChange={() => setActive(prevActive => (!prevActive))}
             />
-          </ValidationFormGroup>
+          </Form.Group>
         </div>
       </div>
       <div className="row">
         <div className="col col-4">
-          <ValidationFormGroup
-            for="cornerstoneBaseUrl"
-            invalid={state.invalidFields.cornerstoneBaseUrl}
-            invalidMessage="Cornerstone Instance URL is required."
-            helpText="Your Cornerstone instance URL. Make sure to include the protocol (ie https/http)"
+          <Form.Group
+            controlId="cornerstoneBaseUrl"
+            isInvalid={state.invalidFields.cornerstoneBaseUrl}
           >
             <label htmlFor="cornerstoneBaseUrl">Cornerstone Instance URL</label>
-            <Input
+            <Form.Control
               type="text"
               id="cornerstoneBaseUrl"
               name="cornerstoneBaseUrl"
               defaultValue={config ? config.cornerstoneBaseUrl : null}
               data-hj-suppress
             />
-          </ValidationFormGroup>
+            <Form.Text>Your Cornerstone instance URL. Make sure to include the protocol (ie https/http)</Form.Text>
+            {state.invalidFields.cornerstoneBaseUrl && (
+              <Form.Control.Feedback icon={<Error className="mr-1" />}>
+                Cornerstone Instance URL is required.
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
         </div>
       </div>
 
