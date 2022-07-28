@@ -11,6 +11,7 @@ const SSO_TAB_LABEL = 'SSO';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
+export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';
 export const SUCCESS_LABEL = 'success';
 export const TOGGLE_SUCCESS_LABEL = 'toggle success';
 export const DELETE_SUCCESS_LABEL = 'delete success';
@@ -26,6 +27,9 @@ export const SAP_TYPE = 'SAP';
 export const INVALID_LINK = 'Link must be properly formatted and start with http or https';
 export const INVALID_NAME = 'Display name must be unique and cannot be over 20 characters';
 export const INVALID_LENGTH = 'Max length must be a number, but cannot be over 2 weeks (1210000 seconds)';
+export const INVALID_API_ROOT_URL = 'OAuth API Root URL attribute must be a valid URL';
+export const INVALID_SAPSF_OAUTH_ROOT_URL = 'SAPSF OAuth URL attribute must be a valid URL';
+export const INVALID_ODATA_API_TIMEOUT_INTERVAL = 'OData API timeout interval must be a number less than 30';
 
 /**
  * Used as tab values and in router params

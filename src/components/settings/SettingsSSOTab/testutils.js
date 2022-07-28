@@ -17,4 +17,5 @@ const getMockStore = aStore => mockStore(aStore);
 export {
   getMockStore,
   initialStore,
+  enterpriseId,
 };

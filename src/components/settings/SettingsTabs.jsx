@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Container,
   Tabs,
@@ -43,6 +43,62 @@ function SettingsTabs({
   const history = useHistory();
   const match = useRouteMatch();
 
+  const tabArray = useMemo(() => {
+    const initialTabs = [];
+    if (enableLearnerPortal) {
+      initialTabs.push(
+        <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
+          <SettingsAccessTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+            identityProvider={identityProvider}
+            enableLearnerPortal={enableLearnerPortal}
+            enableUniversalLink={enableUniversalLink}
+            updatePortalConfiguration={updatePortalConfiguration}
+          />
+        </Tab>,
+      );
+    }
+    if (FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen) {
+      initialTabs.push(
+        <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
+          <SettingsSSOTab
+            enterpriseId={enterpriseId}
+            setHasSSOConfig={setHasSSOConfig}
+          />
+        </Tab>,
+      );
+    }
+    if (SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen) {
+      initialTabs.push(
+        <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+            identityProvider={identityProvider}
+            hasSSOConfig={hasSSOConfig}
+          />
+        </Tab>,
+      );
+    }
+    return initialTabs;
+  }, [
+    FEATURE_SSO_SETTINGS_TAB,
+    SETTINGS_PAGE_LMS_TAB,
+    enableIntegratedCustomerLearnerPortalSearch,
+    enableLearnerPortal,
+    enableLmsConfigurationsScreen,
+    enableSamlConfigurationScreen,
+    enableUniversalLink,
+    enterpriseId,
+    enterpriseSlug,
+    hasSSOConfig,
+    identityProvider,
+    updatePortalConfiguration,
+  ]);
+
   /**
    * Given a key from SETTINGS_TABS_VALUES, this function
    * will push a path into browser history
@@ -66,38 +122,7 @@ function SettingsTabs({
         activeKey={tab}
         onSelect={handleTabChange}
       >
-        {enableLearnerPortal && (
-          <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
-            <SettingsAccessTab
-              enterpriseId={enterpriseId}
-              enterpriseSlug={enterpriseSlug}
-              enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
-              identityProvider={identityProvider}
-              enableLearnerPortal={enableLearnerPortal}
-              enableUniversalLink={enableUniversalLink}
-              updatePortalConfiguration={updatePortalConfiguration}
-            />
-          </Tab>
-        )}
-        {FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen && (
-          <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
-            <SettingsSSOTab
-              enterpriseId={enterpriseId}
-              setHasSSOConfig={setHasSSOConfig}
-            />
-          </Tab>
-        )}
-        {SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen && (
-          <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
-            <SettingsLMSTab
-              enterpriseId={enterpriseId}
-              enterpriseSlug={enterpriseSlug}
-              enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-              identityProvider={identityProvider}
-              hasSSOConfig={hasSSOConfig}
-            />
-          </Tab>
-        )}
+        {tabArray}
       </Tabs>
     </Container>
   );

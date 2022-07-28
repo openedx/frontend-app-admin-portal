@@ -70,8 +70,11 @@ function Sidebar({
     // Hide Settings link if there are no visible tabs
     const shouldShowSettingsLink = (
       features.SETTINGS_PAGE && (
-        enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
-       || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
+        enableLearnerPortal || (
+          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
+        ) || (
+          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
+        )
       )
     );
 
