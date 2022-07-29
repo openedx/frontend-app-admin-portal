@@ -337,14 +337,13 @@ class ReportingConfigForm extends React.Component {
         )}
         <div className="col">
           {this.renderSelect({
-            key: 'enterpriseCustomerCatalogs',
+            key: 'enterpriseCustomerCatalogUuids',
             helpText: 'The catalogs that should be included in the report. No selection means all catalogs will be included.',
             label: 'Enterprise Customer Catalogs',
             options: availableCatalogs.map(item => ({
               value: item.uuid,
               label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
             })),
-            // TODO
             multiple: true,
             defaultValue: selectedCatalogs,
           })}
