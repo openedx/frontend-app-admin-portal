@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+  Form, StatefulButton, Icon, Button,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import StatusAlert from '../StatusAlert';
 import SamlConfiguration from '../SamlConfiguration';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
@@ -11,6 +12,53 @@ import SUBMIT_STATES from '../../data/constants/formSubmissions';
 export const REQUIRED_CONFIG_FIELDS = [
   'entityId',
   'metadataSource',
+];
+
+const CONFIG_FIELDS = [
+  {
+    key: 'entityId',
+    invalidMessage: 'Entity ID is required.',
+    helpText: 'The Entity ID of a provider is typically a url and would be provided by the SAMLProvider. Example: https://idp.testshib.org/idp/shibboleth',
+    label: 'Entity ID',
+    showRequired: true,
+  },
+  {
+    key: 'metadataSource',
+    invalidMessage: 'Metadata Source is required.',
+    helpText: 'URL to this provider\'s XML metadata. Should be an HTTPS URL. Example: https://www.testshib.org/metadata/testshib-providers.xml',
+    label: 'Metadata Source',
+    showRequired: true,
+  },
+  {
+    key: 'attrUserPermanentId',
+    helpText: 'URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default.',
+    label: 'User ID Attribute',
+  },
+  {
+    key: 'attrFullName',
+    helpText: 'URN of SAML attribute containing the user\'s full name. Leave blank for default.',
+    label: 'Full Name Attribute',
+  },
+  {
+    key: 'attrFirstName',
+    helpText: 'URN of SAML attribute containing the user\'s first name. Leave blank for default.',
+    label: 'First Name Attribute',
+  },
+  {
+    key: 'attrLastName',
+    helpText: 'URN of SAML attribute containing the user\'s last name. Leave blank for default.',
+    label: 'Lasr Name Attribute',
+  },
+  {
+    key: 'attrEmail',
+    helpText: 'URN of SAML attribute containing the user\'s email address[es]. Leave blank for default.',
+    label: 'Email Address Attribute',
+  },
+  {
+    key: 'country',
+    helpText: 'URN of SAML attribute containing the user\'s country.',
+    label: 'Country',
+  },
 ];
 
 class SamlProviderConfigForm extends React.Component {
@@ -76,10 +124,42 @@ class SamlProviderConfigForm extends React.Component {
     }
   }
 
+  renderField = data => {
+    const { invalidFields } = this.state;
+    const { config } = this.props;
+    const otherProps = {
+      ...data.max && { max: data.max },
+      ...data.min && { min: data.min },
+    };
+    return (
+      <Form.Group
+        controlId={data.key}
+        isInvalid={invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition]}
+      >
+        <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+        <Form.Control
+          type={data.type || 'text'}
+          id={data.key}
+          name={data.key}
+          // eslint-disable-next-line no-nested-ternary
+          defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
+          data-hj-suppress
+          {...otherProps}
+        />
+        <Form.Text>{data.helpText}{data.showRequired && <span className="required">*</span>}</Form.Text>
+        {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
+          && data.invalidMessage && (
+          <Form.Control.Feedback icon={<Error className="mr-1" />}>
+            {data.invalidMessage}
+          </Form.Control.Feedback>
+        )}
+      </Form.Group>
+    );
+  }
+
   render() {
     const { config, deleteEnabled } = this.props;
     const {
-      invalidFields,
       submitState,
       enabled,
       syncLearnerProfileData,
@@ -110,46 +190,34 @@ class SamlProviderConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="enabled"
-            >
-              <label htmlFor="enabled">Enabled</label>
-              <Input
-                type="checkbox"
+            <Form.Group controlId="enabled">
+              <Form.Label htmlFor="enabled">Enabled</Form.Label>
+              <Form.Checkbox
                 id="enabled"
                 name="enabled"
                 className="ml-3"
                 checked={enabled}
                 onChange={() => this.setState(prevState => ({ enabled: !prevState.enabled }))}
+                isInline
               />
-            </ValidationFormGroup>
+            </Form.Group>
           </div>
         </div>
         <div className="row">
           <div className="col col-4">
-            <ValidationFormGroup
-              for="maxSession"
-              helpText="If this option is set, then users logging in using this SSO provider will have their session length limited to no longer than this value. If set to 0 (zero), the session will expire upon the user closing their browser. If left blank, the Django platform session default length will be used."
-            >
-              <label htmlFor="maxSession">Max session length (seconds)</label>
-              <Input
-                type="number"
-                id="maxSessionLength"
-                name="maxSessionLength"
-                defaultValue={config ? config.maxSessionLength : undefined}
-              />
-            </ValidationFormGroup>
+            {this.renderField({
+              key: 'maxSession',
+              helpText: 'If this option is set, then users logging in using this SSO provider will have their session length limited to no longer than this value. If set to 0 (zero), the session will expire upon the user closing their browser. If left blank, the Django platform session default length will be used.',
+              label: 'Max session length (seconds)',
+              type: 'number',
+            })}
           </div>
         </div>
         <div className="row">
           <div className="col col-4">
-            <ValidationFormGroup
-              for="syncLearnerProfileData"
-              helpText="Synchronize user profile data received from the identity provider with the edX user account on each SSO login. The user will be notified if the email address associated with their account is changed as a part of this synchronization."
-            >
-              <label htmlFor="syncLearnerProfileData">Sync learner profile data</label>
-              <Input
-                type="checkbox"
+            <Form.Group controlId="syncLearnerProfileData">
+              <Form.Label htmlFor="syncLearnerProfileData">Sync learner profile data</Form.Label>
+              <Form.Checkbox
                 id="syncLearnerProfileData"
                 name="syncLearnerProfileData"
                 className="ml-3"
@@ -159,150 +227,23 @@ class SamlProviderConfigForm extends React.Component {
                   { syncLearnerProfileData: !prevState.syncLearnerProfileData }
                 ))}
                 data-hj-suppress
+                isInline
               />
-            </ValidationFormGroup>
+              <Form.Text>
+                Synchronize user profile data received from the identity provider with the edX user account on each SSO
+                login. The user will be notified if the email address associated with their account is changed as a
+                part of this synchronization.
+              </Form.Text>
+            </Form.Group>
           </div>
         </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="entityId"
-              helpText="The Entity ID of a provider is typically a url and would be provided by the SAMLProvider. Example: https://idp.testshib.org/idp/shibboleth"
-              invalid={invalidFields.entityId}
-              invalidMessage="Entity ID is required."
-            >
-              <label htmlFor="entityId">Entity ID<span className="required">*</span></label>
-              <Input
-                type="text"
-                id="entityId"
-                name="entityId"
-                defaultValue={config ? config.entityId : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
+        {CONFIG_FIELDS.map(field => (
+          <div className="row" key={field.key}>
+            <div className="col col-4">
+              {this.renderField(field)}
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="metadataSource"
-              helpText="URL to this provider's XML metadata. Should be an HTTPS URL. Example: https://www.testshib.org/metadata/testshib-providers.xml"
-              invalid={invalidFields.metadataSource}
-              invalidMessage="Metadata Source is required."
-            >
-              <label htmlFor="metadataSource">Metadata Source<span className="required">*</span></label>
-              <Input
-                type="text"
-                id="metadataSource"
-                name="metadataSource"
-                defaultValue={config ? config.metadataSource : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="attrUserPermanentId"
-              helpText="URN of the SAML attribute that we can use as a unique, persistent user ID. Leave blank for default."
-            >
-              <label htmlFor="attrUserPermanentId">User ID Attribute</label>
-              <Input
-                type="text"
-                id="attrUserPermanentId"
-                name="attrUserPermanentId"
-                defaultValue={config ? config.attrUserPermanentId : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="attrFullName"
-              helpText="URN of SAML attribute containing the user's full name. Leave blank for default."
-            >
-              <label htmlFor="attrFullName">Full Name Attribute</label>
-              <Input
-                type="text"
-                id="attrFullName"
-                name="attrFullName"
-                defaultValue={config ? config.attrFullName : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="attrFirstName"
-              helpText="URN of SAML attribute containing the user's first name. Leave blank for default."
-            >
-              <label htmlFor="attrFirstName">First Name Attribute</label>
-              <Input
-                type="text"
-                id="attrFirstName"
-                name="attrFirstName"
-                defaultValue={config ? config.attrFirstName : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="attrLastName"
-              helpText="URN of SAML attribute containing the user's last name. Leave blank for default."
-            >
-              <label htmlFor="attrLastName">Last Name Attribute</label>
-              <Input
-                type="text"
-                id="attrLastName"
-                name="attrLastName"
-                defaultValue={config ? config.attrLastName : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="attrEmail"
-              helpText="URN of SAML attribute containing the user's email address[es]. Leave blank for default."
-            >
-              <label htmlFor="attrEmail">Email Address Attribute</label>
-              <Input
-                type="text"
-                id="attrEmail"
-                name="attrEmail"
-                defaultValue={config ? config.attrEmail : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="country"
-              helpText="URN of SAML attribute containing the user's country"
-            >
-              <label htmlFor="country">Country</label>
-              <Input
-                type="text"
-                id="country"
-                name="country"
-                defaultValue={config ? config.country : ''}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        ))}
         <div className="row">
           <SamlConfiguration
             currentConfig={config ? config.samlConfiguration : undefined}
