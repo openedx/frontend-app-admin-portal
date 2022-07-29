@@ -132,7 +132,7 @@ class SamlProviderConfigForm extends React.Component {
         controlId={data.key}
         isInvalid={invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition]}
       >
-        <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+        <Form.Label htmlFor={data.key}>{data.label}{data.showRequired && <span className="required">*</span>}</Form.Label>
         <Form.Control
           type={data.type || 'text'}
           id={data.key}
@@ -141,7 +141,7 @@ class SamlProviderConfigForm extends React.Component {
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
           data-hj-suppress
         />
-        <Form.Text>{data.helpText}{data.showRequired && <span className="required">*</span>}</Form.Text>
+        <Form.Text>{data.helpText}</Form.Text>
         {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
           && data.invalidMessage && (
           <Form.Control.Feedback icon={<Error className="mr-1" />}>
