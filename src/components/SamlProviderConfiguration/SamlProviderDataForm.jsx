@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+  Form, StatefulButton, Icon, Button,
 } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import StatusAlert from '../StatusAlert';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
 
@@ -11,6 +12,30 @@ export const REQUIRED_DATA_FIELDS = [
   'entityId',
   'ssoUrl',
   'publicKey',
+];
+
+const CONFIG_FIELDS = [
+  {
+    key: 'entityId',
+    invalidMessage: 'Entity ID is required.',
+    helpText: 'The Entity ID of a provider is typically a url and would be provided by the SAMLProvider. Example: https://idp.testshib.org/idp/shibboleth',
+    label: 'Entity ID',
+    showRequired: true,
+  },
+  {
+    key: 'ssoUrl',
+    invalidMessage: 'SSO URL required.',
+    helpText: 'The SSO (Single Sign On) URL of the provider. Example: https://samltest.id/idp/profile/SAML2/Redirect/SSO',
+    label: 'SSO URL',
+    showRequired: true,
+  },
+  {
+    key: 'publicKey',
+    invalidMessage: 'Public Key is required.',
+    helpText: 'The public key (May also be known as Signing Certificate) of your provider.',
+    label: 'Public Key',
+    showRequired: true,
+  },
 ];
 
 class SamlProviderDataForm extends React.Component {
@@ -68,10 +93,40 @@ class SamlProviderDataForm extends React.Component {
     }
   }
 
+  renderField = data => {
+    const { invalidFields } = this.state;
+    const { pData: config, entityId } = this.props;
+    const defaultValue = data.key === 'entityId' ? entityId : '';
+
+    return (
+      <Form.Group
+        controlId={data.key}
+        isInvalid={invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition]}
+      >
+        <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+        <Form.Control
+          type={data.type || 'text'}
+          id={data.key}
+          name={data.key}
+          // eslint-disable-next-line no-nested-ternary
+          defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : defaultValue}
+          disabled={!(config === undefined)}
+          data-hj-suppress
+        />
+        <Form.Text>{data.helpText}{data.showRequired && <span className="required">*</span>}</Form.Text>
+        {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
+          && data.invalidMessage && (
+          <Form.Control.Feedback icon={<Error className="mr-1" />}>
+            {data.invalidMessage}
+          </Form.Control.Feedback>
+        )}
+      </Form.Group>
+    );
+  }
+
   render() {
-    const { pData, entityId, deleteEnabled } = this.props;
+    const { pData, deleteEnabled } = this.props;
     const {
-      invalidFields,
       submitState,
       error,
     } = this.state;
@@ -97,66 +152,13 @@ class SamlProviderDataForm extends React.Component {
         }}
         onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
       >
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="entityId"
-              helpText="The Entity ID of a provider is typically a url and would be provided by the SAMLProvider. Example: https://idp.testshib.org/idp/shibboleth"
-              invalid={invalidFields.entityId}
-              invalidMessage="Entity ID is required."
-            >
-              <label htmlFor="entityId">Entity ID<span className="required">*</span></label>
-              <Input
-                type="text"
-                id="entityId"
-                name="entityId"
-                defaultValue={pData ? pData.entityId : entityId}
-                disabled={!(pData === undefined)}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
+        {CONFIG_FIELDS.map(field => (
+          <div className="row" key={field.key}>
+            <div className="col col-4">
+              {this.renderField(field)}
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="ssoUrl"
-              helpText="The SSO (Single Sign On) URL of the provider. Example: https://samltest.id/idp/profile/SAML2/Redirect/SSO"
-              invalid={invalidFields.ssoUrl}
-              invalidMessage="SSO URL required."
-            >
-              <label htmlFor="ssoUrl">SSO URL<span className="required">*</span></label>
-              <Input
-                type="text"
-                id="ssoUrl"
-                name="ssoUrl"
-                defaultValue={pData ? pData.ssoUrl : ''}
-                disabled={!(pData === undefined)}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col col-4">
-            <ValidationFormGroup
-              for="publicKey"
-              helpText="The public key (May also be known as Signing Certificate) of your provider."
-              invalid={invalidFields.publicKey}
-              invalidMessage="Public Key is required."
-            >
-              <label htmlFor="publicKey">Public Key<span className="required">*</span></label>
-              <Input
-                type="textarea"
-                id="publicKey"
-                name="publicKey"
-                defaultValue={pData ? pData.publicKey : ''}
-                disabled={!(pData === undefined)}
-                data-hj-suppress
-              />
-            </ValidationFormGroup>
-          </div>
-        </div>
+        ))}
         <div className="row">
           {!pData && (
             <div className="col-col2">

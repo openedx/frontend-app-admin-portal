@@ -127,10 +127,6 @@ class SamlProviderConfigForm extends React.Component {
   renderField = data => {
     const { invalidFields } = this.state;
     const { config } = this.props;
-    const otherProps = {
-      ...data.max && { max: data.max },
-      ...data.min && { min: data.min },
-    };
     return (
       <Form.Group
         controlId={data.key}
@@ -144,7 +140,6 @@ class SamlProviderConfigForm extends React.Component {
           // eslint-disable-next-line no-nested-ternary
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
           data-hj-suppress
-          {...otherProps}
         />
         <Form.Text>{data.helpText}{data.showRequired && <span className="required">*</span>}</Form.Text>
         {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
