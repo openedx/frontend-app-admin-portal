@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ValidationFormGroup, Input } from '@edx/paragon';
+import { Form } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LMSApiService from '../../data/services/LmsApiService';
 
@@ -28,10 +28,12 @@ class SamlConfiguration extends React.Component {
 
   getConfigOptions() {
     const { configs } = this.state;
-    const options = [];
-    options.push({ label: '-- choose a configuration --', value: '', hidden: true });
+    const options = [
+      <option value="" hidden="true">-- choose a configuration --</option>,
+    ];
+
     configs.forEach((object) => {
-      options.push({ label: object.slug, value: object.id });
+      options.push(<option value={object.id} key={object.id}>{object.slug}</option>);
     });
     return options;
   }
@@ -39,22 +41,20 @@ class SamlConfiguration extends React.Component {
   render() {
     return (
       <div className="col col-4">
-        <ValidationFormGroup
-          for="samlConfigId"
-          helpText="the edX certificates to use with your SAML provider."
-        >
-          <label htmlFor="samlConfigId">Saml Configuration</label>
-
-          <Input
-            type="select"
+        <Form.Group controlId="samlConfigId">
+          <Form.Label htmlFor="samlConfigId">Saml Configuration</Form.Label>
+          <Form.Control
+            as="select"
             id="samlConfigId"
             name="samlConfigId"
             key={this.state.loading ? 'loaded' : 'loading'}
-            options={this.getConfigOptions()}
             defaultValue={this.props.currentConfig}
             data-hj-suppress
-          />
-        </ValidationFormGroup>
+          >
+            {this.getConfigOptions()}
+          </Form.Control>
+          <Form.Text>the edX certificates to use with your SAML provider.</Form.Text>
+        </Form.Group>
       </div>
     );
   }
