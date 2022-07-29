@@ -218,10 +218,8 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
             <Form.Group
               controlId="userType"
               isInvalid={invalidFields.userType}
-              invalidMessage=""
-              helpText=""
             >
-              <label htmlFor="userType">SAP Success Factors User Type</label>
+              <Form.Label htmlFor="userType">SAP Success Factors User Type</Form.Label>
               <Form.Control
                 as="select"
                 id="userType"
