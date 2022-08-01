@@ -2,7 +2,7 @@
 
 exports[`<ReduxFormCheckbox /> renders checked correctly 1`] = `
 <div
-  className="form-group"
+  className="pgn__form-group"
 >
   <div
     className="form-check"
@@ -21,7 +21,7 @@ exports[`<ReduxFormCheckbox /> renders checked correctly 1`] = `
 
 exports[`<ReduxFormCheckbox /> renders unchecked correctly 1`] = `
 <div
-  className="form-group"
+  className="pgn__form-group"
 >
   <div
     className="form-check"

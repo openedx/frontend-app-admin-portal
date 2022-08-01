@@ -35,6 +35,7 @@ const CONFIG_FIELDS = [
     helpText: 'The public key (May also be known as Signing Certificate) of your provider.',
     label: 'Public Key',
     showRequired: true,
+    as: 'textarea',
   },
 ];
 
@@ -97,7 +98,9 @@ class SamlProviderDataForm extends React.Component {
     const { invalidFields } = this.state;
     const { pData: config, entityId } = this.props;
     const defaultValue = data.key === 'entityId' ? entityId : '';
-
+    const otherProps = {
+      ...data.as && { as: data.as },
+    };
     return (
       <Form.Group
         controlId={data.key}
@@ -112,6 +115,7 @@ class SamlProviderDataForm extends React.Component {
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : defaultValue}
           disabled={!(config === undefined)}
           data-hj-suppress
+          {...otherProps}
         />
         <Form.Text>{data.helpText}</Form.Text>
         {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
