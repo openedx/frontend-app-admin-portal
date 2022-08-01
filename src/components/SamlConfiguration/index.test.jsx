@@ -18,14 +18,9 @@ describe('<SamlConfiguration /> ', () => {
     const wrapper = mount(<SamlConfiguration />);
     setImmediate(() => {
       const options = wrapper.instance().getConfigOptions();
-      expect(options).toEqual([
-        { label: '-- choose a configuration --', value: '', hidden: true },
-        {
-          label: testConfigs.data.results[0].slug,
-          value: testConfigs.data.results[0].id,
-        },
-        { label: testConfigs.data.results[1].slug, value: testConfigs.data.results[1].id },
-      ]);
+      testConfigs.data.results.forEach((config, index) => {
+        expect(options[index + 1].props.value).toEqual(config.id);
+      });
     });
   });
 
