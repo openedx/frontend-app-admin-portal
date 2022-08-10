@@ -47,7 +47,8 @@ export const useLinkManagement = (enterpriseUUID) => {
     };
   }, [enterpriseUUID]);
 
-  useEffect(loadLinks, [loadLinks]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadLinks, []);
 
   return {
     links,
