@@ -4,10 +4,12 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
 const SSO_TAB = 'sso';
+const APPEARANCE_TAB = 'appearance';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'LMS';
 const SSO_TAB_LABEL = 'SSO';
+const APPEARANCE_TAB_LABEL = 'Portal Appearance';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
@@ -38,6 +40,7 @@ export const SETTINGS_TABS_VALUES = {
   [ACCESS_TAB]: ACCESS_TAB,
   [LMS_TAB]: LMS_TAB,
   [SSO_TAB]: SSO_TAB,
+  [APPEARANCE_TAB]: APPEARANCE_TAB,
 };
 
 /**
@@ -47,6 +50,7 @@ export const SETTINGS_TAB_LABELS = {
   [ACCESS_TAB]: ACCESS_TAB_LABEL,
   [LMS_TAB]: LMS_TAB_LABEL,
   [SSO_TAB]: SSO_TAB_LABEL,
+  [APPEARANCE_TAB]: APPEARANCE_TAB_LABEL,
 };
 
 /** Default tab when no parameter is given */

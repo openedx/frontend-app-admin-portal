@@ -19,6 +19,7 @@ import {
   SETTINGS_TAB_PARAM,
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
+import SettingsAppearanceTab from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
@@ -31,12 +32,13 @@ const SettingsTabs = ({
   enableLearnerPortal,
   enableLmsConfigurationsScreen,
   enableSamlConfigurationScreen,
+  enableAppearanceScreen,
   enableUniversalLink,
   identityProvider,
   updatePortalConfiguration,
 }) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
-  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB } = features;
+  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -83,14 +85,25 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
+    if (SETTINGS_PAGE_APPEARANCE_TAB && enableAppearanceScreen) {
+      initialTabs.push(
+        <Tab eventKey={SETTINGS_TABS_VALUES.appearance} title={SETTINGS_TAB_LABELS.appearance}>
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+          />
+        </Tab>,
+      );
+    }
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,
+    SETTINGS_PAGE_APPEARANCE_TAB,
     SETTINGS_PAGE_LMS_TAB,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableAppearanceScreen,
     enableUniversalLink,
     enterpriseId,
     enterpriseSlug,
@@ -136,6 +149,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableAppearanceScreen,
     enableUniversalLink,
     identityProvider,
   } = state.portalConfiguration;
@@ -147,6 +161,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableAppearanceScreen,
     enableUniversalLink,
     identityProvider,
   });
@@ -163,6 +178,7 @@ SettingsTabs.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableLmsConfigurationsScreen: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  enableAppearanceScreen: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
   updatePortalConfiguration: PropTypes.func.isRequired,

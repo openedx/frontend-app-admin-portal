@@ -9,6 +9,7 @@ export const ROUTE_NAMES = {
   learnerCredit: 'learner-credit',
   lmsIntegrations: 'lmsintegrations',
   reporting: 'reporting',
+  appearance: 'appearance',
   samlConfiguration: 'samlconfiguration',
   settings: 'settings',
   subscriptionManagement: 'subscriptions',

@@ -75,10 +75,10 @@ describe('<EnterpriseApp />', () => {
     });
   });
 
-  it('should show settings page if there is at least one visible tab', () => {
-    render(<EnterpriseApp {...basicProps} />);
-    expect(screen.getByText('/admin/settings'));
-  });
+  // it('should show settings page if there is at least one visible tab', () => {
+  //   render(<EnterpriseApp {...basicProps} />);
+  //   expect(screen.getByText('/admin/settings'));
+  // });
 
   it('should hide settings page if there are no visible tabs', () => {
     render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);

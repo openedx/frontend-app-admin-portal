@@ -67,6 +67,7 @@ describe('<SettingsTabs />', () => {
     features.EXTERNAL_LMS_CONFIGURATION = true;
     features.FEATURE_SSO_SETTINGS_TAB = true;
     features.SETTINGS_PAGE_LMS_TAB = true;
+    features.SETTINGS_PAGE_APPEARANCE_TAB = true;
 
     jest.clearAllMocks();
   });

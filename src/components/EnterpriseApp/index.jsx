@@ -84,6 +84,7 @@ class EnterpriseApp extends React.Component {
       enableLmsConfigurationsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
+      enableAppearanceScreen,
       enterpriseId,
       enterpriseName,
       loading,
@@ -107,6 +108,8 @@ class EnterpriseApp extends React.Component {
           features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
         ) || (
           features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
+        ) || (
+          features.SETTINGS_PAGE_APPEARANCE_TAB && enableAppearanceScreen
         )
       )
     );
@@ -167,7 +170,8 @@ class EnterpriseApp extends React.Component {
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
                     enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
                     enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
-                    enableSettingsPage={enableSettingsPage}
+                    enableAppearancePage={features.SETTINGS_PAGE_APPEARANCE_TAB && enableAppearanceScreen}
+                    enableSettingsPage={features.SETTINGS_PAGE_LMS_TAB && enableSettingsPage}
                   />
                 </div>
               </>
@@ -191,6 +195,7 @@ EnterpriseApp.defaultProps = {
   enableLmsConfigurationsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
+  enableAppearanceScreen: false,
   loading: true,
 };
 
@@ -220,6 +225,7 @@ EnterpriseApp.propTypes = {
   enableLmsConfigurationsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
+  enableAppearanceScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };
