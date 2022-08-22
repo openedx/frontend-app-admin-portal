@@ -4,9 +4,9 @@ import { Helmet } from 'react-helmet';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
 import { logError } from '@edx/frontend-platform/logging';
+import { ToastsProvider, Toasts } from '@edx/frontend-enterprise-toasts';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
-
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
@@ -14,7 +14,7 @@ import AuthenticatedEnterpriseApp from '../AuthenticatedEnterpriseApp';
 import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
-import { ToastsProvider, Toasts } from '../Toasts';
+
 import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
