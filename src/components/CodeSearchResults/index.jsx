@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionReplace } from '@edx/paragon';
@@ -78,22 +79,26 @@ class CodeSearchResults extends React.Component {
       <TransitionReplace>
         {isOpen ? (
           <div key="code-search-results" className="code-search-results border-bottom pb-4">
-            <CodeSearchResultsHeading
-              searchQuery={searchQuery}
-              onClose={onClose}
-            />
-            {isCodeReminderSuccessful && this.renderSuccessMessage({
-              message: `A reminder was successfully sent to ${searchQuery}.`,
-            })}
-            {isCodeRevokeSuccessful && this.renderSuccessMessage({
-              message: 'Successfully revoked code(s)',
-            })}
-            <CodeSearchResultsTable
-              searchQuery={searchQuery}
-              shouldRefreshTable={shouldRefreshTable}
-              onRemindSuccess={this.handleRemindOnSuccess}
-              onRevokeSuccess={this.handleRevokeOnSuccess}
-            />
+            <>
+              <CodeSearchResultsHeading
+                searchQuery={searchQuery}
+                onClose={onClose}
+              />
+              <>
+                {isCodeReminderSuccessful && this.renderSuccessMessage({
+                  message: `A reminder was successfully sent to ${searchQuery}.`,
+                })}
+                {isCodeRevokeSuccessful && this.renderSuccessMessage({
+                  message: 'Successfully revoked code(s)',
+                })}
+                <CodeSearchResultsTable
+                  searchQuery={searchQuery}
+                  shouldRefreshTable={shouldRefreshTable}
+                  onRemindSuccess={this.handleRemindOnSuccess}
+                  onRevokeSuccess={this.handleRevokeOnSuccess}
+                />
+              </>
+            </>
           </div>
         ) : null}
       </TransitionReplace>

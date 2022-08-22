@@ -91,7 +91,10 @@ function SubscriptionCard({
         title={title}
         subtitle={subtitle}
         actions={(
-          renderActions() || renderDaysUntilPlanStartText('mt-4')
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>
+            {renderActions() || renderDaysUntilPlanStartText('mt-4')}
+          </>
         )}
       />
     );

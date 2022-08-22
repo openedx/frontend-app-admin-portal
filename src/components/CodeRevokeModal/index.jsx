@@ -185,7 +185,10 @@ class CodeRevokeModal extends React.Component {
           )}
         <div className="assignment-details mb-4">
           {isBulkRevoke && (
-            data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>
+            // eslint-disable-next-line react/jsx-no-useless-fragment
+            <>
+              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
+            </>
           )}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>

@@ -71,7 +71,8 @@ MockReactInstantSearch.connectPagination = Component => function (props) {
 };
 
 MockReactInstantSearch.InstantSearch = function ({ children }) {
-  return children;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{children}</>;
 };
 MockReactInstantSearch.Configure = function () {
   return <div>CONFIGURED</div>;

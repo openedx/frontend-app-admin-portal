@@ -14,7 +14,10 @@ function CodeDetails({
       </>
       )}
       {isBulkRemind && numberOfSelectedCodes > 0 && (
-      <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
+      // eslint-disable-next-line react/jsx-no-useless-fragment
+      <>
+        <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
+      </>
       )}
     </div>
   );
