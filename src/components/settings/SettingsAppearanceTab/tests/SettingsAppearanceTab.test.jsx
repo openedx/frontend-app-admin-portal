@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SettingsAppearanceTab from '..';
+import LmsApiService from '../../../../data/services/LmsApiService';
 
 const enterpriseId = 'an-id-1';
 
@@ -47,7 +48,30 @@ describe('Portal Appearance Tab', () => {
     );
     expect(screen.queryByRole('tooltip')).toBeNull();
     fireEvent.mouseOver(screen.getByTestId('logo-info-hover'));
-    await waitFor(() => screen.getByRole('tooltip'));
-    expect(screen.getByRole('tooltip').toBeInTheDocument);
+    await waitFor(() => {
+      expect(screen.getByRole('tooltip')).toBeInTheDocument();
+    });
+  });
+  test('drop image into dropzone', async () => {
+    const spy = jest.spyOn(LmsApiService, 'updateEnterpriseCustomerBranding');
+    render(
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+        </Provider>
+      </IntlProvider>,
+    );
+
+    const fakeFile = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const testFormData = new FormData();
+    testFormData.append('logo', fakeFile);
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });
