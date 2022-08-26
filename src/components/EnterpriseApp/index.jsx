@@ -169,7 +169,7 @@ class EnterpriseApp extends React.Component {
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
                     enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
                     enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
-                    enableSettingsPage={features.SETTINGS_PAGE_LMS_TAB && enableSettingsPage}
+                    enableSettingsPage={enableSettingsPage}
                   />
                 </div>
               </>

@@ -10,9 +10,10 @@ export default function InfoHover({
     <OverlayTrigger
       placement="top"
       trigger="hover"
-      overlay={<Tooltip key={keyName}>{message}</Tooltip>}
+      overlay={<Tooltip id={keyName} key={keyName}>{message}</Tooltip>}
     >
       <InfoOutline
+        data-testid={keyName}
         className={className}
         style={{ height: size, width: size, verticalAlign: 'top' }}
       />
