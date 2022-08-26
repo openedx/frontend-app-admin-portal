@@ -32,7 +32,6 @@ const SettingsTabs = ({
   enableLearnerPortal,
   enableLmsConfigurationsScreen,
   enableSamlConfigurationScreen,
-  enableAppearanceScreen,
   enableUniversalLink,
   identityProvider,
   updatePortalConfiguration,
@@ -85,7 +84,7 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
-    if (SETTINGS_PAGE_APPEARANCE_TAB && enableAppearanceScreen) {
+    if (SETTINGS_PAGE_APPEARANCE_TAB) {
       initialTabs.push(
         <Tab eventKey={SETTINGS_TABS_VALUES.appearance} title={SETTINGS_TAB_LABELS.appearance}>
           <SettingsAppearanceTab
@@ -103,7 +102,6 @@ const SettingsTabs = ({
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
-    enableAppearanceScreen,
     enableUniversalLink,
     enterpriseId,
     enterpriseSlug,
@@ -149,7 +147,6 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
-    enableAppearanceScreen,
     enableUniversalLink,
     identityProvider,
   } = state.portalConfiguration;
@@ -161,7 +158,6 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
-    enableAppearanceScreen,
     enableUniversalLink,
     identityProvider,
   });
@@ -178,7 +174,6 @@ SettingsTabs.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableLmsConfigurationsScreen: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
-  enableAppearanceScreen: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
   updatePortalConfiguration: PropTypes.func.isRequired,

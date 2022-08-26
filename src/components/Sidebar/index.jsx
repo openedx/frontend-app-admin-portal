@@ -33,7 +33,6 @@ const Sidebar = ({
   enableSamlConfigurationScreen,
   enableLearnerPortal,
   enableLmsConfigurationsScreen,
-  enableAppearanceScreen,
   onWidthChange,
   isMobile,
 }) => {
@@ -76,7 +75,7 @@ const Sidebar = ({
         ) || (
           features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
         ) || (
-          features.SETTINGS_PAGE_APPEARANCE_TAB && enableAppearanceScreen
+          features.SETTINGS_PAGE_APPEARANCE_TAB
         )
       )
     );
@@ -209,7 +208,6 @@ Sidebar.defaultProps = {
   enableAnalyticsScreen: false,
   enableLearnerPortal: false,
   enableLmsConfigurationsScreen: false,
-  enableAppearanceScreen: false,
   onWidthChange: () => {},
   isMobile: false,
 };
@@ -227,7 +225,6 @@ Sidebar.propTypes = {
   enableSamlConfigurationScreen: PropTypes.bool,
   enableLearnerPortal: PropTypes.bool,
   enableLmsConfigurationsScreen: PropTypes.bool,
-  enableAppearanceScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };
