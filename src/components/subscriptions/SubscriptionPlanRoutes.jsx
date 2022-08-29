@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
-import SubscriptionDetailPage from './SubscriptionDetailPage';
+import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
@@ -49,7 +49,7 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
       />
       <Route
         path={`${baseManageLearnersPath}/:subscriptionUUID`}
-        component={SubscriptionDetailPage}
+        component={ConnectedSubscriptionDetailPage}
         exact
       />
     </>
