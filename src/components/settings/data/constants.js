@@ -84,3 +84,48 @@ export const SUBSIDY_TYPE_LABELS = {
   [SUPPORTED_SUBSIDY_TYPES.coupon]: 'Codes',
   [SUPPORTED_SUBSIDY_TYPES.license]: 'Licenses',
 };
+
+export const DARK_COLOR = '#454545';
+export const WHITE_COLOR = '#FFFFFF';
+
+export const SCHOLAR_THEME = {
+  title: 'Scholar (Default)',
+  banner: '#F2F0EF',
+  button: '#2D494E',
+  accent: '#D23228',
+};
+
+export const SAGE_THEME = {
+  title: 'Sage',
+  banner: '#69874B',
+  button: '#38516A',
+  accent: '#D7EAFF',
+};
+
+export const IMPACT_THEME = {
+  title: 'Impact',
+  banner: '#2B4162',
+  button: '#BB4430',
+  accent: '#F3E9DC',
+};
+
+export const CAMBRIDGE_THEME = {
+  title: 'Cambridge',
+  banner: '#2D494E',
+  button: '#5BC0BE',
+  accent: '#DE1A1A',
+};
+
+export const ACUMEN_THEME = {
+  title: 'Acumen',
+  banner: '#D7EAFF',
+  button: '#79C99E',
+  accent: '#3E546A',
+};
+
+export const PIONEER_THEME = {
+  title: 'Pioneer',
+  banner: '#B8EBEF',
+  button: '#3B6CF6',
+  accent: '#F96E46',
+};

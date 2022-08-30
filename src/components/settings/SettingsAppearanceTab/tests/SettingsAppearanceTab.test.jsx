@@ -74,4 +74,20 @@ describe('Portal Appearance Tab', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
+  test('renders curated theme cards', async () => {
+    render(
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+        </Provider>
+      </IntlProvider>,
+    );
+    expect(screen.getByText('Scholar (Default)')).toBeInTheDocument();
+    expect(screen.getByTestId('radio-Scholar (Default)')).toBeChecked();
+    expect(screen.getByText('Sage')).toBeInTheDocument();
+    expect(screen.getByText('Impact')).toBeInTheDocument();
+    expect(screen.getByText('Cambridge')).toBeInTheDocument();
+    expect(screen.getByText('Acumen')).toBeInTheDocument();
+    expect(screen.getByText('Pioneer')).toBeInTheDocument();
+  });
 });

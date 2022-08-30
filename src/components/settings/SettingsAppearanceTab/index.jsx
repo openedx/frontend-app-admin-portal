@@ -1,30 +1,53 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dropzone, Toast } from '@edx/paragon';
+import { CardGrid, Dropzone, Toast } from '@edx/paragon';
 
 import InfoHover from '../../InfoHover';
 import LmsApiService from '../../../data/services/LmsApiService';
+import ThemeCard from './ThemeCard';
+import {
+  ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
+} from '../data/constants';
 
 export default function SettingsAppearanceTab({
   enterpriseId,
 }) {
-  const message = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
-  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
+  const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
+  const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
+  const [theme, setTheme] = useState(SCHOLAR_THEME);
 
   async function handleProcessUpload({
     fileData, handleError,
   }) {
     try {
-      const formData = new FormData();
-      formData.append('logo', fileData.get('file'));
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, fileData);
       if (response.status === 204) {
-        setUploadSuccess(response.status);
+        setConfigChangeSuccess(true);
       }
     } catch (error) {
       handleError(error);
     }
   }
+
+  // useEffect(() => {
+  //   const sendThemeData = async (formData) => {
+  //     const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
+  //     return response;
+  //   };
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('primary_color', theme.banner);
+  //     formData.append('secondary_color', theme.button);
+  //     formData.append('tertiary_color', theme.accent);
+  //     const response = sendThemeData(formData);
+  //     if (response.status === 204) {
+  //       setConfigChangeSuccess(true);
+  //     }
+  //   } catch {
+  //     setConfigChangeSuccess(false);
+  //   }
+  // }, [enterpriseId, theme]);
 
   return (
     <>
@@ -35,7 +58,7 @@ export default function SettingsAppearanceTab({
       </p>
       <h3 className="py-2">
         Logo
-        <InfoHover className="" keyName="logo-info-hover" message={message} />
+        <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
       </h3>
       <Dropzone
         onProcessUpload={handleProcessUpload}
@@ -50,11 +73,29 @@ export default function SettingsAppearanceTab({
         }}
       />
       <Toast
-        onClose={() => setUploadSuccess(false)}
-        show={uploadSuccess}
+        onClose={() => setConfigChangeSuccess(false)}
+        show={configChangeSuccess}
       >
-        Logo image uploaded successfully.
+        Branding configuration successfully.
       </Toast>
+      <h3 className="py-2 pt-5">
+        Theme
+        <InfoHover className="" keyName="theme-info-hover" message={themeMessage} />
+      </h3>
+      <CardGrid
+        columnSizes={{
+          xs: 6,
+          lg: 4,
+          xl: 3,
+        }}
+      >
+        <ThemeCard themeVars={SCHOLAR_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={SAGE_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={IMPACT_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={CAMBRIDGE_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={ACUMEN_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={PIONEER_THEME} selected={theme} setTheme={setTheme} />
+      </CardGrid>
     </>
   );
 }
