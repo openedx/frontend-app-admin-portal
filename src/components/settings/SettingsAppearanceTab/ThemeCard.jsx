@@ -12,7 +12,7 @@ export default function ThemeCard({ themeVars, selected, setTheme }) {
         <h3>{themeVars.title}</h3>
         <Form.Radio
           checked={selected.title === themeVars.title}
-          onChange={() => setTheme()}
+          onChange={() => setTheme(themeVars)}
           data-testid={`radio-${themeVars.title}`}
           name="theme"
           defaultChecked={themeVars.title === 'Scholar (Default)'}

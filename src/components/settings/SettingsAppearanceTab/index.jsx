@@ -30,25 +30,6 @@ export default function SettingsAppearanceTab({
     }
   }
 
-  // useEffect(() => {
-  //   const sendThemeData = async (formData) => {
-  //     const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
-  //     return response;
-  //   };
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('primary_color', theme.banner);
-  //     formData.append('secondary_color', theme.button);
-  //     formData.append('tertiary_color', theme.accent);
-  //     const response = sendThemeData(formData);
-  //     if (response.status === 204) {
-  //       setConfigChangeSuccess(true);
-  //     }
-  //   } catch {
-  //     setConfigChangeSuccess(false);
-  //   }
-  // }, [enterpriseId, theme]);
-
   return (
     <>
       <h2 className="py-2">Portal Appearance</h2>

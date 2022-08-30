@@ -89,5 +89,10 @@ describe('Portal Appearance Tab', () => {
     expect(screen.getByText('Cambridge')).toBeInTheDocument();
     expect(screen.getByText('Acumen')).toBeInTheDocument();
     expect(screen.getByText('Pioneer')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('radio-Impact'));
+    await waitFor(() => {
+      expect(screen.getByTestId('radio-Impact')).toBeChecked();
+    });
   });
 });
