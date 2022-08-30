@@ -74,6 +74,8 @@ const Sidebar = ({
           features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
         ) || (
           features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
+        ) || (
+          features.SETTINGS_PAGE_APPEARANCE_TAB
         )
       )
     );
