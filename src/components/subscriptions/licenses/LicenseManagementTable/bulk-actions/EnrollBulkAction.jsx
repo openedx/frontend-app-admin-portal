@@ -124,13 +124,21 @@ const EnrollBulkAction = ({
         onClose={handleCloseWarningModal}
         onEnroll={handleEnrollFromWarningModal}
       />
-      <BulkEnrollDialog
-        isOpen={showBulkEnrollModal}
-        onClose={handleBulkEnrollDialogClose}
-        subscription={subscription}
-        learners={selectedEnrollableLearnerEmails}
-        onSuccess={handleEnrollSuccess}
-      />
+      {/* The BulkEnrollDialog component initializes the bulk enrollment context's initialEmailsList
+      value with the `learners` prop. Because this value of emails cannot be altered after context
+      initialization, we have to wait to render the dialog until we know all emails have been selected
+      (ie when the button is clicked). The comprehensive fix here is to update paragon's Datatable
+      component to include a function to remove singular selections in the tableInstance. Then we
+      could remove the reducer's handling of selected emails all together. */}
+      { showBulkEnrollModal && (
+        <BulkEnrollDialog
+          isOpen={showBulkEnrollModal}
+          onClose={handleBulkEnrollDialogClose}
+          subscription={subscription}
+          learners={selectedEnrollableLearnerEmails}
+          onSuccess={handleEnrollSuccess}
+        />
+      )}
     </>
   );
 };
