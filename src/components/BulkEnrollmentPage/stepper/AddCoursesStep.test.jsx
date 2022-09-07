@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { ADD_COURSES_TITLE, WARNING_ALERT_TITLE_TEXT } from './constants';
@@ -20,11 +20,12 @@ const defaultProps = {
 
 function StepperWrapper(props) {
   const selectedCourses = [...Array(8).keys()].map(n => `course-${n}`);
-  const value = useMemo(() => ({
+  const selectedEmails = [];
+  const value = {
     courses: [selectedCourses, () => {}],
-    emails: [[], () => {}],
+    emails: [selectedEmails, () => {}],
     subscription: [{}, () => {}],
-  }), [selectedCourses]);
+  };
 
   return (
     <IntlProvider locale="en">

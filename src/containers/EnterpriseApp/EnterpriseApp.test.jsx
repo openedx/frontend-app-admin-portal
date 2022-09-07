@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -20,7 +20,10 @@ import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidies
 
 // eslint-disable-next-line react/function-component-definition
 const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={useMemo(() => ({ canManageLearnerCredit: true }), [])}>
+  <EnterpriseSubsidiesContext.Provider value={{
+    canManageLearnerCredit: true,
+  }}
+  >
     {children}
   </EnterpriseSubsidiesContext.Provider>
 );

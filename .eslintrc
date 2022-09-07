@@ -57,7 +57,16 @@
     "react/no-unstable-nested-components": [
       2, { "allowAsProps": true }
     ],
-    "camelcase": [2, {"properties": "never"}]
+    "camelcase": [2, {"properties": "never"}],
+    "react/jsx-no-constructed-context-values": [
+      "off",
+      {
+        "devDependencies": [
+          "**/*.test.jsx",
+          "**/*.test.js"
+        ]
+      }
+    ]
   },
   "env": {
     "jest": true

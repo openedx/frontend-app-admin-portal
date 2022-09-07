@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
@@ -28,11 +28,8 @@ function LicenseAllocationHeaderWrapper({
   subsidyRequestConfiguration = mockSubsidyRequestConfiguration,
 }) {
   return (
-    <SubscriptionDetailContext.Provider value={useMemo(() => ({ subscription }), [subscription])}>
-      <SubsidyRequestsContext.Provider value={
-        useMemo(() => ({ subsidyRequestConfiguration }), [subsidyRequestConfiguration])
-        }
-      >
+    <SubscriptionDetailContext.Provider value={{ subscription }}>
+      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
         <LicenseAllocationHeader />
       </SubsidyRequestsContext.Provider>
     </SubscriptionDetailContext.Provider>

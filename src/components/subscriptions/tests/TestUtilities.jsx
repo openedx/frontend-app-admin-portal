@@ -157,10 +157,13 @@ export function SubscriptionManagementContext({ children, detailState, store }) 
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
   jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => {}]);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
+
+  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
+
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={useMemo(() => ({ addToast: () => {} }), [])}>
+        <ToastsContext.Provider value={contextValue}>
           <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
             <SubscriptionDetailContextProvider
               subscription={testSubscriptionPlanGenerator(detailState)}
@@ -358,10 +361,11 @@ export function MockSubscriptionContext({
   store = createMockStore(),
   children,
 }) {
+  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={useMemo(() => ({ addToast: () => {} }), [])}>
+        <ToastsContext.Provider value={contextValue}>
           <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
             <SubscriptionDetailContextProvider
               subscription={subscriptionPlan}

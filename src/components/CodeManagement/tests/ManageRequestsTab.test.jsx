@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -150,11 +150,7 @@ function ManageRequestsTabWithRouter({
 }) {
   return (
     <Provider store={storeProp}>
-      <SubsidyRequestsContext.Provider value={
-        useMemo(() => (
-          { decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }), [])
-          }
-      >
+      <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
         <ManageRequestsTab />
       </SubsidyRequestsContext.Provider>
     </Provider>

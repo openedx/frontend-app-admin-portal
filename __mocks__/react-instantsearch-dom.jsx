@@ -6,7 +6,6 @@ const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',
 );
 
-// eslint-disable-next-line camelcase
 const advertisedCourseRun = {
   start: '2020-09-09T04:00:00Z',
   key: 'course-v1:edX+Bee101+3T2020',
