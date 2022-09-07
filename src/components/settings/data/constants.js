@@ -4,10 +4,12 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
 const SSO_TAB = 'sso';
+const APPEARANCE_TAB = 'appearance';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'LMS';
 const SSO_TAB_LABEL = 'SSO';
+const APPEARANCE_TAB_LABEL = 'Portal Appearance';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
@@ -38,6 +40,7 @@ export const SETTINGS_TABS_VALUES = {
   [ACCESS_TAB]: ACCESS_TAB,
   [LMS_TAB]: LMS_TAB,
   [SSO_TAB]: SSO_TAB,
+  [APPEARANCE_TAB]: APPEARANCE_TAB,
 };
 
 /**
@@ -47,6 +50,7 @@ export const SETTINGS_TAB_LABELS = {
   [ACCESS_TAB]: ACCESS_TAB_LABEL,
   [LMS_TAB]: LMS_TAB_LABEL,
   [SSO_TAB]: SSO_TAB_LABEL,
+  [APPEARANCE_TAB]: APPEARANCE_TAB_LABEL,
 };
 
 /** Default tab when no parameter is given */
@@ -79,4 +83,49 @@ export const SSO_CONFIG_POLLING_INTERVAL = 1000;
 export const SUBSIDY_TYPE_LABELS = {
   [SUPPORTED_SUBSIDY_TYPES.coupon]: 'Codes',
   [SUPPORTED_SUBSIDY_TYPES.license]: 'Licenses',
+};
+
+export const DARK_COLOR = '#454545';
+export const WHITE_COLOR = '#FFFFFF';
+
+export const SCHOLAR_THEME = {
+  title: 'Scholar (Default)',
+  banner: '#F2F0EF',
+  button: '#2D494E',
+  accent: '#D23228',
+};
+
+export const SAGE_THEME = {
+  title: 'Sage',
+  banner: '#69874B',
+  button: '#38516A',
+  accent: '#D7EAFF',
+};
+
+export const IMPACT_THEME = {
+  title: 'Impact',
+  banner: '#2B4162',
+  button: '#BB4430',
+  accent: '#F3E9DC',
+};
+
+export const CAMBRIDGE_THEME = {
+  title: 'Cambridge',
+  banner: '#2D494E',
+  button: '#5BC0BE',
+  accent: '#DE1A1A',
+};
+
+export const ACUMEN_THEME = {
+  title: 'Acumen',
+  banner: '#D7EAFF',
+  button: '#79C99E',
+  accent: '#3E546A',
+};
+
+export const PIONEER_THEME = {
+  title: 'Pioneer',
+  banner: '#B8EBEF',
+  button: '#3B6CF6',
+  accent: '#F96E46',
 };

@@ -12,7 +12,7 @@ import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-function SubscriptionDetailPage({ enterpriseSlug, match }) {
+export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
   const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
 
   if (!subscription && !loadingSubscription) {

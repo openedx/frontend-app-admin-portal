@@ -57,11 +57,21 @@ function SSOStepper({ enterpriseSlug, enterpriseId, enterpriseName }) {
   async function sendData(type) {
     const configFormData = new FormData();
     const newConfigValues = { ...configValues };
+    // Values we want all provider configs to by default contain
     configFormData.append('enterprise_customer_uuid', enterpriseId);
     configFormData.append('enabled', true);
+    configFormData.append('debug_mode', true);
+    configFormData.append('skip_hinted_login_dialog', true);
+    configFormData.append('skip_registration_form', true);
+    configFormData.append('skip_email_verification', true);
+    configFormData.append('send_to_registration_first', true);
+    configFormData.append('automatic_refresh_enabled', true);
+
+    // Add all our config values to the form data
     Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));
+
     // Depending on whether the user is using SAP or not as an identity provider, we need to update
-    // both the update payload, as well as the config values.
+    // both the form data payload, as well as the config values.
     if (isUsingSap) {
       configFormData.append('identity_provider_type', 'sap_success_factors');
       configFormData.set('max_session_length', '');

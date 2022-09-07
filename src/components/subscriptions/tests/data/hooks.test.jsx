@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks/dom';
+import { renderHook } from '@testing-library/react-hooks/dom';
 import { waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -37,55 +37,50 @@ describe('useSubscriptionUsersOverview', () => {
     cleanup();
   });
 
-  test('without search argument', () => {
+  test('without search argument', async () => {
     const mockPromiseResolve = Promise.resolve(mockResponse);
     LicenseManagerApiService.fetchSubscriptionUsersOverview.mockReturnValue(mockPromiseResolve);
-    let result;
-    act(() => {
-      ({ result } = renderHook(() => useSubscriptionUsersOverview({
-        subscriptionUUID: TEST_SUBSCRIPTION_PLAN_UUID,
-        search: null,
-        errors: {},
-        setErrors: jest.fn(),
-      })));
-    });
-    expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledTimes(1);
-    expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledWith(
-      TEST_SUBSCRIPTION_PLAN_UUID,
-      {},
-    );
-    const actualOverviewData = result.current[0];
-    waitFor(() => {
-      expect(actualOverviewData).toStrictEqual(
+
+    const args = {
+      subscriptionUUID: TEST_SUBSCRIPTION_PLAN_UUID,
+      search: null,
+      errors: {},
+      setErrors: jest.fn(),
+    };
+    const { result } = renderHook(() => useSubscriptionUsersOverview(args));
+
+    await waitFor(() => {
+      expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledTimes(1);
+      expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledWith(
+        TEST_SUBSCRIPTION_PLAN_UUID,
+        {},
+      );
+      expect(result.current[0]).toStrictEqual(
         expect.objectContaining(mockExpectedOverview),
       );
     });
   });
 
-  // TODO: for some magical reason, having these 2 tests run together causes this one to fail
-  // on the `toHaveBeenCalledTimes(1)` assertion, where it oddly says the service function was
-  // never called despite for sure getting past that call in the code. we are opting to temporarily
-  // skip this test for the time being in order to get a bug fix resolved.
-  test.skip('with search argument', () => {
+  test('with search argument', async () => {
     const mockPromiseResolve = Promise.resolve(mockResponse);
     LicenseManagerApiService.fetchSubscriptionUsersOverview.mockReturnValue(mockPromiseResolve);
-    let result;
-    act(() => {
-      ({ result } = renderHook(() => useSubscriptionUsersOverview({
-        subscriptionUUID: TEST_SUBSCRIPTION_PLAN_UUID,
-        search: 'query',
-        errors: {},
-        setErrors: jest.fn(),
-      })));
-    });
-    expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledTimes(1);
-    expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledWith(
-      TEST_SUBSCRIPTION_PLAN_UUID,
-      { search: 'query' },
-    );
-    const actualOverviewData = result.current[0];
-    waitFor(() => {
-      expect(actualOverviewData).toStrictEqual(
+
+    const args = {
+      subscriptionUUID: TEST_SUBSCRIPTION_PLAN_UUID,
+      search: 'query',
+      errors: {},
+      setErrors: jest.fn(),
+    };
+
+    const { result } = renderHook(() => useSubscriptionUsersOverview(args));
+
+    await waitFor(() => {
+      expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledTimes(1);
+      expect(LicenseManagerApiService.fetchSubscriptionUsersOverview).toHaveBeenCalledWith(
+        TEST_SUBSCRIPTION_PLAN_UUID,
+        { search: 'query' },
+      );
+      expect(result.current[0]).toStrictEqual(
         expect.objectContaining(mockExpectedOverview),
       );
     });

@@ -19,6 +19,7 @@ import {
   SETTINGS_TAB_PARAM,
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
+import SettingsAppearanceTab from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
@@ -36,7 +37,7 @@ function SettingsTabs({
   updatePortalConfiguration,
 }) {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
-  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB } = features;
+  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -83,9 +84,19 @@ function SettingsTabs({
         </Tab>,
       );
     }
+    if (SETTINGS_PAGE_APPEARANCE_TAB) {
+      initialTabs.push(
+        <Tab eventKey={SETTINGS_TABS_VALUES.appearance} title={SETTINGS_TAB_LABELS.appearance}>
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+          />
+        </Tab>,
+      );
+    }
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,
+    SETTINGS_PAGE_APPEARANCE_TAB,
     SETTINGS_PAGE_LMS_TAB,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,

@@ -395,6 +395,12 @@ describe('SAML Config Tab', () => {
       attr_last_name: '',
       attr_email: 'NameID',
       enabled: 'true',
+      debug_mode: 'true',
+      skip_hinted_login_dialog: 'true',
+      skip_registration_form: 'true',
+      skip_email_verification: 'true',
+      send_to_registration_first: 'true',
+      automatic_refresh_enabled: 'true',
       attr_username: 'loggedinuserid',
       other_settings: {
         odata_api_root_url: 'foobar.com',
@@ -477,6 +483,12 @@ describe('SAML Config Tab', () => {
       attr_username: 'foobar',
       other_settings: '',
       enabled: 'true',
+      debug_mode: 'true',
+      skip_hinted_login_dialog: 'true',
+      skip_registration_form: 'true',
+      skip_email_verification: 'true',
+      send_to_registration_first: 'true',
+      automatic_refresh_enabled: 'true',
     };
     mockUpdateProviderConfig.mock.calls[0][0].forEach((value, key) => {
       expect(expectedConfigFormData[key]).toEqual(value);
