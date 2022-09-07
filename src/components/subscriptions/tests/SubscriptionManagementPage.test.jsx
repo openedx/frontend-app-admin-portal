@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import moment from 'moment';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -85,15 +85,13 @@ describe('SubscriptionManagementPage', () => {
       );
     };
 
-    it('renders the correct button text on subscription cards', () => {
+    it('renders the correct button text on subscription cards', async () => {
       renderWithRouter(<SubscriptionManagementPageWrapper />, {
         route: `/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`,
         path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
       });
-      waitFor(() => {
-        expect(screen.getByText('Manage learners'));
-        expect(screen.getByText('View learners'));
-      });
+      expect(screen.getByText('Manage learners'));
+      expect(screen.getByText('View learners'));
     });
   });
 });

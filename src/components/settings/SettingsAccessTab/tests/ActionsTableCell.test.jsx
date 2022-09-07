@@ -25,7 +25,7 @@ const TEST_INVITE_KEY_UUID = 'test-uuid-1';
 
 const ActionsTableCellWrapper = (props) => (
   <IntlProvider locale="en">
-    <ActionsTableCell {...props} />
+    <ActionsTableCell enterpriseUUID="test-enterprise-id" {...props} />
   </IntlProvider>
 );
 
@@ -64,10 +64,10 @@ describe('ActionsTableCell', () => {
       />,
     );
     const copyBtn = screen.getByText('Copy');
-    await act(async () => { userEvent.click(copyBtn); });
+    userEvent.click(copyBtn);
     const expectedURL = `http://localhost:8734/invite/${TEST_INVITE_KEY_UUID}`;
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expectedURL);
-    waitFor(() => expect(screen.getByRole('alert')));
+    await waitFor(() => expect(screen.getByText('Link copied to clipboard')));
   });
 
   test('deactivate invite URL click opens confirmaiton modal', async () => {
