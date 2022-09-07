@@ -14,12 +14,13 @@ import PropTypes from 'prop-types';
 
 import { useCurrentSettingsTab } from './data/hooks';
 import {
+  SCHOLAR_THEME,
   SETTINGS_TAB_LABELS,
   SETTINGS_TABS_VALUES,
   SETTINGS_TAB_PARAM,
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
-import SettingsAppearanceTab from './SettingsAppearanceTab';
+import { SettingsAppearanceTab } from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
@@ -35,6 +36,7 @@ const SettingsTabs = ({
   enableUniversalLink,
   identityProvider,
   updatePortalConfiguration,
+  enterpriseBranding,
 }) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
   const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
@@ -89,6 +91,7 @@ const SettingsTabs = ({
         <Tab eventKey={SETTINGS_TABS_VALUES.appearance} title={SETTINGS_TAB_LABELS.appearance}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
+            enterpriseBranding={enterpriseBranding}
           />
         </Tab>,
       );
@@ -108,6 +111,7 @@ const SettingsTabs = ({
     hasSSOConfig,
     identityProvider,
     updatePortalConfiguration,
+    enterpriseBranding,
   ]);
 
   /**
@@ -149,6 +153,7 @@ const mapStateToProps = state => {
     enableSamlConfigurationScreen,
     enableUniversalLink,
     identityProvider,
+    enterpriseBranding,
   } = state.portalConfiguration;
 
   return ({
@@ -160,11 +165,17 @@ const mapStateToProps = state => {
     enableSamlConfigurationScreen,
     enableUniversalLink,
     identityProvider,
+    enterpriseBranding,
   });
 };
 
 SettingsTabs.defaultProps = {
   identityProvider: null,
+  enterpriseBranding: PropTypes.shape({
+    primary_color: SCHOLAR_THEME.banner,
+    secondary_color: SCHOLAR_THEME.button,
+    tertiary_color: SCHOLAR_THEME.accent,
+  }),
 };
 
 SettingsTabs.propTypes = {
@@ -177,6 +188,11 @@ SettingsTabs.propTypes = {
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
   updatePortalConfiguration: PropTypes.func.isRequired,
+  enterpriseBranding: PropTypes.shape({
+    primary_color: PropTypes.string,
+    secondary_color: PropTypes.string,
+    tertiary_color: PropTypes.string,
+  }),
 };
 
 const mapDispatchToProps = dispatch => ({

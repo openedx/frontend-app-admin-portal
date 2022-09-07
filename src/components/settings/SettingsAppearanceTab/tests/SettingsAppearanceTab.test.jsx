@@ -7,16 +7,28 @@ import thunk from 'redux-thunk';
 
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import SettingsAppearanceTab from '..';
+import { SettingsAppearanceTab } from '..';
+import { SCHOLAR_THEME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 const enterpriseId = 'an-id-1';
+
+const entepriseBranding = {
+  primary_color: SCHOLAR_THEME.banner,
+  secondary_color: SCHOLAR_THEME.button,
+  tertiary_color: SCHOLAR_THEME.accent,
+};
 
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
     enterpriseSlug: 'sluggy',
     enterpriseName: 'sluggyent',
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.banner,
+      secondary_color: SCHOLAR_THEME.button,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   },
 };
 
@@ -29,7 +41,7 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
         </Provider>
       </IntlProvider>,
     );
@@ -42,7 +54,7 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
         </Provider>
       </IntlProvider>,
     );
@@ -57,7 +69,7 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
         </Provider>
       </IntlProvider>,
     );
@@ -78,7 +90,7 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} />
+          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
         </Provider>
       </IntlProvider>,
     );

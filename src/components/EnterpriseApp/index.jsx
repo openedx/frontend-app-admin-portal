@@ -6,12 +6,14 @@ import { breakpoints, MediaQuery } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
+import BrandStyles from '../BrandStyles';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
+import { SCHOLAR_THEME } from '../settings/data/constants';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -86,6 +88,7 @@ class EnterpriseApp extends React.Component {
       enablePortalLearnerCreditManagementScreen,
       enterpriseId,
       enterpriseName,
+      enterpriseBranding,
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
@@ -132,6 +135,7 @@ class EnterpriseApp extends React.Component {
         enterpriseId={enterpriseId}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
+        <BrandStyles enterpriseBranding={enterpriseBranding} />
         <div className="enterprise-app">
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
@@ -184,6 +188,11 @@ class EnterpriseApp extends React.Component {
 EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
+  enterpriseBranding: {
+    primary_color: SCHOLAR_THEME.banner,
+    secondary_color: SCHOLAR_THEME.button,
+    tertiary_color: SCHOLAR_THEME.accent,
+  },
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
@@ -206,6 +215,12 @@ EnterpriseApp.propTypes = {
   }).isRequired,
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
+  enterpriseBranding: PropTypes.shape({
+    primary_color: PropTypes.string,
+    secondary_color: PropTypes.string,
+    tertiary_color: PropTypes.string,
+    logo: PropTypes.string,
+  }),
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,

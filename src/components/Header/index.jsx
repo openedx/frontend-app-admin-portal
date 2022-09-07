@@ -15,25 +15,29 @@ import { configuration } from '../../config';
 
 import './Header.scss';
 
-export const Logo = ({ enterpriseLogo, enterpriseName }) => {
-  const logo = configuration.LOGO_URL;
+export const Logo = ({ enterpriseBranding, enterpriseName }) => {
+  const baseLogo = configuration.LOGO_URL;
 
   return (
     <Img
-      src={enterpriseLogo || logo}
+      src={enterpriseBranding.logo || baseLogo}
       alt={`${enterpriseName} logo`}
-      onError={(e) => { e.target.src = logo; }}
+      onError={(e) => { e.target.src = baseLogo; }}
     />
   );
 };
 
 Logo.defaultProps = {
-  enterpriseLogo: configuration.LOGO_URL,
+  enterpriseBranding: PropTypes.shape({
+    logo: configuration.LOGO_URL,
+  }),
   enterpriseName: 'edX',
 };
 
 Logo.propTypes = {
-  enterpriseLogo: PropTypes.string,
+  enterpriseBranding: PropTypes.shape({
+    logo: PropTypes.string,
+  }),
   enterpriseName: PropTypes.string,
 };
 
@@ -80,7 +84,7 @@ HeaderDropdown.propTypes = {
 };
 
 const Header = ({
-  hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
+  hasSidebarToggle, enterpriseName, enterpriseBranding, enterpriseSlug,
 }) => {
   const user = getAuthenticatedUser();
   return (
@@ -92,7 +96,7 @@ const Header = ({
             href="/"
             className="navbar-brand"
           >
-            <Logo enterpriseLogo={enterpriseLogo} enterpriseName={enterpriseName} />
+            <Logo enterpriseLogo={enterpriseBranding?.logo} enterpriseName={enterpriseName} />
           </Nav.Link>
         </Nav>
         {(user?.username && enterpriseSlug) && (
@@ -106,7 +110,9 @@ const Header = ({
 };
 
 Header.propTypes = {
-  enterpriseLogo: PropTypes.string,
+  enterpriseBranding: PropTypes.shape({
+    logo: PropTypes.string,
+  }),
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   hasSidebarToggle: PropTypes.bool,
@@ -114,7 +120,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   // undefined ensures that any components it is passed to use the default props
-  enterpriseLogo: undefined,
+  enterpriseBranding: undefined,
   enterpriseName: undefined,
   enterpriseSlug: undefined,
   hasSidebarToggle: false,

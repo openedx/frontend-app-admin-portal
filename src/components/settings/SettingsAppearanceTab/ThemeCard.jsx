@@ -15,7 +15,6 @@ export default function ThemeCard({ themeVars, selected, setTheme }) {
           onChange={() => setTheme(themeVars)}
           data-testid={`radio-${themeVars.title}`}
           name="theme"
-          defaultChecked={themeVars.title === 'Scholar (Default)'}
           value={themeVars.title}
         />
       </Card.Footer>

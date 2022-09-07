@@ -30,13 +30,15 @@ HeaderWrapper.propTypes = {
 describe('<Logo />', () => {
   it('renders enterprise logo correctly', () => {
     const props = {
-      enterpriseLogo: 'https://test.url/image/1.png',
+      enterpriseBranding: {
+        logo: 'https://test.url/image/1.png',
+      },
       enterpriseName: 'Test Enterprise',
     };
 
     const wrapper = mount(<Logo {...props} />);
     const logo = wrapper.find(Img);
-    expect(logo.props().src).toEqual(props.enterpriseLogo);
+    expect(logo.props().src).toEqual(props.enterpriseBranding.logo);
     expect(logo.props().alt).toEqual(`${props.enterpriseName} logo`);
   });
 

@@ -15,8 +15,8 @@ class Footer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { enterpriseLogo } = this.props;
-    if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseLogo) {
+    const enterpriseLogo = this.props.enterpriseBranding?.logo;
+    if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseBranding?.logo) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
         enterpriseLogoNotFound: false,
       });
@@ -24,7 +24,8 @@ class Footer extends React.Component {
   }
 
   renderEnterpriseLogo() {
-    const { enterpriseLogo, enterpriseSlug, enterpriseName } = this.props;
+    const { enterpriseBranding, enterpriseSlug, enterpriseName } = this.props;
+    const enterpriseLogo = enterpriseBranding?.logo;
     return (
       <Link className="logo pl-4" to={`/${enterpriseSlug}`}>
         <Img
@@ -38,7 +39,7 @@ class Footer extends React.Component {
 
   render() {
     const { enterpriseLogoNotFound } = this.state;
-    const { enterpriseLogo } = this.props;
+    const enterpriseLogo = this.props.enterpriseBranding?.logo;
     return (
       <footer className="container-fluid py-4 border-top">
         <div className="row justify-content-between align-items-center">
@@ -82,13 +83,15 @@ class Footer extends React.Component {
 Footer.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
-  enterpriseLogo: PropTypes.string,
+  enterpriseBranding: PropTypes.shape({
+    logo: PropTypes.string,
+  }),
 };
 
 Footer.defaultProps = {
   enterpriseName: null,
   enterpriseSlug: null,
-  enterpriseLogo: null,
+  enterpriseBranding: null,
 };
 
 export default Footer;

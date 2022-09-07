@@ -12,7 +12,7 @@ import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
-import { SETTINGS_TAB_LABELS } from '../data/constants';
+import { SCHOLAR_THEME, SETTINGS_TAB_LABELS } from '../data/constants';
 import { features } from '../../../config';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -45,6 +45,11 @@ const initialStore = {
     enableIntegratedCustomerLearnerPortalSearch: true,
     enableSamlConfigurationScreen: false,
     enableUniversalLink: false,
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.banner,
+      secondary_color: SCHOLAR_THEME.button,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   },
 };
 

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { CardGrid, Dropzone, Toast } from '@edx/paragon';
+import {
+  Button, CardGrid, Dropzone, Toast,
+} from '@edx/paragon';
 
 import InfoHover from '../../InfoHover';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -9,19 +11,34 @@ import {
   ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
 
-export default function SettingsAppearanceTab({
-  enterpriseId,
-}) {
+export const SettingsAppearanceTab = ({
+  enterpriseId, enterpriseBranding,
+}) => {
   const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
-  const [theme, setTheme] = useState(SCHOLAR_THEME);
+
+  function checkCurrentTheme(currentTheme) {
+    const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
+    let selectedTheme = null;
+    curatedThemes.forEach(curatedTheme => {
+      if (curatedTheme.banner === currentTheme.primary_color
+        && curatedTheme.button === currentTheme.secondary_color
+        && curatedTheme.accent === currentTheme.tertiary_color) {
+        selectedTheme = curatedTheme;
+      }
+    });
+    return selectedTheme;
+  }
+  const [theme, setTheme] = useState(checkCurrentTheme(enterpriseBranding));
 
   async function handleProcessUpload({
     fileData, handleError,
   }) {
     try {
-      const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, fileData);
+      const formData = new FormData();
+      formData.append('logo', fileData.get('file'));
+      const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
       if (response.status === 204) {
         setConfigChangeSuccess(true);
       }
@@ -30,8 +47,32 @@ export default function SettingsAppearanceTab({
     }
   }
 
+  useEffect(() => {
+    const sendThemeData = async (formData) => {
+      const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
+      return response;
+    };
+    try {
+      const formData = new FormData();
+      formData.append('primary_color', theme.banner);
+      formData.append('secondary_color', theme.button);
+      formData.append('tertiary_color', theme.accent);
+      const response = sendThemeData(formData);
+      if (response.status === 204) {
+        setConfigChangeSuccess(true);
+      }
+    } catch {
+      setConfigChangeSuccess(false);
+    }
+  }, [enterpriseId, theme]);
+
   return (
     <>
+      <Button
+        className="btn-brand-secondary"
+      >
+        hello!
+      </Button>
       <h2 className="py-2">Portal Appearance</h2>
       <p>
         Customize the appearance of your learner and administrator edX experiences with your
@@ -55,7 +96,7 @@ export default function SettingsAppearanceTab({
       />
       <Toast
         onClose={() => setConfigChangeSuccess(false)}
-        show={configChangeSuccess}
+        show={configChangeSuccess || false}
       >
         Branding configuration successfully.
       </Toast>
@@ -79,8 +120,15 @@ export default function SettingsAppearanceTab({
       </CardGrid>
     </>
   );
-}
+};
 
 SettingsAppearanceTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseBranding: PropTypes.shape({
+    primary_color: PropTypes.string,
+    secondary_color: PropTypes.string,
+    tertiary_color: PropTypes.string,
+  }).isRequired,
 };
+
+export default SettingsAppearanceTab;

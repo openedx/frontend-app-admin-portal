@@ -16,7 +16,7 @@ const ContactCustomerSupportButton = ({
     <Hyperlink
       {...rest}
       target="_blank"
-      className={classNames('btn', `btn-${variant}`)}
+      className={classNames('btn', `btn-brand-${variant}`)}
       destination={destinationUrl}
     >
       {children}
@@ -31,7 +31,7 @@ ContactCustomerSupportButton.propTypes = {
 
 ContactCustomerSupportButton.defaultProps = {
   children: 'Contact support',
-  variant: 'outline-primary',
+  variant: 'btn-brand-outline-secondary',
 };
 
 export default ContactCustomerSupportButton;
