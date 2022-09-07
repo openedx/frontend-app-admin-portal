@@ -1,6 +1,6 @@
 # frontend-app-admin-portal
 
-![Build Status](https://github.com/edx/frontend-app-admin-portal/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/openedx/frontend-app-admin-portal/actions/workflows/ci.yml/badge.svg)
 ![Codecov](https://codecov.io/gh/edx/frontend-app-admin-portal/branch/master/graph/badge.svg)
 
 ## Overview
@@ -10,9 +10,9 @@ frontend-app-admin-portal is a frontend that provides branded learning experienc
 
 ### The Short Story
 
-1. Set up docker devstack locally, and start the service containers (see https://github.com/edx/devstack)
+1. Set up docker devstack locally, and start the service containers (see https://github.com/openedx/devstack)
 
-2. Set up and run the edx-analytics-data-api (https://github.com/edx/edx-analytics-data-api) locally
+2. Set up and run the edx-analytics-data-api (https://github.com/openedx/edx-analytics-data-api) locally
 
 3. Clone this repo and install npm requirements:
 
@@ -61,7 +61,7 @@ Once created, make a note of the UUID field in the admin for the enterprise cust
 
 #### Analytics-data-api Data Prep
 
-Follow the instructions for how to get data into the edx-analytics-data-api in the repo README here: https://github.com/edx/edx-analytics-data-api, using the UUID for the enterprise customer you just created.
+Follow the instructions for how to get data into the edx-analytics-data-api in the repo README here: https://github.com/openedx/edx-analytics-data-api, using the UUID for the enterprise customer you just created.
 
 #### Bringing it all together
 
