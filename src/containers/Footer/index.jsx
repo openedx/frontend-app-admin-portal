@@ -5,7 +5,7 @@ import Footer from '../../components/Footer';
 const mapStateToProps = state => ({
   enterpriseName: state.portalConfiguration.enterpriseName,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+  enterpriseLogo: state.portalConfiguration.enterpriseBranding?.logo,
 });
 
 export default connect(mapStateToProps)(Footer);

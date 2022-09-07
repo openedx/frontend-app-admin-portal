@@ -172,8 +172,8 @@ const mapStateToProps = state => {
 SettingsTabs.defaultProps = {
   identityProvider: null,
   enterpriseBranding: PropTypes.shape({
-    primary_color: SCHOLAR_THEME.banner,
-    secondary_color: SCHOLAR_THEME.button,
+    primary_color: SCHOLAR_THEME.button,
+    secondary_color: SCHOLAR_THEME.banner,
     tertiary_color: SCHOLAR_THEME.accent,
   }),
 };

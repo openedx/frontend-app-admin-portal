@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, CardGrid, Dropzone, Toast,
+  Button, CardGrid, Dropzone, Image, Toast,
 } from '@edx/paragon';
 
 import InfoHover from '../../InfoHover';
@@ -17,13 +17,14 @@ export const SettingsAppearanceTab = ({
   const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(undefined);
 
   function checkCurrentTheme(currentTheme) {
     const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
     let selectedTheme = null;
     curatedThemes.forEach(curatedTheme => {
-      if (curatedTheme.banner === currentTheme.primary_color
-        && curatedTheme.button === currentTheme.secondary_color
+      if (curatedTheme.button === currentTheme.primary_color
+        && curatedTheme.banner === currentTheme.secondary_color
         && curatedTheme.accent === currentTheme.tertiary_color) {
         selectedTheme = curatedTheme;
       }
@@ -32,7 +33,7 @@ export const SettingsAppearanceTab = ({
   }
   const [theme, setTheme] = useState(checkCurrentTheme(enterpriseBranding));
 
-  async function handleProcessUpload({
+  async function handleLogoUpload({
     fileData, handleError,
   }) {
     try {
@@ -40,6 +41,7 @@ export const SettingsAppearanceTab = ({
       formData.append('logo', fileData.get('file'));
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
       if (response.status === 204) {
+        setUploadedFile(fileData.get('file'));
         setConfigChangeSuccess(true);
       }
     } catch (error) {
@@ -54,8 +56,8 @@ export const SettingsAppearanceTab = ({
     };
     try {
       const formData = new FormData();
-      formData.append('primary_color', theme.banner);
-      formData.append('secondary_color', theme.button);
+      formData.append('primary_color', theme.button);
+      formData.append('secondary_color', theme.banner);
       formData.append('tertiary_color', theme.accent);
       const response = sendThemeData(formData);
       if (response.status === 204) {
@@ -66,13 +68,12 @@ export const SettingsAppearanceTab = ({
     }
   }, [enterpriseId, theme]);
 
+  const saveChanges = () => {
+    window.location.reload();
+  };
+
   return (
     <>
-      <Button
-        className="btn-brand-secondary"
-      >
-        hello!
-      </Button>
       <h2 className="py-2">Portal Appearance</h2>
       <p>
         Customize the appearance of your learner and administrator edX experiences with your
@@ -82,8 +83,9 @@ export const SettingsAppearanceTab = ({
         Logo
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
       </h3>
+      {!uploadedFile && (
       <Dropzone
-        onProcessUpload={handleProcessUpload}
+        onProcessUpload={handleLogoUpload}
         errorMessages={{
           invalidType: 'Invalid file type, only png images allowed.',
           invalidSize: 'The file size must be under 512 Mb.',
@@ -94,11 +96,20 @@ export const SettingsAppearanceTab = ({
           'image/*': ['.png'],
         }}
       />
+      )}
+      {uploadedFile && (
+      <p className="image-preview">
+        <Image
+          src={window.URL.createObjectURL(uploadedFile)}
+        />
+      </p>
+      )}
+
       <Toast
         onClose={() => setConfigChangeSuccess(false)}
         show={configChangeSuccess || false}
       >
-        Branding configuration successfully.
+        Branding configuration updated successfully.
       </Toast>
       <h3 className="py-2 pt-5">
         Theme
@@ -118,6 +129,7 @@ export const SettingsAppearanceTab = ({
         <ThemeCard themeVars={ACUMEN_THEME} selected={theme} setTheme={setTheme} />
         <ThemeCard themeVars={PIONEER_THEME} selected={theme} setTheme={setTheme} />
       </CardGrid>
+      <Button className="d-flex ml-auto" onClick={saveChanges}>Save Changes</Button>
     </>
   );
 };

@@ -67,7 +67,7 @@ describe('<Header />', () => {
     const wrapper = mount(<HeaderWrapper store={store} />);
     const logo = wrapper.find(Logo);
 
-    expect(logo.props().enterpriseBranding.logo).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
+    expect(logo.props().enterpriseLogo).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
     expect(logo.props().enterpriseName).toEqual(storeData.portalConfiguration.enterpriseName);
   });
 

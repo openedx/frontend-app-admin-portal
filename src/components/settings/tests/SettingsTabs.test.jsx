@@ -13,12 +13,17 @@ import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
 import { SCHOLAR_THEME, SETTINGS_TAB_LABELS } from '../data/constants';
+
 import { features } from '../../../config';
 import '@testing-library/jest-dom/extend-expect';
 
 const ACCESS_MOCK_CONTENT = 'access';
 const LMS_MOCK_CONTENT = 'lms';
 const SSO_MOCK_CONTENT = 'sso';
+
+jest.mock('../../../data/services/LmsApiService', () => ({
+  updateEnterpriseCustomerBranding: jest.fn(),
+}));
 
 jest.mock(
   '../SettingsAccessTab/',
@@ -46,8 +51,8 @@ const initialStore = {
     enableSamlConfigurationScreen: false,
     enableUniversalLink: false,
     enterpriseBranding: {
-      primary_color: SCHOLAR_THEME.banner,
-      secondary_color: SCHOLAR_THEME.button,
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
       tertiary_color: SCHOLAR_THEME.accent,
     },
   },

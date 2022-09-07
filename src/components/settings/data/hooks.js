@@ -114,6 +114,15 @@ export const useStylesForCustomBrandColors = (branding) => {
   const styles = enterpriseColors.map((colorName) => ({
     key: colorName,
     styles: (`
+      .btn-${colorName} {
+        background-color: ${brandColors[colorName].regular.hex()} !important;
+        border-color: ${brandColors[colorName].regular.hex()} !important;
+        color: ${brandColors[colorName].textColor.hex()} !important;
+      }
+      .btn-${colorName}:hover {
+        background-color: ${brandColors[colorName].dark.hex()} !important;
+        border-color: ${brandColors[colorName].dark.hex()} !important;
+      }
       .btn-brand-${colorName} {
         background-color: ${brandColors[colorName].regular.hex()} !important;
         border-color: ${brandColors[colorName].regular.hex()} !important;
@@ -155,9 +164,21 @@ export const useStylesForCustomBrandColors = (branding) => {
     key: 'general',
     styles: (`
       .hero-brand {
-        background-color: ${brandColors.primary.regular.hex()} !important;
+        background-color: ${brandColors.secondary.regular.hex()} !important;
         border-color: ${brandColors.tertiary.regular.hex()} !important;
-        color: ${brandColors.primary.textColor.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .btn-brand {
+        background-color: ${brandColors.secondary.regular.hex()} !important;
+        border-color: ${brandColors.secondary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .btn-brand:hover {
+        background-color: ${brandColors.secondary.dark.hex()} !important;
+        border-color: ${brandColors.secondary.dark.hex()} !important;
+      }
+      .btn-brand:focus:before {
+        border-color: ${brandColors.secondary.regular.hex()} !important;
       }
     `),
   });

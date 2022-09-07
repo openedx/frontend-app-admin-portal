@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 const mapStateToProps = (state) => ({
   enterpriseName: state.portalConfiguration.enterpriseName,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+  enterpriseLogo: state.portalConfiguration.enterpriseBranding?.logo,
   hasSidebarToggle: state.sidebar.hasSidebarToggle,
 });
 
