@@ -23,11 +23,13 @@ jest.mock('@edx/frontend-platform/config', () => ({
 
 const TEST_INVITE_KEY_UUID = 'test-uuid-1';
 
-const ActionsTableCellWrapper = (props) => (
-  <IntlProvider locale="en">
-    <ActionsTableCell enterpriseUUID="test-enterprise-id" {...props} />
-  </IntlProvider>
-);
+function ActionsTableCellWrapper(props) {
+  return (
+    <IntlProvider locale="en">
+      <ActionsTableCell enterpriseUUID="test-enterprise-id" {...props} />
+    </IntlProvider>
+  );
+}
 
 describe('ActionsTableCell', () => {
   jest.spyOn(navigator.clipboard, 'writeText');

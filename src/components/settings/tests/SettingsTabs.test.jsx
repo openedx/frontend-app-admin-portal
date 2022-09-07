@@ -59,17 +59,19 @@ const getMockStore = store => mockStore(store);
 const defaultStore = getMockStore({ ...initialStore });
 
 // eslint-disable-next-line react/prop-types
-const SettingsTabsWithRouter = ({ store = defaultStore }) => (
-  <IntlProvider locale="en">
-    <MemoryRouter initialEntries={['settings/']}>
-      <Provider store={store}>
-        <Route path="settings/">
-          <SettingsTabs />
-        </Route>
-      </Provider>
-    </MemoryRouter>
-  </IntlProvider>
-);
+function SettingsTabsWithRouter({ store = defaultStore }) {
+  return (
+    <IntlProvider locale="en">
+      <MemoryRouter initialEntries={['settings/']}>
+        <Provider store={store}>
+          <Route path="settings/">
+            <SettingsTabs />
+          </Route>
+        </Provider>
+      </MemoryRouter>
+    </IntlProvider>
+  );
+}
 
 describe('<SettingsTabs />', () => {
   afterEach(() => {

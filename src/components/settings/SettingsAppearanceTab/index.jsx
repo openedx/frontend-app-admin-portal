@@ -17,9 +17,9 @@ export default function SettingsAppearanceTab({
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
   const [theme, setTheme] = useState(SCHOLAR_THEME);
 
-  async function handleProcessUpload({
+  const handleProcessUpload = async ({
     fileData, handleError,
-  }) {
+  }) => {
     try {
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, fileData);
       if (response.status === 204) {
@@ -28,7 +28,7 @@ export default function SettingsAppearanceTab({
     } catch (error) {
       handleError(error);
     }
-  }
+  };
 
   return (
     <>
