@@ -114,6 +114,14 @@ function SettingsAccessLinkManagement({
     }
   };
 
+  const getActionsTableCell = (props) => (
+    <ActionsTableCell
+      {...props}
+      enterpriseUUID={enterpriseUUID}
+      onDeactivateLink={handleDeactivatedLink}
+    />
+  );
+
   return (
     <>
       {hasLinkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
@@ -169,13 +177,7 @@ function SettingsAccessLinkManagement({
             {
               id: 'action',
               Header: '',
-              Cell: props => (
-                <ActionsTableCell
-                  {...props}
-                  enterpriseUUID={enterpriseUUID}
-                  onDeactivateLink={handleDeactivatedLink}
-                />
-              ),
+              Cell: props => getActionsTableCell(props),
             },
           ]}
           disableElevation

@@ -57,13 +57,16 @@ export function BaseCourseSearchResults(props) {
 
   const { refinements } = useContext(SearchContext);
 
-  const columns = useMemo(() => [
+  const courseNameCell = (value, row) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />;
+
+  const formattedDateCell = (value) => <FormattedDateCell startValue={value.start} endValue={value.end} />;
+
+  const columns = [
     selectColumn,
     {
       Header: TABLE_HEADERS.courseName,
       accessor: 'title',
-      // eslint-disable-next-line react/prop-types
-      Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
+      Cell: ({ value, row }) => courseNameCell(value, row),
     },
     {
       Header: TABLE_HEADERS.partnerName,
@@ -72,10 +75,9 @@ export function BaseCourseSearchResults(props) {
     {
       Header: TABLE_HEADERS.courseAvailability,
       accessor: 'advertised_course_run',
-      // eslint-disable-next-line react/prop-types
-      Cell: ({ value }) => <FormattedDateCell startValue={value.start} endValue={value.end} />,
+      Cell: ({ value }) => formattedDateCell(value),
     },
-  ], [enterpriseSlug]);
+  ];
 
   const page = useMemo(
     () => {

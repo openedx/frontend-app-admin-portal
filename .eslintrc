@@ -54,9 +54,6 @@
       "ignoredNodes": ["TemplateLiteral", "JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXFragment", "JSXOpeningFragment", "JSXClosingFragment", "JSXText", "JSXEmptyExpression", "JSXSpreadChild"]
     }],
     "import/no-import-module-exports": 0,
-    "react/no-unstable-nested-components": [
-      2, { "allowAsProps": true }
-    ],
     "camelcase": [2, {"properties": "never"}],
     "react/jsx-no-constructed-context-values": [
       "off",

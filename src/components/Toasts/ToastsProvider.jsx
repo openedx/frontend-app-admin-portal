@@ -1,4 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, {
+  createContext, useState, useMemo, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 
 export const ToastsContext = createContext();
@@ -16,18 +18,19 @@ function ToastsProvider({ children }) {
     ]);
   };
 
-  const removeToast = (id) => {
+  const removeToast = useCallback((id) => {
     const index = toasts.findIndex(toast => toast.id === id);
     setToasts((prevToasts) => {
       const newToasts = [...prevToasts];
       newToasts.splice(index, 1);
       return newToasts;
     });
-  };
+  }, [toasts]);
+
+  const contextValue = useMemo(() => [toasts, addToast, removeToast], [removeToast, toasts]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <ToastsContext.Provider value={{ toasts, addToast, removeToast }}>
+    <ToastsContext.Provider value={contextValue}>
       {children}
     </ToastsContext.Provider>
   );

@@ -81,7 +81,7 @@ function ExistingSSOConfigs({
   };
 
   return (
-    <span>
+    <div>
       <ConfigError
         isOpen={errorIsOpen}
         close={closeError}
@@ -177,7 +177,7 @@ function ExistingSSOConfigs({
           </Card>
         ))}
       </CardGrid>
-    </span>
+    </div>
   );
 }
 

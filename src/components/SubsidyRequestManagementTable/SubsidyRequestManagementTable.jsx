@@ -57,6 +57,15 @@ function SubsidyRequestManagementTable({
     [requestStatusFilterChoices],
   );
 
+  const getActionCell = (props) => (
+    <ActionCell
+      {...props}
+      onApprove={onApprove}
+      onDecline={onDecline}
+      disableApproveButton={disableApproveButton}
+    />
+  );
+
   return (
     <DataTable
       isFilterable
@@ -73,14 +82,7 @@ function SubsidyRequestManagementTable({
       additionalColumns={[{
         id: 'action',
         Header: '',
-        Cell: (props) => (
-          <ActionCell
-            {...props}
-            onApprove={onApprove}
-            onDecline={onDecline}
-            disableApproveButton={disableApproveButton}
-          />
-        ),
+        Cell: (props) => getActionCell(props),
       }]}
       initialTableOptions={initialTableOptions}
       initialState={initialState}

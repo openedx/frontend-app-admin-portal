@@ -192,6 +192,25 @@ function LicenseManagementTable() {
     return [<DownloadCsvButton />];
   }, [showSubscriptionZeroStateMessage]);
 
+  const getEmptyTableComponent = () => {
+    if (loadingUsers) {
+      return null;
+    }
+    return <DataTable.EmptyTable content="No results found" />;
+  };
+
+  const getEmailCell = (row) => <span data-hj-suppress>{row.values.emailLabel}</span>;
+
+  const getLicenseManagementTableActionColumn = (row) => (
+    <LicenseManagementTableActionColumn
+      user={row.original}
+      subscription={subscription}
+      disabled={isExpired}
+      onRemindSuccess={onRemindSuccess}
+      onRevokeSuccess={onRevokeSuccess}
+    />
+  );
+
   return (
     <>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
@@ -216,22 +235,14 @@ function LicenseManagementTable() {
         initialTableOptions={{
           getRowId: row => row.id,
         }}
-        EmptyTableComponent={
-          () => {
-            if (loadingUsers) {
-              return null;
-            }
-            return <DataTable.EmptyTable content="No results found" />;
-          }
-        }
+        EmptyTableComponent={getEmptyTableComponent}
         fetchData={fetchData}
         data={rows}
         columns={[
           {
             Header: 'Email address',
             accessor: 'emailLabel',
-            // eslint-disable-next-line react/prop-types
-            Cell: ({ row }) => <span data-hj-suppress>{row.values.emailLabel}</span>,
+            Cell: ({ row }) => getEmailCell(row),
           },
           {
             Header: 'Status',
@@ -264,17 +275,7 @@ function LicenseManagementTable() {
           {
             id: 'action',
             Header: '',
-            /* eslint-disable react/prop-types */
-            Cell: ({ row }) => (
-              <LicenseManagementTableActionColumn
-                user={row.original}
-                subscription={subscription}
-                disabled={isExpired}
-                onRemindSuccess={onRemindSuccess}
-                onRevokeSuccess={onRevokeSuccess}
-              />
-              /* eslint-enable */
-            ),
+            Cell: ({ row }) => getLicenseManagementTableActionColumn(row),
           },
         ]}
         bulkActions={[
