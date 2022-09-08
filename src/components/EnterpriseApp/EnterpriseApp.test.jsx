@@ -36,7 +36,7 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{ children }</EnterpriseSubsidiesContextProvider>,
+  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
@@ -50,7 +50,6 @@ describe('<EnterpriseApp />', () => {
       url: '',
       params: {
         enterpriseSlug: 'foo',
-        page: 'settings',
       },
     },
     location: {
@@ -67,6 +66,11 @@ describe('<EnterpriseApp />', () => {
     enterpriseName: 'test-enterprise',
   };
 
+  const invalidEnterpriseId = {
+    ...basicProps,
+    enterpriseId: null,
+    enterpriseName: null,
+  };
   beforeEach(() => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
@@ -83,5 +87,10 @@ describe('<EnterpriseApp />', () => {
   it('should hide settings page if there are no visible tabs', () => {
     render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
     expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
+  });
+
+  it('should show error page if enterprise name is invalid', () => {
+    render(<EnterpriseApp {...invalidEnterpriseId} />);
+    expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
   });
 });
