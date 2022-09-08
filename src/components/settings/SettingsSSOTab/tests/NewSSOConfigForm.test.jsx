@@ -6,9 +6,12 @@ import { Provider } from 'react-redux';
 import NewSSOConfigForm from '../NewSSOConfigForm';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { getMockStore, initialStore } from '../testutils';
+import { getMockStore, initialStore, enterpriseId } from '../testutils';
 import { updateCurrentStep } from '../data/actions';
 import handleErrors from '../../utils';
+import {
+  INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
+} from '../../data/constants';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -38,7 +41,6 @@ jest.mock('../hooks', () => {
   };
 });
 
-const enterpriseId = 'an-id-1';
 const store = getMockStore({ ...initialStore });
 
 const mockSetProviderConfig = jest.fn();
@@ -350,5 +352,147 @@ describe('SAML Config Tab', () => {
     await waitFor(() => expect(screen.getByText('123abc!')).toBeInTheDocument());
     await waitFor(() => expect(screen.getByDisplayValue('ayylmao!')).toBeInTheDocument());
     await waitFor(() => expect(screen.getByDisplayValue('https://ayylmao.com')).toBeInTheDocument());
+  });
+  test('configure step handling SAP IDPs', async () => {
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
+    }, []);
+    await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
+    expect(screen.getByText('Next')).toBeDisabled();
+    userEvent.type(screen.getByText('OData API Root URL'), 'foobar.com');
+    userEvent.type(screen.getByText('OData Company ID'), '2');
+    userEvent.type(screen.getByText('OData Client ID'), '2');
+    userEvent.type(screen.getByText('OData API Timeout Interval'), '2');
+    userEvent.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'foobar.com');
+    userEvent.type(screen.getByText('SAP SuccessFactors Private Key'), '2');
+    userEvent.type(screen.getByText('OAuth User ID'), '2');
+    expect(screen.getByText('Next')).not.toBeDisabled();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
+
+    const expectedConfigFormData = {
+      enterprise_customer_uuid: enterpriseId,
+      identity_provider_type: 'sap_success_factors',
+      max_session_length: '',
+      attr_user_permanent_id: 'loggedinuserid',
+      attr_full_name: '',
+      attr_first_name: '',
+      attr_last_name: '',
+      attr_email: 'NameID',
+      enabled: 'true',
+      debug_mode: 'true',
+      skip_hinted_login_dialog: 'true',
+      skip_registration_form: 'true',
+      skip_email_verification: 'true',
+      send_to_registration_first: 'true',
+      automatic_refresh_enabled: 'true',
+      attr_username: 'loggedinuserid',
+      other_settings: {
+        odata_api_root_url: 'foobar.com',
+        odata_company_id: '2',
+        odata_client_id: '2',
+        odata_api_timeout_interval: 2,
+        sapsf_oauth_root_url: 'foobar.com',
+        oauth_user_id: '2',
+        sapsf_private_key: '2',
+      },
+    };
+    mockUpdateProviderConfig.mock.calls[0][0].forEach((value, key) => {
+      if (key === 'other_settings') {
+        const otherSettings = JSON.parse(value);
+        Object.keys(otherSettings).forEach(otherSettingsKey => {
+          expect(otherSettings[otherSettingsKey]).toEqual(
+            expectedConfigFormData.other_settings[otherSettingsKey],
+          );
+        });
+      } else {
+        expect(expectedConfigFormData[key]).toEqual(value);
+      }
+    });
+    expect(mockUpdateProviderConfig.mock.calls[0][1]).toEqual(1337);
+  });
+  test('configure step validating SAP IDP specific fields', async () => {
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
+    }, []);
+    await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
+    expect(screen.getByText('Next')).toBeDisabled();
+    userEvent.type(screen.getByText('OData API Root URL'), 'wow');
+    userEvent.type(screen.getByText('OData API Timeout Interval'), '40');
+    userEvent.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'ayylmao');
+    expect(screen.getByText('Next')).toBeDisabled();
+    expect(screen.getByText(INVALID_ODATA_API_TIMEOUT_INTERVAL)).toBeInTheDocument();
+    expect(screen.getByText(INVALID_SAPSF_OAUTH_ROOT_URL)).toBeInTheDocument();
+    expect(screen.getByText(INVALID_API_ROOT_URL)).toBeInTheDocument();
+  });
+  test('configure step handling attr_username', async () => {
+    const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
+    mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
+    contextValue.ssoState.currentStep = 'configure';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    expect(
+      screen.queryByText(
+        'Connect to a SAML identity provider for single sign-on'
+        + ' to allow quick access to your organization\'s learning catalog.',
+      ),
+    ).toBeInTheDocument();
+
+    await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
+    userEvent.type(screen.getByText('Username Hint Attribute'), 'foobar');
+    expect(screen.getByText('Next')).not.toBeDisabled();
+    await waitFor(() => {
+      userEvent.click(screen.getByText('Next'));
+    }, []);
+
+    const expectedConfigFormData = {
+      enterprise_customer_uuid: enterpriseId,
+      identity_provider_type: 'standard_saml_provider',
+      attr_username: 'foobar',
+      other_settings: '',
+      enabled: 'true',
+      debug_mode: 'true',
+      skip_hinted_login_dialog: 'true',
+      skip_registration_form: 'true',
+      skip_email_verification: 'true',
+      send_to_registration_first: 'true',
+      automatic_refresh_enabled: 'true',
+    };
+    mockUpdateProviderConfig.mock.calls[0][0].forEach((value, key) => {
+      expect(expectedConfigFormData[key]).toEqual(value);
+    });
+    expect(mockUpdateProviderConfig.mock.calls[0][1]).toEqual(1337);
   });
 });

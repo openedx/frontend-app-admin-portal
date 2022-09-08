@@ -103,8 +103,13 @@ class EnterpriseApp extends React.Component {
     // Hide Settings page if there are no visible tabs
     const enableSettingsPage = (
       features.SETTINGS_PAGE && (
-        enableLearnerPortal || features.FEATURE_SSO_SETTINGS_TAB
-       || (features.EXTERNAL_LMS_CONFIGURATION && features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen)
+        enableLearnerPortal || (
+          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
+        ) || (
+          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
+        ) || (
+          features.SETTINGS_PAGE_APPEARANCE_TAB
+        )
       )
     );
 
@@ -162,8 +167,8 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableSamlConfigurationPage={features.SAML_CONFIGURATION && enableSamlConfigurationScreen}
-                    enableLmsConfigurationPage={features.EXTERNAL_LMS_CONFIGURATION && enableLmsConfigurationsScreen}
+                    enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
+                    enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
                     enableSettingsPage={enableSettingsPage}
                   />
                 </div>
