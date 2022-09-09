@@ -12,7 +12,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
       controlId={data.key}
       isInvalid={invalidFields[data.key]}
     >
-      <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+      <Form.Label>{data.label}</Form.Label>
       <Form.Control
         type={data.type || 'text'}
         id={data.key}

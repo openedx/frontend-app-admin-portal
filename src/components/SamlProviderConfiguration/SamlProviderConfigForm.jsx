@@ -132,7 +132,7 @@ class SamlProviderConfigForm extends React.Component {
         controlId={data.key}
         isInvalid={invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition]}
       >
-        <Form.Label htmlFor={data.key}>{data.label}{data.showRequired && <span className="required">*</span>}</Form.Label>
+        <Form.Label>{data.label}{data.showRequired && <span className="required">*</span>}</Form.Label>
         <Form.Control
           type={data.type || 'text'}
           id={data.key}

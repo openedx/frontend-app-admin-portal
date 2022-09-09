@@ -145,7 +145,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
             controlId={data.key}
             isInvalid={invalidFields[data.key]}
           >
-            <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+            <Form.Label>{data.label}</Form.Label>
             <Form.Control
               type={data.type || 'text'}
               id={data.key}
@@ -219,7 +219,7 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
               controlId="userType"
               isInvalid={invalidFields.userType}
             >
-              <Form.Label htmlFor="userType">SAP Success Factors User Type</Form.Label>
+              <Form.Label>SAP Success Factors User Type</Form.Label>
               <Form.Control
                 as="select"
                 id="userType"

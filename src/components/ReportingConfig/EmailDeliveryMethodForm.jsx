@@ -16,7 +16,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           controlId="email"
           isInvalid={invalidFields.emailRaw}
         >
-          <Form.Label htmlFor="email">Email(s)</Form.Label>
+          <Form.Label>Email(s)</Form.Label>
           <Form.Control
             as="textarea"
             id="email"
@@ -53,7 +53,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           for="encryptedPassword"
           isInvalid={invalidFields.encryptedPassword}
         >
-          <Form.Label htmlFor="encryptedPassword">Password</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             id="encryptedPassword"

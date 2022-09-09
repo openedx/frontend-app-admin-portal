@@ -199,7 +199,7 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
             controlId="cornerstoneBaseUrl"
             isInvalid={state.invalidFields.cornerstoneBaseUrl}
           >
-            <label htmlFor="cornerstoneBaseUrl">Cornerstone Instance URL</label>
+            <Form.Label>Cornerstone Instance URL</Form.Label>
             <Form.Control
               type="text"
               id="cornerstoneBaseUrl"

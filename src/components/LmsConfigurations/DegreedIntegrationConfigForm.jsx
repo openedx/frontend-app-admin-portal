@@ -245,7 +245,7 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               controlId={degreedField.key}
               isInvalid={state.invalidFields[degreedField.key]}
             >
-              <Form.Label htmlFor={degreedField.key}>{degreedField.label}</Form.Label>
+              <Form.Label>{degreedField.label}</Form.Label>
               <Form.Control
                 type={degreedField.type || 'text'}
                 id={degreedField.key}

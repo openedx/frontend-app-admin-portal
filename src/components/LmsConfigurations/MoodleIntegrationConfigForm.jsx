@@ -201,7 +201,7 @@ class MoodleIntegrationConfigForm extends React.Component {
                 controlId={moodleField.key}
                 isInvalid={invalidFields[moodleField.key] || invalidFields[moodleField.invalidAdditionalCondition]}
               >
-                <Form.Label htmlFor={moodleField.key}>{moodleField.label}</Form.Label>
+                <Form.Label>{moodleField.label}</Form.Label>
                 <Form.Control
                   type={moodleField.type || 'text'}
                   id={moodleField.key}

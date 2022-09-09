@@ -151,7 +151,7 @@ class ReportingConfigForm extends React.Component {
         controlId={data.key}
         isInvalid={invalidFields[data.key]}
       >
-        <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+        <Form.Label>{data.label}</Form.Label>
         <Form.Control
           as="select"
           id={data.key}
@@ -186,7 +186,7 @@ class ReportingConfigForm extends React.Component {
         controlId={data.key}
         isInvalid={data.isInvalid ? data.isInvalid : invalidFields[data.key]}
       >
-        <Form.Label htmlFor={data.key}>{data.label}</Form.Label>
+        <Form.Label>{data.label}</Form.Label>
         <Form.Control
           type="number"
           id={data.key}
@@ -313,7 +313,7 @@ class ReportingConfigForm extends React.Component {
           </div>
         </div>
         <Form.Group controlId="pgpEncyptionKey">
-          <Form.Label htmlFor="pgpEncryptionKey">PGP Encryption Key</Form.Label>
+          <Form.Label>PGP Encryption Key</Form.Label>
           <Form.Control
             as="textarea"
             id="pgpEncryptionKey"

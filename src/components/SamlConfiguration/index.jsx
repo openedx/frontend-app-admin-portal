@@ -42,7 +42,7 @@ class SamlConfiguration extends React.Component {
     return (
       <div className="col col-4">
         <Form.Group controlId="samlConfigId">
-          <Form.Label htmlFor="samlConfigId">Saml Configuration</Form.Label>
+          <Form.Label>Saml Configuration</Form.Label>
           <Form.Control
             as="select"
             id="samlConfigId"

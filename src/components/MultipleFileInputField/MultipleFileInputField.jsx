@@ -71,7 +71,6 @@ const MultipleFileInputField = ({
           'm-0',
           'ml-2',
         )}
-        htmlFor="multiple-file-input-control"
       >Select files
       </Form.Label>
       <Form.Control
