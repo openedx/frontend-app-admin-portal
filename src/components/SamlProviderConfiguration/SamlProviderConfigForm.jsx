@@ -186,15 +186,15 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-6">
             <Form.Group controlId="enabled">
-              <Form.Label htmlFor="enabled">Enabled</Form.Label>
               <Form.Checkbox
                 id="enabled"
                 name="enabled"
-                className="ml-3"
                 checked={enabled}
                 onChange={() => this.setState(prevState => ({ enabled: !prevState.enabled }))}
-                isInline
-              />
+                floatLabelLeft
+              >
+                Enabled
+              </Form.Checkbox>
             </Form.Group>
           </div>
         </div>
@@ -211,19 +211,18 @@ class SamlProviderConfigForm extends React.Component {
         <div className="row">
           <div className="col col-4">
             <Form.Group controlId="syncLearnerProfileData">
-              <Form.Label htmlFor="syncLearnerProfileData">Sync learner profile data</Form.Label>
               <Form.Checkbox
                 id="syncLearnerProfileData"
                 name="syncLearnerProfileData"
-                className="ml-3"
                 checked={syncLearnerProfileData}
                 value={syncLearnerProfileData}
                 onChange={() => this.setState(prevState => (
                   { syncLearnerProfileData: !prevState.syncLearnerProfileData }
                 ))}
-                data-hj-suppress
-                isInline
-              />
+                floatLabelLeft
+              >
+                Sync learner profile data
+              </Form.Checkbox>
               <Form.Text>
                 Synchronize user profile data received from the identity provider with the edX user account on each SSO
                 login. The user will be notified if the email address associated with their account is changed as a

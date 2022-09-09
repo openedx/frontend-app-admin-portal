@@ -231,18 +231,20 @@ class ReportingConfigForm extends React.Component {
         }}
         onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
       >
-        <div className="col">
-          <Form.Group cotntrolId="active">
-            <Form.Label htmlFor="active">Active</Form.Label>
-            <Form.Checkbox
-              id="active"
-              name="active"
-              className="ml-3"
-              checked={active}
-              onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-              isInline
-            />
-          </Form.Group>
+        <div className="row">
+          <div className="col">
+            <Form.Group controlId="active">
+              <Form.Checkbox
+                id="active"
+                name="active"
+                checked={active}
+                onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+                floatLabelLeft
+              >
+                Active?
+              </Form.Checkbox>
+            </Form.Group>
+          </div>
         </div>
         <div className="row">
           <div className="col col-6">

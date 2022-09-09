@@ -180,15 +180,17 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
       </div>
       <div className="row">
         <div className="col col-6">
-          <Form.Label htmlFor="active">Active</Form.Label>
-          <Form.Checkbox
-            id="active"
-            name="active"
-            className="ml-3"
-            checked={active}
-            onChange={() => setActive(prevActive => (!prevActive))}
-            isInline
-          />
+          <Form.Group controlId="active">
+            <Form.Checkbox
+              id="active"
+              name="active"
+              checked={active}
+              onChange={() => setActive(prevActive => (!prevActive))}
+              floatLabelLeft
+            >
+              Active
+            </Form.Checkbox>
+          </Form.Group>
         </div>
       </div>
       <div className="row">

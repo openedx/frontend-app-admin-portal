@@ -198,15 +198,15 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
         <div className="row">
           <div className="col col-6">
             <Form.Group controlId="active">
-              <Form.Label htmlFor="active">Active</Form.Label>
               <Form.Checkbox
                 id="active"
                 name="active"
-                className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-                isInline
-              />
+                floatLabelLeft
+              >
+                Active
+              </Form.Checkbox>
             </Form.Group>
           </div>
         </div>
@@ -240,16 +240,15 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
         <div className="row">
           <div className="col col-6">
             <Form.Group controlId="transmitTotalHours">
-              <Form.Label htmlFor="transmitTotalHours">Transmit Total Hours?</Form.Label>
               <Form.Checkbox
                 id="transmitTotalHours"
                 name="transmitTotalHours"
-                className="ml-3"
                 checked={transmitTotalHours}
                 onChange={() => this.setState(prevState => ({ transmitTotalHours: !prevState.transmitTotalHours }))}
-                data-hj-suppress
-                isInline
-              />
+                floatLabelLeft
+              >
+                Transmit Total Hours?
+              </Form.Checkbox>
               <Form.Text>Include totalHours in the transmitted completion data.</Form.Text>
             </Form.Group>
           </div>

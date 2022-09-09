@@ -153,18 +153,16 @@ class BlackboardIntegrationConfigForm extends React.Component {
       >
         <div className="row">
           <div className="col col-6">
-            <Form.Group
-              controlId="active"
-            >
-              <Form.Label htmlFor="active">Active</Form.Label>
+            <Form.Group controlId="active">
               <Form.Checkbox
                 id="active"
                 name="active"
-                className="ml-3"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-                isInline
-              />
+                floatLabelLeft
+              >
+                Active
+              </Form.Checkbox>
             </Form.Group>
           </div>
         </div>
@@ -175,7 +173,7 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 controlId={backgroundField.key}
                 isInvalid={invalidFields[backgroundField.key]}
               >
-                <Form.Label htmlFor={backgroundField.key}>{backgroundField.label}</Form.Label>
+                <Form.Label>{backgroundField.label}</Form.Label>
                 <Form.Control
                   type="text"
                   id={backgroundField.key}

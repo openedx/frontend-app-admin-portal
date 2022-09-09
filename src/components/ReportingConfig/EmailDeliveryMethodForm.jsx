@@ -37,16 +37,17 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           )}
         </Form.Group>
         {config && (
-          <div className="form-group">
-            <Form.Label htmlFor="changePassword">Change Password</Form.Label>
+          <Form.Group controlId="changePassword">
             <Form.Checkbox
               id="changePassword"
-              className="ml-3"
+              name="changePassword"
               checked={checked}
               onChange={() => setChecked(!checked)}
-              isInline
-            />
-          </div>
+              floatLabelLeft
+            >
+              Change Password
+            </Form.Checkbox>
+          </Form.Group>
         )}
         <Form.Group
           for="encryptedPassword"

@@ -63,17 +63,17 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             label: 'SFTP Username',
           })}
           {config && (
-            <div className="form-group">
-              <Form.Label htmlFor="changePassword">Change Password</Form.Label>
+            <Form.Group controlId="changePassword">
               <Form.Checkbox
-                type="checkbox"
                 id="changePassword"
-                className="ml-3"
+                name="changePassword"
                 checked={checked}
                 onChange={() => setChecked(!checked)}
-                isInline
-              />
-            </div>
+                floatLabelLeft
+              >
+                Change Password
+              </Form.Checkbox>
+            </Form.Group>
           )}
           {renderField({
             key: 'encryptedSftpPassword',
