@@ -27,6 +27,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               return !isEmpty(emails);
             })}
             data-hj-suppress
+            autoResize
           />
           <Form.Text>The email(s), one per line, where the report should be sent</Form.Text>
           {invalidFields.emailRaw && (

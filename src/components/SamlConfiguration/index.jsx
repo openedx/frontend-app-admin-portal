@@ -52,7 +52,7 @@ class SamlConfiguration extends React.Component {
           >
             {this.getConfigOptions()}
           </Form.Control>
-          <Form.Text>the edX certificates to use with your SAML provider.</Form.Text>
+          <Form.Text>The edX certificates to use with your SAML provider.</Form.Text>
         </Form.Group>
       </div>
     );

@@ -140,7 +140,7 @@ class SamlProviderConfigForm extends React.Component {
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
           data-hj-suppress
         />
-        <Form.Text>{data.helpText}</Form.Text>
+        {data.helpText && <Form.Text>{data.helpText}</Form.Text>}
         {(invalidFields[data.key] || invalidFields[data.invalidAdditionalCondition])
           && data.invalidMessage && (
           <Form.Control.Feedback icon={<Error className="mr-1" />}>

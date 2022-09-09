@@ -297,7 +297,6 @@ class ReportingConfigForm extends React.Component {
               label: 'Day of Week',
               options: reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] })),
               disabled: !(frequency === 'weekly'),
-              // onChange: event => this.setState({ deliveryMethod: event.target.value }),
             })}
           </div>
           <div className="col">
@@ -316,6 +315,7 @@ class ReportingConfigForm extends React.Component {
             name="pgpEncryptionKey"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
             data-hj-suppress
+            autoResize
           />
           <Form.Text>The key for encyption, if PGP encrypted file is required</Form.Text>
         </Form.Group>
@@ -348,7 +348,7 @@ class ReportingConfigForm extends React.Component {
         </div>
         <div className="row justify-content-between align-items-center form-group">
           <Form.Group
-            submitButton="submitButton"
+            controlId="submitButton"
             isInvalid={submitState === SUBMIT_STATES.ERROR}
             className="mb-0"
           >
