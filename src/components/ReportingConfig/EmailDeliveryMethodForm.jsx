@@ -38,7 +38,6 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         {config && (
           <Form.Group controlId="changePassword">
             <Form.Checkbox
-              id="changePassword"
               name="changePassword"
               checked={checked}
               onChange={() => setChecked(!checked)}
@@ -49,13 +48,12 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           </Form.Group>
         )}
         <Form.Group
-          for="encryptedPassword"
+          controlId="encryptedPassword"
           isInvalid={invalidFields.encryptedPassword}
         >
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            id="encryptedPassword"
             name="encryptedPassword"
             disabled={config && !checked}
             onBlur={e => handleBlur(e)}

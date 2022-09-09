@@ -64,7 +64,6 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           {config && (
             <Form.Group controlId="changePassword">
               <Form.Checkbox
-                id="changePassword"
                 name="changePassword"
                 checked={checked}
                 onChange={() => setChecked(!checked)}

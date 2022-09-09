@@ -198,7 +198,6 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="active">
               <Form.Checkbox
-                id="active"
                 name="active"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
