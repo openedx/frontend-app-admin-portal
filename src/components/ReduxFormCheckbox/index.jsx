@@ -15,7 +15,6 @@ const ReduxFormCheckbox = (props) => {
     <Form.Group controlId={id}>
       <Form.Check
         {...input}
-        id={id}
         type="checkbox"
         defaultChecked={defaultChecked}
         checked={input.checked}

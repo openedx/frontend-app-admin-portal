@@ -45,7 +45,6 @@ class SamlConfiguration extends React.Component {
           <Form.Label>Saml Configuration</Form.Label>
           <Form.Control
             as="select"
-            id="samlConfigId"
             name="samlConfigId"
             key={this.state.loading ? 'loaded' : 'loading'}
             defaultValue={this.props.currentConfig}

@@ -148,7 +148,6 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
             <Form.Label>{data.label}</Form.Label>
             <Form.Control
               type={data.type || 'text'}
-              id={data.key}
               name={data.key}
               // eslint-disable-next-line no-nested-ternary
               defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
@@ -222,7 +221,6 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
               <Form.Label>SAP Success Factors User Type</Form.Label>
               <Form.Control
                 as="select"
-                id="userType"
                 name="userType"
                 defaultValue={config ? config.userType : null}
               >
@@ -241,7 +239,6 @@ class SuccessFactorsIntegrationConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="transmitTotalHours">
               <Form.Checkbox
-                id="transmitTotalHours"
                 name="transmitTotalHours"
                 checked={transmitTotalHours}
                 onChange={() => this.setState(prevState => ({ transmitTotalHours: !prevState.transmitTotalHours }))}

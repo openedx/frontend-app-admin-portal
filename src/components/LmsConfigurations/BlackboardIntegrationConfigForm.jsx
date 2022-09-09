@@ -155,7 +155,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="active">
               <Form.Checkbox
-                id="active"
                 name="active"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
@@ -176,7 +175,6 @@ class BlackboardIntegrationConfigForm extends React.Component {
                 <Form.Label>{backgroundField.label}</Form.Label>
                 <Form.Control
                   type="text"
-                  id={backgroundField.key}
                   name={backgroundField.key}
                   defaultValue={config ? config[backgroundField.key] : null}
                   data-hj-suppress

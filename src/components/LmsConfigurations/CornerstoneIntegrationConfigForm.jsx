@@ -182,7 +182,6 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
         <div className="col col-6">
           <Form.Group controlId="active">
             <Form.Checkbox
-              id="active"
               name="active"
               checked={active}
               onChange={() => setActive(prevActive => (!prevActive))}
@@ -202,7 +201,6 @@ function CornerstoneIntegrationConfigForm({ enterpriseId, config }) {
             <Form.Label>Cornerstone Instance URL</Form.Label>
             <Form.Control
               type="text"
-              id="cornerstoneBaseUrl"
               name="cornerstoneBaseUrl"
               defaultValue={config ? config.cornerstoneBaseUrl : null}
               data-hj-suppress

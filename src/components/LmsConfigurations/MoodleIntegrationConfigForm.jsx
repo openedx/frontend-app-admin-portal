@@ -182,7 +182,6 @@ class MoodleIntegrationConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="active">
               <Form.Checkbox
-                id="active"
                 name="active"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
@@ -204,7 +203,6 @@ class MoodleIntegrationConfigForm extends React.Component {
                 <Form.Label>{moodleField.label}</Form.Label>
                 <Form.Control
                   type={moodleField.type || 'text'}
-                  id={moodleField.key}
                   name={moodleField.key}
                   // eslint-disable-next-line no-nested-ternary
                   defaultValue={config ? config[moodleField.key] : moodleField.type === 'number' ? 1 : ''}

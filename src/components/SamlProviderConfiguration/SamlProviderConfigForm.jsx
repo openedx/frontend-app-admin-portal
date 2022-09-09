@@ -135,7 +135,6 @@ class SamlProviderConfigForm extends React.Component {
         <Form.Label>{data.label}{data.showRequired && <span className="required">*</span>}</Form.Label>
         <Form.Control
           type={data.type || 'text'}
-          id={data.key}
           name={data.key}
           // eslint-disable-next-line no-nested-ternary
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : ''}
@@ -187,7 +186,6 @@ class SamlProviderConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="enabled">
               <Form.Checkbox
-                id="enabled"
                 name="enabled"
                 checked={enabled}
                 onChange={() => this.setState(prevState => ({ enabled: !prevState.enabled }))}
@@ -212,7 +210,6 @@ class SamlProviderConfigForm extends React.Component {
           <div className="col col-4">
             <Form.Group controlId="syncLearnerProfileData">
               <Form.Checkbox
-                id="syncLearnerProfileData"
                 name="syncLearnerProfileData"
                 checked={syncLearnerProfileData}
                 value={syncLearnerProfileData}

@@ -109,7 +109,6 @@ class SamlProviderDataForm extends React.Component {
         <Form.Label>{data.label}{data.showRequired && <span className="required">*</span>}</Form.Label>
         <Form.Control
           type={data.type || 'text'}
-          id={data.key}
           name={data.key}
           // eslint-disable-next-line no-nested-ternary
           defaultValue={config ? config[data.key] : data.type === 'number' ? 1 : defaultValue}

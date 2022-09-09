@@ -19,7 +19,6 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Label>Email(s)</Form.Label>
           <Form.Control
             as="textarea"
-            id="email"
             name="emailRaw"
             defaultValue={config ? config.email.join('\n') : undefined}
             onBlur={e => handleBlur(e, () => {

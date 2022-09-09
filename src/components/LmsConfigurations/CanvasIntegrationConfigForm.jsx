@@ -142,7 +142,6 @@ class CanvasIntegrationConfigForm extends React.Component {
           <div className="col col-6">
             <Form.Group controlId="active">
               <Form.Checkbox
-                id="active"
                 name="active"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
@@ -160,10 +159,9 @@ class CanvasIntegrationConfigForm extends React.Component {
                 controlId={canvasField.key}
                 isInvalid={invalidFields[canvasField.key]}
               >
-                <Form.Label htmlFor={canvasField.key}>{canvasField.label}</Form.Label>
+                <Form.Label>{canvasField.label}</Form.Label>
                 <Form.Control
                   type="text"
-                  id={canvasField.key}
                   name={canvasField.key}
                   defaultValue={config ? config[canvasField.key] : ''}
                   onChange={() => this.setState(

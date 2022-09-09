@@ -15,7 +15,6 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
       <Form.Label>{data.label}</Form.Label>
       <Form.Control
         type={data.type || 'text'}
-        id={data.key}
         name={data.key}
         // eslint-disable-next-line no-nested-ternary
         defaultValue={config ? config[data.key] : data.type === 'number' ? 22 : ''}

@@ -154,7 +154,6 @@ class ReportingConfigForm extends React.Component {
         <Form.Label>{data.label}</Form.Label>
         <Form.Control
           as="select"
-          id={data.key}
           name={data.key}
           // eslint-disable-next-line no-nested-ternary
           defaultValue={data.defaultValue ? data.defaultValue : config
@@ -189,7 +188,6 @@ class ReportingConfigForm extends React.Component {
         <Form.Label>{data.label}</Form.Label>
         <Form.Control
           type="number"
-          id={data.key}
           name={data.key}
           defaultValue={config ? config[data.key] : 1}
           disabled={data.disabled}
@@ -235,7 +233,6 @@ class ReportingConfigForm extends React.Component {
           <div className="col">
             <Form.Group controlId="active">
               <Form.Checkbox
-                id="active"
                 name="active"
                 checked={active}
                 onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
@@ -316,7 +313,6 @@ class ReportingConfigForm extends React.Component {
           <Form.Label>PGP Encryption Key</Form.Label>
           <Form.Control
             as="textarea"
-            id="pgpEncryptionKey"
             name="pgpEncryptionKey"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
             data-hj-suppress

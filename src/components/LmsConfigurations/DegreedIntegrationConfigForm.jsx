@@ -227,7 +227,6 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
         <div className="col col-6">
           <Form.Group controlId="active">
             <Form.Checkbox
-              id="active"
               name="active"
               checked={active}
               onChange={() => setActive(prevActive => (!prevActive))}
@@ -248,7 +247,6 @@ function DegreedIntegrationConfigForm({ enterpriseId, config }) {
               <Form.Label>{degreedField.label}</Form.Label>
               <Form.Control
                 type={degreedField.type || 'text'}
-                id={degreedField.key}
                 name={degreedField.key}
                 defaultValue={config ? config[degreedField.key] : null}
                 data-hj-suppress
