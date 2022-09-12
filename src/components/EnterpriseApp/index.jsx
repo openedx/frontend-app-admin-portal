@@ -14,6 +14,7 @@ import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
+import NotFoundPage from '../NotFoundPage';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -130,6 +131,10 @@ class EnterpriseApp extends React.Component {
       return <EnterpriseAppSkeleton />;
     }
 
+    if (!enterpriseId) {
+      return <NotFoundPage />;
+    }
+
     return (
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
@@ -210,7 +215,6 @@ EnterpriseApp.propTypes = {
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
-      page: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
