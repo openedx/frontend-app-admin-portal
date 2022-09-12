@@ -12,7 +12,6 @@ import { DARK_COLOR, WHITE_COLOR, SETTINGS_TAB_PARAM } from './constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const COLOR_LIGHTEN_DARKEN_MODIFIER = 0.2;
-const COLOR_MIX_MODIFIER = 0.1;
 
 /**
  * Checks url parameter `SETTINGS_TAB_PARAM`
@@ -110,62 +109,15 @@ export const useStylesForCustomBrandColors = (branding) => {
     return null;
   }
 
-  const enterpriseColors = ['primary', 'secondary', 'tertiary'];
-  const styles = enterpriseColors.map((colorName) => ({
-    key: colorName,
-    styles: (`
-      .btn-${colorName} {
-        background-color: ${brandColors[colorName].regular.hex()} !important;
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-        color: ${brandColors[colorName].textColor.hex()} !important;
-      }
-      .btn-${colorName}:hover {
-        background-color: ${brandColors[colorName].dark.hex()} !important;
-        border-color: ${brandColors[colorName].dark.hex()} !important;
-      }
-      .btn-brand-${colorName} {
-        background-color: ${brandColors[colorName].regular.hex()} !important;
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-        color: ${brandColors[colorName].textColor.hex()} !important;
-      }
-      .btn-brand-${colorName}:hover {
-        background-color: ${brandColors[colorName].dark.hex()} !important;
-        border-color: ${brandColors[colorName].dark.hex()} !important;
-      }
-      .btn-brand-${colorName}:focus:before {
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .btn-brand-outline-${colorName} {
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-        color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .btn-brand-outline-${colorName}:hover {
-        border-color: ${brandColors[colorName].dark.hex()} !important;
-        background-color: ${brandColors.white.mix(brandColors[colorName].light, COLOR_MIX_MODIFIER).hex()} !important;
-      }
-      .btn-brand-outline-${colorName}:focus:before {
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .bg-brand-${colorName} {
-        background-color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .border-brand-${colorName} {
-        border-color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .color-brand-${colorName} {
-        color: ${brandColors[colorName].regular.hex()} !important;
-      }
-      .text-brand-${colorName} {
-        color: ${brandColors[colorName].textColor.hex()} !important;
-      }
-    `),
-  }));
-  styles.push({
-    key: 'general',
+  const styles = ({
+    key: 'styles',
     styles: (`
       .hero-brand {
         background-color: ${brandColors.secondary.regular.hex()} !important;
         border-color: ${brandColors.tertiary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .hero-brand h1 {
         color: ${brandColors.secondary.textColor.hex()} !important;
       }
       .btn-brand {
@@ -179,6 +131,33 @@ export const useStylesForCustomBrandColors = (branding) => {
       }
       .btn-brand:focus:before {
         border-color: ${brandColors.secondary.regular.hex()} !important;
+      }
+      .btn-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+        border-color: ${brandColors.primary.regular.hex()} !important;
+        color: ${brandColors.primary.textColor.hex()} !important;
+      }
+      .btn-primary:hover {
+        background-color: ${brandColors.primary.dark.hex()} !important;
+        border-color: ${brandColors.primary.dark.hex()} !important;
+      }
+      .btn-brand-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+        border-color: ${brandColors.primary.regular.hex()} !important;
+        color: ${brandColors.primary.textColor.hex()} !important;
+      }
+      .btn-brand-primary:hover {
+        background-color: ${brandColors.primary.dark.hex()} !important;
+        border-color: ${brandColors.primary.dark.hex()} !important;
+      }
+      .btn-brand-primary:focus:before {
+        border-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .bg-brand-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .border-brand-primary {
+        border-color: ${brandColors.primary.regular.hex()} !important;
       }
     `),
   });

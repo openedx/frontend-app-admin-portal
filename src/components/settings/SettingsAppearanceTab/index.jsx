@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, CardGrid, Dropzone, Image, Toast,
+  Button, CardGrid, Dropzone, Image, Toast, useToggle,
 } from '@edx/paragon';
 
 import InfoHover from '../../InfoHover';
 import LmsApiService from '../../../data/services/LmsApiService';
 import ThemeCard from './ThemeCard';
+import CustomThemeModal from './CustomThemeModal';
 import {
   ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
@@ -18,20 +19,30 @@ export const SettingsAppearanceTab = ({
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(undefined);
+  const [customIsOpen, openCustom, closeCustom] = useToggle(false);
+  const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
 
-  function checkCurrentTheme(currentTheme) {
-    const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
-    let selectedTheme = null;
-    curatedThemes.forEach(curatedTheme => {
-      if (curatedTheme.button === currentTheme.primary_color
-        && curatedTheme.banner === currentTheme.secondary_color
-        && curatedTheme.accent === currentTheme.tertiary_color) {
-        selectedTheme = curatedTheme;
+  function getStartingTheme() {
+    for (let i = 0; i < curatedThemes.length; i++) {
+      if (curatedThemes[i].button === enterpriseBranding.primary_color
+        && curatedThemes[i].banner === enterpriseBranding.secondary_color
+        && curatedThemes[i].accent === enterpriseBranding.tertiary_color) {
+        return [curatedThemes[i], null];
       }
-    });
-    return selectedTheme;
+    }
+    const CUSTOM_THEME = {
+      title: 'Custom Theme',
+      button: enterpriseBranding.primary_color,
+      banner: enterpriseBranding.secondary_color,
+      accent: enterpriseBranding.tertiary_color,
+    };
+    return [CUSTOM_THEME, CUSTOM_THEME];
   }
-  const [theme, setTheme] = useState(checkCurrentTheme(enterpriseBranding));
+
+  // this variable is [selected , null] if the user has not created a custom
+  // theme and it is [selectedTheme, [customName, #primary, #secondary, #tertiary]] if they have
+  // (they can't be two variables because of rules regarding setting react hooks)
+  const [theme, setTheme] = useState(getStartingTheme());
 
   async function handleLogoUpload({
     fileData, handleError,
@@ -49,27 +60,25 @@ export const SettingsAppearanceTab = ({
     }
   }
 
-  useEffect(() => {
+  const saveChanges = () => {
     const sendThemeData = async (formData) => {
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
-      return response;
+      if (response.status === 204) {
+        setConfigChangeSuccess(true);
+        window.location.reload();
+      } else {
+        setConfigChangeSuccess(false);
+      }
     };
     try {
       const formData = new FormData();
-      formData.append('primary_color', theme.button);
-      formData.append('secondary_color', theme.banner);
-      formData.append('tertiary_color', theme.accent);
-      const response = sendThemeData(formData);
-      if (response.status === 204) {
-        setConfigChangeSuccess(true);
-      }
+      formData.append('primary_color', theme[0].button);
+      formData.append('secondary_color', theme[0].banner);
+      formData.append('tertiary_color', theme[0].accent);
+      sendThemeData(formData);
     } catch {
       setConfigChangeSuccess(false);
     }
-  }, [enterpriseId, theme]);
-
-  const saveChanges = () => {
-    window.location.reload();
   };
 
   return (
@@ -129,6 +138,21 @@ export const SettingsAppearanceTab = ({
         <ThemeCard themeVars={ACUMEN_THEME} selected={theme} setTheme={setTheme} />
         <ThemeCard themeVars={PIONEER_THEME} selected={theme} setTheme={setTheme} />
       </CardGrid>
+      <h3 className="py-2 pt-5 mb-0">
+        Custom Theme
+      </h3>
+      {theme[1] === null && (
+      <p className="mt-0">
+        Rather use your own colors?
+        <Button variant="link" onClick={openCustom} className="p-0 pl-1" style={{ verticalAlign: 'top' }}>
+          Create a custom theme.
+        </Button>
+      </p>
+      )}
+      {theme[1] !== null && (
+        <ThemeCard className="mt-1" themeVars={theme[1]} selected={theme} setTheme={setTheme} openCustom={openCustom} />
+      )}
+      <CustomThemeModal isOpen={customIsOpen} close={closeCustom} customColors={theme[1]} setTheme={setTheme} />
       <Button className="d-flex ml-auto" onClick={saveChanges}>Save Changes</Button>
     </>
   );

@@ -14,6 +14,7 @@ const APPEARANCE_TAB_LABEL = 'Portal Appearance';
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
 export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';
+export const HELP_CENTER_BRANDING_LINK = 'https://business-support.edx.org/hc/en-us/sections/8739219372183';
 export const SUCCESS_LABEL = 'success';
 export const TOGGLE_SUCCESS_LABEL = 'toggle success';
 export const DELETE_SUCCESS_LABEL = 'delete success';
@@ -90,15 +91,15 @@ export const WHITE_COLOR = '#FFFFFF';
 
 export const SCHOLAR_THEME = {
   title: 'Scholar (Default)',
-  banner: '#F2F0EF',
   button: '#2D494E',
+  banner: '#F2F0EF',
   accent: '#D23228',
 };
 
 export const SAGE_THEME = {
   title: 'Sage',
-  banner: '#69874B',
   button: '#38516A',
+  banner: '#69874B',
   accent: '#D7EAFF',
 };
 
@@ -111,21 +112,21 @@ export const IMPACT_THEME = {
 
 export const CAMBRIDGE_THEME = {
   title: 'Cambridge',
-  banner: '#2D494E',
   button: '#5BC0BE',
+  banner: '#2D494E',
   accent: '#DE1A1A',
 };
 
 export const ACUMEN_THEME = {
   title: 'Acumen',
-  banner: '#D7EAFF',
   button: '#79C99E',
+  banner: '#D7EAFF',
   accent: '#3E546A',
 };
 
 export const PIONEER_THEME = {
   title: 'Pioneer',
-  banner: '#B8EBEF',
   button: '#3B6CF6',
+  banner: '#B8EBEF',
   accent: '#F96E46',
 };

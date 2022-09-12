@@ -22,8 +22,8 @@ export default function ThemeSvg({ themeVars }) {
 ThemeSvg.propTypes = {
   themeVars: PropTypes.shape({
     title: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
     banner: PropTypes.string.isRequired,
     accent: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
   }).isRequired,
 };

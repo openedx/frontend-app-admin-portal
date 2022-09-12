@@ -189,8 +189,8 @@ EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
   enterpriseBranding: {
-    primary_color: SCHOLAR_THEME.banner,
-    secondary_color: SCHOLAR_THEME.button,
+    primary_color: SCHOLAR_THEME.button,
+    secondary_color: SCHOLAR_THEME.banner,
     tertiary_color: SCHOLAR_THEME.accent,
   },
   error: null,

@@ -11,9 +11,7 @@ const BrandStyles = ({
 
   return (
     <Helmet>
-      {brandStyles.map(({ key, styles }) => (
-        <style key={key} type="text/css">{styles}</style>
-      ))}
+      <style key={brandStyles.key} type="text/css">{brandStyles.styles}</style>
     </Helmet>
   );
 };
