@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, CardGrid, Dropzone, Image, Toast, useToggle,
+  Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle,
 } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
 import InfoHover from '../../InfoHover';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -13,7 +14,7 @@ import {
 } from '../data/constants';
 
 export const SettingsAppearanceTab = ({
-  enterpriseId, enterpriseBranding,
+  enterpriseId, enterpriseBranding, updatePortalConfiguration,
 }) => {
   const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
@@ -64,8 +65,14 @@ export const SettingsAppearanceTab = ({
     const sendThemeData = async (formData) => {
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
       if (response.status === 204) {
+        const updatedBranding = {
+          logo: uploadedFile || enterpriseBranding.logo,
+          primary_color: theme[0].button,
+          secondary_color: theme[0].banner,
+          tertiary_color: theme[0].accent,
+        };
+        updatePortalConfiguration({ enterpriseBranding: updatedBranding });
         setConfigChangeSuccess(true);
-        window.location.reload();
       } else {
         setConfigChangeSuccess(false);
       }
@@ -88,6 +95,20 @@ export const SettingsAppearanceTab = ({
         Customize the appearance of your learner and administrator edX experiences with your
         organization’s logo and color themes.
       </p>
+      {configChangeSuccess === false && (
+      <Alert
+        variant="danger"
+        icon={Info}
+        onClose={() => setConfigChangeSuccess(null)}
+        dismissible
+        stacked
+      >
+        <Alert.Heading>We&apos;re sorry</Alert.Heading>
+        <p>
+          Something went wrong behind the scenes. Try again later or contact support for help.
+        </p>
+      </Alert>
+      )}
       <h3 className="py-2">
         Logo
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
@@ -115,10 +136,10 @@ export const SettingsAppearanceTab = ({
       )}
 
       <Toast
-        onClose={() => setConfigChangeSuccess(false)}
+        onClose={() => setConfigChangeSuccess(null)}
         show={configChangeSuccess || false}
       >
-        Branding configuration updated successfully.
+        Portal appearance updated successfully.
       </Toast>
       <h3 className="py-2 pt-5">
         Theme
@@ -161,10 +182,12 @@ export const SettingsAppearanceTab = ({
 SettingsAppearanceTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseBranding: PropTypes.shape({
+    logo: PropTypes.string,
     primary_color: PropTypes.string,
     secondary_color: PropTypes.string,
     tertiary_color: PropTypes.string,
   }).isRequired,
+  updatePortalConfiguration: PropTypes.func.isRequired,
 };
 
 export default SettingsAppearanceTab;

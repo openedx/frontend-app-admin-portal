@@ -92,6 +92,7 @@ const SettingsTabs = ({
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
             enterpriseBranding={enterpriseBranding}
+            updatePortalConfiguration={updatePortalConfiguration}
           />
         </Tab>,
       );

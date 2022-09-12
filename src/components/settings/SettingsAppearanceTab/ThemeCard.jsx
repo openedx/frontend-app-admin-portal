@@ -4,22 +4,20 @@ import ThemeSvg from './ThemeSvg';
 import { SCHOLAR_THEME } from '../data/constants';
 
 export default function ThemeCard({
-  themeVars, selected, setTheme, openCustom,
+  themeVars, theme, setTheme, openCustom,
 }) {
   const isCustom = themeVars.title === 'Custom Theme';
   function selectTheme(vars) {
-    setTheme([vars, selected[1]]);
+    setTheme([vars, theme[1]]);
   }
 
   function deleteCustom() {
-    if (selected[0].title === 'Custom Theme') {
+    if (theme[0].title === 'Custom Theme') {
       setTheme([SCHOLAR_THEME, null]);
     } else {
-      setTheme([selected[0], null]);
+      setTheme([theme[0], null]);
     }
   }
-
-  // AFTER DELETE MUST CODE
 
   return (
     <Card style={{ width: '18rem' }} isClickable>
@@ -29,7 +27,7 @@ export default function ThemeCard({
       <Card.Footer className="justify-content-between pt-2.5 pb-0">
         <h3>{themeVars.title}</h3>
         <Form.Radio
-          checked={selected[0].title === themeVars.title}
+          checked={theme[0].title === themeVars.title}
           onChange={() => selectTheme(themeVars)}
           data-testid={`radio-${themeVars.title}`}
           name="theme"
@@ -54,7 +52,7 @@ ThemeCard.propTypes = {
     banner: PropTypes.string.isRequired,
     accent: PropTypes.string.isRequired,
   }).isRequired,
-  selected: PropTypes.arrayOf(
+  theme: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.string.isRequired,
       PropTypes.arrayOf(PropTypes.string.isRequired),

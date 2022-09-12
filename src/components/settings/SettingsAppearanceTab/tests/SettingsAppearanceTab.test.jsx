@@ -36,6 +36,7 @@ const initialStore = {
 const mockStore = configureMockStore([thunk]);
 const getMockStore = aStore => mockStore(aStore);
 const store = getMockStore({ ...initialStore });
+const mockPortalUpdate = jest.fn();
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   updateEnterpriseCustomerBranding: jest.fn(),
@@ -46,7 +47,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -59,7 +64,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -74,7 +83,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -95,7 +108,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -122,7 +139,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -140,7 +161,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
@@ -173,7 +198,11 @@ describe('Portal Appearance Tab', () => {
     render(
       <IntlProvider locale="en">
         <Provider store={store}>
-          <SettingsAppearanceTab enterpriseId={enterpriseId} enterpriseBranding={entepriseBranding} />
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={entepriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
         </Provider>
       </IntlProvider>,
     );
