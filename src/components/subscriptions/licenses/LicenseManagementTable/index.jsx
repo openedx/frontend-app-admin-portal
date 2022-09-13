@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useMemo, useContext,
+  useCallback, useMemo, useContext, useState,
 } from 'react';
 import {
   DataTable,
@@ -7,6 +7,7 @@ import {
   CheckboxFilter,
   useWindowSize,
   breakpoints,
+  Toast,
 } from '@edx/paragon';
 import debounce from 'lodash.debounce';
 import moment from 'moment';
@@ -18,7 +19,6 @@ import {
   PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
 } from '../../data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
-import { ToastsContext } from '../../../Toasts';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
 import DownloadCsvButton from '../../buttons/DownloadCsvButton';
@@ -54,8 +54,8 @@ const selectColumn = {
 };
 
 const LicenseManagementTable = () => {
-  const { addToast } = useContext(ToastsContext);
-
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const { width } = useWindowSize();
   const showFiltersInSidebar = useMemo(() => width > breakpoints.medium.maxWidth, [width]);
 
@@ -174,13 +174,15 @@ const LicenseManagementTable = () => {
   const onRemindSuccess = () => {
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
-    addToast('Users successfully reminded');
+    setToastMessage('Users successfully reminded');
+    setShowToast(true);
   };
   const onRevokeSuccess = () => {
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
-    addToast('Licenses successfully revoked');
+    setToastMessage('Licenses successfully revoked');
+    setShowToast(true);
   };
 
   const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
@@ -298,6 +300,9 @@ const LicenseManagementTable = () => {
           />,
         ]}
       />
+      {toastMessage && (
+      <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
+      )}
     </>
   );
 };

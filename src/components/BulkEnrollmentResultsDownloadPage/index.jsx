@@ -1,21 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { ToastsContext } from '../Toasts';
+import { Toast } from '@edx/paragon';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
 const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
   const { enterpriseSlug, bulkEnrollmentJobId } = useParams();
-  const { addToast } = useContext(ToastsContext);
   const [isLoading, setLoading] = useState(true);
   const [redirectUrl, setRedirectUrl] = useState(null);
   const [error, setError] = useState(null);
   const [notReady, setNotReady] = useState(false);
-
+  const [showToast, setShowToast] = useState(false);
   useEffect(() => {
     if (isLoading) {
       LicenseManagerApiService.fetchBulkEnrollmentJob(enterpriseId, bulkEnrollmentJobId)
@@ -37,16 +36,40 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
     }
   }, [bulkEnrollmentJobId, enterpriseId, isLoading]);
 
+  useEffect(() => {
+    if (notReady || error) {
+      setShowToast(true);
+    }
+  }, [notReady, error]);
+
   if (isLoading) {
     return <EnterpriseAppSkeleton />;
   }
   if (notReady) {
-    addToast('Your download is not ready yet.');
-    return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
+    return (
+      <>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+        >
+          Your download is not ready yet.
+        </Toast>
+        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
+      </>
+    );
   }
   if (error) {
-    addToast('There was a problem with your request.');
-    return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
+    return (
+      <>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+        >
+          There was a problem with your request.
+        </Toast>
+        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
+      </>
+    );
   }
   global.location.href = redirectUrl;
   return <h1>redirecting...</h1>;
