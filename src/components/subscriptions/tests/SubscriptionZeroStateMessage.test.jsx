@@ -6,6 +6,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SubscriptionZeroStateMessage from '../SubscriptionZeroStateMessage';
 import {
   SubscriptionManagementContext,
@@ -23,13 +24,16 @@ jest.mock('../buttons/InviteLearnersButton');
 describe('SubscriptionZeroStateMessage', () => {
   it('should enable the invite learners button if the subscription is active', () => {
     render(
-      <SubscriptionManagementContext detailState={{
-        ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: 1,
-      }}
-      >
-        <SubscriptionZeroStateMessage />
-      </SubscriptionManagementContext>,
+      <IntlProvider locale="en">
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ZERO_STATE,
+          daysUntilExpiration: 1,
+        }}
+        >
+          <SubscriptionZeroStateMessage />
+        </SubscriptionManagementContext>
+      </IntlProvider>,
+
     );
 
     expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toHaveProperty('disabled', false);
@@ -37,13 +41,15 @@ describe('SubscriptionZeroStateMessage', () => {
 
   it('should disable the invite learners button if the subscription has expired', () => {
     render(
-      <SubscriptionManagementContext detailState={{
-        ...SUBSCRIPTION_PLAN_ZERO_STATE,
-        daysUntilExpiration: 0,
-      }}
-      >
-        <SubscriptionZeroStateMessage />
-      </SubscriptionManagementContext>,
+      <IntlProvider locale="en">
+        <SubscriptionManagementContext detailState={{
+          ...SUBSCRIPTION_PLAN_ZERO_STATE,
+          daysUntilExpiration: 0,
+        }}
+        >
+          <SubscriptionZeroStateMessage />
+        </SubscriptionManagementContext>
+      </IntlProvider>,
     );
 
     expect(screen.getByText(INVITE_LEARNERS_BUTTON_TEXT)).toHaveProperty('disabled', true);
@@ -57,11 +63,13 @@ describe('SubscriptionZeroStateMessage', () => {
       forceRefreshUsers,
     } = mockSubscriptionHooks(subscriptionPlan);
     render(
-      <MockSubscriptionContext
-        subscriptionPlan={subscriptionPlan}
-      >
-        <SubscriptionZeroStateMessage />
-      </MockSubscriptionContext>
+      <IntlProvider locale="en">
+        <MockSubscriptionContext
+          subscriptionPlan={subscriptionPlan}
+        >
+          <SubscriptionZeroStateMessage />
+        </MockSubscriptionContext>
+      </IntlProvider>
       ,
     );
 
@@ -71,5 +79,6 @@ describe('SubscriptionZeroStateMessage', () => {
     expect(forceRefreshSubscription).toHaveBeenCalled();
     expect(forceRefreshUsersOverview).toHaveBeenCalled();
     expect(forceRefreshUsers).toHaveBeenCalled();
+    expect(screen.getByText('email addresses were successfully added', { exact: false })).toBeInTheDocument();
   });
 });

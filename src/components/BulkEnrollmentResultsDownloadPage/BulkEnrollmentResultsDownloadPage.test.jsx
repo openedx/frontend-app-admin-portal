@@ -10,7 +10,6 @@ import configureMockStore from 'redux-mock-store';
 
 import { act } from '@testing-library/react';
 
-import { ToastsContext } from '../Toasts';
 import BulkEnrollmentResultsDownloadPage from './index';
 
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
@@ -24,7 +23,6 @@ const initialHistory = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`],
 });
 
-const mockAddToast = jest.fn();
 jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
   default: {
@@ -38,13 +36,11 @@ const BulkEnrollmentResultsDownloadPageWrapper = ({
 }) => (
   <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
     <Router history={history}>
-      <ToastsContext.Provider value={{ addToast: mockAddToast }}>
-        <Route
-          exact
-          path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
-          render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
-        />
-      </ToastsContext.Provider>
+      <Route
+        exact
+        path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
+        render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
+      />
     </Router>
   </Provider>
 );
@@ -82,7 +78,6 @@ describe('<BulkEnrollmentResultsDownloadPage />', () => {
     const history = createMemoryHistory({
       initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`],
     });
-
     await act(async () => {
       mount(<BulkEnrollmentResultsDownloadPageWrapper history={history} />);
     });

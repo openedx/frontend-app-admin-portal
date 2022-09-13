@@ -233,12 +233,7 @@ export default function SettingsLMSTab({
         </span>
       )}
       {toastMessage && (
-        <Toast
-          onClose={() => setShowToast(false)}
-          show={showToast}
-        >
-          {toastMessage}
-        </Toast>
+        <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
       )}
     </div>
   );

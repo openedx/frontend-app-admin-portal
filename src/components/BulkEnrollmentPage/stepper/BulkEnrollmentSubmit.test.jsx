@@ -1,10 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {
-  render, screen, act, cleanup,
+  render, screen, act, cleanup, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BulkEnrollmentSubmit, {
   BulkEnrollmentAlertModal,
   generateSuccessMessage,
@@ -19,7 +20,6 @@ import {
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { clearSelectionAction } from '../data/actions';
-import { ToastsContext } from '../../Toasts/ToastsProvider';
 import { renderWithRouter } from '../../test/testUtils';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { configuration } from '../../../config';
@@ -77,15 +77,15 @@ const bulkEnrollWithCoursesSelectedRows = {
   emails: [[], emailsDispatch],
   courses: [selectedCourses, coursesDispatch],
 };
-const addToast = jest.fn();
 
 // eslint-disable-next-line react/prop-types
 const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) => (
-  <ToastsContext.Provider value={{ addToast }}>
+  <IntlProvider locale="en">
     <BulkEnrollContext.Provider value={bulkEnrollInfo}>
       <BulkEnrollmentSubmit {...props} />
     </BulkEnrollContext.Provider>
-  </ToastsContext.Provider>
+  </IntlProvider>
+
 );
 
 describe('generateSuccessMessage', () => {
@@ -137,7 +137,6 @@ describe('BulkEnrollmentSubmit', () => {
   beforeEach(() => {
     emailsDispatch.mockClear();
     coursesDispatch.mockClear();
-    addToast.mockClear();
     logError.mockClear();
     defaultProps.onEnrollComplete.mockClear();
   });
@@ -291,11 +290,8 @@ describe('BulkEnrollmentSubmit', () => {
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     await userEvent.click(button);
 
-    expect(addToast).toBeCalledTimes(1);
     expect(logError).toBeCalledTimes(0);
-    expect(addToast).toHaveBeenCalledWith(
-      generateSuccessMessage(userEmails.length),
-    );
+    expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
     await act(() => mockPromiseResolve);
   });
 
@@ -314,7 +310,6 @@ describe('BulkEnrollmentSubmit', () => {
     userEvent.click(button);
     await act(() => flushPromises());
 
-    expect(addToast).toBeCalledTimes(0);
     expect(logError).toBeCalledTimes(1);
   });
 
@@ -335,7 +330,6 @@ describe('BulkEnrollmentSubmit', () => {
     // we still get the act warnings.
     await act(() => flushPromises());
     expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument();
-    expect(addToast).toBeCalledTimes(0);
   });
 
   it('alert modal closes when user clicks OK', async () => {
@@ -358,8 +352,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('component calls return to initial step on successful api call', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValueOnce({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -369,7 +362,9 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     await userEvent.click(button);
-    expect(defaultProps.onEnrollComplete).toHaveBeenCalledTimes(1);
-    await act(() => mockPromiseResolve);
+    await waitFor(() => {
+      expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
+      expect(defaultProps.onEnrollComplete).toHaveBeenCalledTimes(1);
+    });
   });
 });

@@ -6,7 +6,6 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
-import { ToastsContext } from '../Toasts';
 import { AnalyticsPage } from './index';
 import AnalyticsApiService from './data/service';
 
@@ -30,13 +29,11 @@ const AnalyticsPageWrapper = ({
   ...rest
 }) => (
   <Router history={history}>
-    <ToastsContext.Provider value={{ addToast: () => {} }}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/analytics"
-        render={routeProps => <AnalyticsPage {...routeProps} {...rest} />}
-      />
-    </ToastsContext.Provider>
+    <Route
+      exact
+      path="/:enterpriseSlug/admin/analytics"
+      render={routeProps => <AnalyticsPage {...routeProps} {...rest} />}
+    />
   </Router>
 );
 
