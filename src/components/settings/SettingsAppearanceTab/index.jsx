@@ -10,7 +10,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import ThemeCard from './ThemeCard';
 import CustomThemeModal from './CustomThemeModal';
 import {
-  ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
+  ACUMEN_THEME, CAMBRIDGE_THEME, CUSTOM_THEME_LABEL, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
 
 export const SettingsAppearanceTab = ({
@@ -20,7 +20,7 @@ export const SettingsAppearanceTab = ({
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(undefined);
-  const [customIsOpen, openCustom, closeCustom] = useToggle(false);
+  const [customModalIsOpen, openCustomModal, closeCustomModal] = useToggle(false);
   const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
 
   function getStartingTheme() {
@@ -32,7 +32,7 @@ export const SettingsAppearanceTab = ({
       }
     }
     const CUSTOM_THEME = {
-      title: 'Custom Theme',
+      title: CUSTOM_THEME_LABEL,
       button: enterpriseBranding.primary_color,
       banner: enterpriseBranding.secondary_color,
       accent: enterpriseBranding.tertiary_color,
@@ -87,7 +87,6 @@ export const SettingsAppearanceTab = ({
       setConfigChangeSuccess(false);
     }
   };
-
   return (
     <>
       <h2 className="py-2">Portal Appearance</h2>
@@ -95,8 +94,8 @@ export const SettingsAppearanceTab = ({
         Customize the appearance of your learner and administrator edX experiences with your
         organization’s logo and color themes.
       </p>
-      {configChangeSuccess === false && (
       <Alert
+        show={configChangeSuccess === false}
         variant="danger"
         icon={Info}
         onClose={() => setConfigChangeSuccess(null)}
@@ -108,7 +107,6 @@ export const SettingsAppearanceTab = ({
           Something went wrong behind the scenes. Try again later or contact support for help.
         </p>
       </Alert>
-      )}
       <h3 className="py-2">
         Logo
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
@@ -130,7 +128,7 @@ export const SettingsAppearanceTab = ({
       {uploadedFile && (
       <p className="image-preview">
         <Image
-          src={window.URL.createObjectURL(uploadedFile)}
+          src={global.URL.createObjectURL(uploadedFile)}
         />
       </p>
       )}
@@ -152,29 +150,34 @@ export const SettingsAppearanceTab = ({
           xl: 3,
         }}
       >
-        <ThemeCard themeVars={SCHOLAR_THEME} selected={theme} setTheme={setTheme} />
-        <ThemeCard themeVars={SAGE_THEME} selected={theme} setTheme={setTheme} />
-        <ThemeCard themeVars={IMPACT_THEME} selected={theme} setTheme={setTheme} />
-        <ThemeCard themeVars={CAMBRIDGE_THEME} selected={theme} setTheme={setTheme} />
-        <ThemeCard themeVars={ACUMEN_THEME} selected={theme} setTheme={setTheme} />
-        <ThemeCard themeVars={PIONEER_THEME} selected={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={SCHOLAR_THEME} theme={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={SAGE_THEME} theme={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={IMPACT_THEME} theme={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={CAMBRIDGE_THEME} theme={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={ACUMEN_THEME} theme={theme} setTheme={setTheme} />
+        <ThemeCard themeVars={PIONEER_THEME} theme={theme} setTheme={setTheme} />
       </CardGrid>
-      <h3 className="py-2 pt-5 mb-0">
-        Custom Theme
+      <h3 className="py-2 pt-5 mb-2">
+        {CUSTOM_THEME_LABEL}
       </h3>
       {theme[1] === null && (
       <p className="mt-0">
         Rather use your own colors?
-        <Button variant="link" onClick={openCustom} className="p-0 pl-1" style={{ verticalAlign: 'top' }}>
+        <Button variant="link" onClick={openCustomModal} className="p-0 pl-1" size="inline">
           Create a custom theme.
         </Button>
       </p>
       )}
       {theme[1] !== null && (
-        <ThemeCard className="mt-1" themeVars={theme[1]} selected={theme} setTheme={setTheme} openCustom={openCustom} />
+        <ThemeCard className="mt-1" themeVars={theme[1]} theme={theme} setTheme={setTheme} openCustom={openCustomModal} />
       )}
-      <CustomThemeModal isOpen={customIsOpen} close={closeCustom} customColors={theme[1]} setTheme={setTheme} />
-      <Button className="d-flex ml-auto" onClick={saveChanges}>Save Changes</Button>
+      <CustomThemeModal
+        isOpen={customModalIsOpen}
+        close={closeCustomModal}
+        customColors={theme[1]}
+        setTheme={setTheme}
+      />
+      <Button className="d-flex ml-auto" onClick={saveChanges}>Save changes</Button>
     </>
   );
 };

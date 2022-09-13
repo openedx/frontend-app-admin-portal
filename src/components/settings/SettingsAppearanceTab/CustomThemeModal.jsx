@@ -4,7 +4,7 @@ import {
   ActionRow, Button, Form, Hyperlink, Icon, ModalDialog,
 } from '@edx/paragon';
 import { InfoOutline } from '@edx/paragon/icons';
-import { HELP_CENTER_BRANDING_LINK } from '../data/constants';
+import { CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK } from '../data/constants';
 
 export default function CustomThemeModal({
   isOpen, close, customColors, setTheme,
@@ -31,7 +31,7 @@ export default function CustomThemeModal({
 
   function setCustom() {
     const CUSTOM_THEME = {
-      title: 'Custom Theme',
+      title: CUSTOM_THEME_LABEL,
       button: (button === '' ? customColors?.button : button),
       banner: (banner === '' ? customColors?.banner : banner),
       accent: (accent === '' ? customColors?.accent : accent),
@@ -51,9 +51,9 @@ export default function CustomThemeModal({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Custom Theme
+          {CUSTOM_THEME_LABEL}
         </ModalDialog.Title>
-        <p className="mt-3">{headerText}</p>
+        <p className="mt-4">{headerText}</p>
       </ModalDialog.Header>
 
       <ModalDialog.Body>
@@ -101,6 +101,7 @@ export default function CustomThemeModal({
             destination={HELP_CENTER_BRANDING_LINK}
             style={{ display: 'contents' }}
             target="_blank"
+            showLaunchIcon={false}
           >
             Enterprise Help Center.
           </Hyperlink>
@@ -130,8 +131,11 @@ CustomThemeModal.defaultProps = {
 CustomThemeModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  customColors: PropTypes.arrayOf(
-    PropTypes.strings,
-  ),
+  customColors: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    banner: PropTypes.string.isRequired,
+    accent: PropTypes.string.isRequired,
+  }),
   setTheme: PropTypes.func.isRequired,
 };

@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 import { useStylesForCustomBrandColors } from '../settings/data/hooks';
 
-const BrandStyles = ({
+function BrandStyles({
   enterpriseBranding,
-}) => {
+}) {
   const brandStyles = useStylesForCustomBrandColors(enterpriseBranding);
 
   return (
@@ -14,7 +14,7 @@ const BrandStyles = ({
       <style key={brandStyles.key} type="text/css">{brandStyles.styles}</style>
     </Helmet>
   );
-};
+}
 
 BrandStyles.defaultProps = {
   enterpriseBranding: null,

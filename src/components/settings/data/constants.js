@@ -89,6 +89,8 @@ export const SUBSIDY_TYPE_LABELS = {
 export const DARK_COLOR = '#454545';
 export const WHITE_COLOR = '#FFFFFF';
 
+export const CUSTOM_THEME_LABEL = 'Custom Theme';
+
 export const SCHOLAR_THEME = {
   title: 'Scholar (Default)',
   button: '#2D494E',
