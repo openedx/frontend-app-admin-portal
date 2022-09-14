@@ -8,6 +8,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { SCHOLAR_THEME } from '../settings/data/constants';
 
 features.SETTINGS_PAGE = true;
 
@@ -64,6 +65,11 @@ describe('<EnterpriseApp />', () => {
     enableLearnerPortal: true,
     enterpriseId: 'uuid',
     enterpriseName: 'test-enterprise',
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   };
 
   const invalidEnterpriseId = {
