@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -19,14 +19,16 @@ import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 
 // eslint-disable-next-line react/function-component-definition
-const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
+const EnterpriseSubsidiesContextProvider = ({ children }) => {
+  const contextValue = useMemo(() => ({
     canManageLearnerCredit: true,
-  }}
-  >
-    {children}
-  </EnterpriseSubsidiesContext.Provider>
-);
+  }), []);
+  return (
+    <EnterpriseSubsidiesContext.Provider value={contextValue}>
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  );
+};
 
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,

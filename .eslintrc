@@ -53,17 +53,7 @@
       "flatTernaryExpressions": false,
       "ignoredNodes": ["TemplateLiteral", "JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXFragment", "JSXOpeningFragment", "JSXClosingFragment", "JSXText", "JSXEmptyExpression", "JSXSpreadChild"]
     }],
-    "import/no-import-module-exports": 0,
-    "camelcase": [2, {"properties": "never"}],
-    "react/jsx-no-constructed-context-values": [
-      "off",
-      {
-        "devDependencies": [
-          "**/*.test.jsx",
-          "**/*.test.js"
-        ]
-      }
-    ]
+    "camelcase": [2, {"properties": "never"}]
   },
   "env": {
     "jest": true

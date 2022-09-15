@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -147,9 +147,11 @@ function SubsidySubsidyRequestsWithRouter({
   store: storeProp,
   subscriptionsData,
 }) {
+  const contextValue = useMemo(() => (
+    { decrementLicenseRequestCount: mockDecrementLicenseRequestCount }), []);
   return (
     <Provider store={storeProp}>
-      <SubsidyRequestsContext.Provider value={{ decrementLicenseRequestCount: mockDecrementLicenseRequestCount }}>
+      <SubsidyRequestsContext.Provider value={contextValue}>
         <SubscriptionContext.Provider value={subscriptionsData}>
           <SubscriptionSubsidyRequests />
         </SubscriptionContext.Provider>

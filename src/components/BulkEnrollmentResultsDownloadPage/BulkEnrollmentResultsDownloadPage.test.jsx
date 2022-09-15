@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
@@ -36,10 +36,11 @@ function BulkEnrollmentResultsDownloadPageWrapper({
   history,
   ...rest
 }) {
+  const contextValue = useMemo(() => ({ addToast: mockAddToast }), []);
   return (
     <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
       <Router history={history}>
-        <ToastsContext.Provider value={{ addToast: mockAddToast }}>
+        <ToastsContext.Provider value={contextValue}>
           <Route
             exact
             path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"

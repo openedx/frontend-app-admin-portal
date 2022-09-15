@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -148,9 +148,10 @@ const mockDecrementCouponCodeRequestCount = jest.fn();
 function ManageRequestsTabWithRouter({
   store: storeProp,
 }) {
+  const contextValue = useMemo(() => ({ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }), []);
   return (
     <Provider store={storeProp}>
-      <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
+      <SubsidyRequestsContext.Provider value={contextValue}>
         <ManageRequestsTab />
       </SubsidyRequestsContext.Provider>
     </Provider>

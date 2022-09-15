@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
@@ -29,9 +29,10 @@ const store = mockStore({
 function AnalyticsPageWrapper({
   ...rest
 }) {
+  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
   return (
     <Router history={history}>
-      <ToastsContext.Provider value={{ addToast: () => {} }}>
+      <ToastsContext.Provider value={contextValue}>
         <Route
           exact
           path="/:enterpriseSlug/admin/analytics"

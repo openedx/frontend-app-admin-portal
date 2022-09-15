@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
+import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import NewSSOConfigForm from '../NewSSOConfigForm';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
@@ -67,6 +68,39 @@ const contextValue = {
   setProviderConfig: mockSetProviderConfig,
   setRefreshBool: jest.fn(),
 };
+
+// eslint-disable-next-line react/prop-types
+function SSOConfigContextWrapper({ storeValue, enterpriseValue }) {
+  const configureContextValue = useMemo(() => ({
+    setCurrentError: jest.fn(),
+    currentError: null,
+    dispatchSsoState: jest.fn(),
+    ssoState: {
+      idp: {
+        metadataURL: '',
+        entityID: '',
+        entryType: '',
+        isDirty: false,
+      },
+      serviceprovider: {
+        isSPConfigured: false,
+      },
+      currentStep: 'configure',
+      refreshBool: false,
+      providerConfig: {
+        id: 1337,
+      },
+    },
+    setProviderConfig: jest.fn(),
+    setRefreshBool: jest.fn(),
+  }), []);
+
+  return (
+    <SSOConfigContext.Provider value={configureContextValue}>
+      <Provider store={storeValue}><NewSSOConfigForm enterpriseId={enterpriseValue} /></Provider>
+    </SSOConfigContext.Provider>
+  );
+}
 
 describe('SAML Config Tab', () => {
   afterEach(() => {
@@ -245,34 +279,8 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
-    const configureContextValue = {
-      setCurrentError: jest.fn(),
-      currentError: null,
-      dispatchSsoState: jest.fn(),
-      ssoState: {
-        idp: {
-          metadataURL: '',
-          entityID: '',
-          entryType: '',
-          isDirty: false,
-        },
-        serviceprovider: {
-          isSPConfigured: false,
-        },
-        currentStep: 'configure',
-        refreshBool: false,
-        providerConfig: {
-          id: 1337,
-        },
-      },
-      setProviderConfig: jest.fn(),
-      setRefreshBool: jest.fn(),
-    };
-
     render(
-      <SSOConfigContext.Provider value={configureContextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
-      </SSOConfigContext.Provider>,
+      <SSOConfigContextWrapper storeValue={store} enterpriseValue={enterpriseId} />,
     );
     expect(
       screen.queryByText(

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -55,10 +55,12 @@ function CouponCodeTabsWrapper({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
 }) {
+  const contextValue = useMemo(() => (
+    { subsidyRequestConfiguration, subsidyRequestsCounts }), [subsidyRequestConfiguration, subsidyRequestsCounts]);
   return (
     <Provider store={store}>
       <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
-        <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
+        <SubsidyRequestsContext.Provider value={contextValue}>
           <CouponCodeTabs />
         </SubsidyRequestsContext.Provider>
       </Route>

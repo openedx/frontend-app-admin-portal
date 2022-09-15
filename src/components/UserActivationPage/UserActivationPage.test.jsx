@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
@@ -19,9 +19,10 @@ function UserActivationPageWrapper({
   history,
   ...rest
 }) {
+  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
   return (
     <Router history={history}>
-      <ToastsContext.Provider value={{ addToast: () => {} }}>
+      <ToastsContext.Provider value={contextValue}>
         <Route
           exact
           path="/:enterpriseSlug/admin/register/activate"
