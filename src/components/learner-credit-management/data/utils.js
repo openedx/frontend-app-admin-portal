@@ -1,8 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from './constants';
-
 /**
  * Transforms offer summary from API for display in the UI, guarding
  * against bad data (e.g., accounting for refunds).
@@ -41,10 +41,15 @@ export const transformOfferSummary = (offerSummary) => {
     percentUtilized,
   };
 };
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 /**
  * Transforms enrollment data from analytics api to fields for display
  * in learner credit allocation table.
+ * Any non-existent enterpriseEnrollmentId will be assigned a 12 digit random uuid number.
+ * Any non-existent userEmail will be assigned as an empty string.
  *
  * @param {array} results List of raw enrollment results from API.
  *
@@ -52,8 +57,8 @@ export const transformOfferSummary = (offerSummary) => {
  */
 export const transformUtilizationTableResults = results => results.map(result => ({
   created: result.created,
-  enterpriseEnrollmentId: result.enterpriseEnrollmentId,
-  userEmail: result.userEmail,
+  enterpriseEnrollmentId: result.enterpriseEnrollmentId === null ? parseInt(uuidv4().replace(/[^\d]+/g, getRandom(0, 9)).slice(0, 12), 10) : result.enterpriseEnrollmentId,
+  userEmail: result.userEmail === null ? '' : result.userEmail,
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
