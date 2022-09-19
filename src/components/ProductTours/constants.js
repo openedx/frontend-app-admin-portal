@@ -7,6 +7,10 @@ export const TOUR_TARGETS = {
   LEARNER_CREDIT,
 };
 
+export const PORTAL_APPEARANCE_TOUR_COOKIE_NAME = 'dismissed-portal-appearance-tour';
+export const PORTAL_APPEARANCE_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.portal-appearance.dismissed';
+export const PORTAL_APPEARANCE_ON_END_EVENT_NAME = 'edx.ui.enterprise.admin-portal.tours.portal-appearance.navigated-to-page';
+
 export const BROWSE_AND_REQUEST_TOUR_COOKIE_NAME = 'dismissed-browse-and-request-tour';
 export const LEARNER_CREDIT_COOKIE_NAME = 'dismissed-learner-credit-tour';
 

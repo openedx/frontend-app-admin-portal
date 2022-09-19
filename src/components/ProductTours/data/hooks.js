@@ -4,12 +4,23 @@ import Cookies from 'universal-cookie';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
+  PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
 } from '../constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 const cookies = new Cookies();
+
+export const usePortalAppearanceTour = ({ enablePortalAppearance }) => {
+  const { enterpriseAppPage } = useParams();
+  const inSettingsPage = enterpriseAppPage === ROUTE_NAMES.settings;
+  const dismissedLearnerCreditTourCookie = cookies.get(PORTAL_APPEARANCE_TOUR_COOKIE_NAME);
+  // Only show tour if feature is enabled, hide cookie is undefined or false or not in the settings page
+  const showPortalAppearanceTour = enablePortalAppearance && !dismissedLearnerCreditTourCookie && !inSettingsPage;
+  const [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled] = useState(showPortalAppearanceTour);
+  return [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled];
+};
 
 export const useBrowseAndRequestTour = ({
   enableLearnerPortal,
