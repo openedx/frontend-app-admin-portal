@@ -53,11 +53,11 @@ export const transformOfferSummary = (offerSummary) => {
 export const transformUtilizationTableResults = results => results.map(result => ({
   created: result.created,
   enterpriseEnrollmentId: result.enterpriseEnrollmentId,
-  userEmail: result.userEmail,
+  userEmail: result.userEmail === null ? '' : result.userEmail,
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
-}));
+})).filter(result => result.enterpriseEnrollmentId !== null);
 
 /**
  * Gets appropriate color variant for the annotated progress bar.
