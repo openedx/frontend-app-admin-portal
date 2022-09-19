@@ -24,8 +24,6 @@ class LmsApiService {
 
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
-  static enterpriseCustomerCatalogsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_catalogs/`;
-
   static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`;
 
   static enterpriseCustomerInviteKeyListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/basic-list/`;
@@ -251,10 +249,6 @@ class LmsApiService {
 
   static createPendingEnterpriseUsers(formData, uuid) {
     return LmsApiService.apiClient().post(`${LmsApiService.createPendingUsersUrl}/${uuid}`, formData);
-  }
-
-  static fetchEnterpriseCustomerCatalogs(enterpriseId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
   }
 
   static markBannerNotificationAsRead(formData) {
