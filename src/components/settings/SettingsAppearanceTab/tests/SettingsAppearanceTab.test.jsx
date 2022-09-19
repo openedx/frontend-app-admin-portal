@@ -174,13 +174,23 @@ describe('Portal Appearance Tab', () => {
       userEvent.click(createCustom);
     });
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
-    userEvent.type(screen.getByLabelText('Button color'), 'bad number');
+    userEvent.type(screen.getByLabelText('Banner color'), 'bad number');
     expect(screen.getByText('Must be hexidecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
-    userEvent.type(screen.getByLabelText('Banner color'), '#023E8A');
+    userEvent.type(screen.getByLabelText('Button color'), '#023E8A');
     userEvent.type(screen.getByLabelText('Accent color'), '#0077b6');
     expect(screen.getByText('Add theme')).toBeDisabled();
 
-    userEvent.type(screen.getByLabelText('Button color'), '#03045e');
+    userEvent.clear(screen.getByLabelText('Banner color'));
+    userEvent.clear(screen.getByLabelText('Button color'));
+
+    userEvent.type(screen.getByLabelText('Banner color'), '#03045e');
+    userEvent.type(screen.getByLabelText('Button color'), '#828282');
+
+    expect(screen.getByText('Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below.')).toBeInTheDocument();
+
+    // user shouldn't be able to add a theme with a bad hex color, but will be able to add one that
+    // doesn't meet AA accessibility standards
+
     act(() => {
       userEvent.click(screen.getByText('Add theme'));
     });

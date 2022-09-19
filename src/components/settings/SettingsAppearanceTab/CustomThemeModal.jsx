@@ -1,30 +1,51 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Color from 'color';
+import ColorContrastChecker from 'color-contrast-checker';
 import {
   ActionRow, Button, Form, Hyperlink, Icon, ModalDialog,
 } from '@edx/paragon';
 import { InfoOutline } from '@edx/paragon/icons';
-import { CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK } from '../data/constants';
+import {
+  CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK, DARK_COLOR, WHITE_COLOR,
+} from '../data/constants';
 
 export default function CustomThemeModal({
   isOpen, close, customColors, setTheme,
 }) {
   const [button, setButton] = useState('');
   const [buttonValid, setButtonValid] = useState(true);
+  const [buttonWarning, setButtonWarning] = useState('');
   const [banner, setBanner] = useState('');
   const [bannerValid, setBannerValid] = useState(true);
+  const [bannerWarning, setBannerWarning] = useState('');
   const [accent, setAccent] = useState('');
   const [accentValid, setAccentValid] = useState(true);
 
   const headerText = 'Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.';
   const infoText = 'More details about color appearance in the admin and learner experiences and best practices for selecting accessible colors are available in the ';
   const invalidMessage = 'Must be hexidecimal starting with # (Ex: #1e0b57)';
+  const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
+
   const validHex = new RegExp('^#([A-Fa-f0-9]{6})$');
 
-  function validateColor(input, setter) {
+  const a11yChecker = new ColorContrastChecker();
+  const whiteColor = Color(WHITE_COLOR);
+  const darkColor = Color(DARK_COLOR);
+  const getA11yTextColor = color => (color.isDark() ? whiteColor : darkColor);
+
+  function validateColor(field, input, setter, warningSetter) {
     if (!input.match(validHex)) {
       setter(false);
     } else {
+      const inputColor = Color(input);
+      const textColor = getA11yTextColor(inputColor);
+      // checker params -> background, foreground, font size
+      if (field === 'button' && !a11yChecker.isLevelAA(input, textColor.hex(), 18)) {
+        warningSetter(true);
+      } else if (field === 'banner' && !a11yChecker.isLevelAA(input, textColor.hex(), 40)) {
+        warningSetter(true);
+      }
       setter(true);
     }
   }
@@ -64,11 +85,16 @@ export default function CustomThemeModal({
               isInvalid={!buttonValid}
               onChange={(e) => {
                 setButton(e.target.value);
-                validateColor(e.target.value, setButtonValid);
+                validateColor('button', e.target.value, setButtonValid, setButtonWarning);
               }}
               defaultValue={customColors?.button}
             />
-            {!buttonValid && (<Form.Control.Feedback type="invalid">{invalidMessage}</Form.Control.Feedback>)}
+            {!buttonValid && (
+              <Form.Control.Feedback type="invalid">{invalidMessage}</Form.Control.Feedback>
+            )}
+            {buttonValid && buttonWarning && (
+              <Form.Control.Feedback type="warning">{warningMessage}</Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group controlId="custom-banner">
             <Form.Control
@@ -76,11 +102,16 @@ export default function CustomThemeModal({
               isInvalid={!bannerValid}
               onChange={(e) => {
                 setBanner(e.target.value);
-                validateColor(e.target.value, setBannerValid);
+                validateColor('banner', e.target.value, setBannerValid, setBannerWarning);
               }}
               defaultValue={customColors?.banner}
             />
-            {!bannerValid && (<Form.Control.Feedback type="invalid">{invalidMessage}</Form.Control.Feedback>)}
+            {!bannerValid && (
+              <Form.Control.Feedback type="invalid">{invalidMessage}</Form.Control.Feedback>
+            )}
+            {bannerValid && bannerWarning && (
+              <Form.Control.Feedback type="warning">{warningMessage}</Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group controlId="custom-accent">
             <Form.Control
@@ -88,7 +119,7 @@ export default function CustomThemeModal({
               isInvalid={!accentValid}
               onChange={(e) => {
                 setAccent(e.target.value);
-                validateColor(e.target.value, setAccentValid);
+                validateColor('accent', e.target.value, setAccentValid, null);
               }}
               defaultValue={customColors?.accent}
             />
