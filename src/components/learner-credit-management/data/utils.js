@@ -48,8 +48,7 @@ function getRandom(min, max) {
 /**
  * Transforms enrollment data from analytics api to fields for display
  * in learner credit allocation table.
- * Any non-existent enterpriseEnrollmentId will be assigned a 12 digit random uuid number.
- * Any non-existent userEmail will be assigned as an empty string.
+ * A uuid is added to each enrollment to be used as a key for the table.
  *
  * @param {array} results List of raw enrollment results from API.
  *
@@ -62,6 +61,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
+  uuid: uuidv4(),
 }));
 
 /**
