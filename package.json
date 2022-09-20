@@ -66,6 +66,7 @@
     "regenerator-runtime": "0.13.7",
     "universal-cookie": "4.0.4",
     "url": "0.11.0",
+    "uuid": "9.0.0",
     "validator": "10.11.0"
   },
   "peerDependencies": {
