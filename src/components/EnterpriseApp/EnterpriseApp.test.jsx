@@ -9,6 +9,7 @@ import { mount } from 'enzyme';
 import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { SCHOLAR_THEME } from '../settings/data/constants';
 
 features.SETTINGS_PAGE = true;
 features.REPORTING_CONFIGURATIONS = true;
@@ -16,6 +17,8 @@ features.CODE_MANAGEMENT = true;
 features.ANALYTICS = true;
 features.SAML_CONFIGURATION = true;
 features.EXTERNAL_LMS_CONFIGURATION = true;
+features.SETTINGS_PAGE_LMS_TAB = true;
+features.FEATURE_SSO_SETTINGS_TAB = true;
 
 const EnterpriseSubsidiesContextProvider = ({ children }) => (
   <EnterpriseSubsidiesContext.Provider value={{
@@ -42,7 +45,7 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{ children }</EnterpriseSubsidiesContextProvider>,
+  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
@@ -56,7 +59,6 @@ describe('<EnterpriseApp />', () => {
       url: '',
       params: {
         enterpriseSlug: 'foo',
-        page: 'settings',
       },
     },
     location: {
@@ -71,8 +73,18 @@ describe('<EnterpriseApp />', () => {
     enableLearnerPortal: true,
     enterpriseId: 'uuid',
     enterpriseName: 'test-enterprise',
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   };
 
+  const invalidEnterpriseId = {
+    ...basicProps,
+    enterpriseId: null,
+    enterpriseName: null,
+  };
   beforeEach(() => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
@@ -90,6 +102,12 @@ describe('<EnterpriseApp />', () => {
     render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
     expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
   });
+
+  it('should show error page if enterprise name is invalid', () => {
+    render(<EnterpriseApp {...invalidEnterpriseId} />);
+    expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
+  });
+
   it('should test sidebar click on props change', () => {
     const wrapper = mount(<EnterpriseApp {...basicProps} />);
     const instance = wrapper.instance();
@@ -131,6 +149,3 @@ describe('<EnterpriseApp />', () => {
     expect(screen.getByText('/admin/lmsintegrations')).toBeInTheDocument();
   });
 });
-
-// describe('Test Integrations', () => {
-// });

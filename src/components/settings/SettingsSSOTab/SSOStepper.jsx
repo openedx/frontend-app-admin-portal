@@ -36,6 +36,7 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const [showValidatedText, setShowValidatedText] = useState(false);
   const [idpNextButtonDisabled, setIdpNextButtonDisabled] = useState(false);
   const [configNextButtonDisabled, setConfigNextButtonDisabled] = useState(false);
+  const [isUsingSap, setIsUsingSap] = React.useState(false);
 
   const {
     metadataURL,
@@ -55,9 +56,44 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
 
   async function sendData(type) {
     const configFormData = new FormData();
-    Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));
+    const newConfigValues = { ...configValues };
+    // Values we want all provider configs to by default contain
     configFormData.append('enterprise_customer_uuid', enterpriseId);
     configFormData.append('enabled', true);
+    configFormData.append('debug_mode', true);
+    configFormData.append('skip_hinted_login_dialog', true);
+    configFormData.append('skip_registration_form', true);
+    configFormData.append('skip_email_verification', true);
+    configFormData.append('send_to_registration_first', true);
+    configFormData.append('automatic_refresh_enabled', true);
+
+    // Add all our config values to the form data
+    Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));
+
+    // Depending on whether the user is using SAP or not as an identity provider, we need to update
+    // both the form data payload, as well as the config values.
+    if (isUsingSap) {
+      configFormData.append('identity_provider_type', 'sap_success_factors');
+      configFormData.set('max_session_length', '');
+      delete newConfigValues.max_session_length;
+      configFormData.set('attr_user_permanent_id', 'loggedinuserid');
+      delete newConfigValues.attr_user_permanent_id;
+      configFormData.set('attr_full_name', '');
+      delete newConfigValues.attr_full_name;
+      configFormData.set('attr_first_name', '');
+      delete newConfigValues.attr_first_name;
+      configFormData.set('attr_last_name', '');
+      delete newConfigValues.attr_last_name;
+      configFormData.set('attr_email', 'NameID');
+      delete newConfigValues.attr_email;
+      configFormData.set('attr_username', 'loggedinuserid');
+      delete newConfigValues.attr_username;
+    } else {
+      configFormData.append('identity_provider_type', 'standard_saml_provider');
+      configFormData.set('other_settings', '');
+      delete newConfigValues.other_settings;
+    }
+    setConfigValues(newConfigValues);
     try {
       await LmsApiService.updateProviderConfig(configFormData, providerConfig.id).then((response) => {
         if (type === 'update') {
@@ -117,6 +153,8 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               setRefreshBool={setRefreshBool}
               setFormUpdated={setFormUpdated}
               setConfigNextButtonDisabled={setConfigNextButtonDisabled}
+              isUsingSap={isUsingSap}
+              setIsUsingSap={setIsUsingSap}
             />
           </Stepper.Step>
 
@@ -188,7 +226,10 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
               Cancel
             </Button>
             <Stepper.ActionRow.Spacer />
-            <Button disabled={configNextButtonDisabled} onClick={() => updateConfig()}>Next<ArrowForward className="ml-2" /></Button>
+            <Button disabled={configNextButtonDisabled} onClick={() => updateConfig()}>
+              Next
+              <ArrowForward className="ml-2" />
+            </Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey="connect">
             <Button variant="outline-primary" onClick={() => setCurrentStep('configure')}>

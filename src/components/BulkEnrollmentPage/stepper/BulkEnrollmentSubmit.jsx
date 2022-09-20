@@ -10,6 +10,7 @@ import {
   useToggle,
   MailtoLink,
   Stack,
+  Toast,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
@@ -26,7 +27,6 @@ import {
 } from './constants';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
-import { ToastsContext } from '../../Toasts';
 import { clearSelectionAction } from '../data/actions';
 import { configuration } from '../../../config';
 
@@ -89,7 +89,8 @@ const BulkEnrollmentSubmit = ({
     emails: [selectedEmails, emailsDispatch],
     courses: [selectedCourses, coursesDispatch],
   } = useContext(BulkEnrollContext);
-  const { addToast } = useContext(ToastsContext);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const courseKeys = selectedCourses.map(
     ({ original, id }) => original?.advertised_course_run?.key || id,
@@ -106,14 +107,15 @@ const BulkEnrollmentSubmit = ({
       notify: checked,
     };
 
-    return LicenseManagerApiService.licenseBulkEnroll(
+    LicenseManagerApiService.licenseBulkEnroll(
       enterpriseId,
       subscription.uuid,
       options,
     ).then(() => {
+      setShowToast(true);
+      setToastMessage(generateSuccessMessage(selectedEmails.length));
       coursesDispatch(clearSelectionAction());
       emailsDispatch(clearSelectionAction());
-      addToast(generateSuccessMessage(selectedEmails.length));
       onEnrollComplete();
     }).catch((err) => {
       logError(err);
@@ -148,6 +150,9 @@ const BulkEnrollmentSubmit = ({
           {FINAL_BUTTON_TEXT}
         </Button>
       </Stack>
+      {toastMessage && (
+        <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
+      )}
     </>
   );
 };

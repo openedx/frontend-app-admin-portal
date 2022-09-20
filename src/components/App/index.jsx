@@ -14,7 +14,6 @@ import AuthenticatedEnterpriseApp from '../AuthenticatedEnterpriseApp';
 import AdminRegisterPage from '../AdminRegisterPage';
 import UserActivationPage from '../UserActivationPage';
 import NotFoundPage from '../NotFoundPage';
-import { ToastsProvider, Toasts } from '../Toasts';
 import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
@@ -57,65 +56,62 @@ const AppWrapper = () => {
 
   return (
     <AppProvider store={store}>
-      <ToastsProvider>
-        <Helmet
-          titleTemplate="%s - edX Admin Portal"
-          defaultTitle="edX Admin Portal"
+      <Helmet
+        titleTemplate="%s - edX Admin Portal"
+        defaultTitle="edX Admin Portal"
+      />
+      {isMaintenanceAlertOpen && (
+        <SystemWideWarningBanner>
+          {config.MAINTENANCE_ALERT_MESSAGE}
+        </SystemWideWarningBanner>
+      )}
+      <Header />
+      <Switch>
+        <AuthenticatedPageRoute
+          path="/enterprises"
+          render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
+          authenticatedAPIClient={apiClient}
+          redirect={`${process.env.BASE_URL}/enterprises`}
         />
-        <Toasts />
-        {isMaintenanceAlertOpen && (
-          <SystemWideWarningBanner>
-            {config.MAINTENANCE_ALERT_MESSAGE}
-          </SystemWideWarningBanner>
-        )}
-        <Header />
-        <Switch>
-          <AuthenticatedPageRoute
-            path="/enterprises"
-            render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-            authenticatedAPIClient={apiClient}
-            redirect={`${process.env.BASE_URL}/enterprises`}
-          />
-          <PageRoute
-            exact
-            path="/:enterpriseSlug/admin/register"
-            component={AdminRegisterPage}
-          />
-          <PageRoute
-            exact
-            path="/:enterpriseSlug/admin/register/activate"
-            component={UserActivationPage}
-          />
-          <PageRoute
-            path="/:enterpriseSlug"
-            authenticatedAPIClient={apiClient}
-            redirect={process.env.BASE_URL}
-            render={({
-              match: {
-                url: baseUrl,
-              },
-            }) => (
-              <Switch>
-                <Route
-                  path="/:enterpriseSlug/admin/:enterpriseAppPage"
-                  component={AuthenticatedEnterpriseApp}
-                />
-                <Redirect
-                  to={`${baseUrl}/admin/${ROUTE_NAMES.learners}`}
-                />
-              </Switch>
-            )}
-          />
-          <AuthenticatedPageRoute
-            path="/"
-            render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-            authenticatedAPIClient={apiClient}
-            redirect={process.env.BASE_URL}
-          />
-          <PageRoute component={NotFoundPage} />
-        </Switch>
-        <Footer />
-      </ToastsProvider>
+        <PageRoute
+          exact
+          path="/:enterpriseSlug/admin/register"
+          component={AdminRegisterPage}
+        />
+        <PageRoute
+          exact
+          path="/:enterpriseSlug/admin/register/activate"
+          component={UserActivationPage}
+        />
+        <PageRoute
+          path="/:enterpriseSlug"
+          authenticatedAPIClient={apiClient}
+          redirect={process.env.BASE_URL}
+          render={({
+            match: {
+              url: baseUrl,
+            },
+          }) => (
+            <Switch>
+              <Route
+                path="/:enterpriseSlug/admin/:enterpriseAppPage"
+                component={AuthenticatedEnterpriseApp}
+              />
+              <Redirect
+                to={`${baseUrl}/admin/${ROUTE_NAMES.learners}`}
+              />
+            </Switch>
+          )}
+        />
+        <AuthenticatedPageRoute
+          path="/"
+          render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
+          authenticatedAPIClient={apiClient}
+          redirect={process.env.BASE_URL}
+        />
+        <PageRoute component={NotFoundPage} />
+      </Switch>
+      <Footer />
     </AppProvider>
   );
 };

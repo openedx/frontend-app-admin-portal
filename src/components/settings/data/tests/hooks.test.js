@@ -1,5 +1,5 @@
 import Router from 'react-router-dom';
-import { renderHook, act } from '@testing-library/react-hooks/dom';
+import { renderHook } from '@testing-library/react-hooks/dom';
 import { waitFor } from '@testing-library/react';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -34,7 +34,7 @@ describe('settings hooks', () => {
       jest.resetAllMocks();
     });
 
-    test('success', () => {
+    test('success', async () => {
       const expectedData = [
         { uuid: 'test-uuid-1' },
         { uuid: 'test-uuid-2' },
@@ -46,16 +46,14 @@ describe('settings hooks', () => {
       const queryParams = new URLSearchParams();
       queryParams.append('enterprise_customer_uuid', TEST_ENTERPRISE_UUID);
 
-      let result;
-      act(() => {
-        ({ result } = renderHook(() => useLinkManagement(TEST_ENTERPRISE_UUID)));
-        expect(result.current).toStrictEqual({
-          links: [],
-          loadingLinks: true,
-          refreshLinks: expect.any(Function),
-        });
+      const { result } = renderHook(() => useLinkManagement(TEST_ENTERPRISE_UUID));
+      expect(result.current).toStrictEqual({
+        links: [],
+        loadingLinks: true,
+        refreshLinks: expect.any(Function),
       });
-      waitFor(() => {
+
+      await waitFor(() => {
         expect(result.current).toStrictEqual({
           links: expectedData,
           loadingLinks: false,

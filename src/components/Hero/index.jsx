@@ -6,7 +6,7 @@ import { configuration } from '../../config';
 const Hero = ({ title }) => {
   const edxWhiteSemiTransparentLogo = configuration.LOGO_WHITE_URL;
   return (
-    <div className="hero">
+    <div className="hero hero-brand">
       <div>
         <h1>{title}</h1>
       </div>

@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { Button, Row, Col } from '@edx/paragon';
+import {
+  Button, Row, Col, Toast,
+} from '@edx/paragon';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
-import { ToastsContext } from '../Toasts';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
@@ -21,7 +22,8 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
     subscription,
     forceRefreshDetailView,
   } = useContext(SubscriptionDetailContext);
-  const { addToast } = useContext(ToastsContext);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const hasLicensesAllocatedOrRevoked = subscription.licenses?.allocated > 0 || subscription.licenses?.revoked > 0;
   const shouldShowInviteLearnersButton = (
@@ -53,7 +55,8 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
                     forceRefreshDetailView();
-                    addToast(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setToastMessage(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setShowToast(true);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}
                 />
@@ -94,6 +97,12 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           </div>
         </Col>
       </Row>
+      <Toast
+        onClose={() => setShowToast(false)}
+        show={showToast}
+      >
+        {toastMessage}
+      </Toast>
     </>
   );
 };

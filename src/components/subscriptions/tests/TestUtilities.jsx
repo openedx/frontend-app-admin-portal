@@ -9,7 +9,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import SubscriptionData from '../SubscriptionData';
 import { ASSIGNED } from '../data/constants';
-import { ToastsContext } from '../../Toasts';
 import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
 import * as hooks from '../data/hooks';
 
@@ -160,16 +159,14 @@ export const SubscriptionManagementContext = ({ children, detailState, store }) 
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={{ addToast: () => {} }}>
-          <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-            <SubscriptionDetailContextProvider
-              subscription={testSubscriptionPlanGenerator(detailState)}
-              hasMultipleSubscriptions={false}
-            >
-              {children}
-            </SubscriptionDetailContextProvider>
-          </SubscriptionData>
-        </ToastsContext.Provider>
+        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+          <SubscriptionDetailContextProvider
+            subscription={testSubscriptionPlanGenerator(detailState)}
+            hasMultipleSubscriptions={false}
+          >
+            {children}
+          </SubscriptionDetailContextProvider>
+        </SubscriptionData>
       </Provider>
     </Router>
   );
@@ -360,16 +357,14 @@ export const MockSubscriptionContext = ({
 }) => (
   <Router history={initialHistory}>
     <Provider store={store}>
-      <ToastsContext.Provider value={{ addToast: () => {} }}>
-        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-          <SubscriptionDetailContextProvider
-            subscription={subscriptionPlan}
-            hasMultipleSubscriptions={false}
-          >
-            {children}
-          </SubscriptionDetailContextProvider>
-        </SubscriptionData>
-      </ToastsContext.Provider>
+      <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+        <SubscriptionDetailContextProvider
+          subscription={subscriptionPlan}
+          hasMultipleSubscriptions={false}
+        >
+          {children}
+        </SubscriptionDetailContextProvider>
+      </SubscriptionData>
     </Provider>
   </Router>
 );

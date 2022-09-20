@@ -288,16 +288,44 @@ const channelMapping = {
 
 const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
 
+const createArrayFromValue = (value) => {
+  const values = [];
+  if (Array.isArray(value)) {
+    return value;
+  }
+  values.push(value);
+  return values;
+};
+
+const isDefined = (value) => {
+  const values = createArrayFromValue(value);
+  return values.every(item => item !== undefined);
+};
+
+const isNull = (value) => {
+  const values = createArrayFromValue(value);
+  return values.every(item => item === null);
+};
+
+const isDefinedAndNotNull = (value) => {
+  const values = createArrayFromValue(value);
+  return values.every(item => isDefined(item) && !isNull(item));
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
   channelMapping,
+  createArrayFromValue,
   formatPercentage,
   formatPassedTimestamp,
   formatTimestamp,
   removeTrailingSlash,
   updateUrl,
   getPageOptionsFromUrl,
+  isDefined,
+  isDefinedAndNotNull,
+  isNull,
   isTriggerKey,
   isRequired,
   isValidEmail,

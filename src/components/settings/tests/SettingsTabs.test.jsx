@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   screen,
   render,
@@ -11,13 +12,18 @@ import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
-import { SETTINGS_TAB_LABELS } from '../data/constants';
+import { SCHOLAR_THEME, SETTINGS_TAB_LABELS } from '../data/constants';
+
 import { features } from '../../../config';
 import '@testing-library/jest-dom/extend-expect';
 
 const ACCESS_MOCK_CONTENT = 'access';
 const LMS_MOCK_CONTENT = 'lms';
 const SSO_MOCK_CONTENT = 'sso';
+
+jest.mock('../../../data/services/LmsApiService', () => ({
+  updateEnterpriseCustomerBranding: jest.fn(),
+}));
 
 jest.mock(
   '../SettingsAccessTab/',
@@ -44,6 +50,11 @@ const initialStore = {
     enableIntegratedCustomerLearnerPortalSearch: true,
     enableSamlConfigurationScreen: false,
     enableUniversalLink: false,
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   },
 };
 
@@ -53,13 +64,15 @@ const defaultStore = getMockStore({ ...initialStore });
 
 // eslint-disable-next-line react/prop-types
 const SettingsTabsWithRouter = ({ store = defaultStore }) => (
-  <MemoryRouter initialEntries={['settings/']}>
-    <Provider store={store}>
-      <Route path="settings/">
-        <SettingsTabs />
-      </Route>
-    </Provider>
-  </MemoryRouter>
+  <IntlProvider locale="en">
+    <MemoryRouter initialEntries={['settings/']}>
+      <Provider store={store}>
+        <Route path="settings/">
+          <SettingsTabs />
+        </Route>
+      </Provider>
+    </MemoryRouter>
+  </IntlProvider>
 );
 
 describe('<SettingsTabs />', () => {
@@ -67,6 +80,7 @@ describe('<SettingsTabs />', () => {
     features.EXTERNAL_LMS_CONFIGURATION = true;
     features.FEATURE_SSO_SETTINGS_TAB = true;
     features.SETTINGS_PAGE_LMS_TAB = true;
+    features.SETTINGS_PAGE_APPEARANCE_TAB = true;
 
     jest.clearAllMocks();
   });
@@ -99,6 +113,12 @@ describe('<SettingsTabs />', () => {
     features.FEATURE_SSO_SETTINGS_TAB = false;
     render(<SettingsTabsWithRouter />);
     expect(screen.queryByText(SETTINGS_TAB_LABELS.sso)).not.toBeInTheDocument();
+  });
+
+  test('Appearance tab is not rendered if FEATURE_SSO_SETTINGS_TAB = false', () => {
+    features.SETTINGS_PAGE_APPEARANCE_TAB = false;
+    render(<SettingsTabsWithRouter />);
+    expect(screen.queryByText(SETTINGS_TAB_LABELS.appearance)).not.toBeInTheDocument();
   });
 
   test('Clicking on a tab changes content via router', async () => {
