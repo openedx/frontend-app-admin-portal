@@ -41,9 +41,6 @@ export const transformOfferSummary = (offerSummary) => {
     percentUtilized,
   };
 };
-function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 /**
  * Transforms enrollment data from analytics api to fields for display
@@ -56,8 +53,8 @@ function getRandom(min, max) {
  */
 export const transformUtilizationTableResults = results => results.map(result => ({
   created: result.created,
-  enterpriseEnrollmentId: result.enterpriseEnrollmentId === null ? parseInt(uuidv4().replace(/[^\d]+/g, getRandom(0, 9)).slice(0, 12), 10) : result.enterpriseEnrollmentId,
-  userEmail: result.userEmail === null ? '' : result.userEmail,
+  enterpriseEnrollmentId: result.enterpriseEnrollmentId,
+  userEmail: result.userEmail,
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
