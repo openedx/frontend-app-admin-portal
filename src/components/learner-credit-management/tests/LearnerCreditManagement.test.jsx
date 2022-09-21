@@ -139,6 +139,7 @@ describe('<LearnerCreditManagement />', () => {
         courseTitle: 'edX Demonstration Course',
         courseListPrice: 100,
         enrollmentDate: '2022-01-01',
+        uuid: '123abc-abc123',
       };
       const subsidiesContextValue = {
         offers: [mockOffer],

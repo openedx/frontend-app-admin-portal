@@ -1,8 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from './constants';
-
 /**
  * Transforms offer summary from API for display in the UI, guarding
  * against bad data (e.g., accounting for refunds).
@@ -45,6 +45,7 @@ export const transformOfferSummary = (offerSummary) => {
 /**
  * Transforms enrollment data from analytics api to fields for display
  * in learner credit allocation table.
+ * A uuid is added to each enrollment to be used as a key for the table.
  *
  * @param {array} results List of raw enrollment results from API.
  *
@@ -57,6 +58,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
+  uuid: uuidv4(),
 }));
 
 /**
