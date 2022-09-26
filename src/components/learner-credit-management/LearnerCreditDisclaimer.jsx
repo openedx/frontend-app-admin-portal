@@ -10,7 +10,7 @@ const LearnerCreditDisclaimer = ({ offerLastUpdated }) => (
     <Col className="col-8 pl-2">
       Data last updated on {offerLastUpdated}. This data reflects
       the current active learner credit only and does not include
-      other spend by your organization (codes, manual enrollments, past offers).
+      other spend by your organization (codes, manual enrollments, past learner credit plans).
     </Col>
   </Stack>
 );
