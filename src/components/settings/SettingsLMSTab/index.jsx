@@ -142,20 +142,29 @@ export default function SettingsLMSTab({
 
   return (
     <div>
-      <div className="d-flex">
-        <h2 className="py-2">Learning Management System Configuration</h2>
+      <h2 className="py-2">Learning Platform Integrations
         <Hyperlink
+
           destination={HELP_CENTER_LINK}
-          className="btn btn-outline-primary ml-auto my-2"
+          className="btn btn-outline-primary side-button"
           target="_blank"
         >
-          Help Center
+          Help Center: Integrations
         </Hyperlink>
-      </div>
-      <p>
-        Enabling a learning management system for your edX account allows quick
-        access to the catalog
-      </p>
+        <div className="mt-3" style={{ pointerEvents: null }}>
+          {!showNewConfigButtons && !configsLoading && !config && (
+          <Button
+            variant="primary"
+            className="side-button"
+            iconBefore={Add}
+            disabled={displayNeedsSSOAlert && !hasSSOConfig}
+            onClick={showCreateConfigCards}
+          >
+            New
+          </Button>
+          )}
+        </div>
+      </h2>
       {displayNeedsSSOAlert && !hasSSOConfig && (
         <Alert
           className="mr-6 sso-alert-modal-margin"
@@ -175,7 +184,6 @@ export default function SettingsLMSTab({
       )}
       {configsExist && (
         <span>
-          <h4 className="mt-5 mb-4">Existing configurations</h4>
           <ExistingLMSCardDeck
             configData={existingConfigsData}
             editExistingConfig={editExistingConfig}
@@ -185,22 +193,9 @@ export default function SettingsLMSTab({
         </span>
       )}
       {configsLoading && (<span data-testid="skeleton"><Skeleton className="mb-4" count={2} height={20} /></span>)}
-      {!showNewConfigButtons && !configsLoading && !config && (
-        <Button
-          variant="primary"
-          className="mr-6"
-          iconBefore={Add}
-          size="lg"
-          block
-          disabled={displayNeedsSSOAlert && !hasSSOConfig}
-          onClick={showCreateConfigCards}
-        >
-          New configuration
-        </Button>
-      )}
       {showNewConfigButtons && !configsLoading && (
         <span>
-          <h4 className="mt-5">New configurations</h4>
+          <h4 className="mt-1">New configurations</h4>
           <p className="mb-4">Click on a card to start a new configuration</p>
 
           <CardGrid

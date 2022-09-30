@@ -6,6 +6,7 @@
 
 .lms-icon {
   max-width: 35px;
+  height: 100%;
 }
 
 .lms-card-hover {
@@ -48,6 +49,13 @@
   }
 }
 
+.side-button {
+  float: right;
+  margin-right: 1rem;
+  right: 0;
+  width: 300px;
+}
+
 .sso-alert-modal-margin {
   margin-right: 15% !important;
 }
@@ -58,8 +66,12 @@
   white-space: nowrap;
 }
 
-.existing-lms-card-width {
+.existing-lms-card {
   width: 70rem !important;
+  .pgn__card-header .pgn__card-header-content{
+    margin-top: 0 !important;
+    justify-content: center;
+  }
 }
 
 

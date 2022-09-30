@@ -2,21 +2,11 @@ import React, { useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import {
-  Badge, Card, CardGrid, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover, useToggle,
+  CardGrid, useToggle,
 } from '@edx/paragon';
-import {
-  Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
-} from '@edx/paragon/icons';
-import { channelMapping } from '../../../utils';
-import handleErrors from '../utils';
-import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
 import ConfigError from '../ConfigError';
-
-const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-const INCOMPLETE = 'incomplete';
-const ACTIVE = 'active';
-const INACTIVE = 'inactive';
+import ErrorReportingModal from './ErrorReporting/ErrorReportingModal';
+import ExistingCard from './ExistingCard';
 
 const ExistingLMSCardDeck = ({
   configData,
@@ -25,61 +15,16 @@ const ExistingLMSCardDeck = ({
   onClick,
 }) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
+  const [errorReportIsOpen, openReport, closeReport] = useToggle(false);
+  const [reportConfig, setReportConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
 
-  const toggleConfig = async (id, channelType, toggle) => {
-    const configOptions = {
-      active: toggle,
-      enterprise_customer: enterpriseCustomerUuid,
-    };
-    let err;
-    try {
-      await channelMapping[channelType].update(configOptions, id);
-    } catch (error) {
-      err = handleErrors(error);
-    }
-    if (err) {
-      setErrorModalText(errorToggleModalText);
-      openError();
-    } else {
-      onClick(TOGGLE_SUCCESS_LABEL);
-    }
-  };
-
-  const deleteConfig = async (id, channelType) => {
-    let err;
-    try {
-      await channelMapping[channelType].delete(id);
-    } catch (error) {
-      err = handleErrors(error);
-    }
-    if (err) {
-      setErrorModalText(errorDeleteModalText);
-      openError();
-    } else {
-      onClick(DELETE_SUCCESS_LABEL);
-    }
-  };
-
-  const numIncorrectFields = (fields) => {
-    const { missing } = fields[0];
-    const { incorrect } = fields[1];
-    let totalNum = 0;
-    if (missing.includes('refresh_token')) {
-      totalNum = -1;
-    }
-    totalNum = totalNum + missing.length + incorrect.length;
-    let strongText;
-    if (totalNum === 0) {
-      return <span>Please <strong>authorize your LMS</strong> to submit this form.</span>;
-    }
-    if (totalNum === 1) {
-      strongText = `${totalNum} field`;
-    } else { strongText = `${totalNum} fields`; }
-    return <span>Amend <strong>{strongText}</strong> to submit this form.</span>;
-  };
+  // Map the existing config data to individual cards
 
   const getStatus = (config) => {
+    const INCOMPLETE = 'incomplete';
+    const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
     if (!isEmpty(config.isValid[0].missing)
         || !isEmpty(config.isValid[1].incorrect)) {
       return INCOMPLETE;
@@ -91,119 +36,32 @@ const ExistingLMSCardDeck = ({
     return INACTIVE;
   };
 
-  const alphabetizeList = (list) => list.sort((listA, listB) => {
-    if (listA.displayName < listB.displayName) {
-      return -1;
-    }
-    if (listA.displayName > listB.displayName) {
-      return 1;
-    }
-    return 0;
-  });
-
-  // Map the existing config data to individual cards
-  const listItems = alphabetizeList(configData).map((config) => (
-    <Card
-      tabIndex="0"
-      className="p-2.5 existing-lms-card-width"
-      key={config.channelCode + config.id}
-    >
-      <Card.Header
-        className="lms-card-content"
-        actions={(
-          <Dropdown>
-            <Dropdown.Toggle
-              id="dropdown-toggle-with-iconbutton"
-              data-testid={`existing-lms-config-card-dropdown-${config.id}`}
-              as={IconButton}
-              src={MoreVert}
-              iconAs={Icon}
-              variant="primary"
-              alt="Actions dropdown"
-            />
-            <Dropdown.Menu>
-              {getStatus(config) === INACTIVE && (
-                <div className="d-flex">
-                  <Dropdown.Item
-                    onClick={() => toggleConfig(config.id, config.channelCode, true)}
-                    data-testid="dropdown-enable-item"
-                  >
-                    <PlayCircleFilled /> Enable
-                  </Dropdown.Item>
-                </div>
-              )}
-              {getStatus(config) === ACTIVE && (
-                <div className="d-flex">
-                  <Dropdown.Item
-                    onClick={() => toggleConfig(config.id, config.channelCode, false)}
-                    data-testid="dropdown-disable-item"
-                  >
-                    <RemoveCircle /> Disable
-                  </Dropdown.Item>
-                </div>
-              )}
-              {getStatus(config) === INCOMPLETE && (
-                <div className="d-flex">
-                  <Dropdown.Item
-                    onClick={() => deleteConfig(config.id, config.channelCode)}
-                    data-testid="dropdown-delete-item"
-                  >
-                    <Delete /> Delete
-                  </Dropdown.Item>
-                </div>
-              )}
-              <Dropdown.Item
-                onClick={() => editExistingConfig(config, config.channelCode)}
-              >
-                <Edit /> Edit
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
-        title={(
-          <div className="ml-1 d-flex">
-            <Image
-              className="lms-icon mr-2"
-              src={channelMapping[config.channelCode].icon}
-            />
-            <div className="lms-card-title-overflow">
-              <span>{config.displayName}</span>
-            </div>
-          </div>
-        )}
-      />
-      <Card.Body>
-        <h3 className="mb-6 mt-4 ml-4">
-          {/* Only incomplete badges will show hover */}
-          <OverlayTrigger
-            trigger={['hover', 'focus']}
-            key={`${config.channelCode + config.id }hover`}
-            placement="top"
-            overlay={(
-              <Popover className="popover-positioned-top" id="inc-popover">
-                <Popover.Title as="h5">Next Steps</Popover.Title>
-                <Popover.Content>
-                  {numIncorrectFields(config.isValid)}
-                </Popover.Content>
-              </Popover>
-            )}
-          >
-            <span>
-              {getStatus(config) === INCOMPLETE && (
-                <Badge variant="secondary">Incomplete</Badge>
-              )}
-            </span>
-          </OverlayTrigger>
-
-          {getStatus(config) === ACTIVE && (
-            <Badge variant="success">Active</Badge>
-          )}
-          {getStatus(config) === INACTIVE && (
-            <Badge variant="light">Inactive</Badge>
-          )}
-        </h3>
-      </Card.Body>
-    </Card>
+  // const listItems = timeSort(configData).map((config) => (
+  const listActive = configData.filter(config => getStatus(config) === 'active').map(config => (
+    <ExistingCard
+      config={config}
+      editExistingConfig={editExistingConfig}
+      enterpriseCustomerUuid={enterpriseCustomerUuid}
+      onClick={onClick}
+      openError={openError}
+      openReport={openReport}
+      setReportConfig={setReportConfig}
+      setErrorModalText={setErrorModalText}
+      getStatus={getStatus}
+    />
+  ));
+  const listInactive = configData.filter(config => getStatus(config) !== 'active').map(config => (
+    <ExistingCard
+      config={config}
+      editExistingConfig={editExistingConfig}
+      enterpriseCustomerUuid={enterpriseCustomerUuid}
+      onClick={onClick}
+      openError={openError}
+      openReport={openReport}
+      setReportConfig={setReportConfig}
+      setErrorModalText={setErrorModalText}
+      getStatus={getStatus}
+    />
   ));
 
   return (
@@ -213,17 +71,34 @@ const ExistingLMSCardDeck = ({
         close={closeError}
         configTextOverride={errorModalText}
       />
+      <ErrorReportingModal
+        isOpen={errorReportIsOpen}
+        close={closeReport}
+        config={reportConfig}
+      />
+      <h4 className="mt-1 mb-4">Active</h4>
       <CardGrid
         className="mr-6"
         columnSizes={{
-          xs: 7,
-          s: 7,
-          m: 6,
-          l: 5,
-          xl: 4,
+          xs: 9,
+          s: 9,
+          m: 9,
+          l: 7,
+          xl: 7,
         }}
-      >
-        {listItems}
+      >{listActive}
+      </CardGrid>
+      <h4 className="mt-1 mb-4">Inactive</h4>
+      <CardGrid
+        className="mr-6"
+        columnSizes={{
+          xs: 9,
+          s: 9,
+          m: 9,
+          l: 7,
+          xl: 7,
+        }}
+      >{listInactive}
       </CardGrid>
     </span>
   );

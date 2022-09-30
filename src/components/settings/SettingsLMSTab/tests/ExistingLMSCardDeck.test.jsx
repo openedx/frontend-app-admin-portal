@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import ExistingLMSCardDeck from '../ExistingLMSCardDeck';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -61,31 +62,14 @@ const needsRefreshTokenConfigData = [
   },
 ];
 
-const multipleConfigData = [
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'barfoo',
-  },
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'foobar',
-  },
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'ayylmao',
-  },
-];
-
 describe('<ExistingLMSCardDeck />', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
+  });
+
   it('renders active config card', () => {
     render(
       <ExistingLMSCardDeck
@@ -170,11 +154,8 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    expect(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`)).toBeInTheDocument();
-    userEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
 
-    expect(screen.getByTestId('dropdown-enable-item')).toBeInTheDocument();
-    userEvent.click(screen.getByTestId('dropdown-enable-item'));
+    userEvent.click(screen.getByText('Enable'));
     const expectedConfigOptions = {
       active: true,
       enterprise_customer: enterpriseCustomerUuid,
@@ -211,23 +192,19 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('authorize your LMS'))
       .toBeInTheDocument();
   });
-  it('alphabetizes existing LMS config cards by display name', async () => {
+  it('only shows sync logs to admins', () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: false,
+    });
     render(
       <ExistingLMSCardDeck
-        configData={multipleConfigData}
+        configData={configData}
         editExistingConfig={mockEditExistingConfigFn}
         onClick={mockOnClick}
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    await waitFor(() => {
-      const html = document.body.innerHTML;
-      const a = html.search('ayylmao');
-      const b = html.search('barfoo');
-      const c = html.search('foobar');
-      expect(a).toBeLessThan(b);
-      expect(a).toBeLessThan(c);
-      expect(b).toBeLessThan(c);
-    });
+
+    expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
   });
 });
