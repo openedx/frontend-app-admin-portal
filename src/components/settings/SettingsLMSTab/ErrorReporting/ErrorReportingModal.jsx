@@ -5,7 +5,9 @@ import {
 } from '@edx/paragon';
 import ContentMetadataTable from './ContentMetadataTable';
 
-function ErrorReportingModal({ isOpen, close, config }) {
+function ErrorReportingModal({
+  isOpen, close, config, enterpriseCustomerUuid,
+}) {
   const [key, setKey] = useState('contentMetadata');
 
   return (
@@ -34,7 +36,7 @@ function ErrorReportingModal({ isOpen, close, config }) {
             <Tab eventKey="contentMetadata" title="Content Metadata">
               <h4 className="mt-4">Most recent data transmission</h4>
               From edX for Business to {config?.displayName}
-              <ContentMetadataTable />
+              <ContentMetadataTable enterpriseCustomerUuid={enterpriseCustomerUuid} config={config} />
             </Tab>
             <Tab eventKey="learnerActivity" title="Learner Activity">
               Learner Activity.
@@ -67,9 +69,11 @@ ErrorReportingModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   config: PropTypes.shape({
+    id: PropTypes.number,
     channelCode: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
   }),
+  enterpriseCustomerUuid: PropTypes.string.isRequired,
 };
 
 export default ErrorReportingModal;

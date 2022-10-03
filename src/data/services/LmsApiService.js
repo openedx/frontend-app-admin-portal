@@ -262,6 +262,10 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/configs/?${queryParams.toString()}`);
   }
 
+  static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  }
+
   /**
    * Creates EnterpriseCustomerInviteKey linked to an enterprise
    * @param {string} enterpriseCustomerUuid Enterprise to set link

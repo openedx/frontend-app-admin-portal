@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import * as timeago from 'timeago.js';
 
 import {
   DataTable, TextFilter,
 } from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
 import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
+import LmsApiService from '../../../../data/services/LmsApiService';
 
-function ContentMetadataTable() {
+function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
+  const [data, setData] = useState([]);
   timeago.register('time-locale');
+
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      const response = await LmsApiService.fetchContentMetadataItemTransmission(
+        enterpriseCustomerUuid, config.channelCode, config.id,
+      );
+      return response;
+    };
+
+    fetchData()
+      .then((response) => {
+        setData(response.data.results);
+      })
+      .catch((err) => {
+        logError(err);
+      });
+  }, [config.channelCode, config.id, enterpriseCustomerUuid]);
 
   const getSyncStatus = (status) => (
     <>
@@ -28,29 +50,8 @@ function ContentMetadataTable() {
         isFilterable
         defaultColumnValues={{ Filter: TextFilter }}
         isPaginated
-        itemCount={3}
-        data={[
-          {
-            content_title: 'edX Demonstration Course',
-            content_id: 'DemoX',
-            sync_status: 'okay',
-            sync_last_attempted_at: '2022-09-21T19:27:18.127225Z',
-            friendly_status_message: null,
-          },
-          {
-            content_title: 'edX Demonstration Course 3',
-            content_id: 'DemoX-3',
-            sync_status: 'pending',
-            sync_last_attempted_at: '2022-09-27T19:27:18.127225Z',
-            friendly_status_message: null,
-          },
-          {
-            content_title: 'edX Demonstration Course 2',
-            content_id: 'DemoX-2',
-            sync_status: 'error',
-            sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
-            friendly_status_message: null,
-          }]}
+        itemCount={data?.length}
+        data={data}
         columns={[
           {
             Header: 'Course',
@@ -82,5 +83,13 @@ function ContentMetadataTable() {
     </div>
   );
 }
+
+ContentMetadataTable.propTypes = {
+  config: PropTypes.shape({
+    id: PropTypes.number,
+    channelCode: PropTypes.string.isRequired,
+  }).isRequired,
+  enterpriseCustomerUuid: PropTypes.string.isRequired,
+};
 
 export default ContentMetadataTable;

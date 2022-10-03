@@ -75,6 +75,7 @@ const ExistingLMSCardDeck = ({
         isOpen={errorReportIsOpen}
         close={closeReport}
         config={reportConfig}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
       />
       <h4 className="mt-1 mb-4">Active</h4>
       <CardGrid
