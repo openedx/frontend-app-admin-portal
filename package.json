@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "The frontend-app-admin-portal is a frontend that provides branded learning experiences.",
   "repository": "https://github.com/openedx/frontend-app-admin-portal",
+  "browserslist": ["extends @edx/browserslist-config"],
   "scripts": {
     "build": "fedx-scripts webpack",
     "build:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && fedx-scripts webpack",
