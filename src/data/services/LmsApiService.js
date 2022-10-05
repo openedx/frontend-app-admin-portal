@@ -22,6 +22,8 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
+  static lmsSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
   static notificationReadUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/read_notification`;
@@ -258,6 +260,10 @@ class LmsApiService {
   static fetchEnterpriseCustomerIntegrationConfigs(options) {
     const queryParams = new URLSearchParams(options);
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/configs/?${queryParams.toString()}`);
+  }
+
+  static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
   }
 
   /**
