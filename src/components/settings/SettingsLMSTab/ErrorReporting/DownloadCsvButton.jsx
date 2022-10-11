@@ -5,12 +5,13 @@ import {
   Toast, StatefulButton, Icon, Spinner, useToggle,
 } from '@edx/paragon';
 import { Download, Check } from '@edx/paragon/icons';
+import { isStrictlyArray } from './utils';
 
 const DownloadCsvButton = ({ data }) => {
   const [buttonState, setButtonState] = useState('pageLoading');
 
   useEffect(() => {
-    if (data !== null && data.length !== 0) {
+    if (data && data.length) {
       setButtonState('default');
     }
   }, [data]);
@@ -24,7 +25,7 @@ const DownloadCsvButton = ({ data }) => {
   };
 
   const getCsvData = () => {
-    if (!Array.isArray(data) || !data.every((p) => typeof p === 'object' && p !== null)) {
+    if (isStrictlyArray(data)) {
       return null;
     }
     const heading = Object.keys(data[0]).join(',');
