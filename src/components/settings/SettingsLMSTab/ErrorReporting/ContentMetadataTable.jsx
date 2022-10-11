@@ -8,13 +8,13 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import DownloadCsvButton from './DownloadCsvButton';
 
 function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   const [data, setData] = useState([]);
   timeago.register('time-locale');
 
   useEffect(() => {
-    // declare the data fetching function
     const fetchData = async () => {
       const response = await LmsApiService.fetchContentMetadataItemTransmission(
         enterpriseCustomerUuid, config.channelCode, config.id,
@@ -40,7 +40,7 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   );
 
   const getSyncTime = (time) => (
-    <div>{timeago.format(time, 'time-locale')}</div>
+    <>{time !== null && (<div>{timeago.format(time, 'time-locale')}</div>)}</>
   );
 
   return (
@@ -52,6 +52,10 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
         isPaginated
         itemCount={data?.length}
         data={data}
+        // eslint-disable-next-line no-unused-vars
+        tableActions={(i) => (
+          <DownloadCsvButton data={data} />
+        )}
         columns={[
           {
             Header: 'Course',
@@ -84,11 +88,15 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   );
 }
 
+ContentMetadataTable.defaultProps = {
+  config: null,
+};
+
 ContentMetadataTable.propTypes = {
   config: PropTypes.shape({
     id: PropTypes.number,
     channelCode: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   enterpriseCustomerUuid: PropTypes.string.isRequired,
 };
 

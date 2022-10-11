@@ -1,16 +1,23 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  act, render, screen, waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
-import ExistingLMSCardDeck from '../ExistingLMSCardDeck';
-import LmsApiService from '../../../../data/services/LmsApiService';
+import ExistingLMSCardDeck from '../../ExistingLMSCardDeck';
+import LmsApiService from '../../../../../data/services/LmsApiService';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
 const mockEditExistingConfigFn = jest.fn();
 const mockOnClick = jest.fn();
+
+// file-saver mocks
+jest.mock('file-saver', () => ({ saveAs: jest.fn() }));
+// eslint-disable-next-line func-names
+global.Blob = function (content, options) { return ({ content, options }); };
 
 const configData = [
   {
@@ -106,5 +113,33 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('Demo3')).toBeInTheDocument();
     expect(screen.getByText('Error')).toBeInTheDocument();
+  });
+  test('csv download works', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(syncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    userEvent.click(screen.queryByText('View sync history'));
+    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
+
+    // Expect to be in the default state
+    expect(screen.queryByText('Download history')).toBeInTheDocument();
+
+    // Click the button
+    await act(async () => {
+      const input = screen.getByText('Download history');
+      userEvent.click(input);
+    });
+    // Expect to have updated the state to complete
+    expect(screen.queryByText('Downloaded')).toBeInTheDocument();
   });
 });
