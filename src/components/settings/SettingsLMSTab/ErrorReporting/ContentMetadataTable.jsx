@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import * as timeago from 'timeago.js';
-
 import {
   DataTable, TextFilter,
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import DownloadCsvButton from './DownloadCsvButton';
+import { getSyncStatus, getSyncTime } from './utils';
 
 function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   const [data, setData] = useState([]);
-  timeago.register('time-locale');
 
   useEffect(() => {
-    // declare the data fetching function
     const fetchData = async () => {
       const response = await LmsApiService.fetchContentMetadataItemTransmission(
         enterpriseCustomerUuid, config.channelCode, config.id,
@@ -31,18 +28,6 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
       });
   }, [config.channelCode, config.id, enterpriseCustomerUuid]);
 
-  const getSyncStatus = (status) => (
-    <>
-      {status === 'okay' && (<><CheckCircle className="text-success-600 mr-2" />Success</>)}
-      {status === 'error' && (<><Error className="text-danger-500 mr-2" /> Error</>)}
-      {status === 'pending' && (<><Sync className="mr-2" /> Pending</>)}
-    </>
-  );
-
-  const getSyncTime = (time) => (
-    <div>{timeago.format(time, 'time-locale')}</div>
-  );
-
   return (
     <div className="pt-4">
       <DataTable
@@ -52,6 +37,10 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
         isPaginated
         itemCount={data?.length}
         data={data}
+        // eslint-disable-next-line no-unused-vars
+        tableActions={[
+          <DownloadCsvButton data={data} />,
+        ]}
         columns={[
           {
             Header: 'Course',
@@ -84,11 +73,15 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   );
 }
 
+ContentMetadataTable.defaultProps = {
+  config: null,
+};
+
 ContentMetadataTable.propTypes = {
   config: PropTypes.shape({
     id: PropTypes.number,
     channelCode: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   enterpriseCustomerUuid: PropTypes.string.isRequired,
 };
 
