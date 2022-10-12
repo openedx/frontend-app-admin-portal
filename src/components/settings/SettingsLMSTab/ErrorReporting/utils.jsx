@@ -4,10 +4,7 @@ import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 timeago.register('time-locale');
 
 export function isStrictlyArray(data) {
-  if (!Array.isArray(data) || !data.every((p) => typeof p === 'object' && p !== null)) {
-    return false;
-  }
-  return true;
+  return !Array.isArray(data) || !data.every((p) => typeof p === 'object' && p !== null);
 }
 
 export function getSyncStatus(status) {
