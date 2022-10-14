@@ -227,7 +227,7 @@ export class BaseCodeReminderModal extends React.Component {
         >
           <ModalDialog.Header>
             <ModalDialog.Title>
-              Invite Learners
+              {this.renderTitle()}
             </ModalDialog.Title>
           </ModalDialog.Header>
           <ModalDialog.Body>
