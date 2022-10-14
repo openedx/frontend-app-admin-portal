@@ -90,7 +90,7 @@ const initialProps = {
   enterpriseSlug: 'bearsRus',
   setEmailAddress: () => {},
   enterpriseUuid: 'foo',
-  createPendingEnterpriseUsers: () => {},
+  createPendingEnterpriseUsers: () => { },
 };
 
 const mockStore = configureMockStore([thunk]);
@@ -134,7 +134,6 @@ const CodeAssignmentModalWrapper = (props) => (
   </MemoryRouter>
 );
 /* eslint-enable react/prop-types */
-
 describe('CodeAssignmentModal component', () => {
   it('displays a modal', () => {
     render(<CodeAssignmentModalWrapper />);

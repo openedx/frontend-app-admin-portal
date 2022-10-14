@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import {
+  Button, Icon, ModalDialog, ActionRow,
+} from '@edx/paragon';
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
@@ -214,35 +216,51 @@ export class BaseCodeReminderModal extends React.Component {
     } = this.state;
 
     return (
-      <>
-        <Modal
-          ref={this.modalRef}
-          dialogClassName="code-reminder"
-          title={this.renderTitle()}
-          body={this.renderBody()}
-          buttons={[
-            <Button
-              key="remind-submit-btn"
-              disabled={submitting}
-              className="code-remind-save-btn"
-              onClick={handleSubmit(this.handleModalSubmit)}
-            >
-              <>
-                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Remind
-              </>
-            </Button>,
-            <SaveTemplateButton
-              key="save-remind-template-btn"
-              templateType={REMIND_MODE}
-              setMode={this.setMode}
-              handleSubmit={handleSubmit}
-            />,
-          ]}
+      <div ref={this.modalRef}>
+        <ModalDialog
+
+          isOpen
           onClose={onClose}
-          open
-        />
-      </>
+          className="code-reminder"
+          hasCloseButton
+
+        >
+          <ModalDialog.Header>
+            <ModalDialog.Title>
+              Invite Learners
+            </ModalDialog.Title>
+          </ModalDialog.Header>
+          <ModalDialog.Body>
+            <div className="p-2">
+              {this.renderBody()}
+            </div>
+          </ModalDialog.Body>
+          <ModalDialog.Footer>
+            <ActionRow>
+              <ModalDialog.CloseButton variant="link">
+                Cancel
+              </ModalDialog.CloseButton>
+              <Button
+                key="remind-submit-btn"
+                disabled={submitting}
+                className="code-remind-save-btn"
+                onClick={handleSubmit(this.handleModalSubmit)}
+              >
+                <>
+                  {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                  Remind
+                </>
+              </Button>,
+              <SaveTemplateButton
+                key="save-remind-template-btn"
+                templateType={REMIND_MODE}
+                setMode={this.setMode}
+                handleSubmit={handleSubmit}
+              />,
+            </ActionRow>
+          </ModalDialog.Footer>
+        </ModalDialog>
+      </div>
     );
   }
 }

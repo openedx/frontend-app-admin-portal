@@ -114,13 +114,13 @@ describe('CodeRevokeModalWrapper', () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
 
     const wrapper = mount(<CodeRevokeModalWrapper data={data} />);
-    expect(wrapper.find('.modal-title').text()).toEqual(couponTitle);
+    expect(wrapper.find('.pgn__modal-title').text()).toEqual(couponTitle);
 
     expect(wrapper.find('.assignment-details p.code').text()).toEqual(`Code: ${data.code}`);
     expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);
 
-    expect(wrapper.find('.modal-body form h3').text()).toEqual('Email Template');
-    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    expect(wrapper.find('.pgn__modal-body-content form h3').text()).toEqual('Email Template');
+    wrapper.find('.pgn__modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
   });
 
@@ -133,7 +133,7 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
-    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.pgn__modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });
 
@@ -149,7 +149,7 @@ describe('CodeRevokeModalWrapper', () => {
       })}
     />);
 
-    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.pgn__modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     const expectedData = codeRevokeRequestData(2);
     delete expectedData.base_enterprise_url;
     expect(spy).toHaveBeenCalledWith(couponId, expectedData);
@@ -164,7 +164,7 @@ describe('CodeRevokeModalWrapper', () => {
     />);
 
     expect(wrapper.find('.bulk-selected-codes').exists()).toBeFalsy();
-    wrapper.find('.modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    wrapper.find('.pgn__modal-footer .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
     expect(spy).not.toHaveBeenCalled();
   });
 
