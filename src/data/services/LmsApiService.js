@@ -124,15 +124,6 @@ class LmsApiService {
     return LmsApiService.apiClient().post(LmsApiService.providerDataSyncUrl, formData);
   }
 
-  static fetchSamlConfigurations() {
-    const samlConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/saml_configuration/`;
-    return LmsApiService.apiClient().get(samlConfigUrl);
-  }
-
-  static fetchMoodleConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static postNewMoodleConfig(formData) {
     return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/`, formData);
   }
@@ -147,10 +138,6 @@ class LmsApiService {
 
   static fetchSingleCanvasConfig(configId) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${configId}/`);
-  }
-
-  static fetchCanvasConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewCanvasConfig(formData) {
@@ -169,10 +156,6 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/global-configuration/`);
   }
 
-  static fetchBlackboardConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static fetchSingleBlackboardConfig(configId) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`);
   }
@@ -189,10 +172,6 @@ class LmsApiService {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`);
   }
 
-  static fetchSuccessFactorsConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static postNewSuccessFactorsConfig(formData) {
     return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/`, formData);
   }
@@ -203,10 +182,6 @@ class LmsApiService {
 
   static deleteSuccessFactorsConfig(configId) {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/${configId}/`);
-  }
-
-  static fetchDegreedConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewDegreedConfig(formData) {
@@ -231,10 +206,6 @@ class LmsApiService {
 
   static deleteDegreed2Config(configId) {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/degreed2/configuration/${configId}/`);
-  }
-
-  static fetchCornerstoneConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewCornerstoneConfig(formData) {

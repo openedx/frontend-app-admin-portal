@@ -278,20 +278,6 @@ describe('<Sidebar />', () => {
     expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
   });
 
-  it('hides settings link if the settings page has no visible tabs.', () => {
-    const store = mockStore({
-      ...initialState,
-      portalConfiguration: {
-        enableLearnerPortal: false,
-      },
-    });
-
-    features.SETTINGS_PAGE = true;
-
-    render(<SidebarWrapper store={store} />);
-    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
-  });
-
   it('renders manage learner credit link if the canManageLearnerCredit = true.', () => {
     const store = mockStore({
       ...initialState,

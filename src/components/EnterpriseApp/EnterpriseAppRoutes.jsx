@@ -5,14 +5,12 @@ import PropTypes from 'prop-types';
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../CodeManagement';
 import RequestCodesPage from '../RequestCodesPage';
-import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
-import LmsConfigurations from '../../containers/LmsConfigurations';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
@@ -27,9 +25,6 @@ const EnterpriseAppRoutes = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
-  enableSamlConfigurationPage,
-  enableLmsConfigurationPage,
-  enableSettingsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
 
@@ -90,36 +85,16 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      {enableSamlConfigurationPage && (
-        <Route
-          key="saml-configuration"
-          exact
-          path={`${baseUrl}/admin/${ROUTE_NAMES.samlConfiguration}`}
-          component={SamlProviderConfiguration}
-        />
-      )}
-
-      {enableLmsConfigurationPage && (
-        <Route
-          key="lms-integrations"
-          exact
-          path={`${baseUrl}/admin/${ROUTE_NAMES.lmsIntegrations}`}
-          component={LmsConfigurations}
-        />
-      )}
-
       <Route
         exact
         path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollmentResults}/:bulkEnrollmentJobId`}
         component={BulkEnrollmentResultsDownloadPage}
       />
 
-      {enableSettingsPage && (
-        <Route
-          path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
-          component={SettingsPage}
-        />
-      )}
+      <Route
+        path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+        component={SettingsPage}
+      />
 
       {canManageLearnerCredit && (
         <Route
@@ -143,9 +118,6 @@ EnterpriseAppRoutes.propTypes = {
   enableReportingPage: PropTypes.bool.isRequired,
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
-  enableSamlConfigurationPage: PropTypes.bool.isRequired,
-  enableLmsConfigurationPage: PropTypes.bool.isRequired,
-  enableSettingsPage: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;

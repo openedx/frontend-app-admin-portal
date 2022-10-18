@@ -3,7 +3,7 @@ import { Form, Hyperlink } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { connect } from 'react-redux';
-import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
+import { createSAMLURLs } from '../utils';
 import { updateServiceProviderConfigured } from '../data/actions';
 import { SSOConfigContext } from '../SSOConfigContext';
 

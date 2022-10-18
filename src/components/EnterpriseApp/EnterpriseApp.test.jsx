@@ -90,11 +90,6 @@ describe('<EnterpriseApp />', () => {
     expect(screen.getByText('/admin/settings'));
   });
 
-  it('should hide settings page if there are no visible tabs', () => {
-    render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
-    expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
-  });
-
   it('should show error page if enterprise name is invalid', () => {
     render(<EnterpriseApp {...invalidEnterpriseId} />);
     expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
