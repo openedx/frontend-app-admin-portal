@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Hyperlink } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
@@ -7,6 +7,7 @@ import { HELP_CENTER_SAML_LINK } from '../data/constants';
 
 const NewSSOConfigForm = () => {
   const { ssoState: { currentError } } = useContext(SSOConfigContext);
+  const [isWarningOpen, setisWarningOpen] = useState(true);
   return (
     <div className="sso-create-form mt-4.5">
       <span>
@@ -20,6 +21,8 @@ const NewSSOConfigForm = () => {
         stacked
         dismissible
         icon={WarningFilled}
+        show={isWarningOpen}
+        onClose={() => setisWarningOpen(false)}
         actions={[
           <Hyperlink
             destination={HELP_CENTER_SAML_LINK}
