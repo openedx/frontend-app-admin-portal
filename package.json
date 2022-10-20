@@ -20,6 +20,7 @@
   },
   "license": "AGPL-3.0",
   "dependencies": {
+    "dash-embedded-component": "file:packages/dash-embedded-component-2.0.2.tgz",
     "@babel/plugin-transform-runtime": "7.12.1",
     "@edx/brand": "npm:@edx/brand-openedx@1.1.0",
     "@edx/frontend-enterprise-catalog-search": "3.1.0",

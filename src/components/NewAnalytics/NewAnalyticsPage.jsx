@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import { DashApp } from 'dash-embedded-component';
 import Hero from '../Hero';
+import { configuration } from '../../config';
 
-const PAGE_TITLE = 'New Analytics';
+const PAGE_TITLE = 'Plotly Analytics';
 
 // eslint-disable-next-line no-unused-vars
 function NewAnalyticsPage({ enterpriseSlug, enterpriseId }) {
@@ -13,7 +15,12 @@ function NewAnalyticsPage({ enterpriseSlug, enterpriseId }) {
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <iframe name="frame-id" src="https://dashdemo.sandbox.edx.org/" title="New Analytics" width="100%" height="100%" />
+      <h1>Embedded Dash Application</h1>
+      <DashApp
+        config={{
+          url_base_pathname: configuration.PLOTLY_SERVER_URL,
+        }}
+      />
     </>
   );
 }

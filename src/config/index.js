@@ -33,6 +33,7 @@ const configuration = {
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
   USE_API_CACHE: process.env.USE_API_CACHE,
+  PLOTLY_SERVER_URL: 'https://enterprise-plotly.edx.org/enterprise-admin-analytics/',
 };
 
 const features = {
