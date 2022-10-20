@@ -1,12 +1,12 @@
+import { act, screen, render } from '@testing-library/react';
 import React from 'react';
-import { mount } from 'enzyme';
+
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import { AnalyticsPage } from './index';
 import AnalyticsApiService from './data/service';
 
@@ -24,7 +24,6 @@ const initialState = {
     enterpriseBranding: {
       secondary_color: '#9DE0AD',
     },
-
   },
 };
 const store = mockStore({
@@ -36,7 +35,7 @@ const AnalyticsPageWrapper = () => (
       <Route
         exact
         path="/:enterpriseSlug/admin/analytics"
-        render={routeProps => <AnalyticsPage {...routeProps} {...store} />}
+        render={(routeProps) => <AnalyticsPage {...routeProps} {...store} />}
       />
     </Router>
   </Provider>
@@ -51,10 +50,10 @@ describe('<AnalyticsPage />', () => {
       data: 'tableau-token',
     }));
     getAuthenticatedUser.mockReturnValue(null);
-    const wrapper = mount(<AnalyticsPageWrapper />);
-
-    // verify that the loading skeleton appears during redirect
-    expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
+    act(() => {
+      const { getByText } = render(<AnalyticsPageWrapper />);
+      expect(getByText('Analytics')).toBeTruthy();
+    });
     expect(global.location.href).toBeTruthy();
   });
 
@@ -66,8 +65,28 @@ describe('<AnalyticsPage />', () => {
       username: 'edx',
       roles: ['enterprise_admin:*'],
     });
-    mount(<AnalyticsPageWrapper />);
+    act(() => {
+      render(<AnalyticsPageWrapper />);
+    });
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/analytics`;
     expect(history.location.pathname).toEqual(expectedRedirectRoute);
+  });
+
+  it('shows maintenence message on /admin/analytics when Tableau service is down', async () => {
+    AnalyticsApiService.fetchTableauToken.mockImplementation(() => Promise.resolve({
+      data: '-1',
+    }));
+    getAuthenticatedUser.mockReturnValue({
+      username: 'edx',
+      roles: ['enterprise_admin:*'],
+    });
+    await act(async () => {
+      await render(<AnalyticsPageWrapper />);
+    });
+    expect(
+      screen.getByText(
+        'We are updating our servers! We apologize for the interruption.',
+      ),
+    ).toBeTruthy();
   });
 });
