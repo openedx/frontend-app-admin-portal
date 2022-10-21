@@ -33,6 +33,7 @@ const configuration = {
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
   USE_API_CACHE: process.env.USE_API_CACHE,
+  PLOTLY_SERVER_URL: 'https://enterprise-plotly.edx.org/enterprise-admin-analytics/',
 };
 
 const features = {
@@ -48,6 +49,7 @@ const features = {
   SETTINGS_PAGE_LMS_TAB: process.env.FEATURE_SETTINGS_PAGE_LMS_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_LMS_TAB'),
   SETTINGS_PAGE_APPEARANCE_TAB: process.env.FEATURE_SETTINGS_PAGE_APPEARANCE_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_APPEARANCE_TAB'),
   FEATURE_SSO_SETTINGS_TAB: process.env.FEATURE_SSO_SETTINGS_TAB || hasFeatureFlagEnabled('SSO_SETTINGS_TAB'),
+  PLOTLY_ANALYTICS: process.env.PLOTLY_ANALYTICS || hasFeatureFlagEnabled('PLOTLY_ANALYTICS'),
 };
 
 export { configuration, features };

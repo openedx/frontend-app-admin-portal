@@ -11,6 +11,7 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { AnalyticsPage } from '../analytics';
+import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
@@ -83,6 +84,15 @@ const EnterpriseAppRoutes = ({
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
           component={AnalyticsPage}
         />
+      )}
+
+      {enableAnalyticsPage && (
+      <Route
+        key="plotly-analytics"
+        exact
+        path={`${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`}
+        component={PlotlyAnalyticsPage}
+      />
       )}
 
       <Route

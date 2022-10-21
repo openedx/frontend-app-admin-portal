@@ -70,6 +70,12 @@ const Sidebar = ({
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
     },
     {
+      title: 'Plotly Analytics',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`,
+      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+      hidden: !features.PLOTLY_ANALYTICS || !enableAnalyticsScreen,
+    },
+    {
       title: 'Analytics',
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
