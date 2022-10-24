@@ -12,4 +12,5 @@ export const ROUTE_NAMES = {
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
   contentHighlights: 'content-highlights',
+  plotly_analytics: 'plotly-analytics',
 };
