@@ -144,7 +144,6 @@ export default function SettingsLMSTab({
     <div>
       <h2 className="py-2">Learning Platform Integrations
         <Hyperlink
-
           destination={HELP_CENTER_LINK}
           className="btn btn-outline-primary side-button"
           target="_blank"
