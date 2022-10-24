@@ -16,7 +16,7 @@ export default function PlotlyAnalyticsCharts({ enterpriseId }) {
     setIsLoading(true);
     PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId })
       .then((response) => {
-        setToken(response.data);
+        setToken(response.data.token);
         setIsLoading(false);
       })
       .catch((err) => {
