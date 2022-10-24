@@ -11,4 +11,5 @@ export const ROUTE_NAMES = {
   appearance: 'appearance',
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
+  contentHighlights: 'content-highlights',
 };

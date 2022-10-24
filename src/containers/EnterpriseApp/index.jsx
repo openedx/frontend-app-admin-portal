@@ -20,6 +20,7 @@ const mapStateToProps = (state) => {
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
     enableReportingConfigurationsScreen: state.portalConfiguration.enableReportingConfigScreen,
     enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
+    enableContentHighlightsScreen: state.portalConfiguration.enableContentHighlightsScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
     enterpriseBranding: state.portalConfiguration.enterpriseBranding,

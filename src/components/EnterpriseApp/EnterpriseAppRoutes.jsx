@@ -15,6 +15,7 @@ import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -25,6 +26,7 @@ const EnterpriseAppRoutes = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
+  enableContentHighlightsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
 
@@ -103,6 +105,13 @@ const EnterpriseAppRoutes = ({
           component={LearnerCreditManagement}
         />
       )}
+      {/* enableContentHighlightsPage  <-- this variable replaces true when feature flag added, @URL /:enterpriseSlug/admin/content-highlights */}
+      {true && (
+        <Route
+          path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
+          component={CourseHighlightRoutes}
+        />
+      )}
 
       <Route path="" component={NotFoundPage} />
     </Switch>
@@ -118,6 +127,7 @@ EnterpriseAppRoutes.propTypes = {
   enableReportingPage: PropTypes.bool.isRequired,
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
+  enableContentHighlightsPage: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;
