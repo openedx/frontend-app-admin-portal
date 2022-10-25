@@ -18,7 +18,6 @@ const NewSSOConfigForm = () => {
       <Alert
         variant="warning"
         stacked
-        dismissible
         icon={WarningFilled}
         actions={[
           <Hyperlink
