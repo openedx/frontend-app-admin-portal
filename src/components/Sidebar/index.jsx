@@ -11,6 +11,7 @@ import {
 import { Icon } from '@edx/paragon';
 import { MoneyOutline, BookOpen } from '@edx/paragon/icons';
 
+import { getConfig } from '@edx/frontend-platform/config';
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
@@ -37,7 +38,7 @@ const Sidebar = ({
   const widthRef = useRef();
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
+  const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
       const { width } = navRef.current.getBoundingClientRect();
@@ -70,16 +71,16 @@ const Sidebar = ({
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
     },
     {
+      title: 'Plotly Analytics',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`,
+      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+      hidden: !features.PLOTLY_ANALYTICS || !enableAnalyticsScreen,
+    },
+    {
       title: 'Analytics',
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
-    },
-    {
-      title: 'Highlights',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
-      icon: <Icon src={BookOpen} className="d-inline-block" />,
-      hidden: !features.FEATURE_CONTENT_HIGHLIGHTS,
     },
     {
       title: 'Code Management',
@@ -101,6 +102,12 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
       icon: <Icon src={MoneyOutline} className="d-inline-block" />,
       hidden: !canManageLearnerCredit,
+    },
+    {
+      title: 'Highlights',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
+      icon: <Icon src={BookOpen} className="d-inline-block" />,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS,
     },
     {
       title: 'Reporting Configurations',

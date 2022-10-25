@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
+import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
@@ -100,6 +101,7 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
+    const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
     if (error) {
       return this.renderError(error);
@@ -160,7 +162,7 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableContentHighlightsPage={features.FEATURE_CONTENT_HIGHLIGHTS}
+                    enableContentHighlightsPage={FEATURE_CONTENT_HIGHLIGHTS}
                   />
                 </div>
               </>
@@ -186,7 +188,6 @@ EnterpriseApp.defaultProps = {
   enableAnalyticsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
-  enableContentHighlightsScreen: false,
   loading: true,
 };
 
@@ -218,7 +219,6 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
-  enableContentHighlightsScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };
