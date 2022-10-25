@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
-import {
-  MoreVert, Sync,
-} from '@edx/paragon/icons';
+import { MoreVert } from '@edx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { features } from '../../../config';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
 import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
@@ -90,7 +89,7 @@ const ExistingCard = ({
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
-        if (isEdxStaff) {
+        if (isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) {
           return <Button variant="outline-primary" onClick={() => openModalButton(config)}>View sync history</Button>;
         }
         return null;
@@ -125,7 +124,7 @@ const ExistingCard = ({
             <Dropdown.Menu>
               {getStatus(config) === INACTIVE && (
                 <>
-                  {isEdxStaff && (
+                  {isEdxStaff && features.FEATURE_INTEGRATION_REPORTING && (
                   <div className="d-flex">
                     <Dropdown.Item
                       onClick={() => openModalButton(config)}
@@ -157,11 +156,15 @@ const ExistingCard = ({
                 </Dropdown.Item>
               </div>
               )}
-              <Dropdown.Item
-                onClick={() => editExistingConfig(config, config.channelCode)}
-              >
-                Configure
-              </Dropdown.Item>
+              {getStatus(config) !== INCOMPLETE && (
+              <div className="d-flex">
+                <Dropdown.Item
+                  onClick={() => editExistingConfig(config, config.channelCode)}
+                >
+                  Configure
+                </Dropdown.Item>
+              </div>
+              )}
             </Dropdown.Menu>
           </Dropdown>
       )}
@@ -196,14 +199,13 @@ const ExistingCard = ({
                 </span>
               </OverlayTrigger>
               {getStatus(config) === INACTIVE && (
-              <Badge variant="light">Inactive</Badge>
+              <Badge variant="light">Disabled</Badge>
               )}
             </h3>
           </div>
       )}
       />
-      <Card.Footer className="pt-2 pb-2 justify-content-between">
-        <div className="small"><Sync className="mr-1" style={{ height: '20px', width: '20px' }} />Last Sync: 36 minutes ago</div>
+      <Card.Footer className="pt-2 pb-2 justify-content-end">
         {getCardButton()}
       </Card.Footer>
     </Card>

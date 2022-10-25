@@ -9,6 +9,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import ExistingLMSCardDeck from '../../ExistingLMSCardDeck';
 import LmsApiService from '../../../../../data/services/LmsApiService';
+import { features } from '../../../../../config';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
 const mockEditExistingConfigFn = jest.fn();
@@ -65,6 +66,7 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+    features.FEATURE_INTEGRATION_REPORTING = true;
   });
   it('opens error reporting modal', () => {
     render(
