@@ -84,7 +84,6 @@ class EnterpriseApp extends React.Component {
       enableAnalyticsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
-      enableContentHighlightsScreen,
       enterpriseId,
       enterpriseName,
       enterpriseBranding,
@@ -161,7 +160,7 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableContentHighlightsPage={enableContentHighlightsScreen}
+                    enableContentHighlightsPage={features.FEATURE_CONTENT_HIGHLIGHTS}
                   />
                 </div>
               </>

@@ -48,6 +48,7 @@ const features = {
   SETTINGS_PAGE_LMS_TAB: process.env.FEATURE_SETTINGS_PAGE_LMS_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_LMS_TAB'),
   SETTINGS_PAGE_APPEARANCE_TAB: process.env.FEATURE_SETTINGS_PAGE_APPEARANCE_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_APPEARANCE_TAB'),
   FEATURE_SSO_SETTINGS_TAB: process.env.FEATURE_SSO_SETTINGS_TAB || hasFeatureFlagEnabled('SSO_SETTINGS_TAB'),
+  FEATURE_CONTENT_HIGHLIGHTS: process.env.FEATURE_CONTENT_HIGHLIGHTS || hasFeatureFlagEnabled('CONTENT_HIGHLIGHTS'),
 };
 
 export { configuration, features };

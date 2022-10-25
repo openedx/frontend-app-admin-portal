@@ -105,8 +105,9 @@ const EnterpriseAppRoutes = ({
           component={LearnerCreditManagement}
         />
       )}
-      {/* enableContentHighlightsPage  <-- this variable replaces true when feature flag added, @URL /:enterpriseSlug/admin/content-highlights */}
-      {true && (
+      {/* enableContentHighlightsPage  <-- this variable replaces true when feature flag added,
+       @URL /:enterpriseSlug/admin/content-highlights */}
+      {enableContentHighlightsPage && (
         <Route
           path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
           component={CourseHighlightRoutes}

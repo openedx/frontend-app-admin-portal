@@ -9,7 +9,7 @@ import {
   faCreditCard, faTags, faChartLine, faChartBar, faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '@edx/paragon';
-import { MoneyOutline } from '@edx/paragon/icons';
+import { MoneyOutline, BookOpen } from '@edx/paragon/icons';
 
 import IconLink from './IconLink';
 
@@ -74,6 +74,12 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+    },
+    {
+      title: 'Highlights',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
+      icon: <Icon src={BookOpen} className="d-inline-block" />,
+      hidden: !features.FEATURE_CONTENT_HIGHLIGHTS,
     },
     {
       title: 'Code Management',
