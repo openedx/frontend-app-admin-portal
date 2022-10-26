@@ -84,13 +84,9 @@ function LearnerCreditManagement({ enterpriseUUID }) {
           </Stack>
         </div>
         {isLoadingOfferSummary || isLoadingOfferRedemptions ? (
-          <>
-            <Skeleton width={320} />
-          </>
+          <Skeleton width={320} />
         ) : (
-          <>
-            <LearnerCreditDisclaimer offerLastUpdated={moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
-          </>
+          <LearnerCreditDisclaimer offerLastUpdated={moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
         )}
         <div className="mb-4.5 d-flex flex-wrap mx-n3">
           <LearnerCreditAggregateCards

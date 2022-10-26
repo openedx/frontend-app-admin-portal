@@ -7,7 +7,7 @@ import {
 import { Download, Check } from '@edx/paragon/icons';
 import { isStrictlyArray } from './utils';
 
-const DownloadCsvButton = ({ data }) => {
+function DownloadCsvButton({ data }) {
   const [buttonState, setButtonState] = useState('pageLoading');
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const DownloadCsvButton = ({ data }) => {
       />
     </>
   );
-};
+}
 
 DownloadCsvButton.defaultProps = {
   data: null,

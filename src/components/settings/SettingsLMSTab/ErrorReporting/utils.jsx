@@ -18,5 +18,6 @@ export function getSyncStatus(status) {
 }
 
 export function getSyncTime(time) {
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return (<>{time !== null && (<div>{timeago.format(time, 'time-locale')}</div>)}</>);
 }

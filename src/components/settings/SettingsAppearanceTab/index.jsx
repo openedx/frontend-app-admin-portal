@@ -13,9 +13,9 @@ import {
   ACUMEN_THEME, CAMBRIDGE_THEME, CUSTOM_THEME_LABEL, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
 
-export const SettingsAppearanceTab = ({
+export function SettingsAppearanceTab({
   enterpriseId, enterpriseBranding, updatePortalConfiguration,
-}) => {
+}) {
   const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
@@ -45,9 +45,9 @@ export const SettingsAppearanceTab = ({
   // (they can't be two variables because of rules regarding setting react hooks)
   const [theme, setTheme] = useState(getStartingTheme());
 
-  async function handleLogoUpload({
+  const handleLogoUpload = async ({
     fileData, handleError,
-  }) {
+  }) => {
     try {
       const formData = new FormData();
       formData.append('logo', fileData.get('file'));
@@ -59,7 +59,7 @@ export const SettingsAppearanceTab = ({
     } catch (error) {
       handleError(error);
     }
-  }
+  };
 
   const saveChanges = () => {
     const sendThemeData = async (formData) => {
@@ -180,7 +180,7 @@ export const SettingsAppearanceTab = ({
       <Button className="d-flex ml-auto" onClick={saveChanges}>Save changes</Button>
     </>
   );
-};
+}
 
 SettingsAppearanceTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

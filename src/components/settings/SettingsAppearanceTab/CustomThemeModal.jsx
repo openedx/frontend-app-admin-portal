@@ -27,7 +27,7 @@ export default function CustomThemeModal({
   const invalidMessage = 'Must be hexidecimal starting with # (Ex: #1e0b57)';
   const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
 
-  const validHex = new RegExp('^#([A-Fa-f0-9]{6})$');
+  const validHex = /^#([A-Fa-f0-9]{6})$/;
 
   const a11yChecker = new ColorContrastChecker();
   const whiteColor = Color(WHITE_COLOR);
@@ -50,7 +50,7 @@ export default function CustomThemeModal({
     }
   }
 
-  function setCustom() {
+  const setCustom = () => {
     const CUSTOM_THEME = {
       title: CUSTOM_THEME_LABEL,
       button: (button === '' ? customColors?.button : button),
@@ -59,7 +59,7 @@ export default function CustomThemeModal({
     };
     setTheme([CUSTOM_THEME, CUSTOM_THEME]);
     close();
-  }
+  };
 
   return (
     <ModalDialog

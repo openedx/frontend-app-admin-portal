@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
@@ -17,18 +17,19 @@ const initialHistory = createMemoryHistory({
 function UserActivationPageWrapper({
   history,
   ...rest
-}) => (
-  <Router history={history}>
-    <IntlProvider locale="en">
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/register/activate"
-        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-      />
-    </IntlProvider>
-  </Router>
-
-);
+}) {
+  return (
+    <Router history={history}>
+      <IntlProvider locale="en">
+        <Route
+          exact
+          path="/:enterpriseSlug/admin/register/activate"
+          render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
+        />
+      </IntlProvider>
+    </Router>
+  );
+}
 
 UserActivationPageWrapper.defaultProps = {
   history: initialHistory,

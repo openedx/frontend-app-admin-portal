@@ -13,9 +13,8 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await LmsApiService.fetchContentMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id,
-      );
+      const response = await LmsApiService
+        .fetchContentMetadataItemTransmission(enterpriseCustomerUuid, config.channelCode, config.id);
       return response;
     };
 

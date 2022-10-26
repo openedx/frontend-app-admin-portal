@@ -17,7 +17,7 @@ import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadP
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
-const EnterpriseAppRoutes = ({
+function EnterpriseAppRoutes({
   baseUrl,
   email,
   enterpriseId,
@@ -26,7 +26,7 @@ const EnterpriseAppRoutes = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
-}) => {
+}) {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
 
   return (
@@ -117,7 +117,7 @@ const EnterpriseAppRoutes = ({
       <Route path="" component={NotFoundPage} />
     </Switch>
   );
-};
+}
 
 EnterpriseAppRoutes.propTypes = {
   baseUrl: PropTypes.string.isRequired,

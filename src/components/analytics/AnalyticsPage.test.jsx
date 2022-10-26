@@ -29,17 +29,19 @@ const initialState = {
 const store = mockStore({
   ...initialState,
 });
-const AnalyticsPageWrapper = () => (
-  <Provider store={store}>
-    <Router history={history}>
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/analytics"
-        render={(routeProps) => <AnalyticsPage {...routeProps} {...store} />}
-      />
-    </Router>
-  </Provider>
-);
+function AnalyticsPageWrapper() {
+  return (
+    <Provider store={store}>
+      <Router history={history}>
+        <Route
+          exact
+          path="/:enterpriseSlug/admin/analytics"
+          render={(routeProps) => <AnalyticsPage {...routeProps} {...store} />}
+        />
+      </Router>
+    </Provider>
+  );
+}
 
 describe('<AnalyticsPage />', () => {
   beforeEach(() => {

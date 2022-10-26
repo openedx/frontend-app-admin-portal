@@ -16,9 +16,9 @@ const errorToggleModalText = 'We were unable to toggle your configuration. Pleas
 const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
 const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
 
-const ExistingSSOConfigs = ({
+function ExistingSSOConfigs({
   configs, refreshBool, setRefreshBool, enterpriseId, providerData,
-}) => {
+}) {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [errorModalText, setErrorModalText] = useState();
   const { setProviderConfig, setCurrentStep } = useContext(SSOConfigContext);
@@ -81,107 +81,105 @@ const ExistingSSOConfigs = ({
   };
 
   return (
-    <>
-      <span>
-        <ConfigError
-          isOpen={errorIsOpen}
-          close={closeError}
-          configTextOverride={errorModalText}
-        />
-        <p>
-          Enabling single sign-on for your edX account allows quick access to
-          your organization’s learning catalog
-        </p>
-        <h4 className="mt-5 mb-4">Existing configurationss</h4>
-        <CardGrid
-          className="mb-3 mr-3"
-          columnSizes={{
-            xs: 6,
-            s: 5,
-            m: 4,
-            l: 4,
-            xl: 3,
-          }}
-        >
-          {configs.map((config) => (
-            <Card
-              className="pb-4"
-              key={config.name + config.id}
-            >
-              <Card.Header
-                title={(
-                  <div className="justify-content-center">
-                    {config.display_name}
-                  </div>
+    <span>
+      <ConfigError
+        isOpen={errorIsOpen}
+        close={closeError}
+        configTextOverride={errorModalText}
+      />
+      <p>
+        Enabling single sign-on for your edX account allows quick access to
+        your organization’s learning catalog
+      </p>
+      <h4 className="mt-5 mb-4">Existing configurationss</h4>
+      <CardGrid
+        className="mb-3 mr-3"
+        columnSizes={{
+          xs: 6,
+          s: 5,
+          m: 4,
+          l: 4,
+          xl: 3,
+        }}
+      >
+        {configs.map((config) => (
+          <Card
+            className="pb-4"
+            key={config.name + config.id}
+          >
+            <Card.Header
+              title={(
+                <div className="justify-content-center">
+                  {config.display_name}
+                </div>
                 )}
-                actions={(
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      id="dropdown-toggle-with-iconbutton"
-                      data-testid={`existing-sso-config-card-dropdown-${config.id}`}
-                      as={IconButton}
-                      src={MoreVert}
-                      iconAs={Icon}
-                      variant="primary"
-                      alt="Actions dropdown"
-                    />
-                    <Dropdown.Menu>
-                      {(config.was_valid_at && !config.enabled) && (
-                        <Dropdown.Item
-                          onClick={() => toggleConfig(config.id, true)}
-                        >
-                          <PlayCircleFilled /> Enable
-                        </Dropdown.Item>
-                      )}
-                      {(config.was_valid_at && config.enabled) && (
-                        <Dropdown.Item
-                          onClick={() => toggleConfig(config.id, false)}
-                        >
-                          <RemoveCircle /> Disable
-                        </Dropdown.Item>
-                      )}
-                      {!config.was_valid_at && (
-                        <div className="d-flex">
-                          <Dropdown.Item
-                            onClick={() => {
-                              // loop through provider data and delete each one
-                              providerData.forEach((data) => {
-                                // double check that we're deleting provider data for the current config
-                                if (data.entity_id === config.entity_id) {
-                                  deleteProviderData(data.id);
-                                }
-                              });
-                              deleteConfig(config.id);
-                            }}
-                            data-testid="dropdown-delete-item"
-                          >
-                            <Delete /> Delete
-                          </Dropdown.Item>
-                        </div>
-                      )}
+              actions={(
+                <Dropdown>
+                  <Dropdown.Toggle
+                    id="dropdown-toggle-with-iconbutton"
+                    data-testid={`existing-sso-config-card-dropdown-${config.id}`}
+                    as={IconButton}
+                    src={MoreVert}
+                    iconAs={Icon}
+                    variant="primary"
+                    alt="Actions dropdown"
+                  />
+                  <Dropdown.Menu>
+                    {(config.was_valid_at && !config.enabled) && (
+                    <Dropdown.Item
+                      onClick={() => toggleConfig(config.id, true)}
+                    >
+                      <PlayCircleFilled /> Enable
+                    </Dropdown.Item>
+                    )}
+                    {(config.was_valid_at && config.enabled) && (
+                    <Dropdown.Item
+                      onClick={() => toggleConfig(config.id, false)}
+                    >
+                      <RemoveCircle /> Disable
+                    </Dropdown.Item>
+                    )}
+                    {!config.was_valid_at && (
+                    <div className="d-flex">
                       <Dropdown.Item
-                        onClick={() => editExistingConfig(config)}
+                        onClick={() => {
+                          // loop through provider data and delete each one
+                          providerData.forEach((data) => {
+                            // double check that we're deleting provider data for the current config
+                            if (data.entity_id === config.entity_id) {
+                              deleteProviderData(data.id);
+                            }
+                          });
+                          deleteConfig(config.id);
+                        }}
+                        data-testid="dropdown-delete-item"
                       >
-                        <Edit /> Edit
+                        <Delete /> Delete
                       </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                    </div>
+                    )}
+                    <Dropdown.Item
+                      onClick={() => editExistingConfig(config)}
+                    >
+                      <Edit /> Edit
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
                 )}
-                subtitle={(
-                  <span>
-                    {!config.was_valid_at && <Badge variant="secondary">Incomplete</Badge>}
-                    {(config.was_valid_at && config.enabled) && (<Badge variant="success">Active</Badge>)}
-                    {(config.was_valid_at && !config.enabled) && (<Badge variant="light">Inactive</Badge>)}
-                  </span>
+              subtitle={(
+                <span>
+                  {!config.was_valid_at && <Badge variant="secondary">Incomplete</Badge>}
+                  {(config.was_valid_at && config.enabled) && (<Badge variant="success">Active</Badge>)}
+                  {(config.was_valid_at && !config.enabled) && (<Badge variant="light">Inactive</Badge>)}
+                </span>
                 )}
-              />
-            </Card>
-          ))}
-        </CardGrid>
-      </span>
-    </>
+            />
+          </Card>
+        ))}
+      </CardGrid>
+    </span>
   );
-};
+}
 
 ExistingSSOConfigs.propTypes = {
   configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

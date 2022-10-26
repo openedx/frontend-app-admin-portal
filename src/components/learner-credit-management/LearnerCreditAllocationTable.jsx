@@ -18,6 +18,16 @@ function LearnerCreditAllocationTable({
   enterpriseUUID,
 }) {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
+  const getEmailAddressTableCell = (row) => (
+    <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
+  );
+
+  const getEmptyTableComponent = () => {
+    if (isLoading) {
+      return null;
+    }
+    return <DataTable.EmptyTable content="No results found" />;
+  };
   return (
     <DataTable
       isSortable
@@ -33,6 +43,7 @@ function LearnerCreditAllocationTable({
         {
           Header: 'Email Address',
           accessor: 'userEmail',
+          // eslint-disable-next-line react/prop-types
           Cell: ({ row }) => getEmailAddressTableCell(row),
         },
         {

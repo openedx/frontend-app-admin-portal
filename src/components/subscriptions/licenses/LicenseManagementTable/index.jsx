@@ -53,7 +53,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const LicenseManagementTable = () => {
+function LicenseManagementTable() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { width } = useWindowSize();
