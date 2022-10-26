@@ -33,6 +33,7 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
       <DataTable
         isSortable
         isFilterable
+        numBreakoutFilters={2}
         defaultColumnValues={{ Filter: TextFilter }}
         isPaginated
         itemCount={data?.length}
@@ -55,12 +56,14 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
             accessor: 'sync_status',
             Cell: ({ row }) => getSyncStatus(row.original.sync_status),
             sortable: true,
+            disableFilters: true,
           },
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
             Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
             sortable: true,
+            disableFilters: true,
           },
         ]}
       >
