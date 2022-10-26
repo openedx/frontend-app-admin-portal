@@ -4,8 +4,10 @@ import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import browseAndRequestTour from './browseAndRequestTour';
+import { features } from '../../config';
+import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
-import { useBrowseAndRequestTour, useLearnerCreditTour } from './data/hooks';
+import { useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour } from './data/hooks';
 
 /**
  * All the logic here is for determining what ProductTours we should show.
@@ -19,9 +21,20 @@ function ProductTours({
     enableLearnerPortal,
   });
   const [learnerCreditTourEnabled, setLearnerCreditTourEnabled] = useLearnerCreditTour();
+  const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
+  const [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled] = usePortalAppearanceTour({
+    enablePortalAppearance,
+  });
 
   const history = useHistory();
   const tours = [
+    portalAppearanceTour({
+      enterpriseSlug,
+      tourEnabled: portalAppearanceTourEnabled,
+      history,
+      onDismiss: () => setPortalAppearanceTourEnabled(false),
+      onEnd: () => setPortalAppearanceTourEnabled(false),
+    }),
     browseAndRequestTour({
       enterpriseSlug,
       tourEnabled: browseAndRequestTourEnabled,

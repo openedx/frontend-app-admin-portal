@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible, Icon } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
+import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';
 import ReportingConfigForm from './ReportingConfigForm';
 import { snakeCaseFormData } from '../../utils';
@@ -27,7 +28,7 @@ class ReportingConfig extends React.Component {
   componentDidMount() {
     Promise.allSettled([
       LMSApiService.fetchReportingConfigs(this.props.enterpriseId),
-      LMSApiService.fetchEnterpriseCustomerCatalogs(this.props.enterpriseId),
+      EnterpriseCatalogApiService.fetchEnterpriseCustomerCatalogs(this.props.enterpriseId),
       LMSApiService.fetchReportingConfigTypes(this.props.enterpriseId),
     ])
       .then((responses) => {

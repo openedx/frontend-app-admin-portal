@@ -59,7 +59,7 @@ EmailAddressTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
       userEmail: PropTypes.string,
-      enterpriseEnrollmentId: PropTypes.number.isRequired,
+      enterpriseEnrollmentId: PropTypes.number,
     }),
   }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,

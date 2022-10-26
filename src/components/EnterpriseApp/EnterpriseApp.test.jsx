@@ -9,6 +9,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { SCHOLAR_THEME } from '../settings/data/constants';
 
 features.SETTINGS_PAGE = true;
 
@@ -40,7 +41,7 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{ children }</EnterpriseSubsidiesContextProvider>,
+  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
@@ -54,7 +55,6 @@ describe('<EnterpriseApp />', () => {
       url: '',
       params: {
         enterpriseSlug: 'foo',
-        page: 'settings',
       },
     },
     location: {
@@ -69,8 +69,18 @@ describe('<EnterpriseApp />', () => {
     enableLearnerPortal: true,
     enterpriseId: 'uuid',
     enterpriseName: 'test-enterprise',
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
   };
 
+  const invalidEnterpriseId = {
+    ...basicProps,
+    enterpriseId: null,
+    enterpriseName: null,
+  };
   beforeEach(() => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
@@ -84,8 +94,8 @@ describe('<EnterpriseApp />', () => {
     expect(screen.getByText('/admin/settings'));
   });
 
-  it('should hide settings page if there are no visible tabs', () => {
-    render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
-    expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
+  it('should show error page if enterprise name is invalid', () => {
+    render(<EnterpriseApp {...invalidEnterpriseId} />);
+    expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
   });
 });

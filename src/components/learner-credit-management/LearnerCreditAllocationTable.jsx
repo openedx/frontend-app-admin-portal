@@ -18,18 +18,6 @@ function LearnerCreditAllocationTable({
   enterpriseUUID,
 }) {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
-
-  const getEmailAddressTableCell = (row) => (
-    <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
-  );
-
-  const getEmptyTableComponent = () => {
-    if (isLoading) {
-      return null;
-    }
-    return <DataTable.EmptyTable content="No results found" />;
-  };
-
   return (
     <DataTable
       isSortable
@@ -65,7 +53,7 @@ function LearnerCreditAllocationTable({
         },
       ]}
       initialTableOptions={{
-        getRowId: row => row.enterpriseEnrollmentId.toString(),
+        getRowId: row => row?.uuid?.toString(),
       }}
       initialState={{
         pageSize: PAGE_SIZE,
@@ -88,7 +76,7 @@ LearnerCreditAllocationTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
-      userEmail: PropTypes.string.isRequired,
+      userEmail: PropTypes.string,
       courseTitle: PropTypes.string.isRequired,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,

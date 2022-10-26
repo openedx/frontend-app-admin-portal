@@ -18,6 +18,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { NotFound } from '../NotFoundPage';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
+import LearnerCreditDisclaimer from './LearnerCreditDisclaimer';
 import OfferDates from './OfferDates';
 import OfferNameHeading from './OfferNameHeading';
 import { useOfferSummary, useOfferRedemptions } from './data/hooks';
@@ -55,7 +56,6 @@ function LearnerCreditManagement({ enterpriseUUID }) {
   // deduce when the data was last updated based on when any of the offer redemptions
   // records were created.
   const offerDataLastUpdatedTimestamp = offerRedemptions.results[0]?.created;
-
   return (
     <>
       <Helmet>
@@ -70,7 +70,7 @@ function LearnerCreditManagement({ enterpriseUUID }) {
           enterpriseUUID={enterpriseUUID}
         />
         <OfferNameHeading name={enterpriseOffer.displayName} />
-        <div className="d-flex flex-wrap align-items-center mb-5">
+        <div className="d-flex flex-wrap align-items-center mb-3.5">
           <Stack direction="horizontal" gap={3}>
             {enterpriseOffer.isCurrent ? (
               <Badge variant="primary">Active</Badge>
@@ -83,16 +83,15 @@ function LearnerCreditManagement({ enterpriseUUID }) {
             />
           </Stack>
         </div>
-        <p className="small mb-2">
-          {(isLoadingOfferSummary || isLoadingOfferRedemptions) ? (
+        {isLoadingOfferSummary || isLoadingOfferRedemptions ? (
+          <>
             <Skeleton width={320} />
-          ) : (
-            <>
-              Data last updated on{' '}
-              {moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)}
-            </>
-          )}
-        </p>
+          </>
+        ) : (
+          <>
+            <LearnerCreditDisclaimer offerLastUpdated={moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
+          </>
+        )}
         <div className="mb-4.5 d-flex flex-wrap mx-n3">
           <LearnerCreditAggregateCards
             isLoading={isLoadingOfferSummary}

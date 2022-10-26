@@ -4,9 +4,8 @@ import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
-import { ToastsContext } from '../Toasts';
 import UserActivationPage from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
@@ -18,20 +17,18 @@ const initialHistory = createMemoryHistory({
 function UserActivationPageWrapper({
   history,
   ...rest
-}) {
-  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
-  return (
-    <Router history={history}>
-      <ToastsContext.Provider value={contextValue}>
-        <Route
-          exact
-          path="/:enterpriseSlug/admin/register/activate"
-          render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-        />
-      </ToastsContext.Provider>
-    </Router>
-  );
-}
+}) => (
+  <Router history={history}>
+    <IntlProvider locale="en">
+      <Route
+        exact
+        path="/:enterpriseSlug/admin/register/activate"
+        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
+      />
+    </IntlProvider>
+  </Router>
+
+);
 
 UserActivationPageWrapper.defaultProps = {
   history: initialHistory,

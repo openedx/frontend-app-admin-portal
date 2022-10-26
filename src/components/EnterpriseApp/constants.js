@@ -7,10 +7,9 @@ export const ROUTE_NAMES = {
   codeManagement: 'coupons',
   learners: 'learners',
   learnerCredit: 'learner-credit',
-  lmsIntegrations: 'lmsintegrations',
   reporting: 'reporting',
   appearance: 'appearance',
-  samlConfiguration: 'samlconfiguration',
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
+  plotly_analytics: 'plotly-analytics',
 };

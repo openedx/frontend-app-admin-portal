@@ -58,7 +58,9 @@ describe('<Header />', () => {
       portalConfiguration: {
         enterpriseName: 'Test Enterprise',
         enterpriseSlug: 'test-enterprise',
-        enterpriseLogo: 'https://test.url/image/1.png',
+        enterpriseBranding: {
+          logo: 'https://test.url/image/1.png',
+        },
       },
       sidebar: {},
     };
@@ -67,7 +69,7 @@ describe('<Header />', () => {
     const wrapper = mount(<HeaderWrapper store={store} />);
     const logo = wrapper.find(Logo);
 
-    expect(logo.props().enterpriseLogo).toEqual(storeData.portalConfiguration.enterpriseLogo);
+    expect(logo.props().enterpriseLogo).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
     expect(logo.props().enterpriseName).toEqual(storeData.portalConfiguration.enterpriseName);
   });
 

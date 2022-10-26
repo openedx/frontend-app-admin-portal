@@ -34,7 +34,9 @@ describe('<Footer />', () => {
       portalConfiguration: {
         enterpriseName: 'Test Enterprise',
         enterpriseSlug: 'test-enterprise',
-        enterpriseLogo: 'https://test.url/image/1.png',
+        enterpriseBranding: {
+          logo: 'https://test.url/image/1.png',
+        },
       },
     });
 

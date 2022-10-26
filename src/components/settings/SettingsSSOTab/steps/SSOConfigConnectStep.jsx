@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { useExistingSSOConfigs } from '../hooks';
 import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
-import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
+import { createSAMLURLs } from '../utils';
 
 function SSOConfigConnectStep({
   enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError, setShowValidatedText, showValidatedText,

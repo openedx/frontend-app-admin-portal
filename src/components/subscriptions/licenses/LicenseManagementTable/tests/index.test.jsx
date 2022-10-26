@@ -262,6 +262,7 @@ describe('<LicenseManagementTable />', () => {
       expect(forceRefreshSubscription).toHaveBeenCalledTimes(1);
       expect(forceRefreshUsers).toHaveBeenCalledTimes(1);
       expect(forceRefreshUsersOverview).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('Licenses successfully revoked')).toBeTruthy();
     });
     it('reminding a user', async () => {
       const {
@@ -279,6 +280,7 @@ describe('<LicenseManagementTable />', () => {
       expect(screen.queryByRole('dialog')).toBeFalsy();
       // Test user data should have been refreshed
       expect(forceRefreshUsers).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('Users successfully reminded')).toBeTruthy();
     });
   });
 });

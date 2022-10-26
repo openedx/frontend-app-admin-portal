@@ -6,6 +6,7 @@
 
 .lms-icon {
   max-width: 35px;
+  height: 100%;
 }
 
 .lms-card-hover {
@@ -48,6 +49,13 @@
   }
 }
 
+.side-button {
+  float: right;
+  margin-right: 1rem;
+  right: 0;
+  width: 300px;
+}
+
 .sso-alert-modal-margin {
   margin-right: 15% !important;
 }
@@ -58,8 +66,12 @@
   white-space: nowrap;
 }
 
-.existing-lms-card-width {
+.existing-lms-card {
   width: 70rem !important;
+  .pgn__card-header .pgn__card-header-content{
+    margin-top: 0 !important;
+    justify-content: center;
+  }
 }
 
 
@@ -84,3 +96,19 @@
 .sso-connect-success-icon {
   color: green;
 }
+
+.image-preview {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  border: 1px dashed $gray-500;
+  min-height: 200px;
+  align-items: center;
+}
+
+.image-preview img {
+    max-height: 150px;
+    max-width: 300px;
+    width: auto;
+}
+

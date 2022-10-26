@@ -26,7 +26,12 @@ function SSOStepper({ enterpriseSlug, enterpriseId, enterpriseName }) {
     setProviderConfig,
     setRefreshBool,
   } = useContext(SSOConfigContext);
-  const { currentStep, providerConfig, refreshBool } = ssoState;
+  const {
+    currentStep,
+    providerConfig,
+    refreshBool,
+    currentError,
+  } = ssoState;
   const setCurrentStep = step => dispatchSsoState(updateCurrentStep(step));
   const [configValues, setConfigValues] = useState(null);
   const [connectError, setConnectError] = useState(false);
@@ -176,7 +181,7 @@ function SSOStepper({ enterpriseSlug, enterpriseId, enterpriseName }) {
             )}
             <Stepper.ActionRow.Spacer />
             <Button
-              disabled={!isIdpStepComplete || idpNextButtonDisabled}
+              disabled={!currentError && (!isIdpStepComplete || idpNextButtonDisabled)}
               onClick={() => {
                 setIdpNextButtonDisabled(true);
                 createOrUpdateIdpRecord({

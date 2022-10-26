@@ -1,21 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
-  Container, Row, Col, Alert, MailtoLink,
+  Container, Row, Col, Alert, MailtoLink, Toast,
 } from '@edx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
 
 import { useInterval } from '../../hooks';
-import { ToastsContext } from '../Toasts';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
 function UserActivationPage({ match }) {
   const user = getAuthenticatedUser();
-  const { addToast } = useContext(ToastsContext);
+  const [showToast, setShowToast] = useState(false);
 
   const { enterpriseSlug } = match.params;
   const { roles, isActive } = user || {};
@@ -25,6 +24,12 @@ function UserActivationPage({ match }) {
       hydrateAuthenticatedUser();
     }
   }, USER_ACCOUNT_POLLING_TIMEOUT);
+
+  useEffect(() => {
+    if (isActive) {
+      setShowToast(true);
+    }
+  }, [isActive]);
 
   if (!user) {
     // user is not authenticated, so redirect to enterprise proxy login flow
@@ -51,8 +56,17 @@ function UserActivationPage({ match }) {
   // user data is hydrated with a verified email address, so redirect the user
   // to the default page in the Admin Portal.
   if (isActive) {
-    addToast('Your edX administrator account was successfully activated.');
-    return <Redirect to={`/${enterpriseSlug}/admin/learners`} />;
+    return (
+      <>
+        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+        >
+          Your edX administrator account was successfully activated.
+        </Toast>
+      </>
+    );
   }
 
   // user data is hydrated with an unverified email address, so display a warning message since

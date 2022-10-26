@@ -2,9 +2,11 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import ExistingLMSCardDeck from '../ExistingLMSCardDeck';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { features } from '../../../../config';
 
 jest.mock('../../../../data/services/LmsApiService');
 
@@ -17,6 +19,16 @@ const configData = [
     id: 1,
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: true,
+    displayName: 'foobar',
+  },
+];
+
+const inactiveConfigData = [
+  {
+    channelCode: 'BLACKBOARD',
+    id: 1,
+    isValid: [{ missing: [] }, { incorrect: [] }],
+    active: false,
     displayName: 'foobar',
   },
 ];
@@ -61,31 +73,15 @@ const needsRefreshTokenConfigData = [
   },
 ];
 
-const multipleConfigData = [
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'barfoo',
-  },
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'foobar',
-  },
-  {
-    channelCode: 'BLACKBOARD',
-    id: 2,
-    isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
-    active: false,
-    displayName: 'ayylmao',
-  },
-];
-
 describe('<ExistingLMSCardDeck />', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
+    features.FEATURE_INTEGRATION_REPORTING = true;
+  });
+
   it('renders active config card', () => {
     render(
       <ExistingLMSCardDeck
@@ -97,6 +93,29 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     expect(screen.getByText('Active')).toBeInTheDocument();
     expect(screen.getByText('foobar')).toBeInTheDocument();
+    expect(screen.getByText('View sync history'));
+
+    userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
+    expect(screen.getByText('Disable'));
+    expect(screen.getByText('Configure'));
+  });
+  it('renders inactive config card', () => {
+    features.REPORTING_CONFIGURATIONS = true;
+    render(
+      <ExistingLMSCardDeck
+        configData={inactiveConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    expect(screen.getByText('Disabled')).toBeInTheDocument();
+    expect(screen.getByText('foobar')).toBeInTheDocument();
+    expect(screen.getByText('Enable'));
+
+    userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
+    expect(screen.getByText('Configure'));
+    expect(screen.getByText('View sync history'));
   });
   it('renders incomplete config card', async () => {
     render(
@@ -109,9 +128,14 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     expect(screen.getByText('barfoo')).toBeInTheDocument();
+    expect(screen.getByText('Configure'));
+
     await waitFor(() => userEvent.hover(screen.getByText('Incomplete')));
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
     expect(screen.getByText('2 fields')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-2'));
+    expect(screen.getByText('Delete'));
   });
   it('renders multiple config cards', () => {
     render(
@@ -170,11 +194,8 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    expect(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`)).toBeInTheDocument();
-    userEvent.click(screen.getByTestId(`existing-lms-config-card-dropdown-${configData[0].id}`));
 
-    expect(screen.getByTestId('dropdown-enable-item')).toBeInTheDocument();
-    userEvent.click(screen.getByTestId('dropdown-enable-item'));
+    userEvent.click(screen.getByText('Enable'));
     const expectedConfigOptions = {
       active: true,
       enterprise_customer: enterpriseCustomerUuid,
@@ -211,23 +232,30 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('authorize your LMS'))
       .toBeInTheDocument();
   });
-  it('alphabetizes existing LMS config cards by display name', async () => {
+  it('only shows sync logs to admins', () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: false,
+    });
     render(
       <ExistingLMSCardDeck
-        configData={multipleConfigData}
+        configData={configData}
         editExistingConfig={mockEditExistingConfigFn}
         onClick={mockOnClick}
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    await waitFor(() => {
-      const html = document.body.innerHTML;
-      const a = html.search('ayylmao');
-      const b = html.search('barfoo');
-      const c = html.search('foobar');
-      expect(a).toBeLessThan(b);
-      expect(a).toBeLessThan(c);
-      expect(b).toBeLessThan(c);
-    });
+    expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
+  });
+  it('only shows sync logs only when feature is not gated', () => {
+    features.FEATURE_INTEGRATION_REPORTING = false;
+    render(
+      <ExistingLMSCardDeck
+        configData={configData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
   });
 });

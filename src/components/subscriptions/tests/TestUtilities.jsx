@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -9,7 +9,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import SubscriptionData from '../SubscriptionData';
 import { ASSIGNED } from '../data/constants';
-import { ToastsContext } from '../../Toasts';
 import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
 import * as hooks from '../data/hooks';
 
@@ -153,30 +152,25 @@ export const mockUseSubscriptionUsers = (state) => [
   false,
 ];
 
-export function SubscriptionManagementContext({ children, detailState, store }) {
+export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
   jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => {}]);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
-
-  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
-
   return (
     <Router history={initialHistory}>
       <Provider store={store}>
-        <ToastsContext.Provider value={contextValue}>
-          <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-            <SubscriptionDetailContextProvider
-              subscription={testSubscriptionPlanGenerator(detailState)}
-              hasMultipleSubscriptions={false}
-            >
-              {children}
-            </SubscriptionDetailContextProvider>
-          </SubscriptionData>
-        </ToastsContext.Provider>
+        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+          <SubscriptionDetailContextProvider
+            subscription={testSubscriptionPlanGenerator(detailState)}
+            hasMultipleSubscriptions={false}
+          >
+            {children}
+          </SubscriptionDetailContextProvider>
+        </SubscriptionData>
       </Provider>
     </Router>
   );
-}
+};
 
 SubscriptionManagementContext.propTypes = {
   children: PropTypes.node.isRequired,
@@ -356,29 +350,24 @@ export const mockSubscriptionHooks = (
  * @param {Object: Settings} contextSettings
  * @returns {React.node} Wrapper component
  */
-export function MockSubscriptionContext({
+export const MockSubscriptionContext = ({
   subscriptionPlan,
   store = createMockStore(),
   children,
-}) {
-  const contextValue = useMemo(() => ({ addToast: () => {} }), []);
-  return (
-    <Router history={initialHistory}>
-      <Provider store={store}>
-        <ToastsContext.Provider value={contextValue}>
-          <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-            <SubscriptionDetailContextProvider
-              subscription={subscriptionPlan}
-              hasMultipleSubscriptions={false}
-            >
-              {children}
-            </SubscriptionDetailContextProvider>
-          </SubscriptionData>
-        </ToastsContext.Provider>
-      </Provider>
-    </Router>
-  );
-}
+}) => (
+  <Router history={initialHistory}>
+    <Provider store={store}>
+      <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+        <SubscriptionDetailContextProvider
+          subscription={subscriptionPlan}
+          hasMultipleSubscriptions={false}
+        >
+          {children}
+        </SubscriptionDetailContextProvider>
+      </SubscriptionData>
+    </Provider>
+  </Router>
+);
 
 MockSubscriptionContext.propTypes = {
   children: PropTypes.node.isRequired,

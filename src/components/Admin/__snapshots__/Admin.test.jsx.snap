@@ -6,7 +6,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -16,7 +16,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -151,7 +151,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -161,7 +161,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -712,7 +712,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -722,7 +722,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -1273,7 +1273,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -1283,7 +1283,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -1838,7 +1838,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -1848,7 +1848,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -2558,7 +2558,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -2568,7 +2568,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -3278,7 +3278,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -3288,7 +3288,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -3843,7 +3843,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -3853,7 +3853,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -4408,7 +4408,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -4418,7 +4418,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -4973,7 +4973,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -4983,7 +4983,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -5534,7 +5534,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -5544,7 +5544,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -6099,7 +6099,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -6109,7 +6109,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>
@@ -6220,7 +6220,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
   role="main"
 >
   <div
-    className="hero"
+    className="hero hero-brand"
   >
     <div>
       <h1>
@@ -6230,7 +6230,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     <div>
       <img
         alt="edX logo"
-        src="https://edx-cdn.org/v3/default/logo-white.svg"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
       />
     </div>
   </div>

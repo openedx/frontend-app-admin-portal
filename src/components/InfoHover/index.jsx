@@ -9,7 +9,6 @@ export default function InfoHover({
   return (
     <OverlayTrigger
       placement="top"
-      trigger="hover"
       overlay={<Tooltip id={keyName} key={keyName}>{message}</Tooltip>}
     >
       <InfoOutline

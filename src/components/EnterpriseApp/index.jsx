@@ -6,12 +6,15 @@ import { breakpoints, MediaQuery } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
+import BrandStyles from '../BrandStyles';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
+import { SCHOLAR_THEME } from '../settings/data/constants';
+import NotFoundPage from '../NotFoundPage';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -79,13 +82,11 @@ class EnterpriseApp extends React.Component {
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
-      enableSamlConfigurationScreen,
-      enableLearnerPortal,
-      enableLmsConfigurationsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
       enterpriseId,
       enterpriseName,
+      enterpriseBranding,
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
@@ -99,19 +100,6 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
-
-    // Hide Settings page if there are no visible tabs
-    const enableSettingsPage = (
-      features.SETTINGS_PAGE && (
-        enableLearnerPortal || (
-          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
-        ) || (
-          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
-        ) || (
-          features.SETTINGS_PAGE_APPEARANCE_TAB
-        )
-      )
-    );
 
     if (error) {
       return this.renderError(error);
@@ -127,11 +115,16 @@ class EnterpriseApp extends React.Component {
       return <EnterpriseAppSkeleton />;
     }
 
+    if (!enterpriseId) {
+      return <NotFoundPage />;
+    }
+
     return (
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
+        <BrandStyles enterpriseBranding={enterpriseBranding} />
         <div className="enterprise-app">
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
@@ -167,9 +160,6 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
-                    enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
-                    enableSettingsPage={enableSettingsPage}
                   />
                 </div>
               </>
@@ -184,13 +174,15 @@ class EnterpriseApp extends React.Component {
 EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
+  enterpriseBranding: {
+    primary_color: SCHOLAR_THEME.button,
+    secondary_color: SCHOLAR_THEME.banner,
+    tertiary_color: SCHOLAR_THEME.accent,
+  },
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
-  enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
-  enableLearnerPortal: false,
-  enableLmsConfigurationsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
   loading: true,
@@ -201,11 +193,16 @@ EnterpriseApp.propTypes = {
     url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       enterpriseSlug: PropTypes.string.isRequired,
-      page: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
+  enterpriseBranding: PropTypes.shape({
+    primary_color: PropTypes.string,
+    secondary_color: PropTypes.string,
+    tertiary_color: PropTypes.string,
+    logo: PropTypes.string,
+  }),
   fetchPortalConfiguration: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -216,10 +213,7 @@ EnterpriseApp.propTypes = {
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
-  enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
-  enableLearnerPortal: PropTypes.bool,
-  enableLmsConfigurationsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
