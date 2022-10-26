@@ -2,38 +2,41 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
-const ContentHighlightCardItem = ({ title, type }) => (
-  <Card
-    isClickable
-    className="h-100"
-  >
+const ContentHighlightCardItem = ({ title, type, owners }) => (
+  <Card isClickable>
     <Card.ImageCap
-      className="h-100"
       src="https://source.unsplash.com/360x200/?nature,flower"
       srcAlt="Card Image"
-      logoSrc="https://via.placeholder.com/150"
-      logoAlt="placeholder"
+      logoSrc={owners[0].imageUrl}
+      logoAlt={`${owners[0].name}'s logo`}
     />
-
-    <Card.Header
-      className="h-100"
-      title={title || 'Course Title'}
-    />
-    <Card.Footer textElement={
-      <span className="text-muted">{type || ''}</span>
-      }
-    />
+    <Card.Header title={title} subtitle={owners[0].name} />
+    {/* footer for spacing purposes */}
+    <Card.Section>
+      <span />
+    </Card.Section>
+    <Card.Footer textElement={type}>
+      <span />
+    </Card.Footer>
   </Card>
 );
 
 ContentHighlightCardItem.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
   type: PropTypes.string,
+  owners: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    imageUrl: PropTypes.string,
+  })),
 };
 
 ContentHighlightCardItem.defaultProps = {
-  title: '',
-  type: '',
+  type: undefined,
+  owners: [{
+    name: 'placeholder',
+    imageUrl: 'https://via.placeholder.com/150',
+  },
+  ],
 };
 
 export default ContentHighlightCardItem;

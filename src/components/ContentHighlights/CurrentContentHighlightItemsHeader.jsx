@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button } from '@edx/paragon';
+import { Button, ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 
 const CurrentContentHighlightItemsHeader = () => {
@@ -8,25 +9,25 @@ const CurrentContentHighlightItemsHeader = () => {
   const [highlightTitle] = useState(TEST_COURSE_HIGHLIHTS_DATA.filter(
     highlights => highlights.uuid === highlightUUID,
   )[0].title);
+
+  if (!highlightTitle) {
+    return null;
+  }
+
+  const titleName = `${highlightTitle} - Highlights`;
+
   return (
     <>
-      { highlightTitle && (
-        <header>
-          <div className="d-flex justify-content-between mb-2">
-            <div className="align-self-end">
-              <h3 className="m-0">
-                {highlightTitle}
-              </h3>
-            </div>
-            <div>
-              <Button>Delete Highlight</Button>
-            </div>
-          </div>
-          <div className="d-flex justify-content-end">
-            <p>Cap - Max Courses</p>
-          </div>
-        </header>
-      )}
+      <Helmet>
+        <title>{titleName}</title>
+      </Helmet>
+      <ActionRow className="mb-4.5">
+        <h2 className="m-0">
+          {highlightTitle}
+        </h2>
+        <ActionRow.Spacer />
+        <Button>Delete Highlight</Button>
+      </ActionRow>
     </>
   );
 };

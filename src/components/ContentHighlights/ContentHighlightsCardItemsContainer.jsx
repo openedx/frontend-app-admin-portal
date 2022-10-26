@@ -10,26 +10,27 @@ const ContentHighlightsCardItemsContainer = () => {
     TEST_COURSE_HIGHLIHTS_DATA.filter(highlight => highlight.uuid === highlightUUID)[0].courses,
   );
 
+  if (!highlightCourses) {
+    return null;
+  }
+
   return (
-    <>
-      {highlightCourses && (
-      <CardGrid
-        columnSizes={{
-          xs: 12,
-          lg: 6,
-          xl: 4,
-        }}
-      >
-        {highlightCourses.map(({ title, type }, index) => (
-          <ContentHighlightCardItem
-            key={`${title}${index + 1}`}
-            title={title}
-            type={type}
-          />
-        ))}
-      </CardGrid>
-      )}
-    </>
+    <CardGrid
+      columnSizes={{
+        xs: 12,
+        lg: 6,
+        xl: 4,
+      }}
+    >
+      {highlightCourses.map(({ title, type, owners }, index) => (
+        <ContentHighlightCardItem
+          key={`${title}${index + 1}`}
+          title={title}
+          type={type}
+          owners={owners}
+        />
+      ))}
+    </CardGrid>
   );
 };
 

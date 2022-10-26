@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container } from '@edx/paragon';
@@ -13,9 +12,6 @@ const CourseHighlightRoutes = ({ enterpriseSlug }) => {
   const baseContentHighlightPath = `/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`;
   return (
     <>
-      <Helmet>
-        <title>Highlights</title>
-      </Helmet>
       <Hero title="Highlights" />
       <Container fluid className="pr-4 mt-5">
         <Route

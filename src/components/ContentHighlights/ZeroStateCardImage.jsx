@@ -1,27 +1,25 @@
 import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import logo from '@edx/brand/logo.svg';
 
-const ZeroStateCardImage = ({ imageContainerClassNames, imageClassNames, cardImage }) => (
-  <div className={imageContainerClassNames} style={{ textAlign: '-webkit-center' }}>
+const ZeroStateCardImage = ({ imageContainerClassName, imageClassName, cardImage }) => (
+  <div className={imageContainerClassName}>
     <Card.ImageCap
-      className={imageClassNames}
+      className={imageClassName}
       src={cardImage}
-      srcAlt="Card image of unimaginable progress"
+      srcAlt=""
     />
   </div>
 );
 
 ZeroStateCardImage.propTypes = {
-  imageContainerClassNames: PropTypes.string,
-  imageClassNames: PropTypes.string,
-  cardImage: PropTypes.string,
+  imageContainerClassName: PropTypes.string,
+  imageClassName: PropTypes.string,
+  cardImage: PropTypes.string.isRequired,
 };
 ZeroStateCardImage.defaultProps = {
-  imageContainerClassNames: 'p-4',
-  imageClassNames: 'w-33',
-  cardImage: logo,
+  imageContainerClassName: 'p-4',
+  imageClassName: undefined,
 };
 
 export default ZeroStateCardImage;

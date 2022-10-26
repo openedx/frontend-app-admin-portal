@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Card, Button, useMediaQuery, breakpoints,
+  Card, Button, Col,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { Add } from '@edx/paragon/icons';
@@ -9,27 +9,27 @@ import ZeroStateCardImage from './ZeroStateCardImage';
 import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
 
-const ZeroStateHighlights = ({ cardClassName }) => {
-  const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.large.minWidth });
-
-  return (
-    <Card className={cardClassName} style={{ width: isExtraSmall ? '100%' : '949px' }}>
-      <ZeroStateCardImage imageContainerClassNames="bg-light-400 p-4" cardImage={cardImage} />
-      <ZeroStateCardText textContainerClassNames="text-center w-75 align-self-center pb-0">
-        <h3>You haven&apos;t created any &quot;highlights&quot; collections yet.</h3>
-        <p>Highlights are a selection of courses that help your learner navigate to the appropriate content faster.</p>
+const ZeroStateHighlights = ({ cardClassName }) => (
+  <Col xs={12} sm={8} lg={5}>
+    <Card className={cardClassName}>
+      <ZeroStateCardImage imageContainerClassName="bg-light-400 p-4" cardImage={cardImage} />
+      <ZeroStateCardText textContainerClassName="text-center w-75 align-self-center pb-0">
+        <h2>You haven&apos;t created any &quot;highlights&quot; collections yet.</h2>
+        <p className="mb-4">&quot;Highlights&quot; feature allows you to create and recommend course collections to your learners,
+          enable them to quickly locate relevant content.
+        </p>
       </ZeroStateCardText>
-      <ZeroStateCardFooter>
-        <Button iconBefore={Add} className="w-100">New Highlight</Button>
+      <ZeroStateCardFooter footerClassName="pb-0 mb-4.5">
+        <Button iconBefore={Add} block>New Highlight</Button>
       </ZeroStateCardFooter>
     </Card>
-  );
-};
+  </Col>
+);
 ZeroStateHighlights.propTypes = {
   cardClassName: PropTypes.string,
 };
 ZeroStateHighlights.defaultProps = {
-  cardClassName: '',
+  cardClassName: undefined,
 };
 
 export default ZeroStateHighlights;

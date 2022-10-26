@@ -18,7 +18,7 @@ CurrentContentHighlights.propTypes = {
 };
 
 CurrentContentHighlights.defaultProps = {
-  parentContainerClassName: '',
+  parentContainerClassName: undefined,
 };
 
 export default CurrentContentHighlights;

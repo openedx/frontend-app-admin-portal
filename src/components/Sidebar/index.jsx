@@ -9,8 +9,9 @@ import {
   faCreditCard, faTags, faChartLine, faChartBar, faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '@edx/paragon';
-import { MoneyOutline } from '@edx/paragon/icons';
+import { MoneyOutline, BookOpen } from '@edx/paragon/icons';
 
+import { getConfig } from '@edx/frontend-platform/config';
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
@@ -37,7 +38,7 @@ const Sidebar = ({
   const widthRef = useRef();
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
+  const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
       const { width } = navRef.current.getBoundingClientRect();
@@ -101,6 +102,12 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
       icon: <Icon src={MoneyOutline} className="d-inline-block" />,
       hidden: !canManageLearnerCredit,
+    },
+    {
+      title: 'Highlights',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
+      icon: <Icon src={BookOpen} className="d-inline-block" />,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS,
     },
     {
       title: 'Reporting Configurations',

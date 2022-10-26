@@ -30,7 +30,6 @@ const EnterpriseAppRoutes = ({
   enableContentHighlightsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
   return (
     <Switch>
       <Route
@@ -115,8 +114,8 @@ const EnterpriseAppRoutes = ({
           component={LearnerCreditManagement}
         />
       )}
-      {/* enableContentHighlightsPage  <-- this variable replaces true when feature flag added, @URL /:enterpriseSlug/admin/content-highlights */}
-      {true && (
+
+      {enableContentHighlightsPage && (
         <Route
           path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
           component={CourseHighlightRoutes}

@@ -2,19 +2,19 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
-const ZeroStateCardText = ({ textContainerClassNames, children }) => (
-  <Card.Section className={textContainerClassNames}>
+const ZeroStateCardText = ({ textContainerClassName, children }) => (
+  <Card.Section className={textContainerClassName}>
     {children}
   </Card.Section>
 );
 
 ZeroStateCardText.propTypes = {
-  textContainerClassNames: PropTypes.string,
+  textContainerClassName: PropTypes.string,
   children: PropTypes.node,
 };
 
 ZeroStateCardText.defaultProps = {
-  textContainerClassNames: 'text-center',
+  textContainerClassName: 'text-center',
   children: null,
 };
 
