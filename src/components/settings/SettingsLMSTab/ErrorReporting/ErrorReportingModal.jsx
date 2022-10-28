@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Button, Hyperlink, ModalDialog, Tab, Tabs,
+  ActionRow, ModalDialog, Tab, Tabs,
 } from '@edx/paragon';
 import ContentMetadataTable from './ContentMetadataTable';
 
@@ -46,11 +46,6 @@ function ErrorReportingModal({
 
         <ModalDialog.Footer>
           <ActionRow>
-            <Button variant="tertiary">
-              <Hyperlink variant="muted" destination="https://www.edx.org" target="_blank">
-                Help Center: Troubleshooting
-              </Hyperlink>
-            </Button>
             <ModalDialog.CloseButton variant="primary">
               Close
             </ModalDialog.CloseButton>
