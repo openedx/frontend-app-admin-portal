@@ -7,7 +7,7 @@ const ContentHighlightCardItem = ({ title, type, owners }) => (
     <Card.ImageCap
       src="https://source.unsplash.com/360x200/?nature,flower"
       srcAlt="Card Image"
-      logoSrc={owners[0].imageUrl}
+      logoSrc={owners[0].logo_image_url}
       logoAlt={`${owners[0].name}'s logo`}
     />
     <Card.Header title={title} subtitle={owners[0].name} />
@@ -26,7 +26,7 @@ ContentHighlightCardItem.propTypes = {
   type: PropTypes.string,
   owners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-    imageUrl: PropTypes.string,
+    logo_image_url: PropTypes.string,
   })),
 };
 
@@ -34,7 +34,7 @@ ContentHighlightCardItem.defaultProps = {
   type: undefined,
   owners: [{
     name: 'placeholder',
-    imageUrl: 'https://via.placeholder.com/150',
+    logo_image_url: 'https://via.placeholder.com/150',
   },
   ],
 };

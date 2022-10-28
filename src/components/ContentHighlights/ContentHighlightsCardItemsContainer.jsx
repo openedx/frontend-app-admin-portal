@@ -7,9 +7,8 @@ import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 const ContentHighlightsCardItemsContainer = () => {
   const { highlightUUID } = useParams();
   const [highlightCourses] = useState(
-    TEST_COURSE_HIGHLIHTS_DATA.filter(highlight => highlight.uuid === highlightUUID)[0].courses,
+    TEST_COURSE_HIGHLIHTS_DATA.filter(highlight => highlight.uuid === highlightUUID)[0].highlighted_content,
   );
-
   if (!highlightCourses) {
     return null;
   }
@@ -22,12 +21,13 @@ const ContentHighlightsCardItemsContainer = () => {
         xl: 4,
       }}
     >
-      {highlightCourses.map(({ title, type, owners }, index) => (
+      {/* eslint-disable camelcase */}
+      {highlightCourses.map(({ title, content_type, authoring_organizations }, index) => (
         <ContentHighlightCardItem
           key={`${title}${index + 1}`}
           title={title}
-          type={type}
-          owners={owners}
+          type={content_type}
+          owners={authoring_organizations}
         />
       ))}
     </CardGrid>
