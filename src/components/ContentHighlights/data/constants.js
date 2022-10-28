@@ -4,6 +4,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Core',
       uuid: '1',
+      is_published: true,
       courses:
               [
                 {
@@ -58,6 +59,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Math',
       uuid: '2',
+      is_published: true,
       courses:
                 [
                   {
@@ -112,6 +114,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Science',
       uuid: '3',
+      is_published: false,
       courses:
                 [
                   {
@@ -166,6 +169,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire English',
       uuid: '4',
+      is_published: true,
       courses:
                 [
                   {
@@ -212,6 +216,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Engineering',
       uuid: '5',
+      is_published: true,
       courses:
                 [
                   {

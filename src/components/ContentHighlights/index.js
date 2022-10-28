@@ -1,3 +1,3 @@
-import ContentHighlightsDashboard from './ContentHighlightsDashboard';
+import ContentHighlightRoutes from './ContentHighlightRoutes';
 
-export default ContentHighlightsDashboard;
+export default ContentHighlightRoutes;

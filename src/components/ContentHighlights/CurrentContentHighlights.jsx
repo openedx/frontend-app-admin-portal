@@ -3,13 +3,13 @@ import {
   Stack,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import ContentHighlightCardContainer from './ContentHighlightCardContainer';
+import ContentHighlightSetCardContainer from './ContentHighlightSetCardContainer';
 import CurrentContentHighlightHeader from './CurrentContentHighlightHeader';
 
 const CurrentContentHighlights = ({ parentContainerClassName }) => (
   <Stack className={parentContainerClassName}>
     <CurrentContentHighlightHeader />
-    <ContentHighlightCardContainer />
+    <ContentHighlightSetCardContainer />
   </Stack>
 );
 

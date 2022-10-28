@@ -16,7 +16,7 @@ import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
-import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
+import ContentHighlightRoutes from '../ContentHighlights';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -118,7 +118,7 @@ const EnterpriseAppRoutes = ({
       {enableContentHighlightsPage && (
         <Route
           path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
-          component={CourseHighlightRoutes}
+          component={ContentHighlightRoutes}
         />
       )}
 
