@@ -2,15 +2,15 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
-const ContentHighlightCardItem = ({ title, type, owners }) => (
+const ContentHighlightCardItem = ({ title, type, authoringOrganizations }) => (
   <Card isClickable>
     <Card.ImageCap
       src="https://source.unsplash.com/360x200/?nature,flower"
-      srcAlt="Card Image"
-      logoSrc={owners[0].imageUrl}
-      logoAlt={`${owners[0].name}'s logo`}
+      srcAlt=""
+      logoSrc={authoringOrganizations[0].logoImageUrl}
+      logoAlt={`${authoringOrganizations[0].name}'s logo`}
     />
-    <Card.Header title={title} subtitle={owners[0].name} />
+    <Card.Header title={title} subtitle={authoringOrganizations[0].name} />
     {/* footer for spacing purposes */}
     <Card.Section>
       <span />
@@ -24,19 +24,16 @@ const ContentHighlightCardItem = ({ title, type, owners }) => (
 ContentHighlightCardItem.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string,
-  owners: PropTypes.arrayOf(PropTypes.shape({
+  authoringOrganizations: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-    imageUrl: PropTypes.string,
+    uuid: PropTypes.string,
+    logoImageUrl: PropTypes.string,
   })),
 };
 
 ContentHighlightCardItem.defaultProps = {
   type: undefined,
-  owners: [{
-    name: 'placeholder',
-    imageUrl: 'https://via.placeholder.com/150',
-  },
-  ],
+  authoringOrganizations: [],
 };
 
 export default ContentHighlightCardItem;

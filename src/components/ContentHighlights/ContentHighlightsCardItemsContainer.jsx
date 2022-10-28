@@ -22,12 +22,14 @@ const ContentHighlightsCardItemsContainer = () => {
         xl: 4,
       }}
     >
-      {highlightCourses.map(({ title, type, owners }, index) => (
+      {highlightCourses.map(({
+        uuid, title, type, owners,
+      }) => (
         <ContentHighlightCardItem
-          key={`${title}${index + 1}`}
+          key={uuid}
           title={title}
           type={type}
-          owners={owners}
+          authoringOrganizations={owners}
         />
       ))}
     </CardGrid>

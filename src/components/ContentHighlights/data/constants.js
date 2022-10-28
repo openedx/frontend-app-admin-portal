@@ -9,12 +9,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                 {
                   title: 'Math',
                   type: 'Course',
-                  id: '1',
+                  uuid: '1',
                   owners: 
                   [
                     {
                       uuid:'123',
-                      imageUrl: 'https://placekitten.com/200/100',
+                      logoImageUrl: 'https://placekitten.com/200/100',
                       name: 'General Studies'
                     }
                   ]
@@ -22,12 +22,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                 {
                   title: 'Science',
                   type: 'Course',
-                  id: '2',
+                  uuid: '2',
                   owners: 
                   [
                     {
                       uuid:'123',
-                      imageUrl: 'https://placekitten.com/200/100',
+                      logoImageUrl: 'https://placekitten.com/200/100',
                       name: 'General Studies'
                     }
                   ]
@@ -35,25 +35,17 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                 {
                   title: 'English',
                   type: 'Course',
-                  id: '3',
+                  uuid: '3',
                   owners: 
                   [
                     {
                       uuid:'123',
-                      imageUrl: 'https://placekitten.com/200/100',
+                      logoImageUrl: 'https://placekitten.com/200/100',
                       name: 'General Studies'
                     }
                   ]
                 },
               ],
-              owners: 
-              [
-                {
-                  uuid:'123',
-                  imageUrl: 'https://placekitten.com/200/100',
-                  name: 'General Studies'
-                }
-              ]
     },
     {
       title: 'Dire Math',
@@ -63,12 +55,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Math Xtreme',
                     type: 'Course',
-                    id: '4',
+                    uuid: '4',
                     owners: 
                     [
                       {
                         uuid:'456',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
@@ -76,12 +68,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Science for Math Majors',
                     type: 'Course',
-                    id: '5',
+                    uuid: '5',
                     owners: 
                     [
                       {
                         uuid:'456',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
@@ -89,25 +81,17 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'English Divergence',
                     type: 'Course',
-                    id: '6',
+                    uuid: '6',
                     owners: 
                     [
                       {
                         uuid:'456',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
                   },
                 ],
-                owners: 
-                [
-                  {
-                    uuid:'456',
-                    imageUrl: 'https://placekitten.com/200/100',
-                    name: 'Matheletes'
-                  }
-                ]
     },
     {
       title: 'Dire Science',
@@ -117,12 +101,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Math for Science Majors',
                     type: 'Course',
-                    id: '7',
+                    uuid: '7',
                     owners: 
                     [
                       {
                         uuid:'789',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
@@ -130,12 +114,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Science Xtreme',
                     type: 'Course',
-                    id: '8',
+                    uuid: '8',
                     owners: 
                     [
                       {
                         uuid:'789',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
@@ -143,25 +127,17 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'English Obfuscation',
                     type: 'Course',
-                    id: '9',
+                    uuid: '9',
                     owners: 
                     [
                       {
                         uuid:'789',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
                   },
                 ],
-                owners: 
-                [
-                  {
-                    uuid:'789',
-                    imageUrl: 'https://placekitten.com/200/100',
-                    name: 'The Beakers'
-                  }
-                ]
     },
     {
       title: 'Dire English',
@@ -171,12 +147,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'To Math or not Math',
                     type: 'Course',
-                    id: '10',
+                    uuid: '10',
                     owners: 
                     [
                       {
                         uuid:'101112',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
@@ -184,12 +160,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Science for English Majors',
                     type: 'Course',
-                    id: '11',
+                    uuid: '11',
                     owners: 
                     [
                       {
                         uuid:'101112',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
@@ -197,12 +173,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'English Again',
                     type: 'Course',
-                    id: '12',
+                    uuid: '12',
                     owners: 
                     [
                       {
                         uuid:'101112',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
@@ -217,12 +193,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Math for Engineering Majors',
                     type: 'Course',
-                    id: '13',  
+                    uuid: '13',  
                     owners: 
                     [
                       {
                         uuid:'131415',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]
@@ -230,12 +206,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'Science for Engineering Majors',
                     type: 'Course',
-                    id: '14',
+                    uuid: '14',
                     owners: 
                     [
                       {
                         uuid:'131415',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]
@@ -243,12 +219,12 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   {
                     title: 'English Instantiation',
                     type: 'Course',
-                    id: '15',
+                    uuid: '15',
                     owners: 
                     [
                       {
                         uuid:'131415',
-                        imageUrl: 'https://placekitten.com/200/100',
+                        logoImageUrl: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]

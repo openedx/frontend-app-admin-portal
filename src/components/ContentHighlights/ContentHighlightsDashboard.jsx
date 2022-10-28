@@ -1,8 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import ZeroStateHighlights from './ZeroStateHighlights';
 import CurrentContentHighlights from './CurrentContentHighlights';
 import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
+import ContentHighlightHelmet from './ContentHighlightHelmet';
 
 const ContentHighlightsDashboard = () => {
   const hasContentHighlights = TEST_COURSE_HIGHLIHTS_DATA.length > 1;
@@ -11,9 +11,7 @@ const ContentHighlightsDashboard = () => {
   if (!hasContentHighlights) {
     return (
       <>
-        <Helmet>
-          <title>Highlights</title>
-        </Helmet>
+        <ContentHighlightHelmet title="Highlights" />
         <ZeroStateHighlights />
       </>
     );
@@ -21,9 +19,7 @@ const ContentHighlightsDashboard = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Highlights</title>
-      </Helmet>
+      <ContentHighlightHelmet title="Highlights" />
       <CurrentContentHighlights />
     </>
   );

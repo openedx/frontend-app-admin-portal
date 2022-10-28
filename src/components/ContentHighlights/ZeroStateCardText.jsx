@@ -10,12 +10,11 @@ const ZeroStateCardText = ({ textContainerClassName, children }) => (
 
 ZeroStateCardText.propTypes = {
   textContainerClassName: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
 
 ZeroStateCardText.defaultProps = {
   textContainerClassName: 'text-center',
-  children: null,
 };
 
 export default ZeroStateCardText;

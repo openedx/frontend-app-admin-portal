@@ -11,7 +11,6 @@ const ContentHighlightSetCard = ({
   const history = useHistory();
   return (
     <Card
-      key={title}
       isClickable
       onClick={() => history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightUUID}`)}
     >

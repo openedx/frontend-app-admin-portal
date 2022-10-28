@@ -13,7 +13,7 @@ const CourseHighlightRoutes = ({ enterpriseSlug }) => {
   return (
     <>
       <Hero title="Highlights" />
-      <Container fluid className="pr-4 mt-5">
+      <Container fluid className="mt-5">
         <Route
           path={baseContentHighlightPath}
           component={ContentHighlightsDashboard}
