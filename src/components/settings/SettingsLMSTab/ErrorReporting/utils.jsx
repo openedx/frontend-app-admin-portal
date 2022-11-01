@@ -1,5 +1,7 @@
 import * as timeago from 'timeago.js';
-import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
+import {
+  CheckCircle, Error, Sync,
+} from '@edx/paragon/icons';
 
 timeago.register('time-locale');
 
