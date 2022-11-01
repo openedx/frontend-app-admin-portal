@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { CardGrid } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
+import { camelCaseObject } from '@edx/frontend-platform';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
-import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
+import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
 const ContentHighlightsCardItemsContainer = () => {
   const { highlightUUID } = useParams();
   const [highlightCourses] = useState(
-    TEST_COURSE_HIGHLIHTS_DATA.filter(highlight => highlight.uuid === highlightUUID)[0].highlighted_content,
+    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
+      highlight => highlight.uuid === highlightUUID,
+    )[0]?.highlightedContent,
   );
   if (!highlightCourses) {
     return null;
@@ -22,12 +25,14 @@ const ContentHighlightsCardItemsContainer = () => {
       }}
     >
       {/* eslint-disable camelcase */}
-      {highlightCourses.map(({ title, content_type, authoring_organizations }, index) => (
+      {highlightCourses.map(({
+        uuid, title, contentType, authoringOrganizations,
+      }) => (
         <ContentHighlightCardItem
-          key={`${title}${index + 1}`}
+          key={uuid}
           title={title}
-          type={content_type}
-          owners={authoring_organizations}
+          type={contentType.toLowerCase()}
+          authoringOrganizations={authoringOrganizations}
         />
       ))}
     </CardGrid>

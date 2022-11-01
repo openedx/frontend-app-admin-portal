@@ -4,7 +4,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import ContentHighlightSetCard from './ContentHighlightSetCard';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
-const ContentHighlightSetCardContainer = () => (
+const ContentHighlightCardContainer = () => (
   <CardGrid
     columnSizes={{
       xs: 12,
@@ -21,7 +21,6 @@ const ContentHighlightSetCardContainer = () => (
         isPublished={isPublished}
       />
     ))}
-    {/* eslint-enable camelcase */}
   </CardGrid>
 );
-export default ContentHighlightSetCardContainer;
+export default ContentHighlightCardContainer;

@@ -1,14 +1,14 @@
 import React from 'react';
-import { CheckCircle } from '@edx/paragon/icons';
 import {
-  Stack, Col, Icon, Form,
+  Stack, Col, Form, Image,
 } from '@edx/paragon';
+import pencil from '../data/images/pencil-circle.svg';
 
 const HighlightStepperTitle = () => (
   <Stack>
     <Col>
       <Stack className="mb-3" direction="horizontal">
-        <Icon src={CheckCircle} />
+        <Image className="pgn__icon" src={pencil} alt="" />
         <Col>
           <h3 className="m-0">Create a title for the highlight collection</h3>
         </Col>

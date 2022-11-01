@@ -1,55 +1,48 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, {
+  useMemo, useContext,
+} from 'react';
 import { Card, Badge, Stack } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
-import {
-  setHighlightStepperModal,
-} from './data/actions';
-import { initialStepperModalState } from './data/reducer';
-import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
+import { HIGHLIGHT_CARD_BADGE_STATUS } from './data/constants';
+import { ContentHighlightsContext } from './ContentHighlightsContext';
 
 const ContentHighlightSetCard = ({
   title, highlightUUID, isPublished, enterpriseSlug,
 }) => {
   const history = useHistory();
-  /* Stepper Draft Logic - Start */
-  const [toggleModal, setToggleModal] = useState(false);
-  const [stepperModalState] = useReducer(setHighlightStepperModal, initialStepperModalState);
-  const badgeData = {
-    variant: isPublished ? 'success' : 'warning',
-    message: isPublished ? 'Published' : 'Draft',
-  };
-  const editDraft = () => {
+  /* Stepper Draft Logic (See Hook) - Start */
+  const {
+    setIsModalOpen,
+  } = useContext(ContentHighlightsContext);
+  /* Stepper Draft Logic (See Hook) - End */
+  const handleHighlightSetClick = () => {
     if (isPublished) {
       // redirect to individual highlighted courses based on uuid
       return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightUUID}`);
     }
-    return setToggleModal(true);
+    return setIsModalOpen(true);
   };
-  useEffect(() => {
-    if (!stepperModalState?.isOpen) {
-      setToggleModal(false);
-    }
-  }, [stepperModalState.isOpen]);
-  /* Stepper Draft Logic - End */
+  const badgeData = useMemo(() => () => ({
+    variant: HIGHLIGHT_CARD_BADGE_STATUS(isPublished).variant,
+    label: HIGHLIGHT_CARD_BADGE_STATUS(isPublished).label,
+  }), [isPublished]);
   return (
     <Card
-      key={title}
       isClickable
-      onClick={() => editDraft()}
+      onClick={() => handleHighlightSetClick()}
     >
       <Stack className="justify-content-between p-4" direction="horizontal">
         <Card.Header
           className="p-0"
           title={title}
         />
-        <Badge className="align-self-end" variant={badgeData.variant}>
-          {badgeData.message}
+        <Badge className="align-self-end" variant={badgeData().variant}>
+          {badgeData().label}
         </Badge>
       </Stack>
-      {!isPublished && <ContentHighlightStepper openModal={toggleModal} />}
     </Card>
   );
 };

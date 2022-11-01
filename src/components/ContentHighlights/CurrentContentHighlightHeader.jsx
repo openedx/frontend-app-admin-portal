@@ -1,23 +1,14 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useContext } from 'react';
 import {
   Button, ActionRow,
 } from '@edx/paragon';
-import {
-  setHighlightStepperModal,
-} from './data/actions';
-import { initialStepperModalState } from './data/reducer';
 import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
+import { ContentHighlightsContext } from './ContentHighlightsContext';
 
 const CurrentContentHighlightHeader = () => {
-  /* Stepper declarations and functions - Start */
-  const [toggleModal, setToggleModal] = useState(false);
-  const [stepperModalState] = useReducer(setHighlightStepperModal, initialStepperModalState);
-  useEffect(() => {
-    if (!stepperModalState?.isOpen) {
-      setToggleModal(false);
-    }
-  }, [stepperModalState.isOpen]);
-  /* Stepper declarations and functions - End */
+  const {
+    isModalOpen, setIsModalOpen,
+  } = useContext(ContentHighlightsContext);
   return (
     <>
       <ActionRow className="mb-4.5">
@@ -25,10 +16,11 @@ const CurrentContentHighlightHeader = () => {
           Active Highlights
         </h2>
         <ActionRow.Spacer />
-        <Button onClick={() => setToggleModal(true)}>New Highlight</Button>
+        <Button onClick={() => setIsModalOpen(true)}>New Highlight</Button>
       </ActionRow>
-      <ContentHighlightStepper openModal={toggleModal} />
+      <ContentHighlightStepper isOpen={isModalOpen} />
     </>
   );
 };
+
 export default CurrentContentHighlightHeader;

@@ -1,4 +1,3 @@
-/*eslint-disable*/ 
 import { logError } from '@edx/frontend-platform/logging';
 import {
   SET_HIGHLIGHT_STEPPER_MODAL,
@@ -9,11 +8,10 @@ export const initialStepperModalState = {
   isOpen: false,
   step: 0,
   highlight: null,
-  isLoading: false,
 };
 
 export const stepperModalReducer = (state = initialStepperModalState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SET_HIGHLIGHT_STEPPER_MODAL:
       return { ...state, isOpen: action.payload.data };
     case SET_CURRENT_STEPPER_STEP:
@@ -23,5 +21,5 @@ export const stepperModalReducer = (state = initialStepperModalState, action) =>
       logError(msg);
       throw new Error(msg);
     }
-}
+  }
 };

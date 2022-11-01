@@ -1,55 +1,52 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+import { Container } from '@edx/paragon';
 import ZeroStateHighlights from './ZeroState';
 import CurrentContentHighlights from './CurrentContentHighlights';
-// import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
+import ContentHighlightHelmet from './ContentHighlightHelmet';
+// import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
-const ContentHighlightsDashboard = ({ data }) => {
-  const hasContentHighlights = data?.length > 0;
+const ContentHighlightsDashboard = ({ highlightSets }) => {
+  const hasContentHighlights = highlightSets?.length > 0;
   /* uncomment out import and 1 of the following conditions to test behavior */
-  // const hasContentHighlights = TEST_COURSE_HIGHLIHTS_DATA.length > 0;
+  // const hasContentHighlights = TEST_COURSE_HIGHLIGHTS_DATA.length > 0;
   // const hasContentHighlights = false;
   if (!hasContentHighlights) {
     return (
-      <>
-        <Helmet>
-          <title>Highlights</title>
-        </Helmet>
+      <Container fluid className="mt-5">
+        <ContentHighlightHelmet title="Highlights" />
         <ZeroStateHighlights />
-      </>
+      </Container>
     );
   }
 
   return (
-    <>
-      <Helmet>
-        <title>Highlights</title>
-      </Helmet>
+    <Container fluid className="mt-5">
+      <ContentHighlightHelmet title="Highlights" />
       <CurrentContentHighlights />
-    </>
+    </Container>
   );
 };
 
 ContentHighlightsDashboard.propTypes = {
-  data: PropTypes.arrayOf(
+  highlightSets: PropTypes.arrayOf(
     PropTypes.shape({
       uuid: PropTypes.string,
       title: PropTypes.string,
-      is_published: PropTypes.bool,
-      enterprise_curation: PropTypes.string,
-      highlighted_content: PropTypes.arrayOf(
+      isPublished: PropTypes.bool,
+      enterpriseCuration: PropTypes.string,
+      highlightedContent: PropTypes.arrayOf(
         PropTypes.shape({
           uuid: PropTypes.string,
-          content_key: PropTypes.string,
-          content_type: PropTypes.string,
+          contentKey: PropTypes.string,
+          contentType: PropTypes.string,
           title: PropTypes.string,
-          card_image_url: PropTypes.string,
-          authoring_organizations: PropTypes.arrayOf(
+          cardImageUrl: PropTypes.string,
+          authoringOrganizations: PropTypes.arrayOf(
             PropTypes.shape({
               uuid: PropTypes.string,
               name: PropTypes.string,
-              logo_image_urls: PropTypes.string,
+              logoImageUrls: PropTypes.string,
             }),
           ),
         }),
@@ -59,7 +56,7 @@ ContentHighlightsDashboard.propTypes = {
 };
 
 ContentHighlightsDashboard.defaultProps = {
-  data: null,
+  highlightSets: null,
 };
 
 export default ContentHighlightsDashboard;

@@ -3,7 +3,7 @@ import { Stack } from '@edx/paragon';
 
 const HighlightStepperConfirmHighlight = () => (
   <Stack>
-    <h3>Your highlight has been created</h3>
+    <h3>Confirm your Highlight</h3>
     <p>Yay</p>
   </Stack>
 );

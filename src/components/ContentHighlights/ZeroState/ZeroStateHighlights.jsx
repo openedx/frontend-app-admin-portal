@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useContext } from 'react';
 import {
-  Card, Button, Col,
+  Card, Button, Col, Row,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { Add } from '@edx/paragon/icons';
@@ -8,25 +8,16 @@ import cardImage from '../data/images/ContentHighlightImage.svg';
 import ZeroStateCardImage from './ZeroStateCardImage';
 import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
-import {
-  setHighlightStepperModal,
-} from '../data/actions';
-import { initialStepperModalState } from '../data/reducer';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
+// import useStepperModalState from '../data/hooks';
+import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const ZeroStateHighlights = ({ cardClassName }) => {
-  /* Stepper declarations and functions - Start */
-  const [toggleModal, setToggleModal] = useState(false);
-  const [stepperModalState] = useReducer(setHighlightStepperModal, initialStepperModalState);
-  useEffect(() => {
-    if (!stepperModalState?.isOpen) {
-      setToggleModal(false);
-    }
-  }, [stepperModalState.isOpen]);
-  /* Stepper declarations and functions - End */
+  const {
+    isModalOpen, setIsModalOpen,
+  } = useContext(ContentHighlightsContext);
   return (
-    <>
-
+    <Row>
       <Col xs={12} sm={8} lg={5}>
         <Card className={cardClassName}>
           <ZeroStateCardImage imageContainerClassName="bg-light-400 p-4" cardImage={cardImage} />
@@ -37,12 +28,12 @@ const ZeroStateHighlights = ({ cardClassName }) => {
             </p>
           </ZeroStateCardText>
           <ZeroStateCardFooter footerClassName="pb-0 mb-4.5">
-            <Button onClick={() => setToggleModal(true)} iconBefore={Add} block>New Highlight</Button>
+            <Button onClick={() => setIsModalOpen(true)} iconBefore={Add} block>New Highlight</Button>
           </ZeroStateCardFooter>
         </Card>
       </Col>
-      <ContentHighlightStepper openModal={toggleModal} />
-    </>
+      <ContentHighlightStepper isOpen={isModalOpen} />
+    </Row>
   );
 };
 ZeroStateHighlights.propTypes = {

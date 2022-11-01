@@ -1,6 +1,19 @@
-/* eslint-disable*/
-
-export const TEST_COURSE_HIGHLIHTS_DATA = [
+// badge status for published vs unpublished highlight cards
+export function HIGHLIGHT_CARD_BADGE_STATUS(isPublished) {
+  if (isPublished) {
+    return {
+      label: 'Published',
+      variant: 'primary',
+    };
+  }
+  return {
+    label: 'Draft',
+    variant: 'light',
+  };
+}
+/*eslint-disable*/
+// Test Data for Content Highlights
+export const TEST_COURSE_HIGHLIGHTS_DATA = [
     {
       uuid: '1',
       title: 'Dire Core',
@@ -18,14 +31,19 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                   [
                     {
                       uuid:'123',
-                      name: 'General Studies',
+                      name: 'General Studies 1',
                       logo_image_url: 'https://placekitten.com/200/100',
+                    },
+                    {
+                      uuid:'1234',
+                      logo_image_url: 'https://placekitten.com/200/100',
+                      name: 'Super General Studies'
                     }
                   ]
                 },
                 {
                   title: 'Science',
-                  content_type: 'Course',
+                  content_type: 'Pathway',
                   uuid: '2',
                   content_key: 'edX+DemoX',
                   authoring_organizations: 
@@ -33,13 +51,13 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                     {
                       uuid:'123',
                       logo_image_url: 'https://placekitten.com/200/100',
-                      name: 'General Studies'
+                      name: 'General Studies 2'
                     }
                   ]
                 },
                 {
                   title: 'English',
-                  content_type: 'Course',
+                  content_type: 'Program',
                   uuid: '3',
                   content_key: 'edX+DemoX',
                   authoring_organizations: 
@@ -47,7 +65,7 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
                     {
                       uuid:'123',
                       logo_image_url: 'https://placekitten.com/200/100',
-                      name: 'General Studies'
+                      name: 'General Studies 3'
                     }
                   ]
                 },
