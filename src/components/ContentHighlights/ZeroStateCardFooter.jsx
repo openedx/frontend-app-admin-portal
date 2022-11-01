@@ -1,0 +1,20 @@
+import React from 'react';
+import { Card } from '@edx/paragon';
+import PropTypes from 'prop-types';
+
+const ZeroStateCardFooter = ({ footerClassName, children }) => (
+  <Card.Footer className={footerClassName}>
+    {children}
+  </Card.Footer>
+);
+
+ZeroStateCardFooter.propTypes = {
+  footerClassName: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+ZeroStateCardFooter.defaultProps = {
+  footerClassName: undefined,
+};
+
+export default ZeroStateCardFooter;
