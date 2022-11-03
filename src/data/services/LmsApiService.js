@@ -22,7 +22,9 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
-  static lmsSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+  static lmsContentSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+
+  static lmsLearnerSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/learner_sync_status`;
 
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
@@ -234,7 +236,11 @@ class LmsApiService {
   }
 
   static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  }
+
+  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId) {
+    return LmsApiService.apiClient().get(`${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
   }
 
   /**
