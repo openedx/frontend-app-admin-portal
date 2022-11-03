@@ -199,7 +199,6 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
     userEvent.click(screen.queryByText('Read'));
-    screen.debug(undefined, 100000);
     expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
   });
 });
