@@ -59,7 +59,7 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
           {
             Header: 'Sync status',
             accessor: 'sync_status',
-            Cell: ({ row }) => getSyncStatus(row.original.sync_status),
+            Cell: ({ row }) => getSyncStatus(row.original.sync_status, row.original.friendly_status_message),
             sortable: true,
             disableFilters: true,
           },
