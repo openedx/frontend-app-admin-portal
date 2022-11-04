@@ -67,10 +67,10 @@ export default function SettingsLMSTab({
       .then((response) => {
         setShowNewConfigButtons(true);
         setConfigsLoading(false);
+        // Save all existing configs
+        setExistingConfigsData(camelCaseDictArray(response.data));
         // If the enterprise has existing configs
         if (response.data.length !== 0) {
-          // Save all existing configs
-          setExistingConfigsData(camelCaseDictArray(response.data));
           // toggle the existing configs bool
           setConfigsExist(true);
           // Hide the create cards and show the create button

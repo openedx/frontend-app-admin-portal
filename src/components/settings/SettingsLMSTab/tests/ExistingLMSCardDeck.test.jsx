@@ -1,5 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  act, render, screen, waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -116,6 +118,63 @@ describe('<ExistingLMSCardDeck />', () => {
     userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
     expect(screen.getByText('Configure'));
     expect(screen.getByText('View sync history'));
+  });
+  it('can delete inactive config card', async () => {
+    const deleteConfigCall = jest.spyOn(LmsApiService, 'deleteBlackboardConfig');
+    features.REPORTING_CONFIGURATIONS = true;
+    render(
+      <ExistingLMSCardDeck
+        configData={inactiveConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    // Click kebab menu
+    userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
+    // Click Delete
+    userEvent.click(screen.getByTestId('dropdown-delete-item'));
+    // Verify modal with delete button appears
+    await waitFor(() => {
+      screen.getByTestId('confirm-delete-config');
+    });
+    // Click confirm
+    const deleteButton = screen.getByTestId('confirm-delete-config');
+    act(() => {
+      userEvent.click(deleteButton);
+    });
+    // Verify delete call
+    expect(deleteConfigCall).toHaveBeenCalledTimes(1);
+  });
+  it('can cancel deleting inactive config card', async () => {
+    const deleteConfigCall = jest.spyOn(LmsApiService, 'deleteBlackboardConfig');
+    features.REPORTING_CONFIGURATIONS = true;
+    render(
+      <ExistingLMSCardDeck
+        configData={inactiveConfigData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    // Click kebab menu
+    userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
+    // Click Delete
+    userEvent.click(screen.getByTestId('dropdown-delete-item'));
+    // Verify modal with cancel delete button appears
+    const cancelTestId = 'cancel-delete-config';
+    await waitFor(() => {
+      screen.getByTestId(cancelTestId);
+    });
+    // Click cancel
+    const cancelButton = screen.getByTestId(cancelTestId);
+    act(() => {
+      userEvent.click(cancelButton);
+    });
+    // Verify modal closed
+    expect(screen.queryByTestId(cancelTestId)).toBeNull();
+    // Verify delete was not called
+    expect(deleteConfigCall).toHaveBeenCalledTimes(0);
   });
   it('renders incomplete config card', async () => {
     render(
