@@ -10,13 +10,13 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { AnalyticsPage } from '../analytics';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
-import ContentHighlights from '../ContentHighlights';
+import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
+import { AnalyticsPage } from '../analytics';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -83,16 +83,16 @@ const EnterpriseAppRoutes = ({
           key="analytics"
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
-          component={AnalyticsPage}
+          component={PlotlyAnalyticsPage}
         />
       )}
 
       {enableAnalyticsPage && (
       <Route
-        key="plotly-analytics"
+        key="tableau-analytics"
         exact
-        path={`${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`}
-        component={PlotlyAnalyticsPage}
+        path={`${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`}
+        component={AnalyticsPage}
       />
       )}
 
