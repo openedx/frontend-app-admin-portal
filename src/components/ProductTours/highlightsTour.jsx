@@ -3,22 +3,22 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import Cookies from 'universal-cookie';
 
 import {
-  LEARNER_CREDIT_COOKIE_NAME,
-  LEARNER_CREDIT_ADVANCE_EVENT_NAME,
-  LEARNER_CREDIT_DISMISS_EVENT_NAME,
-  LEARNER_CREDIT_ON_END_EVENT_NAME,
+  HIGHLIGHTS_COOKIE_NAME,
+  HIGHLIGHTS_ADVANCE_EVENT_NAME,
+  HIGHLIGHTS_DISMISS_EVENT_NAME,
+  HIGHLIGHTS_ON_END_EVENT_NAME,
   TOUR_TARGETS,
 } from './constants';
 import disableAll from './data/utils';
 
 const cookies = new Cookies();
 
-const learnerCreditTour = ({
+const highlightsTour = ({
   enterpriseSlug,
 }) => {
   const disableTour = () => {
     cookies.set(
-      LEARNER_CREDIT_COOKIE_NAME,
+      HIGHLIGHTS_COOKIE_NAME,
       true,
       { sameSite: 'strict' },
     );
@@ -26,35 +26,36 @@ const learnerCreditTour = ({
 
   const handleAdvanceTour = () => {
     disableTour();
-    sendEnterpriseTrackEvent(enterpriseSlug, LEARNER_CREDIT_ADVANCE_EVENT_NAME);
+    sendEnterpriseTrackEvent(enterpriseSlug, HIGHLIGHTS_ADVANCE_EVENT_NAME);
   };
 
   const handleDismissTour = () => {
     disableAll();
-    sendEnterpriseTrackEvent(enterpriseSlug, LEARNER_CREDIT_DISMISS_EVENT_NAME);
+    sendEnterpriseTrackEvent(enterpriseSlug, HIGHLIGHTS_DISMISS_EVENT_NAME);
   };
 
   const handleTourEnd = () => {
     disableAll();
-    sendEnterpriseTrackEvent(enterpriseSlug, LEARNER_CREDIT_ON_END_EVENT_NAME);
+    sendEnterpriseTrackEvent(enterpriseSlug, HIGHLIGHTS_ON_END_EVENT_NAME);
   };
 
   const tour = {
     placement: 'right',
-    body: "We've recently added a Learner Credit feature where you "
-      + 'can review and manage your spend.',
-    target: `#${TOUR_TARGETS.LEARNER_CREDIT}`,
+    body: "We've recently added a Highlights feature that allows you to create and recommend course collections to your learners.",
+    target: `#${TOUR_TARGETS.CONTENT_HIGHLIGHTS}`,
     title: 'New Feature',
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
+
   };
 
   return tour;
 };
 
-learnerCreditTour.propTypes = {
+highlightsTour.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  tourEnabled: PropTypes.bool.isRequired,
 };
 
-export default learnerCreditTour;
+export default highlightsTour;

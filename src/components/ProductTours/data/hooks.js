@@ -6,6 +6,7 @@ import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
+  HIGHLIGHTS_COOKIE_NAME,
 } from '../constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
@@ -52,4 +53,15 @@ export const useLearnerCreditTour = () => {
 
   const [learnerCreditTourEnabled, setBrowseAndRequestTourEnabled] = useState(showLearnerCreditTour);
   return [learnerCreditTourEnabled, setBrowseAndRequestTourEnabled];
+};
+
+export const useHighlightsTour = (enableHighlights) => {
+  const { enterpriseAppPage } = useParams();
+
+  const inHighlights = enterpriseAppPage === ROUTE_NAMES.contentHighlights;
+  const dismissedHighlightsTourCookie = cookies.get(HIGHLIGHTS_COOKIE_NAME);
+  // Only show tour if feature is enabled, hide cookie is undefined or false or not in the settings page
+  const showHighlightsTour = enableHighlights && !dismissedHighlightsTourCookie && !inHighlights;
+  const [highlightsTourEnabled, setHighlightsTourEnabled] = useState(showHighlightsTour);
+  return [highlightsTourEnabled, setHighlightsTourEnabled];
 };
