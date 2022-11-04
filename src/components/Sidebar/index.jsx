@@ -71,10 +71,10 @@ const Sidebar = ({
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
     },
     {
-      title: 'Plotly Analytics',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`,
+      title: 'Tableau Analytics',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
-      hidden: !features.PLOTLY_ANALYTICS || !enableAnalyticsScreen,
+      hidden: !features.TABLEAU_ANALYTICS || !enableAnalyticsScreen,
     },
     {
       title: 'Analytics',
