@@ -11,5 +11,6 @@ export const ROUTE_NAMES = {
   appearance: 'appearance',
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
-  plotly_analytics: 'plotly-analytics',
+  contentHighlights: 'content-highlights',
+  tableau_analytics: 'tableau-analytics',
 };
