@@ -10,6 +10,8 @@ import browseAndRequestTour from './browseAndRequestTour';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import highlightsTour from './highlightsTour';
+import disableAll from './data/utils';
+
 // import {
 //   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
 // } from './data/hooks';
@@ -44,7 +46,9 @@ const ProductTours = ({
   const history = useHistory();
   const test = new Cookies().getAll();
 
-  const filterRegex = new RegExp(`(?:${PORTAL_APPEARANCE_TOUR_COOKIE_NAME}|${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}|${LEARNER_CREDIT_COOKIE_NAME}|${HIGHLIGHTS_COOKIE_NAME})`, 'g');
+  const filterRegex = new RegExp(
+    `(?:${PORTAL_APPEARANCE_TOUR_COOKIE_NAME}|${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}|${LEARNER_CREDIT_COOKIE_NAME}|${HIGHLIGHTS_COOKIE_NAME})`, 'g',
+  );
   const checkpoint = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
@@ -77,6 +81,7 @@ const ProductTours = ({
     dismissButtonText: 'Dismiss',
     endButtonText: 'End',
     enabled: isTourOpen,
+    onEnd: () => disableAll(),
     checkpoints: y,
   }];
   return (

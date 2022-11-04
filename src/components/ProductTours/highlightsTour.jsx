@@ -47,7 +47,6 @@ const highlightsTour = ({
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
-
   };
 
   return tour;
