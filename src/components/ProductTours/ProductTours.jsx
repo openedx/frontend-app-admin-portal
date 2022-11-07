@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { getConfig } from '@edx/frontend-platform/config';
-import Cookies from 'universal-cookie';
+import { getConfig } from '@edx/frontend-platform/config';
 import browseAndRequestTour from './browseAndRequestTour';
-// import { features } from '../../config';
+import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import highlightsTour from './highlightsTour';
-import disableAll from './data/utils';
+import disableAll, { filterCheckpoints } from './data/utils';
 
-// import {
-//   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
-// } from './data/hooks';
+import {
+  useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
+} from './data/hooks';
 import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
@@ -27,54 +26,38 @@ import {
  */
 const ProductTours = ({
   enterpriseSlug,
-  // enableLearnerPortal,
+  enableLearnerPortal,
 }) => {
-  // Commented out while determining how to handle multiple tours in current implementation
-  // const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
-  // const [browseAndRequestTourEnabled] = useBrowseAndRequestTour({
-  //   enableLearnerPortal,
-  // });
-  // const [learnerCreditTourEnabled] = useLearnerCreditTour();
-  // const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
-  // const [portalAppearanceTourEnabled] = usePortalAppearanceTour({
-  //   enablePortalAppearance,
-  // });
-  // const [highlightsTourEnabled] = useHighlightsTour(
-  //   FEATURE_CONTENT_HIGHLIGHTS,
-  // );
+  const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+  const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const [isTourOpen] = useState(true);
   const history = useHistory();
-  const test = new Cookies().getAll();
 
-  const filterRegex = new RegExp(
-    `(?:${PORTAL_APPEARANCE_TOUR_COOKIE_NAME}|${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}|${LEARNER_CREDIT_COOKIE_NAME}|${HIGHLIGHTS_COOKIE_NAME})`, 'g',
-  );
+  const enabledFeatures = {
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
+    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
+    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
+  };
   const checkpoint = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
-      tourEnabled: false,
       history,
     }),
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({
       enterpriseSlug,
-      tourEnabled: false,
       history,
     }),
     [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({
       enterpriseSlug,
-      tourEnabled: false,
       history,
     }),
     [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({
       enterpriseSlug,
-      tourEnabled: false,
       history,
     }),
   };
-  const x = Object.entries(test).filter(item => item[0].match(filterRegex)).map(item => item[0]);
-  let xx = 0;
-  const y = Object.keys(checkpoint).filter(item => item !== x[xx++]).map(item => checkpoint[item]);
-
+  const checkpointArray = filterCheckpoints(checkpoint, enabledFeatures);
   const tours = [{
     tourID: 'a',
     advanceButtonText: 'Next',
@@ -82,8 +65,9 @@ const ProductTours = ({
     endButtonText: 'End',
     enabled: isTourOpen,
     onEnd: () => disableAll(),
-    checkpoints: y,
+    checkpoints: checkpointArray,
   }];
+
   return (
     <ProductTour
       tours={tours}
@@ -93,12 +77,12 @@ const ProductTours = ({
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  // enableLearnerPortal: PropTypes.bool.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  // enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
 });
 
 export default connect(mapStateToProps)(ProductTours);

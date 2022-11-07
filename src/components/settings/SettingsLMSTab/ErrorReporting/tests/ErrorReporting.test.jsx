@@ -52,7 +52,7 @@ const contentSyncData = {
         content_id: 'DemoX-3',
         sync_status: 'error',
         sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
-        friendly_status_message: null,
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
       },
     ],
   },
@@ -77,7 +77,7 @@ const learnerSyncData = {
         progress_status: 'Passed',
         sync_status: 'error',
         sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
-        friendly_status_message: null,
+        friendly_status_message: 'The server is temporarily unavailable.',
       },
     ],
   },
@@ -139,6 +139,8 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('Demo3')).toBeInTheDocument();
     expect(screen.getByText('Error')).toBeInTheDocument();
+    userEvent.click(screen.queryByText('Read'));
+    expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
   });
   test('csv download works', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
@@ -196,5 +198,7 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
+    userEvent.click(screen.queryByText('Read'));
+    expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
   });
 });

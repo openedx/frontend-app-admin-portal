@@ -7,19 +7,17 @@ import {
   screen,
   render,
   cleanup,
-  act,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mergeConfig } from '@edx/frontend-platform';
 import { Router, Route } from 'react-router-dom';
 
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
-
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
+  HIGHLIGHTS_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
@@ -37,7 +35,6 @@ const useHistoryPush = jest.fn();
 
 const SUBSCRIPTION_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`;
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
-const SETTINGS_PAG_APPEARANCE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.appearance}`;
 const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.learnerCredit}`;
 
 const historyMock = (pathname = SUBSCRIPTION_PAGE_LOCATION) => ({
@@ -99,10 +96,12 @@ const deleteCookie = (name) => {
 
 describe('<ProductTours/>', () => {
   beforeEach(() => {
+    mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
     mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: false });
     deleteCookie(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
     deleteCookie(LEARNER_CREDIT_COOKIE_NAME);
     deleteCookie(PORTAL_APPEARANCE_TOUR_COOKIE_NAME);
+    deleteCookie(HIGHLIGHTS_COOKIE_NAME);
   });
   afterEach(() => cleanup());
 
@@ -118,44 +117,24 @@ describe('<ProductTours/>', () => {
     it('is shown when feature is enabled, and no cookie found', () => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = true;
       render(<ToursWithContext />);
-      expect(screen.queryByText('Portal Appearance')).toBeTruthy();
-    });
-    it(`redirects to settings page at ${SETTINGS_PAG_APPEARANCE_LOCATION}`, async () => {
-      features.SETTINGS_PAGE_APPEARANCE_TAB = true;
-      render(<ToursWithContext />);
-      const button = screen.getByText('Portal Appearance');
-      await act(async () => { userEvent.click(button); });
-      expect(useHistoryPush).toHaveBeenCalledWith({
-        pathname: SETTINGS_PAG_APPEARANCE_LOCATION,
-      });
-      expect(screen.queryByText('Portal Appearance')).toBeFalsy();
+      expect(screen.queryByText('Portal Appearance', { exact: false })).toBeTruthy();
     });
     it('is not shown when feature is turned off', () => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = false;
       render(<ToursWithContext />);
-      expect(screen.queryByText('Portal Appearance')).toBeFalsy();
+      expect(screen.queryByText('Portal Appearance', { exact: false })).toBeFalsy();
     });
   });
 
   describe('browse and request tour', () => {
     it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
       render(<ToursWithContext />);
-      expect(screen.queryByText('New Feature')).toBeTruthy();
+      expect(screen.queryByText('browse for courses', { exact: false })).toBeTruthy();
     });
 
     it('is not shown if enterprise already has subsidy requests turned on', () => {
       render(<ToursWithContext subsidyRequestsEnabled />);
-      expect(screen.queryByText('New Feature')).toBeFalsy();
-    });
-
-    it(`redirects to settings page at ${SETTINGS_PAGE_LOCATION}`, async () => {
-      render(<ToursWithContext />);
-      const button = screen.getByText('Continue To Settings');
-      await act(async () => { userEvent.click(button); });
-      expect(useHistoryPush).toHaveBeenCalledWith({
-        pathname: SETTINGS_PAGE_LOCATION,
-      });
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
 
     it('is not shown when feature is enabled and cookie found ', () => {
@@ -202,18 +181,6 @@ describe('<ProductTours/>', () => {
 
       render(<ToursWithContext canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
-    });
-
-    it(`has link to Learner Credit page: ${LEARNER_CREDIT_PAGE_LOCATION}`, async () => {
-      mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
-
-      render(<ToursWithContext canManageLearnerCredit />);
-      const button = screen.getByText('Continue To Learner Credit Page');
-      await act(async () => { userEvent.click(button); });
-      expect(useHistoryPush).toHaveBeenCalledWith({
-        pathname: LEARNER_CREDIT_PAGE_LOCATION,
-      });
-      expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
     it('is not shown if cookie is present', () => {
