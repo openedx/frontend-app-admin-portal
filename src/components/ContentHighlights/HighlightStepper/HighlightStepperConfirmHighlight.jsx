@@ -1,11 +1,15 @@
 import React from 'react';
-import { Stack } from '@edx/paragon';
+import { Stack, Container } from '@edx/paragon';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const HighlightStepperConfirmHighlight = () => (
-  <Stack>
-    <h3>Confirm your Highlight</h3>
-    <p>Yay</p>
-  </Stack>
+  <Container size="md">
+    <Stack>
+      <h3>{STEPPER_STEP_TEXT.confirmHighlight}</h3>
+      <p>Yay</p>
+    </Stack>
+  </Container>
+
 );
 
 export default HighlightStepperConfirmHighlight;

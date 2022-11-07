@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import { capitalizeFirstLetter } from '../../utils';
+import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
 
 const ContentHighlightCardItem = ({ title, type, authoringOrganizations }) => (
   <Card isClickable>
@@ -16,7 +16,7 @@ const ContentHighlightCardItem = ({ title, type, authoringOrganizations }) => (
     <Card.Section>
       <span />
     </Card.Section>
-    <Card.Footer textElement={capitalizeFirstLetter(type)}>
+    <Card.Footer textElement={FOOTER_TEXT_BY_CONTENT_TYPE[type]}>
       <span />
     </Card.Footer>
   </Card>
@@ -24,7 +24,7 @@ const ContentHighlightCardItem = ({ title, type, authoringOrganizations }) => (
 
 ContentHighlightCardItem.propTypes = {
   title: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['course', 'program', 'pathway']),
+  type: PropTypes.oneOf(['course', 'program', 'learnerpathway']),
   authoringOrganizations: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     uuid: PropTypes.string,

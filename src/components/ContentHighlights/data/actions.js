@@ -1,15 +1,15 @@
 export const SET_HIGHLIGHT_STEPPER_MODAL = 'SET_HIGHLIGHT_STEPPER_MODAL';
-export const setHighlightStepperModal = data => ({
+export const setHighlightStepperModal = isOpen => ({
   type: SET_HIGHLIGHT_STEPPER_MODAL,
   payload: {
-    data,
+    isOpen,
   },
 });
 
 export const SET_CURRENT_STEPPER_STEP = 'SET_CURRENT_STEPPER_STEP';
-export const setCurrentStepperStep = data => ({
+export const setCurrentStepperStep = step => ({
   type: SET_CURRENT_STEPPER_STEP,
   payload: {
-    data,
+    step,
   },
 });

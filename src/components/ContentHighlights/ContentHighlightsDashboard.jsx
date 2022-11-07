@@ -46,7 +46,7 @@ ContentHighlightsDashboard.propTypes = {
             PropTypes.shape({
               uuid: PropTypes.string,
               name: PropTypes.string,
-              logoImageUrls: PropTypes.string,
+              logoImageUrl: PropTypes.string,
             }),
           ),
         }),

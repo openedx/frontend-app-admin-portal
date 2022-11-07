@@ -3,23 +3,21 @@ import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import useStepperModalState from './data/hooks';
 
-import ContentHighlightContextProvider from './ContentHighlightsContext';
+import ContentHighlightsContextProvider from './ContentHighlightsContext';
 
 const ContentHighlights = () => {
   const {
-    stepperModalState, setIsModalOpen, isModalOpen, setHighlightStepperModal,
+    setIsModalOpen, isModalOpen,
   } = useStepperModalState({});
   const value = {
-    stepperModalState,
     setIsModalOpen,
     isModalOpen,
-    setHighlightStepperModal,
   };
   return (
-    <ContentHighlightContextProvider value={value}>
+    <ContentHighlightsContextProvider value={value}>
       <Hero title="Highlights" />
       <ContentHighlightRoutes />
-    </ContentHighlightContextProvider>
+    </ContentHighlightsContextProvider>
   );
 };
 

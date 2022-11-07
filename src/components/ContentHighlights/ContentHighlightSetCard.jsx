@@ -25,22 +25,23 @@ const ContentHighlightSetCard = ({
     }
     return setIsModalOpen(true);
   };
-  const badgeData = useMemo(() => () => ({
-    variant: HIGHLIGHT_CARD_BADGE_STATUS(isPublished).variant,
-    label: HIGHLIGHT_CARD_BADGE_STATUS(isPublished).label,
+  // TODO: Bring logic one level up to abstract different sections for draft vs published
+  const badgeData = useMemo(() => ({
+    variant: isPublished ? HIGHLIGHT_CARD_BADGE_STATUS.PUBLISHED.variant : HIGHLIGHT_CARD_BADGE_STATUS.DRAFT.variant,
+    label: isPublished ? HIGHLIGHT_CARD_BADGE_STATUS.PUBLISHED.label : HIGHLIGHT_CARD_BADGE_STATUS.DRAFT.label,
   }), [isPublished]);
   return (
     <Card
       isClickable
-      onClick={() => handleHighlightSetClick()}
+      onClick={handleHighlightSetClick}
     >
       <Stack className="justify-content-between p-4" direction="horizontal">
         <Card.Header
           className="p-0"
           title={title}
         />
-        <Badge className="align-self-end" variant={badgeData().variant}>
-          {badgeData().label}
+        <Badge className="align-self-end" variant={badgeData.variant}>
+          {badgeData.label}
         </Badge>
       </Stack>
     </Card>

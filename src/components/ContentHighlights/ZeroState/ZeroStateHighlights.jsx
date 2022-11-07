@@ -9,7 +9,6 @@ import ZeroStateCardImage from './ZeroStateCardImage';
 import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
-// import useStepperModalState from '../data/hooks';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const ZeroStateHighlights = ({ cardClassName }) => {

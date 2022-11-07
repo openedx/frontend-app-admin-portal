@@ -5,24 +5,7 @@ import React from 'react';
 import ContentHighlightStepper from '../ContentHighlightStepper';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import useStepperModalState from '../../data/hooks';
-/**
- * Non-Zero index reference to text representing step passed into this function
- *
- * @param {Integer} step
- * @returns
- */
-const stepperTextStep = (step) => {
-  const stepText = [
-    'Create a title for the highlight collection',
-    'Select Courses to Add',
-    'Confirm your Content',
-    'Confirm your Highlight',
-  ];
-  if (step < 1 || step > 4) {
-    throw new Error('stepperTextStep Error: Step must be between 1 and 4');
-  }
-  return stepText[step - 1];
-};
+import { STEPPER_STEP_TEXT } from '../../data/constants';
 
 const ContentHighlightStepperWrapper = () => {
   const { stepperModalState, setIsModalOpen, isModalOpen } = useStepperModalState();
@@ -45,7 +28,7 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText('Click Me');
     fireEvent.click(stepper);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
     render(<ContentHighlightStepperWrapper />);
@@ -61,13 +44,13 @@ describe('<ContentHighlightStepper>', () => {
 
     const backButton1 = screen.getByText('Back');
     fireEvent.click(backButton1);
-    expect(screen.getByText(stepperTextStep(3))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
     const backButton2 = screen.getByText('Back');
     fireEvent.click(backButton2);
-    expect(screen.getByText(stepperTextStep(2))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.selectCourses)).toBeInTheDocument();
     const backButton3 = screen.getByText('Back');
     fireEvent.click(backButton3);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
     const backButton4 = screen.getByText('Back');
     fireEvent.click(backButton4);
     expect(screen.getByText('Click Me')).toBeInTheDocument();
@@ -77,7 +60,7 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText('Click Me');
     fireEvent.click(stepper);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     fireEvent.click(closeButton);
@@ -88,7 +71,7 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText('Click Me');
     fireEvent.click(stepper);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const nextButton1 = screen.getByText('Next');
     fireEvent.click(nextButton1);
@@ -96,7 +79,7 @@ describe('<ContentHighlightStepper>', () => {
     fireEvent.click(nextButton2);
     const nextButton3 = screen.getByText('Next');
     fireEvent.click(nextButton3);
-    expect(screen.getByText(stepperTextStep(4))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.confirmHighlight)).toBeInTheDocument();
 
     const confirmButton = screen.getByText('Confirm');
     fireEvent.click(confirmButton);
@@ -107,7 +90,7 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper1 = screen.getByText('Click Me');
     fireEvent.click(stepper1);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     fireEvent.click(closeButton);
@@ -115,6 +98,6 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper2 = screen.getByText('Click Me');
     fireEvent.click(stepper2);
-    expect(screen.getByText(stepperTextStep(1))).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 });

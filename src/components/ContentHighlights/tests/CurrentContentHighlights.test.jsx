@@ -47,7 +47,7 @@ describe('<CurrentContentHighlights>', () => {
     expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
   });
 
-  /* Currently the ContentHighlightSetCardContainer is hard coded with data, test to be updated */
+  /* TODO: Currently the ContentHighlightSetCardContainer is hard coded with data, test to be updated */
   it('Displays the ContentHighlightSetCardContainer', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
     expect(screen.getByText('Dire Core')).toBeInTheDocument();

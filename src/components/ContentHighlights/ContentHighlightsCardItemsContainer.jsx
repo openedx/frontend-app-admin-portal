@@ -24,7 +24,6 @@ const ContentHighlightsCardItemsContainer = () => {
         xl: 4,
       }}
     >
-      {/* eslint-disable camelcase */}
       {highlightCourses.map(({
         uuid, title, contentType, authoringOrganizations,
       }) => (

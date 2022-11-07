@@ -1,13 +1,16 @@
 import React from 'react';
-import { Stack, Col } from '@edx/paragon';
+import { Container, Stack, Col } from '@edx/paragon';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const HighlightStepperConfirmCourses = () => (
-  <Stack>
-    <h3>Confirm your Content</h3>
-    <Col>
-      Search Data Table Card View here
-    </Col>
-  </Stack>
+  <Container size="md">
+    <Stack>
+      <h3>{STEPPER_STEP_TEXT.confirmContent}</h3>
+      <Col>
+        Search Data Table Card View here
+      </Col>
+    </Stack>
+  </Container>
 );
 
 export default HighlightStepperConfirmCourses;

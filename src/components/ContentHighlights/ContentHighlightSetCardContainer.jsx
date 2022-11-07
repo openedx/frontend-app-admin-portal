@@ -12,7 +12,6 @@ const ContentHighlightSetCardContainer = () => (
       xl: 4,
     }}
   >
-    {/* eslint-disable camelcase */}
     {camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).map(({ title, uuid, isPublished }) => (
       <ContentHighlightSetCard
         key={uuid}

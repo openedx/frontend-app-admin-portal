@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useContext,
 } from 'react';
 import {
-  Stepper, FullscreenModal, Container, Button,
+  Stepper, FullscreenModal, Button,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import HighlightStepperTitle from './HighlightStepperTitle';
@@ -53,51 +53,50 @@ const ContentHighlightStepper = ({ isOpen }) => {
               <Stepper.ActionRow eventKey="Title">
                 <HighlightStepperFooterHelpLink />
                 <Stepper.ActionRow.Spacer />
-                <Button variant="tertiary" onClick={() => submitAndReset()}>Back</Button>
-                <Button variant="primary" onClick={() => setCurrentStep('Select courses')}>Next</Button>
+                {/* Eventually would need a check to see if the user has made any changes
+                to the form before allowing them to close the modal without saving. Ln 58 onClick */}
+                <Button variant="tertiary" onClick={() => setIsModalOpen(false)}>Back</Button>
+                <Button variant="primary" onClick={() => setCurrentStep(steps[1])}>Next</Button>
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="Select courses">
                 <HighlightStepperFooterHelpLink />
                 <Stepper.ActionRow.Spacer />
-                <Button variant="tertiary" onClick={() => setCurrentStep('Title')}>Back</Button>
-                <Button variant="primary" onClick={() => setCurrentStep('Confirm and Publish')}>Next</Button>
+                <Button variant="tertiary" onClick={() => setCurrentStep(steps[0])}>Back</Button>
+                <Button variant="primary" onClick={() => setCurrentStep(steps[2])}>Next</Button>
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="Confirm and Publish">
                 <HighlightStepperFooterHelpLink />
                 <Stepper.ActionRow.Spacer />
-                <Button variant="tertiary" onClick={() => setCurrentStep('Select courses')}>Back</Button>
-                <Button variant="primary" onClick={() => setCurrentStep('All Set')}>Next</Button>
+                <Button variant="tertiary" onClick={() => setCurrentStep(steps[1])}>Back</Button>
+                <Button variant="primary" onClick={() => setCurrentStep(steps[3])}>Next</Button>
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="All Set">
                 <HighlightStepperFooterHelpLink />
                 <Stepper.ActionRow.Spacer />
-                <Button variant="tertiary" onClick={() => setCurrentStep('Confirm and Publish')}>Back</Button>
+                <Button variant="tertiary" onClick={() => setCurrentStep(steps[2])}>Back</Button>
                 <Button variant="primary" onClick={() => submitAndReset()}>Confirm</Button>
               </Stepper.ActionRow>
             </>
-    )}
+          )}
         >
-          <Container size="md">
-            <Stepper.Step eventKey="Title" title={steps[0]}>
-              <HighlightStepperTitle />
-            </Stepper.Step>
+          <Stepper.Step eventKey="Title" title={steps[0]}>
+            <HighlightStepperTitle />
+          </Stepper.Step>
 
-            <Stepper.Step eventKey="Select courses" title={steps[1]}>
-              <HighlightStepperSelectCourses />
-            </Stepper.Step>
+          <Stepper.Step eventKey="Select courses" title={steps[1]}>
+            <HighlightStepperSelectCourses />
+          </Stepper.Step>
 
-            <Stepper.Step eventKey="Confirm and Publish" title={steps[2]}>
-              <HighlightStepperConfirmCourses />
-            </Stepper.Step>
+          <Stepper.Step eventKey="Confirm and Publish" title={steps[2]}>
+            <HighlightStepperConfirmCourses />
+          </Stepper.Step>
 
-            <Stepper.Step eventKey="All Set" title={steps[3]}>
-              <HighlightStepperConfirmHighlight />
-            </Stepper.Step>
-
-          </Container>
+          <Stepper.Step eventKey="All Set" title={steps[3]}>
+            <HighlightStepperConfirmHighlight />
+          </Stepper.Step>
         </FullscreenModal>
       </Stepper>
     </>

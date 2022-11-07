@@ -1,16 +1,21 @@
+// Stepper Step Text that match testing components
+export const STEPPER_STEP_TEXT = {
+  createTitle: 'Create a title for the highlight collection',
+  selectCourses: 'Select Courses to Add',
+  confirmContent: 'Confirm your Content',
+  confirmHighlight: 'Confirm your Highlight',
+};
+// Default footer values based on API response for ContentHighlightCardItem
+export const FOOTER_TEXT_BY_CONTENT_TYPE = {
+  course: 'Course',
+  program: 'Program',
+  learnerpathway: 'Pathway',
+};
 // badge status for published vs unpublished highlight cards
-export function HIGHLIGHT_CARD_BADGE_STATUS(isPublished) {
-  if (isPublished) {
-    return {
-      label: 'Published',
-      variant: 'primary',
-    };
-  }
-  return {
-    label: 'Draft',
-    variant: 'light',
-  };
-}
+export const HIGHLIGHT_CARD_BADGE_STATUS = {
+  PUBLISHED: { label: 'Published', variant: 'primary' },
+  DRAFT: { label: 'Draft', variant: 'light' },
+};
 /*eslint-disable*/
 // Test Data for Content Highlights
 export const TEST_COURSE_HIGHLIGHTS_DATA = [

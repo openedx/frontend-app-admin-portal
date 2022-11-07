@@ -16,7 +16,7 @@ const CurrentContentHighlightHeader = () => {
           Active Highlights
         </h2>
         <ActionRow.Spacer />
-        <Button onClick={() => setIsModalOpen(true)}>New Highlight</Button>
+        <Button onClick={setIsModalOpen}>New Highlight</Button>
       </ActionRow>
       <ContentHighlightStepper isOpen={isModalOpen} />
     </>
