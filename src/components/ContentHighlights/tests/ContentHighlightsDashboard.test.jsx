@@ -20,9 +20,8 @@ const initialState = {
 };
 
 const ContentHighlightsDashboardWrapper = (props) => {
-  const { stepperModalState, setIsModalOpen, isModalOpen } = useStepperModalState();
+  const { setIsModalOpen, isModalOpen } = useStepperModalState();
   const defaultValue = {
-    stepperModalState,
     setIsModalOpen,
     isModalOpen,
   };

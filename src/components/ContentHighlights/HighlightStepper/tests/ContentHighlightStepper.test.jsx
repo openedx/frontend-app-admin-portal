@@ -8,9 +8,8 @@ import useStepperModalState from '../../data/hooks';
 import { STEPPER_STEP_TEXT } from '../../data/constants';
 
 const ContentHighlightStepperWrapper = () => {
-  const { stepperModalState, setIsModalOpen, isModalOpen } = useStepperModalState();
+  const { setIsModalOpen, isModalOpen } = useStepperModalState();
   const defaultValue = {
-    stepperModalState,
     setIsModalOpen,
     isModalOpen,
   };

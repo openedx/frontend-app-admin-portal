@@ -17,9 +17,8 @@ const initialState = {
 };
 
 const CurrentContentHighlightsWrapper = (props) => {
-  const { stepperModalState, setIsModalOpen, isModalOpen } = useStepperModalState();
+  const { setIsModalOpen, isModalOpen } = useStepperModalState();
   const defaultValue = {
-    stepperModalState,
     setIsModalOpen,
     isModalOpen,
   };
