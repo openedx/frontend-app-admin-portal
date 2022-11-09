@@ -7,7 +7,7 @@ import {
 import { Download, Check } from '@edx/paragon/icons';
 import { isStrictlyArray } from './utils';
 
-function DownloadCsvButton({ data }) {
+const DownloadCsvButton = ({ data, testId }) => {
   const [buttonState, setButtonState] = useState('pageLoading');
 
   useEffect(() => {
@@ -57,6 +57,7 @@ function DownloadCsvButton({ data }) {
       <StatefulButton
         state={buttonState}
         className="download-button"
+        data-testid={testId}
         labels={{
           default: 'Download history',
           pending: 'Downloading',
@@ -74,10 +75,11 @@ function DownloadCsvButton({ data }) {
       />
     </>
   );
-}
+};
 
 DownloadCsvButton.defaultProps = {
   data: null,
+  testId: 'download-csv-button',
 };
 
 DownloadCsvButton.propTypes = {
@@ -89,6 +91,7 @@ DownloadCsvButton.propTypes = {
       sync_status: PropTypes.string,
     }),
   ),
+  testId: PropTypes.string,
 };
 
 export default DownloadCsvButton;

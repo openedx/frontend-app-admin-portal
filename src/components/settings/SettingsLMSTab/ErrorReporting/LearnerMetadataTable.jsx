@@ -5,16 +5,16 @@ import {
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import DownloadCsvButton from './DownloadCsvButton';
 import { getSyncStatus, getSyncTime } from './utils';
+import DownloadCsvButton from './DownloadCsvButton';
 
-function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
+function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
   const [data, setData] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await LmsApiService
-        .fetchContentMetadataItemTransmission(enterpriseCustomerUuid, config.channelCode, config.id);
+      const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
+        enterpriseCustomerUuid, config.channelCode, config.id,
+      );
       return response;
     };
 
@@ -39,16 +39,22 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
         data={data}
         // eslint-disable-next-line no-unused-vars
         tableActions={[
-          <DownloadCsvButton data={data} testId="content-download" />,
+          <DownloadCsvButton data={data} testId="learner-download" />,
         ]}
         columns={[
+          {
+            Header: 'Learner email',
+            accessor: 'user_email',
+          },
           {
             Header: 'Course',
             accessor: 'content_title',
           },
           {
-            Header: 'Course key',
-            accessor: 'content_id',
+            Header: 'Completion status',
+            accessor: 'progress_status',
+            sortable: true,
+            disableFilters: true,
           },
           {
             Header: 'Sync status',
@@ -75,11 +81,11 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   );
 }
 
-ContentMetadataTable.defaultProps = {
+LearnerMetadataTable.defaultProps = {
   config: null,
 };
 
-ContentMetadataTable.propTypes = {
+LearnerMetadataTable.propTypes = {
   config: PropTypes.shape({
     id: PropTypes.number,
     channelCode: PropTypes.string.isRequired,
@@ -87,4 +93,4 @@ ContentMetadataTable.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
 };
 
-export default ContentMetadataTable;
+export default LearnerMetadataTable;

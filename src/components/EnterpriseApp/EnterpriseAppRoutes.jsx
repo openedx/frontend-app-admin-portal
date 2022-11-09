@@ -10,14 +10,15 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { AnalyticsPage } from '../analytics';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
+import { AnalyticsPage } from '../analytics';
 
-function EnterpriseAppRoutes({
+const EnterpriseAppRoutes = ({
   baseUrl,
   email,
   enterpriseId,
@@ -26,9 +27,9 @@ function EnterpriseAppRoutes({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
-}) {
+  enableContentHighlightsPage,
+}) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
   return (
     <Switch>
       <Route
@@ -82,16 +83,16 @@ function EnterpriseAppRoutes({
           key="analytics"
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
-          component={AnalyticsPage}
+          component={PlotlyAnalyticsPage}
         />
       )}
 
       {enableAnalyticsPage && (
       <Route
-        key="plotly-analytics"
+        key="tableau-analytics"
         exact
-        path={`${baseUrl}/admin/${ROUTE_NAMES.plotly_analytics}`}
-        component={PlotlyAnalyticsPage}
+        path={`${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`}
+        component={AnalyticsPage}
       />
       )}
 
@@ -114,10 +115,17 @@ function EnterpriseAppRoutes({
         />
       )}
 
+      {enableContentHighlightsPage && (
+        <Route
+          path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
+          component={CourseHighlightRoutes}
+        />
+      )}
+
       <Route path="" component={NotFoundPage} />
     </Switch>
   );
-}
+};
 
 EnterpriseAppRoutes.propTypes = {
   baseUrl: PropTypes.string.isRequired,
@@ -128,6 +136,7 @@ EnterpriseAppRoutes.propTypes = {
   enableReportingPage: PropTypes.bool.isRequired,
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
+  enableContentHighlightsPage: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;
