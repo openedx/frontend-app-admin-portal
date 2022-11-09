@@ -8,7 +8,7 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import useStepperModalState from '../data/hooks';
+import { useStepperModalState } from '../data/hooks';
 
 const mockStore = configureMockStore([thunk]);
 

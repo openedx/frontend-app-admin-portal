@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import useStepperModalState from '../data/hooks';
+import { useStepperModalState } from '../data/hooks';
 
 const mockStore = configureMockStore([thunk]);
 

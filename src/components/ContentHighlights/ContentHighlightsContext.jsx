@@ -1,16 +1,19 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import useStepperModalState from './data/hooks';
+import { useStepperModalState, useStepperDataState } from './data/hooks';
 
 export const ContentHighlightsContext = createContext({});
 
 const ContentHighlightsContextProvider = ({ children }) => {
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
+  const { setStepperData, stepperData } = useStepperDataState();
   const value = useMemo(() => ({
     setIsModalOpen,
     isModalOpen,
-  }), [setIsModalOpen, isModalOpen]);
+    setStepperData,
+    stepperData,
+  }), [setIsModalOpen, isModalOpen, setStepperData, stepperData]);
 
   return <ContentHighlightsContext.Provider value={value}>{children}</ContentHighlightsContext.Provider>;
 };

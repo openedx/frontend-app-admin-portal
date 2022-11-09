@@ -22,19 +22,28 @@ import { ContentHighlightsContext } from '../ContentHighlightsContext';
  * @returns
  */
 const ContentHighlightStepper = ({ isOpen }) => {
-  const { setIsModalOpen } = useContext(ContentHighlightsContext);
+  const { setIsModalOpen, stepperData, setStepperData } = useContext(ContentHighlightsContext);
   /* eslint-disable no-unused-vars */
   const steps = ['Title', 'Select courses', 'Confirm and Publish', 'All Set'];
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [modalState, setModalState] = useState(isOpen);
   useEffect(() => {
     setModalState(isOpen);
-  }, [isOpen]);
+  }, [isOpen, stepperData]);
   const submitAndReset = () => {
     if (steps.indexOf(currentStep) === steps.length - 1) {
       /* TODO: submit data to api if confirmed */
       setCurrentStep(steps[0]);
     }
+    setIsModalOpen(false);
+  };
+  const validateStepsAndContinue = () => {
+    if (currentStep === steps[0] && stepperData?.title) {
+      setCurrentStep(steps[1]);
+    }
+  };
+  const clearDataAndClose = () => {
+    setStepperData({});
     setIsModalOpen(false);
   };
   return (
@@ -55,8 +64,8 @@ const ContentHighlightStepper = ({ isOpen }) => {
                 <Stepper.ActionRow.Spacer />
                 {/* Eventually would need a check to see if the user has made any changes
                 to the form before allowing them to close the modal without saving. Ln 58 onClick */}
-                <Button variant="tertiary" onClick={() => setIsModalOpen(false)}>Back</Button>
-                <Button variant="primary" onClick={() => setCurrentStep(steps[1])}>Next</Button>
+                <Button variant="tertiary" onClick={clearDataAndClose}>Back</Button>
+                <Button variant="primary" onClick={validateStepsAndContinue}>Next</Button>
               </Stepper.ActionRow>
 
               <Stepper.ActionRow eventKey="Select courses">

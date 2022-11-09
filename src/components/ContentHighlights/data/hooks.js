@@ -1,11 +1,17 @@
 import { useState } from 'react';
 
-const useStepperModalState = () => {
+export const useStepperModalState = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   return {
     isModalOpen,
     setIsModalOpen,
   };
 };
-export default useStepperModalState;
+
+export const useStepperDataState = () => {
+  const [stepperData, setStepperData] = useState({});
+  return {
+    stepperData,
+    setStepperData,
+  };
+};
