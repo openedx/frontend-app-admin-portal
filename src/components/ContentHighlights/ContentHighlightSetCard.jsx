@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 
-const ContentHighlightSetCard = ({
+function ContentHighlightSetCard({
   title, highlightUUID, enterpriseSlug,
-}) => {
+}) {
   const history = useHistory();
   return (
     <Card
@@ -20,7 +20,7 @@ const ContentHighlightSetCard = ({
       />
     </Card>
   );
-};
+}
 
 ContentHighlightSetCard.propTypes = {
   title: PropTypes.string.isRequired,

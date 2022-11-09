@@ -18,7 +18,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
 import { AnalyticsPage } from '../analytics';
 
-const EnterpriseAppRoutes = ({
+function EnterpriseAppRoutes({
   baseUrl,
   email,
   enterpriseId,
@@ -28,7 +28,7 @@ const EnterpriseAppRoutes = ({
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
   enableContentHighlightsPage,
-}) => {
+}) {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   return (
     <Switch>
@@ -125,7 +125,7 @@ const EnterpriseAppRoutes = ({
       <Route path="" component={NotFoundPage} />
     </Switch>
   );
-};
+}
 
 EnterpriseAppRoutes.propTypes = {
   baseUrl: PropTypes.string.isRequired,

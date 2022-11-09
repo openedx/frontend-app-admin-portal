@@ -5,11 +5,13 @@ import {
 import ContentHighlightCardContainer from './ContentHighlightCardContainer';
 import CurrentContentHighlightHeader from './CurrentContentHighlightHeader';
 
-const CurrentContentHighlights = () => (
-  <Stack>
-    <CurrentContentHighlightHeader />
-    <ContentHighlightCardContainer />
-  </Stack>
-);
+function CurrentContentHighlights() {
+  return (
+    <Stack>
+      <CurrentContentHighlightHeader />
+      <ContentHighlightCardContainer />
+    </Stack>
+  );
+}
 
 export default CurrentContentHighlights;

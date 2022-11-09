@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 
-const ContentHighlightsCardItemsContainer = () => {
+function ContentHighlightsCardItemsContainer() {
   const { highlightUUID } = useParams();
   const [highlightCourses] = useState(
     TEST_COURSE_HIGHLIHTS_DATA.filter(highlight => highlight.uuid === highlightUUID)[0].courses,
@@ -34,6 +34,6 @@ const ContentHighlightsCardItemsContainer = () => {
       ))}
     </CardGrid>
   );
-};
+}
 
 export default ContentHighlightsCardItemsContainer;

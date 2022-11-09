@@ -12,9 +12,8 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id,
-      );
+      const response = await
+      LmsApiService.fetchLearnerMetadataItemTransmission(enterpriseCustomerUuid, config.channelCode, config.id);
       return response;
     };
 

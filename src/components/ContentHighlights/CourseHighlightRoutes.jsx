@@ -8,7 +8,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import ContentHighlightSet from './ContentHighlightSet';
 import ContentHighlightsDashboard from './ContentHighlightsDashboard';
 
-const CourseHighlightRoutes = ({ enterpriseSlug }) => {
+function CourseHighlightRoutes({ enterpriseSlug }) {
   const baseContentHighlightPath = `/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`;
   return (
     <>
@@ -27,7 +27,7 @@ const CourseHighlightRoutes = ({ enterpriseSlug }) => {
       </Container>
     </>
   );
-};
+}
 
 const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,

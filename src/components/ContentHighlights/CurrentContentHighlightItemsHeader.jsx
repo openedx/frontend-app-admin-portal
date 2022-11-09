@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 
-const CurrentContentHighlightItemsHeader = () => {
+function CurrentContentHighlightItemsHeader() {
   const { highlightUUID } = useParams();
   const [highlightTitle] = useState(TEST_COURSE_HIGHLIHTS_DATA.filter(
     highlights => highlights.uuid === highlightUUID,
@@ -28,6 +28,6 @@ const CurrentContentHighlightItemsHeader = () => {
       </ActionRow>
     </>
   );
-};
+}
 
 export default CurrentContentHighlightItemsHeader;

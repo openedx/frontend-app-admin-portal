@@ -2,15 +2,17 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import PropTypes from 'prop-types';
 
-const ZeroStateCardImage = ({ imageContainerClassName, imageClassName, cardImage }) => (
-  <div className={imageContainerClassName}>
-    <Card.ImageCap
-      className={imageClassName}
-      src={cardImage}
-      srcAlt=""
-    />
-  </div>
-);
+function ZeroStateCardImage({ imageContainerClassName, imageClassName, cardImage }) {
+  return (
+    <div className={imageContainerClassName}>
+      <Card.ImageCap
+        className={imageClassName}
+        src={cardImage}
+        srcAlt=""
+      />
+    </div>
+  );
+}
 
 ZeroStateCardImage.propTypes = {
   imageContainerClassName: PropTypes.string,

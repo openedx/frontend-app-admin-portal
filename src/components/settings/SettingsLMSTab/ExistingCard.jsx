@@ -16,7 +16,7 @@ const INCOMPLETE = 'incomplete';
 const ACTIVE = 'active';
 const INACTIVE = 'inactive';
 
-const ExistingCard = ({
+function ExistingCard({
   config,
   editExistingConfig,
   enterpriseCustomerUuid,
@@ -26,7 +26,7 @@ const ExistingCard = ({
   setReportConfig,
   setErrorModalText,
   getStatus,
-}) => {
+}) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
 
@@ -168,6 +168,7 @@ const ExistingCard = ({
               />
               <Dropdown.Menu>
                 {isInactive && (
+                  // eslint-disable-next-line react/jsx-no-useless-fragment
                   <>
                     {isEdxStaff && features.FEATURE_INTEGRATION_REPORTING && (
                     <div className="d-flex">
@@ -257,7 +258,7 @@ const ExistingCard = ({
       </Card>
     </>
   );
-};
+}
 
 ExistingCard.propTypes = {
   config: PropTypes.shape({

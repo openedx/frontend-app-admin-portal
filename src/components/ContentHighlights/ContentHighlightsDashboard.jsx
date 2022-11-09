@@ -4,7 +4,7 @@ import CurrentContentHighlights from './CurrentContentHighlights';
 import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 
-const ContentHighlightsDashboard = () => {
+function ContentHighlightsDashboard() {
   const hasContentHighlights = TEST_COURSE_HIGHLIHTS_DATA.length > 1;
   // const hasContentHighlights = false;
 
@@ -23,5 +23,5 @@ const ContentHighlightsDashboard = () => {
       <CurrentContentHighlights />
     </>
   );
-};
+}
 export default ContentHighlightsDashboard;
