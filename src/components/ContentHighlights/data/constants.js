@@ -1,47 +1,76 @@
-/* eslint-disable*/
-
-export const TEST_COURSE_HIGHLIHTS_DATA = [
+// Stepper Step Text that match testing components
+export const STEPPER_STEP_TEXT = {
+  createTitle: 'Create a title for the highlight collection',
+  selectCourses: 'Select Courses to Add',
+  confirmContent: 'Confirm your Content',
+  confirmHighlight: 'Confirm your Highlight',
+};
+// Default footer values based on API response for ContentHighlightCardItem
+export const FOOTER_TEXT_BY_CONTENT_TYPE = {
+  course: 'Course',
+  program: 'Program',
+  learnerpathway: 'Pathway',
+};
+// badge status for published vs unpublished highlight cards
+export const HIGHLIGHT_CARD_BADGE_STATUS = {
+  PUBLISHED: { label: 'Published', variant: 'primary' },
+  DRAFT: { label: 'Draft', variant: 'light' },
+};
+/*eslint-disable*/
+// Test Data for Content Highlights
+export const TEST_COURSE_HIGHLIGHTS_DATA = [
     {
-      title: 'Dire Core',
       uuid: '1',
-      courses:
+      title: 'Dire Core',
+      is_published: true,
+      enterprise_curation: "321123",
+      highlighted_content:
               [
                 {
-                  title: 'Math',
-                  type: 'Course',
                   uuid: '1',
-                  owners: 
+                  content_type: 'Course',
+                  content_key: 'edX+DemoX',
+                  title: 'Math',
+                  card_image_url: 'https://source.unsplash.com/360x200/?nature,flower',
+                  authoring_organizations: 
                   [
                     {
                       uuid:'123',
-                      logoImageUrl: 'https://placekitten.com/200/100',
-                      name: 'General Studies'
+                      name: 'General Studies 1',
+                      logo_image_url: 'https://placekitten.com/200/100',
+                    },
+                    {
+                      uuid:'1234',
+                      logo_image_url: 'https://placekitten.com/200/100',
+                      name: 'Super General Studies'
                     }
                   ]
                 },
                 {
                   title: 'Science',
-                  type: 'Course',
+                  content_type: 'Pathway',
                   uuid: '2',
-                  owners: 
+                  content_key: 'edX+DemoX',
+                  authoring_organizations: 
                   [
                     {
                       uuid:'123',
-                      logoImageUrl: 'https://placekitten.com/200/100',
-                      name: 'General Studies'
+                      logo_image_url: 'https://placekitten.com/200/100',
+                      name: 'General Studies 2'
                     }
                   ]
                 },
                 {
                   title: 'English',
-                  type: 'Course',
+                  content_type: 'Program',
                   uuid: '3',
-                  owners: 
+                  content_key: 'edX+DemoX',
+                  authoring_organizations: 
                   [
                     {
                       uuid:'123',
-                      logoImageUrl: 'https://placekitten.com/200/100',
-                      name: 'General Studies'
+                      logo_image_url: 'https://placekitten.com/200/100',
+                      name: 'General Studies 3'
                     }
                   ]
                 },
@@ -50,43 +79,48 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Math',
       uuid: '2',
-      courses:
+      is_published: true,
+      enterprise_curation: "321123",
+      highlighted_content:
                 [
                   {
                     title: 'Math Xtreme',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '4',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'456',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
                   },
                   {
                     title: 'Science for Math Majors',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '5',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'456',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                       logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
                   },
                   {
                     title: 'English Divergence',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '6',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'456',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Matheletes'
                       }
                     ]
@@ -96,89 +130,99 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Science',
       uuid: '3',
-      courses:
+      is_published: false,
+      enterprise_curation: "321123",
+      highlighted_content:
                 [
                   {
                     title: 'Math for Science Majors',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '7',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'789',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
                   },
                   {
                     title: 'Science Xtreme',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '8',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'789',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
                   },
                   {
                     title: 'English Obfuscation',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '9',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'789',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'The Beakers'
                       }
                     ]
                   },
-                ],
+                ]
     },
     {
       title: 'Dire English',
       uuid: '4',
-      courses:
+      is_published: true,
+      enterprise_curation: "321123",
+      highlighted_content:
                 [
                   {
                     title: 'To Math or not Math',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '10',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'101112',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
                   },
                   {
                     title: 'Science for English Majors',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '11',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'101112',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
                   },
                   {
                     title: 'English Again',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '12',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'101112',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Extensive Etymology'
                       }
                     ]
@@ -188,43 +232,48 @@ export const TEST_COURSE_HIGHLIHTS_DATA = [
     {
       title: 'Dire Engineering',
       uuid: '5',
-      courses:
+      is_published: true,
+      enterprise_curation: "321123",
+      highlighted_content:
                 [
                   {
                     title: 'Math for Engineering Majors',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '13',  
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'131415',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]
                   },
                   {
                     title: 'Science for Engineering Majors',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '14',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'131415',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]
                   },
                   {
                     title: 'English Instantiation',
-                    type: 'Course',
+                    content_type: 'Course',
                     uuid: '15',
-                    owners: 
+                    content_key: 'edX+DemoX',
+                    authoring_organizations: 
                     [
                       {
                         uuid:'131415',
-                        logoImageUrl: 'https://placekitten.com/200/100',
+                        logo_image_url: 'https://placekitten.com/200/100',
                         name: 'Building Bridges'
                       }
                     ]
