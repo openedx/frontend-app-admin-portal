@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
-import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
+import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 
 const CurrentContentHighlightItemsHeader = () => {
   const { highlightUUID } = useParams();
-  const [highlightTitle] = useState(TEST_COURSE_HIGHLIHTS_DATA.filter(
+  const [highlightTitle] = useState(TEST_COURSE_HIGHLIGHTS_DATA.filter(
     highlights => highlights.uuid === highlightUUID,
   )[0].title);
 

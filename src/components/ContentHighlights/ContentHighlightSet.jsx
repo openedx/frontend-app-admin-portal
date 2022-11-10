@@ -4,7 +4,7 @@ import CurrentContentHighlightItemsHeader from './CurrentContentHighlightItemsHe
 
 const ContentHighlightSet = () => (
   <>
-    <Container fluid>
+    <Container fluid className="mt-5">
       <CurrentContentHighlightItemsHeader />
       <ContentHighlightsCardItemContainer />
     </Container>
