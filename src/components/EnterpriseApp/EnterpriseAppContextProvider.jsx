@@ -45,16 +45,19 @@ const EnterpriseAppContextProvider = ({
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
+  // subsidies for the enterprise customer
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
   });
+
+  // subsidy requests for the enterprise customer
   const {
     enterpriseSubsidyTypes,
   } = enterpriseSubsidiesContext;
-
   const subsidyRequestsContext = useSubsidyRequestsContext({ enterpriseId, enterpriseSubsidyTypes });
 
+  // content highlights for the enterprise customer
   const enterpriseCurationContext = useEnterpriseCurationContext({
     enterpriseId,
     curationTitleForCreation: enterpriseName,
@@ -78,6 +81,7 @@ const EnterpriseAppContextProvider = ({
 
   return (
     <EnterpriseAppContext.Provider value={enterpriseAppContext}>
+      {/* [tech debt] consolidate EnterpriseSubsidiesContext and SubsidyRequestsContext into EnterpriseAppContext */}
       <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContext}>
         <SubsidyRequestsContext.Provider value={subsidyRequestsContext}>
           {children}

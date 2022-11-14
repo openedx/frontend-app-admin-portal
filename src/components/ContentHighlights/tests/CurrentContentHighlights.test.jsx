@@ -6,7 +6,8 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import useStepperModalState from '../data/hooks';
+import { useStepperModalState } from '../data/hooks';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -16,39 +17,95 @@ const initialState = {
   },
 };
 
-const CurrentContentHighlightsWrapper = (props) => {
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      highlightSets: [],
+    },
+  },
+};
+
+/* eslint-disable react/prop-types */
+const CurrentContentHighlightsWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  ...props
+}) => {
+/* eslint-enable react/prop-types */
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
   const defaultValue = {
     setIsModalOpen,
     isModalOpen,
   };
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
-      <Provider store={mockStore(initialState)}>
-        <CurrentContentHighlights {...props} />
-      </Provider>
-    </ContentHighlightsContext.Provider>
+    <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+      <ContentHighlightsContext.Provider value={defaultValue}>
+        <Provider store={mockStore(initialState)}>
+          <CurrentContentHighlights {...props} />
+        </Provider>
+      </ContentHighlightsContext.Provider>
+    </EnterpriseAppContext.Provider>
   );
 };
 
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('Active Highlights')).toBeInTheDocument();
+    expect(screen.getByText('Highlight collections')).toBeInTheDocument();
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('New Highlight')).toBeInTheDocument();
+    expect(screen.getByText('New')).toBeInTheDocument();
   });
   it('Displays the stepper modal on click of the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    fireEvent.click(screen.getByText('New Highlight'));
+    fireEvent.click(screen.getByText('New'));
     expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
   });
 
-  /* TODO: Currently the ContentHighlightSetCardContainer is hard coded with data, test to be updated */
-  it('Displays the ContentHighlightSetCardContainer', () => {
-    renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('Dire Core')).toBeInTheDocument();
+  describe('ContentHighlightSetCardContainer', () => {
+    const exampleHighlightSet = {
+      uuid: 'fake-uuid',
+      title: 'Test Highlight Set',
+      isPublished: false,
+      highlightedContentUuids: [],
+    };
+    it('Displays no highlight set cards', () => {
+      renderWithRouter(<CurrentContentHighlightsWrapper />);
+      expect(screen.queryByText('Published')).not.toBeInTheDocument();
+      expect(screen.queryByText('Drafts')).not.toBeInTheDocument();
+    });
+    it('Displays draft highlight set cards', () => {
+      renderWithRouter(
+        <CurrentContentHighlightsWrapper
+          enterpriseAppContextValue={{
+            enterpriseCuration: {
+              enterpriseCuration: {
+                highlightSets: [exampleHighlightSet],
+              },
+            },
+          }}
+        />,
+      );
+      expect(screen.getByText('Drafts')).toBeInTheDocument();
+      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    });
+    it('Displays published highlight set cards', () => {
+      renderWithRouter(
+        <CurrentContentHighlightsWrapper
+          enterpriseAppContextValue={{
+            enterpriseCuration: {
+              enterpriseCuration: {
+                highlightSets: [{
+                  ...exampleHighlightSet,
+                  isPublished: true,
+                }],
+              },
+            },
+          }}
+        />,
+      );
+      expect(screen.getByText('Published')).toBeInTheDocument();
+      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    });
   });
 });

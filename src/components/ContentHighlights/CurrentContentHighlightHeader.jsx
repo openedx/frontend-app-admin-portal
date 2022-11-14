@@ -11,6 +11,10 @@ const CurrentContentHighlightHeader = () => {
     isModalOpen, setIsModalOpen,
   } = useContext(ContentHighlightsContext);
 
+  const handleNewClick = () => {
+    setIsModalOpen(prevState => !prevState);
+  };
+
   return (
     <>
       <ActionRow>
@@ -20,7 +24,7 @@ const CurrentContentHighlightHeader = () => {
         <ActionRow.Spacer />
         <Button
           iconBefore={Add}
-          onClick={setIsModalOpen}
+          onClick={handleNewClick}
         >
           New
         </Button>

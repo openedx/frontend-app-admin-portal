@@ -4,7 +4,7 @@ import { Button } from '@edx/paragon';
 import React from 'react';
 import ContentHighlightStepper from '../ContentHighlightStepper';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import useStepperModalState from '../../data/hooks';
+import { useStepperModalState } from '../../data/hooks';
 import { STEPPER_STEP_TEXT } from '../../data/constants';
 
 const ContentHighlightStepperWrapper = () => {

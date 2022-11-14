@@ -7,34 +7,40 @@ import ContentHighlightSetCard from './ContentHighlightSetCard';
 const HighlightSetSection = ({
   title: sectionTitle,
   highlightSets,
-}) => (
-  <div>
-    <h3 className="mb-3">{sectionTitle}</h3>
-    <CardGrid
-      columnSizes={{
-        xs: 12,
-        lg: 6,
-        xl: 4,
-      }}
-    >
-      {highlightSets.map(({
-        title,
-        uuid,
-        isPublished,
-        highlightedContentUuids,
-      }) => (
-        <ContentHighlightSetCard
-          key={uuid}
-          title={title}
-          highlightUUID={uuid}
-          isPublished={isPublished}
-          itemCount={highlightedContentUuids.length}
-          imageCapSrc="https://source.unsplash.com/360x200/?cat,dog"
-        />
-      ))}
-    </CardGrid>
-  </div>
-);
+}) => {
+  if (highlightSets.length === 0) {
+    return null;
+  }
+
+  return (
+    <div>
+      <h3 className="mb-3">{sectionTitle}</h3>
+      <CardGrid
+        columnSizes={{
+          xs: 12,
+          lg: 6,
+          xl: 4,
+        }}
+      >
+        {highlightSets.map(({
+          title,
+          uuid,
+          isPublished,
+          highlightedContentUuids,
+        }) => (
+          <ContentHighlightSetCard
+            key={uuid}
+            title={title}
+            highlightUUID={uuid}
+            isPublished={isPublished}
+            itemCount={highlightedContentUuids.length}
+            imageCapSrc="https://source.unsplash.com/360x200/?cat,dog"
+          />
+        ))}
+      </CardGrid>
+    </div>
+  );
+};
 
 HighlightSetSection.propTypes = {
   title: PropTypes.string.isRequired,

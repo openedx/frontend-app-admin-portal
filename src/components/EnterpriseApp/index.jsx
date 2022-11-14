@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
-import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
@@ -11,11 +10,11 @@ import BrandStyles from '../BrandStyles';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
-import EnterpriseAppContextProvider, { EnterpriseAppContext } from './EnterpriseAppContextProvider';
-import EnterpriseAppRoutes from './EnterpriseAppRoutes';
+import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
+import EnterpriseAppContent from './EnterpriseAppContent';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -101,7 +100,6 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
-    const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
     if (error) {
       return this.renderError(error);
@@ -150,31 +148,18 @@ class EnterpriseApp extends React.Component {
                     paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                   }}
                 >
-                  <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  {/* TODO: consider moving the content area to a subcomponent to
-                  avoid needing to use the `EnterpriseAppContext.Consumer` */}
-                  <EnterpriseAppContext.Consumer>
-                    {({
-                      enterpriseCuration: { enterpriseCuration },
-                    }) => {
-                      const isContentHighlightsEnabled = !!(
-                        FEATURE_CONTENT_HIGHLIGHTS && enterpriseCuration?.isHighlightFeatureActive
-                      );
-                      return (
-                        <EnterpriseAppRoutes
-                          baseUrl={baseUrl}
-                          email={email}
-                          enterpriseId={enterpriseId}
-                          enterpriseName={enterpriseName}
-                          enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
-                          enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
-                          enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
-                          enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                          enableContentHighlightsPage={isContentHighlightsEnabled}
-                        />
-                      );
-                    }}
-                  </EnterpriseAppContext.Consumer>
+                  <EnterpriseAppContent
+                    baseUrl={baseUrl}
+                    email={email}
+                    enterpriseId={enterpriseId}
+                    enterpriseName={enterpriseName}
+                    enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
+                    enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
+                    enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
+                    enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                  >
+                    <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
+                  </EnterpriseAppContent>
                 </div>
               </>
             )}

@@ -9,16 +9,28 @@ import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
+import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 
 features.SETTINGS_PAGE = true;
 
-const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
-    canManageLearnerCredit: true,
-  }}
+const EnterpriseAppContextProvider = ({ children }) => (
+  <EnterpriseAppContext.Provider
+    value={{
+      enterpriseCuration: {
+        enterpriseCuration: null,
+        isLoading: false,
+        fetchError: null,
+      },
+    }}
   >
-    {children}
-  </EnterpriseSubsidiesContext.Provider>
+    <EnterpriseSubsidiesContext.Provider
+      value={{
+        canManageLearnerCredit: true,
+      }}
+    >
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  </EnterpriseAppContext.Provider>
 );
 
 jest.mock('react-router-dom', () => ({
@@ -37,7 +49,8 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
+  ...jest.requireActual('./EnterpriseAppContextProvider'),
+  default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
