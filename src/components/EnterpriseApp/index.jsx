@@ -11,7 +11,7 @@ import BrandStyles from '../BrandStyles';
 import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
-import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
+import EnterpriseAppContextProvider, { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
@@ -124,6 +124,7 @@ class EnterpriseApp extends React.Component {
     return (
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
@@ -134,9 +135,6 @@ class EnterpriseApp extends React.Component {
                 <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
-                  wrappedComponentRef={(node) => {
-                    this.sidebarRef = node && node.getWrappedInstance();
-                  }}
                   onWidthChange={(width) => {
                     this.setState({
                       sidebarWidth: width + defaultContentPadding,
@@ -153,17 +151,30 @@ class EnterpriseApp extends React.Component {
                   }}
                 >
                   <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  <EnterpriseAppRoutes
-                    baseUrl={baseUrl}
-                    email={email}
-                    enterpriseId={enterpriseId}
-                    enterpriseName={enterpriseName}
-                    enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
-                    enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
-                    enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
-                    enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableContentHighlightsPage={!!FEATURE_CONTENT_HIGHLIGHTS}
-                  />
+                  {/* TODO: consider moving the content area to a subcomponent to
+                  avoid needing to use the `EnterpriseAppContext.Consumer` */}
+                  <EnterpriseAppContext.Consumer>
+                    {({
+                      enterpriseCuration: { enterpriseCuration },
+                    }) => {
+                      const isContentHighlightsEnabled = !!(
+                        FEATURE_CONTENT_HIGHLIGHTS && enterpriseCuration?.isHighlightFeatureActive
+                      );
+                      return (
+                        <EnterpriseAppRoutes
+                          baseUrl={baseUrl}
+                          email={email}
+                          enterpriseId={enterpriseId}
+                          enterpriseName={enterpriseName}
+                          enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
+                          enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
+                          enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
+                          enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                          enableContentHighlightsPage={isContentHighlightsEnabled}
+                        />
+                      );
+                    }}
+                  </EnterpriseAppContext.Consumer>
                 </div>
               </>
             )}

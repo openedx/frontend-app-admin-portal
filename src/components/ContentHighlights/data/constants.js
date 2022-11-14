@@ -5,17 +5,14 @@ export const STEPPER_STEP_TEXT = {
   confirmContent: 'Confirm your Content',
   confirmHighlight: 'Confirm your Highlight',
 };
+
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
   program: 'Program',
   learnerpathway: 'Pathway',
 };
-// badge status for published vs unpublished highlight cards
-export const HIGHLIGHT_CARD_BADGE_STATUS = {
-  PUBLISHED: { label: 'Published', variant: 'primary' },
-  DRAFT: { label: 'Draft', variant: 'light' },
-};
+
 /*eslint-disable*/
 // Test Data for Content Highlights
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
@@ -48,7 +45,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
                 },
                 {
                   title: 'Science',
-                  content_type: 'Pathway',
+                  content_type: 'Learnerpathway',
                   uuid: '2',
                   content_key: 'edX+DemoX',
                   authoring_organizations: 
