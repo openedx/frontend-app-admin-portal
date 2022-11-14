@@ -13,7 +13,7 @@ import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalo
  */
 export function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [fetchError, setFetchError] = useState();
+  const [fetchError, setFetchError] = useState(null);
   const [enterpriseCuration, setEnterpriseCuration] = useState();
 
   const createEnterpriseCuration = useCallback(async () => {

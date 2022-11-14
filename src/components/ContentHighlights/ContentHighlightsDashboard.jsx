@@ -18,8 +18,8 @@ ContentHighlightsDashboardBase.propTypes = {
 };
 
 const ContentHighlightsDashboard = () => {
-  const { enterpriseCuration } = useContext(EnterpriseAppContext);
-  const highlightSets = enterpriseCuration.enterpriseCuration?.highlightSets;
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const highlightSets = enterpriseCuration?.highlightSets;
   const hasContentHighlights = highlightSets?.length > 0;
 
   if (!hasContentHighlights) {

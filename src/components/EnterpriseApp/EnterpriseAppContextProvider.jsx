@@ -3,11 +3,45 @@ import PropTypes from 'prop-types';
 
 import { EnterpriseSubsidiesContext, useEnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SubsidyRequestsContext, useSubsidyRequestsContext } from '../subsidy-requests/SubsidyRequestsContext';
+import { useEnterpriseCurationContext } from './data/hooks';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
-import { useEnterpriseCurationContext } from './data/hooks';
+/**
+ * @typedef THighlightSet
+ * @property {String} uuid
+ * @property {Boolean} isPublished
+ * @property {String} title
+ * @property {String[]} highlightedContentUuids
+ */
 
-export const EnterpriseAppContext = createContext();
+/**
+ * @typedef TEnterpriseCuration
+ * @property {String} uuid
+ * @property {String} title
+ * @property {Boolean} isHighlightFeatureActive
+ * @property {THighlightSet[]} highlightSets
+ * @property {String} created
+ * @property {String} modified
+ */
+
+/**
+ * @typedef TEnterpriseCurationData
+ * @property {TEnterpriseCuration} enterpriseCuration
+ * @property {Boolean} isLoading
+ * @property {Error} fetchError
+ */
+
+/**
+ * @typedef {Object} TEnterpriseAppContext
+ * @property {TEnterpriseCurationData} enterpriseCuration
+ */
+
+/** @type {React.Context<TEnterpriseAppContext>} */
+export const EnterpriseAppContext = createContext({
+  enterpriseCuration: null,
+  isLoading: null,
+  fetchError: null,
+});
 
 const EnterpriseAppContextProvider = ({
   enterpriseId,
@@ -19,10 +53,10 @@ const EnterpriseAppContextProvider = ({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
   });
-
   const {
     enterpriseSubsidyTypes,
   } = enterpriseSubsidiesContext;
+
   const subsidyRequestsContext = useSubsidyRequestsContext({ enterpriseId, enterpriseSubsidyTypes });
 
   const enterpriseCurationContext = useEnterpriseCurationContext({
@@ -36,6 +70,8 @@ const EnterpriseAppContextProvider = ({
     || enterpriseCurationContext.isLoading
   );
 
+  // [tech debt] consolidate the other context values (e.g., useSubsidyRequestsContext)
+  // into a singular `EnterpriseAppContext.Provider`.
   const enterpriseAppContext = useMemo(() => ({
     enterpriseCuration: enterpriseCurationContext,
   }), [enterpriseCurationContext]);
@@ -44,7 +80,6 @@ const EnterpriseAppContextProvider = ({
     return <EnterpriseAppSkeleton />;
   }
 
-  // TODO: explain tech debt refactoring
   return (
     <EnterpriseAppContext.Provider value={enterpriseAppContext}>
       <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContext}>
