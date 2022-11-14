@@ -37,11 +37,7 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
  */
 
 /** @type {React.Context<TEnterpriseAppContext>} */
-export const EnterpriseAppContext = createContext({
-  enterpriseCuration: null,
-  isLoading: null,
-  fetchError: null,
-});
+export const EnterpriseAppContext = createContext();
 
 const EnterpriseAppContextProvider = ({
   enterpriseId,
