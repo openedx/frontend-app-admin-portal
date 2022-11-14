@@ -43,8 +43,6 @@ const Sidebar = ({
 
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
-  console.log('enterpriseCuration', enterpriseCuration);
-
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
       const { width } = navRef.current.getBoundingClientRect();
