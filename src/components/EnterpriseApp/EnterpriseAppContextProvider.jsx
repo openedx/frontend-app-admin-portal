@@ -55,6 +55,7 @@ const EnterpriseAppContextProvider = ({
   const {
     enterpriseSubsidyTypes,
   } = enterpriseSubsidiesContext;
+
   const subsidyRequestsContext = useSubsidyRequestsContext({ enterpriseId, enterpriseSubsidyTypes });
 
   // content highlights for the enterprise customer
