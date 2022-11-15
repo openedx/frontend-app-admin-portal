@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
@@ -30,16 +30,14 @@ const ProductTours = ({
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
-  const [isTourOpen] = useState(true);
   const history = useHistory();
-
   const enabledFeatures = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
   };
-  const checkpoint = {
+  const checkpoints = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
       history,
@@ -57,17 +55,16 @@ const ProductTours = ({
       history,
     }),
   };
-  const checkpointArray = filterCheckpoints(checkpoint, enabledFeatures);
+  const checkpointsArray = filterCheckpoints(checkpoints, enabledFeatures);
   const tours = [{
     tourID: 'a',
     advanceButtonText: 'Next',
     dismissButtonText: 'Dismiss',
     endButtonText: 'End',
-    enabled: isTourOpen,
+    enabled: checkpointsArray?.length > 0,
     onEnd: () => disableAll(),
-    checkpoints: checkpointArray,
+    checkpoints: checkpointsArray,
   }];
-
   return (
     <ProductTour
       tours={tours}

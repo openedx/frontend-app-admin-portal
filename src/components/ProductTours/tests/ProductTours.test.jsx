@@ -146,9 +146,9 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
-    it('not shown in settings page', () => {
+    it('it is shown in settings page', () => {
       render(<ToursWithContext pathname={SETTINGS_PAGE_LOCATION} />);
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('New Feature')).toBeTruthy();
     });
 
     it('is not shown if enterprise does not have subsidies that can be used for browse and request', () => {
@@ -195,10 +195,10 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
-    it('is not shown if in Learner Credit page', () => {
+    it('is is shown if in Learner Credit page', () => {
       mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
       render(<ToursWithContext pathname={LEARNER_CREDIT_PAGE_LOCATION} canManageLearnerCredit />);
-      expect(screen.queryByText('New Feature')).toBeFalsy();
+      expect(screen.queryByText('New Feature')).toBeTruthy();
     });
   });
 });
