@@ -9,7 +9,7 @@ import { ContentHighlightsContext } from './ContentHighlightsContext';
 const ContentHighlightSetCard = ({
   imageCapSrc,
   title,
-  highlightUUID,
+  highlightSetUUID,
   isPublished,
   enterpriseSlug,
   itemCount,
@@ -23,7 +23,7 @@ const ContentHighlightSetCard = ({
   const handleHighlightSetClick = () => {
     if (isPublished) {
       // redirect to individual highlighted courses based on uuid
-      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightUUID}`);
+      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
     }
     return setIsModalOpen(true);
   };
@@ -44,7 +44,7 @@ const ContentHighlightSetCard = ({
 
 ContentHighlightSetCard.propTypes = {
   title: PropTypes.string.isRequired,
-  highlightUUID: PropTypes.string.isRequired,
+  highlightSetUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   isPublished: PropTypes.bool.isRequired,
   itemCount: PropTypes.number.isRequired,

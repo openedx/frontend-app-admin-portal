@@ -16,7 +16,7 @@ const ContentHighlightSetCardContainer = () => (
       <ContentHighlightSetCard
         key={uuid}
         title={title}
-        highlightUUID={uuid}
+        highlightSetUUID={uuid}
         isPublished={isPublished}
       />
     ))}

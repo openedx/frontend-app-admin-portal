@@ -17,7 +17,7 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 // Test Data for Content Highlights
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
     {
-      uuid: '1',
+      uuid: 'c89197fa-f760-4d08-a813-07f2c262e358',
       title: 'Dire Core',
       is_published: true,
       enterprise_curation: "321123",

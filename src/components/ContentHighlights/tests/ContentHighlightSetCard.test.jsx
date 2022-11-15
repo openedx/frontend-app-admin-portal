@@ -14,7 +14,7 @@ const mockStore = configureMockStore([thunk]);
 
 const mockData = {
   title: 'Test Title',
-  highlightUUID: 'test-uuid',
+  highlightSetUUID: 'test-uuid',
   enterpriseSlug: 'test-enterprise-slug',
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
@@ -24,7 +24,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise-id',
   },
-  highlightUUID: 'test-uuid',
+  highlightSetUUID: 'test-uuid',
 };
 
 const initialEnterpriseAppContextValue = {

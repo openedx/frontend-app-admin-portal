@@ -16,7 +16,7 @@ const ContentHighlightRoutes = ({ enterpriseSlug }) => {
         exact
       />
       <Route
-        path={`${baseContentHighlightPath}/:highlightUUID/`}
+        path={`${baseContentHighlightPath}/:highlightSetUUID/`}
         component={ContentHighlightSet}
         exact
       />

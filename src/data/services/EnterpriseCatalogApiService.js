@@ -12,6 +12,8 @@ class EnterpriseCatalogApiService {
 
   static enterpriseCurationUrl = `${EnterpriseCatalogApiService.baseUrl}/enterprise-curations-admin/`;
 
+  static highlightSetUrl = `${EnterpriseCatalogApiService.baseUrl}/highlight-sets-admin/`;
+
   static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
@@ -49,6 +51,10 @@ class EnterpriseCatalogApiService {
       EnterpriseCatalogApiService.enterpriseCurationUrl,
       payload,
     );
+  }
+
+  static deleteHighlightSet(highlightSetUUID) {
+    return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
   }
 }
 

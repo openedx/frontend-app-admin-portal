@@ -16,7 +16,6 @@ const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise-id',
   },
-  highlightUUID: 'test-uuid',
 };
 
 const initialEnterpriseAppContextValue = {

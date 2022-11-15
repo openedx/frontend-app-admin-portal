@@ -10,15 +10,15 @@ import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
-const highlightUUID = '1';
+const highlightSetUUID = '1';
 const contentByUUID = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
-  highlight => highlight.uuid === highlightUUID,
+  highlight => highlight.uuid === highlightSetUUID,
 )[0]?.highlightedContent;
 /* Currently mocks TEST_COURSE_HIGHLIGHTS_DATA from data/constants.js by the uuid */
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
-    highlightUUID,
+    highlightSetUUID,
   }),
 }));
 
