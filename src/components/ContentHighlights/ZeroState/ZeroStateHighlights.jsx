@@ -10,11 +10,10 @@ import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import { toggleStepperModalAction } from '../data/actions';
 
 const ZeroStateHighlights = ({ cardClassName }) => {
-  const {
-    isModalOpen, setIsModalOpen,
-  } = useContext(ContentHighlightsContext);
+  const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
   return (
     <Row>
       <Col xs={12} sm={8} lg={5}>
@@ -27,11 +26,19 @@ const ZeroStateHighlights = ({ cardClassName }) => {
             </p>
           </ZeroStateCardText>
           <ZeroStateCardFooter footerClassName="pb-0 mb-4.5">
-            <Button onClick={() => setIsModalOpen(true)} iconBefore={Add} block>New Highlight</Button>
+            <Button
+              onClick={() => {
+                dispatch(toggleStepperModalAction({ isOpen: true }));
+              }}
+              iconBefore={Add}
+              block
+            >
+              New Highlight
+            </Button>
           </ZeroStateCardFooter>
         </Card>
       </Col>
-      <ContentHighlightStepper isOpen={isModalOpen} />
+      <ContentHighlightStepper isModalOpen={isOpen} />
     </Row>
   );
 };

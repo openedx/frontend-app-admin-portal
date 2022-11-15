@@ -4,9 +4,14 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { useReducer, useMemo } from 'react';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { useStepperModalState } from '../data/hooks';
+import {
+  contentHighlightsReducer,
+  initialContentHighlightsState,
+} from '../data/reducer';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -17,13 +22,16 @@ const initialState = {
 };
 
 const CurrentContentHighlightsWrapper = (props) => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-  };
+  const [
+    contentHighlightsState,
+    dispatch,
+  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+  const value = useMemo(() => ({
+    ...contentHighlightsState,
+    dispatch,
+  }), [contentHighlightsState]);
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
+    <ContentHighlightsContext.Provider value={value}>
       <Provider store={mockStore(initialState)}>
         <CurrentContentHighlights {...props} />
       </Provider>
@@ -43,7 +51,7 @@ describe('<CurrentContentHighlights>', () => {
   it('Displays the stepper modal on click of the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
     fireEvent.click(screen.getByText('New Highlight'));
-    expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 
   /* TODO: Currently the ContentHighlightSetCardContainer is hard coded with data, test to be updated */

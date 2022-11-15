@@ -5,8 +5,8 @@ import {
 
 const HighlightStepperFooterHelpLink = () => (
   <div className="mr-1 p-0">
-    <Hyperlink target="_blank" destination={process.env.ENTERPRISE_SUPPORT_URL}>
-      Help Center
+    <Hyperlink target="_blank" destination={process.env.ENTERPRISE_SUPPORT_PROGRAM_OPTIMIZATION_URL}>
+      Help Center: Program Optimization
     </Hyperlink>
   </div>
 );

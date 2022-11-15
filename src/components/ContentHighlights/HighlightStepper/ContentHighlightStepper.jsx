@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useContext,
+  useState, useContext,
 } from 'react';
 import {
   Stepper, FullscreenModal, Button,
@@ -11,6 +11,13 @@ import HighlightStepperConfirmCourses from './HighlightStepperConfirmCourses';
 import HighlightStepperConfirmHighlight from './HighlightStepperConfirmHighlight';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import {
+  toggleStepperModalAction,
+  setStepperHighlightTitle,
+  setStepperHighlightCreated,
+  setStepperHighlightPublished,
+} from '../data/actions';
+
 /**
  * Stepper Modal Currently accessible from:
  *  - ContentHighlightSetCard
@@ -21,38 +28,39 @@ import { ContentHighlightsContext } from '../ContentHighlightsContext';
  * @param {boolean} args.isOpen Whether the modal containing the stepper is currently open.
  * @returns
  */
-const ContentHighlightStepper = ({ isOpen }) => {
-  const { setIsModalOpen, stepperData, setStepperData } = useContext(ContentHighlightsContext);
+const ContentHighlightStepper = ({ isModalOpen }) => {
   /* eslint-disable no-unused-vars */
   const steps = ['Title', 'Select courses', 'Confirm and Publish', 'All Set'];
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  const [modalState, setModalState] = useState(isOpen);
-  useEffect(() => {
-    setModalState(isOpen);
-  }, [isOpen, stepperData]);
+  const { dispatch, stepperModal: { isOpen, highlightTitle }, stepperData } = useContext(ContentHighlightsContext);
   const submitAndReset = () => {
     if (steps.indexOf(currentStep) === steps.length - 1) {
       /* TODO: submit data to api if confirmed */
       setCurrentStep(steps[0]);
+      /* TODO: reset stepper data in context */
+      // dispatch(setStepper)
     }
-    setIsModalOpen(false);
+    dispatch(toggleStepperModalAction({ isOpen: false }));
   };
   const validateStepsAndContinue = () => {
-    if (currentStep === steps[0] && stepperData?.title) {
+    if (currentStep === steps[0] && highlightTitle && highlightTitle.length < 61) {
+      dispatch(setStepperHighlightCreated({ createdHighlight: true }));
+      dispatch(setStepperHighlightPublished({ publishedHighlight: false }));
       setCurrentStep(steps[1]);
     }
   };
   const clearDataAndClose = () => {
-    setStepperData({});
-    setIsModalOpen(false);
+    dispatch(setStepperHighlightTitle({ highlightTitle: '' }));
+    dispatch(toggleStepperModalAction({ isOpen: false }));
   };
+
   return (
     <>
       <Stepper activeKey={currentStep}>
         <FullscreenModal
           title="New Highlight"
           className="bg-light-200"
-          isOpen={modalState}
+          isOpen={isModalOpen}
           onClose={() => {
             submitAndReset();
           }}
@@ -64,7 +72,7 @@ const ContentHighlightStepper = ({ isOpen }) => {
                 <Stepper.ActionRow.Spacer />
                 {/* Eventually would need a check to see if the user has made any changes
                 to the form before allowing them to close the modal without saving. Ln 58 onClick */}
-                <Button variant="tertiary" onClick={clearDataAndClose}>Back</Button>
+                <Button variant="tertiary" onClick={clearDataAndClose}>Cancel</Button>
                 <Button variant="primary" onClick={validateStepsAndContinue}>Next</Button>
               </Stepper.ActionRow>
 
@@ -113,7 +121,7 @@ const ContentHighlightStepper = ({ isOpen }) => {
 };
 
 ContentHighlightStepper.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
 };
 
 export default ContentHighlightStepper;

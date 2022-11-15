@@ -8,22 +8,21 @@ import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { HIGHLIGHT_CARD_BADGE_STATUS } from './data/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
+import { toggleStepperModalAction } from './data/actions';
 
 const ContentHighlightSetCard = ({
   title, highlightUUID, isPublished, enterpriseSlug,
 }) => {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
-  const {
-    setIsModalOpen,
-  } = useContext(ContentHighlightsContext);
+  const { dispatch } = useContext(ContentHighlightsContext);
   /* Stepper Draft Logic (See Hook) - End */
   const handleHighlightSetClick = () => {
     if (isPublished) {
       // redirect to individual highlighted courses based on uuid
       return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightUUID}`);
     }
-    return setIsModalOpen(true);
+    return dispatch(toggleStepperModalAction({ isOpen: true }));
   };
   // TODO: Bring logic one level up to abstract different sections for draft vs published
   const badgeData = useMemo(() => ({

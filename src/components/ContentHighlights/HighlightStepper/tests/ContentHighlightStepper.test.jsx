@@ -1,30 +1,41 @@
 import { screen, render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Button } from '@edx/paragon';
-import React, { useEffect } from 'react';
+import React, {
+  useMemo, useReducer, useState,
+  useEffect,
+} from 'react';
 import Proptypes from 'prop-types';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlightStepper from '../ContentHighlightStepper';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { useStepperModalState, useStepperDataState } from '../../data/hooks';
 import { STEPPER_STEP_TEXT } from '../../data/constants';
+import { setStepperHighlightTitle } from '../../data/actions';
+import {
+  contentHighlightsReducer,
+  initialContentHighlightsState,
+} from '../../data/reducer';
 
 const ContentHighlightStepperWrapper = ({ stepperTitle }) => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const { setStepperData, stepperData } = useStepperDataState();
+  const [
+    contentHighlightsState,
+    dispatch,
+  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+  const value = useMemo(() => ({
+    ...contentHighlightsState,
+    dispatch,
+  }), [contentHighlightsState]);
+  const [isOpen, setIsOpen] = useState(contentHighlightsState.stepperModal.isOpen);
   useEffect(() => {
-    setStepperData({ title: stepperTitle });
-  }, [setStepperData, stepperTitle]);
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-    setStepperData,
-    stepperData,
-  };
+    dispatch(setStepperHighlightTitle(stepperTitle));
+  }, [stepperTitle, dispatch]);
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
-      <Button onClick={() => setIsModalOpen(true)}>Click Me</Button>
-      <ContentHighlightStepper isOpen={isModalOpen} />
-    </ContentHighlightsContext.Provider>
+    <IntlProvider locale="en">
+      <ContentHighlightsContext.Provider value={value}>
+        <Button onClick={() => setIsOpen(true)}>Click Me</Button>
+        <ContentHighlightStepper isModalOpen={isOpen} />
+      </ContentHighlightsContext.Provider>
+    </IntlProvider>
   );
 };
 
@@ -46,12 +57,13 @@ describe('<ContentHighlightStepper>', () => {
   });
   it('Displays the stepper and test all back and next buttons', () => {
     render(<ContentHighlightStepperWrapper stepperTitle="test-title" />);
-
     // open stepper --> title
     const stepper = screen.getByText('Click Me');
     fireEvent.click(stepper);
     // title --> select courses
     const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
     fireEvent.click(nextButton1);
     // select courses --> confirm courses
     const nextButton2 = screen.getByText('Next');
@@ -60,7 +72,7 @@ describe('<ContentHighlightStepper>', () => {
     const nextButton3 = screen.getByText('Next');
     fireEvent.click(nextButton3);
 
-    // confirm highlight --> confirm courses
+    // // confirm highlight --> confirm courses
     const backButton1 = screen.getByText('Back');
     fireEvent.click(backButton1);
     expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
@@ -73,7 +85,7 @@ describe('<ContentHighlightStepper>', () => {
     fireEvent.click(backButton3);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
     // title --> closed stepper
-    const backButton4 = screen.getByText('Back');
+    const backButton4 = screen.getByText('Cancel');
     fireEvent.click(backButton4);
     expect(screen.getByText('Click Me')).toBeInTheDocument();
   });
@@ -95,6 +107,8 @@ describe('<ContentHighlightStepper>', () => {
     fireEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
     const nextButton1 = screen.getByText('Next');
     fireEvent.click(nextButton1);
     const nextButton2 = screen.getByText('Next');

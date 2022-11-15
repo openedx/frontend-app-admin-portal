@@ -1,19 +1,23 @@
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useReducer, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { useStepperModalState, useStepperDataState } from './data/hooks';
+import {
+  contentHighlightsReducer,
+  initialContentHighlightsState,
+} from './data/reducer';
 
 export const ContentHighlightsContext = createContext({});
 
 const ContentHighlightsContextProvider = ({ children }) => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const { setStepperData, stepperData } = useStepperDataState();
+  const [
+    contentHighlightsState,
+    dispatch,
+  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+
   const value = useMemo(() => ({
-    setIsModalOpen,
-    isModalOpen,
-    setStepperData,
-    stepperData,
-  }), [setIsModalOpen, isModalOpen, setStepperData, stepperData]);
+    ...contentHighlightsState,
+    dispatch,
+  }), [contentHighlightsState]);
 
   return <ContentHighlightsContext.Provider value={value}>{children}</ContentHighlightsContext.Provider>;
 };

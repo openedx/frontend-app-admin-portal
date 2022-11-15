@@ -1,14 +1,17 @@
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import { useReducer, useMemo } from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { STEPPER_STEP_TEXT, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { useStepperModalState } from '../data/hooks';
+import {
+  contentHighlightsReducer,
+  initialContentHighlightsState,
+} from '../data/reducer';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -20,13 +23,16 @@ const initialState = {
 };
 
 const ContentHighlightsDashboardWrapper = (props) => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-  };
+  const [
+    contentHighlightsState,
+    dispatch,
+  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+  const value = useMemo(() => ({
+    ...contentHighlightsState,
+    dispatch,
+  }), [contentHighlightsState]);
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
+    <ContentHighlightsContext.Provider value={value}>
       <Provider store={mockStore(initialState)}>
         <ContentHighlightsDashboard {...props} />
       </Provider>
@@ -43,7 +49,7 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText('New Highlight');
     fireEvent.click(newHighlight);
-    expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays current highlights when data is populated', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper highlightSets={TEST_COURSE_HIGHLIGHTS_DATA} />);
@@ -53,6 +59,6 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper highlightSets={TEST_COURSE_HIGHLIGHTS_DATA} />);
     const newHighlight = screen.getByText('New Highlight');
     fireEvent.click(newHighlight);
-    expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 });

@@ -1,13 +1,18 @@
 import React from 'react';
-import { Stack, Col, Container } from '@edx/paragon';
-import { STEPPER_STEP_TEXT } from '../data/constants';
+import {
+  Stack, Col, Container,
+} from '@edx/paragon';
+import HighlightStepperSelectCoursesDataTable from './HighlightStepperSelectCoursesDataTable';
+import HighlightStepperSelectCoursesHeader from './HighlightStepperSelectCoursesHeader';
 
 const HighlightStepperSelectCourses = () => (
-  <Container size="md">
+  <Container>
     <Stack>
-      <h3>{STEPPER_STEP_TEXT.selectCourses}</h3>
+      <Col md={5}>
+        <HighlightStepperSelectCoursesHeader />
+      </Col>
       <Col>
-        Search Data Table Card View here
+        <HighlightStepperSelectCoursesDataTable />
       </Col>
     </Stack>
   </Container>

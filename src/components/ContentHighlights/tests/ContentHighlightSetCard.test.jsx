@@ -4,10 +4,17 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import {
+  useReducer, useMemo,
+} from 'react';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { useStepperModalState } from '../data/hooks';
-import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
+import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
+import {
+  contentHighlightsReducer,
+  initialContentHighlightsState,
+} from '../data/reducer';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -35,16 +42,19 @@ const initialState = {
 };
 
 const ContentHighlightSetCardWrapper = (props) => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-  };
+  const [
+    contentHighlightsState,
+    dispatch,
+  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+  const value = useMemo(() => ({
+    ...contentHighlightsState,
+    dispatch,
+  }), [contentHighlightsState]);
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
+    <ContentHighlightsContext.Provider value={value}>
       <Provider store={mockStore(initialState)}>
+        <CurrentContentHighlightHeader />
         <ContentHighlightSetCard {...props} />
-        <ContentHighlightStepper isOpen={isModalOpen} />
       </Provider>
     </ContentHighlightsContext.Provider>
   );
@@ -66,6 +76,6 @@ describe('<ContentHighlightSetCard>', () => {
   it('Displays the stepper modal on click of the draft status', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper {...unpublishedData} />);
     fireEvent.click(screen.getByText('Test Title'));
-    expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 });

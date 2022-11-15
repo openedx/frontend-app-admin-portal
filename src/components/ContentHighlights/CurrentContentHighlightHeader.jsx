@@ -4,11 +4,10 @@ import {
 } from '@edx/paragon';
 import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
+import { toggleStepperModalAction } from './data/actions';
 
 const CurrentContentHighlightHeader = () => {
-  const {
-    isModalOpen, setIsModalOpen,
-  } = useContext(ContentHighlightsContext);
+  const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
   return (
     <>
       <ActionRow className="mb-4.5">
@@ -16,11 +15,18 @@ const CurrentContentHighlightHeader = () => {
           Active Highlights
         </h2>
         <ActionRow.Spacer />
-        <Button onClick={setIsModalOpen}>New Highlight</Button>
+        <Button
+          onClick={
+            () => {
+              dispatch(toggleStepperModalAction({ isOpen: true }));
+            }
+          }
+        >
+          New Highlight
+        </Button>
       </ActionRow>
-      <ContentHighlightStepper isOpen={isModalOpen} />
+      <ContentHighlightStepper isModalOpen={isOpen} />
     </>
   );
 };
-
 export default CurrentContentHighlightHeader;
