@@ -7,8 +7,8 @@ const SSO_TAB = 'sso';
 const APPEARANCE_TAB = 'appearance';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
-const LMS_TAB_LABEL = 'LMS';
-const SSO_TAB_LABEL = 'SSO';
+const LMS_TAB_LABEL = 'Learning Platform';
+const SSO_TAB_LABEL = 'Single Sign On (SSO)';
 const APPEARANCE_TAB_LABEL = 'Portal Appearance';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';

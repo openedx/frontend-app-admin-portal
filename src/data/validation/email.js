@@ -68,12 +68,13 @@ const validateEmailAddresses = (emails) => {
     return result;
   }
   emails.forEach((email, index) => {
-    if (email) {
-      if (!isEmail(email)) {
-        result.invalidEmails.push(email);
+    const sanitizedEmail = email.trim();
+    if (sanitizedEmail) {
+      if (!isEmail(sanitizedEmail)) {
+        result.invalidEmails.push(sanitizedEmail);
         result.invalidEmailIndices.push(index);
       } else {
-        result.validEmails.push(email);
+        result.validEmails.push(sanitizedEmail);
         result.validEmailIndices.push(index);
       }
     }
