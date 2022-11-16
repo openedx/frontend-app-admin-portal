@@ -39,6 +39,7 @@ const ExistingLMSCardDeck = ({
   // const listItems = timeSort(configData).map((config) => (
   const listActive = configData.filter(config => getStatus(config) === 'active').map(config => (
     <ExistingCard
+      key={`${config.channelCode}${config.id}`}
       config={config}
       editExistingConfig={editExistingConfig}
       enterpriseCustomerUuid={enterpriseCustomerUuid}
@@ -52,6 +53,7 @@ const ExistingLMSCardDeck = ({
   ));
   const listInactive = configData.filter(config => getStatus(config) !== 'active').map(config => (
     <ExistingCard
+      key={`${config.channelCode}${config.id}`}
       config={config}
       editExistingConfig={editExistingConfig}
       enterpriseCustomerUuid={enterpriseCustomerUuid}
@@ -77,30 +79,38 @@ const ExistingLMSCardDeck = ({
         config={reportConfig}
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />
-      <h4 className="mt-1 mb-4">Active</h4>
-      <CardGrid
-        className="mr-6"
-        columnSizes={{
-          xs: 9,
-          s: 9,
-          m: 9,
-          l: 7,
-          xl: 7,
-        }}
-      >{listActive}
-      </CardGrid>
-      <h4 className="mt-1 mb-4">Inactive</h4>
-      <CardGrid
-        className="mr-6"
-        columnSizes={{
-          xs: 9,
-          s: 9,
-          m: 9,
-          l: 7,
-          xl: 7,
-        }}
-      >{listInactive}
-      </CardGrid>
+      { listActive.length > 0 && (
+      <>
+        <h4 className="mt-1 mb-4">Active</h4>
+        <CardGrid
+          className="mr-6"
+          columnSizes={{
+            xs: 9,
+            s: 9,
+            m: 9,
+            l: 7,
+            xl: 7,
+          }}
+        >{listActive}
+        </CardGrid>
+      </>
+      )}
+      { listInactive.length > 0 && (
+      <>
+        <h4 className="mt-1 mb-4">Inactive</h4>
+        <CardGrid
+          className="mr-6"
+          columnSizes={{
+            xs: 9,
+            s: 9,
+            m: 9,
+            l: 7,
+            xl: 7,
+          }}
+        >{listInactive}
+        </CardGrid>
+      </>
+      )}
     </span>
   );
 };

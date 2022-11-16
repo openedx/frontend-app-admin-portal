@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow, Button, Hyperlink, ModalDialog, Tab, Tabs,
+  ActionRow, ModalDialog, Tab, Tabs,
 } from '@edx/paragon';
 import ContentMetadataTable from './ContentMetadataTable';
+import LearnerMetadataTable from './LearnerMetadataTable';
 
 function ErrorReportingModal({
   isOpen, close, config, enterpriseCustomerUuid,
@@ -39,18 +40,15 @@ function ErrorReportingModal({
               <ContentMetadataTable enterpriseCustomerUuid={enterpriseCustomerUuid} config={config} />
             </Tab>
             <Tab eventKey="learnerActivity" title="Learner Activity">
-              Learner Activity.
+              <h4 className="mt-4">Most recent data transmission</h4>
+              From edX for Business to {config?.displayName}
+              <LearnerMetadataTable enterpriseCustomerUuid={enterpriseCustomerUuid} config={config} />
             </Tab>
           </Tabs>
         </ModalDialog.Body>
 
         <ModalDialog.Footer>
           <ActionRow>
-            <Button variant="tertiary">
-              <Hyperlink variant="muted" destination="https://www.edx.org" target="_blank">
-                Help Center: Troubleshooting
-              </Hyperlink>
-            </Button>
             <ModalDialog.CloseButton variant="primary">
               Close
             </ModalDialog.CloseButton>

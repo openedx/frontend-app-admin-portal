@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
+import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
@@ -82,9 +83,6 @@ class EnterpriseApp extends React.Component {
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
-      enableSamlConfigurationScreen,
-      enableLearnerPortal,
-      enableLmsConfigurationsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
       enterpriseId,
@@ -103,19 +101,7 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
-
-    // Hide Settings page if there are no visible tabs
-    const enableSettingsPage = (
-      features.SETTINGS_PAGE && (
-        enableLearnerPortal || (
-          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
-        ) || (
-          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
-        ) || (
-          features.SETTINGS_PAGE_APPEARANCE_TAB
-        )
-      )
-    );
+    const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
     if (error) {
       return this.renderError(error);
@@ -176,9 +162,7 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
-                    enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
-                    enableSettingsPage={enableSettingsPage}
+                    enableContentHighlightsPage={!!FEATURE_CONTENT_HIGHLIGHTS}
                   />
                 </div>
               </>
@@ -201,10 +185,7 @@ EnterpriseApp.defaultProps = {
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
-  enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
-  enableLearnerPortal: false,
-  enableLmsConfigurationsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
   loading: true,
@@ -235,10 +216,7 @@ EnterpriseApp.propTypes = {
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
-  enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
-  enableLearnerPortal: PropTypes.bool,
-  enableLmsConfigurationsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),

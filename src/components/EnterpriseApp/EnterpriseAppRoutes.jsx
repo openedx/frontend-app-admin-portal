@@ -5,18 +5,18 @@ import PropTypes from 'prop-types';
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../CodeManagement';
 import RequestCodesPage from '../RequestCodesPage';
-import SamlProviderConfiguration from '../../containers/SamlProviderConfiguration';
 import ReportingConfig from '../ReportingConfig';
 import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { AnalyticsPage } from '../analytics';
-import LmsConfigurations from '../../containers/LmsConfigurations';
+import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import ContentHighlights from '../ContentHighlights';
+import { AnalyticsPage } from '../analytics';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -27,12 +27,9 @@ const EnterpriseAppRoutes = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
-  enableSamlConfigurationPage,
-  enableLmsConfigurationPage,
-  enableSettingsPage,
+  enableContentHighlightsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
   return (
     <Switch>
       <Route
@@ -86,26 +83,17 @@ const EnterpriseAppRoutes = ({
           key="analytics"
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
-          component={AnalyticsPage}
+          component={PlotlyAnalyticsPage}
         />
       )}
 
-      {enableSamlConfigurationPage && (
-        <Route
-          key="saml-configuration"
-          exact
-          path={`${baseUrl}/admin/${ROUTE_NAMES.samlConfiguration}`}
-          component={SamlProviderConfiguration}
-        />
-      )}
-
-      {enableLmsConfigurationPage && (
-        <Route
-          key="lms-integrations"
-          exact
-          path={`${baseUrl}/admin/${ROUTE_NAMES.lmsIntegrations}`}
-          component={LmsConfigurations}
-        />
+      {enableAnalyticsPage && (
+      <Route
+        key="tableau-analytics"
+        exact
+        path={`${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`}
+        component={AnalyticsPage}
+      />
       )}
 
       <Route
@@ -114,18 +102,23 @@ const EnterpriseAppRoutes = ({
         component={BulkEnrollmentResultsDownloadPage}
       />
 
-      {enableSettingsPage && (
-        <Route
-          path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
-          component={SettingsPage}
-        />
-      )}
+      <Route
+        path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+        component={SettingsPage}
+      />
 
       {canManageLearnerCredit && (
         <Route
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`}
           component={LearnerCreditManagement}
+        />
+      )}
+
+      {enableContentHighlightsPage && (
+        <Route
+          path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
+          component={ContentHighlights}
         />
       )}
 
@@ -143,9 +136,7 @@ EnterpriseAppRoutes.propTypes = {
   enableReportingPage: PropTypes.bool.isRequired,
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
-  enableSamlConfigurationPage: PropTypes.bool.isRequired,
-  enableLmsConfigurationPage: PropTypes.bool.isRequired,
-  enableSettingsPage: PropTypes.bool.isRequired,
+  enableContentHighlightsPage: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;
