@@ -9,6 +9,7 @@ import * as subsidyRequestsContext from '../subsidy-requests/SubsidyRequestsCont
 import * as enterpriseSubsidiesContext from '../EnterpriseSubsidiesContext';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
+const TEST_ENTERPRISE_NAME = 'test-enterprise-name';
 
 describe('<EnterpriseAppContextProvider />', () => {
   it.each([{
@@ -39,6 +40,7 @@ describe('<EnterpriseAppContextProvider />', () => {
     render(
       <EnterpriseAppContextProvider
         enterpriseId={TEST_ENTERPRISE_UUID}
+        enterpriseName={TEST_ENTERPRISE_NAME}
         enablePortalLearnerCreditManagementScreen
       >
         children

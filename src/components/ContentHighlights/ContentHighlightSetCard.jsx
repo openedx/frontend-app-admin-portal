@@ -1,16 +1,18 @@
-import React, {
-  useMemo, useContext,
-} from 'react';
-import { Card, Badge, Stack } from '@edx/paragon';
+import React, { useContext } from 'react';
+import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
-import { HIGHLIGHT_CARD_BADGE_STATUS } from './data/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 
 const ContentHighlightSetCard = ({
-  title, highlightUUID, isPublished, enterpriseSlug,
+  imageCapSrc,
+  title,
+  highlightUUID,
+  isPublished,
+  enterpriseSlug,
+  itemCount,
 }) => {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
@@ -25,25 +27,17 @@ const ContentHighlightSetCard = ({
     }
     return setIsModalOpen(true);
   };
-  // TODO: Bring logic one level up to abstract different sections for draft vs published
-  const badgeData = useMemo(() => ({
-    variant: isPublished ? HIGHLIGHT_CARD_BADGE_STATUS.PUBLISHED.variant : HIGHLIGHT_CARD_BADGE_STATUS.DRAFT.variant,
-    label: isPublished ? HIGHLIGHT_CARD_BADGE_STATUS.PUBLISHED.label : HIGHLIGHT_CARD_BADGE_STATUS.DRAFT.label,
-  }), [isPublished]);
+
   return (
     <Card
       isClickable
       onClick={handleHighlightSetClick}
     >
-      <Stack className="justify-content-between p-4" direction="horizontal">
-        <Card.Header
-          className="p-0"
-          title={title}
-        />
-        <Badge className="align-self-end" variant={badgeData.variant}>
-          {badgeData.label}
-        </Badge>
-      </Stack>
+      <Card.ImageCap src={imageCapSrc} srcAlt="" />
+      <Card.Header title={title} />
+      <Card.Section>
+        {itemCount} items
+      </Card.Section>
     </Card>
   );
 };
@@ -53,6 +47,8 @@ ContentHighlightSetCard.propTypes = {
   highlightUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   isPublished: PropTypes.bool.isRequired,
+  itemCount: PropTypes.number.isRequired,
+  imageCapSrc: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({

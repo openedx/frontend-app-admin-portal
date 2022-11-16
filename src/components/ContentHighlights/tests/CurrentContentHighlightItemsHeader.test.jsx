@@ -33,10 +33,10 @@ const ContentHighlightsCardItemsHeaderWrapper = (props) => (
   </Provider>
 );
 
-describe('<ContentHighlightsCardItemsContainer>', () => {
+describe('<CurrentContentHighlightItemsHeader>', () => {
   it('Displays all content data titles', () => {
     renderWithRouter(<ContentHighlightsCardItemsHeaderWrapper />);
-    const { title } = contentByUUID;
-    expect(screen.getByText(title)).toBeInTheDocument();
+    const { uuid } = contentByUUID;
+    expect(screen.getByText(uuid)).toBeInTheDocument();
   });
 });

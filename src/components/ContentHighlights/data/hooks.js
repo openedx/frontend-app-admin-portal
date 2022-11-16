@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useStepperModalState = () => {
+export const useStepperModalState = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return {
@@ -8,4 +8,31 @@ const useStepperModalState = () => {
     setIsModalOpen,
   };
 };
-export default useStepperModalState;
+
+export const useHighlightSetsForCuration = (enterpriseCuration) => {
+  const [highlightSets, setHighlightSets] = useState({
+    draft: [],
+    published: [],
+  });
+
+  useEffect(() => {
+    const highlightSetsForCuration = enterpriseCuration?.highlightSets;
+    const draftHighlightSets = [];
+    const publishedHighlightSets = [];
+
+    highlightSetsForCuration.forEach((highlightSet) => {
+      if (highlightSet.isPublished) {
+        publishedHighlightSets.push(highlightSet);
+      } else {
+        draftHighlightSets.push(highlightSet);
+      }
+    });
+
+    setHighlightSets({
+      draft: draftHighlightSets,
+      published: publishedHighlightSets,
+    });
+  }, [enterpriseCuration]);
+
+  return highlightSets;
+};

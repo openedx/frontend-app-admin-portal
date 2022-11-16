@@ -17,20 +17,33 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
-const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
-    canManageLearnerCredit: true,
-  }}
+const EnterpriseAppContextProvider = ({ children }) => (
+  <EnterpriseAppContext.Provider
+    value={{
+      enterpriseCuration: {
+        enterpriseCuration: null,
+        isLoading: false,
+        fetchError: null,
+      },
+    }}
   >
-    {children}
-  </EnterpriseSubsidiesContext.Provider>
+    <EnterpriseSubsidiesContext.Provider
+      value={{
+        canManageLearnerCredit: true,
+      }}
+    >
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  </EnterpriseAppContext.Provider>
 );
 
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,
+  ...jest.requireActual('../../components/EnterpriseApp/EnterpriseAppContextProvider'),
   // eslint-disable-next-line react/prop-types
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
+  default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../Sidebar', () => ({

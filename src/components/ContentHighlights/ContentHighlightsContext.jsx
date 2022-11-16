@@ -1,7 +1,9 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import useStepperModalState from './data/hooks';
+import {
+  useStepperModalState,
+} from './data/hooks';
 
 export const ContentHighlightsContext = createContext({});
 
