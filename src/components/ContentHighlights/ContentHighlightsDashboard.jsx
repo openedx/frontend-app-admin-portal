@@ -1,17 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Container } from '@edx/paragon';
+import { useHistory } from 'react-router-dom';
+import { Container, Toast } from '@edx/paragon';
+
 import ZeroStateHighlights from './ZeroState';
 import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ContentHighlightsDashboardBase = ({ children }) => (
-  <Container fluid className="my-5">
-    <ContentHighlightHelmet title="Highlights" />
-    {children}
-  </Container>
-);
+const ContentHighlightsDashboardBase = ({ children }) => {
+  const history = useHistory();
+  const { location } = history;
+  const { state: locationState } = location;
+
+  const [hasDeletedHighlightSetToast, setHasDeletedHighlightSetToast] = useState(false);
+
+  useEffect(() => {
+    if (!locationState?.deletedHighlightSet) {
+      return;
+    }
+    setHasDeletedHighlightSetToast(true);
+    const newState = { ...locationState };
+    delete newState.deletedHighlightSet;
+    history.replace({ ...location, state: newState });
+  }, [history, location, locationState]);
+
+  return (
+    <Container fluid className="my-5">
+      <ContentHighlightHelmet title="Highlights" />
+      {children}
+      <Toast
+        onClose={() => setHasDeletedHighlightSetToast(false)}
+        show={hasDeletedHighlightSetToast}
+      >
+        Highlight collection deleted.
+      </Toast>
+    </Container>
+  );
+};
 
 ContentHighlightsDashboardBase.propTypes = {
   children: PropTypes.node.isRequired,

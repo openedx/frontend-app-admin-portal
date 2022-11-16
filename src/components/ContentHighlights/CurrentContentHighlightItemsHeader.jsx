@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
-import DeleteHighlight from './DeleteHighlight';
+import DeleteHighlight from './DeleteHighlightSet';
 
 const CurrentContentHighlightItemsHeader = () => {
   const { highlightSetUUID } = useParams();
