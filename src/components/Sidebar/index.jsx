@@ -105,6 +105,7 @@ const Sidebar = ({
     },
     {
       title: 'Highlights',
+      id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} className="d-inline-block" />,
       hidden: !FEATURE_CONTENT_HIGHLIGHTS,

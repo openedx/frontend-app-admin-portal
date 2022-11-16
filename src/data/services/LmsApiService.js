@@ -1,5 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
+import generateFormattedStatusUrl from './apiServiceUtils';
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
@@ -235,12 +236,16 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/configs/?${queryParams.toString()}`);
   }
 
-  static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  static fetchContentMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
   }
 
-  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
   }
 
   /**

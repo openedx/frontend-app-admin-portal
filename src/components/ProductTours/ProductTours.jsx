@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getConfig } from '@edx/frontend-platform/config';
 import browseAndRequestTour from './browseAndRequestTour';
 import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
-import { useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour } from './data/hooks';
+import highlightsTour from './highlightsTour';
+import disableAll, { filterCheckpoints } from './data/utils';
 
+import {
+  useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
+} from './data/hooks';
+import {
+  PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
+  BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
+  LEARNER_CREDIT_COOKIE_NAME,
+  HIGHLIGHTS_COOKIE_NAME,
+} from './constants';
 /**
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
@@ -17,40 +28,43 @@ const ProductTours = ({
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const [browseAndRequestTourEnabled, setBrowseAndRequestTourEnabled] = useBrowseAndRequestTour({
-    enableLearnerPortal,
-  });
-  const [learnerCreditTourEnabled, setLearnerCreditTourEnabled] = useLearnerCreditTour();
+  const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
-  const [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled] = usePortalAppearanceTour({
-    enablePortalAppearance,
-  });
-
   const history = useHistory();
-  const tours = [
-    portalAppearanceTour({
+  const enabledFeatures = {
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
+    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
+    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
+  };
+  const checkpoints = {
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
-      tourEnabled: portalAppearanceTourEnabled,
       history,
-      onDismiss: () => setPortalAppearanceTourEnabled(false),
-      onEnd: () => setPortalAppearanceTourEnabled(false),
     }),
-    browseAndRequestTour({
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({
       enterpriseSlug,
-      tourEnabled: browseAndRequestTourEnabled,
       history,
-      onDismiss: () => setBrowseAndRequestTourEnabled(false),
-      onEnd: () => setBrowseAndRequestTourEnabled(false),
     }),
-    learnerCreditTour({
+    [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({
       enterpriseSlug,
-      tourEnabled: learnerCreditTourEnabled,
       history,
-      onDismiss: () => setLearnerCreditTourEnabled(false),
-      onEnd: () => setLearnerCreditTourEnabled(false),
     }),
-  ];
-
+    [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({
+      enterpriseSlug,
+      history,
+    }),
+  };
+  const checkpointsArray = filterCheckpoints(checkpoints, enabledFeatures);
+  const tours = [{
+    tourID: 'a',
+    advanceButtonText: 'Next',
+    dismissButtonText: 'Dismiss',
+    endButtonText: 'End',
+    enabled: checkpointsArray?.length > 0,
+    onEnd: () => disableAll(),
+    checkpoints: checkpointsArray,
+  }];
   return (
     <ProductTour
       tours={tours}

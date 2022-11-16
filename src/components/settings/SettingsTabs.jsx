@@ -50,7 +50,11 @@ const SettingsTabs = ({
     const initialTabs = [];
     if (enableLearnerPortal) {
       initialTabs.push(
-        <Tab eventKey={SETTINGS_TABS_VALUES.access} title={SETTINGS_TAB_LABELS.access}>
+        <Tab
+          key={SETTINGS_TABS_VALUES.access}
+          eventKey={SETTINGS_TABS_VALUES.access}
+          title={SETTINGS_TAB_LABELS.access}
+        >
           <SettingsAccessTab
             enterpriseId={enterpriseId}
             enterpriseSlug={enterpriseSlug}
@@ -65,7 +69,11 @@ const SettingsTabs = ({
     }
     if (FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen) {
       initialTabs.push(
-        <Tab eventKey={SETTINGS_TABS_VALUES.sso} title={SETTINGS_TAB_LABELS.sso}>
+        <Tab
+          key={SETTINGS_TABS_VALUES.sso}
+          eventKey={SETTINGS_TABS_VALUES.sso}
+          title={SETTINGS_TAB_LABELS.sso}
+        >
           <SettingsSSOTab
             enterpriseId={enterpriseId}
             setHasSSOConfig={setHasSSOConfig}
@@ -75,7 +83,11 @@ const SettingsTabs = ({
     }
     if (SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen) {
       initialTabs.push(
-        <Tab eventKey={SETTINGS_TABS_VALUES.lms} title={SETTINGS_TAB_LABELS.lms}>
+        <Tab
+          key={SETTINGS_TABS_VALUES.lms}
+          eventKey={SETTINGS_TABS_VALUES.lms}
+          title={SETTINGS_TAB_LABELS.lms}
+        >
           <SettingsLMSTab
             enterpriseId={enterpriseId}
             enterpriseSlug={enterpriseSlug}
@@ -88,7 +100,11 @@ const SettingsTabs = ({
     }
     if (SETTINGS_PAGE_APPEARANCE_TAB) {
       initialTabs.push(
-        <Tab eventKey={SETTINGS_TABS_VALUES.appearance} title={SETTINGS_TAB_LABELS.appearance}>
+        <Tab
+          key={SETTINGS_TABS_VALUES.appearance}
+          eventKey={SETTINGS_TABS_VALUES.appearance}
+          title={SETTINGS_TAB_LABELS.appearance}
+        >
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
             enterpriseBranding={enterpriseBranding}
