@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
-import DeleteHighlight from './DeleteHighlightSet';
+import DeleteHighlightSet from './DeleteHighlightSet';
 
 const CurrentContentHighlightItemsHeader = () => {
   const { highlightSetUUID } = useParams();
@@ -19,7 +19,7 @@ const CurrentContentHighlightItemsHeader = () => {
           {highlightTitle}
         </h2>
         <ActionRow.Spacer />
-        <DeleteHighlight />
+        <DeleteHighlightSet />
       </ActionRow>
     </>
   );
