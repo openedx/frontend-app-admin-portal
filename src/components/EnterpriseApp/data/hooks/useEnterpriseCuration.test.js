@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
 
+import { mergeConfig } from '@edx/frontend-platform/config';
 import useEnterpriseCuration from './useEnterpriseCuration';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 
@@ -25,153 +26,177 @@ const mockEnterpriseCurationConfigResponse = {
 };
 
 describe('useEnterpriseCuration', () => {
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
+  describe('without feature flag', () => {
+    beforeEach(() => {
+      mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
+      jest.resetAllMocks();
+    });
 
-  it('should do nothing without an enterprise id', async () => {
-    const args = {};
-    const { result } = renderHook(() => useEnterpriseCuration(args));
-    expect(result.current).toEqual({
-      isLoading: false,
-      fetchError: null,
-      enterpriseCuration: null,
+    it('should do nothing', () => {
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({ data: {} });
+      const args = {};
+      const { result } = renderHook(() => useEnterpriseCuration(args));
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
+      expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
   });
 
-  it('should retrieve existing enterprise curation config', async () => {
-    EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
-      data: mockEnterpriseCurationConfigResponse,
+  describe('with feature flag', () => {
+    beforeEach(() => {
+      mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: true });
+      jest.resetAllMocks();
     });
 
-    const args = {
-      enterpriseId: TEST_ENTERPRISE_UUID,
-      curationTitleForCreation: TEST_ENTERPRISE_NAME,
-    };
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
-
-    expect(result.current).toEqual({
-      isLoading: true,
-      fetchError: null,
-      enterpriseCuration: null,
+    it('should do nothing without an enterprise id', async () => {
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({ data: {} });
+      const args = {};
+      const { result } = renderHook(() => useEnterpriseCuration(args));
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
+      expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
 
-    await waitForNextUpdate();
+    it('should retrieve existing enterprise curation config', async () => {
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: mockEnterpriseCurationConfigResponse,
+      });
 
-    expect(
-      EnterpriseCatalogApiService.getEnterpriseCurationConfig,
-    ).toHaveBeenCalled();
-    expect(
-      EnterpriseCatalogApiService.createEnterpriseCurationConfig,
-    ).not.toHaveBeenCalled();
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
 
-    expect(result.current).toEqual({
-      isLoading: false,
-      fetchError: null,
-      enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
-    });
-  });
+      expect(result.current).toEqual({
+        isLoading: true,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
 
-  it('should create enterprise curation config if one does not exist', async () => {
-    EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
-      data: {
-        results: [],
-      },
-    });
+      await waitForNextUpdate();
 
-    EnterpriseCatalogApiService.createEnterpriseCurationConfig.mockResolvedValueOnce({
-      data: mockEnterpriseCurationConfig,
-    });
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalled();
+      expect(
+        EnterpriseCatalogApiService.createEnterpriseCurationConfig,
+      ).not.toHaveBeenCalled();
 
-    const args = {
-      enterpriseId: TEST_ENTERPRISE_UUID,
-      curationTitleForCreation: TEST_ENTERPRISE_NAME,
-    };
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
-
-    expect(result.current).toEqual({
-      isLoading: true,
-      fetchError: null,
-      enterpriseCuration: null,
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: null,
+        enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+      });
     });
 
-    await waitForNextUpdate();
+    it('should create enterprise curation config if one does not exist', async () => {
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: {
+          results: [],
+        },
+      });
 
-    expect(
-      EnterpriseCatalogApiService.getEnterpriseCurationConfig,
-    ).toHaveBeenCalled();
-    expect(
-      EnterpriseCatalogApiService.createEnterpriseCurationConfig,
-    ).toHaveBeenCalled();
+      EnterpriseCatalogApiService.createEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: mockEnterpriseCurationConfig,
+      });
 
-    expect(result.current).toEqual({
-      isLoading: false,
-      fetchError: null,
-      enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
-    });
-  });
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
 
-  it('should handle fetch error while retrieving existing enterprise curation config', async () => {
-    const mockErrorMessage = 'oh noes!';
-    EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockRejectedValueOnce(mockErrorMessage);
+      expect(result.current).toEqual({
+        isLoading: true,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
 
-    const args = {
-      enterpriseId: TEST_ENTERPRISE_UUID,
-      curationTitleForCreation: TEST_ENTERPRISE_NAME,
-    };
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      await waitForNextUpdate();
 
-    expect(result.current).toEqual({
-      isLoading: true,
-      fetchError: null,
-      enterpriseCuration: null,
-    });
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalled();
+      expect(
+        EnterpriseCatalogApiService.createEnterpriseCurationConfig,
+      ).toHaveBeenCalled();
 
-    await waitForNextUpdate();
-
-    expect(
-      EnterpriseCatalogApiService.getEnterpriseCurationConfig,
-    ).toHaveBeenCalled();
-
-    expect(result.current).toEqual({
-      isLoading: false,
-      fetchError: mockErrorMessage,
-      enterpriseCuration: null,
-    });
-  });
-
-  it('should handle fetch error while creating enterprise curation config', async () => {
-    const mockErrorMessage = 'oh noes!';
-    EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
-      data: {
-        results: [],
-      },
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: null,
+        enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+      });
     });
 
-    EnterpriseCatalogApiService.createEnterpriseCurationConfig.mockRejectedValueOnce(mockErrorMessage);
+    it('should handle fetch error while retrieving existing enterprise curation config', async () => {
+      const mockErrorMessage = 'oh noes!';
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockRejectedValueOnce(mockErrorMessage);
 
-    const args = {
-      enterpriseId: TEST_ENTERPRISE_UUID,
-      curationTitleForCreation: TEST_ENTERPRISE_NAME,
-    };
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
 
-    expect(result.current).toEqual({
-      isLoading: true,
-      fetchError: null,
-      enterpriseCuration: null,
+      expect(result.current).toEqual({
+        isLoading: true,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
+
+      await waitForNextUpdate();
+
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalled();
+
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: mockErrorMessage,
+        enterpriseCuration: null,
+      });
     });
 
-    await waitForNextUpdate();
+    it('should handle fetch error while creating enterprise curation config', async () => {
+      const mockErrorMessage = 'oh noes!';
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: {
+          results: [],
+        },
+      });
 
-    expect(
-      EnterpriseCatalogApiService.getEnterpriseCurationConfig,
-    ).toHaveBeenCalled();
+      EnterpriseCatalogApiService.createEnterpriseCurationConfig.mockRejectedValueOnce(mockErrorMessage);
 
-    expect(result.current).toEqual({
-      isLoading: false,
-      fetchError: mockErrorMessage,
-      enterpriseCuration: null,
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+
+      expect(result.current).toEqual({
+        isLoading: true,
+        fetchError: null,
+        enterpriseCuration: null,
+      });
+
+      await waitForNextUpdate();
+
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalled();
+
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: mockErrorMessage,
+        enterpriseCuration: null,
+      });
     });
   });
 });
