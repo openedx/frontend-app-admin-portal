@@ -7,10 +7,9 @@ import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import thunk from 'redux-thunk';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
-import { Skeleton } from '@edx/paragon';
+import { Skeleton, Alert } from '@edx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import StatusAlert from '../StatusAlert';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
   BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS,
@@ -158,7 +157,7 @@ describe('<CourseSearchResults />', () => {
     const wrapper = mount(<CourseSearchWrapper
       props={{ ...defaultProps, searchResults: { ...searchResults, nbHits: 0 } }}
     />);
-    expect(wrapper.find(StatusAlert)).toHaveLength(1);
+    expect(wrapper.find(Alert)).toHaveLength(1);
     expect(wrapper.text()).toContain(NO_DATA_MESSAGE);
   });
 });
