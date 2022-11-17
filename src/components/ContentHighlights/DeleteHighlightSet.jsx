@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Alert,
   Button,
   AlertModal,
   useToggle,
   ActionRow,
   StatefulButton,
 } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 import { useParams, useHistory } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
@@ -23,6 +25,7 @@ function DeleteHighlightSet({ enterpriseSlug }) {
   const history = useHistory();
   const { enterpriseCuration: { dispatch } } = useContext(EnterpriseAppContext);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [deletionError, setDeletionError] = useState(null);
 
   const handleDeleteClick = () => {
     const deleteHighlightSet = async () => {
@@ -33,6 +36,7 @@ function DeleteHighlightSet({ enterpriseSlug }) {
         setIsDeleted(true);
       } catch (error) {
         logError(error);
+        setDeletionError(error);
       } finally {
         setDeletionState('default');
       }
@@ -45,7 +49,9 @@ function DeleteHighlightSet({ enterpriseSlug }) {
       close();
       history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
         // TODO: expose the highlight set name here so it can be
-        // displayed in the Toast notification
+        // displayed in the Toast notification. once ContentHighlights has
+        // a reducer in its context value, we can use that to communicate between
+        // components instead of history's location state.
         deletedHighlightSet: true,
       });
     }
@@ -69,10 +75,22 @@ function DeleteHighlightSet({ enterpriseSlug }) {
               variant="primary"
               state={deletionState}
               onClick={handleDeleteClick}
+              data-testid="delete-confirmation-button"
             />
           </ActionRow>
         )}
       >
+        <Alert
+          show={!!deletionError}
+          onClose={() => setDeletionError(null)}
+          variant="danger"
+          dismissible
+          icon={Info}
+        >
+          <p>
+            An error occurred while deleting this highlight collection. Please try again.
+          </p>
+        </Alert>
         <p>
           Deleting this highlight collection will remove it from your
           learners. This action is permanent and cannot be undone.

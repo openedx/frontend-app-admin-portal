@@ -3,7 +3,7 @@ import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 
 const ContentHighlightSetCard = ({

@@ -15,6 +15,10 @@ const ContentHighlightsDashboardBase = ({ children }) => {
 
   const [hasDeletedHighlightSetToast, setHasDeletedHighlightSetToast] = useState(false);
 
+  // TODO: the below `useEffect` needs test coverage. deferred until there is a reducer
+  // for the `ContentHighlights` module, where `DeleteHighlightSet` can dispatch an action
+  // to trigger the `Toast`, rather than relying on history's location state.
+  /* istanbul ignore next */
   useEffect(() => {
     if (!locationState?.deletedHighlightSet) {
       return;

@@ -1,56 +1,35 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { Route } from 'react-router-dom';
+
 import CurrentContentHighlightItemsHeader from '../CurrentContentHighlightItemsHeader';
 
-const mockStore = configureMockStore([thunk]);
-
-const highlightSetUUID = 'fake-uuid';
-/* Currently mocks TEST_COURSE_HIGHLIGHTS_DATA from data/constants.js by the uuid */
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: () => ({
-    highlightSetUUID,
-  }),
+jest.mock('../DeleteHighlightSet', () => ({
+  __esModule: true,
+  default: () => <div data-testid="deleteHighlightSet" />,
 }));
 
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
-  },
-};
+const highlightSetUUID = 'fake-uuid';
 
-const mockDispatchFn = jest.fn();
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    dispatch: mockDispatchFn,
-  },
-};
-
-/* eslint-disable react/prop-types */
-const ContentHighlightsCardItemsHeaderWrapper = ({
-  enterpriseAppContext = initialEnterpriseAppContextValue,
-  ...props
-}) => (
-/* eslint-enable react/prop-types */
-  <Provider store={mockStore(initialState)}>
-    <EnterpriseAppContext.Provider value={enterpriseAppContext}>
-      <CurrentContentHighlightItemsHeader {...props} />
-    </EnterpriseAppContext.Provider>
-  </Provider>
-);
+function CurrentContentHighlightItemsHeaderWrapper(props) {
+  return (
+    <Route
+      path="/:enterpriseSlug/admin/content-highlights/:highlightSetUUID"
+      render={routeProps => <CurrentContentHighlightItemsHeader {...routeProps} {...props} />}
+    />
+  );
+}
 
 describe('<CurrentContentHighlightItemsHeader>', () => {
   it('Displays all content data titles', () => {
     const initialRouterEntry = `/test-enterprise/admin/content-highlights/${highlightSetUUID}`;
     renderWithRouter(
-      <ContentHighlightsCardItemsHeaderWrapper />,
+      <CurrentContentHighlightItemsHeaderWrapper />,
       { route: initialRouterEntry },
     );
     expect(screen.getByText(highlightSetUUID)).toBeInTheDocument();
+    expect(screen.getByTestId('deleteHighlightSet')).toBeInTheDocument();
   });
 });

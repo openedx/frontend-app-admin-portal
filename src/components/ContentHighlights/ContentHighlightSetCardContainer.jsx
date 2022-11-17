@@ -23,4 +23,5 @@ const ContentHighlightSetCardContainer = () => (
     {/* eslint-enable camelcase */}
   </CardGrid>
 );
+
 export default ContentHighlightSetCardContainer;

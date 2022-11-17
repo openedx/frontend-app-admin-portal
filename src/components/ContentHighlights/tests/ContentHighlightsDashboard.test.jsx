@@ -15,7 +15,7 @@ const mockStore = configureMockStore([thunk]);
 
 const initialState = {
   portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise',
   },
 };
 
@@ -86,7 +86,7 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(screen.getByText('Highlight collections')).toBeInTheDocument();
   });
 
-  it('Displays New highlight Modal on button click with highlighted content list', () => {
+  it('Displays New highlight modal on button click with highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText('New highlight');
     fireEvent.click(newHighlight);

@@ -19,7 +19,7 @@ const contentByUUID = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
 
 const initialState = {
   portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise',
   },
 };
 
