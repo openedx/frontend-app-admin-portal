@@ -12,6 +12,7 @@ import {
   initialContentHighlightsState,
 } from '../data/reducer';
 import { STEPPER_STEP_TEXT } from '../data/constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -21,28 +22,43 @@ const initialState = {
   },
 };
 
-const CurrentContentHighlightsWrapper = (props) => {
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      highlightSets: [],
+    },
+  },
+};
+
+/* eslint-disable react/prop-types */
+const CurrentContentHighlightsWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  ...props
+}) => {
+/* eslint-enable react/prop-types */
   const [
     contentHighlightsState,
     dispatch,
   ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
-  const value = useMemo(() => ({
+  const defaultValue = useMemo(() => ({
     ...contentHighlightsState,
     dispatch,
   }), [contentHighlightsState]);
   return (
-    <ContentHighlightsContext.Provider value={value}>
-      <Provider store={mockStore(initialState)}>
-        <CurrentContentHighlights {...props} />
-      </Provider>
-    </ContentHighlightsContext.Provider>
+    <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+      <ContentHighlightsContext.Provider value={defaultValue}>
+        <Provider store={mockStore(initialState)}>
+          <CurrentContentHighlights {...props} />
+        </Provider>
+      </ContentHighlightsContext.Provider>
+    </EnterpriseAppContext.Provider>
   );
 };
 
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('Active Highlights')).toBeInTheDocument();
+    expect(screen.getByText('Highlight collections')).toBeInTheDocument();
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
@@ -54,9 +70,50 @@ describe('<CurrentContentHighlights>', () => {
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 
-  /* TODO: Currently the ContentHighlightSetCardContainer is hard coded with data, test to be updated */
-  it('Displays the ContentHighlightSetCardContainer', () => {
-    renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('Dire Core')).toBeInTheDocument();
+  describe('ContentHighlightSetCardContainer', () => {
+    const exampleHighlightSet = {
+      uuid: 'fake-uuid',
+      title: 'Test Highlight Set',
+      isPublished: false,
+      highlightedContentUuids: [],
+    };
+    it('Displays no highlight set cards', () => {
+      renderWithRouter(<CurrentContentHighlightsWrapper />);
+      expect(screen.queryByText('Published')).not.toBeInTheDocument();
+      expect(screen.queryByText('Drafts')).not.toBeInTheDocument();
+    });
+    it('Displays draft highlight set cards', () => {
+      renderWithRouter(
+        <CurrentContentHighlightsWrapper
+          enterpriseAppContextValue={{
+            enterpriseCuration: {
+              enterpriseCuration: {
+                highlightSets: [exampleHighlightSet],
+              },
+            },
+          }}
+        />,
+      );
+      expect(screen.getByText('Drafts')).toBeInTheDocument();
+      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    });
+    it('Displays published highlight set cards', () => {
+      renderWithRouter(
+        <CurrentContentHighlightsWrapper
+          enterpriseAppContextValue={{
+            enterpriseCuration: {
+              enterpriseCuration: {
+                highlightSets: [{
+                  ...exampleHighlightSet,
+                  isPublished: true,
+                }],
+              },
+            },
+          }}
+        />,
+      );
+      expect(screen.getByText('Published')).toBeInTheDocument();
+      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    });
   });
 });

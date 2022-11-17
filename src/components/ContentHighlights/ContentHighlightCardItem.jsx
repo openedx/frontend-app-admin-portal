@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
 
 const ContentHighlightCardItem = ({ title, type, authoringOrganizations }) => (
-  <Card isClickable>
+  <Card>
     <Card.ImageCap
       src="https://source.unsplash.com/360x200/?nature,flower"
       srcAlt=""

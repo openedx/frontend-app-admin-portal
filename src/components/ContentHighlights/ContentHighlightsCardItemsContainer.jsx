@@ -6,12 +6,11 @@ import ContentHighlightCardItem from './ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
 const ContentHighlightsCardItemsContainer = () => {
-  const { highlightUUID } = useParams();
+  const { highlightUUID } = useParams(); // eslint-disable-line
   const [highlightCourses] = useState(
-    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
-      highlight => highlight.uuid === highlightUUID,
-    )[0]?.highlightedContent,
+    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent,
   );
+
   if (!highlightCourses) {
     return null;
   }

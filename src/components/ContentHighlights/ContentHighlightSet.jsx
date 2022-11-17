@@ -3,12 +3,10 @@ import ContentHighlightsCardItemContainer from './ContentHighlightsCardItemsCont
 import CurrentContentHighlightItemsHeader from './CurrentContentHighlightItemsHeader';
 
 const ContentHighlightSet = () => (
-  <>
-    <Container fluid className="mt-5">
-      <CurrentContentHighlightItemsHeader />
-      <ContentHighlightsCardItemContainer />
-    </Container>
-  </>
+  <Container fluid className="mt-5">
+    <CurrentContentHighlightItemsHeader />
+    <ContentHighlightsCardItemContainer />
+  </Container>
 );
 
 export default ContentHighlightSet;

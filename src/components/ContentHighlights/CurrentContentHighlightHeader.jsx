@@ -8,11 +8,12 @@ import { toggleStepperModalAction } from './data/actions';
 
 const CurrentContentHighlightHeader = () => {
   const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
+
   return (
     <>
-      <ActionRow className="mb-4.5">
+      <ActionRow>
         <h2 className="m-0">
-          Active Highlights
+          Highlight collections
         </h2>
         <ActionRow.Spacer />
         <Button
