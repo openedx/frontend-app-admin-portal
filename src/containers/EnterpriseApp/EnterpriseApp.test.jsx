@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -17,23 +17,33 @@ import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
-// eslint-disable-next-line react/function-component-definition
-const EnterpriseSubsidiesContextProvider = ({ children }) => {
-  const contextValue = useMemo(() => ({
-    canManageLearnerCredit: true,
-  }), []);
-  return (
-    <EnterpriseSubsidiesContext.Provider value={contextValue}>
+const EnterpriseAppContextProvider = ({ children }) => (
+  <EnterpriseAppContext.Provider
+    value={{
+      enterpriseCuration: {
+        enterpriseCuration: null,
+        isLoading: false,
+        fetchError: null,
+      },
+    }}
+  >
+    <EnterpriseSubsidiesContext.Provider
+      value={{
+        canManageLearnerCredit: true,
+      }}
+    >
       {children}
     </EnterpriseSubsidiesContext.Provider>
-  );
-};
+  </EnterpriseAppContext.Provider>
+);
 
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,
+  ...jest.requireActual('../../components/EnterpriseApp/EnterpriseAppContextProvider'),
   // eslint-disable-next-line react/prop-types
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
+  default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../Sidebar', () => ({
@@ -42,9 +52,7 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/ProductTours', () => function () {
-  return null;
-});
+jest.mock('../../components/ProductTours/ProductTours', () => () => null);
 
 features.CODE_MANAGEMENT = true;
 
@@ -79,18 +87,16 @@ const initialState = {
 };
 
 // eslint-disable-next-line react/prop-types
-function EnterpriseAppWrapper({ store, initialEntries, ...props }) {
-  return (
-    <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
-      <Provider store={store}>
-        <Route
-          path="/:enterpriseSlug"
-          render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
+  <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
+    <Provider store={store}>
+      <Route
+        path="/:enterpriseSlug"
+        render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 EnterpriseAppWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

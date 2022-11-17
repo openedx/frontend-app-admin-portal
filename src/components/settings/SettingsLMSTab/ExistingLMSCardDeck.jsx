@@ -39,6 +39,7 @@ function ExistingLMSCardDeck({
   // const listItems = timeSort(configData).map((config) => (
   const listActive = configData.filter(config => getStatus(config) === 'active').map(config => (
     <ExistingCard
+      key={`${config.channelCode}${config.id}`}
       config={config}
       editExistingConfig={editExistingConfig}
       enterpriseCustomerUuid={enterpriseCustomerUuid}
@@ -52,6 +53,7 @@ function ExistingLMSCardDeck({
   ));
   const listInactive = configData.filter(config => getStatus(config) !== 'active').map(config => (
     <ExistingCard
+      key={`${config.channelCode}${config.id}`}
       config={config}
       editExistingConfig={editExistingConfig}
       enterpriseCustomerUuid={enterpriseCustomerUuid}

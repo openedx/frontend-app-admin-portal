@@ -12,11 +12,12 @@ function ZeroStateCardFooter({ footerClassName, children }) {
 
 ZeroStateCardFooter.propTypes = {
   footerClassName: PropTypes.string,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 ZeroStateCardFooter.defaultProps = {
   footerClassName: undefined,
+  children: null,
 };
 
 export default ZeroStateCardFooter;

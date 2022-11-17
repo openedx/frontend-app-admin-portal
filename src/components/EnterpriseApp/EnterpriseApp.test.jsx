@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useMemo } from 'react';
 import {
   render, screen,
 } from '@testing-library/react';
@@ -10,20 +9,29 @@ import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
+import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 
 features.SETTINGS_PAGE = true;
 
-// eslint-disable-next-line react/function-component-definition
-const EnterpriseSubsidiesContextProvider = ({ children }) => {
-  const contextValue = useMemo(() => ({
-    canManageLearnerCredit: true,
-  }), []);
-  return (
-    <EnterpriseSubsidiesContext.Provider value={contextValue}>
+const EnterpriseAppContextProvider = ({ children }) => (
+  <EnterpriseAppContext.Provider
+    value={{
+      enterpriseCuration: {
+        enterpriseCuration: null,
+        isLoading: false,
+        fetchError: null,
+      },
+    }}
+  >
+    <EnterpriseSubsidiesContext.Provider
+      value={{
+        canManageLearnerCredit: true,
+      }}
+    >
       {children}
     </EnterpriseSubsidiesContext.Provider>
-  );
-};
+  </EnterpriseAppContext.Provider>
+);
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -41,7 +49,8 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
+  ...jest.requireActual('./EnterpriseAppContextProvider'),
+  default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({

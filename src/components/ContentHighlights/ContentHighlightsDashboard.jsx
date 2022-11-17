@@ -1,27 +1,40 @@
-import React from 'react';
-import ZeroStateHighlights from './ZeroStateHighlights';
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
+import { Container } from '@edx/paragon';
+import ZeroStateHighlights from './ZeroState';
 import CurrentContentHighlights from './CurrentContentHighlights';
-import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-function ContentHighlightsDashboard() {
-  const hasContentHighlights = TEST_COURSE_HIGHLIHTS_DATA.length > 1;
-  // const hasContentHighlights = false;
+const ContentHighlightsDashboardBase = ({ children }) => (
+  <Container fluid className="my-5">
+    <ContentHighlightHelmet title="Highlights" />
+    {children}
+  </Container>
+);
+
+ContentHighlightsDashboardBase.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+const ContentHighlightsDashboard = () => {
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const highlightSets = enterpriseCuration?.highlightSets;
+  const hasContentHighlights = highlightSets?.length > 0;
 
   if (!hasContentHighlights) {
     return (
-      <>
-        <ContentHighlightHelmet title="Highlights" />
+      <ContentHighlightsDashboardBase>
         <ZeroStateHighlights />
-      </>
+      </ContentHighlightsDashboardBase>
     );
   }
 
   return (
-    <>
-      <ContentHighlightHelmet title="Highlights" />
+    <ContentHighlightsDashboardBase>
       <CurrentContentHighlights />
-    </>
+    </ContentHighlightsDashboardBase>
   );
-}
+};
+
 export default ContentHighlightsDashboard;

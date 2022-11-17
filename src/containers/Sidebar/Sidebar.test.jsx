@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { getConfig } from '@edx/frontend-platform/config';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -15,6 +16,7 @@ import '@testing-library/jest-dom';
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
 import { features } from '../../config';
 
@@ -25,6 +27,13 @@ import {
 
 features.CODE_MANAGEMENT = true;
 
+jest.mock('@edx/frontend-platform/config', () => ({
+  ...jest.requireActual('@edx/frontend-platform/config'),
+  getConfig: jest.fn(() => ({
+    FEATURE_CONTENT_HIGHLIGHTS: false,
+  })),
+}));
+
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   sidebar: {
@@ -32,9 +41,20 @@ const initialState = {
     isExpandedByToggle: false,
   },
   portalConfiguration: {
+    enableLearnerPortal: true,
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
+  },
+};
+
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      isHighlightFeatureActive: true,
+    },
+    isLoading: false,
+    fetchError: null,
   },
 };
 
@@ -49,14 +69,15 @@ const initialEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
-function SidebarWrapper({
+const SidebarWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
   enterpriseSubsidiesContextValue = initialEnterpriseSubsidiesContextValue,
   ...props
-}) {
-  return (
-    <MemoryRouter>
-      <Provider store={props.store}>
+}) => (
+  <MemoryRouter>
+    <Provider store={props.store}>
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
         <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
           <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
             <Sidebar
@@ -65,10 +86,10 @@ function SidebarWrapper({
             />
           </SubsidyRequestsContext.Provider>
         </EnterpriseSubsidiesContext.Provider>
-      </Provider>
-    </MemoryRouter>
-  );
-}
+      </EnterpriseAppContext.Provider>
+    </Provider>
+  </MemoryRouter>
+);
 
 SidebarWrapper.defaultProps = {
   store: mockStore({
@@ -237,7 +258,7 @@ describe('<Sidebar />', () => {
   });
 
   it('renders correctly when subscriptionManagementScreen is false', () => {
-    // should cause both subscription management and enrollment links to not be present
+    // should cause subscription management to not be present
     const store = mockStore({
       sidebar: {
         ...initialState.sidebar,
@@ -252,7 +273,7 @@ describe('<Sidebar />', () => {
     expect(subscriptionManagementLink).toBeNull();
   });
 
-  it('renders correctly when subscriptionManagementScreen', () => {
+  it('renders correctly when subscriptionManagementScreen is enabled', () => {
     const store = mockStore({
       sidebar: {
         ...initialState.sidebar,
@@ -307,6 +328,60 @@ describe('<Sidebar />', () => {
       }}
     />);
     expect(screen.queryByRole('link', { name: 'Learner Credit Management' })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    [
+      {
+        highlightsFeatureFlag: true,
+        curationFeatureFlag: true,
+      },
+      true,
+    ],
+    [
+      {
+        highlightsFeatureFlag: false,
+        curationFeatureFlag: true,
+      },
+      false,
+    ],
+    [
+      {
+        highlightsFeatureFlag: true,
+        curationFeatureFlag: false,
+      },
+      false,
+    ],
+    [
+      {
+        highlightsFeatureFlag: false,
+        curationFeatureFlag: false,
+      },
+      false,
+    ],
+  ])('highlights link, when %s, is visible: %s', async (
+    { highlightsFeatureFlag, curationFeatureFlag },
+    expected,
+  ) => {
+    getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: highlightsFeatureFlag });
+    const store = mockStore(initialState);
+    render(<SidebarWrapper
+      store={store}
+      enterpriseAppContextValue={{
+        ...initialEnterpriseAppContextValue,
+        enterpriseCuration: {
+          enterpriseCuration: {
+            isHighlightFeatureActive: curationFeatureFlag,
+          },
+        },
+      }}
+    />);
+    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
+    if (expected) {
+      highlightsLink.toBeInTheDocument();
+    } else {
+      highlightsLink.not.toBeInTheDocument();
+    }
   });
 
   describe('notifications', () => {

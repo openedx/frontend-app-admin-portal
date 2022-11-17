@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
+import React, {
+  useCallback, useEffect, useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   DataTable, TextFilter,
@@ -6,26 +9,57 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import DownloadCsvButton from './DownloadCsvButton';
-import { getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getSyncTime } from './utils';
 
 function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
-  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState();
+  const [currentFilters, setCurrentFilters] = useState();
+  const [paginationData, setPaginationData] = useState({
+    itemCount: 0,
+    pageCount: 0,
+    data: [],
+    sortBy: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await LmsApiService
-        .fetchContentMetadataItemTransmission(enterpriseCustomerUuid, config.channelCode, config.id);
+      const response = await LmsApiService.fetchContentMetadataItemTransmission(
+        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
+      );
       return response;
     };
 
     fetchData()
       .then((response) => {
-        setData(response.data.results);
+        setPaginationData({
+          itemCount: response.data.count,
+          pageCount: response.data.pages_count,
+          data: response.data.results,
+        });
       })
       .catch((err) => {
         logError(err);
       });
-  }, [config.channelCode, config.id, enterpriseCustomerUuid]);
+  }, [config.channelCode, config.id, enterpriseCustomerUuid, currentPage, currentFilters]);
+
+  // Call back function, handles filters and page changes
+  const fetchData = useCallback(
+    (args) => {
+      let newFilters = createLookup(args.filters, (filter) => filter.id, (filter) => filter.value);
+
+      const sortBy = args.sortBy.at(-1);
+      if (!_.isEmpty(sortBy)) {
+        const newSortBys = { sort_by: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
+        newFilters = { ...newFilters, ...newSortBys };
+      }
+      setCurrentFilters(newFilters);
+
+      if (args.pageIndex !== currentPage) {
+        setCurrentPage(args.pageIndex);
+      }
+    },
+    [setCurrentPage, currentPage],
+  );
 
   return (
     <div className="pt-4">
@@ -33,13 +67,23 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
         isSortable
         isFilterable
         numBreakoutFilters={2}
+        manualFilters
         defaultColumnValues={{ Filter: TextFilter }}
         isPaginated
-        itemCount={data?.length}
-        data={data}
+        manualPagination
+        pageCount={paginationData.pageCount}
+        itemCount={paginationData.itemCount}
+        fetchData={fetchData}
+        manualSortBy
+        initialState={{
+          pageSize: 10,
+          pageIndex: currentPage || 0,
+          sortBy: [],
+        }}
+        data={paginationData.data}
         // eslint-disable-next-line no-unused-vars
         tableActions={[
-          <DownloadCsvButton data={data} testId="content-download" />,
+          <DownloadCsvButton data={paginationData.data} testId="content-download" />,
         ]}
         columns={[
           {

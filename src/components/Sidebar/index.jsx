@@ -20,6 +20,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 function Sidebar({
   baseUrl,
@@ -36,9 +37,12 @@ function Sidebar({
 }) {
   const navRef = useRef();
   const widthRef = useRef();
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
       const { width } = navRef.current.getBoundingClientRect();
@@ -105,9 +109,10 @@ function Sidebar({
     },
     {
       title: 'Highlights',
+      id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} className="d-inline-block" />,
-      hidden: !FEATURE_CONTENT_HIGHLIGHTS,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
     },
     {
       title: 'Reporting Configurations',

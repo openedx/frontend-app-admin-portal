@@ -12,11 +12,12 @@ function ZeroStateCardText({ textContainerClassName, children }) {
 
 ZeroStateCardText.propTypes = {
   textContainerClassName: PropTypes.string,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 ZeroStateCardText.defaultProps = {
   textContainerClassName: 'text-center',
+  children: null,
 };
 
 export default ZeroStateCardText;
