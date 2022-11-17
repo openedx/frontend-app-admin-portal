@@ -2,30 +2,39 @@
 
 exports[`CompletedLearnersTable renders empty state correctly 1`] = `
 <div
-  className="alert fade alert-warning show"
-  hidden={false}
+  className="fade alert-content alert alert-warning show"
   role="alert"
 >
+  <span
+    className="pgn__icon alert-icon"
+  >
+    <svg
+      aria-hidden={true}
+      fill="none"
+      focusable={false}
+      height={24}
+      role="img"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2L1 21h22L12 2z"
+        fill="#F0CC00"
+      />
+      <path
+        d="M13 16h-2v2h2v-2zM13 10h-2v4h2v-4z"
+        fill="#111"
+      />
+    </svg>
+  </span>
   <div
-    className="alert-dialog"
+    className="pgn__alert-message-wrapper"
   >
     <div
-      className="d-flex"
+      className="alert-message-content"
     >
-      <div
-        className="icon mr-2"
-      >
-        <span
-          aria-hidden={true}
-          className="fa fa-exclamation-circle"
-          id="Icon1"
-        />
-      </div>
-      <div
-        className="message"
-      >
-        There are no results.
-      </div>
+      There are no results.
     </div>
   </div>
 </div>

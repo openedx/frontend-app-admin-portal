@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import LearnerActivityTable from '.';
 
@@ -84,9 +85,11 @@ const learnerActivityStore = mockStore({
 const LearnerActivityEmptyTableWrapper = props => (
   <MemoryRouter>
     <Provider store={learnerActivityEmptyStore}>
-      <LearnerActivityTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <LearnerActivityTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -94,9 +97,11 @@ const LearnerActivityEmptyTableWrapper = props => (
 const LearnerActivityTableWrapper = props => (
   <MemoryRouter>
     <Provider store={learnerActivityStore}>
-      <LearnerActivityTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <LearnerActivityTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -212,6 +217,7 @@ describe('LearnerActivityTable', () => {
       'Course Price',
       'Start Date',
       'End Date',
+      'Passed Date',
       'Current Grade',
       'Progress Status',
       'Last Activity Date',
@@ -223,6 +229,7 @@ describe('LearnerActivityTable', () => {
         '$200',
         'October 21, 2017',
         'May 13, 2018',
+        'September 23, 2018',
         '66%',
         'Failed',
         'September 22, 2018',
@@ -233,6 +240,7 @@ describe('LearnerActivityTable', () => {
         '$200',
         'October 21, 2017',
         'May 13, 2018',
+        'September 22, 2018',
         '80%',
         'Passed',
         'September 25, 2018',
@@ -251,6 +259,7 @@ describe('LearnerActivityTable', () => {
       'Course Price',
       'Start Date',
       'End Date',
+      'Passed Date',
       'Current Grade',
       'Progress Status',
       'Last Activity Date',
@@ -262,6 +271,7 @@ describe('LearnerActivityTable', () => {
         '$200',
         'October 21, 2017',
         'May 13, 2018',
+        'September 23, 2018',
         '66%',
         'Failed',
         'September 22, 2018',
@@ -272,6 +282,7 @@ describe('LearnerActivityTable', () => {
         '$200',
         'October 21, 2017',
         'May 13, 2018',
+        'September 22, 2018',
         '80%',
         'Passed',
         'September 25, 2018',

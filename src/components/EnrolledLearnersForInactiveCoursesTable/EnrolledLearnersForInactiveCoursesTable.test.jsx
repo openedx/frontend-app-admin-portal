@@ -5,8 +5,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnrolledLearnersForInactiveCoursesTable from '.';
+import * as tableUtils from '../../data/actions/table';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -27,7 +29,7 @@ const enrolledLearnersForInactiveCoursesEmptyStore = mockStore({
     },
   },
 });
-const enrolledLearnersForInactiveCoursesStore = mockStore({
+const enrolledLearnersForInactiveCoursesData = {
   portalConfiguration: {
     enterpriseId,
   },
@@ -90,14 +92,17 @@ const enrolledLearnersForInactiveCoursesStore = mockStore({
       error: null,
     },
   },
-});
+};
+const enrolledLearnersForInactiveCoursesStore = mockStore(enrolledLearnersForInactiveCoursesData);
 
 const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
   <MemoryRouter>
     <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-      <EnrolledLearnersForInactiveCoursesTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <EnrolledLearnersForInactiveCoursesTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -105,9 +110,11 @@ const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
 const EnrolledLearnersForInactiveCoursesWrapper = props => (
   <MemoryRouter>
     <Provider store={enrolledLearnersForInactiveCoursesStore}>
-      <EnrolledLearnersForInactiveCoursesTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <EnrolledLearnersForInactiveCoursesTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -178,5 +185,42 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
         expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
       });
     });
+  });
+  it('test sorting', () => {
+    const tableId = 'enrolled-learners-inactive-courses';
+
+    jest.spyOn(tableUtils, 'sortTable');
+
+    const wrapper = mount((
+      <EnrolledLearnersForInactiveCoursesWrapper />
+    ));
+
+    expect(tableUtils.sortTable).toHaveBeenCalledTimes(0);
+    wrapper.find(`.${tableId} th`).first().simulate('click');
+    expect(tableUtils.sortTable).toHaveBeenCalledTimes(1);
+  });
+
+  it('test pagination', () => {
+    const tableId = 'enrolled-learners-inactive-courses';
+    const storeData = JSON.parse(JSON.stringify(enrolledLearnersForInactiveCoursesData));
+
+    storeData.table['enrolled-learners-inactive-courses'].data.num_pages = 2;
+    storeData.table['enrolled-learners-inactive-courses'].data.next = '?page=2';
+
+    jest.spyOn(tableUtils, 'paginateTable');
+
+    const wrapper = mount((
+      <MemoryRouter>
+        <Provider store={mockStore(storeData)}>
+          <IntlProvider locale="en">
+            <EnrolledLearnersForInactiveCoursesTable />
+          </IntlProvider>
+        </Provider>
+      </MemoryRouter>
+    ));
+
+    expect(tableUtils.paginateTable).toHaveBeenCalledTimes(1);
+    wrapper.find(`.${tableId}`).find('button[aria-label="Next, Page 2"]').simulate('click');
+    expect(tableUtils.paginateTable).toHaveBeenCalledTimes(2);
   });
 });

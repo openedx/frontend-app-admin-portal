@@ -8,9 +8,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import '@testing-library/jest-dom/extend-expect';
-import { StatusAlert } from '@edx/paragon';
+import { Alert } from '@edx/paragon';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
@@ -96,10 +97,12 @@ const initialCouponData = {
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CouponDetails
-        couponData={initialCouponData}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CouponDetails
+          couponData={initialCouponData}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -183,8 +186,8 @@ describe('CouponDetails container', () => {
       });
       renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
-      DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
-        expect(screen.getByText(label)).toBeInTheDocument();
+      DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ Header }) => {
+        expect(screen.getByText(Header)).toBeInTheDocument();
       });
     });
 
@@ -203,8 +206,8 @@ describe('CouponDetails container', () => {
       renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
 
-      DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
-        expect(screen.getByText(label)).toBeInTheDocument();
+      DEFAULT_TABLE_COLUMNS[filterType].forEach(({ Header }) => {
+        expect(screen.getByText(Header)).toBeInTheDocument();
       });
     });
 
@@ -338,8 +341,8 @@ describe('CouponDetails container', () => {
       />
     ));
 
-    expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('danger');
-    wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
+    expect(wrapper.find(Alert).prop('variant')).toEqual('danger');
+    wrapper.find(Alert).find('#try-again').find('.btn').simulate('click'); // Retry fetching coupon overview data
 
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
@@ -390,14 +393,14 @@ describe('CouponDetails container', () => {
   describe('modals', () => {
     let spy;
 
-    const openModalByActionButton = ({ key }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
+    const openModalByActionButton = ({ accessor }) => {
+      const actionButton = wrapper.find('table').find('button').find(`.${accessor}-btn`);
       actionButton.simulate('click');
     };
 
-    const testModalActionButton = ({ key, label }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
-      expect(actionButton.text()).toEqual(label);
+    const testModalActionButton = ({ accessor, Header }) => {
+      const actionButton = wrapper.find('table').find('button').find(`.${accessor}-btn`);
+      expect(actionButton.text()).toEqual(Header);
       actionButton.simulate('click');
     };
 
@@ -424,22 +427,22 @@ describe('CouponDetails container', () => {
 
     it('sets remind modal state on Remind button click', () => {
       testModalActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
     });
 
     it('sets revoke modal state on Revoke button click', () => {
       testModalActionButton({
-        key: 'revoke',
-        label: 'Revoke',
+        accessor: 'revoke',
+        Header: 'Revoke',
       });
     });
 
     it('sets assignment modal state on Assign button click', () => {
       testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
       // TODO: The remind/revoke buttons now manage their modal state in their
       // own components, so we only need to worry about the `assign` action now.
@@ -449,8 +452,8 @@ describe('CouponDetails container', () => {
 
     it('shows correct remaining uses on assignment modal', () => {
       testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
 
       expect(wrapper.find('.assignment-details .code-remaining-uses').text()).toEqual('Remaining Uses: 85');
@@ -495,8 +498,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code assignment from modal', () => {
       openModalByActionButton({
-        key: 'assignment',
-        label: 'Assign',
+        accessor: 'assignment',
+        Header: 'Assign',
       });
 
       // fake successful code assignment
@@ -504,13 +507,13 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
-      statusAlert.find('.alert-dialog .btn').simulate('click');
+      statusAlert.find('.btn-tertiary').simulate('click');
 
       // after alert is dismissed
-      expect(wrapper.find(StatusAlert)).toHaveLength(0);
+      expect(wrapper.find(Alert)).toHaveLength(0);
       expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
 
       // fetches overview data for coupon
@@ -520,8 +523,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code revoke from modal', () => {
       openModalByActionButton({
-        key: 'revoke',
-        label: 'Revoke',
+        accessor: 'revoke',
+        Header: 'Revoke',
       });
 
       // fake successful code assignment
@@ -529,8 +532,8 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
 
       // fetches overview data for coupon
@@ -540,8 +543,8 @@ describe('CouponDetails container', () => {
 
     it('handles successful code remind from modal', () => {
       openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
 
       // fake successful code assignment
@@ -549,8 +552,8 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
 
       // does not fetch overview data for coupon
@@ -559,8 +562,8 @@ describe('CouponDetails container', () => {
 
     it('handles errors in response data for code reminder ', () => {
       openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
+        accessor: 'remind',
+        Header: 'Remind',
       });
 
       // fake code assignment 200 status with error in response data.

@@ -13,476 +13,671 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
-        >
-          <thead
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Passed Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 23, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="active-week-pagination"
-        className="pagination-default"
-      >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          className="pgn__data-table-layout-wrapper"
         >
-          Page 1, Current Page, of 1
+          <div
+            className="pgn__data-table-layout-main"
+          >
+            <div
+              className="pgn__data-table-wrapper"
+            >
+              <div
+                className="pgn__data-table-status-bar"
+              >
+                <div
+                  className="pgn__data-table-status"
+                >
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
+                    >
+                      Showing 2 of 2.
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
+                    />
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
+              >
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
+                >
+                  <thead>
+                    <tr
+                      role="row"
+                    >
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
+              >
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="active-week-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -490,30 +685,39 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
 
 exports[`LearnerActivityTable renders empty state correctly 1`] = `
 <div
-  className="alert fade alert-warning show"
-  hidden={false}
+  className="fade alert-content alert alert-warning show"
   role="alert"
 >
+  <span
+    className="pgn__icon alert-icon"
+  >
+    <svg
+      aria-hidden={true}
+      fill="none"
+      focusable={false}
+      height={24}
+      role="img"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2L1 21h22L12 2z"
+        fill="#F0CC00"
+      />
+      <path
+        d="M13 16h-2v2h2v-2zM13 10h-2v4h2v-4z"
+        fill="#111"
+      />
+    </svg>
+  </span>
   <div
-    className="alert-dialog"
+    className="pgn__alert-message-wrapper"
   >
     <div
-      className="d-flex"
+      className="alert-message-content"
     >
-      <div
-        className="icon mr-2"
-      >
-        <span
-          aria-hidden={true}
-          className="fa fa-exclamation-circle"
-          id="Icon1"
-        />
-      </div>
-      <div
-        className="message"
-      >
-        There are no results.
-      </div>
+      There are no results.
     </div>
   </div>
 </div>
@@ -532,438 +736,671 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
-        >
-          <thead
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-month-pagination"
-        className="pagination-default"
-      >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          className="pgn__data-table-layout-wrapper"
         >
-          Page 1, Current Page, of 1
+          <div
+            className="pgn__data-table-layout-main"
+          >
+            <div
+              className="pgn__data-table-wrapper"
+            >
+              <div
+                className="pgn__data-table-status-bar"
+              >
+                <div
+                  className="pgn__data-table-status"
+                >
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
+                    >
+                      Showing 2 of 2.
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
+                    />
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
+              >
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
+                >
+                  <thead>
+                    <tr
+                      role="row"
+                    >
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
+              >
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="inactive-month-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -982,438 +1419,671 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
       <div
         className="table-responsive"
       >
-        <table
-          className="table table-sm table-striped"
-        >
-          <thead
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Title
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Course Price
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Start Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    End Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Current Grade
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Progress Status
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  awesome.me@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Dive into ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                66%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Failed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 22, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  new@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Redux with ReactJS
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                $200
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                October 21, 2017
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                May 13, 2018
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                80%
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                Passed
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                September 25, 2018
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-week-pagination"
-        className="pagination-default"
-      >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          className="pgn__data-table-layout-wrapper"
         >
-          Page 1, Current Page, of 1
+          <div
+            className="pgn__data-table-layout-main"
+          >
+            <div
+              className="pgn__data-table-wrapper"
+            >
+              <div
+                className="pgn__data-table-status-bar"
+              >
+                <div
+                  className="pgn__data-table-status"
+                >
+                  <div
+                    className="pgn__data-table-status-left"
+                  >
+                    <div
+                      className="pgn__smart-status"
+                    >
+                      Showing 2 of 2.
+                    </div>
+                  </div>
+                  <div
+                    className="pgn__data-table-actions-right"
+                  >
+                    <div
+                      className="pgn__data-table-toggle"
+                    />
+                    <div />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="pgn__data-table-container"
+              >
+                <table
+                  className="pgn__data-table is-striped"
+                  role="table"
+                >
+                  <thead>
+                    <tr
+                      role="row"
+                    >
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Email
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Title
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Course Price
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Start Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            End Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Passed Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Current Grade
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Progress Status
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                      <th
+                        colSpan={1}
+                        onClick={[Function]}
+                        role="columnheader"
+                        style={
+                          Object {
+                            "cursor": "pointer",
+                          }
+                        }
+                        title="Toggle SortBy"
+                      >
+                        <span
+                          className="d-flex align-items-center"
+                        >
+                          <span>
+                            Last Activity Date
+                          </span>
+                          <span
+                            className="pgn__icon"
+                            style={
+                              Object {
+                                "opacity": 0.5,
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden={true}
+                              fill="none"
+                              focusable={false}
+                              height={24}
+                              role="img"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 10l5-5 5 5H7zM7 14l5 5 5-5H7z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    role="rowgroup"
+                  >
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          awesome.me@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Dive into ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 23, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        66%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Failed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                    </tr>
+                    <tr
+                      className="pgn__data-table-row"
+                      role="row"
+                    >
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        <span
+                          data-hj-suppress={true}
+                        >
+                          new@example.com
+                        </span>
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Redux with ReactJS
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        $200
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        October 21, 2017
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        May 13, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 22, 2018
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        80%
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        Passed
+                      </td>
+                      <td
+                        className="pgn__data-table-cell-wrap"
+                        role="cell"
+                      >
+                        September 25, 2018
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                className="pgn__data-table-footer"
+              >
+                <div
+                  className="col d-flex justify-content-center"
+                >
+                  <nav
+                    aria-label="inactive-week-pagination"
+                    className="pagination-default"
+                  >
+                    <div
+                      aria-atomic={true}
+                      aria-live="polite"
+                      aria-relevant="text"
+                      className="sr-only"
+                    >
+                      Page 1, Current Page, of 1
+                    </div>
+                    <ul
+                      className="pagination"
+                    >
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Previous"
+                          className="previous page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                            Previous
+                          </div>
+                        </button>
+                      </li>
+                      <li
+                        className="page-item disabled"
+                      >
+                        <button
+                          aria-label="Next"
+                          className="next page-link btn btn-primary"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex="-1"
+                          type="button"
+                        >
+                          <div>
+                            Next
+                            <span
+                              className="pgn__icon"
+                            >
+                              <svg
+                                aria-hidden={true}
+                                fill="none"
+                                focusable={false}
+                                height={24}
+                                role="img"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
-          >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+      </div>
     </div>
   </div>
 </div>

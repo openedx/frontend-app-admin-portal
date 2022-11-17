@@ -7,18 +7,18 @@ import { formatTimestamp } from '../../utils';
 const PastWeekPassedLearnersTable = () => {
   const tableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Course Title',
-      key: 'course_title',
+      Header: 'Course Title',
+      accessor: 'course_title',
       columnSortable: true,
     },
     {
-      label: 'Passed Date',
-      key: 'passed_date',
+      Header: 'Passed Date',
+      accessor: 'passed_date',
       columnSortable: true,
     },
   ];

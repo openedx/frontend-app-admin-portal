@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import PastWeekPassedLearnersTable from '.';
 
@@ -51,9 +52,11 @@ const store = mockStore({
 const PastWeekPassedLearnersWrapper = props => (
   <MemoryRouter>
     <Provider store={store}>
-      <PastWeekPassedLearnersTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <PastWeekPassedLearnersTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

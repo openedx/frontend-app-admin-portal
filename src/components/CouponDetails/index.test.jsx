@@ -2,10 +2,13 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import { renderWithRouter } from '../test/testUtils';
 import CouponDetails from './index';
 import { COUPON_FILTERS, DEFAULT_TABLE_COLUMNS } from './constants';
@@ -135,9 +138,11 @@ const defaultProps = {
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={mockStore(reduxState)}>
-      <CouponDetails
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CouponDetails
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -157,9 +162,19 @@ describe('CouponDetails component', () => {
   it('renders the unassigned table by default', () => {
     renderWithRouter(<CouponDetailsWrapper {...defaultProps} />);
     expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
-    DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+    DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ Header }) => {
+      expect(screen.getByText(Header)).toBeInTheDocument();
     });
+  });
+  it('test unredeemed codes success', () => {
+    const wrapper = shallow(<CouponDetailsWrapper {...defaultProps} />).childAt(0).childAt(0).childAt(0)
+      .dive();
+    const instance = wrapper.instance();
+    jest.spyOn(instance, 'resetCodeActionStatus');
+    instance.setState({ isCodeAssignmentSuccessful: true });
+    wrapper.update();
+    wrapper.find('#unredeemed-codes').simulate('click');
+    expect(instance.resetCodeActionStatus).toBeCalled();
   });
   it('renders with error state', () => {
     renderWithRouter(<CouponDetailsWrapper

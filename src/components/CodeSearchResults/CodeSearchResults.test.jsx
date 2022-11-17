@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CodeSearchResults from './index';
 
@@ -77,12 +78,14 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                enableLearnerPortal={false}
-                enterpriseSlug="sluggy"
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="test@test.com"
+                  enableLearnerPortal={false}
+                  enterpriseSlug="sluggy"
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -105,11 +108,13 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                isOpen
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="test@test.com"
+                  isOpen
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -164,11 +169,13 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                isOpen
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="test@test.com"
+                  isOpen
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -204,11 +211,13 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="FAG2LVLNHAKIXQ0Q"
-                isOpen
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="FAG2LVLNHAKIXQ0Q"
+                  isOpen
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -235,11 +244,13 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                isOpen
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="test@test.com"
+                  isOpen
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -262,11 +273,13 @@ describe('<CodeSearchResults />', () => {
         .create((
           <MemoryRouter>
             <Provider store={store}>
-              <CodeSearchResults
-                onClose={jest.fn()}
-                searchQuery="test@test.com"
-                isOpen
-              />
+              <IntlProvider locale="en">
+                <CodeSearchResults
+                  onClose={jest.fn()}
+                  searchQuery="test@test.com"
+                  isOpen
+                />
+              </IntlProvider>
             </Provider>
           </MemoryRouter>
         ))
@@ -305,11 +318,13 @@ describe('<CodeSearchResults />', () => {
       const wrapper = mount((
         <MemoryRouter>
           <Provider store={store}>
-            <CodeSearchResults
-              onClose={jest.fn()}
-              searchQuery="test@test.com"
-              isOpen
-            />
+            <IntlProvider locale="en">
+              <CodeSearchResults
+                onClose={jest.fn()}
+                searchQuery="test@test.com"
+                isOpen
+              />
+            </IntlProvider>
           </Provider>
         </MemoryRouter>
       ));
@@ -360,11 +375,13 @@ describe('<CodeSearchResults />', () => {
       const wrapper = mount((
         <MemoryRouter>
           <Provider store={store}>
-            <CodeSearchResults
-              onClose={jest.fn()}
-              searchQuery="test@test.com"
-              isOpen
-            />
+            <IntlProvider locale="en">
+              <CodeSearchResults
+                onClose={jest.fn()}
+                searchQuery="test@test.com"
+                isOpen
+              />
+            </IntlProvider>
           </Provider>
         </MemoryRouter>
       ));
@@ -405,11 +422,13 @@ describe('<CodeSearchResults />', () => {
       const wrapper = mount((
         <MemoryRouter>
           <Provider store={store}>
-            <CodeSearchResults
-              onClose={jest.fn()}
-              searchQuery="test@test.com"
-              isOpen
-            />
+            <IntlProvider locale="en">
+              <CodeSearchResults
+                onClose={jest.fn()}
+                searchQuery="test@test.com"
+                isOpen
+              />
+            </IntlProvider>
           </Provider>
         </MemoryRouter>
       ));
@@ -441,11 +460,13 @@ describe('<CodeSearchResults />', () => {
     const wrapper = mount((
       <MemoryRouter>
         <Provider store={store}>
-          <CodeSearchResults
-            onClose={mockOnClose}
-            searchQuery="test@test.com"
-            isOpen
-          />
+          <IntlProvider locale="en">
+            <CodeSearchResults
+              onClose={mockOnClose}
+              searchQuery="test@test.com"
+              isOpen
+            />
+          </IntlProvider>
         </Provider>
       </MemoryRouter>
     ));

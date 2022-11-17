@@ -503,9 +503,11 @@ class CouponDetails extends React.Component {
         dismissible
       >
         <Alert.Heading>
-          <p>{title}</p>
+          {title}
         </Alert.Heading>
-        {message}
+        <p>
+          {message}
+        </p>
       </Alert>
     );
   }
@@ -627,6 +629,7 @@ class CouponDetails extends React.Component {
                           <Button
                             variant="link"
                             className="p-0 pl-1 border-0"
+                            id="try-again"
                             onClick={() => this.props.fetchCouponOrder(id)}
                           >
                             Please try again.
@@ -642,6 +645,7 @@ class CouponDetails extends React.Component {
                           <Button
                             variant="link"
                             className="p-0 pl-1 border-0"
+                            id="unredeemed-codes"
                             onClick={() => {
                               this.setState({
                                 selectedToggle: 'unredeemed',
