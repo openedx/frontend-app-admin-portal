@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     ordering: tableState.ordering,
     loading: tableState.loading,
     error: tableState.error,
+    totalCount: tableState?.data?.count,
   };
 };
 

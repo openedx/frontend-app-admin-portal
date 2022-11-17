@@ -7,23 +7,23 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const EnrolledLearnersForInactiveCoursesTable = () => {
   const tableColumns = [
     {
-      label: 'Email',
-      key: 'user_email',
+      Header: 'Email',
+      accessor: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Total Course Enrollment Count',
-      key: 'enrollment_count',
+      Header: 'Total Course Enrollment Count',
+      accessor: 'enrollment_count',
       columnSortable: true,
     },
     {
-      label: 'Total Completed Courses Count',
-      key: 'course_completion_count',
+      Header: 'Total Completed Courses Count',
+      accessor: 'course_completion_count',
       columnSortable: true,
     },
     {
-      label: 'Last Activity Date',
-      key: 'last_activity_date',
+      Header: 'Last Activity Date',
+      accessor: 'last_activity_date',
       columnSortable: true,
     },
   ];

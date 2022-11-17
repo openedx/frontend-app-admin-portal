@@ -13,28 +13,28 @@ import EcommerceApiService from '../../data/services/EcommerceApiService';
 
 const tableColumns = [
   {
-    label: 'Coupon Batch',
-    key: 'couponName',
+    Header: 'Coupon Batch',
+    accessor: 'couponName',
   },
   {
-    label: 'Code',
-    key: 'code',
+    Header: 'Code',
+    accessor: 'code',
   },
   {
-    label: 'Redeemed',
-    key: 'isRedeemed',
+    Header: 'Redeemed',
+    accessor: 'isRedeemed',
   },
   {
-    label: 'Redemption Date',
-    key: 'redemptionDate',
+    Header: 'Redemption Date',
+    accessor: 'redemptionDate',
   },
   {
-    label: 'Course Title',
-    key: 'courseTitle',
+    Header: 'Course Title',
+    accessor: 'courseTitle',
   },
   {
-    label: 'Actions',
-    key: 'actions',
+    Header: 'Actions',
+    accessor: 'actions',
   },
 ];
 
@@ -72,7 +72,7 @@ const searchParameter = (searchQuery) => {
 };
 
 const handleTableColumns = (searchQuery) => {
-  const assignedToColumnIndex = tableColumns.findIndex(column => column.key === 'assignedTo');
+  const assignedToColumnIndex = tableColumns.findIndex(column => column.accessor === 'assignedTo');
   // If search is made by email, no need to show "Assigned To" field
   if (isValidEmail(searchQuery) === undefined && assignedToColumnIndex > -1) {
     // Remove "Assigned To" column if it already exists
@@ -80,8 +80,8 @@ const handleTableColumns = (searchQuery) => {
   } else if (isValidEmail(searchQuery) !== undefined && assignedToColumnIndex === -1) {
     // Add "Assigned To" column if it doesn't already exist
     tableColumns.splice(4, 0, {
-      label: 'Assigned To',
-      key: 'assignedTo',
+      Header: 'Assigned To',
+      accessor: 'assignedTo',
     });
   }
   return tableColumns;
