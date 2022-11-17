@@ -6,11 +6,11 @@ export const initialReducerState = {
   fetchError: null,
 };
 
-const SET_IS_LOADING = 'SET_IS_LOADING';
-const SET_ENTERPRISE_CURATION = 'SET_ENTERPRISE_CURATION';
-const SET_FETCH_ERROR = 'SET_FETCH_ERROR';
-const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
-const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
+export const SET_IS_LOADING = 'SET_IS_LOADING';
+export const SET_ENTERPRISE_CURATION = 'SET_ENTERPRISE_CURATION';
+export const SET_FETCH_ERROR = 'SET_FETCH_ERROR';
+export const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
+export const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
 
 export const enterpriseCurationActions = {
   setIsLoading: (payload) => ({
@@ -50,7 +50,7 @@ function enterpriseCurationReducer(state, action) {
     case DELETE_HIGHLIGHT_SET: {
       const existingHighlightSets = getHighlightSetsFromState(state);
       const filteredHighlightSets = existingHighlightSets.filter(
-        hightlightSet => hightlightSet.uuid !== action.payload,
+        highlightSet => highlightSet.uuid !== action.payload,
       );
       return {
         ...state,
@@ -66,7 +66,7 @@ function enterpriseCurationReducer(state, action) {
         ...state,
         enterpriseCuration: {
           ...state.enterpriseCuration,
-          highlightSets: [existingHighlightSets, action.payload],
+          highlightSets: [...existingHighlightSets, action.payload],
         },
       };
     }

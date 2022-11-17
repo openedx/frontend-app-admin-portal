@@ -54,7 +54,7 @@ class EnterpriseCatalogApiService {
   }
 
   static deleteHighlightSet(highlightSetUUID) {
-    return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
+    return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`);
   }
 }
 
