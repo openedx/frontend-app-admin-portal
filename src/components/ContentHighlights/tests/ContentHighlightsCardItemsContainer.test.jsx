@@ -1,30 +1,25 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
-const highlightUUID = '1';
+const highlightSetUUID = '1';
 const contentByUUID = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
-  highlight => highlight.uuid === highlightUUID,
+  highlight => highlight.uuid === highlightSetUUID,
 )[0]?.highlightedContent;
-/* Currently mocks TEST_COURSE_HIGHLIGHTS_DATA from data/constants.js by the uuid */
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: () => ({
-    highlightUUID,
-  }),
-}));
 
 const initialState = {
   portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise',
   },
 };
 
@@ -42,6 +37,7 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     expect(screen.getByText(firstTitle)).toBeInTheDocument();
     expect(screen.getByText(lastTitle)).toBeInTheDocument();
   });
+
   it('Displays all content data content types', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
     const firstContentType = contentByUUID[0].contentType;
@@ -49,6 +45,7 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     expect(screen.getByText(firstContentType)).toBeInTheDocument();
     expect(screen.getByText(lastContentType)).toBeInTheDocument();
   });
+
   it('Displays only the first organization', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
     const firstContentType = contentByUUID[0]

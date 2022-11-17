@@ -11,7 +11,7 @@ import {
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import SubscriptionPlanRoutes from './SubscriptionPlanRoutes';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import {
   MANAGE_LEARNERS_TAB,
   MANAGE_REQUESTS_TAB,

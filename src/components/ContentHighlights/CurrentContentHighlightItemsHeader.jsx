@@ -1,12 +1,13 @@
 import React from 'react';
-import { Button, ActionRow } from '@edx/paragon';
+import { ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
+import DeleteHighlightSet from './DeleteHighlightSet';
 
 const CurrentContentHighlightItemsHeader = () => {
-  const { highlightUUID } = useParams();
+  const { highlightSetUUID } = useParams();
 
-  const highlightTitle = highlightUUID;
+  const highlightTitle = highlightSetUUID;
 
   const titleName = `${highlightTitle} - Highlights`;
 
@@ -18,7 +19,7 @@ const CurrentContentHighlightItemsHeader = () => {
           {highlightTitle}
         </h2>
         <ActionRow.Spacer />
-        <Button variant="outline-primary">Delete Highlight</Button>
+        <DeleteHighlightSet />
       </ActionRow>
     </>
   );
