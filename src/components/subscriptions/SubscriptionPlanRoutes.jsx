@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
 import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
 function SubscriptionPlanRoutes({ enterpriseSlug }) {

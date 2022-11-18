@@ -3,13 +3,13 @@ import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 
 function ContentHighlightSetCard({
   imageCapSrc,
   title,
-  highlightUUID,
+  highlightSetUUID,
   isPublished,
   enterpriseSlug,
   itemCount,
@@ -23,7 +23,7 @@ function ContentHighlightSetCard({
   const handleHighlightSetClick = () => {
     if (isPublished) {
       // redirect to individual highlighted courses based on uuid
-      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightUUID}`);
+      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
     }
     return setIsModalOpen(true);
   };
@@ -44,7 +44,7 @@ function ContentHighlightSetCard({
 
 ContentHighlightSetCard.propTypes = {
   title: PropTypes.string.isRequired,
-  highlightUUID: PropTypes.string.isRequired,
+  highlightSetUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   isPublished: PropTypes.bool.isRequired,
   itemCount: PropTypes.number.isRequired,

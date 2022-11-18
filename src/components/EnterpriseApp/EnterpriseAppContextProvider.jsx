@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import { EnterpriseSubsidiesContext, useEnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SubsidyRequestsContext, useSubsidyRequestsContext } from '../subsidy-requests/SubsidyRequestsContext';
-import { useEnterpriseCurationContext } from './data/hooks';
+import {
+  useEnterpriseCurationContext,
+} from './data/hooks';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
 /**

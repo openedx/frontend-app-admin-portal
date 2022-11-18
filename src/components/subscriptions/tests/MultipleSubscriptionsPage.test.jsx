@@ -10,7 +10,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { renderWithRouter } from '../../test/testUtils';
 import { SubscriptionContext } from '../SubscriptionData';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
 
 const fakeSlug = 'sluggo';

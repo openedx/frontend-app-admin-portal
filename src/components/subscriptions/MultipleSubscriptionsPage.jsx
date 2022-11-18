@@ -17,7 +17,7 @@ import {
   DEFAULT_LEAD_TEXT,
 } from './data/constants';
 import { sortSubscriptionsByStatus } from './data/utils';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { configuration } from '../../config';
 
 function MultipleSubscriptionsPage({

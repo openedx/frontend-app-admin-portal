@@ -11,7 +11,7 @@ import {
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import ManageCodesTab from './ManageCodesTab';
 import ManageRequestsTab from './ManageRequestsTab';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import {
   MANAGE_CODES_TAB,
   MANAGE_REQUESTS_TAB,

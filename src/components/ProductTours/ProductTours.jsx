@@ -37,7 +37,7 @@ function ProductTours({
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
   };
-  const checkpoints = {
+  const newFeatureTourCheckpoints = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
       history,
@@ -55,9 +55,9 @@ function ProductTours({
       history,
     }),
   };
-  const checkpointsArray = filterCheckpoints(checkpoints, enabledFeatures);
+  const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{
-    tourID: 'a',
+    tourId: 'newFeatureTour',
     advanceButtonText: 'Next',
     dismissButtonText: 'Dismiss',
     endButtonText: 'End',
@@ -65,6 +65,7 @@ function ProductTours({
     onEnd: () => disableAll(),
     checkpoints: checkpointsArray,
   }];
+
   return (
     <ProductTour
       tours={tours}

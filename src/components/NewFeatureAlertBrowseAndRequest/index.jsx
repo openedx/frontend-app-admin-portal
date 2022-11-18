@@ -10,7 +10,7 @@ import {
   BROWSE_AND_REQUEST_ALERT_TEXT,
   REDIRECT_SETTINGS_BUTTON_TEXT,
 } from '../subscriptions/data/constants';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
 
 const cookies = new Cookies();

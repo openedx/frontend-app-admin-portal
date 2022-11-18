@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { CardGrid } from '@edx/paragon';
-import { useParams } from 'react-router-dom';
 import { camelCaseObject } from '@edx/frontend-platform';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
-function ContentHighlightsCardItemsContainer() {
-  const { highlightUUID } = useParams(); // eslint-disable-line
+const ContentHighlightsCardItemsContainer = () => {
   const [highlightCourses] = useState(
     camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent,
   );
@@ -35,6 +33,6 @@ function ContentHighlightsCardItemsContainer() {
       ))}
     </CardGrid>
   );
-}
+};
 
 export default ContentHighlightsCardItemsContainer;

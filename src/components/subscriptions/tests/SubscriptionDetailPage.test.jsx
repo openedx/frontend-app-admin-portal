@@ -6,7 +6,7 @@ import { useSubscriptionFromParams } from '../data/contextHooks';
 import { SubscriptionDetailPage } from '../SubscriptionDetailPage';
 import { SubscriptionManagementContext, SUBSCRIPTION_PLAN_ZERO_STATE } from './TestUtilities';
 import { renderWithRouter } from '../../test/testUtils';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from '../data/constants';
 
 jest.mock('../SubscriptionDetails', () => ({
