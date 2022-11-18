@@ -8,7 +8,7 @@ import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ContentHighlightsDashboardBase = ({ children }) => {
+function ContentHighlightsDashboardBase({ children }) {
   const history = useHistory();
   const { location } = history;
   const { state: locationState } = location;
@@ -41,13 +41,13 @@ const ContentHighlightsDashboardBase = ({ children }) => {
       </Toast>
     </Container>
   );
-};
+}
 
 ContentHighlightsDashboardBase.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const ContentHighlightsDashboard = () => {
+function ContentHighlightsDashboard() {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const highlightSets = enterpriseCuration?.highlightSets;
   const hasContentHighlights = highlightSets?.length > 0;
@@ -65,6 +65,6 @@ const ContentHighlightsDashboard = () => {
       <CurrentContentHighlights />
     </ContentHighlightsDashboardBase>
   );
-};
+}
 
 export default ContentHighlightsDashboard;

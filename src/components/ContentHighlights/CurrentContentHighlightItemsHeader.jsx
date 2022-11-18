@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import DeleteHighlightSet from './DeleteHighlightSet';
 
-const CurrentContentHighlightItemsHeader = () => {
+function CurrentContentHighlightItemsHeader() {
   const { highlightSetUUID } = useParams();
 
   const highlightTitle = highlightSetUUID;
@@ -23,6 +23,6 @@ const CurrentContentHighlightItemsHeader = () => {
       </ActionRow>
     </>
   );
-};
+}
 
 export default CurrentContentHighlightItemsHeader;

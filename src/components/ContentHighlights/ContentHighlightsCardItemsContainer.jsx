@@ -4,7 +4,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
-const ContentHighlightsCardItemsContainer = () => {
+function ContentHighlightsCardItemsContainer() {
   const [highlightCourses] = useState(
     camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent,
   );
@@ -33,6 +33,6 @@ const ContentHighlightsCardItemsContainer = () => {
       ))}
     </CardGrid>
   );
-};
+}
 
 export default ContentHighlightsCardItemsContainer;

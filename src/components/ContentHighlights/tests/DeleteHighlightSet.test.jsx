@@ -38,22 +38,23 @@ const initialEnterpriseAppContextValue = {
 const initialRouterEntry = `/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`;
 
 /* eslint-disable react/prop-types */
-const DeleteHighlightSetWrapper = ({
+function DeleteHighlightSetWrapper({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
-}) => (
-/* eslint-enable react/prop-types */
-  <IntlProvider locale="en">
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <Route
-          path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
-          render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
-        />
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  </IntlProvider>
-);
+}) {
+  return (
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <Route
+            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
+            render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
+          />
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
+  );
+}
 
 describe('<DeleteHighlightSet />', () => {
   const getDeleteHighlightBtn = () => {
