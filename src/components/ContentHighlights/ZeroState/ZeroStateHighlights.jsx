@@ -11,7 +11,7 @@ import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-const ZeroStateHighlights = ({ cardClassName }) => {
+function ZeroStateHighlights({ cardClassName }) {
   const {
     isModalOpen, setIsModalOpen,
   } = useContext(ContentHighlightsContext);
@@ -34,7 +34,7 @@ const ZeroStateHighlights = ({ cardClassName }) => {
       <ContentHighlightStepper isOpen={isModalOpen} />
     </Row>
   );
-};
+}
 ZeroStateHighlights.propTypes = {
   cardClassName: PropTypes.string,
 };

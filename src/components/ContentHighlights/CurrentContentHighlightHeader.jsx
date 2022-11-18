@@ -6,7 +6,7 @@ import { Add } from '@edx/paragon/icons';
 import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 
-const CurrentContentHighlightHeader = () => {
+function CurrentContentHighlightHeader() {
   const {
     isModalOpen, setIsModalOpen,
   } = useContext(ContentHighlightsContext);
@@ -35,6 +35,6 @@ const CurrentContentHighlightHeader = () => {
       <ContentHighlightStepper isOpen={isModalOpen} />
     </>
   );
-};
+}
 
 export default CurrentContentHighlightHeader;

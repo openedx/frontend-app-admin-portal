@@ -39,12 +39,12 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 /** @type {React.Context<TEnterpriseAppContext>} */
 export const EnterpriseAppContext = createContext();
 
-const EnterpriseAppContextProvider = ({
+function EnterpriseAppContextProvider({
   enterpriseId,
   enterpriseName,
   enablePortalLearnerCreditManagementScreen,
   children,
-}) => {
+}) {
   // subsidies for the enterprise customer
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
@@ -89,7 +89,7 @@ const EnterpriseAppContextProvider = ({
       </EnterpriseSubsidiesContext.Provider>
     </EnterpriseAppContext.Provider>
   );
-};
+}
 
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

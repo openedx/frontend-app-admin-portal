@@ -1,6 +1,6 @@
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -28,16 +28,16 @@ const initialEnterpriseAppContextValue = {
 };
 
 /* eslint-disable react/prop-types */
-const ContentHighlightsDashboardWrapper = ({
+function ContentHighlightsDashboardWrapper({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
-}) => {
+}) {
 /* eslint-enable react/prop-types */
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
+  const defaultValue = useMemo(() => ({
     setIsModalOpen,
     isModalOpen,
-  };
+  }), [isModalOpen, setIsModalOpen]);
   return (
     <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
       <ContentHighlightsContext.Provider value={defaultValue}>
@@ -47,7 +47,7 @@ const ContentHighlightsDashboardWrapper = ({
       </ContentHighlightsContext.Provider>
     </EnterpriseAppContext.Provider>
   );
-};
+}
 
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {

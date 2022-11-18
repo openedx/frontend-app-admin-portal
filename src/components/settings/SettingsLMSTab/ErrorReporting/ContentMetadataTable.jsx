@@ -23,9 +23,9 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      // eslint-disable-next-line function-paren-newline
       const response = await LmsApiService.fetchContentMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
-      );
+        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters);
       return response;
     };
 

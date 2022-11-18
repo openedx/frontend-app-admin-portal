@@ -5,7 +5,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 
-const EnterpriseAppContent = ({
+function EnterpriseAppContent({
   baseUrl,
   email,
   enterpriseId,
@@ -14,7 +14,7 @@ const EnterpriseAppContent = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
-}) => {
+}) {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enterpriseAppContext = useContext(EnterpriseAppContext);
   const { enterpriseCuration: { enterpriseCuration } } = enterpriseAppContext;
@@ -36,7 +36,7 @@ const EnterpriseAppContent = ({
       enableContentHighlightsPage={isContentHighlightsEnabled}
     />
   );
-};
+}
 
 EnterpriseAppContent.propTypes = {
   baseUrl: PropTypes.string.isRequired,

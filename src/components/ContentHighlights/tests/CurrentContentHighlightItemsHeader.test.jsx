@@ -27,11 +27,13 @@ const initialState = {
   },
 };
 
-const ContentHighlightsCardItemsHeaderWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <CurrentContentHighlightItemsHeader {...props} />
-  </Provider>
-);
+function ContentHighlightsCardItemsHeaderWrapper(props) {
+  return (
+    <Provider store={mockStore(initialState)}>
+      <CurrentContentHighlightItemsHeader {...props} />
+    </Provider>
+  );
+}
 
 describe('<CurrentContentHighlightItemsHeader>', () => {
   it('Displays all content data titles', () => {

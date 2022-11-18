@@ -5,7 +5,7 @@ import { useHighlightSetsForCuration } from './data/hooks';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import HighlightSetSection from './HighlightSetSection';
 
-const ContentHighlightCardContainer = () => {
+function ContentHighlightCardContainer() {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const highlightSets = useHighlightSetsForCuration(enterpriseCuration);
 
@@ -21,6 +21,6 @@ const ContentHighlightCardContainer = () => {
       />
     </Stack>
   );
-};
+}
 
 export default ContentHighlightCardContainer;

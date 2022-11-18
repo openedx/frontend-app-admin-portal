@@ -1,5 +1,6 @@
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -36,16 +37,16 @@ const initialEnterpriseAppContextValue = {
 };
 
 /* eslint-disable react/prop-types */
-const ContentHighlightSetCardWrapper = ({
+function ContentHighlightSetCardWrapper({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
-}) => {
+}) {
 /* eslint-enable react/prop-types */
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
+  const defaultValue = useMemo(() => ({
     setIsModalOpen,
     isModalOpen,
-  };
+  }), [isModalOpen, setIsModalOpen]);
   return (
     <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
       <ContentHighlightsContext.Provider value={defaultValue}>
@@ -56,7 +57,7 @@ const ContentHighlightSetCardWrapper = ({
       </ContentHighlightsContext.Provider>
     </EnterpriseAppContext.Provider>
   );
-};
+}
 
 describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {

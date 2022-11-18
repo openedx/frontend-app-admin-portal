@@ -29,19 +29,17 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     }
   }, [enterpriseId, curationTitleForCreation]);
 
-  const getEnterpriseCuration = useCallback(
-    async () => {
-      try {
-        const response = await EnterpriseCatalogApiService.getEnterpriseCurationConfig(enterpriseId);
-        const formattedResponse = camelCaseObject(response.data);
-        const result = formattedResponse.results[0];
-        return result;
-      } catch (error) {
-        logError(error);
-        throw error;
-      }
-    }, [enterpriseId],
-  );
+  const getEnterpriseCuration = useCallback(async () => {
+    try {
+      const response = await EnterpriseCatalogApiService.getEnterpriseCurationConfig(enterpriseId);
+      const formattedResponse = camelCaseObject(response.data);
+      const result = formattedResponse.results[0];
+      return result;
+    } catch (error) {
+      logError(error);
+      throw error;
+    }
+  }, [enterpriseId]);
 
   useEffect(() => {
     if (!enterpriseId) {

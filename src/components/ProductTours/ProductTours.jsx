@@ -24,10 +24,10 @@ import {
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
  */
-const ProductTours = ({
+function ProductTours({
   enterpriseSlug,
   enableLearnerPortal,
-}) => {
+}) {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
@@ -70,7 +70,7 @@ const ProductTours = ({
       tours={tours}
     />
   );
-};
+}
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

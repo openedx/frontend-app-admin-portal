@@ -6,11 +6,13 @@ import {
 import ContentHighlightCardContainer from './ContentHighlightCardContainer';
 import CurrentContentHighlightHeader from './CurrentContentHighlightHeader';
 
-const CurrentContentHighlights = () => (
-  <Stack gap={3}>
-    <CurrentContentHighlightHeader />
-    <ContentHighlightCardContainer />
-  </Stack>
-);
+function CurrentContentHighlights() {
+  return (
+    <Stack gap={3}>
+      <CurrentContentHighlightHeader />
+      <ContentHighlightCardContainer />
+    </Stack>
+  );
+}
 
 export default CurrentContentHighlights;

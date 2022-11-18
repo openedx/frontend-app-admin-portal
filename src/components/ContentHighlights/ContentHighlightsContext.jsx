@@ -7,7 +7,7 @@ import {
 
 export const ContentHighlightsContext = createContext({});
 
-const ContentHighlightsContextProvider = ({ children }) => {
+function ContentHighlightsContextProvider({ children }) {
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
   const value = useMemo(() => ({
     setIsModalOpen,
@@ -15,7 +15,7 @@ const ContentHighlightsContextProvider = ({ children }) => {
   }), [setIsModalOpen, isModalOpen]);
 
   return <ContentHighlightsContext.Provider value={value}>{children}</ContentHighlightsContext.Provider>;
-};
+}
 
 ContentHighlightsContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

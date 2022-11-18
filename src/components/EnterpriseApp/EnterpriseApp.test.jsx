@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { useMemo } from 'react';
 
 import EnterpriseApp from './index';
 import { features } from '../../config';
@@ -13,25 +14,30 @@ import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 
 features.SETTINGS_PAGE = true;
 
-const EnterpriseAppContextProvider = ({ children }) => (
-  <EnterpriseAppContext.Provider
-    value={{
-      enterpriseCuration: {
-        enterpriseCuration: null,
-        isLoading: false,
-        fetchError: null,
-      },
-    }}
-  >
-    <EnterpriseSubsidiesContext.Provider
-      value={{
-        canManageLearnerCredit: true,
-      }}
+// eslint-disable-next-line react/function-component-definition
+const EnterpriseAppContextProvider = ({ children }) => {
+  const contextProvider = useMemo(() => ({
+    enterpriseCuration: {
+      enterpriseCuration: null,
+      isLoading: false,
+      fetchError: null,
+    },
+  }), []);
+  const subsidiesContextProvider = useMemo(() => ({
+    canManageLearnerCredit: true,
+  }), []);
+  return (
+    <EnterpriseAppContext.Provider
+      value={contextProvider}
     >
-      {children}
-    </EnterpriseSubsidiesContext.Provider>
-  </EnterpriseAppContext.Provider>
-);
+      <EnterpriseSubsidiesContext.Provider
+        value={subsidiesContextProvider}
+      >
+        {children}
+      </EnterpriseSubsidiesContext.Provider>
+    </EnterpriseAppContext.Provider>
+  );
+};
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

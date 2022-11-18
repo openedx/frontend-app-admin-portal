@@ -6,18 +6,20 @@ import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ContentHighlightsDashboardBase = ({ children }) => (
-  <Container fluid className="my-5">
-    <ContentHighlightHelmet title="Highlights" />
-    {children}
-  </Container>
-);
+function ContentHighlightsDashboardBase({ children }) {
+  return (
+    <Container fluid className="my-5">
+      <ContentHighlightHelmet title="Highlights" />
+      {children}
+    </Container>
+  );
+}
 
 ContentHighlightsDashboardBase.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const ContentHighlightsDashboard = () => {
+function ContentHighlightsDashboard() {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const highlightSets = enterpriseCuration?.highlightSets;
   const hasContentHighlights = highlightSets?.length > 0;
@@ -35,6 +37,6 @@ const ContentHighlightsDashboard = () => {
       <CurrentContentHighlights />
     </ContentHighlightsDashboardBase>
   );
-};
+}
 
 export default ContentHighlightsDashboard;

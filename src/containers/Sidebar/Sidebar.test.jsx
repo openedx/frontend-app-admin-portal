@@ -69,27 +69,29 @@ const initialEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
-const SidebarWrapper = ({
+function SidebarWrapper({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
   enterpriseSubsidiesContextValue = initialEnterpriseSubsidiesContextValue,
   ...props
-}) => (
-  <MemoryRouter>
-    <Provider store={props.store}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-            <Sidebar
-              baseUrl="/test-enterprise-slug"
-              {...props}
-            />
-          </SubsidyRequestsContext.Provider>
-        </EnterpriseSubsidiesContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  </MemoryRouter>
-);
+}) {
+  return (
+    <MemoryRouter>
+      <Provider store={props.store}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+              <Sidebar
+                baseUrl="/test-enterprise-slug"
+                {...props}
+              />
+            </SubsidyRequestsContext.Provider>
+          </EnterpriseSubsidiesContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </MemoryRouter>
+  );
+}
 
 SidebarWrapper.defaultProps = {
   store: mockStore({

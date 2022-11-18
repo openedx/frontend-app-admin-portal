@@ -1,5 +1,6 @@
+/* eslint-disable react/function-component-definition */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -19,25 +20,29 @@ import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
-const EnterpriseAppContextProvider = ({ children }) => (
-  <EnterpriseAppContext.Provider
-    value={{
-      enterpriseCuration: {
-        enterpriseCuration: null,
-        isLoading: false,
-        fetchError: null,
-      },
-    }}
-  >
-    <EnterpriseSubsidiesContext.Provider
-      value={{
-        canManageLearnerCredit: true,
-      }}
+const EnterpriseAppContextProvider = ({ children }) => {
+  const contextProvider = useMemo(() => ({
+    enterpriseCuration: {
+      enterpriseCuration: null,
+      isLoading: false,
+      fetchError: null,
+    },
+  }), []);
+  const subsidiesContextProvider = useMemo(() => ({
+    canManageLearnerCredit: true,
+  }), []);
+  return (
+    <EnterpriseAppContext.Provider
+      value={contextProvider}
     >
-      {children}
-    </EnterpriseSubsidiesContext.Provider>
-  </EnterpriseAppContext.Provider>
-);
+      <EnterpriseSubsidiesContext.Provider
+        value={subsidiesContextProvider}
+      >
+        {children}
+      </EnterpriseSubsidiesContext.Provider>
+    </EnterpriseAppContext.Provider>
+  );
+};
 
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,

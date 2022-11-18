@@ -10,7 +10,7 @@ export const initialStepperModalState = {
   highlight: null,
 };
 
-export const stepperModalReducer = (state = initialStepperModalState, action) => {
+export const stepperModalReducer = (state = initialStepperModalState, action = {}) => {
   switch (action.type) {
     case SET_HIGHLIGHT_STEPPER_MODAL:
       return { ...state, isOpen: action.payload.data };

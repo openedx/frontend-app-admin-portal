@@ -4,10 +4,10 @@ import { CardGrid } from '@edx/paragon';
 
 import ContentHighlightSetCard from './ContentHighlightSetCard';
 
-const HighlightSetSection = ({
+function HighlightSetSection({
   title: sectionTitle,
   highlightSets,
-}) => {
+}) {
   if (highlightSets.length === 0) {
     return null;
   }
@@ -40,7 +40,7 @@ const HighlightSetSection = ({
       </CardGrid>
     </div>
   );
-};
+}
 
 HighlightSetSection.propTypes = {
   title: PropTypes.string.isRequired,

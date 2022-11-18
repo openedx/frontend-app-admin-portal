@@ -6,14 +6,14 @@ import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 
-const ContentHighlightSetCard = ({
+function ContentHighlightSetCard({
   imageCapSrc,
   title,
   highlightUUID,
   isPublished,
   enterpriseSlug,
   itemCount,
-}) => {
+}) {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
   const {
@@ -40,7 +40,7 @@ const ContentHighlightSetCard = ({
       </Card.Section>
     </Card>
   );
-};
+}
 
 ContentHighlightSetCard.propTypes = {
   title: PropTypes.string.isRequired,

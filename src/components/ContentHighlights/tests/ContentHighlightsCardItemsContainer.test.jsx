@@ -28,11 +28,13 @@ const initialState = {
   },
 };
 
-const ContentHighlightsCardItemsContainerWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <ContentHighlightsCardItemsContainer {...props} />
-  </Provider>
-);
+function ContentHighlightsCardItemsContainerWrapper(props) {
+  return (
+    <Provider store={mockStore(initialState)}>
+      <ContentHighlightsCardItemsContainer {...props} />
+    </Provider>
+  );
+}
 
 describe('<ContentHighlightsCardItemsContainer>', () => {
   it('Displays all content data titles', () => {

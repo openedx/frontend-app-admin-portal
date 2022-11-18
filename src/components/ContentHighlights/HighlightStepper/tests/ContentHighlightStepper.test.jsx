@@ -1,25 +1,22 @@
 import { screen, render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Button } from '@edx/paragon';
-import React from 'react';
+import React, { useMemo } from 'react';
 import ContentHighlightStepper from '../ContentHighlightStepper';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { useStepperModalState } from '../../data/hooks';
 import { STEPPER_STEP_TEXT } from '../../data/constants';
 
-const ContentHighlightStepperWrapper = () => {
+function ContentHighlightStepperWrapper() {
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-  };
+  const defaultValue = useMemo(() => ({ setIsModalOpen, isModalOpen }), [isModalOpen, setIsModalOpen]);
   return (
     <ContentHighlightsContext.Provider value={defaultValue}>
       <Button onClick={() => setIsModalOpen(true)}>Click Me</Button>
       <ContentHighlightStepper isOpen={isModalOpen} />
     </ContentHighlightsContext.Provider>
   );
-};
+}
 
 describe('<ContentHighlightStepper>', () => {
   it('Displays the stepper', () => {

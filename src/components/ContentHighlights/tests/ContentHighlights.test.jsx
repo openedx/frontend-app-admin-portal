@@ -15,11 +15,13 @@ const initialState = {
     },
 };
 
-const ContentHighlightsWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <ContentHighlights {...props} />
-  </Provider>
-);
+function ContentHighlightsWrapper(props) {
+  return (
+    <Provider store={mockStore(initialState)}>
+      <ContentHighlights {...props} />
+    </Provider>
+  );
+}
 
 describe('<ContentHighlightRoutes>', () => {
   it('Displays the Hero', () => {
