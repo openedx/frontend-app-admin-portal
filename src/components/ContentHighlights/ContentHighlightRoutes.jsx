@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import ContentHighlightSet from './ContentHighlightSet';
 import ContentHighlightsDashboard from './ContentHighlightsDashboard';
 
@@ -16,7 +16,7 @@ const ContentHighlightRoutes = ({ enterpriseSlug }) => {
         exact
       />
       <Route
-        path={`${baseContentHighlightPath}/:highlightUUID/`}
+        path={`${baseContentHighlightPath}/:highlightSetUUID/`}
         component={ContentHighlightSet}
         exact
       />

@@ -1,5 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
+
 import useEnterpriseCuration from './useEnterpriseCuration';
+import enterpriseCurationReducer, {
+  initialReducerState,
+  enterpriseCurationActions,
+} from '../enterpriseCurationReducer';
 
 /**
  * TODO
@@ -10,6 +15,8 @@ function useEnterpriseCurationContext({
   enterpriseId,
   curationTitleForCreation,
 }) {
+  const [enterpriseCurationState, dispatch] = useReducer(enterpriseCurationReducer, initialReducerState);
+
   const {
     isLoading,
     enterpriseCuration,
@@ -19,11 +26,22 @@ function useEnterpriseCurationContext({
     curationTitleForCreation,
   });
 
+  useEffect(() => {
+    dispatch(enterpriseCurationActions.setIsLoading(isLoading));
+  }, [isLoading]);
+
+  useEffect(() => {
+    dispatch(enterpriseCurationActions.setEnterpriseCuration(enterpriseCuration));
+  }, [enterpriseCuration]);
+
+  useEffect(() => {
+    dispatch(enterpriseCurationActions.setFetchError(fetchError));
+  }, [fetchError]);
+
   const contextValue = useMemo(() => ({
-    isLoading,
-    enterpriseCuration,
-    fetchError,
-  }), [isLoading, enterpriseCuration, fetchError]);
+    ...enterpriseCurationState,
+    dispatch,
+  }), [enterpriseCurationState]);
 
   return contextValue;
 }

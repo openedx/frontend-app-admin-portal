@@ -20,7 +20,7 @@ import {
   HIGHLIGHTS_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { SETTINGS_TABS_VALUES } from '../../settings/data/constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';

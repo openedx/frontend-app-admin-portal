@@ -58,7 +58,7 @@ const ContentHighlightStepper = ({ isModalOpen }) => {
     <>
       <Stepper activeKey={currentStep}>
         <FullscreenModal
-          title="New Highlight"
+          title="New highlight"
           className="bg-light-200"
           isOpen={isModalOpen}
           onClose={() => {
