@@ -14,17 +14,18 @@ const mockStore = configureMockStore([thunk]);
 
 const mockData = {
   title: 'Test Title',
-  highlightUUID: 'test-uuid',
+  highlightSetUUID: 'test-uuid',
   enterpriseSlug: 'test-enterprise-slug',
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
+  isPublished: true,
 };
 
 const initialState = {
   portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
+    enterpriseSlug: 'test-enterprise',
   },
-  highlightUUID: 'test-uuid',
+  highlightSetUUID: 'test-uuid',
 };
 
 const initialEnterpriseAppContextValue = {
@@ -64,7 +65,11 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
   it('Displays the stepper modal on click of the draft status', () => {
-    renderWithRouter(<ContentHighlightSetCardWrapper {...mockData} />);
+    const props = {
+      ...mockData,
+      isPublished: false,
+    };
+    renderWithRouter(<ContentHighlightSetCardWrapper {...props} />);
     fireEvent.click(screen.getByText('Test Title'));
     expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
   });

@@ -31,7 +31,7 @@ const HighlightSetSection = ({
           <ContentHighlightSetCard
             key={uuid}
             title={title}
-            highlightUUID={uuid}
+            highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
             imageCapSrc="https://source.unsplash.com/360x200/?cat,dog"

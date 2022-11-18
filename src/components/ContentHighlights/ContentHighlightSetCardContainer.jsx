@@ -16,11 +16,12 @@ const ContentHighlightSetCardContainer = () => (
       <ContentHighlightSetCard
         key={uuid}
         title={title}
-        highlightUUID={uuid}
+        highlightSetUUID={uuid}
         isPublished={isPublished}
       />
     ))}
     {/* eslint-enable camelcase */}
   </CardGrid>
 );
+
 export default ContentHighlightSetCardContainer;

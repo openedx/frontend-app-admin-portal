@@ -10,7 +10,7 @@ import {
   TEST_ENTERPRISE_CUSTOMER_SLUG, createMockStore,
 } from './TestUtilities';
 import SubscriptionManagementPage from '../SubscriptionManagementPage';
-import { ROUTE_NAMES } from '../../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { renderWithRouter } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
