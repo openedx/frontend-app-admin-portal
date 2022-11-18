@@ -4,6 +4,7 @@ import {
   screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import * as hooks from './data/hooks';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import * as subsidyRequestsContext from '../subsidy-requests/SubsidyRequestsContext';
 import * as enterpriseSubsidiesContext from '../EnterpriseSubsidiesContext';
@@ -11,22 +12,38 @@ import * as enterpriseSubsidiesContext from '../EnterpriseSubsidiesContext';
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_NAME = 'test-enterprise-name';
 
+jest.mock('./data/hooks');
+
 describe('<EnterpriseAppContextProvider />', () => {
   it.each([{
+    isLoadingEnterpriseSubsidies: true,
+    isLoadingSubsidyRequests: false,
+    isLoadingEnterpriseCuration: false,
+  },
+  {
     isLoadingEnterpriseSubsidies: false,
     isLoadingSubsidyRequests: true,
+    isLoadingEnterpriseCuration: false,
+  },
+  {
+    isLoadingEnterpriseSubsidies: false,
+    isLoadingSubsidyRequests: false,
+    isLoadingEnterpriseCuration: true,
   },
   {
     isLoadingEnterpriseSubsidies: true,
-    isLoadingSubsidyRequests: false,
+    isLoadingSubsidyRequests: true,
+    isLoadingEnterpriseCuration: false,
   },
   {
-    isLoadingEnterpriseSubsidies: false,
-    isLoadingSubsidyRequests: false,
+    isLoadingEnterpriseSubsidies: true,
+    isLoadingSubsidyRequests: true,
+    isLoadingEnterpriseCuration: true,
   },
-  ])('renders <EnterpriseAppSkeleton /> if loading', async ({
+  ])('renders <EnterpriseAppSkeleton /> when: %s', async ({
     isLoadingEnterpriseSubsidies,
     isLoadingSubsidyRequests,
+    isLoadingEnterpriseCuration,
   }) => {
     const mockUseEnterpriseSubsidiesContext = jest.spyOn(enterpriseSubsidiesContext, 'useEnterpriseSubsidiesContext').mockReturnValue({
       isLoading: isLoadingEnterpriseSubsidies,
@@ -34,6 +51,11 @@ describe('<EnterpriseAppContextProvider />', () => {
     const mockUseSubsidyRequestsContext = jest.spyOn(subsidyRequestsContext, 'useSubsidyRequestsContext').mockReturnValue(
       {
         isLoading: isLoadingSubsidyRequests,
+      },
+    );
+    const mockUseEnterpriseCurationContext = jest.spyOn(hooks, 'useEnterpriseCurationContext').mockReturnValue(
+      {
+        isLoading: isLoadingEnterpriseCuration,
       },
     );
 
@@ -50,8 +72,9 @@ describe('<EnterpriseAppContextProvider />', () => {
     await waitFor(() => {
       expect(mockUseSubsidyRequestsContext).toHaveBeenCalled();
       expect(mockUseEnterpriseSubsidiesContext).toHaveBeenCalled();
+      expect(mockUseEnterpriseCurationContext).toHaveBeenCalled();
 
-      if (isLoadingEnterpriseSubsidies || isLoadingSubsidyRequests) {
+      if (isLoadingEnterpriseSubsidies || isLoadingSubsidyRequests || isLoadingEnterpriseCuration) {
         expect(screen.getByText('Loading...'));
       } else {
         expect(screen.getByText('children'));
