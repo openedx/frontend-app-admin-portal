@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -245,7 +246,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
-    const configureContextValue = {
+    const configureContextValue = useMemo(() => ({
       setCurrentError: jest.fn(),
       currentError: null,
       dispatchSsoState: jest.fn(),
@@ -267,7 +268,7 @@ describe('SAML Config Tab', () => {
       },
       setProviderConfig: jest.fn(),
       setRefreshBool: jest.fn(),
-    };
+    }), []);
 
     render(
       <SSOConfigContext.Provider value={configureContextValue}>

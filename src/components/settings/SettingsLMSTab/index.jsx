@@ -28,13 +28,13 @@ const SUBMIT_TOAST_MESSAGE = 'Configuration was submitted successfully.';
 const TOGGLE_TOAST_MESSAGE = 'Configuration was toggled successfully.';
 const DELETE_TOAST_MESSAGE = 'Configuration was successfully removed.';
 
-export default function SettingsLMSTab({
+const SettingsLMSTab = ({
   enterpriseId,
   enterpriseSlug,
   enableSamlConfigurationScreen,
   identityProvider,
   hasSSOConfig,
-}) {
+}) => {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
 
@@ -231,7 +231,7 @@ export default function SettingsLMSTab({
       )}
     </div>
   );
-}
+};
 
 SettingsLMSTab.defaultProps = {
   identityProvider: null,
@@ -244,3 +244,5 @@ SettingsLMSTab.propTypes = {
   identityProvider: PropTypes.string,
   hasSSOConfig: PropTypes.bool.isRequired,
 };
+
+export default SettingsLMSTab;

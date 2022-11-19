@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -41,10 +42,10 @@ const ContentHighlightsDashboardWrapper = ({
 }) => {
 /* eslint-enable react/prop-types */
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
+  const defaultValue = useMemo(() => ({
     setIsModalOpen,
     isModalOpen,
-  };
+  }), [setIsModalOpen, isModalOpen]);
   return (
     <IntlProvider locale="en">
       <Provider store={mockStore(initialState)}>

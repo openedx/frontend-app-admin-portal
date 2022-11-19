@@ -167,40 +167,36 @@ const ExistingCard = ({
                 alt="Actions dropdown"
               />
               <Dropdown.Menu>
-                {isInactive && (
-                  <>
-                    {isEdxStaff && features.FEATURE_INTEGRATION_REPORTING && (
-                    <div className="d-flex">
-                      <Dropdown.Item
-                        onClick={() => openModalButton(config)}
-                        data-testid="dropdown-sync-history-item"
-                      >
-                        View sync history
-                      </Dropdown.Item>
-                    </div>
-                    )}
-                  </>
+                {(isInactive && isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) && (
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      onClick={() => openModalButton(config)}
+                      data-testid="dropdown-sync-history-item"
+                    >
+                      View sync history
+                    </Dropdown.Item>
+                  </div>
                 )}
                 {isActive && (
-                <div className="d-flex">
-                  <Dropdown.Item
-                    onClick={() => toggleConfig(config.id, config.channelCode, false)}
-                    data-testid="dropdown-disable-item"
-                  >
-                    Disable
-                  </Dropdown.Item>
-                </div>
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      onClick={() => toggleConfig(config.id, config.channelCode, false)}
+                      data-testid="dropdown-disable-item"
+                    >
+                      Disable
+                    </Dropdown.Item>
+                  </div>
                 )}
                 {(isInactive || isIncomplete) && (
-                <div className="d-flex">
-                  <Dropdown.Item
-                    // Ask before deleting an inactive project
-                    onClick={() => handleClickDelete(isInactive)}
-                    data-testid="dropdown-delete-item"
-                  >
-                    Delete
-                  </Dropdown.Item>
-                </div>
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      // Ask before deleting an inactive project
+                      onClick={() => handleClickDelete(isInactive)}
+                      data-testid="dropdown-delete-item"
+                    >
+                      Delete
+                    </Dropdown.Item>
+                  </div>
                 )}
                 {!isIncomplete && (
                   <div className="d-flex">
@@ -227,7 +223,7 @@ const ExistingCard = ({
                 {/* Only incomplete badges will show hover */}
                 <OverlayTrigger
                   trigger={['hover', 'focus']}
-                  key={`${config.channelCode + config.id }hover`}
+                  key={`${config.channelCode + config.id}hover`}
                   placement="top"
                   overlay={(
                     <Popover className="popover-positioned-top" id="inc-popover">

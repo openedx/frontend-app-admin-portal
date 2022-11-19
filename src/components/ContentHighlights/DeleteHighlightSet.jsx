@@ -18,7 +18,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
-function DeleteHighlightSet({ enterpriseSlug }) {
+const DeleteHighlightSet = ({ enterpriseSlug }) => {
   const { highlightSetUUID } = useParams();
   const [isOpen, open, close] = useToggle(false);
   const [deletionState, setDeletionState] = useState('default');
@@ -98,7 +98,7 @@ function DeleteHighlightSet({ enterpriseSlug }) {
       </AlertModal>
     </>
   );
-}
+};
 
 DeleteHighlightSet.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

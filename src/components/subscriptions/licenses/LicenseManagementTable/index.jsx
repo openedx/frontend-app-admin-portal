@@ -219,12 +219,14 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         EmptyTableComponent={
+          /* eslint-disable react/no-unstable-nested-components */
           () => {
             if (loadingUsers) {
               return null;
             }
             return <DataTable.EmptyTable content="No results found" />;
           }
+          /* eslint-enable react/no-unstable-nested-components */
         }
         fetchData={fetchData}
         data={rows}
@@ -232,8 +234,11 @@ const LicenseManagementTable = () => {
           {
             Header: 'Email address',
             accessor: 'emailLabel',
-            // eslint-disable-next-line react/prop-types
+            /* eslint-disable react/prop-types */
+            /* eslint-disable react/no-unstable-nested-components */
             Cell: ({ row }) => <span data-hj-suppress>{row.values.emailLabel}</span>,
+            /* eslint-enable react/prop-types */
+            /* eslint-enable react/no-unstable-nested-components */
           },
           {
             Header: 'Status',
@@ -267,6 +272,7 @@ const LicenseManagementTable = () => {
             id: 'action',
             Header: '',
             /* eslint-disable react/prop-types */
+            /* eslint-disable react/no-unstable-nested-components */
             Cell: ({ row }) => (
               <LicenseManagementTableActionColumn
                 user={row.original}
@@ -275,8 +281,9 @@ const LicenseManagementTable = () => {
                 onRemindSuccess={onRemindSuccess}
                 onRevokeSuccess={onRevokeSuccess}
               />
-              /* eslint-enable */
             ),
+            /* eslint-enable react/prop-types */
+            /* eslint-enable react/no-unstable-nested-components */
           },
         ]}
         bulkActions={[

@@ -28,7 +28,6 @@ class CouponDetails extends React.Component {
   constructor(props) {
     super(props);
 
-    this.bulkActionSelectRef = React.createRef();
     this.selectAllCheckBoxRef = React.createRef();
 
     this.hasAllTableRowsSelected = false;
@@ -79,6 +78,164 @@ class CouponDetails extends React.Component {
     if (!isExpanded && isExpanded !== prevProps.isExpanded) {
       // On collapse, reset to default states
       this.reset();
+    }
+  }
+
+  handleToggleSelect(newValue) {
+    const { selectedToggle } = this.state;
+
+    const value = newValue || selectedToggle;
+
+    this.resetCodeActionStatus();
+    updateUrl({ page: undefined });
+    this.setState({
+      tableColumns: this.getNewColumns(value),
+      selectedToggle: value,
+      selectedCodes: [],
+      hasAllCodesSelected: false,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
+  }
+
+  handleCodeActionSuccess(action, response) {
+    let stateKey;
+    let doesCodeActionHaveErrors;
+
+    switch (action) {
+      case ACTIONS.assign.value: {
+        stateKey = 'isCodeAssignmentSuccessful';
+        break;
+      }
+      case ACTIONS.revoke.value: {
+        stateKey = 'isCodeRevokeSuccessful';
+        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
+        break;
+      }
+      case ACTIONS.remind.value: {
+        stateKey = 'isCodeReminderSuccessful';
+        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
+        break;
+      }
+      default: {
+        stateKey = null;
+        doesCodeActionHaveErrors = null;
+        break;
+      }
+    }
+
+    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
+      this.updateCouponOverviewData();
+    }
+
+    this.resetCodeActionStatus();
+
+    if (stateKey) {
+      this.setState((state) => ({
+        [stateKey]: true,
+        refreshIndex: state.refreshIndex + 1, // force new table instance
+        selectedCodes: [],
+        doesCodeActionHaveErrors,
+      }), () => {
+        this.updateSelectAllCheckBox();
+      });
+    }
+  }
+
+  handleCodeSelection({ checked, code }) {
+    let { selectedCodes, hasAllCodesSelected } = this.state;
+
+    if (checked) {
+      // Add code to selected codes array
+      selectedCodes = [...selectedCodes, code];
+    } else {
+      // Remove code from selected codes array
+      selectedCodes = selectedCodes.filter(selectedCode => selectedCode !== code);
+      hasAllCodesSelected = false;
+    }
+
+    this.setState({
+      selectedCodes,
+      hasAllCodesSelected,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
+  }
+
+  handleSelectAllCodes(checked) {
+    const { couponDetailsTable: { data: tableData } } = this.props;
+    let { hasAllCodesSelected, selectedCodes } = this.state;
+
+    if (checked) {
+      selectedCodes = tableData.results;
+    } else {
+      selectedCodes = [];
+      hasAllCodesSelected = false;
+    }
+
+    this.setState({
+      selectedCodes,
+      hasAllCodesSelected,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
+  }
+
+  handleBulkAction(bulkActionToggle) {
+    const {
+      couponData: {
+        id,
+        title: couponTitle,
+        num_unassigned: unassignedCodes,
+        usage_limitation: couponType,
+      },
+    } = this.props;
+    const {
+      hasAllCodesSelected,
+      selectedCodes,
+      selectedToggle,
+    } = this.state;
+
+    if (bulkActionToggle === ACTIONS.assign.value) {
+      this.setModalState({
+        key: 'assignment',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkAssign: true,
+          data: {
+            unassignedCodes,
+            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
+            hasAllCodesSelected,
+            couponType,
+          },
+        },
+      });
+    } else if (bulkActionToggle === ACTIONS.revoke.value) {
+      this.setModalState({
+        key: 'revoke',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRevoke: true,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
+    } else if (bulkActionToggle === ACTIONS.remind.value) {
+      this.setModalState({
+        key: 'remind',
+        options: {
+          couponId: id,
+          title: couponTitle,
+          isBulkRemind: true,
+          selectedToggle,
+          data: {
+            selectedCodes,
+          },
+        },
+      });
     }
   }
 
@@ -205,23 +362,6 @@ class CouponDetails extends React.Component {
     return !this.isTableLoading() && hasStatusAlert;
   }
 
-  handleToggleSelect(newValue) {
-    const { selectedToggle } = this.state;
-
-    const value = newValue || selectedToggle;
-
-    this.resetCodeActionStatus();
-    updateUrl({ page: undefined });
-    this.setState({
-      tableColumns: this.getNewColumns(value),
-      selectedToggle: value,
-      selectedCodes: [],
-      hasAllCodesSelected: false,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
   updateSelectAllCheckBox() {
     const { selectedCodes, tableColumns } = this.state;
     const { couponDetailsTable: { data: tableData } } = this.props;
@@ -265,89 +405,6 @@ class CouponDetails extends React.Component {
     this.props.fetchCouponOrder(id);
   }
 
-  handleCodeActionSuccess(action, response) {
-    let stateKey;
-    let doesCodeActionHaveErrors;
-
-    switch (action) {
-      case ACTIONS.assign.value: {
-        stateKey = 'isCodeAssignmentSuccessful';
-        break;
-      }
-      case ACTIONS.revoke.value: {
-        stateKey = 'isCodeRevokeSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
-        break;
-      }
-      case ACTIONS.remind.value: {
-        stateKey = 'isCodeReminderSuccessful';
-        doesCodeActionHaveErrors = response && response.some && response.some(item => item.detail === 'failure');
-        break;
-      }
-      default: {
-        stateKey = null;
-        doesCodeActionHaveErrors = null;
-        break;
-      }
-    }
-
-    if (action === ACTIONS.assign.value || action === ACTIONS.revoke.value) {
-      this.updateCouponOverviewData();
-    }
-
-    this.resetCodeActionStatus();
-
-    if (stateKey) {
-      this.setState((state) => ({
-        [stateKey]: true,
-        refreshIndex: state.refreshIndex + 1, // force new table instance
-        selectedCodes: [],
-        doesCodeActionHaveErrors,
-      }), () => {
-        this.updateSelectAllCheckBox();
-      });
-    }
-  }
-
-  handleCodeSelection({ checked, code }) {
-    let { selectedCodes, hasAllCodesSelected } = this.state;
-
-    if (checked) {
-      // Add code to selected codes array
-      selectedCodes = [...selectedCodes, code];
-    } else {
-      // Remove code from selected codes array
-      selectedCodes = selectedCodes.filter(selectedCode => selectedCode !== code);
-      hasAllCodesSelected = false;
-    }
-
-    this.setState({
-      selectedCodes,
-      hasAllCodesSelected,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
-  handleSelectAllCodes(checked) {
-    const { couponDetailsTable: { data: tableData } } = this.props;
-    let { hasAllCodesSelected, selectedCodes } = this.state;
-
-    if (checked) {
-      selectedCodes = tableData.results;
-    } else {
-      selectedCodes = [];
-      hasAllCodesSelected = false;
-    }
-
-    this.setState({
-      selectedCodes,
-      hasAllCodesSelected,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
   formatCouponData(data) {
     const { couponData } = this.props;
     const { selectedCodes, selectedToggle } = this.state;
@@ -380,9 +437,9 @@ class CouponDetails extends React.Component {
           }
           onChange={(checked) => {
             this.handleCodeSelection({ checked, code });
-            if (checked) {
+            if (checked && !this.selectedTableRows[code.code]) {
               this.selectedTableRows[code.code] = true;
-            } else if (checked && this.selectedTableRows[code.code]) {
+            } else if (!checked && this.selectedTableRows[code.code]) {
               delete this.selectedTableRows[code.code];
             }
           }}
@@ -395,64 +452,6 @@ class CouponDetails extends React.Component {
   isTableLoading() {
     const { couponDetailsTable } = this.props;
     return !!(couponDetailsTable && couponDetailsTable.loading);
-  }
-
-  handleBulkAction(bulkActionToggle) {
-    const {
-      couponData: {
-        id,
-        title: couponTitle,
-        num_unassigned: unassignedCodes,
-        usage_limitation: couponType,
-      },
-    } = this.props;
-    const {
-      hasAllCodesSelected,
-      selectedCodes,
-      selectedToggle,
-    } = this.state;
-
-    if (bulkActionToggle === ACTIONS.assign.value) {
-      this.setModalState({
-        key: 'assignment',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkAssign: true,
-          data: {
-            unassignedCodes,
-            selectedCodes: hasAllCodesSelected ? [] : selectedCodes,
-            hasAllCodesSelected,
-            couponType,
-          },
-        },
-      });
-    } else if (bulkActionToggle === ACTIONS.revoke.value) {
-      this.setModalState({
-        key: 'revoke',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRevoke: true,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    } else if (bulkActionToggle === ACTIONS.remind.value) {
-      this.setModalState({
-        key: 'remind',
-        options: {
-          couponId: id,
-          title: couponTitle,
-          isBulkRemind: true,
-          selectedToggle,
-          data: {
-            selectedCodes,
-          },
-        },
-      });
-    }
   }
 
   resetModals() {
@@ -734,7 +733,10 @@ CouponDetails.propTypes = {
   // props from container
   fetchCouponOrder: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
-    data: PropTypes.shape({}),
+    data: PropTypes.shape({
+      count: PropTypes.number,
+      results: PropTypes.arrayOf(PropTypes.shape()),
+    }),
     loading: PropTypes.bool,
   }),
   couponOverviewError: PropTypes.instanceOf(Error),

@@ -127,22 +127,20 @@ class FileInput extends React.Component {
               />
             </>
           ) : (
-            <>
-              <Button
-                variant="link"
-                className="remove-file-btn p-1 ml-2"
-                onClick={() => {
-                  dispatch(clearFields(form, false, false, input.name));
-                  input.onChange(null);
-                  this.setState({ fileName: null });
-                }}
-              >
-                <>
-                  <Icon className="fa fa-times mr-1" />
-                  Remove
-                </>
-              </Button>
-            </>
+            <Button
+              variant="link"
+              className="remove-file-btn p-1 ml-2"
+              onClick={() => {
+                dispatch(clearFields(form, false, false, input.name));
+                input.onChange(null);
+                this.setState({ fileName: null });
+              }}
+            >
+              <>
+                <Icon className="fa fa-times mr-1" />
+                Remove
+              </>
+            </Button>
           )}
         </div>
       </ValidationFormGroup>

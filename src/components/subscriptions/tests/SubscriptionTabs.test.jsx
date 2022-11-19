@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -24,12 +24,16 @@ const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
 
 jest.mock(
   '../SubscriptionPlanRoutes',
-  () => () => (<div>{MANAGE_LEARNERS_MOCK_CONTENT}</div>),
+  () => function SubscriptionPlanRoutes() {
+    return <div>{MANAGE_LEARNERS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../SubscriptionSubsidyRequests',
-  () => () => (<div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>),
+  () => function SubscriptionSubsidyRequests() {
+    return <div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';
@@ -50,15 +54,21 @@ const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LE
 const SubscriptionTabsWrapper = ({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
-}) => (
-  <Provider store={store}>
-    <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
-      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
-        <SubscriptionTabs />
-      </SubsidyRequestsContext.Provider>
-    </Route>
-  </Provider>
-);
+}) => {
+  const value = useMemo(
+    () => ({ subsidyRequestConfiguration, subsidyRequestsCounts }),
+    [subsidyRequestConfiguration, subsidyRequestsCounts],
+  );
+  return (
+    <Provider store={store}>
+      <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
+        <SubsidyRequestsContext.Provider value={value}>
+          <SubscriptionTabs />
+        </SubsidyRequestsContext.Provider>
+      </Route>
+    </Provider>
+  );
+};
 
 SubscriptionTabsWrapper.defaultProps = {
   subsidyRequestConfiguration: {

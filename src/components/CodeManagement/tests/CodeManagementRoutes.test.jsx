@@ -17,17 +17,23 @@ const NOT_FOUND_MOCK_CONTENT = 'not found';
 
 jest.mock(
   '../CouponCodeTabs',
-  () => () => (<div>{COUPON_CODE_TABS_MOCK_CONTENT}</div>),
+  () => function CouponCodeTabs() {
+    return <div>{COUPON_CODE_TABS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../../NotFoundPage',
-  () => () => (<div>{NOT_FOUND_MOCK_CONTENT}</div>),
+  () => function NotFoundPage() {
+    return <div>{NOT_FOUND_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../ManageCodesTab',
-  () => () => (<div>{MANAGE_CODES_MOCK_CONTENT}</div>),
+  () => function ManageCodesTab() {
+    return <div>{MANAGE_CODES_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';

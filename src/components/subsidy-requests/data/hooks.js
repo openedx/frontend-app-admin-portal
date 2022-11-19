@@ -58,8 +58,7 @@ export const useSubsidyRequestConfiguration = ({
   }, [enterpriseId]);
 
   const loadSubsidyRequestConfiguration = useCallback(
-    async ({ clearCacheEntry = false } = { clearCacheEntry: false },
-    ) => {
+    async ({ clearCacheEntry = false } = { clearCacheEntry: false }) => {
       try {
         const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(
           { enterpriseId, clearCacheEntry },
@@ -70,7 +69,8 @@ export const useSubsidyRequestConfiguration = ({
         logError(error);
         throw error;
       }
-    }, [enterpriseId],
+    },
+    [enterpriseId],
   );
 
   useEffect(() => {

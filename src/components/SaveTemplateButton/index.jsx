@@ -32,28 +32,6 @@ class SaveTemplateButton extends React.Component {
     }
   }
 
-  setButtonStateToDefault() {
-    this.setState({ submitState: SUBMIT_STATES.DEFAULT });
-    clearTimeout(this.timer);
-  }
-
-  validateFormData(formData) {
-    const emailTemplateNameKey = 'template-name';
-    const errors = validateEmailTemplateFields(formData, emailTemplateNameKey);
-
-    /* eslint-disable no-underscore-dangle */
-    if (!formData[emailTemplateNameKey]) {
-      const message = 'No template name provided. Please enter a template name.';
-      errors[emailTemplateNameKey] = message;
-      errors._error.unshift(message);
-    }
-
-    if (Object.keys(errors) > 1 || errors._error.length > 0) {
-      throw new SubmissionError(errors);
-    }
-    /* eslint-enable no-underscore-dangle */
-  }
-
   handleSaveTemplate(formData) {
     const {
       setMode,
@@ -128,6 +106,28 @@ class SaveTemplateButton extends React.Component {
       });
   }
 
+  setButtonStateToDefault() {
+    this.setState({ submitState: SUBMIT_STATES.DEFAULT });
+    clearTimeout(this.timer);
+  }
+
+  validateFormData(formData) {
+    const emailTemplateNameKey = 'template-name';
+    const errors = validateEmailTemplateFields(formData, emailTemplateNameKey);
+
+    /* eslint-disable no-underscore-dangle */
+    if (!formData[emailTemplateNameKey]) {
+      const message = 'No template name provided. Please enter a template name.';
+      errors[emailTemplateNameKey] = message;
+      errors._error.unshift(message);
+    }
+
+    if (Object.keys(errors) > 1 || errors._error.length > 0) {
+      throw new SubmissionError(errors);
+    }
+    /* eslint-enable no-underscore-dangle */
+  }
+
   render() {
     const { submitState } = this.state;
     const { handleSubmit, disabled } = this.props;
@@ -175,7 +175,7 @@ SaveTemplateButton.propTypes = {
   saveTemplate: PropTypes.func.isRequired,
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  emailTemplates: PropTypes.objectOf(PropTypes.any),
+  emailTemplates: PropTypes.shape(),
   disabled: PropTypes.bool,
 };
 

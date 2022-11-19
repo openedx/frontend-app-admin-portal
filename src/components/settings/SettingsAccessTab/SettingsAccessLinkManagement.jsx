@@ -169,7 +169,8 @@ const SettingsAccessLinkManagement = ({
             {
               id: 'action',
               Header: '',
-              Cell: props => (
+              // eslint-disable-next-line react/no-unstable-nested-components
+              Cell: (props) => (
                 <ActionsTableCell
                   {...props}
                   enterpriseUUID={enterpriseUUID}
