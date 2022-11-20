@@ -112,19 +112,6 @@ export const useStylesForCustomBrandColors = (branding) => {
   const styles = ({
     key: 'styles',
     styles: (`
-      :root {
-        --pgn-color-primary-base: ${brandColors.primary.regular.hex()};
-      }
-      // NOTE: due to how Bootstrap generates the ".btn-*" class names (i.e., SCSS mixins),
-      // we've identified that we need to re-create these classes instead of relying on the
-      // Bootstrap mixins. As a result, the below class represents a similar change that will
-      // be made in core Paragon itself.
-
-      .btn-primary {
-        background-color: var(--pgn-color-primary-base);
-      }
-
-      // unrelated stuff
       .hero-brand {
         background-color: ${brandColors.secondary.regular.hex()} !important;
         border-color: ${brandColors.tertiary.regular.hex()} !important;
@@ -133,46 +120,45 @@ export const useStylesForCustomBrandColors = (branding) => {
       .hero-brand h1 {
         color: ${brandColors.secondary.textColor.hex()} !important;
       }
-
-      // .btn-brand {
-      //   background-color: ${brandColors.secondary.regular.hex()} !important;
-      //   border-color: ${brandColors.secondary.regular.hex()} !important;
-      //   color: ${brandColors.secondary.textColor.hex()} !important;
-      // }
-      // .btn-brand:hover {
-      //   background-color: ${brandColors.secondary.dark.hex()} !important;
-      //   border-color: ${brandColors.secondary.dark.hex()} !important;
-      // }
-      // .btn-brand:focus:before {
-      //   border-color: ${brandColors.secondary.regular.hex()} !important;
-      // }
-      // .btn-primary {
-      //   background-color: ${brandColors.primary.regular.hex()} !important;
-      //   border-color: ${brandColors.primary.regular.hex()} !important;
-      //   color: ${brandColors.primary.textColor.hex()} !important;
-      // }
-      // .btn-primary:hover {
-      //   background-color: ${brandColors.primary.dark.hex()} !important;
-      //   border-color: ${brandColors.primary.dark.hex()} !important;
-      // }
-      // .btn-brand-primary {
-      //   background-color: ${brandColors.primary.regular.hex()} !important;
-      //   border-color: ${brandColors.primary.regular.hex()} !important;
-      //   color: ${brandColors.primary.textColor.hex()} !important;
-      // }
-      // .btn-brand-primary:hover {
-      //   background-color: ${brandColors.primary.dark.hex()} !important;
-      //   border-color: ${brandColors.primary.dark.hex()} !important;
-      // }
-      // .btn-brand-primary:focus:before {
-      //   border-color: ${brandColors.primary.regular.hex()} !important;
-      // }
-      // .bg-brand-primary {
-      //   background-color: ${brandColors.primary.regular.hex()} !important;
-      // }
-      // .border-brand-primary {
-      //   border-color: ${brandColors.primary.regular.hex()} !important;
-      // }
+      .btn-brand {
+        background-color: ${brandColors.secondary.regular.hex()} !important;
+        border-color: ${brandColors.secondary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .btn-brand:hover {
+        background-color: ${brandColors.secondary.dark.hex()} !important;
+        border-color: ${brandColors.secondary.dark.hex()} !important;
+      }
+      .btn-brand:focus:before {
+        border-color: ${brandColors.secondary.regular.hex()} !important;
+      }
+      .btn-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+        border-color: ${brandColors.primary.regular.hex()} !important;
+        color: ${brandColors.primary.textColor.hex()} !important;
+      }
+      .btn-primary:hover {
+        background-color: ${brandColors.primary.dark.hex()} !important;
+        border-color: ${brandColors.primary.dark.hex()} !important;
+      }
+      .btn-brand-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+        border-color: ${brandColors.primary.regular.hex()} !important;
+        color: ${brandColors.primary.textColor.hex()} !important;
+      }
+      .btn-brand-primary:hover {
+        background-color: ${brandColors.primary.dark.hex()} !important;
+        border-color: ${brandColors.primary.dark.hex()} !important;
+      }
+      .btn-brand-primary:focus:before {
+        border-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .bg-brand-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .border-brand-primary {
+        border-color: ${brandColors.primary.regular.hex()} !important;
+      }
     `),
   });
 
