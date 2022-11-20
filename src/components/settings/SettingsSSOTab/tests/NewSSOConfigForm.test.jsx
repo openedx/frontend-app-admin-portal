@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -246,32 +245,8 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
-    const configureContextValue = useMemo(() => ({
-      setCurrentError: jest.fn(),
-      currentError: null,
-      dispatchSsoState: jest.fn(),
-      ssoState: {
-        idp: {
-          metadataURL: '',
-          entityID: '',
-          entryType: '',
-          isDirty: false,
-        },
-        serviceprovider: {
-          isSPConfigured: false,
-        },
-        currentStep: 'configure',
-        refreshBool: false,
-        providerConfig: {
-          id: 1337,
-        },
-      },
-      setProviderConfig: jest.fn(),
-      setRefreshBool: jest.fn(),
-    }), []);
-
     render(
-      <SSOConfigContext.Provider value={configureContextValue}>
+      <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
       </SSOConfigContext.Provider>,
     );
