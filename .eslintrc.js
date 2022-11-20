@@ -2,12 +2,10 @@
 const { getBaseConfig } = require('@edx/frontend-build');
 
 const config = getBaseConfig('eslint');
-
+/* Custom config manipulations */
 config.rules = {
   ...config.rules,
   'default-param-last': 'off',
 };
-
-/* Custom config manipulations */
 
 module.exports = config;
