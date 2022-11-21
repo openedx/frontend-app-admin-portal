@@ -2,6 +2,7 @@ import {
   useCallback, useEffect, useState,
 } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
+import { getConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
@@ -15,6 +16,8 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [enterpriseCuration, setEnterpriseCuration] = useState(null);
+
+  const config = getConfig();
 
   const createEnterpriseCuration = useCallback(async () => {
     try {
@@ -61,8 +64,15 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
       }
     };
 
-    getOrCreateConfiguration();
-  }, [enterpriseId, getEnterpriseCuration, createEnterpriseCuration]);
+    if (config.FEATURE_CONTENT_HIGHLIGHTS) {
+      getOrCreateConfiguration();
+    }
+  }, [
+    enterpriseId,
+    getEnterpriseCuration,
+    createEnterpriseCuration,
+    config,
+  ]);
 
   return {
     isLoading,
