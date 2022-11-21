@@ -240,10 +240,8 @@ class CodeRevokeModal extends React.Component {
             className="code-revoke-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            <>
-              {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              Revoke
-            </>
+            {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            Revoke
           </Button>,
           <SaveTemplateButton
             key="save-revoke-template-btn"

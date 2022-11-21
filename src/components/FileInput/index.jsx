@@ -136,10 +136,8 @@ class FileInput extends React.Component {
                 this.setState({ fileName: null });
               }}
             >
-              <>
-                <Icon className="fa fa-times mr-1" />
-                Remove
-              </>
+              <Icon className="fa fa-times mr-1" />
+              Remove
             </Button>
           )}
         </div>
