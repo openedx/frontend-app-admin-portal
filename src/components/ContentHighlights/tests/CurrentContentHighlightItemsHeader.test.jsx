@@ -13,14 +13,12 @@ jest.mock('../DeleteHighlightSet', () => ({
 
 const highlightSetUUID = 'fake-uuid';
 
-function CurrentContentHighlightItemsHeaderWrapper(props) {
-  return (
-    <Route
-      path="/:enterpriseSlug/admin/content-highlights/:highlightSetUUID"
-      render={routeProps => <CurrentContentHighlightItemsHeader {...routeProps} {...props} />}
-    />
-  );
-}
+const CurrentContentHighlightItemsHeaderWrapper = (props) => (
+  <Route
+    path="/:enterpriseSlug/admin/content-highlights/:highlightSetUUID"
+    render={routeProps => <CurrentContentHighlightItemsHeader {...routeProps} {...props} />}
+  />
+);
 
 describe('<CurrentContentHighlightItemsHeader>', () => {
   it('Displays all content data titles', () => {

@@ -11,7 +11,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import DownloadCsvButton from './DownloadCsvButton';
 import { createLookup, getSyncStatus, getSyncTime } from './utils';
 
-function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
+const ContentMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
   const [currentFilters, setCurrentFilters] = useState();
   const [paginationData, setPaginationData] = useState({
@@ -24,7 +24,11 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await LmsApiService.fetchContentMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
+        enterpriseCustomerUuid,
+        config.channelCode,
+        config.id,
+        currentPage,
+        currentFilters,
       );
       return response;
     };
@@ -117,7 +121,7 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
       </DataTable>
     </div>
   );
-}
+};
 
 ContentMetadataTable.defaultProps = {
   config: null,

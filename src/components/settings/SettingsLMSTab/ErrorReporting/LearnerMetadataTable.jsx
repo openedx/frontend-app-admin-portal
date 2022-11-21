@@ -11,7 +11,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { createLookup, getSyncStatus, getSyncTime } from './utils';
 import DownloadCsvButton from './DownloadCsvButton';
 
-function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
+const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
   const [currentFilters, setCurrentFilters] = useState();
   const [paginationData, setPaginationData] = useState({
@@ -24,7 +24,11 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
+        enterpriseCustomerUuid,
+        config.channelCode,
+        config.id,
+        currentPage,
+        currentFilters,
       );
       return response;
     };
@@ -122,7 +126,7 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
       </DataTable>
     </div>
   );
-}
+};
 
 LearnerMetadataTable.defaultProps = {
   config: null,

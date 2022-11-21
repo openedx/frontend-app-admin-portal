@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
@@ -43,10 +44,13 @@ const ContentHighlightSetCardWrapper = ({
 }) => {
 /* eslint-enable react/prop-types */
   const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = {
-    setIsModalOpen,
-    isModalOpen,
-  };
+  const defaultValue = useMemo(
+    () => ({
+      setIsModalOpen,
+      isModalOpen,
+    }),
+    [setIsModalOpen, isModalOpen],
+  );
   return (
     <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
       <ContentHighlightsContext.Provider value={defaultValue}>

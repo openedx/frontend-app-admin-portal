@@ -179,30 +179,28 @@ class InviteLearnersModal extends React.Component {
     } = this.props;
 
     return (
-      <>
-        <Modal
-          ref={this.modalRef}
-          dialogClassName="add-users"
-          title="Invite learners"
-          body={this.renderBody()}
-          buttons={[
-            <Button
-              key="subscribe-users-submit-btn"
-              disabled={submitting}
-              className="subscribe-users-save-btn"
-              onClick={handleSubmit(this.handleModalSubmit)}
-            >
-              <>
-                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Invite learners
-              </>
-            </Button>,
-          ]}
-          closeText="Cancel"
-          onClose={onClose}
-          open
-        />
-      </>
+      <Modal
+        ref={this.modalRef}
+        dialogClassName="add-users"
+        title="Invite learners"
+        body={this.renderBody()}
+        buttons={[
+          <Button
+            key="subscribe-users-submit-btn"
+            disabled={submitting}
+            className="subscribe-users-save-btn"
+            onClick={handleSubmit(this.handleModalSubmit)}
+          >
+            <>
+              {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              Invite learners
+            </>
+          </Button>,
+        ]}
+        closeText="Cancel"
+        onClose={onClose}
+        open
+      />
     );
   }
 }

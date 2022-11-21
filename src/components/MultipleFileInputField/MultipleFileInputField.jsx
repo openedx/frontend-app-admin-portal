@@ -90,7 +90,7 @@ const MultipleFileInputField = ({
       {
         inputValues?.map((e, i) => (
           <div className="border rounded p-1 m-1">
-            <small>{`${e.name } - ${ formatBytes(e.size)}`}</small>
+            <small>{`${e.name} - ${formatBytes(e.size)}`}</small>
             <IconButton className="mr-2" icon={FontAwesome.faTimes} onClick={() => handleFileRemoveClick(i)} variant="danger" />
           </div>
         ))
@@ -111,7 +111,10 @@ MultipleFileInputField.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.array,
+    value: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      size: PropTypes.number,
+    })),
   }).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   type: PropTypes.string.isRequired,

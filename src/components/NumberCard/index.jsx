@@ -49,50 +49,12 @@ class NumberCard extends React.Component {
     }
   }
 
-  addEvents() {
-    document.addEventListener('click', this.handleDocumentClick, true);
-  }
-
-  removeEvents() {
-    document.removeEventListener('click', this.handleDocumentClick, true);
-  }
-
   handleDocumentClick(e) {
     if (this.containerRef && this.containerRef.contains(e.target)
       && this.containerRef !== e.target) {
       return;
     }
     this.toggleDetails();
-  }
-
-  formatTitle(title) {
-    if (typeof title === 'number') {
-      return title.toLocaleString();
-    }
-    return title;
-  }
-
-  toggleDetails() {
-    this.setState((state) => ({
-      detailsExpanded: !state.detailsExpanded,
-      focusIndex: 0,
-    }), () => {
-      // Wait until after the state is set for the DOM elements
-      // to render before we set focus.
-      if (this.state.detailsExpanded) {
-        this.detailActionItemRefs[this.state.focusIndex].focus();
-        this.addEvents();
-      } else {
-        this.toggleDetailsBtnRef.focus();
-        this.removeEvents();
-      }
-    });
-  }
-
-  closeDetails() {
-    this.setState({
-      detailsExpanded: false,
-    });
   }
 
   handleDetailsActionClick(event) {
@@ -131,6 +93,38 @@ class NumberCard extends React.Component {
         focusIndex: ((focusIndex - 1) + detailActions.length) % detailActions.length,
       });
     }
+  }
+
+  toggleDetails() {
+    this.setState((state) => ({
+      detailsExpanded: !state.detailsExpanded,
+      focusIndex: 0,
+    }), () => {
+      // Wait until after the state is set for the DOM elements
+      // to render before we set focus.
+      if (this.state.detailsExpanded) {
+        this.detailActionItemRefs[this.state.focusIndex].focus();
+        this.addEvents();
+      } else {
+        this.toggleDetailsBtnRef.focus();
+        this.removeEvents();
+      }
+    });
+  }
+
+  formatTitle(title) {
+    if (typeof title === 'number') {
+      return title.toLocaleString();
+    }
+    return title;
+  }
+
+  addEvents() {
+    document.addEventListener('click', this.handleDocumentClick, true);
+  }
+
+  removeEvents() {
+    document.removeEventListener('click', this.handleDocumentClick, true);
   }
 
   renderDetailActions() {

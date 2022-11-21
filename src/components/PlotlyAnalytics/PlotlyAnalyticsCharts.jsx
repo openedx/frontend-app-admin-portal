@@ -7,7 +7,7 @@ import ErrorPage from '../ErrorPage';
 import PlotlyAnalyticsApiService from './data/service';
 import { configuration } from '../../config';
 
-export default function PlotlyAnalyticsCharts({ enterpriseId }) {
+const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,8 +52,10 @@ export default function PlotlyAnalyticsCharts({ enterpriseId }) {
       }}
     />
   );
-}
+};
 
 PlotlyAnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
+
+export default PlotlyAnalyticsCharts;

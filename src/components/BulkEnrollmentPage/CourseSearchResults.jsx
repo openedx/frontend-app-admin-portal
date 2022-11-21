@@ -41,6 +41,16 @@ const selectColumn = {
   disableSortBy: true,
 };
 
+export const TitleCell = ({
+  value, row, enterpriseSlug,
+}) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />;
+
+TitleCell.propTypes = {
+  value: PropTypes.string.isRequired,
+  row: PropTypes.shape().isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
 export const BaseCourseSearchResults = (props) => {
   const {
     searchResults,
@@ -58,8 +68,11 @@ export const BaseCourseSearchResults = (props) => {
     {
       Header: TABLE_HEADERS.courseName,
       accessor: 'title',
-      // eslint-disable-next-line react/prop-types
+      /* eslint-disable react/prop-types */
+      /* eslint-disable react/no-unstable-nested-components */
       Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
+      /* eslint-enable react/prop-types */
+      /* eslint-enable react/no-unstable-nested-components */
     },
     {
       Header: TABLE_HEADERS.partnerName,
@@ -68,8 +81,11 @@ export const BaseCourseSearchResults = (props) => {
     {
       Header: TABLE_HEADERS.courseAvailability,
       accessor: 'advertised_course_run',
-      // eslint-disable-next-line react/prop-types
+      /* eslint-disable react/prop-types */
+      /* eslint-disable react/no-unstable-nested-components */
       Cell: ({ value }) => <FormattedDateCell startValue={value.start} endValue={value.end} />,
+      /* eslint-enable react/prop-types */
+      /* eslint-enable react/no-unstable-nested-components */
     },
   ], [enterpriseSlug]);
 
@@ -114,29 +130,27 @@ export const BaseCourseSearchResults = (props) => {
   }
 
   return (
-    <>
-      <div className="data-table-selector-column-wrapper">
-        <DataTable
-          columns={columns}
-          data={searchResults?.hits || []}
-          itemCount={searchResults?.nbHits}
-          SelectionStatusComponent={AddCoursesSelectionStatus}
-          pageCount={searchResults?.nbPages || 1}
-          pageSize={searchResults?.hitsPerPage || 0}
-          selectedFlatRows={selectedCourses}
-          initialTableOptions={{
-            getRowId: (row) => row.key,
-          }}
-        >
-          <DataTable.TableControlBar />
-          <DataTable.Table />
-          <DataTable.TableFooter>
-            <DataTable.RowStatus />
-            <SearchPagination defaultRefinement={page} />
-          </DataTable.TableFooter>
-        </DataTable>
-      </div>
-    </>
+    <div className="data-table-selector-column-wrapper">
+      <DataTable
+        columns={columns}
+        data={searchResults?.hits || []}
+        itemCount={searchResults?.nbHits}
+        SelectionStatusComponent={AddCoursesSelectionStatus}
+        pageCount={searchResults?.nbPages || 1}
+        pageSize={searchResults?.hitsPerPage || 0}
+        selectedFlatRows={selectedCourses}
+        initialTableOptions={{
+          getRowId: (row) => row.key,
+        }}
+      >
+        <DataTable.TableControlBar />
+        <DataTable.Table />
+        <DataTable.TableFooter>
+          <DataTable.RowStatus />
+          <SearchPagination defaultRefinement={page} />
+        </DataTable.TableFooter>
+      </DataTable>
+    </div>
   );
 };
 

@@ -28,6 +28,7 @@ const defaultProps = {
     total: 20,
   },
 };
+const responsiveContextValue = { width: breakpoints.extraSmall.maxWidth };
 
 jest.mock('moment', () => (date) => {
   if (date) {
@@ -50,7 +51,7 @@ describe('SubscriptionCard', () => {
     [moment().add(3, 'hours').toISOString(), '3 hours'],
   ])('displays days until plan starts text if there are no actions and the plan is scheduled', (startDate, expectedText) => {
     renderWithRouter(
-      <ResponsiveContext.Provider value={{ width: breakpoints.extraSmall.maxWidth }}>
+      <ResponsiveContext.Provider value={responsiveContextValue}>
         <SubscriptionCard
           {...defaultProps}
           subscription={{

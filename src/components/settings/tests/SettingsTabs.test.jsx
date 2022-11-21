@@ -27,17 +27,23 @@ jest.mock('../../../data/services/LmsApiService', () => ({
 
 jest.mock(
   '../SettingsAccessTab/',
-  () => () => (<div>{ACCESS_MOCK_CONTENT}</div>),
+  () => function SettingsAccessTab() {
+    return <div>{ACCESS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../SettingsLMSTab/',
-  () => () => (<div>{LMS_MOCK_CONTENT}</div>),
+  () => function SettingsLMSTab() {
+    return <div>{LMS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../SettingsSSOTab/',
-  () => () => (<div>{SSO_MOCK_CONTENT}</div>),
+  () => function SettingsSSOTab() {
+    return <div>{SSO_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';

@@ -357,7 +357,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
           Showing 3 of 24.
         </div>
         <div
-          className="dropdown"
+          className="pgn__dropdown pgn__dropdown-light dropdown"
           data-testid="dropdown"
         >
           <button

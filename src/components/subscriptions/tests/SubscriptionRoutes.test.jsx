@@ -17,17 +17,23 @@ const NOT_FOUND_MOCK_CONTENT = 'not found';
 
 jest.mock(
   '../SubscriptionTabs',
-  () => () => (<div>{SUBSCRIPTION_TABS_MOCK_CONTENT}</div>),
+  () => function SubscriptionTabs() {
+    return <div>{SUBSCRIPTION_TABS_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../../NotFoundPage',
-  () => () => (<div>{NOT_FOUND_MOCK_CONTENT}</div>),
+  () => function NotFoundPage() {
+    return <div>{NOT_FOUND_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../SubscriptionPlanRoutes',
-  () => () => (<div>{SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT}</div>),
+  () => function SubscriptionPlanRoutes() {
+    return <div>{SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';

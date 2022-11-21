@@ -57,36 +57,34 @@ describe('useEnterpriseOffers', () => {
     });
   });
 
-  it.each([0, 2])(
-    'should set canManageLearnerCredit to false if enterprise does not have exactly 1 offer', async (
-      offersCount,
-    ) => {
-      const mockOffers = [...Array(offersCount)].map((_, index) => ({
-        uuid: `offer-${index}`,
-      }));
+  it.each([0, 2])('should set canManageLearnerCredit to false if enterprise does not have exactly 1 offer', async (
+    offersCount,
+  ) => {
+    const mockOffers = [...Array(offersCount)].map((_, index) => ({
+      uuid: `offer-${index}`,
+    }));
 
-      EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
-        data: {
-          results: mockOffers,
-        },
-      });
+    EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
+      data: {
+        results: mockOffers,
+      },
+    });
 
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
-        enablePortalLearnerCreditManagementScreen: true,
-      }));
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
+      enablePortalLearnerCreditManagementScreen: true,
+    }));
 
-      await waitForNextUpdate();
+    await waitForNextUpdate();
 
-      expect(EcommerceApiService.fetchEnterpriseOffers).toHaveBeenCalledWith(
-        { isCurrent: true },
-      );
-      expect(result.current).toEqual({
-        offers: mockOffers,
-        isLoading: false,
-        canManageLearnerCredit: false,
-      });
-    },
-  );
+    expect(EcommerceApiService.fetchEnterpriseOffers).toHaveBeenCalledWith(
+      { isCurrent: true },
+    );
+    expect(result.current).toEqual({
+      offers: mockOffers,
+      isLoading: false,
+      canManageLearnerCredit: false,
+    });
+  });
 });
 
 describe('useCustomerAgreement', () => {
