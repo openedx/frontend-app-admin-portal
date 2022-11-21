@@ -47,7 +47,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   );
 
   useEffect(() => {
-    if (!enterpriseId) {
+    if (!enterpriseId || !config.FEATURE_CONTENT_HIGHLIGHTS) {
       setIsLoading(false);
       return;
     }
@@ -65,10 +65,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
         setIsLoading(false);
       }
     };
-
-    if (config.FEATURE_CONTENT_HIGHLIGHTS) {
-      getOrCreateConfiguration();
-    }
+    getOrCreateConfiguration();
   }, [
     enterpriseId,
     getEnterpriseCuration,
