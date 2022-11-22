@@ -7,6 +7,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 import { getSubscriptionExpiringCookieName } from '../data/utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
+import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../../data/constants';
 
 export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';
 
@@ -27,14 +28,7 @@ const SubscriptionExpiringModal = ({
         enterpriseId,
       });
       // Mark that the user has seen this range's expiration modal when they close it
-      cookies.set(
-        seenCurrentExpirationModalCookieName,
-        true,
-        // Cookies without the `sameSite` attribute are rejected if they are missing the `secure`
-        // attribute. See
-        // https//developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
-        { sameSite: 'strict' },
-      );
+      cookies.set(seenCurrentExpirationModalCookieName, true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
     }
     onClose();
   };

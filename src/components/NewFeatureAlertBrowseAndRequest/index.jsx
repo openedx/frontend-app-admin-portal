@@ -3,8 +3,8 @@ import { Alert, Button } from '@edx/paragon';
 import Cookies from 'universal-cookie';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
+
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
   BROWSE_AND_REQUEST_ALERT_TEXT,
@@ -12,6 +12,7 @@ import {
 } from '../subscriptions/data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
+import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../data/constants';
 
 const cookies = new Cookies();
 
@@ -33,11 +34,7 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
    */
   const handleClose = () => {
     setShowAlert(false);
-    cookies.set(
-      browseAndRequestAlertCookieName,
-      true,
-      { sameSite: 'strict' },
-    );
+    cookies.set(browseAndRequestAlertCookieName, true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
   };
 
   const history = useHistory();

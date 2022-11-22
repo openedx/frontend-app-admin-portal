@@ -9,7 +9,8 @@ import {
   HIGHLIGHTS_ON_END_EVENT_NAME,
   TOUR_TARGETS,
 } from './constants';
-import disableAll from './data/utils';
+import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../data/constants';
+import { disableAll } from './data/utils';
 
 const cookies = new Cookies();
 
@@ -17,11 +18,7 @@ const highlightsTour = ({
   enterpriseSlug,
 }) => {
   const disableTour = () => {
-    cookies.set(
-      HIGHLIGHTS_COOKIE_NAME,
-      true,
-      { sameSite: 'strict' },
-    );
+    cookies.set(HIGHLIGHTS_COOKIE_NAME, true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
   };
 
   const handleAdvanceTour = () => {

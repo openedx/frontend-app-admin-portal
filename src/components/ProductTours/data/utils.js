@@ -1,5 +1,7 @@
 import Cookies from 'universal-cookie';
+
 import { COOKIE_NAMES } from '../constants';
+import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../../data/constants';
 
 const cookies = new Cookies();
 
@@ -16,9 +18,9 @@ export function filterCheckpoints(checkpoints, enabledFeatures) {
 }
 
 // Enable all cookies when onDismiss is called to ensure that the tour is not shown again
-export default function disableAll() {
+export function disableAll() {
   // set all cookies to true to ensure that the tour checkpoints are not shown again
   Object.keys(COOKIE_NAMES).forEach((key) => {
-    cookies.set(COOKIE_NAMES[key], true, { sameSite: 'strict' });
+    cookies.set(COOKIE_NAMES[key], true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
   });
 }

@@ -91,7 +91,7 @@ const ToursWithContext = ({
 
 const deleteCookie = (name) => {
   document.cookie = `${name}=; Path=/;  Domain=${window.location.host};`
-    + 'Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=None; Secure';
+    + 'Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax; Secure';
 };
 
 describe('<ProductTours/>', () => {
