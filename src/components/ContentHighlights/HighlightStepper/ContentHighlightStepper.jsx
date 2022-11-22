@@ -4,35 +4,41 @@ import React, {
 import {
   Stepper, FullscreenModal, Button,
 } from '@edx/paragon';
-import PropTypes from 'prop-types';
+
 import HighlightStepperTitle from './HighlightStepperTitle';
 import HighlightStepperSelectCourses from './HighlightStepperSelectCourses';
 import HighlightStepperConfirmCourses from './HighlightStepperConfirmCourses';
-import HighlightStepperConfirmHighlight from './HighlightStepperConfirmHighlight';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import {
   toggleStepperModalAction,
-  setStepperHighlightTitle,
-  setStepperHighlightCreated,
-  setStepperHighlightPublished,
+  // setStepperHighlightTitle,
+  // setStepperHighlightCreated,
+  // setStepperHighlightPublished,
 } from '../data/actions';
 
+const STEPPER_STEP_LABELS = {
+  CREATE_TITLE: 'Create a title',
+  SELECT_COURSES: 'Select courses',
+  CONFIRM_PUBLISH: 'Confirm and publish',
+};
+
 /**
- * Stepper Modal Currently accessible from:
- *  - ContentHighlightSetCard
- *  - CurrentContentHighlightHeader
- *  - ZeroStateHighlights
- *
- * @param {object} args Arugments
- * @param {boolean} args.isOpen Whether the modal containing the stepper is currently open.
- * @returns
+ * Stepper to support create/edit user flow for a highlight set.
  */
-const ContentHighlightStepper = ({ isModalOpen }) => {
-  /* eslint-disable no-unused-vars */
-  const steps = ['Title', 'Select courses', 'Confirm and Publish', 'All Set'];
+const ContentHighlightStepper = () => {
+  const steps = [
+    STEPPER_STEP_LABELS.CREATE_TITLE,
+    STEPPER_STEP_LABELS.SELECT_COURSES,
+    STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
+  ];
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  const { dispatch, stepperModal: { isOpen, highlightTitle }, stepperData } = useContext(ContentHighlightsContext);
+  const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
+
+  const closeStepperModal = () => {
+    dispatch(toggleStepperModalAction({ isOpen: false }));
+  };
+
   const submitAndReset = () => {
     if (steps.indexOf(currentStep) === steps.length - 1) {
       /* TODO: submit data to api if confirmed */
@@ -40,65 +46,73 @@ const ContentHighlightStepper = ({ isModalOpen }) => {
       /* TODO: reset stepper data in context */
       // dispatch(setStepper)
     }
-    dispatch(toggleStepperModalAction({ isOpen: false }));
+    closeStepperModal();
   };
-  const validateStepsAndContinue = () => {
-    if (currentStep === steps[0] && highlightTitle && highlightTitle.length < 61) {
-      dispatch(setStepperHighlightCreated({ createdHighlight: true }));
-      dispatch(setStepperHighlightPublished({ publishedHighlight: false }));
-      setCurrentStep(steps[1]);
-    }
-  };
-  const clearDataAndClose = () => {
-    dispatch(setStepperHighlightTitle({ highlightTitle: '' }));
-    dispatch(toggleStepperModalAction({ isOpen: false }));
-  };
+
+  // const validateStepsAndContinue = () => {
+  //   if (currentStep === steps[0] && highlightTitle && highlightTitle.length < 61) {
+  //     dispatch(setStepperHighlightCreated({ createdHighlight: true }));
+  //     dispatch(setStepperHighlightPublished({ publishedHighlight: false }));
+  //     setCurrentStep(steps[1]);
+  //   }
+  // };
+
+  // const clearDataAndClose = () => {
+  //   dispatch(setStepperHighlightTitle({ highlightTitle: '' }));
+  //   dispatch(toggleStepperModalAction({ isOpen: false }));
+  // };
 
   return (
     <Stepper activeKey={currentStep}>
       <FullscreenModal
         title="New highlight"
         className="bg-light-200"
-        isOpen={modalState}
+        isOpen={isOpen}
         onClose={() => {
           submitAndReset();
         }}
         beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
         footerNode={(
           <>
-            <Stepper.ActionRow eventKey="Title">
+            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              {/* Eventually would need a check to see if the user has made any changes
-                to the form before allowing them to close the modal without saving. Ln 58 onClick */}
-              <Button variant="tertiary" onClick={() => setIsModalOpen(false)}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[1])}>Next</Button>
+              {/* TODO: Eventually would need a check to see if the user has made any changes
+                to the form before allowing them to close the modal without saving. */}
+              <Button
+                variant="tertiary"
+                onClick={() => closeStepperModal()}
+              >
+                Back
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_COURSES)}
+              >
+                Next
+              </Button>
             </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey="Select courses">
+            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_COURSES}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[0])}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[2])}>Next</Button>
+              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}>Back</Button>
+              <Button variant="primary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}>Next</Button>
             </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey="Confirm and Publish">
+            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[1])}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[3])}>Next</Button>
-            </Stepper.ActionRow>
-
-            <Stepper.ActionRow eventKey="All Set">
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[2])}>Back</Button>
+              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_COURSES)}>Back</Button>
               <Button variant="primary" onClick={() => submitAndReset()}>Confirm</Button>
             </Stepper.ActionRow>
           </>
           )}
       >
-        <Stepper.Step eventKey="Title" title={steps[0]}>
+        <Stepper.Step
+          eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
+          title={STEPPER_STEP_LABELS.CREATE_TITLE}
+        >
           <HighlightStepperTitle />
         </Stepper.Step>
 
@@ -106,20 +120,12 @@ const ContentHighlightStepper = ({ isModalOpen }) => {
           <HighlightStepperSelectCourses />
         </Stepper.Step>
 
-        <Stepper.Step eventKey="Confirm and Publish" title={steps[2]}>
+        <Stepper.Step eventKey="Confirm and publish" title={steps[2]}>
           <HighlightStepperConfirmCourses />
-        </Stepper.Step>
-
-        <Stepper.Step eventKey="All Set" title={steps[3]}>
-          <HighlightStepperConfirmHighlight />
         </Stepper.Step>
       </FullscreenModal>
     </Stepper>
   );
-};
-
-ContentHighlightStepper.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
 };
 
 export default ContentHighlightStepper;

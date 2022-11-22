@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Stack, Col, Icon, Container,
+  Row, Col, Icon, Container,
 } from '@edx/paragon';
 import { AddCircle } from '@edx/paragon/icons';
 import { STEPPER_STEP_TEXT } from '../data/constants';
@@ -8,15 +8,13 @@ import HighlightStepperTitleInput from './HighlightStepperTitleInput';
 
 const HighlightStepperTitle = () => (
   <Container>
-    <Stack>
-      <Col md={5}>
-        <Stack className="mb-3" direction="horizontal">
-          <Icon src={AddCircle} />
-          <Col>
-            <h3 className="m-0">{STEPPER_STEP_TEXT.createTitle}</h3>
-          </Col>
-        </Stack>
-        <div className="mb-5">
+    <Row>
+      <Col xs={12} md={8} lg={6}>
+        <h3 className="mb-3 d-flex align-items-center">
+          <Icon src={AddCircle} className="mr-2 color-brand-tertiary" />
+          {STEPPER_STEP_TEXT.createTitle}
+        </h3>
+        <div className="mb-4.5">
           <p>
             Create a unique title for your highlight. This title is visible
             to your learners and helps them navigate to relevant content.
@@ -31,7 +29,7 @@ const HighlightStepperTitle = () => (
         </div>
         <HighlightStepperTitleInput />
       </Col>
-    </Stack>
+    </Row>
   </Container>
 );
 export default HighlightStepperTitle;

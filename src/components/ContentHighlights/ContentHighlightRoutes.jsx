@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import ContentHighlightSet from './ContentHighlightSet';
 import ContentHighlightsDashboard from './ContentHighlightsDashboard';
+import ContentHighlightStepper from './HighlightStepper/ContentHighlightStepper';
 
 const ContentHighlightRoutes = ({ enterpriseSlug }) => {
   const baseContentHighlightPath = `/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`;
@@ -20,6 +21,7 @@ const ContentHighlightRoutes = ({ enterpriseSlug }) => {
         component={ContentHighlightSet}
         exact
       />
+      <ContentHighlightStepper />
     </>
   );
 };

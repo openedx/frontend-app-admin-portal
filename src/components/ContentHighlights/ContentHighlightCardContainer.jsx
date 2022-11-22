@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Stack } from '@edx/paragon';
 
-import useHighlightSetsForCuration from './data/hooks';
+import { useHighlightSetsForCuration } from './data/hooks';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import HighlightSetSection from './HighlightSetSection';
 

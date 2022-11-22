@@ -1,20 +1,22 @@
 import React from 'react';
 import {
-  Stack, Col, Container,
+  Row, Col, Container,
 } from '@edx/paragon';
 import HighlightStepperSelectCoursesDataTable from './HighlightStepperSelectCoursesDataTable';
 import HighlightStepperSelectCoursesHeader from './HighlightStepperSelectCoursesHeader';
 
 const HighlightStepperSelectCourses = () => (
   <Container>
-    <Stack>
+    <Row>
       <Col md={5}>
         <HighlightStepperSelectCoursesHeader />
       </Col>
+    </Row>
+    <Row>
       <Col>
         <HighlightStepperSelectCoursesDataTable />
       </Col>
-    </Stack>
+    </Row>
   </Container>
 );
 

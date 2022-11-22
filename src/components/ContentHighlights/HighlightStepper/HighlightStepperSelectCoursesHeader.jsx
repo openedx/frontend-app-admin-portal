@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Stack, Col, Icon,
-} from '@edx/paragon';
+import { Icon } from '@edx/paragon';
 import { AddCircle } from '@edx/paragon/icons';
 import { MAX_COURSES_PER_HIGHLIGHT, STEPPER_STEP_TEXT } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -10,12 +8,10 @@ const HighlightStepperSelectCoursesTitle = () => {
   const { stepperModal: { highlightTitle } } = useContext(ContentHighlightsContext);
   return (
     <>
-      <Stack className="mb-3" direction="horizontal">
-        <Icon src={AddCircle} />
-        <Col>
-          <h3 className="m-0">{STEPPER_STEP_TEXT.selectCourses}</h3>
-        </Col>
-      </Stack>
+      <h3 className="mb-3 d-flex align-items-center">
+        <Icon src={AddCircle} className="mr-2 color-brand-tertiary" />
+        {STEPPER_STEP_TEXT.selectCourses}
+      </h3>
       <div className="mb-5">
         <p>
           Select up to {MAX_COURSES_PER_HIGHLIGHT} courses for &quot;{highlightTitle}&quot;.

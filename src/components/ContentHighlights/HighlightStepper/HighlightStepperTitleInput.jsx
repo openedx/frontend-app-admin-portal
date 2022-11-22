@@ -19,9 +19,19 @@ const HighlightStepperTitleInput = () => {
     dispatch(setStepperHighlightTitle({ highlightTitle: e.target.value }));
   };
   return (
-    <Form.Group isInvalid={isInvalid}>
-      <Form.Control className="mb-2.5" data-testid="stepper-title-input" value={highlightTitle} onChange={handleChange} type="text" floatingLabel="Highlight collection name" />
-      <Form.Label>{titleLength}/{HIGHLIGHT_TITLE_MAX_LENGTH} </Form.Label>
+    <Form.Group
+      isInvalid={isInvalid}
+    >
+      <Form.Control
+        data-testid="stepper-title-input"
+        value={highlightTitle || ''}
+        onChange={handleChange}
+        floatingLabel="Highlight title"
+        autoComplete="off"
+      />
+      <Form.Control.Feedback type={isInvalid ? 'invalid' : undefined}>
+        {titleLength}/{HIGHLIGHT_TITLE_MAX_LENGTH}
+      </Form.Control.Feedback>
     </Form.Group>
   );
 };

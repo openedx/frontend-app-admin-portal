@@ -1,7 +1,7 @@
-/* eslint-disable linebreak-style */
 import { useState, useEffect } from 'react';
 
-export default function useHighlightSetsForCuration(enterpriseCuration) {
+// eslint-disable-next-line import/prefer-default-export
+export function useHighlightSetsForCuration(enterpriseCuration) {
   const [highlightSets, setHighlightSets] = useState({
     draft: [],
     published: [],

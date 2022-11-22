@@ -112,9 +112,6 @@ describe('<ContentHighlightStepper>', () => {
     fireEvent.click(nextButton1);
     const nextButton2 = screen.getByText('Next');
     fireEvent.click(nextButton2);
-    const nextButton3 = screen.getByText('Next');
-    fireEvent.click(nextButton3);
-    expect(screen.getByText(STEPPER_STEP_TEXT.confirmHighlight)).toBeInTheDocument();
 
     const confirmButton = screen.getByText('Confirm');
     fireEvent.click(confirmButton);

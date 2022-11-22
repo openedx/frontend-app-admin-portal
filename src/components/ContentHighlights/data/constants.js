@@ -4,10 +4,9 @@ export const MAX_COURSES_PER_HIGHLIGHT = 12;
 export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
-  createTitle: 'Create a title for the highlight',
+  createTitle: 'Create a title for your highlight',
   selectCourses: 'Add courses to your highlight',
-  confirmContent: 'Confirm your Content',
-  confirmHighlight: 'Confirm your Highlight',
+  confirmContent: 'Confirm your content',
 };
 
 // Default footer values based on API response for ContentHighlightCardItem
