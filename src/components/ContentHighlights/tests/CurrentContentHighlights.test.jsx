@@ -1,11 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useReducer } from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { useReducer, useMemo } from 'react';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import {
@@ -63,11 +62,11 @@ describe('<CurrentContentHighlights>', () => {
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('New Highlight')).toBeInTheDocument();
+    expect(screen.getByText('New highlight')).toBeInTheDocument();
   });
   it('Displays the stepper modal on click of the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    fireEvent.click(screen.getByText('New Highlight'));
+    fireEvent.click(screen.getByText('New highlight'));
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 
