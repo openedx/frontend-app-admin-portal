@@ -15,9 +15,7 @@ import { features } from '../../../config';
 import ProductTours from '../ProductTours';
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
-  PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
-  HIGHLIGHTS_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -89,20 +87,15 @@ const ToursWithContext = ({
   </Provider>
 );
 
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; Path=/;  Domain=${window.location.host};`
-    + 'Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax; Secure';
-};
-
 describe('<ProductTours/>', () => {
   beforeEach(() => {
     mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
     mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: false });
-    deleteCookie(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME);
-    deleteCookie(LEARNER_CREDIT_COOKIE_NAME);
-    deleteCookie(PORTAL_APPEARANCE_TOUR_COOKIE_NAME);
-    deleteCookie(HIGHLIGHTS_COOKIE_NAME);
+
+    global.localStorage.clear();
+    jest.clearAllMocks();
   });
+
   afterEach(() => cleanup());
 
   describe('portal appearance tour', () => {
@@ -137,11 +130,8 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
 
-    it('is not shown when feature is enabled and cookie found ', () => {
-      Object.defineProperty(window.document, 'cookie', {
-        writable: true,
-        value: `${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}=true`,
-      });
+    it('is not shown when feature is enabled and localStorage record found ', () => {
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
       render(<ToursWithContext />);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
@@ -169,6 +159,8 @@ describe('<ProductTours/>', () => {
 
   describe('learner credit management tour', () => {
     beforeEach(() => {
+      mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
+
       // hide browse and request tour
       Object.defineProperty(window.document, 'cookie', {
         writable: true,
@@ -177,26 +169,18 @@ describe('<ProductTours/>', () => {
     });
 
     it('is shown if Learner Credit Management feature is on, enterprise has subsidy', () => {
-      mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
-
       render(<ToursWithContext canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
     });
 
-    it('is not shown if cookie is present', () => {
-      mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
-
-      Object.defineProperty(window.document, 'cookie', {
-        writable: true,
-        value: `${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}=true;${LEARNER_CREDIT_COOKIE_NAME}=true`,
-      });
-
+    it('is not shown if localStorage record is present', () => {
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_CREDIT_COOKIE_NAME, true);
       render(<ToursWithContext canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
-    it('is is shown if in Learner Credit page', () => {
-      mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
+    it('is shown if in Learner Credit page', () => {
       render(<ToursWithContext pathname={LEARNER_CREDIT_PAGE_LOCATION} canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
     });

@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
 import { ActionRow, ModalDialog } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { getSubscriptionExpiringCookieName } from '../data/utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
-import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../../data/constants';
 
 export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';
 
@@ -22,13 +20,12 @@ const SubscriptionExpiringModal = ({
 
   const handleClose = () => {
     if (expirationThreshold) {
-      const cookies = new Cookies();
       const seenCurrentExpirationModalCookieName = getSubscriptionExpiringCookieName({
         expirationThreshold,
         enterpriseId,
       });
       // Mark that the user has seen this range's expiration modal when they close it
-      cookies.set(seenCurrentExpirationModalCookieName, true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
+      global.localStorage.setItem(seenCurrentExpirationModalCookieName, true);
     }
     onClose();
   };

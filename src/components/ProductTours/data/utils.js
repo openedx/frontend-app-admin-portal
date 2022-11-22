@@ -1,9 +1,4 @@
-import Cookies from 'universal-cookie';
-
 import { COOKIE_NAMES } from '../constants';
-import { COOKIE_DISMISS_MAX_EXPIRY_DATE } from '../../../data/constants';
-
-const cookies = new Cookies();
 
 // Filter enabled features prescreened for cookie to populate tour array
 export function filterCheckpoints(checkpoints, enabledFeatures) {
@@ -21,6 +16,6 @@ export function filterCheckpoints(checkpoints, enabledFeatures) {
 export function disableAll() {
   // set all cookies to true to ensure that the tour checkpoints are not shown again
   Object.keys(COOKIE_NAMES).forEach((key) => {
-    cookies.set(COOKIE_NAMES[key], true, { expires: COOKIE_DISMISS_MAX_EXPIRY_DATE });
+    global.localStorage.setItem(COOKIE_NAMES[key], true);
   });
 }
