@@ -9,7 +9,7 @@ import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import highlightsTour from './highlightsTour';
-import disableAll, { filterCheckpoints } from './data/utils';
+import { disableAll, filterCheckpoints } from './data/utils';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
