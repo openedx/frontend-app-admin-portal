@@ -33,7 +33,7 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Email Address',
           accessor: 'userEmail',
-          // eslint-disable-next-line react/prop-types
+          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />,
         },
         {
@@ -68,6 +68,7 @@ const LearnerCreditAllocationTable = ({
       itemCount={tableData.itemCount}
       pageCount={tableData.pageCount}
       EmptyTableComponent={
+        // eslint-disable-next-line react/no-unstable-nested-components
         () => {
           if (isLoading) {
             return null;

@@ -8,7 +8,7 @@ import { EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE } from '../constants/emailTemplate'
 class EcommerceApiService {
   static ecommerceBaseUrl = configuration.ECOMMERCE_BASE_URL;
 
-  static apiClient = getAuthenticatedHttpClient
+  static apiClient = getAuthenticatedHttpClient;
 
   static fetchCouponOrders(options) {
     const { enterpriseId } = store.getState().portalConfiguration;

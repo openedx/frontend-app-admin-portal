@@ -19,21 +19,25 @@ import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
-const EnterpriseAppContextProvider = ({ children }) => (
-  <EnterpriseAppContext.Provider
-    value={{
-      enterpriseCuration: {
-        enterpriseCuration: null,
-        isLoading: false,
-        fetchError: null,
-      },
-    }}
-  >
-    <EnterpriseSubsidiesContext.Provider
-      value={{
-        canManageLearnerCredit: true,
-      }}
-    >
+const defaultEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: null,
+    isLoading: false,
+    fetchError: null,
+  },
+};
+
+const defaultEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
+const EnterpriseAppContextProvider = ({
+  initialEnterpriseAppContextValue = defaultEnterpriseAppContextValue,
+  initialEnterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  children,
+}) => (
+  <EnterpriseAppContext.Provider value={initialEnterpriseAppContextValue}>
+    <EnterpriseSubsidiesContext.Provider value={initialEnterpriseSubsidiesContextValue}>
       {children}
     </EnterpriseSubsidiesContext.Provider>
   </EnterpriseAppContext.Provider>
@@ -52,7 +56,9 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/ProductTours', () => () => null);
+jest.mock('../../components/ProductTours/ProductTours', () => function ProductTours() {
+  return null;
+});
 
 features.CODE_MANAGEMENT = true;
 

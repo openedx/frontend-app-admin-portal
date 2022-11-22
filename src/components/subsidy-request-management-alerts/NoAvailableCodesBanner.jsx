@@ -61,11 +61,7 @@ NoAvailableCodesBanner.propTypes = {
   coupons: PropTypes.arrayOf(PropTypes.shape({
     endDate: PropTypes.string.isRequired,
     numUnassigned: PropTypes.number.isRequired,
-  })),
-};
-
-NoAvailableCodesBanner.defaultProps = {
-  couponsData: null,
+  })).isRequired,
 };
 
 export default NoAvailableCodesBanner;

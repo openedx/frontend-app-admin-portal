@@ -13,21 +13,21 @@ import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 
 features.SETTINGS_PAGE = true;
 
+const defaultEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: null,
+    isLoading: false,
+    fetchError: null,
+  },
+};
+
+const defaultEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
 const EnterpriseAppContextProvider = ({ children }) => (
-  <EnterpriseAppContext.Provider
-    value={{
-      enterpriseCuration: {
-        enterpriseCuration: null,
-        isLoading: false,
-        fetchError: null,
-      },
-    }}
-  >
-    <EnterpriseSubsidiesContext.Provider
-      value={{
-        canManageLearnerCredit: true,
-      }}
-    >
+  <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
+    <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
       {children}
     </EnterpriseSubsidiesContext.Provider>
   </EnterpriseAppContext.Provider>

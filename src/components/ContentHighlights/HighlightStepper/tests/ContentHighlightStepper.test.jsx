@@ -2,8 +2,7 @@ import { screen, render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Button } from '@edx/paragon';
 import React, {
-  useMemo, useReducer, useState,
-  useEffect,
+  useMemo, useReducer, useState, useEffect,
 } from 'react';
 import Proptypes from 'prop-types';
 import { IntlProvider } from '@edx/frontend-platform/i18n';

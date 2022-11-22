@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -24,12 +24,16 @@ const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
 
 jest.mock(
   '../ManageCodesTab',
-  () => () => (<div>{MANAGE_CODES_MOCK_CONTENT}</div>),
+  () => function ManageCodesTab() {
+    return <div>{MANAGE_CODES_MOCK_CONTENT}</div>;
+  },
 );
 
 jest.mock(
   '../ManageRequestsTab',
-  () => () => (<div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>),
+  () => function ManageRequestsTab() {
+    return <div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>;
+  },
 );
 
 const enterpriseId = 'test-enterprise';
@@ -50,15 +54,21 @@ const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TA
 const CouponCodeTabsWrapper = ({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
-}) => (
-  <Provider store={store}>
-    <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
-      <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration, subsidyRequestsCounts }}>
-        <CouponCodeTabs />
-      </SubsidyRequestsContext.Provider>
-    </Route>
-  </Provider>
-);
+}) => {
+  const contextValue = useMemo(
+    () => ({ subsidyRequestConfiguration, subsidyRequestsCounts }),
+    [subsidyRequestConfiguration, subsidyRequestsCounts],
+  );
+  return (
+    <Provider store={store}>
+      <Route path="/:enterpriseSlug/admin/coupons/:couponCodesTab">
+        <SubsidyRequestsContext.Provider value={contextValue}>
+          <CouponCodeTabs />
+        </SubsidyRequestsContext.Provider>
+      </Route>
+    </Provider>
+  );
+};
 
 CouponCodeTabsWrapper.defaultProps = {
   subsidyRequestConfiguration: {
