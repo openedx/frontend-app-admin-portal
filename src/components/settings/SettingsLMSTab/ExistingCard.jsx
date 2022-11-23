@@ -8,7 +8,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { features } from '../../../config';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
-import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
+import { ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE } from '../data/constants';
 
 const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
 const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
@@ -49,7 +49,12 @@ const ExistingCard = ({
       setErrorModalText(errorToggleModalText);
       openError();
     } else {
-      onClick(TOGGLE_SUCCESS_LABEL);
+      // eslint-disable-next-line no-lonely-if
+      if (toggle) {
+        onClick(ACTIVATE_TOAST_MESSAGE);
+      } else {
+        onClick(INACTIVATE_TOAST_MESSAGE);
+      }
     }
   };
 
@@ -64,7 +69,7 @@ const ExistingCard = ({
       setErrorModalText(errorDeleteModalText);
       openError();
     } else {
-      onClick(DELETE_SUCCESS_LABEL);
+      onClick(DELETE_TOAST_MESSAGE);
     }
   };
 
