@@ -1,3 +1,4 @@
+import { snakeCaseObject } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
 import { configuration } from '../../config';
@@ -8,6 +9,10 @@ class EnterpriseCatalogApiService {
   static apiClient = getAuthenticatedHttpClient;
 
   static enterpriseCustomerCatalogsUrl = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/`;
+
+  static enterpriseCurationUrl = `${EnterpriseCatalogApiService.baseUrl}/enterprise-curations-admin/`;
+
+  static highlightSetUrl = `${EnterpriseCatalogApiService.baseUrl}/highlight-sets-admin/`;
 
   static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
     // This API call will *only* obtain the enterprise's catalogs whose
@@ -28,6 +33,28 @@ class EnterpriseCatalogApiService {
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
+  }
+
+  static getEnterpriseCurationConfig(enterpriseId) {
+    const queryParams = new URLSearchParams({
+      enterprise_customer: enterpriseId,
+    });
+    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
+  }
+
+  static createEnterpriseCurationConfig(enterpriseId, options = {}) {
+    const payload = {
+      enterprise_customer: enterpriseId,
+      ...snakeCaseObject(options),
+    };
+    return EnterpriseCatalogApiService.apiClient().post(
+      EnterpriseCatalogApiService.enterpriseCurationUrl,
+      payload,
+    );
+  }
+
+  static deleteHighlightSet(highlightSetUUID) {
+    return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`);
   }
 }
 

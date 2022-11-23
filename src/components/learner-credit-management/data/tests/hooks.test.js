@@ -55,9 +55,7 @@ describe('useOfferSummary', () => {
 
   it('should fetch summary data for enterprise offer', async () => {
     EnterpriseDataApiService.fetchEnterpriseOfferSummary.mockResolvedValueOnce({ data: mockOfferSummary });
-    const { result, waitForNextUpdate } = renderHook(() => useOfferSummary(
-      TEST_ENTERPRISE_UUID, mockEnterpriseOffer,
-    ));
+    const { result, waitForNextUpdate } = renderHook(() => useOfferSummary(TEST_ENTERPRISE_UUID, mockEnterpriseOffer));
 
     expect(result.current).toEqual({
       offerSummary: undefined,

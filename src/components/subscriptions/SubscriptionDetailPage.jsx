@@ -9,7 +9,7 @@ import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
 import SubscriptionDetailContextProvider from './SubscriptionDetailContextProvider';
 import { useSubscriptionFromParams } from './data/contextHooks';
 import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
 export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {

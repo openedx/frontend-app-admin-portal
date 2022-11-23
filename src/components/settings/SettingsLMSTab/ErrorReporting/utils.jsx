@@ -7,6 +7,18 @@ import {
 } from '@edx/paragon/icons';
 
 timeago.register('time-locale');
+/**
+ * Transforms an array to a dictionary of objects allowing for custom key lookup and value transformations
+ *
+ * Paramaters:
+ * source (array): The array which is to be transformed
+ * lookupFunc (func): Function that generates string keys for the object
+ * valueTransformation (func): Function that transforms and generates string values for the object
+ */
+export function createLookup(source, lookupFunc, valueTransformation) {
+  const newFiltersMap = source.map((item) => ({ [lookupFunc(item)]: valueTransformation(item) }));
+  return Object.assign({}, ...newFiltersMap);
+}
 
 export function isStrictlyArray(data) {
   return !Array.isArray(data) || !data.every((p) => typeof p === 'object' && p !== null);
@@ -44,5 +56,8 @@ export function getSyncStatus(status, statusMessage) {
 }
 
 export function getSyncTime(time) {
-  return (<>{time !== null && (<div>{timeago.format(time, 'time-locale')}</div>)}</>);
+  if (!time) {
+    return null;
+  }
+  return <div>{timeago.format(time, 'time-locale')}</div>;
 }

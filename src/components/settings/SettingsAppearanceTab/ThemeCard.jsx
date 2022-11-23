@@ -5,9 +5,9 @@ import {
 import ThemeSvg from './ThemeSvg';
 import { CUSTOM_THEME_LABEL, SCHOLAR_THEME } from '../data/constants';
 
-export default function ThemeCard({
+const ThemeCard = ({
   themeVars, theme, setTheme, openCustom,
-}) {
+}) => {
   const isCustom = themeVars.title === CUSTOM_THEME_LABEL;
   function selectTheme(vars) {
     setTheme([vars, theme[1]]);
@@ -45,7 +45,7 @@ export default function ThemeCard({
       {!isCustom && (<div className="pt-3" />)}
     </Card>
   );
-}
+};
 
 ThemeCard.defaultProps = {
   openCustom: null,
@@ -69,3 +69,5 @@ ThemeCard.propTypes = {
   setTheme: PropTypes.func.isRequired,
   openCustom: PropTypes.func,
 };
+
+export default ThemeCard;

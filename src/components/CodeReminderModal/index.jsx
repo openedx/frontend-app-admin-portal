@@ -75,29 +75,6 @@ export class BaseCodeReminderModal extends React.Component {
     }
   }
 
-  getNumberOfSelectedCodes() {
-    const {
-      data: { selectedCodes },
-      couponDetailsTable: { data: tableData },
-    } = this.props;
-    let numberOfSelectedCodes = 0;
-    if (selectedCodes && selectedCodes.length) {
-      numberOfSelectedCodes = selectedCodes.length;
-    } else if (tableData && tableData.count) {
-      numberOfSelectedCodes = tableData.count;
-    }
-    return numberOfSelectedCodes;
-  }
-
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  hasIndividualRemindData() {
-    const { data } = this.props;
-    return ['code', 'email'].every(key => key in data);
-  }
-
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -165,6 +142,29 @@ export class BaseCodeReminderModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  getNumberOfSelectedCodes() {
+    const {
+      data: { selectedCodes },
+      couponDetailsTable: { data: tableData },
+    } = this.props;
+    let numberOfSelectedCodes = 0;
+    if (selectedCodes && selectedCodes.length) {
+      numberOfSelectedCodes = selectedCodes.length;
+    } else if (tableData && tableData.count) {
+      numberOfSelectedCodes = tableData.count;
+    }
+    return numberOfSelectedCodes;
+  }
+
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
+  hasIndividualRemindData() {
+    const { data } = this.props;
+    return ['code', 'email'].every(key => key in data);
+  }
+
   renderBody() {
     const {
       data,
@@ -214,35 +214,31 @@ export class BaseCodeReminderModal extends React.Component {
     } = this.state;
 
     return (
-      <>
-        <Modal
-          ref={this.modalRef}
-          dialogClassName="code-reminder"
-          title={this.renderTitle()}
-          body={this.renderBody()}
-          buttons={[
-            <Button
-              key="remind-submit-btn"
-              disabled={submitting}
-              className="code-remind-save-btn"
-              onClick={handleSubmit(this.handleModalSubmit)}
-            >
-              <>
-                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Remind
-              </>
-            </Button>,
-            <SaveTemplateButton
-              key="save-remind-template-btn"
-              templateType={REMIND_MODE}
-              setMode={this.setMode}
-              handleSubmit={handleSubmit}
-            />,
-          ]}
-          onClose={onClose}
-          open
-        />
-      </>
+      <Modal
+        ref={this.modalRef}
+        dialogClassName="code-reminder"
+        title={this.renderTitle()}
+        body={this.renderBody()}
+        buttons={[
+          <Button
+            key="remind-submit-btn"
+            disabled={submitting}
+            className="code-remind-save-btn"
+            onClick={handleSubmit(this.handleModalSubmit)}
+          >
+            {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            Remind
+          </Button>,
+          <SaveTemplateButton
+            key="save-remind-template-btn"
+            templateType={REMIND_MODE}
+            setMode={this.setMode}
+            handleSubmit={handleSubmit}
+          />,
+        ]}
+        onClose={onClose}
+        open
+      />
     );
   }
 }

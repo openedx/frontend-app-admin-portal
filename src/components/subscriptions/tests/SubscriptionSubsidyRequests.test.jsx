@@ -142,13 +142,15 @@ const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
 const mockDecrementLicenseRequestCount = jest.fn();
+const defaultSubsidyRequestsContextValue = { decrementLicenseRequestCount: mockDecrementLicenseRequestCount };
 
 const SubsidySubsidyRequestsWithRouter = ({
   store: storeProp,
   subscriptionsData,
+  initialSubsidyRequestsContextValue,
 }) => (
   <Provider store={storeProp}>
-    <SubsidyRequestsContext.Provider value={{ decrementLicenseRequestCount: mockDecrementLicenseRequestCount }}>
+    <SubsidyRequestsContext.Provider value={initialSubsidyRequestsContextValue}>
       <SubscriptionContext.Provider value={subscriptionsData}>
         <SubscriptionSubsidyRequests />
       </SubscriptionContext.Provider>
@@ -159,11 +161,13 @@ const SubsidySubsidyRequestsWithRouter = ({
 SubsidySubsidyRequestsWithRouter.propTypes = {
   store: PropTypes.shape(),
   subscriptionsData: PropTypes.shape(),
+  initialSubsidyRequestsContextValue: PropTypes.shape(),
 };
 
 SubsidySubsidyRequestsWithRouter.defaultProps = {
   store,
   subscriptionsData: initialSubscriptionsData,
+  initialSubsidyRequestsContextValue: defaultSubsidyRequestsContextValue,
 };
 
 describe('<SubscriptionSubsidyRequests />', () => {

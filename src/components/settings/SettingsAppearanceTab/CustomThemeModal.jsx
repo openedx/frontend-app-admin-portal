@@ -10,9 +10,9 @@ import {
   CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK, DARK_COLOR, WHITE_COLOR,
 } from '../data/constants';
 
-export default function CustomThemeModal({
+const CustomThemeModal = ({
   isOpen, close, customColors, setTheme,
-}) {
+}) => {
   const [button, setButton] = useState('');
   const [buttonValid, setButtonValid] = useState(true);
   const [buttonWarning, setButtonWarning] = useState('');
@@ -27,14 +27,15 @@ export default function CustomThemeModal({
   const invalidMessage = 'Must be hexidecimal starting with # (Ex: #1e0b57)';
   const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
 
-  const validHex = new RegExp('^#([A-Fa-f0-9]{6})$');
+  const hexRegExpPattern = '^#([A-Fa-f0-9]{6})$';
+  const validHex = new RegExp(hexRegExpPattern);
 
   const a11yChecker = new ColorContrastChecker();
   const whiteColor = Color(WHITE_COLOR);
   const darkColor = Color(DARK_COLOR);
   const getA11yTextColor = color => (color.isDark() ? whiteColor : darkColor);
 
-  function validateColor(field, input, setter, warningSetter) {
+  const validateColor = (field, input, setter, warningSetter) => {
     if (!input.match(validHex)) {
       setter(false);
     } else {
@@ -48,9 +49,9 @@ export default function CustomThemeModal({
       }
       setter(true);
     }
-  }
+  };
 
-  function setCustom() {
+  const setCustom = () => {
     const CUSTOM_THEME = {
       title: CUSTOM_THEME_LABEL,
       button: (button === '' ? customColors?.button : button),
@@ -59,7 +60,7 @@ export default function CustomThemeModal({
     };
     setTheme([CUSTOM_THEME, CUSTOM_THEME]);
     close();
-  }
+  };
 
   return (
     <ModalDialog
@@ -153,7 +154,7 @@ export default function CustomThemeModal({
     </ModalDialog>
 
   );
-}
+};
 
 CustomThemeModal.defaultProps = {
   customColors: null,
@@ -170,3 +171,5 @@ CustomThemeModal.propTypes = {
   }),
   setTheme: PropTypes.func.isRequired,
 };
+
+export default CustomThemeModal;

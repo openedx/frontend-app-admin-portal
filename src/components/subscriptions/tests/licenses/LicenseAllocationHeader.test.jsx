@@ -23,12 +23,15 @@ const mockSubscription = {
 };
 const mockSubsidyRequestConfiguration = {};
 
+const defaultSubscriptionDetailContextValue = { subscription: mockSubscription };
+const defaultSubsidyRequestContextValue = { subsidyRequestConfiguration: mockSubsidyRequestConfiguration };
+
 const LicenseAllocationHeaderWrapper = ({
-  subscription = mockSubscription,
-  subsidyRequestConfiguration = mockSubsidyRequestConfiguration,
+  initialSubscriptionDetailContextValue = defaultSubscriptionDetailContextValue,
+  initialSubsidyRequestContextValue = defaultSubsidyRequestContextValue,
 }) => (
-  <SubscriptionDetailContext.Provider value={{ subscription }}>
-    <SubsidyRequestsContext.Provider value={{ subsidyRequestConfiguration }}>
+  <SubscriptionDetailContext.Provider value={initialSubscriptionDetailContextValue}>
+    <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
       <LicenseAllocationHeader />
     </SubsidyRequestsContext.Provider>
   </SubscriptionDetailContext.Provider>
@@ -63,7 +66,11 @@ describe('<LicenseAllocationHeader />', () => {
       shouldShowAlert: false,
     },
   ])('should render browse and request feature alert correctly', ({ subsidyRequestConfiguration, shouldShowAlert }) => {
-    render(<LicenseAllocationHeaderWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
+    render(
+      <LicenseAllocationHeaderWrapper
+        initialSubsidyRequestContextValue={{ subsidyRequestConfiguration }}
+      />,
+    );
 
     if (shouldShowAlert) {
       expect(screen.getByText(BNR_NEW_FEATURE_ALERT_TEXT));

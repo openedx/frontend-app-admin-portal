@@ -1,14 +1,15 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
+import generateFormattedStatusUrl from './apiServiceUtils';
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
   static baseUrl = configuration.LMS_BASE_URL;
 
-  static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
+  static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`;
 
-  static reportingConfigTypesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_report_types/`
+  static reportingConfigTypesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_report_types/`;
 
   static enterpriseCustomerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/`;
 
@@ -235,12 +236,16 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/configs/?${queryParams.toString()}`);
   }
 
-  static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  static fetchContentMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
   }
 
-  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
   }
 
   /**

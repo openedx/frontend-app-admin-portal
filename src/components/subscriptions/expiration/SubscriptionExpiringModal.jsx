@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
 import { ActionRow, ModalDialog } from '@edx/paragon';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
@@ -21,20 +20,12 @@ const SubscriptionExpiringModal = ({
 
   const handleClose = () => {
     if (expirationThreshold) {
-      const cookies = new Cookies();
       const seenCurrentExpirationModalCookieName = getSubscriptionExpiringCookieName({
         expirationThreshold,
         enterpriseId,
       });
       // Mark that the user has seen this range's expiration modal when they close it
-      cookies.set(
-        seenCurrentExpirationModalCookieName,
-        true,
-        // Cookies without the `sameSite` attribute are rejected if they are missing the `secure`
-        // attribute. See
-        // https//developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
-        { sameSite: 'strict' },
-      );
+      global.localStorage.setItem(seenCurrentExpirationModalCookieName, true);
     }
     onClose();
   };

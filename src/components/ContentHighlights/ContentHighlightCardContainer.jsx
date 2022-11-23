@@ -1,23 +1,26 @@
-import React from 'react';
-import { CardGrid } from '@edx/paragon';
-import ContentHighlightSetCard from './ContentHighlightSetCard';
-import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
+import React, { useContext } from 'react';
+import { Stack } from '@edx/paragon';
 
-const ContentHighlightCardContainer = () => (
-  <CardGrid
-    columnSizes={{
-      xs: 12,
-      lg: 6,
-      xl: 4,
-    }}
-  >
-    {TEST_COURSE_HIGHLIHTS_DATA.map(({ title, uuid }) => (
-      <ContentHighlightSetCard
-        key={uuid}
-        title={title}
-        highlightUUID={uuid}
+import { useHighlightSetsForCuration } from './data/hooks';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import HighlightSetSection from './HighlightSetSection';
+
+const ContentHighlightCardContainer = () => {
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const highlightSets = useHighlightSetsForCuration(enterpriseCuration);
+
+  return (
+    <Stack gap={4}>
+      <HighlightSetSection
+        title="Published"
+        highlightSets={highlightSets.published}
       />
-    ))}
-  </CardGrid>
-);
+      <HighlightSetSection
+        title="Drafts"
+        highlightSets={highlightSets.draft}
+      />
+    </Stack>
+  );
+};
+
 export default ContentHighlightCardContainer;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, render, screen, waitFor,
+  act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -32,6 +32,8 @@ const configData = [
 
 const contentSyncData = {
   data: {
+    count: 12,
+    pages_count: 2,
     results: [
       {
         content_title: 'Demo1',
@@ -54,6 +56,55 @@ const contentSyncData = {
         sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
         friendly_status_message: 'The request was unauthorized, check your credentials.',
       },
+      {
+        content_title: 'Demo4',
+        content_id: 'DemoX-4',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo5',
+        content_id: 'DemoX-5',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo6',
+        content_id: 'DemoX-6',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo7',
+        content_id: 'DemoX-7',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo8',
+        content_id: 'DemoX-8',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo9',
+        content_id: 'DemoX-9',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
+      {
+        content_title: 'Demo10',
+        content_id: 'DemoX-10',
+        sync_status: 'pending',
+        sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
+        friendly_status_message: 'The request was unauthorized, check your credentials.',
+      },
     ],
   },
   status: 200,
@@ -62,6 +113,8 @@ const contentSyncData = {
 
 const learnerSyncData = {
   data: {
+    count: 2,
+    pages_count: 1,
     results: [
       {
         user_email: 'totallynormalemail@example.com',
@@ -135,12 +188,60 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Success')).toBeInTheDocument();
 
     expect(screen.getByText('Demo2')).toBeInTheDocument();
-    expect(screen.getByText('Pending')).toBeInTheDocument();
+    expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
 
     expect(screen.getByText('Demo3')).toBeInTheDocument();
     expect(screen.getByText('Error')).toBeInTheDocument();
-    userEvent.click(screen.queryByText('Read'));
+
+    await waitFor(() => userEvent.click(screen.queryByText('Read')));
     expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
+  });
+  it('paginates over data', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    userEvent.click(screen.queryByText('View sync history'));
+
+    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
+    expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
+    act(() => {
+      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
+    });
+
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
+  });
+  it('adds filters to the backend url query params', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    userEvent.click(screen.queryByText('View sync history'));
+
+    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText('Search course key'), {
+      target: { value: 'ayylmao' },
+    });
+
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
   });
   test('csv download works', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
@@ -184,8 +285,8 @@ describe('<ExistingLMSCardDeck />', () => {
         />
       </IntlProvider>,
     );
-    userEvent.click(screen.queryByText('View sync history'));
-    userEvent.click(screen.queryByText('Learner Activity'));
+    await waitFor(() => userEvent.click(screen.queryByText('View sync history')));
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
 
     expect(screen.getByText('Learner email')).toBeInTheDocument();
     expect(screen.getAllByText('Course')).toHaveLength(2);
@@ -198,7 +299,7 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
-    userEvent.click(screen.queryByText('Read'));
+    await waitFor(() => userEvent.click(screen.queryByText('Read')));
     expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
   });
 });

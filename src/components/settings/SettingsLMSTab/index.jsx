@@ -31,7 +31,7 @@ export default function SettingsLMSTab({
   enableSamlConfigurationScreen,
   identityProvider,
   hasSSOConfig,
-}) {
+}) => {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
 
@@ -65,10 +65,10 @@ export default function SettingsLMSTab({
       .then((response) => {
         setShowNewConfigButtons(true);
         setConfigsLoading(false);
+        // Save all existing configs
+        setExistingConfigsData(camelCaseDictArray(response.data));
         // If the enterprise has existing configs
         if (response.data.length !== 0) {
-          // Save all existing configs
-          setExistingConfigsData(camelCaseDictArray(response.data));
           // toggle the existing configs bool
           setConfigsExist(true);
           // Hide the create cards and show the create button
@@ -219,7 +219,7 @@ export default function SettingsLMSTab({
       )}
     </div>
   );
-}
+};
 
 SettingsLMSTab.defaultProps = {
   identityProvider: null,
@@ -232,3 +232,5 @@ SettingsLMSTab.propTypes = {
   identityProvider: PropTypes.string,
   hasSSOConfig: PropTypes.bool.isRequired,
 };
+
+export default SettingsLMSTab;

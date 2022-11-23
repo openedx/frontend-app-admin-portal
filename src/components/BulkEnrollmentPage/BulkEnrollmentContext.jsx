@@ -1,4 +1,6 @@
-import React, { createContext, useState, useReducer } from 'react';
+import React, {
+  createContext, useState, useReducer, useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import selectedRowsReducer from './data/reducer';
@@ -18,13 +20,16 @@ const BulkEnrollContextProvider = ({ children, initialEmailsList }) => {
   const [selectedEmails, emailsDispatch] = useReducer(selectedRowsReducer, formattedEmailsList);
   const [selectedSubscription, setSelectedSubscription] = useState({});
 
-  const value = {
-    courses: [selectedCourses, coursesDispatch],
-    emails: [selectedEmails, emailsDispatch],
-    subscription: [selectedSubscription, setSelectedSubscription],
-  };
+  const contextValue = useMemo(
+    () => ({
+      courses: [selectedCourses, coursesDispatch],
+      emails: [selectedEmails, emailsDispatch],
+      subscription: [selectedSubscription, setSelectedSubscription],
+    }),
+    [selectedCourses, selectedEmails, selectedSubscription],
+  );
 
-  return <BulkEnrollContext.Provider value={value}>{children}</BulkEnrollContext.Provider>;
+  return <BulkEnrollContext.Provider value={contextValue}>{children}</BulkEnrollContext.Provider>;
 };
 
 BulkEnrollContextProvider.defaultProps = {

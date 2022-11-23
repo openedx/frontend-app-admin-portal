@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Color from 'color';
 import { DARK_COLOR, WHITE_COLOR } from '../data/constants';
 
-export default function ThemeSvg({ themeVars }) {
+const ThemeSvg = ({ themeVars }) => {
   const bannerColor = (Color(themeVars.banner).isDark() ? Color(WHITE_COLOR) : Color(DARK_COLOR));
   return (
     <svg viewBox="87.68 236.596 356.789 153.834" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@ export default function ThemeSvg({ themeVars }) {
       </g>
     </svg>
   );
-}
+};
 
 ThemeSvg.propTypes = {
   themeVars: PropTypes.shape({
@@ -27,3 +27,5 @@ ThemeSvg.propTypes = {
     accent: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+export default ThemeSvg;

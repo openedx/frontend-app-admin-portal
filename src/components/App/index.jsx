@@ -17,7 +17,7 @@ import NotFoundPage from '../NotFoundPage';
 import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();

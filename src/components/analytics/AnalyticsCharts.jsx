@@ -8,7 +8,7 @@ import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
 
-export default function AnalyticsCharts({ enterpriseId }) {
+const AnalyticsCharts = ({ enterpriseId }) => {
   const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -77,8 +77,10 @@ export default function AnalyticsCharts({ enterpriseId }) {
   }
 
   return <div id="tableau_frame" ref={tableauRef} />;
-}
+};
 
 AnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
+
+export default AnalyticsCharts;

@@ -45,9 +45,9 @@ export const SettingsAppearanceTab = ({
   // (they can't be two variables because of rules regarding setting react hooks)
   const [theme, setTheme] = useState(getStartingTheme());
 
-  async function handleLogoUpload({
+  const handleLogoUpload = async ({
     fileData, handleError,
-  }) {
+  }) => {
     try {
       const formData = new FormData();
       formData.append('logo', fileData.get('file'));
@@ -59,7 +59,7 @@ export const SettingsAppearanceTab = ({
     } catch (error) {
       handleError(error);
     }
-  }
+  };
 
   const saveChanges = () => {
     const sendThemeData = async (formData) => {

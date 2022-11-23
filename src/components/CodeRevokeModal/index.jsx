@@ -73,19 +73,6 @@ class CodeRevokeModal extends React.Component {
     }
   }
 
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  setDoNotEmail(doNotEmail) {
-    this.setState({ doNotEmail });
-  }
-
-  hasIndividualRevokeData() {
-    const { data } = this.props;
-    return ['code', 'assigned_to'].every(key => key in data);
-  }
-
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -163,6 +150,19 @@ class CodeRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
+  setDoNotEmail(doNotEmail) {
+    this.setState({ doNotEmail });
+  }
+
+  hasIndividualRevokeData() {
+    const { data } = this.props;
+    return ['code', 'assigned_to'].every(key => key in data);
+  }
+
   renderBody() {
     const {
       data,
@@ -184,11 +184,7 @@ class CodeRevokeModal extends React.Component {
           />
           )}
         <div className="assignment-details mb-4">
-          {isBulkRevoke && (
-            <>
-              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
-            </>
-          )}
+          {(isBulkRevoke && data.selectedCodes.length > 0) && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>
               <p className="code">{displayCode(data.code)}</p>
@@ -232,36 +228,32 @@ class CodeRevokeModal extends React.Component {
     } = this.state;
 
     return (
-      <>
-        <Modal
-          ref={this.modalRef}
-          dialogClassName="code-revoke"
-          title={this.renderTitle()}
-          body={this.renderBody()}
-          buttons={[
-            <Button
-              key="revoke-submit-btn"
-              disabled={submitting}
-              className="code-revoke-save-btn"
-              onClick={handleSubmit(this.handleModalSubmit)}
-            >
-              <>
-                {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                Revoke
-              </>
-            </Button>,
-            <SaveTemplateButton
-              key="save-revoke-template-btn"
-              templateType={MODAL_TYPES.revoke}
-              setMode={this.setMode}
-              handleSubmit={handleSubmit}
-              disabled={doNotEmail}
-            />,
-          ]}
-          onClose={onClose}
-          open
-        />
-      </>
+      <Modal
+        ref={this.modalRef}
+        dialogClassName="code-revoke"
+        title={this.renderTitle()}
+        body={this.renderBody()}
+        buttons={[
+          <Button
+            key="revoke-submit-btn"
+            disabled={submitting}
+            className="code-revoke-save-btn"
+            onClick={handleSubmit(this.handleModalSubmit)}
+          >
+            {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            Revoke
+          </Button>,
+          <SaveTemplateButton
+            key="save-revoke-template-btn"
+            templateType={MODAL_TYPES.revoke}
+            setMode={this.setMode}
+            handleSubmit={handleSubmit}
+            disabled={doNotEmail}
+          />,
+        ]}
+        onClose={onClose}
+        open
+      />
     );
   }
 }

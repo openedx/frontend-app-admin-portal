@@ -11,11 +11,11 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
-import { ROUTE_NAMES } from './constants';
+import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
-import CourseHighlightRoutes from '../ContentHighlights/CourseHighlightRoutes';
+import ContentHighlights from '../ContentHighlights';
 import { AnalyticsPage } from '../analytics';
 
 const EnterpriseAppRoutes = ({
@@ -118,7 +118,7 @@ const EnterpriseAppRoutes = ({
       {enableContentHighlightsPage && (
         <Route
           path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
-          component={CourseHighlightRoutes}
+          component={ContentHighlights}
         />
       )}
 

@@ -11,23 +11,21 @@ import { DEFAULT_LEAD_TEXT } from './data/constants';
 const MultipleSubscriptionsPicker = ({
   leadText, subscriptions, createActions,
 }) => (
-  <>
-    <Row>
-      <Col xs="12">
-        <h2>Plans</h2>
-        <p>{leadText}</p>
-      </Col>
-      <Col lg="10">
-        {subscriptions.map(subscription => (
-          <SubscriptionCard
-            key={subscription.uuid}
-            subscription={subscription}
-            createActions={createActions}
-          />
-        ))}
-      </Col>
-    </Row>
-  </>
+  <Row>
+    <Col xs="12">
+      <h2>Plans</h2>
+      <p>{leadText}</p>
+    </Col>
+    <Col lg="10">
+      {subscriptions.map(subscription => (
+        <SubscriptionCard
+          key={subscription.uuid}
+          subscription={subscription}
+          createActions={createActions}
+        />
+      ))}
+    </Col>
+  </Row>
 );
 
 MultipleSubscriptionsPicker.defaultProps = {

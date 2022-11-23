@@ -83,12 +83,6 @@ describe('<NumberCard />', () => {
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
     });
 
-    it('closeDetails closes the detail actions', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      getNumberCard(wrapper).instance().closeDetails();
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
-    });
-
     it('opens and closes detail actions with keydown on collapse btn', () => {
       getNumberCard(wrapper).find('.toggle-collapse').hostNodes().simulate('keyDown', { key: 'ArrowDown' });
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();

@@ -144,12 +144,16 @@ const getMockStore = store => mockStore(store);
 const defaultStore = getMockStore({ ...initialStore });
 
 const mockDecrementCouponCodeRequestCount = jest.fn();
+const defaultSubsidyRequestContextValue = { decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount };
 
+/* eslint-disable react/prop-types */
 const ManageRequestsTabWithRouter = ({
   store: storeProp,
+  initialSubsidyRequestContextValue = defaultSubsidyRequestContextValue,
 }) => (
+/* eslint-enable react/prop-types */
   <Provider store={storeProp}>
-    <SubsidyRequestsContext.Provider value={{ decrementCouponCodeRequestCount: mockDecrementCouponCodeRequestCount }}>
+    <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
       <ManageRequestsTab />
     </SubsidyRequestsContext.Provider>
   </Provider>

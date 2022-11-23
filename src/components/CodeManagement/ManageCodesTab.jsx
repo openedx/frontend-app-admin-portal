@@ -17,7 +17,7 @@ import LoadingMessage from '../LoadingMessage';
 import Coupon from '../Coupon';
 import { updateUrl } from '../../utils';
 import { fetchCouponOrders, clearCouponOrders } from '../../data/actions/coupons';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
@@ -99,6 +99,29 @@ class ManageCodesTab extends React.Component {
     this.props.clearCouponOrders();
   }
 
+  handleRefreshData() {
+    this.paginateCouponOrders(1);
+    this.removeQueryParams(['coupon_id', 'page', 'overview_page']);
+    this.setState({ searchQuery: '' });
+  }
+
+  handleCouponExpand(selectedIndex) {
+    const coupons = this.getCouponRefs();
+    const selectedCoupon = coupons[selectedIndex];
+    const couponId = selectedCoupon.props.data.id;
+    const queryParams = {
+      coupon_id: couponId,
+    };
+    updateUrl(queryParams);
+    this.setCouponOpacity(couponId);
+    this.setState({ searchQuery: '' });
+  }
+
+  handleCouponCollapse() {
+    this.setCouponOpacity();
+    this.removeQueryParams(['coupon_id', 'page']);
+  }
+
   getCouponRefs() {
     return this.couponRefs.filter(coupon => coupon);
   }
@@ -131,29 +154,6 @@ class ManageCodesTab extends React.Component {
   paginateCouponOrders(pageNumber) {
     const page = pageNumber ? parseInt(pageNumber, 10) : 1;
     this.props.fetchCouponOrders({ page });
-  }
-
-  handleRefreshData() {
-    this.paginateCouponOrders(1);
-    this.removeQueryParams(['coupon_id', 'page', 'overview_page']);
-    this.setState({ searchQuery: '' });
-  }
-
-  handleCouponExpand(selectedIndex) {
-    const coupons = this.getCouponRefs();
-    const selectedCoupon = coupons[selectedIndex];
-    const couponId = selectedCoupon.props.data.id;
-    const queryParams = {
-      coupon_id: couponId,
-    };
-    updateUrl(queryParams);
-    this.setCouponOpacity(couponId);
-    this.setState({ searchQuery: '' });
-  }
-
-  handleCouponCollapse() {
-    this.setCouponOpacity();
-    this.removeQueryParams(['coupon_id', 'page']);
   }
 
   hasCouponData(coupons) {

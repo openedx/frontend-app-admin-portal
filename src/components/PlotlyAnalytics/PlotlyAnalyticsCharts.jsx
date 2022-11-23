@@ -7,10 +7,15 @@ import ErrorPage from '../ErrorPage';
 import PlotlyAnalyticsApiService from './data/service';
 import { configuration } from '../../config';
 
-export default function PlotlyAnalyticsCharts({ enterpriseId }) {
+const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const refreshPlotlyToken = async () => {
+    const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId });
+    return response.data.token;
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -43,11 +48,14 @@ export default function PlotlyAnalyticsCharts({ enterpriseId }) {
       config={{
         url_base_pathname: configuration.PLOTLY_SERVER_URL,
         auth_token: token,
+        request_refresh_jwt: refreshPlotlyToken,
       }}
     />
   );
-}
+};
 
 PlotlyAnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
+
+export default PlotlyAnalyticsCharts;

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
-import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
 import ErrorPage from '../ErrorPage';
@@ -12,10 +11,10 @@ import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
-import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
+import EnterpriseAppContent from './EnterpriseAppContent';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -101,7 +100,6 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
-    const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
     if (error) {
       return this.renderError(error);
@@ -124,6 +122,7 @@ class EnterpriseApp extends React.Component {
     return (
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
@@ -134,9 +133,6 @@ class EnterpriseApp extends React.Component {
                 <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
-                  wrappedComponentRef={(node) => {
-                    this.sidebarRef = node && node.getWrappedInstance();
-                  }}
                   onWidthChange={(width) => {
                     this.setState({
                       sidebarWidth: width + defaultContentPadding,
@@ -152,8 +148,7 @@ class EnterpriseApp extends React.Component {
                     paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                   }}
                 >
-                  <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  <EnterpriseAppRoutes
+                  <EnterpriseAppContent
                     baseUrl={baseUrl}
                     email={email}
                     enterpriseId={enterpriseId}
@@ -162,8 +157,9 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableContentHighlightsPage={!!FEATURE_CONTENT_HIGHLIGHTS}
-                  />
+                  >
+                    <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
+                  </EnterpriseAppContent>
                 </div>
               </>
             )}

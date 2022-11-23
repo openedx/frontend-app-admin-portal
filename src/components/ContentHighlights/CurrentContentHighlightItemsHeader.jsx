@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
-import { Button, ActionRow } from '@edx/paragon';
+import React from 'react';
+import { ActionRow } from '@edx/paragon';
 import { useParams } from 'react-router-dom';
-import { TEST_COURSE_HIGHLIHTS_DATA } from './data/constants';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
+import DeleteHighlightSet from './DeleteHighlightSet';
 
 const CurrentContentHighlightItemsHeader = () => {
-  const { highlightUUID } = useParams();
-  const [highlightTitle] = useState(TEST_COURSE_HIGHLIHTS_DATA.filter(
-    highlights => highlights.uuid === highlightUUID,
-  )[0].title);
+  const { highlightSetUUID } = useParams();
 
-  if (!highlightTitle) {
-    return null;
-  }
+  const highlightTitle = highlightSetUUID;
 
   const titleName = `${highlightTitle} - Highlights`;
 
@@ -24,7 +19,7 @@ const CurrentContentHighlightItemsHeader = () => {
           {highlightTitle}
         </h2>
         <ActionRow.Spacer />
-        <Button variant="outline-primary">Delete Highlight</Button>
+        <DeleteHighlightSet />
       </ActionRow>
     </>
   );
