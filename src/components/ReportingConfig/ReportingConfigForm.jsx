@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import omit from 'lodash/omit';
 import {
   ValidationFormGroup, Input, StatefulButton, Icon, Button,
 } from '@edx/paragon';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
@@ -42,6 +44,7 @@ class ReportingConfigForm extends React.Component {
     frequency: this.props.config ? this.props.config.frequency : 'monthly',
     deliveryMethod: this.props.config ? this.props.config.deliveryMethod : 'email',
     invalidFields: {},
+    APIErrors: {},
     active: this.props.config ? this.props.config.active : false,
     submitState: SUBMIT_STATES.DEFAULT,
   };
@@ -71,13 +74,35 @@ class ReportingConfigForm extends React.Component {
     // One special case for email fields
     const field = e.target;
     const error = validationFunction ? validationFunction() : !field.value.length;
-
     this.setState((state) => ({
       invalidFields: {
         ...state.invalidFields,
         [field.name]: error,
       },
+      // Remove the field that changed from APIErrors. It will b validated again on the next API request/
+      APIErrors: {
+        ...omit(state.APIErrors, [field.name]),
+      },
     }));
+  };
+
+  handleAPIErrorResponse = (response) => {
+    const responseData = response && camelCaseObject(response.data);
+    const invalidFields = {};
+
+    if (!isEmpty(responseData)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(responseData)) {
+        [invalidFields[key]] = value;
+      }
+
+      this.setState((state) => ({
+        APIErrors: {
+          ...state.APIErrors,
+          ...invalidFields,
+        },
+      }));
+    }
   };
 
   /**
@@ -118,6 +143,7 @@ class ReportingConfigForm extends React.Component {
       const err = await this.props.updateConfig(formData, config.uuid);
       if (err) {
         this.setState({ submitState: SUBMIT_STATES.ERROR });
+        this.handleAPIErrorResponse(err.response);
         return;
       }
     } else {
@@ -126,6 +152,7 @@ class ReportingConfigForm extends React.Component {
       const err = await this.props.createConfig(formData);
       if (err) {
         this.setState({ submitState: SUBMIT_STATES.ERROR });
+        this.handleAPIErrorResponse(err.response);
         return;
       }
     }
@@ -137,6 +164,7 @@ class ReportingConfigForm extends React.Component {
     const {
       frequency,
       invalidFields,
+      APIErrors,
       deliveryMethod,
       active,
       submitState,
@@ -287,8 +315,10 @@ class ReportingConfigForm extends React.Component {
           </div>
         </div>
         <ValidationFormGroup
-          for="pgpEncyptionKey"
-          helpText="The key for encyption, if PGP encrypted file is required"
+          for="pgpEncryptionKey"
+          helpText="The key for encryption, if PGP encrypted file is required"
+          invalid={!!APIErrors.pgpEncryptionKey}
+          invalidMessage={APIErrors.pgpEncryptionKey}
         >
           <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
           <Input
@@ -297,6 +327,7 @@ class ReportingConfigForm extends React.Component {
             name="pgpEncryptionKey"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
             data-hj-suppress
+            onBlur={e => this.handleBlur(e)}
           />
         </ValidationFormGroup>
         {deliveryMethod === 'email' && (
@@ -326,7 +357,7 @@ class ReportingConfigForm extends React.Component {
               multiple
               defaultValue={selectedCatalogs}
               options={
-                availableCatalogs.map(item => ({
+                availableCatalogs && availableCatalogs.map(item => ({
                   value: item.uuid,
                   label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
                 }))

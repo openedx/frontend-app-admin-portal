@@ -306,4 +306,40 @@ describe('<ReportingConfigForm />', () => {
     await act(() => flushPromises());
     expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
   });
+  it('handles API response errors correctly.', async () => {
+    defaultConfig.pgpEncryptionKey = 'invalid-key';
+    const mock = jest.fn();
+
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={defaultConfig}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
+    wrapper.instance().setState = mock;
+
+    const formData = new FormData();
+    Object.entries(defaultConfig).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    const errorResponse = {
+      data: {
+        pgp_encryption_key: ['Please enter a valid PGP encryption key.'],
+      },
+    };
+    wrapper.instance().handleAPIErrorResponse(errorResponse);
+    expect(mock).toHaveBeenCalled();
+
+    mock.mockClear();
+
+    wrapper.instance().handleAPIErrorResponse({});
+    expect(mock).not.toHaveBeenCalled();
+
+    wrapper.instance().handleAPIErrorResponse(null);
+    expect(mock).not.toHaveBeenCalled();
+  });
 });
