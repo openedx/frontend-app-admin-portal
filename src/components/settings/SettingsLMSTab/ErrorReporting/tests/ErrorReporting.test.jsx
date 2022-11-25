@@ -241,9 +241,7 @@ describe('<ExistingLMSCardDeck />', () => {
       target: { value: 'ayylmao' },
     });
 
-    await waitFor(() => expect(mockFetchCmits).toBeCalledWith(
-      'test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' },
-    ));
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
   });
   test('csv download works', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');

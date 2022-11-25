@@ -73,19 +73,6 @@ class CodeRevokeModal extends React.Component {
     }
   }
 
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  setDoNotEmail(doNotEmail) {
-    this.setState({ doNotEmail });
-  }
-
-  hasIndividualRevokeData() {
-    const { data } = this.props;
-    return ['code', 'assigned_to'].every(key => key in data);
-  }
-
   handleModalSubmit(formData) {
     const {
       couponId,
@@ -163,6 +150,19 @@ class CodeRevokeModal extends React.Component {
     /* eslint-enable no-underscore-dangle */
   }
 
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
+  setDoNotEmail(doNotEmail) {
+    this.setState({ doNotEmail });
+  }
+
+  hasIndividualRevokeData() {
+    const { data } = this.props;
+    return ['code', 'assigned_to'].every(key => key in data);
+  }
+
   renderBody() {
     const {
       data,
@@ -184,11 +184,7 @@ class CodeRevokeModal extends React.Component {
             />
           )}
         <div className="assignment-details mb-4">
-          {isBulkRevoke && (
-            <>
-              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
-            </>
-          )}
+          {(isBulkRevoke && data.selectedCodes.length > 0) && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>
               <p className="code">{displayCode(data.code)}</p>

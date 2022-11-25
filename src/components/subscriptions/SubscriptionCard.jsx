@@ -91,9 +91,9 @@ const SubscriptionCard = ({
         title={title}
         subtitle={subtitle}
         actions={(
-          <>
+          <div>
             {renderActions() || renderDaysUntilPlanStartText('mt-4')}
-          </>
+          </div>
         )}
       />
     );

@@ -73,6 +73,7 @@ const SubsidyRequestManagementTable = ({
       additionalColumns={[{
         id: 'action',
         Header: '',
+        // eslint-disable-next-line react/no-unstable-nested-components
         Cell: (props) => (
           <ActionCell
             {...props}

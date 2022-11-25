@@ -54,7 +54,7 @@ export const useLinkManagement = (enterpriseUUID) => {
     };
   }, [enterpriseUUID]);
 
-  useEffect(loadLinks, []);
+  useEffect(loadLinks, [loadLinks]);
 
   return {
     links,

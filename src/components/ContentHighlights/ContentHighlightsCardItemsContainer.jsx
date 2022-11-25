@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { CardGrid } from '@edx/paragon';
-import { useParams } from 'react-router-dom';
 import { camelCaseObject } from '@edx/frontend-platform';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
 const ContentHighlightsCardItemsContainer = () => {
-  const { highlightUUID } = useParams();
   const [highlightCourses] = useState(
-    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
-      highlight => highlight.uuid === highlightUUID,
-    )[0]?.highlightedContent,
+    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent,
   );
+
   if (!highlightCourses) {
     return null;
   }

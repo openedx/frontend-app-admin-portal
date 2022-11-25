@@ -1,42 +1,33 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { Route } from 'react-router-dom';
+
 import CurrentContentHighlightItemsHeader from '../CurrentContentHighlightItemsHeader';
 
-const mockStore = configureMockStore([thunk]);
-
-const highlightUUID = '1';
-const contentByUUID = TEST_COURSE_HIGHLIGHTS_DATA.filter(
-  highlight => highlight.uuid === highlightUUID,
-)[0];
-/* Currently mocks TEST_COURSE_HIGHLIGHTS_DATA from data/constants.js by the uuid */
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: () => ({
-    highlightUUID,
-  }),
+jest.mock('../DeleteHighlightSet', () => ({
+  __esModule: true,
+  default: () => <div data-testid="deleteHighlightSet" />,
 }));
 
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-id',
-  },
-};
+const highlightSetUUID = 'fake-uuid';
 
-const ContentHighlightsCardItemsHeaderWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <CurrentContentHighlightItemsHeader {...props} />
-  </Provider>
+const CurrentContentHighlightItemsHeaderWrapper = (props) => (
+  <Route
+    path="/:enterpriseSlug/admin/content-highlights/:highlightSetUUID"
+    render={routeProps => <CurrentContentHighlightItemsHeader {...routeProps} {...props} />}
+  />
 );
 
-describe('<ContentHighlightsCardItemsContainer>', () => {
+describe('<CurrentContentHighlightItemsHeader>', () => {
   it('Displays all content data titles', () => {
-    renderWithRouter(<ContentHighlightsCardItemsHeaderWrapper />);
-    const { title } = contentByUUID;
-    expect(screen.getByText(title)).toBeInTheDocument();
+    const initialRouterEntry = `/test-enterprise/admin/content-highlights/${highlightSetUUID}`;
+    renderWithRouter(
+      <CurrentContentHighlightItemsHeaderWrapper />,
+      { route: initialRouterEntry },
+    );
+    expect(screen.getByText(highlightSetUUID)).toBeInTheDocument();
+    expect(screen.getByTestId('deleteHighlightSet')).toBeInTheDocument();
   });
 });

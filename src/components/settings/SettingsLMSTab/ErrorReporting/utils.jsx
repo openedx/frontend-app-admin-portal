@@ -56,5 +56,8 @@ export function getSyncStatus(status, statusMessage) {
 }
 
 export function getSyncTime(time) {
-  return (<>{time !== null && (<div>{timeago.format(time, 'time-locale')}</div>)}</>);
+  if (!time) {
+    return null;
+  }
+  return <div>{timeago.format(time, 'time-locale')}</div>;
 }
