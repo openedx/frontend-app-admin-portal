@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import Cookies from 'universal-cookie';
 
 import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
@@ -9,19 +8,13 @@ import {
   PORTAL_APPEARANCE_ON_END_EVENT_NAME,
   TOUR_TARGETS,
 } from './constants';
-import disableAll from './data/utils';
-
-const cookies = new Cookies();
+import { disableAll } from './data/utils';
 
 const portalAppearanceTour = ({
   enterpriseSlug,
 }) => {
   const disableTour = () => {
-    cookies.set(
-      PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
-      true,
-      { sameSite: 'strict' },
-    );
+    global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
   };
 
   const handleAdvanceTour = () => {

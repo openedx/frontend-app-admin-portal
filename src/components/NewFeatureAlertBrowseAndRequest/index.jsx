@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Button } from '@edx/paragon';
-import Cookies from 'universal-cookie';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
+
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
   BROWSE_AND_REQUEST_ALERT_TEXT,
@@ -12,8 +11,6 @@ import {
 } from '../subscriptions/data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
-
-const cookies = new Cookies();
 
 /**
  * Generates string use to identify cookie
@@ -24,7 +21,7 @@ export const generateBrowseAndRequestAlertCookieName = (enterpriseId) => `${BROW
 
 const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
   const browseAndRequestAlertCookieName = generateBrowseAndRequestAlertCookieName(enterpriseId);
-  const hideAlert = cookies.get(browseAndRequestAlertCookieName);
+  const hideAlert = global.localStorage.getItem(browseAndRequestAlertCookieName);
 
   const [showAlert, setShowAlert] = useState(!hideAlert);
 
@@ -33,11 +30,7 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
    */
   const handleClose = () => {
     setShowAlert(false);
-    cookies.set(
-      browseAndRequestAlertCookieName,
-      true,
-      { sameSite: 'strict' },
-    );
+    global.localStorage.setItem(browseAndRequestAlertCookieName, true);
   };
 
   const history = useHistory();
