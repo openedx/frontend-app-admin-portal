@@ -34,7 +34,7 @@ const HighlightSetSection = ({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
-            imageCapSrc="https://source.unsplash.com/360x200/?cat,dog"
+            imageCapSrc="https://picsum.photos/360/200/"
           />
         ))}
       </CardGrid>

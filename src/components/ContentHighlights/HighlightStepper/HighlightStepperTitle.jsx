@@ -3,6 +3,7 @@ import {
   Row, Col, Icon, Container,
 } from '@edx/paragon';
 import { AddCircle } from '@edx/paragon/icons';
+
 import { STEPPER_STEP_TEXT } from '../data/constants';
 import HighlightStepperTitleInput from './HighlightStepperTitleInput';
 
@@ -32,4 +33,5 @@ const HighlightStepperTitle = () => (
     </Row>
   </Container>
 );
+
 export default HighlightStepperTitle;

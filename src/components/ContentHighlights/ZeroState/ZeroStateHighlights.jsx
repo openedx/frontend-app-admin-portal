@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useContextSelector } from 'use-context-selector';
 import {
   Card, Button, Col, Row,
 } from '@edx/paragon';
@@ -10,10 +11,18 @@ import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { toggleStepperModalAction } from '../data/actions';
 
 const ZeroStateHighlights = ({ cardClassName }) => {
-  const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
+  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+  const openContentHighlightStepper = () => setState(s => ({
+    ...s,
+    stepperModal: {
+      ...s.stepperModal,
+      isOpen: true,
+    },
+  }));
+
   return (
     <Row>
       <Col xs={12} sm={10} md={9} lg={8} xl={5}>
@@ -29,15 +38,16 @@ const ZeroStateHighlights = ({ cardClassName }) => {
 
           <ZeroStateCardFooter>
             <Button
-              onClick={() => dispatch(toggleStepperModalAction({ isOpen: true }))}
+              onClick={openContentHighlightStepper}
               iconBefore={Add}
               block
-            >New highlight
+            >
+              New highlight
             </Button>
           </ZeroStateCardFooter>
         </Card>
       </Col>
-      <ContentHighlightStepper isModalOpen={isOpen} />
+      <ContentHighlightStepper isModalOpen={isStepperModalOpen} />
     </Row>
   );
 };

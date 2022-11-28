@@ -34,7 +34,6 @@ const ContentHighlightRoutes = ({ enterpriseSlug }) => {
       />
       <Route
         path={`${baseContentHighlightPath}/:highlightSetUUID/`}
-        component={ContentHighlightSet}
         render={(routeProps) => (
           <BaseContentHighlightRoute {...routeProps}>
             <ContentHighlightSet />

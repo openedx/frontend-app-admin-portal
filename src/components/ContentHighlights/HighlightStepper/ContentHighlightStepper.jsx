@@ -1,6 +1,5 @@
-import React, {
-  useState, useContext,
-} from 'react';
+import React, { useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 import {
   Stepper, FullscreenModal, Button,
 } from '@edx/paragon';
@@ -10,12 +9,6 @@ import HighlightStepperSelectCourses from './HighlightStepperSelectCourses';
 import HighlightStepperConfirmCourses from './HighlightStepperConfirmCourses';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import {
-  toggleStepperModalAction,
-  // setStepperHighlightTitle,
-  // setStepperHighlightCreated,
-  // setStepperHighlightPublished,
-} from '../data/actions';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -33,41 +26,47 @@ const ContentHighlightStepper = () => {
     STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
   ];
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  const { dispatch, stepperModal: { isOpen } } = useContext(ContentHighlightsContext);
+
+  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+  const titleStepValidationError = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.titleStepValidationError,
+  );
+  const highlightTitle = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.highlightTitle,
+  );
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
 
   const closeStepperModal = () => {
-    dispatch(toggleStepperModalAction({ isOpen: false }));
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: false,
+        highlightTitle: null,
+        currentSelectedRowIds: {},
+      },
+    }));
+    setCurrentStep(steps[0]);
   };
 
   const submitAndReset = () => {
     if (steps.indexOf(currentStep) === steps.length - 1) {
       /* TODO: submit data to api if confirmed */
-      setCurrentStep(steps[0]);
+      // setCurrentStep(steps[0]);
       /* TODO: reset stepper data in context */
       // dispatch(setStepper)
     }
     closeStepperModal();
   };
 
-  // const validateStepsAndContinue = () => {
-  //   if (currentStep === steps[0] && highlightTitle && highlightTitle.length < 61) {
-  //     dispatch(setStepperHighlightCreated({ createdHighlight: true }));
-  //     dispatch(setStepperHighlightPublished({ publishedHighlight: false }));
-  //     setCurrentStep(steps[1]);
-  //   }
-  // };
-
-  // const clearDataAndClose = () => {
-  //   dispatch(setStepperHighlightTitle({ highlightTitle: '' }));
-  //   dispatch(toggleStepperModalAction({ isOpen: false }));
-  // };
-
   return (
     <Stepper activeKey={currentStep}>
       <FullscreenModal
         title="New highlight"
         className="bg-light-200"
-        isOpen={isOpen}
+        isOpen={isStepperModalOpen}
         onClose={() => {
           submitAndReset();
         }}
@@ -88,6 +87,7 @@ const ContentHighlightStepper = () => {
               <Button
                 variant="primary"
                 onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_COURSES)}
+                disabled={!!titleStepValidationError || !highlightTitle}
               >
                 Next
               </Button>
@@ -96,8 +96,18 @@ const ContentHighlightStepper = () => {
             <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_COURSES}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}>Next</Button>
+              <Button
+                variant="tertiary"
+                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
+              >
+                Back
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+              >
+                Next
+              </Button>
             </Stepper.ActionRow>
 
             <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
@@ -112,15 +122,26 @@ const ContentHighlightStepper = () => {
         <Stepper.Step
           eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
           title={STEPPER_STEP_LABELS.CREATE_TITLE}
+          hasError={!!titleStepValidationError}
+          description={titleStepValidationError || ''}
+          index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
         >
           <HighlightStepperTitle />
         </Stepper.Step>
 
-        <Stepper.Step eventKey="Select courses" title={steps[1]}>
+        <Stepper.Step
+          eventKey={STEPPER_STEP_LABELS.SELECT_COURSES}
+          title={STEPPER_STEP_LABELS.SELECT_COURSES}
+          index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_COURSES)}
+        >
           <HighlightStepperSelectCourses />
         </Stepper.Step>
 
-        <Stepper.Step eventKey="Confirm and publish" title={steps[2]}>
+        <Stepper.Step
+          eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+          title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+          index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+        >
           <HighlightStepperConfirmCourses />
         </Stepper.Step>
       </FullscreenModal>

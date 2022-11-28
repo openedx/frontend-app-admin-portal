@@ -1,25 +1,21 @@
-import React, { createContext, useReducer, useMemo } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { createContext } from 'use-context-selector';
 
-import {
-  contentHighlightsReducer,
-  initialContentHighlightsState,
-} from './data/reducer';
-
-export const ContentHighlightsContext = createContext({});
+export const ContentHighlightsContext = createContext(null);
 
 const ContentHighlightsContextProvider = ({ children }) => {
-  const [
-    contentHighlightsState,
-    dispatch,
-  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: {},
+    },
+    contentHighlights: [],
+  });
 
-  const value = useMemo(() => ({
-    ...contentHighlightsState,
-    dispatch,
-  }), [contentHighlightsState]);
-
-  return <ContentHighlightsContext.Provider value={value}>{children}</ContentHighlightsContext.Provider>;
+  return <ContentHighlightsContext.Provider value={contextValue}>{children}</ContentHighlightsContext.Provider>;
 };
 
 ContentHighlightsContextProvider.propTypes = {

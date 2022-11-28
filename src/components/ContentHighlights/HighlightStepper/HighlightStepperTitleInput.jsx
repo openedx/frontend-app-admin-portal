@@ -1,23 +1,41 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { useContextSelector } from 'use-context-selector';
 import { Form } from '@edx/paragon';
+
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { setStepperHighlightTitle } from '../data/actions';
 import { HIGHLIGHT_TITLE_MAX_LENGTH } from '../data/constants';
 
 const HighlightStepperTitleInput = () => {
-  const { dispatch, stepperModal: { highlightTitle } } = useContext(ContentHighlightsContext);
-  const [titleLength, setTitleLength] = useState(0);
+  const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+  const [titleLength, setTitleLength] = useState(highlightTitle?.length || 0);
   const [isInvalid, setIsInvalid] = useState(false);
+
   const handleChange = (e) => {
-    // TODO: Eventually allow uniqueness of names validation based on existing highlight sets
     if (e.target.value.length > 60) {
       setIsInvalid(true);
+      setState(s => ({
+        ...s,
+        stepperModal: {
+          ...s.stepperModal,
+          highlightTitle: e.target.value,
+          titleStepValidationError: 'Titles may only be 60 characters or less',
+        },
+      }));
     } else {
       setIsInvalid(false);
+      setState(s => ({
+        ...s,
+        stepperModal: {
+          ...s.stepperModal,
+          highlightTitle: e.target.value,
+          titleStepValidationError: undefined,
+        },
+      }));
     }
     setTitleLength(e.target.value.length);
-    dispatch(setStepperHighlightTitle({ highlightTitle: e.target.value }));
   };
+
   return (
     <Form.Group
       isInvalid={isInvalid}

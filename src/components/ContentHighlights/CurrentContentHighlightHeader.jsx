@@ -1,13 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useContextSelector } from 'use-context-selector';
 import {
   Button, ActionRow,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
+
 import { ContentHighlightsContext } from './ContentHighlightsContext';
-import { toggleStepperModalAction } from './data/actions';
 
 const CurrentContentHighlightHeader = () => {
-  const { dispatch } = useContext(ContentHighlightsContext);
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+
+  const openHighlightStepperModal = () => setState(s => ({
+    ...s,
+    stepperModal: {
+      ...s.stepperModal,
+      isOpen: true,
+    },
+  }));
+
   return (
     <ActionRow>
       <h2 className="m-0">
@@ -16,7 +26,7 @@ const CurrentContentHighlightHeader = () => {
       <ActionRow.Spacer />
       <Button
         iconBefore={Add}
-        onClick={() => dispatch(toggleStepperModalAction({ isOpen: true }))}
+        onClick={openHighlightStepperModal}
       >
         New
       </Button>

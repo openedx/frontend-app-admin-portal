@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useContextSelector } from 'use-context-selector';
 import { Icon } from '@edx/paragon';
 import { AddCircle } from '@edx/paragon/icons';
-import { MAX_COURSES_PER_HIGHLIGHT, STEPPER_STEP_TEXT } from '../data/constants';
+import { MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET, STEPPER_STEP_TEXT } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const HighlightStepperSelectCoursesTitle = () => {
-  const { stepperModal: { highlightTitle } } = useContext(ContentHighlightsContext);
+  const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
   return (
     <>
       <h3 className="mb-3 d-flex align-items-center">
@@ -14,8 +15,7 @@ const HighlightStepperSelectCoursesTitle = () => {
       </h3>
       <div className="mb-5">
         <p>
-          Select up to {MAX_COURSES_PER_HIGHLIGHT} courses for &quot;{highlightTitle}&quot;.
-          Courses in Learner&apos;s Portal appear in order of selection.
+          Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> courses for &quot;{highlightTitle}&quot;.
         </p>
         <p>
           <strong>

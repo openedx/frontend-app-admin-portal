@@ -8,7 +8,7 @@ import HighlightStepperSelectCoursesHeader from './HighlightStepperSelectCourses
 const HighlightStepperSelectCourses = () => (
   <Container>
     <Row>
-      <Col md={5}>
+      <Col xs={12} md={8} lg={6}>
         <HighlightStepperSelectCoursesHeader />
       </Col>
     </Row>

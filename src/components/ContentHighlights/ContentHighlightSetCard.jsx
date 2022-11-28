@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useContextSelector } from 'use-context-selector';
 import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
-import { toggleStepperModalAction } from './data/actions';
 
 const ContentHighlightSetCard = ({
   imageCapSrc,
@@ -17,14 +17,21 @@ const ContentHighlightSetCard = ({
 }) => {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
-  const { dispatch } = useContext(ContentHighlightsContext);
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
   /* Stepper Draft Logic (See Hook) - End */
   const handleHighlightSetClick = () => {
     if (isPublished) {
       // redirect to individual highlighted courses based on uuid
-      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
+      history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
+      return;
     }
-    return dispatch(toggleStepperModalAction({ isOpen: true }));
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: true,
+      },
+    }));
   };
 
   return (
