@@ -9,7 +9,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import DownloadCsvButton from './DownloadCsvButton';
-import { createLookup, getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 
 const ContentMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
@@ -108,7 +108,7 @@ const ContentMetadataTable = ({ config, enterpriseCustomerUuid }) => {
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
-            Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
+            Cell: ({ row }) => getTimeAgo(row.original.sync_last_attempted_at),
             sortable: true,
             disableFilters: true,
           },

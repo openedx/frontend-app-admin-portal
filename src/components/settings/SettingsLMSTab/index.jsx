@@ -25,7 +25,7 @@ import {
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-export default function SettingsLMSTab({
+const SettingsLMSTab = ({
   enterpriseId,
   enterpriseSlug,
   enableSamlConfigurationScreen,
