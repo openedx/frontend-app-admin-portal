@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
+import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
+import { connect } from 'react-redux';
 import {
-  Stepper, FullscreenModal, Button,
+  Stepper, FullscreenModal, Button, StatefulButton,
 } from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
+import { camelCaseObject } from '@edx/frontend-platform';
 
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import HighlightStepperTitle from './HighlightStepperTitle';
 import HighlightStepperSelectContent from './HighlightStepperSelectContent';
 import HighlightStepperConfirmContent from './HighlightStepperConfirmContent';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
-import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -16,16 +28,24 @@ const STEPPER_STEP_LABELS = {
   CONFIRM_PUBLISH: 'Confirm and publish',
 };
 
+const steps = [
+  STEPPER_STEP_LABELS.CREATE_TITLE,
+  STEPPER_STEP_LABELS.SELECT_CONTENT,
+  STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
+];
+
 /**
- * Stepper to support create/edit user flow for a highlight set.
+ * Stepper to support create user flow for a highlight set.
  */
-const ContentHighlightStepper = () => {
-  const steps = [
-    STEPPER_STEP_LABELS.CREATE_TITLE,
-    STEPPER_STEP_LABELS.SELECT_CONTENT,
-    STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
-  ];
+const ContentHighlightStepper = ({ enterpriseId }) => {
+  const {
+    enterpriseCuration: {
+      dispatch: dispatchEnterpriseCuration,
+    },
+  } = useContext(EnterpriseAppContext);
   const [currentStep, setCurrentStep] = useState(steps[0]);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
 
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -38,7 +58,7 @@ const ContentHighlightStepper = () => {
   );
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
 
-  const closeStepperModal = () => {
+  const closeStepperModal = useCallback(() => {
     setState(s => ({
       ...s,
       stepperModal: {
@@ -49,16 +69,37 @@ const ContentHighlightStepper = () => {
       },
     }));
     setCurrentStep(steps[0]);
-  };
+  }, [setState]);
 
-  const submitAndReset = () => {
-    if (steps.indexOf(currentStep) === steps.length - 1) {
-      /* TODO: submit data to api if confirmed */
-      // setCurrentStep(steps[0]);
-      /* TODO: reset stepper data in context */
-      // dispatch(setStepper)
+  useEffect(() => {
+    if (isPublished) {
+      closeStepperModal();
     }
-    closeStepperModal();
+  }, [closeStepperModal, isPublished]);
+
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    try {
+      const newHighlightSet = {
+        title: highlightTitle,
+        isPublished: true,
+      };
+      const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
+      const result = camelCaseObject(response.data);
+      const transformedHighlightSet = {
+        cardImageUrl: result.cardImageUrl,
+        isPublished: result.isPublished,
+        title: result.title,
+        uuid: result.uuid,
+        highlightedContentUuids: [],
+      };
+      dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
+      setIsPublished(true);
+    } catch (error) {
+      logError(error);
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   return (
@@ -67,9 +108,7 @@ const ContentHighlightStepper = () => {
         title="New highlight"
         className="bg-light-200"
         isOpen={isStepperModalOpen}
-        onClose={() => {
-          submitAndReset();
-        }}
+        onClose={closeStepperModal}
         beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
         footerNode={(
           <>
@@ -113,8 +152,21 @@ const ContentHighlightStepper = () => {
             <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}>Back</Button>
-              <Button variant="primary" onClick={() => submitAndReset()}>Confirm</Button>
+              <Button
+                variant="tertiary"
+                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+              >
+                Back
+              </Button>
+              <StatefulButton
+                labels={{
+                  default: 'Publish',
+                  pending: 'Publishing...',
+                }}
+                variant="primary"
+                onClick={handlePublish}
+                state={isPublishing ? 'pending' : 'default'}
+              />
             </Stepper.ActionRow>
           </>
           )}
@@ -149,4 +201,12 @@ const ContentHighlightStepper = () => {
   );
 };
 
-export default ContentHighlightStepper;
+ContentHighlightStepper.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(ContentHighlightStepper);

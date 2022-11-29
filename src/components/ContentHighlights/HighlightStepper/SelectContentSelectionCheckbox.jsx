@@ -25,7 +25,7 @@ const SelectContentSelectionCheckbox = ({ row }) => {
       <CheckboxControl
         {...toggleRowSelectedProps}
         checked={checked}
-        title="Toggle row selected"
+        title={!isDisabled ? 'Toggle row selected' : undefined}
         isIndeterminate={indeterminate}
         disabled={isDisabled}
         style={{ cursor: !isDisabled ? 'pointer' : undefined }}

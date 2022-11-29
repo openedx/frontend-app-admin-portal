@@ -66,7 +66,7 @@ function enterpriseCurationReducer(state, action) {
         ...state,
         enterpriseCuration: {
           ...state.enterpriseCuration,
-          highlightSets: [...existingHighlightSets, action.payload],
+          highlightSets: [action.payload, ...existingHighlightSets],
         },
       };
     }

@@ -15,7 +15,7 @@ const HighlightStepperSelectContentTitle = () => {
       </h3>
       <div className="mb-5">
         <p>
-          Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> courses for &quot;{highlightTitle}&quot;.
+          Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> items for &quot;{highlightTitle}&quot;.
         </p>
         <p>
           <strong>
