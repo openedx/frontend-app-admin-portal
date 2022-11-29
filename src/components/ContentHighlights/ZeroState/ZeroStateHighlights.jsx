@@ -11,17 +11,11 @@ import ZeroStateCardText from './ZeroStateCardText';
 import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import { useContentHighlightsContext } from '../data/hooks';
 
 const ZeroStateHighlights = ({ cardClassName }) => {
+  const { openStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
-  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
-  const openContentHighlightStepper = () => setState(s => ({
-    ...s,
-    stepperModal: {
-      ...s.stepperModal,
-      isOpen: true,
-    },
-  }));
 
   return (
     <Row>
@@ -37,7 +31,7 @@ const ZeroStateHighlights = ({ cardClassName }) => {
           </ZeroStateCardText>
           <ZeroStateCardFooter>
             <Button
-              onClick={openContentHighlightStepper}
+              onClick={openStepperModal}
               iconBefore={Add}
               block
             >

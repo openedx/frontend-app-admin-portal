@@ -1,8 +1,5 @@
 import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useContext,
+  useCallback, useState, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
@@ -21,6 +18,7 @@ import HighlightStepperConfirmContent from './HighlightStepperConfirmContent';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
+import { useContentHighlightsContext } from '../data/hooks';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -45,8 +43,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   } = useContext(EnterpriseAppContext);
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [isPublished, setIsPublished] = useState(false);
 
+  const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
     ContentHighlightsContext,
@@ -56,26 +54,15 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].stepperModal.highlightTitle,
   );
-  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+  const currentSelectedRowIds = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.currentSelectedRowIds,
+  );
 
   const closeStepperModal = useCallback(() => {
-    setState(s => ({
-      ...s,
-      stepperModal: {
-        ...s.stepperModal,
-        isOpen: false,
-        highlightTitle: null,
-        currentSelectedRowIds: {},
-      },
-    }));
+    resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [setState]);
-
-  useEffect(() => {
-    if (isPublished) {
-      closeStepperModal();
-    }
-  }, [closeStepperModal, isPublished]);
+  }, [resetStepperModal]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -83,6 +70,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
+        // TODO: pass along the selected content keys!
       };
       const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
       const result = camelCaseObject(response.data);
@@ -94,7 +82,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         highlightedContentUuids: [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
-      setIsPublished(true);
+      closeStepperModal();
     } catch (error) {
       logError(error);
     } finally {
@@ -144,6 +132,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               <Button
                 variant="primary"
                 onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+                disabled={Object.keys(currentSelectedRowIds).length === 0}
               >
                 Next
               </Button>

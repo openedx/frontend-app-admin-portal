@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+import { useContextSelector } from 'use-context-selector';
+import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-// eslint-disable-next-line import/prefer-default-export
 export function useHighlightSetsForCuration(enterpriseCuration) {
   const [highlightSets, setHighlightSets] = useState({
     draft: [],
@@ -27,4 +28,58 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
   }, [enterpriseCuration]);
 
   return highlightSets;
+}
+
+export function useContentHighlightsContext() {
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+
+  const openStepperModal = useCallback(() => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: true,
+      },
+    }));
+  }, [setState]);
+
+  const resetStepperModal = useCallback(() => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: false,
+        highlightTitle: null,
+        currentSelectedRowIds: {},
+      },
+    }));
+  }, [setState]);
+
+  const setCurrentSelectedRowIds = useCallback((selectedRowIds) => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        currentSelectedRowIds: selectedRowIds,
+      },
+    }));
+  }, [setState]);
+
+  const setHighlightTitle = useCallback(({ highlightTitle, titleStepValidationError }) => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        highlightTitle,
+        titleStepValidationError,
+      },
+    }));
+  }, [setState]);
+
+  return {
+    openStepperModal,
+    resetStepperModal,
+    setCurrentSelectedRowIds,
+    setHighlightTitle,
+  };
 }

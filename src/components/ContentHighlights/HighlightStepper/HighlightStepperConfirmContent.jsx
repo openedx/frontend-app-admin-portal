@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
-import algoliasearch from 'algoliasearch/lite';
 import {
   Container,
   Row,
@@ -75,12 +74,11 @@ BaseReviewContentSelections.defaultProps = {
 
 const ReviewContentSelections = connectStateResults(BaseReviewContentSelections);
 
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
 const SelectedContent = () => {
+  const searchClient = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].searchClient,
+  );
   const currentSelectedRowIdsRaw = useContextSelector(
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,

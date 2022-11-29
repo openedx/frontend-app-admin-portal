@@ -1,6 +1,4 @@
-import React, {
-  useState, useCallback, useMemo,
-} from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
@@ -15,6 +13,7 @@ import SelectContentSelectionStatus from './SelectContentSelectionStatus';
 import SelectContentSelectionCheckbox from './SelectContentSelectionCheckbox';
 import SelectContentSearchPagination from './SelectContentSearchPagination';
 import SkeletonContentCard from '../SkeletonContentCard';
+import { useContentHighlightsContext } from '../data/hooks';
 
 const defaultActiveStateValue = 'card';
 const pageSize = 24;
@@ -30,6 +29,7 @@ const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
 
 const HighlightStepperSelectContent = () => {
+  const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
@@ -38,17 +38,6 @@ const HighlightStepperSelectContent = () => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
-  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
-
-  const handleSelectedRowsChanged = useCallback((selectedRowIds) => {
-    setState(s => ({
-      ...s,
-      stepperModal: {
-        ...s.stepperModal,
-        currentSelectedRowIds: selectedRowIds,
-      },
-    }));
-  }, [setState]);
 
   const searchFilters = `enterprise_customer_uuids:${prodEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch} AND content_type:course`;
 
@@ -63,7 +52,7 @@ const HighlightStepperSelectContent = () => {
       />
       <HighlightStepperSelectContentDataTable
         selectedRowIds={currentSelectedRowIds}
-        onSelectedRowsChanged={handleSelectedRowsChanged}
+        onSelectedRowsChanged={setCurrentSelectedRowIds}
       />
     </InstantSearch>
   );
