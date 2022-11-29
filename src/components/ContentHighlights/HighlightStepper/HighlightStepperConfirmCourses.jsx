@@ -62,8 +62,8 @@ const BaseReviewContentSelections = ({
 BaseReviewContentSelections.propTypes = {
   searchResults: PropTypes.shape({
     hits: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      aggregationKey: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      aggregationKey: PropTypes.string,
     })).isRequired,
   }),
   isSearchStalled: PropTypes.bool.isRequired,

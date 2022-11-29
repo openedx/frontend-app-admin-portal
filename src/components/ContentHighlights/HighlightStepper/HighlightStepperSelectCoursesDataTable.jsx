@@ -10,7 +10,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 
 import { configuration } from '../../../config';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
-import ContentHighlightCardItem from '../ContentHighlightCardItem';
+import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SelectCoursesSelectionStatus from './SelectCoursesSelectionStatus';
 import SelectCoursesSelectCheckbox from './SelectCoursesSelectCheckbox';
@@ -156,7 +156,7 @@ const BaseHighlightStepperSelectCoursesDataTable = ({
             xl: 3,
           }}
           SkeletonCardComponent={SkeletonContentCard}
-          CardComponent={ContentHighlightCardItem}
+          CardComponent={ContentSearchResultCard}
         />
       )}
       {currentView === 'list' && <DataTable.Table /> }
