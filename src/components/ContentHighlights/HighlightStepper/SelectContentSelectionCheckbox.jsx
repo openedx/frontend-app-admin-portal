@@ -6,7 +6,7 @@ import { CheckboxControl } from '@edx/paragon';
 import { MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-const SelectCoursesSelectCheckbox = ({ row }) => {
+const SelectContentSelectionCheckbox = ({ row }) => {
   const {
     indeterminate,
     checked,
@@ -34,10 +34,10 @@ const SelectCoursesSelectCheckbox = ({ row }) => {
   );
 };
 
-SelectCoursesSelectCheckbox.propTypes = {
+SelectContentSelectionCheckbox.propTypes = {
   row: PropTypes.shape({
     getToggleRowSelectedProps: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default SelectCoursesSelectCheckbox;
+export default SelectContentSelectionCheckbox;

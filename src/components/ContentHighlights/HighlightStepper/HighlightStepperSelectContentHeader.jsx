@@ -5,13 +5,13 @@ import { AddCircle } from '@edx/paragon/icons';
 import { MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET, STEPPER_STEP_TEXT } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-const HighlightStepperSelectCoursesTitle = () => {
+const HighlightStepperSelectContentTitle = () => {
   const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
   return (
     <>
       <h3 className="mb-3 d-flex align-items-center">
         <Icon src={AddCircle} className="mr-2 color-brand-tertiary" />
-        {STEPPER_STEP_TEXT.selectCourses}
+        {STEPPER_STEP_TEXT.selectContent}
       </h3>
       <div className="mb-5">
         <p>
@@ -27,4 +27,4 @@ const HighlightStepperSelectCoursesTitle = () => {
     </>
   );
 };
-export default HighlightStepperSelectCoursesTitle;
+export default HighlightStepperSelectContentTitle;

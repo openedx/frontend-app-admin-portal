@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
-import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 import { DataTable, CardView } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -12,9 +11,9 @@ import { configuration } from '../../../config';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
 import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import SelectCoursesSelectionStatus from './SelectCoursesSelectionStatus';
-import SelectCoursesSelectCheckbox from './SelectCoursesSelectCheckbox';
-import SelectCoursesSearchPagination from './SelectCoursesSearchPagination';
+import SelectContentSelectionStatus from './SelectContentSelectionStatus';
+import SelectContentSelectionCheckbox from './SelectContentSelectionCheckbox';
+import SelectContentSearchPagination from './SelectContentSearchPagination';
 import SkeletonContentCard from '../SkeletonContentCard';
 
 const defaultActiveStateValue = 'card';
@@ -23,22 +22,21 @@ const pageSize = 24;
 const selectColumn = {
   id: 'selection',
   Header: () => null,
-  Cell: SelectCoursesSelectCheckbox,
+  Cell: SelectContentSelectionCheckbox,
   disableSortBy: true,
 };
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
 
 const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
 
-const HighlightStepperSelectCourses = () => {
+const HighlightStepperSelectContent = () => {
   const currentSelectedRowIds = useContextSelector(
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
+  );
+  const searchClient = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].searchClient,
   );
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
 
@@ -52,16 +50,18 @@ const HighlightStepperSelectCourses = () => {
     }));
   }, [setState]);
 
+  const searchFilters = `enterprise_customer_uuids:${prodEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch} AND content_type:course`;
+
   return (
     <InstantSearch
       indexName={configuration.ALGOLIA.INDEX_NAME}
       searchClient={searchClient}
     >
       <Configure
-        filters={`enterprise_customer_uuids:${prodEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`}
+        filters={searchFilters}
         hitsPerPage={pageSize}
       />
-      <HighlightStepperSelectCoursesDataTable
+      <HighlightStepperSelectContentDataTable
         selectedRowIds={currentSelectedRowIds}
         onSelectedRowsChanged={handleSelectedRowsChanged}
       />
@@ -87,7 +87,7 @@ PriceTableCell.propTypes = {
 
 const ContentTypeTableCell = ({ row }) => FOOTER_TEXT_BY_CONTENT_TYPE[row.original.contentType.toLowerCase()];
 
-const BaseHighlightStepperSelectCoursesDataTable = ({
+const BaseHighlightStepperSelectContentDataTable = ({
   selectedRowIds,
   onSelectedRowsChanged,
   isSearchStalled,
@@ -126,7 +126,7 @@ const BaseHighlightStepperSelectCoursesDataTable = ({
       }}
       data={tableData}
       manualSelectColumn={selectColumn}
-      SelectionStatusComponent={SelectCoursesSelectionStatus}
+      SelectionStatusComponent={SelectContentSelectionStatus}
       columns={[
         {
           Header: 'Content name',
@@ -163,13 +163,13 @@ const BaseHighlightStepperSelectCoursesDataTable = ({
       <DataTable.EmptyTable content="No results found" />
       <DataTable.TableFooter>
         <DataTable.RowStatus />
-        <SelectCoursesSearchPagination />
+        <SelectContentSearchPagination />
       </DataTable.TableFooter>
     </DataTable>
   );
 };
 
-BaseHighlightStepperSelectCoursesDataTable.propTypes = {
+BaseHighlightStepperSelectContentDataTable.propTypes = {
   selectedRowIds: PropTypes.shape().isRequired,
   onSelectedRowsChanged: PropTypes.func.isRequired,
   isSearchStalled: PropTypes.bool.isRequired,
@@ -180,10 +180,10 @@ BaseHighlightStepperSelectCoursesDataTable.propTypes = {
   }),
 };
 
-BaseHighlightStepperSelectCoursesDataTable.defaultProps = {
+BaseHighlightStepperSelectContentDataTable.defaultProps = {
   searchResults: null,
 };
 
-const HighlightStepperSelectCoursesDataTable = connectStateResults(BaseHighlightStepperSelectCoursesDataTable);
+const HighlightStepperSelectContentDataTable = connectStateResults(BaseHighlightStepperSelectContentDataTable);
 
-export default HighlightStepperSelectCourses;
+export default HighlightStepperSelectContent;

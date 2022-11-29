@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@edx/paragon';
+import { Card, Truncate } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
 
@@ -22,8 +22,8 @@ const ContentHighlightCardItem = ({
         logoAlt={cardLogoAlt}
       />
       <Card.Header
-        title={title}
-        subtitle={cardSubtitle}
+        title={<Truncate lines={3} title={title}>{title}</Truncate>}
+        subtitle={<Truncate lines={2}>{cardSubtitle}</Truncate>}
       />
       {contentType && (
         <>

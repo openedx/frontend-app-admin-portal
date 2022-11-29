@@ -6,7 +6,7 @@ import { Button, DataTableContext } from '@edx/paragon';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-const SelectCoursesSelectionStatus = ({ className }) => {
+const SelectContentSelectionStatus = ({ className }) => {
   const { toggleAllRowsSelected } = useContext(DataTableContext);
   const currentSelectedRowsCount = useContextSelector(
     ContentHighlightsContext,
@@ -35,12 +35,12 @@ const SelectCoursesSelectionStatus = ({ className }) => {
   );
 };
 
-SelectCoursesSelectionStatus.propTypes = {
+SelectContentSelectionStatus.propTypes = {
   className: PropTypes.string,
 };
 
-SelectCoursesSelectionStatus.defaultProps = {
+SelectContentSelectionStatus.defaultProps = {
   className: undefined,
 };
 
-export default SelectCoursesSelectionStatus;
+export default SelectContentSelectionStatus;

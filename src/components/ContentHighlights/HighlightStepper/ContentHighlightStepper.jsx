@@ -5,14 +5,14 @@ import {
 } from '@edx/paragon';
 
 import HighlightStepperTitle from './HighlightStepperTitle';
-import HighlightStepperSelectCourses from './HighlightStepperSelectCourses';
-import HighlightStepperConfirmCourses from './HighlightStepperConfirmCourses';
+import HighlightStepperSelectContent from './HighlightStepperSelectContent';
+import HighlightStepperConfirmContent from './HighlightStepperConfirmContent';
 import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
-  SELECT_COURSES: 'Select courses',
+  SELECT_CONTENT: 'Select content',
   CONFIRM_PUBLISH: 'Confirm and publish',
 };
 
@@ -22,7 +22,7 @@ const STEPPER_STEP_LABELS = {
 const ContentHighlightStepper = () => {
   const steps = [
     STEPPER_STEP_LABELS.CREATE_TITLE,
-    STEPPER_STEP_LABELS.SELECT_COURSES,
+    STEPPER_STEP_LABELS.SELECT_CONTENT,
     STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
   ];
   const [currentStep, setCurrentStep] = useState(steps[0]);
@@ -86,14 +86,14 @@ const ContentHighlightStepper = () => {
               </Button>
               <Button
                 variant="primary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_COURSES)}
+                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
                 disabled={!!titleStepValidationError || !highlightTitle}
               >
                 Next
               </Button>
             </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_COURSES}>
+            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
               <Button
@@ -113,7 +113,7 @@ const ContentHighlightStepper = () => {
             <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
               <HighlightStepperFooterHelpLink />
               <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_COURSES)}>Back</Button>
+              <Button variant="tertiary" onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}>Back</Button>
               <Button variant="primary" onClick={() => submitAndReset()}>Confirm</Button>
             </Stepper.ActionRow>
           </>
@@ -130,11 +130,11 @@ const ContentHighlightStepper = () => {
         </Stepper.Step>
 
         <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.SELECT_COURSES}
-          title={STEPPER_STEP_LABELS.SELECT_COURSES}
-          index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_COURSES)}
+          eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
+          title={STEPPER_STEP_LABELS.SELECT_CONTENT}
+          index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
         >
-          <HighlightStepperSelectCourses />
+          <HighlightStepperSelectContent />
         </Stepper.Step>
 
         <Stepper.Step
@@ -142,7 +142,7 @@ const ContentHighlightStepper = () => {
           title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
           index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
         >
-          <HighlightStepperConfirmCourses />
+          <HighlightStepperConfirmContent />
         </Stepper.Step>
       </FullscreenModal>
     </Stepper>

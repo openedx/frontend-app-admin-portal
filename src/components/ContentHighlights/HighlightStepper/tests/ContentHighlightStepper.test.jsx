@@ -59,27 +59,27 @@ describe('<ContentHighlightStepper>', () => {
     // open stepper --> title
     const stepper = screen.getByText('Click Me');
     fireEvent.click(stepper);
-    // title --> select courses
+    // title --> select content
     const nextButton1 = screen.getByText('Next');
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
     fireEvent.click(nextButton1);
-    // select courses --> confirm courses
+    // select content --> confirm content
     const nextButton2 = screen.getByText('Next');
     fireEvent.click(nextButton2);
-    // confirm courses --> confirm highlight
+    // confirm content --> confirm highlight
     const nextButton3 = screen.getByText('Next');
     fireEvent.click(nextButton3);
 
-    // // confirm highlight --> confirm courses
+    // // confirm highlight --> confirm content
     const backButton1 = screen.getByText('Back');
     fireEvent.click(backButton1);
     expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
-    // confirm courses --> select courses
+    // confirm content --> select content
     const backButton2 = screen.getByText('Back');
     fireEvent.click(backButton2);
-    expect(screen.getByText(STEPPER_STEP_TEXT.selectCourses)).toBeInTheDocument();
-    // select courses --> title
+    expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
+    // select content --> title
     const backButton3 = screen.getByText('Back');
     fireEvent.click(backButton3);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();

@@ -1,14 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { faker } from '@faker-js/faker';
 
-// Max number of courses per highlight
+// Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 // Max length of highlight title in stepper
 export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
   createTitle: 'Create a title for your highlight',
-  selectCourses: 'Add content to your highlight',
+  selectContent: 'Add content to your highlight',
   confirmContent: 'Confirm your content selections',
 };
 

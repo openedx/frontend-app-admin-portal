@@ -21,7 +21,7 @@ const ContentHighlightSetCard = ({
   /* Stepper Draft Logic (See Hook) - End */
   const handleHighlightSetClick = () => {
     if (isPublished) {
-      // redirect to individual highlighted courses based on uuid
+      // redirect to individual highlighted set based on uuid
       history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
       return;
     }

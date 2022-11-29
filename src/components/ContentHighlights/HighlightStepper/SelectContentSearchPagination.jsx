@@ -18,7 +18,7 @@ export const BaseSearchPagination = ({
       variant="minimal"
       currentPage={currentRefinement}
       pageCount={nbPages}
-      paginationLabel="select courses pagination"
+      paginationLabel="select content pagination"
       onPageSelect={(pageNum) => refine(pageNum)}
     />
   </>

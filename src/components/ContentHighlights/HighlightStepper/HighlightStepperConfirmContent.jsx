@@ -126,7 +126,7 @@ const SelectedContent = () => {
   );
 };
 
-const HighlightStepperConfirmCourses = () => (
+const HighlightStepperConfirmContent = () => (
   <Container>
     <Row>
       <Col xs={12} md={8} lg={6}>
@@ -140,4 +140,4 @@ const HighlightStepperConfirmCourses = () => (
   </Container>
 );
 
-export default HighlightStepperConfirmCourses;
+export default HighlightStepperConfirmContent;
