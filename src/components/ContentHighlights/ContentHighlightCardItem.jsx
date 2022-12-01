@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Truncate } from '@edx/paragon';
+import { Card } from '@edx/paragon';
+import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
 
@@ -9,9 +10,9 @@ const ContentHighlightCardItem = ({
   partners,
   cardImageUrl,
 }) => {
-  const cardLogoSrc = partners.length === 1 ? partners[0].logoImageUrl : undefined;
-  const cardLogoAlt = partners.length === 1 ? `${partners[0].name}'s logo` : undefined;
-  const cardSubtitle = partners.map(p => p.name).join(', ');
+  const cardLogoSrc = partners?.length === 1 ? partners[0].logoImageUrl : undefined;
+  const cardLogoAlt = partners?.length === 1 ? `${partners[0].name}'s logo` : undefined;
+  const cardSubtitle = partners?.map(p => p.name).join(', ');
 
   return (
     <Card>

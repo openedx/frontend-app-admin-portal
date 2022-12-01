@@ -1,4 +1,4 @@
-import { useMemo, useReducer } from 'react';
+import { useState } from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -7,14 +7,12 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { STEPPER_STEP_TEXT } from '../data/constants';
+import algoliasearch from 'algoliasearch/lite';
+import { BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import {
-  contentHighlightsReducer,
-  initialContentHighlightsState,
-} from '../data/reducer';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { configuration } from '../../../config';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -32,6 +30,11 @@ const initialEnterpriseAppContextValue = {
   },
 };
 
+const searchClient = algoliasearch(
+  configuration.ALGOLIA.APP_ID,
+  configuration.ALGOLIA.SEARCH_API_KEY,
+);
+
 const exampleHighlightSet = {
   uuid: 'fake-uuid',
   title: 'Test Highlight Set',
@@ -45,19 +48,21 @@ const ContentHighlightsDashboardWrapper = ({
   ...props
 }) => {
   /* eslint-enable react/prop-types */
-  const [
-    contentHighlightsState,
-    dispatch,
-  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
-  const defaultValue = useMemo(() => ({
-    ...contentHighlightsState,
-    dispatch,
-  }), [contentHighlightsState]);
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: {},
+    },
+    contentHighlights: [],
+    searchClient,
+  });
   return (
     <IntlProvider locale="en">
       <Provider store={mockStore(initialState)}>
         <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={defaultValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
             <ContentHighlightsDashboard {...props} />
           </ContentHighlightsContext.Provider>
         </EnterpriseAppContext.Provider>
@@ -74,7 +79,7 @@ describe('<ContentHighlightsDashboard>', () => {
 
   it('Displays New highlight Modal on button click with no highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText('New highlight');
+    const newHighlight = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
@@ -91,7 +96,7 @@ describe('<ContentHighlightsDashboard>', () => {
         }}
       />,
     );
-    expect(screen.getByText('Highlight collections')).toBeInTheDocument();
+    expect(screen.getByText(HEADER_TEXT.currentContent)).toBeInTheDocument();
   });
 
   it('Displays New highlight modal on button click with highlighted content list', () => {

@@ -1,18 +1,15 @@
-import { useMemo, useReducer } from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { useState } from 'react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import algoliasearch from 'algoliasearch/lite';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
-import {
-  contentHighlightsReducer,
-  initialContentHighlightsState,
-} from '../data/reducer';
-import { STEPPER_STEP_TEXT } from '../data/constants';
+import { configuration } from '../../../config';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -32,17 +29,24 @@ const initialState = {
   highlightSetUUID: 'test-uuid',
 };
 
+const searchClient = algoliasearch(
+  configuration.ALGOLIA.APP_ID,
+  configuration.ALGOLIA.SEARCH_API_KEY,
+);
+
 const ContentHighlightSetCardWrapper = (props) => {
-  const [
-    contentHighlightsState,
-    dispatch,
-  ] = useReducer(contentHighlightsReducer, initialContentHighlightsState);
-  const value = useMemo(() => ({
-    ...contentHighlightsState,
-    dispatch,
-  }), [contentHighlightsState]);
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: {},
+    },
+    contentHighlights: [],
+    searchClient,
+  });
   return (
-    <ContentHighlightsContext.Provider value={value}>
+    <ContentHighlightsContext.Provider value={contextValue}>
       <Provider store={mockStore(initialState)}>
         <CurrentContentHighlightHeader />
         <ContentHighlightSetCard {...props} />
@@ -55,14 +59,5 @@ describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper {...mockData} />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();
-  });
-  it('Displays the stepper modal on click of the draft status', () => {
-    const props = {
-      ...mockData,
-      isPublished: false,
-    };
-    renderWithRouter(<ContentHighlightSetCardWrapper {...props} />);
-    fireEvent.click(screen.getByText('Test Title'));
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 });

@@ -13,7 +13,7 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
     const draftHighlightSets = [];
     const publishedHighlightSets = [];
 
-    highlightSetsForCuration.forEach((highlightSet) => {
+    highlightSetsForCuration?.forEach((highlightSet) => {
       if (highlightSet.isPublished) {
         publishedHighlightSets.push(highlightSet);
       } else {

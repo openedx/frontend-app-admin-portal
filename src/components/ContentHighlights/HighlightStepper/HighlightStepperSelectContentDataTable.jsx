@@ -40,7 +40,6 @@ const HighlightStepperSelectContent = () => {
   );
 
   const searchFilters = `enterprise_customer_uuids:${prodEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch} AND content_type:course`;
-
   return (
     <InstantSearch
       indexName={configuration.ALGOLIA.INDEX_NAME}

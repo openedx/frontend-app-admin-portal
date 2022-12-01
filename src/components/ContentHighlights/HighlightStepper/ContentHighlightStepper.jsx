@@ -58,7 +58,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
   );
-
   const closeStepperModal = useCallback(() => {
     resetStepperModal();
     setCurrentStep(steps[0]);

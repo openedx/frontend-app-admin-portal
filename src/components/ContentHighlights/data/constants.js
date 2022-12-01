@@ -11,6 +11,15 @@ export const STEPPER_STEP_TEXT = {
   selectContent: 'Add content to your highlight',
   confirmContent: 'Confirm your content selections',
 };
+// Header text extracted into constant to maintain passing test on changes
+export const HEADER_TEXT = {
+  currentContent: 'Highlights',
+};
+// Button text extracted from constant to maintain passing test on changes
+export const BUTTON_TEXT = {
+  createNewHighlight: 'New',
+  zeroStateCreateNewHighlight: 'New highlight',
+};
 
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {

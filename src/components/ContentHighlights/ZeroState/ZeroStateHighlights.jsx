@@ -12,6 +12,7 @@ import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { useContentHighlightsContext } from '../data/hooks';
+import { BUTTON_TEXT } from '../data/constants';
 
 const ZeroStateHighlights = ({ cardClassName }) => {
   const { openStepperModal } = useContentHighlightsContext();
@@ -35,7 +36,7 @@ const ZeroStateHighlights = ({ cardClassName }) => {
               iconBefore={Add}
               block
             >
-              New highlight
+              {BUTTON_TEXT.zeroStateCreateNewHighlight}
             </Button>
           </ZeroStateCardFooter>
         </Card>
