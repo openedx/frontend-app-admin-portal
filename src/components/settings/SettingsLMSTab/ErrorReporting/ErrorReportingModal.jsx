@@ -10,8 +10,9 @@ const ErrorReportingModal = ({
   isOpen, close, config, enterpriseCustomerUuid,
 }) => {
   const [key, setKey] = useState('contentMetadata');
-  const contentError = config?.lastContentSyncErroredAt == null ? '' : ' ';
-  const learnerError = config?.lastLearnerSyncErroredAt == null ? '' : ' ';
+  // notification for tab must be a non-empty string to appear
+  const contentError = config?.lastContentSyncErroredAt == null ? null : ' ';
+  const learnerError = config?.lastLearnerSyncErroredAt == null ? null : ' ';
   return (
     <ModalDialog
       title="Error Reporting Modal"

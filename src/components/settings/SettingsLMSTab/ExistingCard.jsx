@@ -54,12 +54,7 @@ const ExistingCard = ({
       setErrorModalText(errorToggleModalText);
       openError();
     } else {
-      // eslint-disable-next-line no-lonely-if
-      if (toggle) {
-        onClick(ACTIVATE_TOAST_MESSAGE);
-      } else {
-        onClick(INACTIVATE_TOAST_MESSAGE);
-      }
+      onClick(toggle ? ACTIVATE_TOAST_MESSAGE : INACTIVATE_TOAST_MESSAGE);
     }
   };
 
@@ -125,7 +120,8 @@ const ExistingCard = ({
     if (config.lastSyncErroredAt != null) {
       const timeStamp = getTimeAgo(config.lastSyncErroredAt);
       return <>Recent sync error:&nbsp; {timeStamp}<Icon className="small-icon text-danger-500" src={Error} /></>;
-    } if (config.lastSyncAttemptedAt != null) {
+    }
+    if (config.lastSyncAttemptedAt != null) {
       const timeStamp = getTimeAgo(config.lastSyncAttemptedAt);
       return <>Last sync:&nbsp; {timeStamp}<Icon className="small-icon text-success-500" src={CheckCircle} /></>;
     }
