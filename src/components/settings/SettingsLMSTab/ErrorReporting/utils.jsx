@@ -55,7 +55,7 @@ export function getSyncStatus(status, statusMessage) {
   );
 }
 
-export function getSyncTime(time) {
+export function getTimeAgo(time) {
   if (!time) {
     return null;
   }
