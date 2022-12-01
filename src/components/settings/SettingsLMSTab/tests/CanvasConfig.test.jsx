@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import CanvasConfig from '../LMSConfigs/CanvasConfig';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 jest.mock('../../data/constants', () => ({
@@ -295,7 +295,7 @@ describe('<CanvasConfig />', () => {
     expect(mockUpdateConfigApi).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
-    await waitFor(() => expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL));
+    await waitFor(() => expect(mockOnClick).toHaveBeenCalledWith(SUBMIT_TOAST_MESSAGE));
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
     render(
@@ -313,7 +313,7 @@ describe('<CanvasConfig />', () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.queryByText('Authorize')).not.toBeInTheDocument());
-    expect(mockOnClick).toHaveBeenCalledWith(SUCCESS_LABEL);
+    expect(mockOnClick).toHaveBeenCalledWith(SUBMIT_TOAST_MESSAGE);
     expect(mockUpdateConfigApi).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);

@@ -30,6 +30,9 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
   return highlightSets;
 }
 
+/**
+ * Defines an interface to mutate the `ContentHighlightsContext` context value.
+ */
 export function useContentHighlightsContext() {
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
 

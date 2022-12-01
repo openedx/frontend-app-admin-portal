@@ -8,7 +8,7 @@ import {
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { createLookup, getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 import DownloadCsvButton from './DownloadCsvButton';
 
 const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
@@ -113,7 +113,7 @@ const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
-            Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
+            Cell: ({ row }) => getTimeAgo(row.original.sync_last_attempted_at),
             sortable: true,
             disableFilters: true,
           },

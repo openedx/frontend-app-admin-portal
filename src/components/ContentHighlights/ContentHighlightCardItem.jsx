@@ -24,7 +24,7 @@ const ContentHighlightCardItem = ({
       />
       <Card.Header
         title={<Truncate lines={3} title={title}>{title}</Truncate>}
-        subtitle={<Truncate lines={2}>{cardSubtitle}</Truncate>}
+        subtitle={<Truncate lines={2} title={cardSubtitle}>{cardSubtitle}</Truncate>}
       />
       {contentType && (
         <>
