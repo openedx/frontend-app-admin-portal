@@ -12,11 +12,7 @@ import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
-const highlightSetUUID = '1';
-const contentByUUID = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA).filter(
-  highlight => highlight.uuid === highlightSetUUID,
-)[0]?.highlightedContent;
-
+const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent;
 const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise',
@@ -32,27 +28,27 @@ const ContentHighlightsCardItemsContainerWrapper = (props) => (
 describe('<ContentHighlightsCardItemsContainer>', () => {
   it('Displays all content data titles', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
-    const firstTitle = contentByUUID[0].title;
-    const lastTitle = contentByUUID[contentByUUID.length - 1].title;
+    const firstTitle = testHighlightSet[0].title;
+    const lastTitle = testHighlightSet[testHighlightSet.length - 1].title;
     expect(screen.getByText(firstTitle)).toBeInTheDocument();
     expect(screen.getByText(lastTitle)).toBeInTheDocument();
   });
 
   it('Displays all content data content types', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
-    const firstContentType = contentByUUID[0].contentType;
-    const lastContentType = contentByUUID[contentByUUID.length - 1].contentType;
+    const firstContentType = testHighlightSet[0].contentType;
+    const lastContentType = testHighlightSet[testHighlightSet.length - 1].contentType;
     expect(screen.getByText(firstContentType)).toBeInTheDocument();
     expect(screen.getByText(lastContentType)).toBeInTheDocument();
   });
 
-  it('Displays only the first organization', () => {
+  it('Displays multiple organizations', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper />);
-    const firstContentType = contentByUUID[0]
+    const firstContentType = testHighlightSet[0]
       .authoringOrganizations[0].name;
-    const lastContentType = contentByUUID[0]
-      .authoringOrganizations[contentByUUID[0].authoringOrganizations.length - 1].name;
-    expect(screen.getByText(firstContentType)).toBeInTheDocument();
-    expect(screen.queryByText(lastContentType)).not.toBeInTheDocument();
+    const lastContentType = testHighlightSet[0]
+      .authoringOrganizations[testHighlightSet[0].authoringOrganizations.length - 1].name;
+    expect(screen.getByText(firstContentType, { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(lastContentType, { exact: false })).toBeInTheDocument();
   });
 });
