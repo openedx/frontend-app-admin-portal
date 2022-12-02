@@ -174,7 +174,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           title={STEPPER_STEP_LABELS.SELECT_CONTENT}
           index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
         >
-          <HighlightStepperSelectContent />
+          <HighlightStepperSelectContent enterpriseId={enterpriseId} />
         </Stepper.Step>
 
         <Stepper.Step

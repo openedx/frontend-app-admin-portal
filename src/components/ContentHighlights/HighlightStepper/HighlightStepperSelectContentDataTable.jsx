@@ -25,10 +25,9 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
 
-const HighlightStepperSelectContent = () => {
+const HighlightStepperSelectContent = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
     ContentHighlightsContext,
@@ -39,7 +38,7 @@ const HighlightStepperSelectContent = () => {
     v => v[0].searchClient,
   );
 
-  const searchFilters = `enterprise_customer_uuids:${prodEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch} AND content_type:course`;
+  const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
   return (
     <InstantSearch
       indexName={configuration.ALGOLIA.INDEX_NAME}
@@ -55,6 +54,10 @@ const HighlightStepperSelectContent = () => {
       />
     </InstantSearch>
   );
+};
+
+HighlightStepperSelectContent.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const PriceTableCell = ({ row }) => {
