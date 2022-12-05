@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 
-const ContentSearchResultCard = ({ original }) => {
+const ContentConfirmContentCard = ({ original }) => {
   const {
     title,
     contentType,
     partners,
     cardImageUrl,
     originalImageUrl,
+    extras,
   } = original;
-  const extras = {
-    firstEnrollablePaidSeatPrice: original.firstEnrollablePaidSeatPrice,
-  };
   return (
     <ContentHighlightCardItem
       title={title}
@@ -25,15 +23,17 @@ const ContentSearchResultCard = ({ original }) => {
   );
 };
 
-ContentSearchResultCard.propTypes = {
+ContentConfirmContentCard.propTypes = {
   original: PropTypes.shape({
     title: PropTypes.string,
     contentType: PropTypes.string,
     partners: PropTypes.arrayOf(PropTypes.shape()),
     cardImageUrl: PropTypes.string,
     originalImageUrl: PropTypes.string,
-    firstEnrollablePaidSeatPrice: PropTypes.number,
+    extras: PropTypes.shape({
+      firstEnrollablePaidSeatPrice: PropTypes.number,
+    }),
   }).isRequired,
 };
 
-export default ContentSearchResultCard;
+export default ContentConfirmContentCard;

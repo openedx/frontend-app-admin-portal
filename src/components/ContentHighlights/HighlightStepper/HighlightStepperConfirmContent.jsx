@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import {
@@ -13,11 +13,15 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 
 import { configuration } from '../../../config';
-import { STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET } from '../data/constants';
+// import {
+//   STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET, testEnterpriseId,
+// } from '../data/constants';
+import {
+  STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+} from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SkeletonContentCard from '../SkeletonContentCard';
-
-const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+import ContentConfirmContentCard from './ContentConfirmContentCard';
 
 const BaseReviewContentSelections = ({
   searchResults,
@@ -43,18 +47,40 @@ const BaseReviewContentSelections = ({
   }
 
   const { hits } = camelCaseObject(searchResults);
+  const contentCards = () => {
+    const cardData = hits.map((highlightedContent) => {
+      const {
+        aggregationKey, title, cardImageUrl, contentType, partners, originalImageUrl, firstEnrollablePaidSeatPrice,
+      } = highlightedContent;
+      const original = {
+        aggregationKey,
+        title,
+        contentType,
+        partners,
+        cardImageUrl,
+        originalImageUrl,
+      };
+      original.extras = {
+        firstEnrollablePaidSeatPrice,
+      };
+      return original;
+    });
+    return cardData;
+  };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [cardData] = useState(contentCards());
   return (
-    <ul>
-      {hits.map((highlightedContent) => {
-        const { aggregationKey, title } = highlightedContent;
-        return (
-          <li key={aggregationKey}>
-            {title}
-          </li>
-        );
-      })}
-    </ul>
+    <CardGrid
+      columnSizes={{
+        xs: 12,
+        md: 6,
+        lg: 4,
+        xl: 3,
+      }}
+    >
+      {cardData.map((original) => (<ContentConfirmContentCard original={original} />))}
+    </CardGrid>
   );
 };
 
@@ -74,7 +100,7 @@ BaseReviewContentSelections.defaultProps = {
 
 const ReviewContentSelections = connectStateResults(BaseReviewContentSelections);
 
-const SelectedContent = () => {
+const SelectedContent = ({ enterpriseId }) => {
   const searchClient = useContextSelector(
     ContentHighlightsContext,
     v => v[0].searchClient,
@@ -92,7 +118,9 @@ const SelectedContent = () => {
    */
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
-    let filterString = `enterprise_customer_uuids:${prodEnterpriseId}`;
+    // TODO: replace testEnterpriseId with enterpriseID before push,
+    // uncomment out import and replace with testEnterpriseId to test
+    let filterString = `enterprise_customer_uuids:${enterpriseId}`;
     if (currentSelectedRowIds.length > 0) {
       filterString += ' AND (';
       currentSelectedRowIds.forEach((selectedRowId, index) => {
@@ -104,6 +132,7 @@ const SelectedContent = () => {
       filterString += ')';
     }
     return filterString;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSelectedRowIds]);
 
   if (currentSelectedRowIds.length === 0) {
@@ -124,7 +153,11 @@ const SelectedContent = () => {
   );
 };
 
-const HighlightStepperConfirmContent = () => (
+SelectedContent.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const HighlightStepperConfirmContent = ({ enterpriseId }) => (
   <Container>
     <Row>
       <Col xs={12} md={8} lg={6}>
@@ -134,8 +167,12 @@ const HighlightStepperConfirmContent = () => (
         </h3>
       </Col>
     </Row>
-    <SelectedContent />
+    <SelectedContent enterpriseId={enterpriseId} />
   </Container>
 );
+
+HighlightStepperConfirmContent.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
 
 export default HighlightStepperConfirmContent;

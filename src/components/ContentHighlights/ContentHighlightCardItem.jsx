@@ -9,11 +9,12 @@ const ContentHighlightCardItem = ({
   contentType,
   partners,
   cardImageUrl,
+  extras,
 }) => {
   const cardLogoSrc = partners?.length === 1 ? partners[0].logoImageUrl : undefined;
   const cardLogoAlt = partners?.length === 1 ? `${partners[0].name}'s logo` : undefined;
   const cardSubtitle = partners?.map(p => p.name).join(', ');
-
+  const cardFooter = extras?.firstEnrollablePaidSeatPrice ? `$${extras.firstEnrollablePaidSeatPrice} · ${FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()]}` : FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()];
   return (
     <Card>
       <Card.ImageCap
@@ -30,7 +31,7 @@ const ContentHighlightCardItem = ({
         <>
           <Card.Section />
           <Card.Footer
-            textElement={FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()]}
+            textElement={cardFooter}
           />
         </>
       )}
@@ -47,10 +48,14 @@ ContentHighlightCardItem.propTypes = {
     uuid: PropTypes.string,
     logoImageUrl: PropTypes.string,
   })).isRequired,
+  extras: PropTypes.shape({
+    firstEnrollablePaidSeatPrice: PropTypes.number,
+  }),
 };
 
 ContentHighlightCardItem.defaultProps = {
   cardImageUrl: undefined,
+  extras: undefined,
 };
 
 export default ContentHighlightCardItem;

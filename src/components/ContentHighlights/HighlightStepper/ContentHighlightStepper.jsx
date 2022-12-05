@@ -182,7 +182,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
           index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
         >
-          <HighlightStepperConfirmContent />
+          <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
         </Stepper.Step>
       </FullscreenModal>
     </Stepper>

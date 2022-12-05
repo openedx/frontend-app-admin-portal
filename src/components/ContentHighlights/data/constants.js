@@ -28,7 +28,10 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
-// Test Data for Content Highlights
+// Test Data for Content Highlights TODO: Remove when API is available || Remove when feature completed
+// Test entepriseId for Content Highlights to display card selections and confirmation
+export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+// Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
     uuid: faker.datatype.uuid(),
