@@ -91,7 +91,7 @@ const ExistingSSOConfigs = ({
         Enabling single sign-on for your edX account allows quick access to
         your organization’s learning catalog
       </p>
-      <h4 className="mt-5 mb-4">Existing configurationss</h4>
+      <h4 className="mt-5 mb-4">Existing configurations</h4>
       <CardGrid
         className="mb-3 mr-3"
         columnSizes={{
