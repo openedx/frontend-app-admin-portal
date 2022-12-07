@@ -106,6 +106,7 @@ const BaseHighlightStepperSelectContentDataTable = ({
       isPaginated
       manualPagination
       initialState={{
+        pageIndex: 0,
         pageSize,
         selectedRowIds,
       }}
