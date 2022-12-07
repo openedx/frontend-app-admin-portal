@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, Button, useToggle,
+  Alert, Button, useToggle, Skeleton,
 } from '@edx/paragon';
 import ReviewItem from './ReviewItem';
 
@@ -34,7 +34,12 @@ ShowHideButton.propTypes = {
 };
 
 const ReviewList = ({
-  rows, accessor, dispatch, subject, returnToSelection,
+  rows,
+  accessor,
+  dispatch,
+  subject,
+  returnToSelection,
+  isLoading,
 }) => {
   const [isShowingAll, showAll, show25] = useToggle(false);
   const displayRows = useMemo(() => {
@@ -48,32 +53,44 @@ const ReviewList = ({
     <div className="col col-6">
       <h3>{subject.title}</h3>
       <p>{subject.title} selected: {rows.length}</p>
-      <ul className="be-review-list">
-        {rows.length < 1 && (
-          <Alert variant="danger" data-testid="no-rows-alert">
-            At least one {subject.singular} must be selected to enroll learners.
-            <Button
-              data-testid="return-to-selection-button"
-              variant="link"
-              size="inline"
-              onClick={returnToSelection}
-            >
-              Return to {subject.singular} selection
-            </Button>
-          </Alert>
-        )}
-        {displayRows.map((row) => (
-          <ReviewItem key={row.id} row={row} accessor={accessor} dispatch={dispatch} altText={subject.removal} />
-        ))}
-      </ul>
-      <ShowHideButton
-        data-testid="show-hide"
-        isShowingAll={isShowingAll}
-        show25={show25}
-        showAll={showAll}
-        numRows={rows.length}
-        subject={subject}
-      />
+      {isLoading ? (
+        <Skeleton count={3} />
+      ) : (
+        <>
+          <ul className="be-review-list">
+            {rows.length < 1 && (
+              <Alert variant="danger" data-testid="no-rows-alert">
+                At least one {subject.singular} must be selected to enroll learners.
+                <Button
+                  data-testid="return-to-selection-button"
+                  variant="link"
+                  size="inline"
+                  onClick={returnToSelection}
+                >
+                  Return to {subject.singular} selection
+                </Button>
+              </Alert>
+            )}
+            {displayRows.map((row) => (
+              <ReviewItem
+                key={row.id}
+                row={row}
+                accessor={accessor}
+                dispatch={dispatch}
+                altText={subject.removal}
+              />
+            ))}
+          </ul>
+          <ShowHideButton
+            data-testid="show-hide"
+            isShowingAll={isShowingAll}
+            show25={show25}
+            showAll={showAll}
+            numRows={rows.length}
+            subject={subject}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -94,6 +111,8 @@ ReviewList.propTypes = {
   }).isRequired,
   /* Function to return the user to the table where these rows were selected */
   returnToSelection: PropTypes.func.isRequired,
+  /* Whether the review list is loading */
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default ReviewList;

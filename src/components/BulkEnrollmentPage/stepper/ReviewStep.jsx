@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { REVIEW_TITLE } from './constants';
 import ReviewList from './ReviewList';
+import ReviewStepCourseList from './ReviewStepCourseList';
 
 const LEARNERS = {
   singular: 'learner',
@@ -13,38 +14,23 @@ const LEARNERS = {
   removal: 'Remove learner',
 };
 
-const COURSES = {
-  singular: 'course',
-  plural: 'courses',
-  title: 'Courses',
-  removal: 'Remove course',
-};
-
 const ReviewStep = ({ returnToLearnerSelection, returnToCourseSelection }) => {
   const {
     emails: [selectedEmails, emailsDispatch],
-    courses: [selectedCourses, coursesDispatch],
   } = useContext(BulkEnrollContext);
 
   return (
     <>
       <p>
-        {/* eslint-disable-next-line react/no-unescaped-entities */}
-        You're almost done! Review your selections and make any final changes before completing enrollment for
+        You&apos;re almost done! Review your selections and make any final changes before completing enrollment for
         your learners.
       </p>
       <h2 className="mb-4">{REVIEW_TITLE}</h2>
       <Row>
-        <ReviewList
-          key="courses"
-          rows={selectedCourses}
-          accessor="title"
-          dispatch={coursesDispatch}
-          subject={COURSES}
+        <ReviewStepCourseList
           returnToSelection={returnToCourseSelection}
         />
         <ReviewList
-          key="emails"
           rows={selectedEmails}
           accessor="userEmail"
           dispatch={emailsDispatch}

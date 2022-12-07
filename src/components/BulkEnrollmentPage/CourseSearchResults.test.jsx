@@ -45,6 +45,7 @@ const searchResults = {
         start: testStartDate,
         end: testEndDate,
       },
+      aggregation_key: 'course:foo',
       key: 'foo',
       short_description: testCourseDesc,
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
@@ -56,6 +57,7 @@ const searchResults = {
         start: testStartDate2,
         end: testEndDate2,
       },
+      aggregation_key: 'course:foo2',
       key: 'foo2',
       short_description: testCourseDesc2,
       partners: [{ name: 'edX' }, { name: 'another_unused' }],
@@ -94,7 +96,7 @@ const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) 
 );
 
 describe('<CourseSearchResults />', () => {
-  it('renders search results', () => {
+  it.only('renders search results', () => {
     const wrapper = mount(<CourseSearchWrapper />);
 
     // 5 header columns: selection, Course name, Partner, Course Date, and enrollment

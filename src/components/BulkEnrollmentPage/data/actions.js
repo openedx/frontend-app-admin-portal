@@ -1,19 +1,13 @@
 export const SET_SELECTED_ROWS = 'SET SELECTED ROWS';
-export const setSelectedRowsAction = (rows) => ({
+export const setSelectedRowsAction = (selectedRowIds) => ({
   type: SET_SELECTED_ROWS,
-  rows,
+  payload: selectedRowIds,
 });
 
 export const DELETE_ROW = 'DELETE ROW';
 export const deleteSelectedRowAction = (rowId) => ({
   type: DELETE_ROW,
-  rowId,
-});
-
-export const ADD_ROW = 'ADD ROW';
-export const addSelectedRowAction = (row) => ({
-  type: ADD_ROW,
-  row,
+  payload: rowId,
 });
 
 export const CLEAR_SELECTION = 'CLEAR SELECTION';

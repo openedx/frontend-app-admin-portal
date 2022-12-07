@@ -39,6 +39,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
 
   const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
+
   return (
     <InstantSearch
       indexName={configuration.ALGOLIA.INDEX_NAME}
@@ -106,7 +107,6 @@ const BaseHighlightStepperSelectContentDataTable = ({
       manualPagination
       initialState={{
         pageSize,
-        pageIndex: 0,
         selectedRowIds,
       }}
       pageCount={searchResultsPageCount}

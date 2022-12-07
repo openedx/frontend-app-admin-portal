@@ -45,6 +45,7 @@ const BulkEnrollStepper = ({
     onClose();
     onSuccess();
   };
+
   return (
     <Stepper activeKey={currentStep}>
       <ModalDialog
