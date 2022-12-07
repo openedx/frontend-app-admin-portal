@@ -113,7 +113,7 @@ const BaseHighlightStepperSelectContentDataTable = ({
       pageCount={searchResultsPageCount}
       itemCount={searchResultsItemCount}
       initialTableOptions={{
-        getRowId: row => row.aggregationKey,
+        getRowId: row => row?.aggregationKey,
         autoResetSelectedRows: false,
       }}
       data={tableData}
