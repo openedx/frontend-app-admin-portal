@@ -6,7 +6,6 @@ import { DataTable, CardView } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 
 import { configuration } from '../../../config';
-// import { FOOTER_TEXT_BY_CONTENT_TYPE, testEnterpriseId } from '../data/constants';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
 import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';

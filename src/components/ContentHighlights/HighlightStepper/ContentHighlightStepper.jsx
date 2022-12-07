@@ -69,7 +69,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
-        // TODO: pass along the selected content keys!
+        content_key: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
       };
       const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
       const result = camelCaseObject(response.data);

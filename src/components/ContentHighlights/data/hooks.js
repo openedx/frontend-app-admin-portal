@@ -1,5 +1,7 @@
+import { camelCaseObject } from '@edx/frontend-platform';
 import { useCallback, useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
+import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 export function useHighlightSetsForCuration(enterpriseCuration) {
@@ -28,6 +30,35 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
   }, [enterpriseCuration]);
 
   return highlightSets;
+}
+
+export function useHighlightSetItems(highlightSetUUID) {
+  const [highlightSetItems, setHighlightSetItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getHighlightSetItems = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data } = await EnterpriseCatalogApiService.fetchHighlightSetItems(highlightSetUUID);
+      const result = camelCaseObject(data);
+      setHighlightSetItems(result);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [highlightSetUUID]);
+
+  useEffect(() => {
+    getHighlightSetItems();
+  }, [getHighlightSetItems]);
+
+  return {
+    highlightSetItems,
+    loading,
+    error,
+  };
 }
 
 /**

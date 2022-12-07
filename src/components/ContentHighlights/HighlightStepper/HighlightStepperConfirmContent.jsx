@@ -13,9 +13,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 
 import { configuration } from '../../../config';
-// import {
-//   STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET, testEnterpriseId,
-// } from '../data/constants';
+
 import {
   STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
 } from '../data/constants';

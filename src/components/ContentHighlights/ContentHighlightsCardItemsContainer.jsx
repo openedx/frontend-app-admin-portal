@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CardGrid } from '@edx/paragon';
-import { camelCaseObject } from '@edx/frontend-platform';
+import PropTypes from 'prop-types';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
-import { TEST_COURSE_HIGHLIGHTS_DATA } from './data/constants';
 
-const ContentHighlightsCardItemsContainer = () => {
-  const [highlightCourses] = useState(
-    camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent,
-  );
-
-  if (!highlightCourses) {
+const ContentHighlightsCardItemsContainer = ({ highlightedContent }) => {
+  if (!highlightedContent) {
     return null;
   }
-
   return (
     <CardGrid
       columnSizes={{
@@ -21,7 +15,7 @@ const ContentHighlightsCardItemsContainer = () => {
         xl: 4,
       }}
     >
-      {highlightCourses.map(({
+      {highlightedContent.map(({
         uuid, title, contentType, authoringOrganizations,
       }) => (
         <ContentHighlightCardItem
@@ -34,6 +28,20 @@ const ContentHighlightsCardItemsContainer = () => {
       ))}
     </CardGrid>
   );
+};
+
+ContentHighlightsCardItemsContainer.propTypes = {
+  highlightedContent: PropTypes.arrayOf(PropTypes.shape({
+    uuid: PropTypes.string,
+    contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']),
+    title: PropTypes.string,
+    cardImageUrl: PropTypes.string,
+    authoringOrganizations: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      logoImageUrl: PropTypes.string,
+      uuid: PropTypes.string,
+    })),
+  })).isRequired,
 };
 
 export default ContentHighlightsCardItemsContainer;

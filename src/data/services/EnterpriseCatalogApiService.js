@@ -42,6 +42,10 @@ class EnterpriseCatalogApiService {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
+  static fetchHighlightSetItems(highlightSetUUID) {
+    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
+  }
+
   static createEnterpriseCurationConfig(enterpriseId, options = {}) {
     const payload = {
       enterprise_customer: enterpriseId,
