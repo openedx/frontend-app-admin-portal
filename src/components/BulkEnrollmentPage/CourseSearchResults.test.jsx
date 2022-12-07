@@ -113,14 +113,14 @@ describe('<CourseSearchResults />', () => {
     expect(tableCells.at(2).text()).toBe('edX');
     expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
   });
-  it.only('renders popover with course description', async () => {
+  it('renders popover with course description', async () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
     const courseTitle = screen.getByText(testCourseName);
     userEvent.click(courseTitle);
     await waitFor(() => {
       expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
-    })
+    });
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
