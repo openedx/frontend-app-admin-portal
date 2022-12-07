@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import { act, screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
@@ -96,7 +96,7 @@ const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) 
 );
 
 describe('<CourseSearchResults />', () => {
-  it.only('renders search results', () => {
+  it('renders search results', () => {
     const wrapper = mount(<CourseSearchWrapper />);
 
     // 5 header columns: selection, Course name, Partner, Course Date, and enrollment
@@ -113,14 +113,14 @@ describe('<CourseSearchResults />', () => {
     expect(tableCells.at(2).text()).toBe('edX');
     expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
   });
-  it('renders popover with course description', () => {
+  it.only('renders popover with course description', async () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
     const courseTitle = screen.getByText(testCourseName);
-    act(() => {
-      userEvent.click(courseTitle);
-    });
-    expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
+    userEvent.click(courseTitle);
+    await waitFor(() => {
+      expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
+    })
   });
   it('displays search pagination', () => {
     const wrapper = mount(<CourseSearchWrapper />);
@@ -139,22 +139,7 @@ describe('<CourseSearchResults />', () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     const rowToSelect = screen.getByText(testCourseName2).closest('tr');
     userEvent.click(within(rowToSelect).getByTestId('selectOne'));
-    expect(screen.getByText('1 selected')).toBeInTheDocument();
-  });
-  it('shows all selected when courses on a page are selected', () => {
-    const onePageState = { page: 0 };
-    const allSelectedProps = {
-      searchResults,
-      searchState: onePageState,
-      isSearchStalled: false,
-      enterpriseId: 'foo',
-      enterpriseSlug: 'fancyCompany',
-    };
-    renderWithRouter(<CourseSearchWrapper props={allSelectedProps} />);
-    const selection = screen.getByTestId('selectAll');
-    userEvent.click(selection);
-
-    expect(screen.getByText('2 selected')).toBeInTheDocument();
+    expect(screen.getByText('1 selected (1 shown below)', { exact: false })).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {
     const wrapper = mount(<CourseSearchWrapper
