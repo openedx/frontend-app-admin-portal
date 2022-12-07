@@ -42,7 +42,7 @@ export function getSyncStatus(status, statusMessage) {
             <Popover variant="danger" id="error-popover">
               <Popover.Content>
                 <h5 className="mb-2"><Error className="text-danger-500 mr-1" />Error<br /></h5>
-                {statusMessage}
+                {statusMessage || 'Something went wrong.  Please contact enterprise customer support.'}
               </Popover.Content>
             </Popover>
       )}
