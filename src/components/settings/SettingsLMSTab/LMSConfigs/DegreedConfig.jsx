@@ -9,7 +9,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 
 const DegreedConfig = ({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
@@ -79,7 +79,7 @@ const DegreedConfig = ({
     if (err) {
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 

@@ -26,9 +26,10 @@ const ContentHighlightsCardItemsContainer = () => {
       }) => (
         <ContentHighlightCardItem
           key={uuid}
+          cardImageUrl="https://picsum.photos/200/300"
           title={title}
-          type={contentType.toLowerCase()}
-          authoringOrganizations={authoringOrganizations}
+          contentType={contentType.toLowerCase()}
+          partners={authoringOrganizations}
         />
       ))}
     </CardGrid>

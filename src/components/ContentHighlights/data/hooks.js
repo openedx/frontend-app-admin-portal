@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+import { useContextSelector } from 'use-context-selector';
+import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
-export const useStepperModalState = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  return {
-    isModalOpen,
-    setIsModalOpen,
-  };
-};
-
-export const useHighlightSetsForCuration = (enterpriseCuration) => {
+export function useHighlightSetsForCuration(enterpriseCuration) {
   const [highlightSets, setHighlightSets] = useState({
     draft: [],
     published: [],
@@ -20,7 +13,7 @@ export const useHighlightSetsForCuration = (enterpriseCuration) => {
     const draftHighlightSets = [];
     const publishedHighlightSets = [];
 
-    highlightSetsForCuration.forEach((highlightSet) => {
+    highlightSetsForCuration?.forEach((highlightSet) => {
       if (highlightSet.isPublished) {
         publishedHighlightSets.push(highlightSet);
       } else {
@@ -35,4 +28,61 @@ export const useHighlightSetsForCuration = (enterpriseCuration) => {
   }, [enterpriseCuration]);
 
   return highlightSets;
-};
+}
+
+/**
+ * Defines an interface to mutate the `ContentHighlightsContext` context value.
+ */
+export function useContentHighlightsContext() {
+  const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
+
+  const openStepperModal = useCallback(() => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: true,
+      },
+    }));
+  }, [setState]);
+
+  const resetStepperModal = useCallback(() => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        isOpen: false,
+        highlightTitle: null,
+        currentSelectedRowIds: {},
+      },
+    }));
+  }, [setState]);
+
+  const setCurrentSelectedRowIds = useCallback((selectedRowIds) => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        currentSelectedRowIds: selectedRowIds,
+      },
+    }));
+  }, [setState]);
+
+  const setHighlightTitle = useCallback(({ highlightTitle, titleStepValidationError }) => {
+    setState(s => ({
+      ...s,
+      stepperModal: {
+        ...s.stepperModal,
+        highlightTitle,
+        titleStepValidationError,
+      },
+    }));
+  }, [setState]);
+
+  return {
+    openStepperModal,
+    resetStepperModal,
+    setCurrentSelectedRowIds,
+    setHighlightTitle,
+  };
+}

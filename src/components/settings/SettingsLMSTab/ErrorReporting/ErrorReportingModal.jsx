@@ -10,10 +10,12 @@ const ErrorReportingModal = ({
   isOpen, close, config, enterpriseCustomerUuid,
 }) => {
   const [key, setKey] = useState('contentMetadata');
-
+  // notification for tab must be a non-empty string to appear
+  const contentError = config?.lastContentSyncErroredAt == null ? null : ' ';
+  const learnerError = config?.lastLearnerSyncErroredAt == null ? null : ' ';
   return (
     <ModalDialog
-      title="My dialog"
+      title="Error Reporting Modal"
       isOpen={isOpen}
       onClose={close}
       size="xl"
@@ -33,12 +35,12 @@ const ErrorReportingModal = ({
           onSelect={(k) => setKey(k)}
           className="mb-3"
         >
-          <Tab eventKey="contentMetadata" title="Content Metadata">
+          <Tab eventKey="contentMetadata" title="Content Metadata" notification={contentError}>
             <h4 className="mt-4">Most recent data transmission</h4>
             From edX for Business to {config?.displayName}
             <ContentMetadataTable enterpriseCustomerUuid={enterpriseCustomerUuid} config={config} />
           </Tab>
-          <Tab eventKey="learnerActivity" title="Learner Activity">
+          <Tab eventKey="learnerActivity" title="Learner Activity" notification={learnerError}>
             <h4 className="mt-4">Most recent data transmission</h4>
             From edX for Business to {config?.displayName}
             <LearnerMetadataTable enterpriseCustomerUuid={enterpriseCustomerUuid} config={config} />
@@ -68,6 +70,8 @@ ErrorReportingModal.propTypes = {
     id: PropTypes.number,
     channelCode: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
+    lastContentSyncErroredAt: PropTypes.string.isRequired,
+    lastLearnerSyncErroredAt: PropTypes.string.isRequired,
   }),
   enterpriseCustomerUuid: PropTypes.string.isRequired,
 };

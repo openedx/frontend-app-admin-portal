@@ -1,103 +1,152 @@
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Button } from '@edx/paragon';
-import React, { useMemo } from 'react';
-import ContentHighlightStepper from '../ContentHighlightStepper';
+import { useState } from 'react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import algoliasearch from 'algoliasearch/lite';
+import thunk from 'redux-thunk';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import configureMockStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { useStepperModalState } from '../../data/hooks';
-import { STEPPER_STEP_TEXT } from '../../data/constants';
+import { BUTTON_TEXT, STEPPER_STEP_TEXT } from '../../data/constants';
+import { configuration } from '../../../../config';
+import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
+import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ContentHighlightStepperWrapper = () => {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
+const mockStore = configureMockStore([thunk]);
 
-  const defaultValue = useMemo(() => ({
-    setIsModalOpen,
-    isModalOpen,
-  }), [setIsModalOpen, isModalOpen]);
+const initialState = {
+  portalConfiguration: {
+    enterpriseSlug: 'test-enterprise',
+  },
+};
 
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      highlightSets: [],
+    },
+  },
+};
+
+const testCourses = {
+  'course:HarvardX+CS50x': true,
+  'course:HarvardX+CS50P': true,
+  'course:HarvardX+CS50W': true,
+  'course:HarvardX+CS50AI': true,
+};
+
+const searchClient = algoliasearch(
+  configuration.ALGOLIA.APP_ID,
+  configuration.ALGOLIA.SEARCH_API_KEY,
+);
+
+/* eslint-disable react/prop-types */
+const ContentHighlightStepperWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  ...props
+}) => {
+  /* eslint-enable react/prop-types */
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: testCourses,
+    },
+    contentHighlights: [],
+    searchClient,
+  });
   return (
-    <ContentHighlightsContext.Provider value={defaultValue}>
-      <Button onClick={() => setIsModalOpen(true)}>Click Me</Button>
-      <ContentHighlightStepper isOpen={isModalOpen} />
-    </ContentHighlightsContext.Provider>
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
+            <ContentHighlightsDashboard {...props} />
+          </ContentHighlightsContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
   );
 };
 
 describe('<ContentHighlightStepper>', () => {
   it('Displays the stepper', () => {
-    render(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper = screen.getByText('Click Me');
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
-    render(<ContentHighlightStepperWrapper />);
-
-    const stepper = screen.getByText('Click Me');
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    // open stepper --> title
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper);
+    // title --> select content
     const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
     fireEvent.click(nextButton1);
+    // select content --> confirm content
     const nextButton2 = screen.getByText('Next');
     fireEvent.click(nextButton2);
-    const nextButton3 = screen.getByText('Next');
-    fireEvent.click(nextButton3);
 
-    const backButton1 = screen.getByText('Back');
-    fireEvent.click(backButton1);
-    expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
+    // confirm content --> select content
     const backButton2 = screen.getByText('Back');
     fireEvent.click(backButton2);
-    expect(screen.getByText(STEPPER_STEP_TEXT.selectCourses)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
+    // select content --> title
     const backButton3 = screen.getByText('Back');
     fireEvent.click(backButton3);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    // title --> closed stepper
     const backButton4 = screen.getByText('Back');
     fireEvent.click(backButton4);
-    expect(screen.getByText('Click Me')).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and exits on the X button', () => {
-    render(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper = screen.getByText('Click Me');
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     fireEvent.click(closeButton);
-    expect(screen.getByText('Click Me')).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
-  it('Displays the stepper and closes the stepper on confirm', () => {
-    render(<ContentHighlightStepperWrapper />);
+  it('Displays the stepper and closes the stepper on confirm', async () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper = screen.getByText('Click Me');
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
-
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
     const nextButton1 = screen.getByText('Next');
     fireEvent.click(nextButton1);
+    expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
     const nextButton2 = screen.getByText('Next');
     fireEvent.click(nextButton2);
-    const nextButton3 = screen.getByText('Next');
-    fireEvent.click(nextButton3);
-    expect(screen.getByText(STEPPER_STEP_TEXT.confirmHighlight)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
 
-    const confirmButton = screen.getByText('Confirm');
+    const confirmButton = screen.getByText('Publish');
     fireEvent.click(confirmButton);
-    expect(screen.getByText('Click Me')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Publishing...')).toBeInTheDocument());
   });
   it('Displays the stepper, closes, then displays stepper again', () => {
-    render(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper1 = screen.getByText('Click Me');
+    const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper1);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     fireEvent.click(closeButton);
-    expect(screen.getByText('Click Me')).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
 
-    const stepper2 = screen.getByText('Click Me');
+    const stepper2 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     fireEvent.click(stepper2);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
