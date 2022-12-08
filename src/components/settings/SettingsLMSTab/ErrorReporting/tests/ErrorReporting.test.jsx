@@ -59,9 +59,9 @@ const contentSyncData = {
       {
         content_title: 'Demo4',
         content_id: 'DemoX-4',
-        sync_status: 'pending',
+        sync_status: 'error',
         sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
-        friendly_status_message: 'The request was unauthorized, check your credentials.',
+        friendly_status_message: null,
       },
       {
         content_title: 'Demo5',
@@ -191,10 +191,15 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
 
     expect(screen.getByText('Demo3')).toBeInTheDocument();
-    expect(screen.getByText('Error')).toBeInTheDocument();
+    expect(screen.getAllByText('Error')[0]).toBeInTheDocument();
 
-    await waitFor(() => userEvent.click(screen.queryByText('Read')));
+    const readLinks = screen.queryAllByText('Read');
+    await waitFor(() => userEvent.click(readLinks[0]));
     expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
+    // Click away to close message
+    await waitFor(() => userEvent.click(readLinks[0]));
+    await waitFor(() => userEvent.click(readLinks[1]));
+    expect(screen.getByText(/Something went wrong.*Please contact enterprise customer support/)).toBeInTheDocument();
   });
   it('paginates over data', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
@@ -241,9 +246,7 @@ describe('<ExistingLMSCardDeck />', () => {
       target: { value: 'ayylmao' },
     });
 
-    await waitFor(() => expect(mockFetchCmits).toBeCalledWith(
-      'test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' },
-    ));
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
   });
   test('csv download works', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');

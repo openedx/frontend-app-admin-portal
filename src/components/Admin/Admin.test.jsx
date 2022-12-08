@@ -398,7 +398,9 @@ describe('<Admin />', () => {
         wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
-          enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, { csvId: key },
+          enterpriseId,
+          CSV_CLICK_SEGMENT_EVENT_NAME,
+          { csvId: key },
         );
       });
     });

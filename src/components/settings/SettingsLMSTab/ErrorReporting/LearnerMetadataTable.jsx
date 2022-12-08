@@ -8,10 +8,10 @@ import {
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { createLookup, getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 import DownloadCsvButton from './DownloadCsvButton';
 
-function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
+const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
   const [currentFilters, setCurrentFilters] = useState();
   const [paginationData, setPaginationData] = useState({
@@ -24,7 +24,11 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
+        enterpriseCustomerUuid,
+        config.channelCode,
+        config.id,
+        currentPage,
+        currentFilters,
       );
       return response;
     };
@@ -109,7 +113,7 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
-            Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
+            Cell: ({ row }) => getTimeAgo(row.original.sync_last_attempted_at),
             sortable: true,
             disableFilters: true,
           },
@@ -122,7 +126,7 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
       </DataTable>
     </div>
   );
-}
+};
 
 LearnerMetadataTable.defaultProps = {
   config: null,

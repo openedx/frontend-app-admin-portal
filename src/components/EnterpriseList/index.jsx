@@ -43,6 +43,16 @@ class EnterpriseList extends React.Component {
     }
   }
 
+  handleSearch(query) {
+    this.setState({
+      searchQuery: query || '',
+      searchSubmitted: true,
+    });
+    this.props.searchEnterpriseList(query ? {
+      search: query,
+    } : {});
+  }
+
   formatEnterpriseData = enterprises => enterprises.map(enterprise => ({
     link: <Link to={`/${enterprise.slug}/admin/learners`}>{enterprise.name}</Link>,
     name: enterprise.name,
@@ -56,17 +66,7 @@ class EnterpriseList extends React.Component {
       optionsWithSearch.search = this.state.searchQuery;
     }
     return LmsApiService.fetchEnterpriseList(optionsWithSearch);
-  }
-
-  handleSearch(query) {
-    this.setState({
-      searchQuery: query || '',
-      searchSubmitted: true,
-    });
-    this.props.searchEnterpriseList(query ? {
-      search: query,
-    } : {});
-  }
+  };
 
   shouldRenderRedirectToEnterpriseAdminPage() {
     const {

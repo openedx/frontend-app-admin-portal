@@ -10,19 +10,17 @@ import SubscriptionRoutes from './SubscriptionRoutes';
 
 const PAGE_TITLE = 'Subscription Management';
 
-function SubscriptionManagementPage({ enterpriseId }) {
-  return (
-    <SubscriptionData enterpriseId={enterpriseId}>
-      <Helmet title={PAGE_TITLE} />
-      <Hero title={PAGE_TITLE} />
-      <main role="main" className="manage-subscription">
-        <Container className="py-3" fluid>
-          <SubscriptionRoutes />
-        </Container>
-      </main>
-    </SubscriptionData>
-  );
-}
+const SubscriptionManagementPage = ({ enterpriseId }) => (
+  <SubscriptionData enterpriseId={enterpriseId}>
+    <Helmet title={PAGE_TITLE} />
+    <Hero title={PAGE_TITLE} />
+    <main role="main" className="manage-subscription">
+      <Container className="py-3" fluid>
+        <SubscriptionRoutes />
+      </Container>
+    </main>
+  </SubscriptionData>
+);
 
 SubscriptionManagementPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

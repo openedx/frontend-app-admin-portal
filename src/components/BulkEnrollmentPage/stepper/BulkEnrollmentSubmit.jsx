@@ -51,7 +51,7 @@ export const BulkEnrollmentAlertModal = ({
         rel="noopener noreferrer"
         data-testid={CUSTOMER_SUPPORT_HYPERLINK_TEST_ID}
         subject={SUPPORT_EMAIL_SUBJECT + enterpriseSlug}
-        body={`enterprise UUID: ${enterpriseId}\n${ SUPPORT_EMAIL_BODY }${error}`}
+        body={`enterprise UUID: ${enterpriseId}\n${SUPPORT_EMAIL_BODY}${error}`}
       >
         {SUPPORT_HYPERLINK_TEXT}
       </MailtoLink>

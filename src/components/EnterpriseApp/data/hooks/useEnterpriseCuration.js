@@ -2,6 +2,7 @@ import {
   useCallback, useEffect, useState,
 } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
+import { getConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
@@ -16,6 +17,8 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   const [fetchError, setFetchError] = useState(null);
   const [enterpriseCuration, setEnterpriseCuration] = useState(null);
 
+  const config = getConfig();
+
   const createEnterpriseCuration = useCallback(async () => {
     try {
       const response = await EnterpriseCatalogApiService.createEnterpriseCurationConfig(enterpriseId, {
@@ -29,22 +32,20 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     }
   }, [enterpriseId, curationTitleForCreation]);
 
-  const getEnterpriseCuration = useCallback(
-    async () => {
-      try {
-        const response = await EnterpriseCatalogApiService.getEnterpriseCurationConfig(enterpriseId);
-        const formattedResponse = camelCaseObject(response.data);
-        const result = formattedResponse.results[0];
-        return result;
-      } catch (error) {
-        logError(error);
-        throw error;
-      }
-    }, [enterpriseId],
-  );
+  const getEnterpriseCuration = useCallback(async () => {
+    try {
+      const response = await EnterpriseCatalogApiService.getEnterpriseCurationConfig(enterpriseId);
+      const formattedResponse = camelCaseObject(response.data);
+      const result = formattedResponse.results[0];
+      return result;
+    } catch (error) {
+      logError(error);
+      throw error;
+    }
+  }, [enterpriseId]);
 
   useEffect(() => {
-    if (!enterpriseId) {
+    if (!enterpriseId || !config.FEATURE_CONTENT_HIGHLIGHTS) {
       setIsLoading(false);
       return;
     }
@@ -62,9 +63,13 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
         setIsLoading(false);
       }
     };
-
     getOrCreateConfiguration();
-  }, [enterpriseId, getEnterpriseCuration, createEnterpriseCuration]);
+  }, [
+    enterpriseId,
+    getEnterpriseCuration,
+    createEnterpriseCuration,
+    config,
+  ]);
 
   return {
     isLoading,

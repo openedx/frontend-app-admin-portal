@@ -9,9 +9,9 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import DownloadCsvButton from './DownloadCsvButton';
-import { createLookup, getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 
-function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
+const ContentMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
   const [currentFilters, setCurrentFilters] = useState();
   const [paginationData, setPaginationData] = useState({
@@ -24,7 +24,11 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
   useEffect(() => {
     const fetchData = async () => {
       const response = await LmsApiService.fetchContentMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters,
+        enterpriseCustomerUuid,
+        config.channelCode,
+        config.id,
+        currentPage,
+        currentFilters,
       );
       return response;
     };
@@ -104,7 +108,7 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
-            Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
+            Cell: ({ row }) => getTimeAgo(row.original.sync_last_attempted_at),
             sortable: true,
             disableFilters: true,
           },
@@ -117,7 +121,7 @@ function ContentMetadataTable({ config, enterpriseCustomerUuid }) {
       </DataTable>
     </div>
   );
-}
+};
 
 ContentMetadataTable.defaultProps = {
   config: null,

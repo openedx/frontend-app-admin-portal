@@ -45,18 +45,28 @@ class Coupon extends React.Component {
     }
   }
 
+  handleCouponKeyDown(event) {
+    const { isExpanded } = this.state;
+    if (!isExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
+      event.preventDefault();
+      this.toggleCouponDetails();
+    } else if (isExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
+      event.preventDefault();
+      this.toggleCouponDetails();
+    }
+  }
+
+  /* eslint-disable react/no-unused-class-component-methods */
+  /**
+   * [tech debt] This class method isn't used by the component itself, but rather by another component
+   * that reaches into the class methods of a rendered instance of this component, which should be avoided.
+   */
   setCouponOpacity(dimmedStatus) {
     this.setState({
       dimmed: dimmedStatus,
     });
   }
-
-  closeCouponDetails() {
-    this.setState({
-      isExpanded: false,
-      dimmed: false,
-    });
-  }
+  /* eslint-enable react/no-unused-class-component-methods */
 
   toggleCouponDetails() {
     this.setState((state) => ({
@@ -68,17 +78,6 @@ class Coupon extends React.Component {
       this.props.onExpand();
     } else {
       this.props.onCollapse();
-    }
-  }
-
-  handleCouponKeyDown(event) {
-    const { isExpanded } = this.state;
-    if (!isExpanded && isTriggerKey({ triggerKeys, action: 'OPEN_DETAILS', key: event.key })) {
-      event.preventDefault();
-      this.toggleCouponDetails();
-    } else if (isExpanded && isTriggerKey({ triggerKeys, action: 'CLOSE_DETAILS', key: event.key })) {
-      event.preventDefault();
-      this.toggleCouponDetails();
     }
   }
 

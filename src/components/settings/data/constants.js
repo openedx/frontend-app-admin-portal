@@ -15,9 +15,10 @@ export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categ
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
 export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';
 export const HELP_CENTER_BRANDING_LINK = 'https://business-support.edx.org/hc/en-us/sections/8739219372183';
-export const SUCCESS_LABEL = 'success';
-export const TOGGLE_SUCCESS_LABEL = 'toggle success';
-export const DELETE_SUCCESS_LABEL = 'delete success';
+export const ACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully activated.';
+export const DELETE_TOAST_MESSAGE = 'Learning platform integration successfully removed.';
+export const INACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully disabled.';
+export const SUBMIT_TOAST_MESSAGE = 'Learning platform integration successfully submitted.';
 
 export const BLACKBOARD_TYPE = 'BLACKBOARD';
 export const CANVAS_TYPE = 'CANVAS';

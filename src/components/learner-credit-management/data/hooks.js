@@ -26,9 +26,7 @@ export const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await EnterpriseDataApiService.fetchEnterpriseOfferSummary(
-          enterpriseUUID, enterpriseOffer.id,
-        );
+        const response = await EnterpriseDataApiService.fetchEnterpriseOfferSummary(enterpriseUUID, enterpriseOffer.id);
         const data = camelCaseObject(response.data);
         const transformedOfferSummary = transformOfferSummary(data);
         setOfferSummary(transformedOfferSummary);

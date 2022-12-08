@@ -13,9 +13,7 @@ const CodeDetails = ({
     </>
     )}
     {isBulkRemind && numberOfSelectedCodes > 0 && (
-    <>
-      <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
-    </>
+    <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
     )}
   </div>
 );

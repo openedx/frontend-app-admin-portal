@@ -189,19 +189,6 @@ describe('<Coupon />', () => {
     expect(instance.state.dimmed).toBeTruthy();
   });
 
-  it('sets state correctly on closeCouponDetails()', () => {
-    wrapper = shallow(<CouponWrapper />);
-    const instance = wrapper.find(Coupon).dive().instance();
-
-    instance.setState({
-      isExpanded: true,
-    });
-
-    expect(instance.state.isExpanded).toBeTruthy();
-    instance.closeCouponDetails(true);
-    expect(instance.state.isExpanded).toBeFalsy();
-  });
-
   it('sets state correctly for isExpanded prop on componentDidMount', () => {
     wrapper = mount(<CouponWrapper isExpanded />);
     expect(wrapper.find(Coupon).instance().state.isExpanded).toBeTruthy();

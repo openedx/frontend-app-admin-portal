@@ -15,7 +15,7 @@ import {
   CANVAS_OAUTH_REDIRECT_URL,
   INVALID_LINK,
   INVALID_NAME,
-  SUCCESS_LABEL,
+  SUBMIT_TOAST_MESSAGE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
@@ -60,7 +60,7 @@ const CanvasConfig = ({
           setOauthPollingTimeout(null);
           setOauthTimeout(false);
           // trigger a success call which will redirect the user back to the landing page
-          onClick(SUCCESS_LABEL);
+          onClick(SUBMIT_TOAST_MESSAGE);
         }
       } catch (error) {
         err = handleErrors(error);
@@ -191,7 +191,7 @@ const CanvasConfig = ({
     if (err) {
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 

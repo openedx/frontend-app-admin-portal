@@ -10,7 +10,7 @@ import PlotlyAnalyticsCharts from './PlotlyAnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
 
-function PlotlyAnalyticsPage({ enterpriseId }) {
+const PlotlyAnalyticsPage = ({ enterpriseId }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -49,7 +49,7 @@ function PlotlyAnalyticsPage({ enterpriseId }) {
       <PlotlyAnalyticsCharts enterpriseId={enterpriseId} />
     </>
   );
-}
+};
 
 PlotlyAnalyticsPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
