@@ -8,7 +8,7 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { BUTTON_TEXT, STEPPER_STEP_TEXT } from '../../data/constants';
+import { BUTTON_TEXT, STEPPER_STEP_TEXT, testCourseAggregation } from '../../data/constants';
 import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -29,13 +29,6 @@ const initialEnterpriseAppContextValue = {
   },
 };
 
-const testCourses = {
-  'course:HarvardX+CS50x': true,
-  'course:HarvardX+CS50P': true,
-  'course:HarvardX+CS50W': true,
-  'course:HarvardX+CS50AI': true,
-};
-
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
   configuration.ALGOLIA.SEARCH_API_KEY,
@@ -52,7 +45,7 @@ const ContentHighlightStepperWrapper = ({
       isOpen: false,
       highlightTitle: null,
       titleStepValidationError: null,
-      currentSelectedRowIds: testCourses,
+      currentSelectedRowIds: testCourseAggregation,
     },
     contentHighlights: [],
     searchClient,

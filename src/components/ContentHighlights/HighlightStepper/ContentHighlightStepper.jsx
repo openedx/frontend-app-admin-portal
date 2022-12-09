@@ -69,7 +69,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
-        // TODO: This is a temporary solution to get the content keys from the selected row ids.
+        // TODO: This is a temporary solution to get the content keys from the
+        // selected row ids based on content_type (uuid, key etc.).
         content_keys: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
         // content_keys: ['edX+DemoX'],
       };

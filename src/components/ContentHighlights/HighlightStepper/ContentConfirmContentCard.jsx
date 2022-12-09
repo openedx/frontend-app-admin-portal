@@ -25,7 +25,7 @@ const ContentConfirmContentCard = ({ original }) => {
       deleteSelectedRowId(deleteKey);
       setIsDeleted(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteKey, aggregationKey]);
   if (isDeleted) {
     return (

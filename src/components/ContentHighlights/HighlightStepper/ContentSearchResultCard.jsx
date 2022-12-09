@@ -18,7 +18,7 @@ const ContentSearchResultCard = ({ original }) => {
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}
-      firstEnrollablePaidSeatPrice={firstEnrollablePaidSeatPrice}
+      price={firstEnrollablePaidSeatPrice}
     />
   );
 };
