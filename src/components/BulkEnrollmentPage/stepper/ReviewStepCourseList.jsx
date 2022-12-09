@@ -69,13 +69,14 @@ BaseContentSelections.defaultProps = {
 
 const ContentSelections = connectStateResults(BaseContentSelections);
 
-const ReviewStepCourseList = ({
-  returnToSelection,
-}) => {
-  const {
-    courses: [selectedCourses],
-  } = useContext(BulkEnrollContext);
-
+/**
+ * Given a list of selected content, compute an Algolia search filter to return
+ * the metadata for the selected content.
+ *
+ * @param {array} selectedCourses A list of selected rows, representing by the row ID (aggregation key)
+ * @returns A filter string to pass to Algolia to query for the selected content.
+ */
+export const useSearchFiltersForSelectedCourses = (selectedCourses) => {
   const searchFilters = useMemo(
     () => {
       const extractAggregationKey = row => row?.id;
@@ -89,6 +90,17 @@ const ReviewStepCourseList = ({
     },
     [selectedCourses],
   );
+
+  return searchFilters;
+};
+
+const ReviewStepCourseList = ({
+  returnToSelection,
+}) => {
+  const {
+    courses: [selectedCourses],
+  } = useContext(BulkEnrollContext);
+  const searchFilters = useSearchFiltersForSelectedCourses(selectedCourses);
 
   return (
     <InstantSearch

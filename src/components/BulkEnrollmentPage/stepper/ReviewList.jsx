@@ -54,7 +54,9 @@ const ReviewList = ({
       <h3>{subject.title}</h3>
       <p>{subject.title} selected: {rows.length}</p>
       {isLoading ? (
-        <Skeleton count={3} />
+        <div data-testid="bulk-enrollment-review-list-loading-skeleton">
+          <Skeleton count={3} />
+        </div>
       ) : (
         <>
           <ul className="be-review-list">

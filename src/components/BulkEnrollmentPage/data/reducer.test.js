@@ -46,4 +46,11 @@ describe('selectedRowsReducer', () => {
     );
     expect(result).toEqual([]);
   });
+  it('handles unknown action', () => {
+    const reducerState = { id: 'foo' };
+    expect(selectedRowsReducer(
+      reducerState,
+      { type: 'unknown' },
+    )).toEqual(reducerState);
+  });
 });
