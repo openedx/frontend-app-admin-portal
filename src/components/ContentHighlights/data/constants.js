@@ -30,7 +30,7 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 
 // High Card logic for footer text
 export const getContentHighlightCardFooter = (price, contentType) => {
-  const formattedContentType = FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()];
+  const formattedContentType = FOOTER_TEXT_BY_CONTENT_TYPE[contentType?.toLowerCase()];
   if (!price) {
     return formattedContentType;
   }

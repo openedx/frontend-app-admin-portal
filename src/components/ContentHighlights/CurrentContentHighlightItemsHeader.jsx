@@ -7,7 +7,9 @@ import DeleteHighlightSet from './DeleteHighlightSet';
 const CurrentContentHighlightItemsHeader = ({ isLoading, highlightTitle }) => {
   if (isLoading) {
     return (
-      <Skeleton />
+      <div data-testid="header-skeleton">
+        <Skeleton />
+      </div>
     );
   }
   return (

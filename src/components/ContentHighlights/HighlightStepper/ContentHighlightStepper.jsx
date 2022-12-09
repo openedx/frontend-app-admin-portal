@@ -168,7 +168,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           hasError={!!titleStepValidationError}
           description={titleStepValidationError || ''}
           index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
-        >s
+        >
           <HighlightStepperTitle />
         </Stepper.Step>
 

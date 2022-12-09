@@ -8,8 +8,6 @@ import Router, { Route } from 'react-router-dom';
 import { renderHook } from '@testing-library/react-hooks/dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { configuration } from '../../../config';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentHighlightSet from '../ContentHighlightSet';
 import { useHighlightSet } from '../data/hooks';
@@ -17,6 +15,7 @@ import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { configuration } from '../../../config';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
@@ -46,8 +45,10 @@ jest.mock('react-router-dom', () => ({
 }));
 
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 const ContentHighlightSetWrapper = (
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  { children },
   ...props
 ) => {
   /* eslint-enable react/prop-types */
@@ -66,6 +67,7 @@ const ContentHighlightSetWrapper = (
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
         <ContentHighlightsContext.Provider value={contextValue}>
           <Provider store={mockStore(initialState)}>
+            {children}
             <Route
               path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
               render={routeProps => <ContentHighlightSet {...routeProps} {...props} />}
@@ -83,8 +85,6 @@ describe('<ContentHighlightSet>', () => {
     EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
       data: mockHighlightSetResponse,
     });
-    renderWithRouter(<ContentHighlightSetWrapper />);
-
     const { result, waitForNextUpdate } = renderHook(() => useHighlightSet(highlightSetUUID));
     expect(result.current).toEqual({
       isLoading: true,

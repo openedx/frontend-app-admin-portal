@@ -22,29 +22,31 @@ import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SkeletonContentCard from '../SkeletonContentCard';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
 
-const BaseReviewContentSelections = ({
+export const BaseReviewContentSelections = ({
   searchResults,
   isSearchStalled,
 }) => {
   if (isSearchStalled) {
     return (
-      <CardGrid
-        columnSizes={{
-          xs: 12,
-          md: 6,
-          lg: 4,
-          xl: 3,
-        }}
-      >
-        {/* eslint-disable */}
-        {[...new Array(8)].map((element, index) => <SkeletonContentCard key={index} />)}
+      <div data-testid="skeleton-container">
+        <CardGrid
+          columnSizes={{
+            xs: 12,
+            md: 6,
+            lg: 4,
+            xl: 3,
+          }}
+        >
+          {/* eslint-disable */}
+        {[...new Array(8)].map((element, index) => 
+        <SkeletonContentCard key={index} />)}
         {/* eslint-enable */}
-      </CardGrid>
+        </CardGrid>
+      </div>
     );
   }
-
   if (!searchResults) {
-    return null;
+    return (<div data-testid="base-content-no-results" />);
   }
   const { hits } = camelCaseObject(searchResults);
 
@@ -95,7 +97,7 @@ BaseReviewContentSelections.defaultProps = {
 
 const ReviewContentSelections = connectStateResults(BaseReviewContentSelections);
 
-const SelectedContent = ({ enterpriseId }) => {
+export const SelectedContent = ({ enterpriseId }) => {
   const searchClient = useContextSelector(
     ContentHighlightsContext,
     v => v[0].searchClient,
@@ -132,7 +134,7 @@ const SelectedContent = ({ enterpriseId }) => {
   }, [currentSelectedRowIds]);
 
   if (currentSelectedRowIds.length === 0) {
-    return null;
+    return (<div data-testid="selected-content-no-results" />);
   }
 
   return (

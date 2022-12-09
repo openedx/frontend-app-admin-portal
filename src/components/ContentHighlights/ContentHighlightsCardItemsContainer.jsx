@@ -5,7 +5,7 @@ import ContentHighlightCardItem from './ContentHighlightCardItem';
 
 const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) => {
   if (!highlightedContent || highlightedContent?.length === 0) {
-    return null;
+    return <div data-testid="empty-highlighted-content" />;
   }
   return (
     <CardGrid
@@ -28,6 +28,7 @@ const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) 
           partners={authoringOrganizations}
         />
       ))}
+      {isLoading && <div data-testid="card-item-skeleton" />}
     </CardGrid>
   );
 };

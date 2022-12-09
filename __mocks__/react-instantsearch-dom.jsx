@@ -74,10 +74,12 @@ MockReactInstantSearch.connectPagination = Component => function connectPaginati
 };
 
 MockReactInstantSearch.InstantSearch = function InstantSearch({ children }) {
-  return children;
+  return (
+    <div data-testid="algolia__InstantSearch">{children}</div>
+  );
 };
 MockReactInstantSearch.Configure = function Configure() {
-  return <div>CONFIGURED</div>;
+  return <div data-testid="algolia__Configure">CONFIGURED</div>;
 };
 
 module.exports = MockReactInstantSearch;
