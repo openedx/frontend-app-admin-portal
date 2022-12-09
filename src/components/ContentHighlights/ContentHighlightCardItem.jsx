@@ -2,21 +2,22 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
+import { getContentHighlightCardFooter } from './data/constants';
 
 const ContentHighlightCardItem = ({
+  isLoading,
   title,
   contentType,
   partners,
   cardImageUrl,
-  extras,
+  price,
 }) => {
   const cardLogoSrc = partners?.length === 1 ? partners[0].logoImageUrl : undefined;
   const cardLogoAlt = partners?.length === 1 ? `${partners[0].name}'s logo` : undefined;
   const cardSubtitle = partners?.map(p => p.name).join(', ');
-  const cardFooter = extras?.firstEnrollablePaidSeatPrice ? `$${extras.firstEnrollablePaidSeatPrice} · ${FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()]}` : FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()];
+  const cardFooter = getContentHighlightCardFooter(price, contentType);
   return (
-    <Card>
+    <Card isLoading={isLoading}>
       <Card.ImageCap
         src={cardImageUrl}
         srcAlt=""
@@ -40,6 +41,7 @@ const ContentHighlightCardItem = ({
 };
 
 ContentHighlightCardItem.propTypes = {
+  isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
@@ -48,14 +50,13 @@ ContentHighlightCardItem.propTypes = {
     uuid: PropTypes.string,
     logoImageUrl: PropTypes.string,
   })).isRequired,
-  extras: PropTypes.shape({
-    firstEnrollablePaidSeatPrice: PropTypes.number,
-  }),
+  price: PropTypes.number,
 };
 
 ContentHighlightCardItem.defaultProps = {
+  isLoading: false,
   cardImageUrl: undefined,
-  extras: undefined,
+  price: undefined,
 };
 
 export default ContentHighlightCardItem;

@@ -10,17 +10,15 @@ const ContentSearchResultCard = ({ original }) => {
     partners,
     cardImageUrl,
     originalImageUrl,
+    firstEnrollablePaidSeatPrice,
   } = original;
-  const extras = {
-    firstEnrollablePaidSeatPrice: original.firstEnrollablePaidSeatPrice,
-  };
   return (
     <ContentHighlightCardItem
       title={title}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}
-      extras={extras}
+      firstEnrollablePaidSeatPrice={firstEnrollablePaidSeatPrice}
     />
   );
 };

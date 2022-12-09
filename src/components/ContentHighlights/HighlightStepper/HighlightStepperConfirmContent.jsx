@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, {
+  useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import {
@@ -11,7 +13,6 @@ import {
 import { Assignment } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
-
 import { configuration } from '../../../config';
 
 import {
@@ -35,7 +36,9 @@ const BaseReviewContentSelections = ({
           xl: 3,
         }}
       >
-        {[...new Array(8)].map(() => <SkeletonContentCard />)}
+        {/* eslint-disable */}
+        {[...new Array(8)].map((element, index) => <SkeletonContentCard key={index} />)}
+        {/* eslint-enable */}
       </CardGrid>
     );
   }
@@ -43,31 +46,24 @@ const BaseReviewContentSelections = ({
   if (!searchResults) {
     return null;
   }
-
   const { hits } = camelCaseObject(searchResults);
-  const contentCards = () => {
-    const cardData = hits.map((highlightedContent) => {
-      const {
-        aggregationKey, title, cardImageUrl, contentType, partners, originalImageUrl, firstEnrollablePaidSeatPrice,
-      } = highlightedContent;
-      const original = {
-        aggregationKey,
-        title,
-        contentType,
-        partners,
-        cardImageUrl,
-        originalImageUrl,
-      };
-      original.extras = {
-        firstEnrollablePaidSeatPrice,
-      };
-      return original;
-    });
-    return cardData;
-  };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [cardData] = useState(contentCards());
+  const transformedCardData = hits.map((highlightedContent) => {
+    const {
+      aggregationKey, title, cardImageUrl, contentType, partners, originalImageUrl, firstEnrollablePaidSeatPrice,
+    } = highlightedContent;
+    const original = {
+      aggregationKey,
+      title,
+      contentType,
+      partners,
+      cardImageUrl,
+      originalImageUrl,
+      firstEnrollablePaidSeatPrice,
+    };
+    return original;
+  });
   return (
     <CardGrid
       columnSizes={{
@@ -77,7 +73,8 @@ const BaseReviewContentSelections = ({
         xl: 3,
       }}
     >
-      {cardData.map((original) => (<ContentConfirmContentCard original={original} />))}
+      {transformedCardData.map((original) => (
+        <ContentConfirmContentCard key={original.aggregationKey} original={original} />))}
     </CardGrid>
   );
 };
@@ -107,6 +104,7 @@ const SelectedContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
   );
+
   const currentSelectedRowIds = Object.keys(currentSelectedRowIdsRaw);
 
   /* eslint-disable max-len */

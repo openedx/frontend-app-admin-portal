@@ -3,16 +3,15 @@ import { useParams } from 'react-router-dom';
 import React from 'react';
 import ContentHighlightsCardItemContainer from './ContentHighlightsCardItemsContainer';
 import CurrentContentHighlightItemsHeader from './CurrentContentHighlightItemsHeader';
-import { useHighlightSetItems } from './data/hooks';
+import { useHighlightSet } from './data/hooks';
 
 const ContentHighlightSet = () => {
-  // const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const { highlightSetUUID } = useParams();
-  const { highlightSetItems } = useHighlightSetItems(highlightSetUUID);
+  const { highlightSet, isLoading } = useHighlightSet(highlightSetUUID);
   return (
     <Container fluid className="mt-5">
-      <CurrentContentHighlightItemsHeader highlightTitle={highlightSetItems?.title} />
-      <ContentHighlightsCardItemContainer highlightedContent={highlightSetItems?.highlightedContent} />
+      <CurrentContentHighlightItemsHeader isLoading={isLoading} highlightTitle={highlightSet?.title} />
+      <ContentHighlightsCardItemContainer isLoading={isLoading} highlightedContent={highlightSet?.highlightedContent} />
     </Container>
   );
 };

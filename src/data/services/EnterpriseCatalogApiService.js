@@ -42,7 +42,7 @@ class EnterpriseCatalogApiService {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
-  static fetchHighlightSetItems(highlightSetUUID) {
+  static fetchHighlightSet(highlightSetUUID) {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
   }
 

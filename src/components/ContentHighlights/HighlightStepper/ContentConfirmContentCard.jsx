@@ -1,25 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { Delete } from '@edx/paragon/icons';
+import { IconButton, Icon } from '@edx/paragon';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
+import { useContentHighlightsContext } from '../data/hooks';
 
 const ContentConfirmContentCard = ({ original }) => {
+  const { deleteSelectedRowId } = useContentHighlightsContext();
+  const [deleteKey, setDeleteKey] = useState(null);
+  const [isDeleted, setIsDeleted] = useState(false);
   const {
     title,
     contentType,
     partners,
     cardImageUrl,
     originalImageUrl,
-    extras,
+    firstEnrollablePaidSeatPrice,
+    aggregationKey,
+    key,
   } = original;
+  // eslint-disable-next-line no-shadow
+  useEffect(() => {
+    if (deleteKey === aggregationKey) {
+      deleteSelectedRowId(deleteKey);
+      setIsDeleted(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteKey, aggregationKey]);
+  if (isDeleted) {
+    return (
+      null
+    );
+  }
   return (
-    <ContentHighlightCardItem
-      title={title}
-      contentType={contentType}
-      partners={partners}
-      cardImageUrl={cardImageUrl || originalImageUrl}
-      extras={extras}
-    />
+    <React.Fragment key={key}>
+      <ContentHighlightCardItem
+        title={title}
+        contentType={contentType}
+        partners={partners}
+        cardImageUrl={cardImageUrl || originalImageUrl}
+        price={firstEnrollablePaidSeatPrice}
+
+      />
+      <IconButton
+        invertColors
+        isActive
+        src={Delete}
+        iconAs={Icon}
+        alt="Delete"
+        onClick={() => setDeleteKey(aggregationKey)}
+        className="ml-1 flex-shrink-0"
+      />
+    </React.Fragment>
   );
 };
 
@@ -30,9 +62,9 @@ ContentConfirmContentCard.propTypes = {
     partners: PropTypes.arrayOf(PropTypes.shape()),
     cardImageUrl: PropTypes.string,
     originalImageUrl: PropTypes.string,
-    extras: PropTypes.shape({
-      firstEnrollablePaidSeatPrice: PropTypes.number,
-    }),
+    firstEnrollablePaidSeatPrice: PropTypes.number,
+    aggregationKey: PropTypes.string,
+    key: PropTypes.string,
   }).isRequired,
 };
 
