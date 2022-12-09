@@ -84,6 +84,7 @@ describe('<ContentHighlightSet>', () => {
       data: mockHighlightSetResponse,
     });
     renderWithRouter(<ContentHighlightSetWrapper />);
+
     const { result, waitForNextUpdate } = renderHook(() => useHighlightSet(highlightSetUUID));
     expect(result.current).toEqual({
       isLoading: true,
