@@ -7,7 +7,8 @@ import { Button, DataTableContext } from '@edx/paragon';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const SelectContentSelectionStatus = ({ className }) => {
-  const { toggleAllRowsSelected } = useContext(DataTableContext);
+  const { toggleAllRowsSelected, page } = useContext(DataTableContext);
+  const currentSelectedRowsOnPageCount = page.filter(r => r.isSelected).length;
   const currentSelectedRowsCount = useContextSelector(
     ContentHighlightsContext,
     v => Object.keys(v[0].stepperModal.currentSelectedRowIds).length,
@@ -20,7 +21,7 @@ const SelectContentSelectionStatus = ({ className }) => {
   return (
     <div className={classNames('d-flex align-items-center', className)}>
       <div>
-        {currentSelectedRowsCount} selected
+        {currentSelectedRowsCount} selected ({currentSelectedRowsOnPageCount} shown below)
       </div>
       {currentSelectedRowsCount > 0 && (
         <Button

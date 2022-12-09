@@ -4,6 +4,7 @@ import { useContextSelector } from 'use-context-selector';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 import { DataTable, CardView } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
@@ -39,20 +40,24 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
 
   const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
+
   return (
-    <InstantSearch
-      indexName={configuration.ALGOLIA.INDEX_NAME}
-      searchClient={searchClient}
-    >
-      <Configure
-        filters={searchFilters}
-        hitsPerPage={pageSize}
-      />
-      <HighlightStepperSelectContentDataTable
-        selectedRowIds={currentSelectedRowIds}
-        onSelectedRowsChanged={setCurrentSelectedRowIds}
-      />
-    </InstantSearch>
+    <SearchData>
+      <InstantSearch
+        indexName={configuration.ALGOLIA.INDEX_NAME}
+        searchClient={searchClient}
+      >
+        <Configure
+          filters={searchFilters}
+          hitsPerPage={pageSize}
+        />
+        <SearchHeader variant="default" />
+        <HighlightStepperSelectContentDataTable
+          selectedRowIds={currentSelectedRowIds}
+          onSelectedRowsChanged={setCurrentSelectedRowIds}
+        />
+      </InstantSearch>
+    </SearchData>
   );
 };
 
@@ -105,14 +110,14 @@ const BaseHighlightStepperSelectContentDataTable = ({
       isPaginated
       manualPagination
       initialState={{
-        pageSize,
         pageIndex: 0,
+        pageSize,
         selectedRowIds,
       }}
       pageCount={searchResultsPageCount}
       itemCount={searchResultsItemCount}
       initialTableOptions={{
-        getRowId: row => row.aggregationKey,
+        getRowId: row => row?.aggregationKey,
         autoResetSelectedRows: false,
       }}
       data={tableData}
