@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
+import { generateAboutPageUrl } from '../data/constants';
 
-const ContentSearchResultCard = ({ original }) => {
+const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
   const {
+    aggregationKey,
     title,
     contentType,
     partners,
@@ -15,6 +17,7 @@ const ContentSearchResultCard = ({ original }) => {
   return (
     <ContentHighlightCardItem
       title={title}
+      hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), aggregationKey.split(':')[1])}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}
@@ -24,7 +27,9 @@ const ContentSearchResultCard = ({ original }) => {
 };
 
 ContentSearchResultCard.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
+    aggregationKey: PropTypes.string,
     title: PropTypes.string,
     contentType: PropTypes.string,
     partners: PropTypes.arrayOf(PropTypes.shape()),
@@ -34,4 +39,8 @@ ContentSearchResultCard.propTypes = {
   }).isRequired,
 };
 
-export default ContentSearchResultCard;
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(ContentSearchResultCard);

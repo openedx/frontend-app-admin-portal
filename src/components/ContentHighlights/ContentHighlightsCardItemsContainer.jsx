@@ -1,9 +1,11 @@
 import React from 'react';
 import { CardGrid } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
+import { generateAboutPageUrl } from './data/constants';
 
-const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) => {
+const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highlightedContent }) => {
   if (!highlightedContent || highlightedContent?.length === 0) {
     return <div data-testid="empty-highlighted-content" />;
   }
@@ -16,7 +18,7 @@ const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) 
       }}
     >
       {highlightedContent.map(({
-        uuid, title, contentType, authoringOrganizations,
+        uuid, title, contentType, authoringOrganizations, contentKey,
       }) => (
 
         <ContentHighlightCardItem
@@ -24,6 +26,7 @@ const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) 
           key={uuid}
           cardImageUrl="https://picsum.photos/200/300"
           title={title}
+          hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), contentKey)}
           contentType={contentType.toLowerCase()}
           partners={authoringOrganizations}
         />
@@ -34,6 +37,7 @@ const ContentHighlightsCardItemsContainer = ({ isLoading, highlightedContent }) 
 };
 
 ContentHighlightsCardItemsContainer.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   highlightedContent: PropTypes.arrayOf(PropTypes.shape({
     uuid: PropTypes.string,
@@ -48,4 +52,8 @@ ContentHighlightsCardItemsContainer.propTypes = {
   })).isRequired,
 };
 
-export default ContentHighlightsCardItemsContainer;
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(ContentHighlightsCardItemsContainer);

@@ -1,5 +1,17 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { faker } from '@faker-js/faker';
+import { configuration } from '../../../config';
+/* eslint-enable import/no-extraneous-dependencies */
+
+// Generate URLs for about pages from the enterprise learner portal
+export const generateAboutPageUrl = (enterpriseSlug, contentType, contentKey) => {
+  const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
+  const aboutPageBase = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
+  if (contentType === 'learnerpathway') {
+    return `${aboutPageBase}/search/${contentKey}`;
+  }
+  return `${aboutPageBase}/${contentType}/${contentKey}`;
+};
 
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@edx/paragon';
+import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
 import { getContentHighlightCardFooter } from './data/constants';
@@ -7,32 +7,43 @@ import { getContentHighlightCardFooter } from './data/constants';
 const ContentHighlightCardItem = ({
   isLoading,
   title,
+  hyperlink,
   contentType,
   partners,
   cardImageUrl,
   price,
 }) => {
-  const cardLogoSrc = partners?.length === 1 ? partners[0].logoImageUrl : undefined;
-  const cardLogoAlt = partners?.length === 1 ? `${partners[0].name}'s logo` : undefined;
-  const cardSubtitle = partners?.map(p => p.name).join(', ');
-  const cardFooter = getContentHighlightCardFooter(price, contentType);
+  const cardInfo = {
+    cardTitle: (<Truncate lines={3} title={title}>{title}</Truncate>),
+    cardLogoAlt: partners?.length === 1 ? `${partners[0].name}'s logo` : undefined,
+    cardLogoSrc: partners?.length === 1 ? partners[0].logoImageUrl : undefined,
+    cardSubtitle: partners?.map(p => p.name).join(', '),
+    cardFooter: getContentHighlightCardFooter(price, contentType),
+  };
+  if (hyperlink) {
+    cardInfo.cardTitle = (
+      <Hyperlink destination={hyperlink} target="_blank">
+        <Truncate lines={3} title={title}>{title}</Truncate>
+      </Hyperlink>
+    );
+  }
   return (
     <Card isLoading={isLoading}>
       <Card.ImageCap
         src={cardImageUrl}
         srcAlt=""
-        logoSrc={cardLogoSrc}
-        logoAlt={cardLogoAlt}
+        logoSrc={cardInfo.cardLogoSrc}
+        logoAlt={cardInfo.cardLogoAlt}
       />
       <Card.Header
-        title={<Truncate lines={3} title={title}>{title}</Truncate>}
-        subtitle={<Truncate lines={2} title={cardSubtitle}>{cardSubtitle}</Truncate>}
+        title={cardInfo.cardTitle}
+        subtitle={<Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>}
       />
       {contentType && (
         <>
           <Card.Section />
           <Card.Footer
-            textElement={cardFooter}
+            textElement={cardInfo.cardFooter}
           />
         </>
       )}
@@ -44,6 +55,7 @@ ContentHighlightCardItem.propTypes = {
   isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
+  hyperlink: PropTypes.string,
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -55,6 +67,7 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
+  hyperlink: undefined,
   cardImageUrl: undefined,
   price: undefined,
 };

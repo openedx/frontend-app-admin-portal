@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Delete } from '@edx/paragon/icons';
 import { IconButton, Icon } from '@edx/paragon';
+import { connect } from 'react-redux';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { useContentHighlightsContext } from '../data/hooks';
+import { generateAboutPageUrl } from '../data/constants';
 
-const ContentConfirmContentCard = ({ original }) => {
+const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
   const { deleteSelectedRowId } = useContentHighlightsContext();
   const [deleteKey, setDeleteKey] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -36,6 +38,7 @@ const ContentConfirmContentCard = ({ original }) => {
     <React.Fragment key={key}>
       <ContentHighlightCardItem
         title={title}
+        hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), aggregationKey.split(':')[1])}
         contentType={contentType}
         partners={partners}
         cardImageUrl={cardImageUrl || originalImageUrl}
@@ -56,6 +59,7 @@ const ContentConfirmContentCard = ({ original }) => {
 };
 
 ContentConfirmContentCard.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
     title: PropTypes.string,
     contentType: PropTypes.string,
@@ -68,4 +72,8 @@ ContentConfirmContentCard.propTypes = {
   }).isRequired,
 };
 
-export default ContentConfirmContentCard;
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(ContentConfirmContentCard);
