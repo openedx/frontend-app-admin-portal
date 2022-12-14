@@ -3,12 +3,23 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedContent } from '../HighlightStepperConfirmContent';
 import {
   testCourseAggregation,
 } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
+
+const mockStore = configureMockStore([thunk]);
+const initialState = {
+  portalConfiguration:
+    {
+      enterpriseSlug: 'test-enterprise',
+    },
+};
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -29,9 +40,11 @@ const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds
     searchClient,
   });
   return (
-    <ContentHighlightsContext.Provider value={contextValue}>
-      {children}
-    </ContentHighlightsContext.Provider>
+    <Provider store={mockStore(initialState)}>
+      <ContentHighlightsContext.Provider value={contextValue}>
+        {children}
+      </ContentHighlightsContext.Provider>
+    </Provider>
   );
 };
 

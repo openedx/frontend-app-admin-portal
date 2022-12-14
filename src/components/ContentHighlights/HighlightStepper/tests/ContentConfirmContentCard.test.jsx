@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import ContentConfirmContentCard from '../ContentConfirmContentCard';
 import { testCourseData, testCourseAggregation, FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
+
+const mockStore = configureMockStore();
+const initialState = {
+  portalConfiguration:
+    {
+      enterpriseSlug: 'test-enterprise',
+    },
+};
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const ContentHighlightContentCardWrapper = () => {
+const ContentHighlightContentCardWrapper = ({
+  // eslint-disable-next-line react/prop-types
+  store = mockStore(initialState),
+}) => {
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -24,15 +38,18 @@ const ContentHighlightContentCardWrapper = () => {
     searchClient,
   });
   return (
-    <ContentHighlightsContext.Provider value={contextValue}>
-      {testCourseData.map((original) => <ContentConfirmContentCard original={original} />)}
-    </ContentHighlightsContext.Provider>
+    <Provider store={store}>
+      <ContentHighlightsContext.Provider value={contextValue}>
+        {testCourseData.map((original) => <ContentConfirmContentCard original={original} />)}
+      </ContentHighlightsContext.Provider>
+    </Provider>
   );
 };
 
 describe('<ContentConfirmContentCard />', () => {
   it('renders the correct content', () => {
-    render(<ContentHighlightContentCardWrapper />);
+    renderWithRouter(<ContentHighlightContentCardWrapper />);
+
     for (let i = 0; i < testCourseData.length; i++) {
       expect(screen.getByText(testCourseData[i].title)).toBeInTheDocument();
       expect(screen.getByText(testCourseData[i].firstEnrollablePaidSeatPrice, { exact: false })).toBeInTheDocument();
@@ -42,7 +59,8 @@ describe('<ContentConfirmContentCard />', () => {
     }
   });
   it('deletes the correct content', () => {
-    render(<ContentHighlightContentCardWrapper />);
+    renderWithRouter(<ContentHighlightContentCardWrapper />);
+
     const deleteButton = screen.getAllByRole('button', { 'aria-label': 'Delete' });
     fireEvent.click(deleteButton[0]);
     for (let i = 0; i < testCourseData.length; i++) {

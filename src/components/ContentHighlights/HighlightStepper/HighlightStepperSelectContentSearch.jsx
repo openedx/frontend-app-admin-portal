@@ -91,7 +91,6 @@ const BaseHighlightStepperSelectContentDataTable = ({
   searchResults,
 }) => {
   const [currentView, setCurrentView] = useState(defaultActiveStateValue);
-
   const tableData = useMemo(() => camelCaseObject(searchResults?.hits || []), [searchResults]);
   const searchResultsItemCount = searchResults?.nbHits || 0;
   const searchResultsPageCount = searchResults?.nbPages || 0;

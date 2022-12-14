@@ -17,7 +17,7 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
   return (
     <ContentHighlightCardItem
       title={title}
-      hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), aggregationKey.split(':')[1])}
+      hyperlink={generateAboutPageUrl(enterpriseSlug, contentType?.toLowerCase(), aggregationKey?.split(':')[1])}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}

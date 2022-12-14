@@ -38,7 +38,7 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
     <React.Fragment key={key}>
       <ContentHighlightCardItem
         title={title}
-        hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), aggregationKey.split(':')[1])}
+        hyperlink={generateAboutPageUrl(enterpriseSlug, contentType?.toLowerCase(), aggregationKey?.split(':')[1])}
         contentType={contentType}
         partners={partners}
         cardImageUrl={cardImageUrl || originalImageUrl}
@@ -72,7 +72,7 @@ ContentConfirmContentCard.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

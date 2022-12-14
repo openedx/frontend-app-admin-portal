@@ -26,8 +26,8 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
           key={uuid}
           cardImageUrl="https://picsum.photos/200/300"
           title={title}
-          hyperlink={generateAboutPageUrl(enterpriseSlug, contentType.toLowerCase(), contentKey)}
-          contentType={contentType.toLowerCase()}
+          hyperlink={generateAboutPageUrl(enterpriseSlug, contentType?.toLowerCase(), contentKey)}
+          contentType={contentType?.toLowerCase()}
           partners={authoringOrganizations}
         />
       ))}
