@@ -14,13 +14,13 @@ const ContentHighlights = () => {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   useEffect(() => {
     if (locationState?.deletedHighlightSet) {
-      setToast((prevState) => [...prevState, `"${enterpriseCuration.toastText}" deleted.`]);
+      setToast((prevState) => [...prevState, `"${enterpriseCuration?.toastText}" deleted.`]);
       const newState = { ...locationState };
       delete newState.deletedHighlightSet;
       history.replace({ ...location, state: newState });
     }
     if (locationState?.addHighlightSet) {
-      setToast([...toast, `"${enterpriseCuration.toastText}" added.`]);
+      setToast([...toast, `"${enterpriseCuration?.toastText}" added.`]);
       const newState = { ...locationState };
       delete newState.addHighlightSet;
       history.replace({ ...location, state: newState });
