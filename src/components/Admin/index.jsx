@@ -22,6 +22,9 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 import { formatTimestamp } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
+import { SubscriptionData } from '../subscriptions';
+import EmbeddedSubscription from './EmbeddedSubscription';
+import { features } from '../../config';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -292,6 +295,7 @@ class Admin extends React.Component {
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
     };
+    const { SUBSCRIPTION_LPR } = features;
 
     return (
       <main role="main" className="learner-progress-report">
@@ -315,6 +319,18 @@ class Admin extends React.Component {
                   <AdminCards />
                 )}
               </div>
+
+              {SUBSCRIPTION_LPR
+                  && (
+                  <div className="row">
+                    <div className="col mb-4.5">
+                      <SubscriptionData enterpriseId={enterpriseId}>
+                        <EmbeddedSubscription />
+                      </SubscriptionData>
+                    </div>
+                  </div>
+                  )}
+
               <div className="row mt-4">
                 <div className="col">
                   <div className="row">
