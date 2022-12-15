@@ -7,6 +7,7 @@ import ReviewList, { ShowHideButton, MAX_ITEMS_DISPLAYED } from './ReviewList';
 import { deleteSelectedRowAction } from '../data/actions';
 
 const defaultProps = {
+  isLoading: false,
   rows: [
     {
       id: '1234',
@@ -47,8 +48,7 @@ const rowGenerator = (numRows) => {
 
 describe('ReviewList', () => {
   beforeEach(() => {
-    defaultProps.dispatch.mockClear();
-    defaultProps.returnToSelection.mockClear();
+    jest.clearAllMocks();
   });
   it('displays a title', () => {
     render(<ReviewList {...defaultProps} />);
@@ -120,7 +120,10 @@ describe('ReviewList', () => {
     expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
     expect(defaultProps.dispatch).toHaveBeenCalledWith(deleteSelectedRowAction(defaultProps.rows[0].id));
   });
-
+  it('shows loading state', () => {
+    render(<ReviewList {...defaultProps} isLoading />);
+    expect(screen.getByTestId('bulk-enrollment-review-list-loading-skeleton')).toBeInTheDocument();
+  });
   describe('ShowHideButton', () => {
     const buttonProps = {
       isShowingAll: false,
@@ -135,8 +138,7 @@ describe('ReviewList', () => {
       'data-testid': 'test-button',
     };
     beforeEach(() => {
-      buttonProps.show25.mockClear();
-      buttonProps.showAll.mockClear();
+      jest.clearAllMocks();
     });
     it('returns null if there are less than  MAX_ITEMS_DISPLAYED rows', () => {
       render(<ShowHideButton {...buttonProps} numRows={24} />);

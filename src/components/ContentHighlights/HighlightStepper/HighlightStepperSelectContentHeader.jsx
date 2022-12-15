@@ -13,17 +13,15 @@ const HighlightStepperSelectContentTitle = () => {
         <Icon src={AddCircle} className="mr-2 color-brand-tertiary" />
         {STEPPER_STEP_TEXT.selectContent}
       </h3>
-      <div className="mb-5">
-        <p>
-          Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> items for &quot;{highlightTitle}&quot;.
-        </p>
-        <p>
-          <strong>
-            Pro tip: a highlight can include courses similar to each other for your learners to choose from,
-            or courses that vary in subtopics to help your learners master a larger topic.
-          </strong>
-        </p>
-      </div>
+      <p>
+        Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> items for &quot;{highlightTitle}&quot;.
+      </p>
+      <p>
+        <strong>
+          Pro tip: a highlight can include courses similar to each other for your learners to choose from,
+          or courses that vary in subtopics to help your learners master a larger topic.
+        </strong>
+      </p>
     </>
   );
 };

@@ -3,7 +3,7 @@ import {
   Row, Col, Container,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import HighlightStepperSelectContentDataTable from './HighlightStepperSelectContentDataTable';
+import HighlightStepperSelectContentSearch from './HighlightStepperSelectContentSearch';
 import HighlightStepperSelectContentHeader from './HighlightStepperSelectContentHeader';
 
 const HighlightStepperSelectContent = ({ enterpriseId }) => (
@@ -15,7 +15,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => (
     </Row>
     <Row>
       <Col>
-        <HighlightStepperSelectContentDataTable enterpriseId={enterpriseId} />
+        <HighlightStepperSelectContentSearch enterpriseId={enterpriseId} />
       </Col>
     </Row>
   </Container>
