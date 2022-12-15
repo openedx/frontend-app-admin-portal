@@ -10,6 +10,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 
+import { useHistory } from 'react-router-dom';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import HighlightStepperTitle from './HighlightStepperTitle';
@@ -41,6 +42,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       dispatch: dispatchEnterpriseCuration,
     },
   } = useContext(EnterpriseAppContext);
+  const history = useHistory();
+  const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
   const { resetStepperModal } = useContentHighlightsContext();
@@ -84,6 +87,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         highlightedContentUuids: result?.highlightedContentUuids || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
+      dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightToast(transformedHighlightSet.uuid));
+      history.push(location.pathname, { addHighlightSet: true });
       closeStepperModal();
     } catch (error) {
       logError(error);
@@ -91,7 +96,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
-
   return (
     <Stepper activeKey={currentStep}>
       <FullscreenModal
