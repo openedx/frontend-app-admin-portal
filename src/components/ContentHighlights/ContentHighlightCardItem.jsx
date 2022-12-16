@@ -2,35 +2,42 @@ import React from 'react';
 import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { getContentHighlightCardFooter } from './data/constants';
+import { getContentHighlightCardFooter } from './data/utils';
+import SkeletonContentCard from './SkeletonContentCard';
 
 const ContentHighlightCardItem = ({
   isLoading,
   title,
-  hyperlink,
+  href,
   contentType,
   partners,
   cardImageUrl,
   price,
 }) => {
+  if (isLoading) {
+    return (
+      <SkeletonContentCard />
+    );
+  }
   const cardInfo = {
-    cardTitle: (<Truncate lines={3} title={title}>{title}</Truncate>),
-    cardLogoAlt: partners?.length === 1 ? `${partners[0].name}'s logo` : undefined,
+    cardImgSrc: cardImageUrl,
     cardLogoSrc: partners?.length === 1 ? partners[0].logoImageUrl : undefined,
+    cardLogoAlt: partners?.length === 1 ? `${partners[0].name}'s logo` : undefined,
+    cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
     cardSubtitle: partners?.map(p => p.name).join(', '),
-    cardFooter: getContentHighlightCardFooter(price, contentType),
+    cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
-  if (hyperlink) {
+  if (href) {
     cardInfo.cardTitle = (
-      <Hyperlink destination={hyperlink} target="_blank">
+      <Hyperlink destination={href} target="_blank">
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
   }
   return (
-    <Card isLoading={isLoading}>
+    <Card>
       <Card.ImageCap
-        src={cardImageUrl}
+        src={cardInfo.cardImgSrc}
         srcAlt=""
         logoSrc={cardInfo.cardLogoSrc}
         logoAlt={cardInfo.cardLogoAlt}
@@ -55,7 +62,7 @@ ContentHighlightCardItem.propTypes = {
   isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
-  hyperlink: PropTypes.string,
+  href: PropTypes.string,
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -67,7 +74,7 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
-  hyperlink: undefined,
+  href: undefined,
   cardImageUrl: undefined,
   price: undefined,
 };

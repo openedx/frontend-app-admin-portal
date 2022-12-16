@@ -9,7 +9,7 @@ const ContentHighlightSet = () => {
   const { highlightSetUUID } = useParams();
   const { highlightSet, isLoading } = useHighlightSet(highlightSetUUID);
   return (
-    <Container fluid className="mt-5">
+    <Container className="mt-5">
       <CurrentContentHighlightItemsHeader isLoading={isLoading} highlightTitle={highlightSet?.title} />
       <ContentHighlightsCardItemContainer isLoading={isLoading} highlightedContent={highlightSet?.highlightedContent} />
     </Container>

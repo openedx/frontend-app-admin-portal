@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedContent } from '../HighlightStepperConfirmContent';
 import {
+  DEFAULT_ERROR_MESSAGE,
   testCourseAggregation,
 } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
@@ -67,7 +68,7 @@ describe('BaseReviewContentSelections', () => {
         <BaseReviewContentSelections isSearchStalled />
       </HighlightStepperConfirmContentWrapper>,
     );
-    expect(screen.getByTestId('skeleton-container')).toBeInTheDocument();
+    expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
   });
   it('should render selected card content', () => {
     renderWithRouter(
@@ -87,5 +88,6 @@ describe('SelectedContent', () => {
       </HighlightStepperConfirmContentWrapper>,
     );
     expect(screen.getByTestId('selected-content-no-results')).toBeInTheDocument();
+    expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EMPTY_SELECTEDROWIDS)).toBeInTheDocument();
   });
 });

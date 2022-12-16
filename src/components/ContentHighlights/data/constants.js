@@ -1,18 +1,22 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { faker } from '@faker-js/faker';
-import { configuration } from '../../../config';
 /* eslint-enable import/no-extraneous-dependencies */
 
-// Generate URLs for about pages from the enterprise learner portal
-export const generateAboutPageUrl = (enterpriseSlug, contentType, contentKey) => {
-  const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
-  const aboutPageBase = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
-  if (contentType === 'learnerpathway') {
-    return `${aboutPageBase}/search/${contentKey}`;
-  }
-  return `${aboutPageBase}/${contentType}/${contentKey}`;
+// Default Card Grid columnSizes
+export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
+  xs: 12,
+  md: 6,
+  lg: 4,
+  xl: 3,
 };
-
+// Empty Content and Error Messages
+export const DEFAULT_ERROR_MESSAGE = {
+  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
+  // eslint-disable-next-line quotes
+  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
+};
+// Max highlight sets per enteprise curation
+export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 8;
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 // Max length of highlight title in stepper
@@ -38,15 +42,6 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
   program: 'Program',
   learnerpathway: 'Pathway',
-};
-
-// High Card logic for footer text
-export const getContentHighlightCardFooter = (price, contentType) => {
-  const formattedContentType = FOOTER_TEXT_BY_CONTENT_TYPE[contentType?.toLowerCase()];
-  if (!price) {
-    return formattedContentType;
-  }
-  return `$${price} · ${formattedContentType}`;
 };
 
 // Test Data for Content Highlights TODO: Remove when API is available || Remove when feature completed

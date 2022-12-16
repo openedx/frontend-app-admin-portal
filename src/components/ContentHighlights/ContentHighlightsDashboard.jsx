@@ -30,7 +30,7 @@ const ContentHighlightsDashboardBase = ({ children }) => {
   }, [history, location, locationState]);
 
   return (
-    <Container fluid className="my-5">
+    <Container className="my-5">
       <ContentHighlightHelmet title="Highlights" />
       {children}
       <Toast

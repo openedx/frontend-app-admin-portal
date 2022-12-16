@@ -8,7 +8,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
-import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -66,12 +66,13 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
       highlightedContent={[]}
     />);
     expect(screen.getByTestId('empty-highlighted-content')).toBeInTheDocument();
+    expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EMPTY_HIGHLIGHT_SET)).toBeInTheDocument();
   });
   it('Displays Skeleton on load', () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading
       highlightedContent={testHighlightSet}
     />);
-    expect(screen.getByTestId('card-item-skeleton')).toBeInTheDocument();
+    expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
   });
 });
