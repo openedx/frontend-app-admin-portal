@@ -133,11 +133,6 @@ class EnterpriseApp extends React.Component {
                 <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
-                  onWidthChange={(width) => {
-                    this.setState({
-                      sidebarWidth: width + defaultContentPadding,
-                    });
-                  }}
                   isMobile={!matchesMediaQ}
                 />
                 <div
