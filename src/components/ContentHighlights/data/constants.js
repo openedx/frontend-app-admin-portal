@@ -382,6 +382,12 @@ export const testCourseData = [
     firstEnrollablePaidSeatPrice: 199,
   },
 ];
+testCourseData.forEach((element, index) => {
+  if (!element.objectID) {
+    // added to mimic the objectID prop passed by `connectStateResults` with Algolia
+    testCourseData[index].objectID = index + 1;
+  }
+});
 
 export const testCourseAggregation = {
   'course:HarvardX+CS50x': true,
