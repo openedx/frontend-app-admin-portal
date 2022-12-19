@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { CardGrid } from '@edx/paragon';
+import { v4 as uuidv4 } from 'uuid';
 import SkeletonContentCard from './SkeletonContentCard';
 import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
 
@@ -7,8 +8,7 @@ const SkeletonContentCardContainer = ({ length, columnSizes }) => (
   <CardGrid columnSizes={columnSizes}>
     {[
       ...new Array(length),
-    // eslint-disable-next-line react/no-array-index-key
-    ].map((_, index) => <SkeletonContentCard key={index} />)};
+    ].map(() => <SkeletonContentCard key={uuidv4()} />)};
   </CardGrid>
 );
 

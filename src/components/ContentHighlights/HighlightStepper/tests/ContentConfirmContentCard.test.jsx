@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { Provider } from 'react-redux';
@@ -17,6 +18,13 @@ const initialState = {
       enterpriseSlug: 'test-enterprise',
     },
 };
+const mockDeleteSelectedRowId = jest.fn();
+jest.mock('../data/hooks.js', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useContentHighlightsContext: jest.fn(() => ({
+    deleteSelectedRowId: mockDeleteSelectedRowId,
+  })),
+}));
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -49,7 +57,6 @@ const ContentHighlightContentCardWrapper = ({
 describe('<ContentConfirmContentCard />', () => {
   it('renders the correct content', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
-
     for (let i = 0; i < testCourseData.length; i++) {
       expect(screen.getByText(testCourseData[i].title)).toBeInTheDocument();
       expect(screen.getByText(testCourseData[i].firstEnrollablePaidSeatPrice, { exact: false })).toBeInTheDocument();
@@ -60,24 +67,9 @@ describe('<ContentConfirmContentCard />', () => {
   });
   it('deletes the correct content', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
-
-    const deleteButton = screen.getAllByRole('button', { 'aria-label': 'Delete' });
-    fireEvent.click(deleteButton[0]);
-    for (let i = 0; i < testCourseData.length; i++) {
-      if (i === 0) {
-        expect(screen.queryByText(testCourseData[i].title)).not.toBeInTheDocument();
-        // eslint-disable-next-line max-len
-        expect(screen.queryByText(testCourseData[i].firstEnrollablePaidSeatPrice, { exact: false })).not.toBeInTheDocument();
-        // eslint-disable-next-line max-len
-        expect(screen.queryAllByText(FOOTER_TEXT_BY_CONTENT_TYPE[testCourseData[i].contentType], { exact: false }).length).toBe(testCourseData.length - 1);
-        expect(screen.queryAllByText(testCourseData[i].partners[0].name).length).toBe(testCourseData.length - 1);
-      } else {
-        expect(screen.getByText(testCourseData[i].title)).toBeInTheDocument();
-        expect(screen.getByText(testCourseData[i].firstEnrollablePaidSeatPrice, { exact: false })).toBeInTheDocument();
-        // eslint-disable-next-line max-len
-        expect(screen.queryAllByText(FOOTER_TEXT_BY_CONTENT_TYPE[testCourseData[i].contentType], { exact: false }).length).toBe(testCourseData.length - 1);
-        expect(screen.queryAllByText(testCourseData[i].partners[0].name).length).toBe(testCourseData.length - 1);
-      }
-    }
+    const deleteButton = screen.getByLabelText('Delete');
+    userEvent.click(deleteButton);
+    // fireEvent.click(screen.getByTestId(`delete-${testCourseData[0].aggregationKey}`));
+    expect(mockDeleteSelectedRowId).toHaveBeenCalledWith(testCourseData[0].aggregationKey);
   });
 });

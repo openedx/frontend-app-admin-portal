@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { faker } from '@faker-js/faker';
-/* eslint-enable import/no-extraneous-dependencies */
 
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {

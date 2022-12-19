@@ -14,13 +14,14 @@ import {
 import { Assignment } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
+import { connect } from 'react-redux';
 import { configuration } from '../../../config';
-
 import {
   STEPPER_STEP_TEXT,
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   DEFAULT_ERROR_MESSAGE,
+  testEnterpriseId,
 } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
@@ -38,26 +39,12 @@ export const BaseReviewContentSelections = ({
   if (!searchResults) {
     return (<div data-testid="base-content-no-results" />);
   }
+
   const { hits } = camelCaseObject(searchResults);
 
-  const transformedCardData = hits.map((highlightedContent) => {
-    const {
-      aggregationKey, title, cardImageUrl, contentType, partners, originalImageUrl, firstEnrollablePaidSeatPrice,
-    } = highlightedContent;
-    const original = {
-      aggregationKey,
-      title,
-      contentType,
-      partners,
-      cardImageUrl,
-      originalImageUrl,
-      firstEnrollablePaidSeatPrice,
-    };
-    return original;
-  });
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
-      {transformedCardData.map((original) => (
+      {hits.map((original) => (
         <ContentConfirmContentCard key={original.aggregationKey} original={original} />))}
     </CardGrid>
   );
@@ -98,9 +85,8 @@ export const SelectedContent = ({ enterpriseId }) => {
    */
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
-    // TODO: replace testEnterpriseId with enterpriseID before push,
-    // uncomment out import and replace with testEnterpriseId to test
-    let filterString = `enterprise_customer_uuids:${enterpriseId}`;
+    // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
+    let filterString = `enterprise_customer_uuids:${testEnterpriseId}`;
     if (currentSelectedRowIds.length > 0) {
       filterString += ' AND (';
       currentSelectedRowIds.forEach((selectedRowId, index) => {
@@ -116,7 +102,7 @@ export const SelectedContent = ({ enterpriseId }) => {
 
   if (currentSelectedRowIds.length === 0) {
     return (
-      <Alert data-testid="selected-content-no-results">
+      <Alert data-testid="selected-content-no-results" variant="warning">
         {DEFAULT_ERROR_MESSAGE.EMPTY_SELECTEDROWIDS}
       </Alert>
     );
@@ -158,4 +144,8 @@ HighlightStepperConfirmContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-export default HighlightStepperConfirmContent;
+const mapStateToProps = (state) => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(HighlightStepperConfirmContent);
