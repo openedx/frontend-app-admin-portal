@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import {
   Card, Button, Col, Row,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { Add } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { connect } from 'react-redux';
 import cardImage from '../data/images/ContentHighlightImage.svg';
 import ZeroStateCardImage from './ZeroStateCardImage';
 import ZeroStateCardText from './ZeroStateCardText';
@@ -12,12 +14,38 @@ import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { useContentHighlightsContext } from '../data/hooks';
-import { BUTTON_TEXT } from '../data/constants';
+import { BUTTON_TEXT, CONTENT_HIGHLIGHTS_BASE_DATA, TRACK_EVENT_NAMES } from '../data/constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ZeroStateHighlights = ({ cardClassName }) => {
+const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const { openStepperModal } = useContentHighlightsContext();
+  const getState = useContextSelector(ContentHighlightsContext, v => v[0]);
+  const { stepperModal: { isOpen } } = getState;
+  const {
+    enterpriseCuration: {
+      enterpriseCuration: {
+        uuid, created, modified, highlightSets, title,
+      },
+    },
+  } = useContext(EnterpriseAppContext);
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
-
+  const handleNewHighlightClick = (e) => {
+    e.preventDefault();
+    const trackInfo = {
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(e, enterpriseId, title, uuid, created, modified),
+      highlight_sets: highlightSets,
+      number_of_highlight_sets: highlightSets.length,
+      stepperModal: {
+        isOpen,
+      },
+    };
+    openStepperModal();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${TRACK_EVENT_NAMES.NEW_HIGHLIHT}.${e.nativeEvent.type}`,
+      trackInfo,
+    );
+  };
   return (
     <Row>
       <Col xs={12} sm={10} md={9} lg={8} xl={5}>
@@ -32,7 +60,7 @@ const ZeroStateHighlights = ({ cardClassName }) => {
           </ZeroStateCardText>
           <ZeroStateCardFooter>
             <Button
-              onClick={openStepperModal}
+              onClick={handleNewHighlightClick}
               iconBefore={Add}
               block
             >
@@ -47,6 +75,8 @@ const ZeroStateHighlights = ({ cardClassName }) => {
 };
 
 ZeroStateHighlights.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+
   cardClassName: PropTypes.string,
 };
 
@@ -54,4 +84,8 @@ ZeroStateHighlights.defaultProps = {
   cardClassName: undefined,
 };
 
-export default ZeroStateHighlights;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(ZeroStateHighlights);

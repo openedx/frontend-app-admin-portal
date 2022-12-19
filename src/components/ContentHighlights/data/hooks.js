@@ -35,7 +35,8 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
  */
 export function useContentHighlightsContext() {
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
-
+  const getState = useContextSelector(ContentHighlightsContext, v => v[0]);
+  const getHighlightsState = useCallback(() => getState(), [getState]);
   const openStepperModal = useCallback(() => {
     setState(s => ({
       ...s,
@@ -80,6 +81,7 @@ export function useContentHighlightsContext() {
   }, [setState]);
 
   return {
+    getHighlightsState,
     openStepperModal,
     resetStepperModal,
     setCurrentSelectedRowIds,

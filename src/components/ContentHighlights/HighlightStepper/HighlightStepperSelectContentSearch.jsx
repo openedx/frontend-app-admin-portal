@@ -27,6 +27,8 @@ const selectColumn = {
 };
 
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
+// remove before final PR
+// const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 
 const HighlightStepperSelectContent = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();

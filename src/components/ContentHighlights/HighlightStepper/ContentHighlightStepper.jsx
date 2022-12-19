@@ -10,6 +10,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import HighlightStepperTitle from './HighlightStepperTitle';
@@ -19,6 +20,7 @@ import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
+import { CONTENT_HIGHLIGHTS_BASE_DATA, TRACK_EVENT_NAMES } from '../data/constants';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -41,6 +43,14 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       dispatch: dispatchEnterpriseCuration,
     },
   } = useContext(EnterpriseAppContext);
+  const {
+    enterpriseCuration: {
+      enterpriseCuration: {
+        uuid, created, modified, title,
+      },
+    },
+  } = useContext(EnterpriseAppContext);
+  // uuid ,created, modified
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
 
@@ -88,7 +98,36 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
-
+  const handleNext = (e) => {
+    const trackInfo = {
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(e, enterpriseId, title, uuid, created, modified),
+      stepperModal: {
+        prev_step: currentStep,
+        prev_step_position: steps.indexOf(currentStep) + 1,
+        current_step: steps[steps.indexOf(currentStep) + 1],
+        current_step_position: steps.indexOf(currentStep) + 2,
+        total_steps: steps.length,
+        highlight_title: highlightTitle,
+        currentSelectedRowIds,
+        isOpen: isStepperModalOpen,
+      },
+    };
+    if (currentStep === STEPPER_STEP_LABELS.CREATE_TITLE) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${TRACK_EVENT_NAMES.STEPPER_STEP_CREATE_TITLE}.${e.nativeEvent.type}`,
+        trackInfo,
+      );
+    }
+    if (currentStep === STEPPER_STEP_LABELS.SELECT_CONTENT) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${TRACK_EVENT_NAMES.STEPPER_STEP_SELECT_CONTENT}.${e.nativeEvent.type}`,
+        trackInfo,
+      );
+    }
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
   return (
     <Stepper activeKey={currentStep}>
       <FullscreenModal
@@ -112,7 +151,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               </Button>
               <Button
                 variant="primary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                onClick={(event) => handleNext(event)}
                 disabled={!!titleStepValidationError || !highlightTitle}
               >
                 Next
@@ -130,7 +169,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               </Button>
               <Button
                 variant="primary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+                onClick={(event) => handleNext(event)}
                 disabled={Object.keys(currentSelectedRowIds).length === 0}
               >
                 Next

@@ -1,6 +1,26 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { faker } from '@faker-js/faker';
 
+// TrackEventNamingScheme for ContentHighlights
+export const TRACK_EVENT_BASE = 'edx.ui.enterprise.admin_portal';
+export const TRACK_EVENT_NAMES = {
+  NEW_HIGHLIHT: `${TRACK_EVENT_BASE}.create_new_highlight`,
+  STEPPER_STEP_CREATE_TITLE: `${TRACK_EVENT_BASE}.stepper_create_title`,
+  STEPPER_STEP_SELECT_CONTENT: `${TRACK_EVENT_BASE}.stepper_select_content`,
+};
+// Base data info for ContentHighlights
+export const CONTENT_HIGHLIGHTS_BASE_DATA = (e, enterpriseId, title, uuid, created, modified) => ({
+  event: {
+    event_type: e.nativeEvent.type,
+    event_type_interaction: e.target.type,
+    event_type_interaction_label: e.target.textContent,
+  },
+  enterprise_id: enterpriseId,
+  enterprise_name: title,
+  enterprise_curation_uuid: uuid,
+  enterprise_curation_created: created,
+  enterprise_curation_modified: modified,
+});
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 // Max length of highlight title in stepper

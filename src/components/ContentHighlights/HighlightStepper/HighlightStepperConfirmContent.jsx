@@ -17,6 +17,7 @@ import { STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET } from '../data/
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SkeletonContentCard from '../SkeletonContentCard';
 
+// remove before final PR
 const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 
 const BaseReviewContentSelections = ({
