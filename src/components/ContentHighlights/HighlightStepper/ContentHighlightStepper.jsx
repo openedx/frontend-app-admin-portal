@@ -78,7 +78,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         isPublished: result.isPublished,
         title: result.title,
         uuid: result.uuid,
-        highlightedContentUuids: result.highlightedContentUuids || [],
+        highlightedContentUuids: result.highlightedContent || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
       closeStepperModal();
