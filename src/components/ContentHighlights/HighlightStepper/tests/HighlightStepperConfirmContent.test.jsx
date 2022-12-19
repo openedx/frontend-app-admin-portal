@@ -15,10 +15,12 @@ import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseId = 'test-enterprise-id';
 const initialState = {
   portalConfiguration:
     {
       enterpriseSlug: 'test-enterprise',
+      enterpriseId,
     },
 };
 
@@ -27,7 +29,6 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const enterpriseId = 'test-enterprise-id';
 // eslint-disable-next-line react/prop-types
 const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds = [] }) => {
   const contextValue = useState({
@@ -56,6 +57,7 @@ describe('<HighlightStepperConfirmContent />', () => {
         <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
       </HighlightStepperConfirmContentWrapper>,
     );
+    expect(screen.getByText('Pikachu')).toBeInTheDocument();
     expect(screen.getByText('blp')).toBeInTheDocument();
     expect(screen.getByText('bla')).toBeInTheDocument();
   });

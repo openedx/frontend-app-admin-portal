@@ -10,6 +10,7 @@ import ContentConfirmContentCard from '../ContentConfirmContentCard';
 import { testCourseData, testCourseAggregation, FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
+import { useContentHighlightsContext } from '../../data/hooks';
 
 const mockStore = configureMockStore();
 const initialState = {
@@ -18,13 +19,16 @@ const initialState = {
       enterpriseSlug: 'test-enterprise',
     },
 };
+testCourseData.forEach((element, index) => {
+  if (!element.objectID) {
+    testCourseData[index].objectID = index + 1;
+  }
+});
 const mockDeleteSelectedRowId = jest.fn();
-jest.mock('../data/hooks.js', () => ({
-  ...jest.requireActual('../data/hooks'),
-  useContentHighlightsContext: jest.fn(() => ({
-    deleteSelectedRowId: mockDeleteSelectedRowId,
-  })),
-}));
+jest.mock('../../data/hooks');
+useContentHighlightsContext.mockReturnValue({
+  deleteSelectedRowId: mockDeleteSelectedRowId,
+});
 
 const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
@@ -48,7 +52,12 @@ const ContentHighlightContentCardWrapper = ({
   return (
     <Provider store={store}>
       <ContentHighlightsContext.Provider value={contextValue}>
-        {testCourseData.map((original) => <ContentConfirmContentCard original={original} />)}
+        {testCourseData.map((original) => (
+          <ContentConfirmContentCard
+            original={original}
+            key={original.aggregationKey}
+          />
+        ))}
       </ContentHighlightsContext.Provider>
     </Provider>
   );
@@ -67,9 +76,8 @@ describe('<ContentConfirmContentCard />', () => {
   });
   it('deletes the correct content', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
-    const deleteButton = screen.getByLabelText('Delete');
-    userEvent.click(deleteButton);
-    // fireEvent.click(screen.getByTestId(`delete-${testCourseData[0].aggregationKey}`));
+    const deleteButton = screen.getAllByRole('button', { 'aria-label': 'Delete' });
+    userEvent.click(deleteButton[0]);
     expect(mockDeleteSelectedRowId).toHaveBeenCalledWith(testCourseData[0].aggregationKey);
   });
 });
