@@ -12,7 +12,7 @@ import { generateAboutPageUrl } from './data/utils';
 const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highlightedContent }) => {
   if (isLoading) {
     return (
-      <SkeletonContentCardContainer length={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
+      <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
     );
   }
   if (!highlightedContent || highlightedContent?.length === 0) {

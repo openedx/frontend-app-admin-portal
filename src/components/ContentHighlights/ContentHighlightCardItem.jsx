@@ -28,6 +28,7 @@ const ContentHighlightCardItem = ({
       </Hyperlink>
     );
   }
+
   return (
     <Card isLoading={isLoading}>
       <Card.ImageCap

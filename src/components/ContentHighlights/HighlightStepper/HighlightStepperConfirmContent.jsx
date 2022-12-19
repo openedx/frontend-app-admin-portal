@@ -32,7 +32,7 @@ export const BaseReviewContentSelections = ({
 }) => {
   if (isSearchStalled) {
     return (
-      <SkeletonContentCardContainer length={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
+      <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
     );
   }
   if (!searchResults) {
