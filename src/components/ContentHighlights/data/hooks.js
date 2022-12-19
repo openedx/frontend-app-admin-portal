@@ -101,13 +101,13 @@ export function useContentHighlightsContext() {
   }, [setState]);
 
   const deleteSelectedRowId = useCallback((rowId) => {
-    const x = getState.stepperModal.currentSelectedRowIds;
-    delete x[rowId];
+    const currentRowIds = getState.stepperModal.currentSelectedRowIds;
+    delete currentRowIds[rowId];
     setState(s => ({
       ...s,
       stepperModal: {
         ...s.stepperModal,
-        currentSelectedRowIds: x,
+        currentSelectedRowIds: currentRowIds,
       },
     }));
   }, [setState, getState]);

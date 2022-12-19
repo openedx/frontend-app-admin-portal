@@ -9,6 +9,7 @@ import {
   Col,
   Icon,
   CardGrid,
+  Alert,
 } from '@edx/paragon';
 import { Assignment } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -16,11 +17,14 @@ import { Configure, InstantSearch, connectStateResults } from 'react-instantsear
 import { configuration } from '../../../config';
 
 import {
-  STEPPER_STEP_TEXT, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+  STEPPER_STEP_TEXT,
+  MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+  HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
+  DEFAULT_ERROR_MESSAGE,
 } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import SkeletonContentCard from '../SkeletonContentCard';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
+import SkeletonContentCardContainer from '../SkeletonContentCardContainer';
 
 export const BaseReviewContentSelections = ({
   searchResults,
@@ -28,21 +32,7 @@ export const BaseReviewContentSelections = ({
 }) => {
   if (isSearchStalled) {
     return (
-      <div data-testid="skeleton-container">
-        <CardGrid
-          columnSizes={{
-            xs: 12,
-            md: 6,
-            lg: 4,
-            xl: 3,
-          }}
-        >
-          {/* eslint-disable */}
-        {[...new Array(8)].map((element, index) => 
-        <SkeletonContentCard key={index} />)}
-        {/* eslint-enable */}
-        </CardGrid>
-      </div>
+      <SkeletonContentCardContainer length={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
     );
   }
   if (!searchResults) {
@@ -50,7 +40,6 @@ export const BaseReviewContentSelections = ({
   }
   const { hits } = camelCaseObject(searchResults);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const transformedCardData = hits.map((highlightedContent) => {
     const {
       aggregationKey, title, cardImageUrl, contentType, partners, originalImageUrl, firstEnrollablePaidSeatPrice,
@@ -67,14 +56,7 @@ export const BaseReviewContentSelections = ({
     return original;
   });
   return (
-    <CardGrid
-      columnSizes={{
-        xs: 12,
-        md: 6,
-        lg: 4,
-        xl: 3,
-      }}
-    >
+    <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {transformedCardData.map((original) => (
         <ContentConfirmContentCard key={original.aggregationKey} original={original} />))}
     </CardGrid>
@@ -130,11 +112,14 @@ export const SelectedContent = ({ enterpriseId }) => {
       filterString += ')';
     }
     return filterString;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSelectedRowIds]);
+  }, [currentSelectedRowIds, enterpriseId]);
 
   if (currentSelectedRowIds.length === 0) {
-    return (<div data-testid="selected-content-no-results" />);
+    return (
+      <Alert data-testid="selected-content-no-results">
+        {DEFAULT_ERROR_MESSAGE.EMPTY_SELECTEDROWIDS}
+      </Alert>
+    );
   }
 
   return (

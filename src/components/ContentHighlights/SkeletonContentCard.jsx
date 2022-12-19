@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 
 const SkeletonContentCard = () => (
-  <Card isLoading>
+  <Card isLoading data-testid="card-item-skeleton">
     <Card.ImageCap logoSkeleton />
     <Card.Section className="mt-2" />
     <Card.Footer />

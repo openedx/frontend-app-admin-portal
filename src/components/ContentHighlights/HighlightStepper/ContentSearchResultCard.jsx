@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
-import { generateAboutPageUrl } from '../data/constants';
+import { generateAboutPageUrl } from '../data/utils';
 
 const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
   const {
@@ -17,7 +17,11 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
   return (
     <ContentHighlightCardItem
       title={title}
-      hyperlink={generateAboutPageUrl(enterpriseSlug, contentType?.toLowerCase(), aggregationKey?.split(':')[1])}
+      href={generateAboutPageUrl({
+        enterpriseSlug,
+        contentType: contentType?.toLowerCase(),
+        contentKey: aggregationKey?.split(':')[1],
+      })}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}

@@ -14,6 +14,7 @@ const ContentHighlightsDashboardBase = ({ children }) => (
     {children}
   </Container>
 );
+
 ContentHighlightsDashboardBase.propTypes = {
   children: PropTypes.node.isRequired,
 };

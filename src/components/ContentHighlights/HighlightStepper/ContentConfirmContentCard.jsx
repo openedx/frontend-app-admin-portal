@@ -5,7 +5,7 @@ import { IconButton, Icon } from '@edx/paragon';
 import { connect } from 'react-redux';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { useContentHighlightsContext } from '../data/hooks';
-import { generateAboutPageUrl } from '../data/constants';
+import { generateAboutPageUrl } from '../data/utils';
 
 const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
   const { deleteSelectedRowId } = useContentHighlightsContext();
@@ -38,7 +38,11 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
     <React.Fragment key={key}>
       <ContentHighlightCardItem
         title={title}
-        hyperlink={generateAboutPageUrl(enterpriseSlug, contentType?.toLowerCase(), aggregationKey?.split(':')[1])}
+        href={generateAboutPageUrl({
+          enterpriseSlug,
+          contentType: contentType?.toLowerCase(),
+          contentKey: aggregationKey?.split(':')[1],
+        })}
         contentType={contentType}
         partners={partners}
         cardImageUrl={cardImageUrl || originalImageUrl}
@@ -46,11 +50,9 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
 
       />
       <IconButton
-        invertColors
-        isActive
         src={Delete}
         iconAs={Icon}
-        alt="Delete"
+        alt={`Remove ${title} from highlight collection`}
         onClick={() => setDeleteKey(aggregationKey)}
         className="ml-1 flex-shrink-0"
       />
