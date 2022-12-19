@@ -102,15 +102,17 @@ export function useContentHighlightsContext() {
   }, [setState]);
 
   const deleteSelectedRowId = useCallback((rowId) => {
-    const currentRowIds = { ...currentSelectedRowState };
-    delete currentRowIds[rowId];
-    setState(s => ({
-      ...s,
-      stepperModal: {
-        ...s.stepperModal,
-        currentSelectedRowIds: currentRowIds,
-      },
-    }));
+    setState(s => {
+      const currentRowIds = { ...currentSelectedRowState };
+      delete currentRowIds[rowId];
+      return {
+        ...s,
+        stepperModal: {
+          ...s.stepperModal,
+          currentSelectedRowIds: currentRowIds,
+        },
+      };
+    });
   }, [setState, currentSelectedRowState]);
 
   const setHighlightTitle = useCallback(({ highlightTitle, titleStepValidationError }) => {

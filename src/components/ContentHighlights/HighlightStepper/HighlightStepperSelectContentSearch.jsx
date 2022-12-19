@@ -7,7 +7,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
-import { FOOTER_TEXT_BY_CONTENT_TYPE, testEnterpriseId } from '../data/constants';
+import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
 import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SelectContentSelectionStatus from './SelectContentSelectionStatus';
@@ -40,7 +40,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
     // TODO: replace testEnterpriseId with enterpriseID before push,
     // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${testEnterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
+  const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
 
   return (
     <SearchData>

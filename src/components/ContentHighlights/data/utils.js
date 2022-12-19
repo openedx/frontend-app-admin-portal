@@ -12,6 +12,9 @@ export const getContentHighlightCardFooter = ({ price, contentType }) => {
 
 // Generate URLs for about pages from the enterprise learner portal
 export function generateAboutPageUrl({ enterpriseSlug, contentType, contentKey }) {
+  if (!contentType || !contentKey) {
+    return undefined;
+  }
   const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
   const aboutPageBase = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
   if (contentType === 'learnerpathway') {

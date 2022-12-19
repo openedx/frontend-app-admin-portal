@@ -21,7 +21,6 @@ import {
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   DEFAULT_ERROR_MESSAGE,
-  testEnterpriseId,
 } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
@@ -86,7 +85,7 @@ export const SelectedContent = ({ enterpriseId }) => {
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
     // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
-    let filterString = `enterprise_customer_uuids:${testEnterpriseId}`;
+    let filterString = `enterprise_customer_uuids:${enterpriseId}`;
     if (currentSelectedRowIds.length > 0) {
       filterString += ' AND (';
       currentSelectedRowIds.forEach((selectedRowId, index) => {
