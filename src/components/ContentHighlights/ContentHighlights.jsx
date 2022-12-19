@@ -20,7 +20,7 @@ const ContentHighlights = () => {
       history.replace({ ...location, state: newState });
     }
     if (locationState?.addHighlightSet) {
-      setToast([...toast, `"${enterpriseCuration?.toastText}" added.`]);
+      setToast((prevState) => [...prevState, `"${enterpriseCuration?.toastText}" added.`]);
       const newState = { ...locationState };
       delete newState.addHighlightSet;
       history.replace({ ...location, state: newState });
