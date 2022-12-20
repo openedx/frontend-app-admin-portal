@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import ContentHighlightsContextProvider from './ContentHighlightsContext';
@@ -9,26 +10,26 @@ const ContentHighlights = () => {
   const history = useHistory();
   const { location } = history;
   const { state: locationState } = location;
-  const [toast, setToast] = useState([]);
+  const [toasts, setToasts] = useState([]);
   useEffect(() => {
     if (locationState?.deletedHighlightSet) {
-      setToast((prevState) => [...prevState, `"${locationState?.toastText}" deleted.`]);
+      setToasts((prevState) => [...prevState, `"${locationState?.toastText}" deleted.`]);
       const newState = { ...locationState };
       delete newState.deletedHighlightSet;
       history.replace({ ...location, state: newState });
     }
     if (locationState?.addHighlightSet) {
-      setToast((prevState) => [...prevState, `"${locationState?.toastText}" added.`]);
+      setToasts((prevState) => [...prevState, `"${locationState?.toastText}" added.`]);
       const newState = { ...locationState };
       delete newState.addHighlightSet;
       history.replace({ ...location, state: newState });
     }
-  }, [history, location, locationState, toast]);
+  }, [history, location, locationState, toasts]);
   return (
     <ContentHighlightsContextProvider>
       <Hero title="Highlights" />
       <ContentHighlightRoutes />
-      {toast.map((element) => (<ContentHighlightToast toastText={element} />))}
+      {toasts.map((element) => (<ContentHighlightToast toastText={element} key={uuidv4()} />))}
     </ContentHighlightsContextProvider>
   );
 };

@@ -3,17 +3,19 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const ContentHighlightToast = ({ toastText }) => {
-  const [toastState, setToastState] = useState(false);
+  /* Toast visibility state initially set to false to ensure the toast's
+  fade-in animation occurs on mount once `showToast` set to true. */
+  const [showToast, isToastShown] = useState(false);
   const handleClose = () => {
-    setToastState(false);
+    isToastShown(false);
   };
   useEffect(() => {
-    setToastState(true);
+    isToastShown(true);
   }, []);
   return (
     <Toast
       onClose={() => handleClose()}
-      show={toastState}
+      show={showToast}
     >
       {toastText}
     </Toast>

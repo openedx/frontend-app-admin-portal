@@ -102,10 +102,10 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('confirming deletion in confirmation modal deletes via API', async () => {
-    await EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
       data: mockHighlightSetResponse,
     });
-    await EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
+    EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
     const { history } = renderWithRouter(
       <DeleteHighlightSetWrapper />,
       { route: initialRouterEntry },
@@ -130,10 +130,10 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
-    await EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+    EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
       data: mockHighlightSetResponse,
     });
-    await EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
+    EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
     renderWithRouter(
       <DeleteHighlightSetWrapper />,

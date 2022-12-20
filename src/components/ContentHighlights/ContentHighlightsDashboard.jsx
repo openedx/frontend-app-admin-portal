@@ -9,7 +9,7 @@ import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const ContentHighlightsDashboardBase = ({ children }) => (
-  <Container fluid className="my-5">
+  <Container className="my-5">
     <ContentHighlightHelmet title="Highlights" />
     {children}
   </Container>

@@ -11,7 +11,6 @@ export const SET_ENTERPRISE_CURATION = 'SET_ENTERPRISE_CURATION';
 export const SET_FETCH_ERROR = 'SET_FETCH_ERROR';
 export const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
 export const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
-export const SET_TOAST_TEXT = 'SET_TOAST_TEXT';
 
 export const enterpriseCurationActions = {
   setIsLoading: (payload) => ({

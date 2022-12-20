@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import DeclineSubsidyRequestModal from '../DeclineSubsidyRequestModal';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
@@ -46,17 +46,17 @@ describe('<DeclineSubsidyRequestModal />', () => {
 
     if (!shouldNotifyLearner) {
       const notifyLearnerCheckbox = getByTestId('decline-subsidy-request-modal-notify-learner-checkbox');
-      fireEvent.click(notifyLearnerCheckbox);
+      userEvent.click(notifyLearnerCheckbox);
     }
 
     if (shouldUnlinkLearnerFromEnterprise) {
       const unlinkLearnerCheckbox = getByTestId('decline-subsidy-request-modal-unlink-learner-checkbox');
-      fireEvent.click(unlinkLearnerCheckbox);
+      userEvent.click(unlinkLearnerCheckbox);
     }
 
     const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');
 
-    fireEvent.click(declineBtn);
+    userEvent.click(declineBtn);
     await waitFor(() => {
       expect(mockDeclineRequestFn).toHaveBeenCalledWith({
         subsidyRequestUUIDS: [TEST_REQUEST_UUID],
@@ -76,7 +76,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
     );
 
     const closeBtn = getByTestId('decline-subsidy-request-modal-close-btn');
-    fireEvent.click(closeBtn);
+    userEvent.click(closeBtn);
 
     await waitFor(() => {
       expect(mockHandleClose).toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
 
     const declineBtn = getByTestId('decline-subsidy-request-modal-decline-btn');
 
-    fireEvent.click(declineBtn);
+    userEvent.click(declineBtn);
 
     await waitFor(() => {
       expect(mockDeclineRequestFn).toHaveBeenCalledWith({

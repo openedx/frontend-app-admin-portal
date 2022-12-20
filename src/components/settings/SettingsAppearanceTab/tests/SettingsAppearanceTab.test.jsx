@@ -1,10 +1,10 @@
 import {
   act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import userEvent from '@testing-library/user-event';
 
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -124,7 +124,7 @@ describe('Portal Appearance Tab', () => {
     expect(screen.getByText('Acumen')).toBeInTheDocument();
     expect(screen.getByText('Pioneer')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByTestId('radio-Impact'));
+    userEvent.click(screen.getByTestId('radio-Impact'));
     await waitFor(() => {
       expect(screen.getByTestId('radio-Impact')).toBeChecked();
     });
