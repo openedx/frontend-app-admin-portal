@@ -10,15 +10,18 @@ import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedCo
 import {
   DEFAULT_ERROR_MESSAGE,
   testCourseAggregation,
+  testCourseData,
 } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import { configuration } from '../../../../config';
 
 const mockStore = configureMockStore([thunk]);
+const enterpriseId = 'test-enterprise-id';
 const initialState = {
   portalConfiguration:
     {
       enterpriseSlug: 'test-enterprise',
+      enterpriseId,
     },
 };
 
@@ -27,7 +30,6 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const enterpriseId = 'test-enterprise-id';
 // eslint-disable-next-line react/prop-types
 const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds = [] }) => {
   const contextValue = useState({
@@ -49,6 +51,35 @@ const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds
   );
 };
 
+testCourseData.forEach((element, index) => {
+  if (!element.objectID) {
+    testCourseData[index].objectID = index + 1;
+  }
+});
+
+const mockCourseData = [...testCourseData];
+jest.mock('react-instantsearch-dom', () => ({
+  ...jest.requireActual('react-instantsearch-dom'),
+  connectStateResults: Component => function connectStateResults(props) {
+    return (
+      <Component
+        searchResults={{
+          hits: mockCourseData,
+          hitsPerPage: 25,
+          nbHits: 2,
+          nbPages: 1,
+          page: 1,
+        }}
+        isSearchStalled={false}
+        searchState={{
+          page: 1,
+        }}
+        {...props}
+      />
+    );
+  },
+}));
+
 describe('<HighlightStepperConfirmContent />', () => {
   it('renders the content', () => {
     renderWithRouter(
@@ -56,8 +87,9 @@ describe('<HighlightStepperConfirmContent />', () => {
         <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
       </HighlightStepperConfirmContentWrapper>,
     );
-    expect(screen.getByText('blp')).toBeInTheDocument();
-    expect(screen.getByText('bla')).toBeInTheDocument();
+    testCourseData.forEach((element) => {
+      expect(screen.getByText(element.title)).toBeInTheDocument();
+    });
   });
 });
 

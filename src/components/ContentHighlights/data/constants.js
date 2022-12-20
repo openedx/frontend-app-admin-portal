@@ -44,7 +44,7 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
-// Test Data for Content Highlights TODO: Remove when API is available || Remove when feature completed
+// Test Data for Content Highlights From this point onwards
 // Test entepriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 // Test Content Highlights data
@@ -383,6 +383,12 @@ export const testCourseData = [
     firstEnrollablePaidSeatPrice: 199,
   },
 ];
+testCourseData.forEach((element, index) => {
+  if (!element.objectID) {
+    // added to mimic the objectID prop passed by `connectStateResults` with Algolia
+    testCourseData[index].objectID = index + 1;
+  }
+});
 
 export const testCourseAggregation = {
   'course:HarvardX+CS50x': true,

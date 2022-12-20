@@ -12,7 +12,7 @@ import { generateAboutPageUrl } from './data/utils';
 const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highlightedContent }) => {
   if (isLoading) {
     return (
-      <SkeletonContentCardContainer length={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
+      <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
     );
   }
   if (!highlightedContent || highlightedContent?.length === 0) {
@@ -25,12 +25,12 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {highlightedContent.map(({
-        uuid, title, contentType, authoringOrganizations, contentKey,
+        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl,
       }) => (
         <ContentHighlightCardItem
           isLoading={isLoading}
           key={uuid}
-          cardImageUrl="https://picsum.photos/200/300"
+          cardImageUrl={cardImageUrl}
           title={title}
           href={generateAboutPageUrl({
             enterpriseSlug,

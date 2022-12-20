@@ -34,15 +34,15 @@ export function useHighlightSetsForCuration(enterpriseCuration) {
 }
 
 export function useHighlightSet(highlightSetUUID) {
-  const [highlightSet, setHighlightSetItems] = useState([]);
+  const [highlightSet, setHighlightSet] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getHighlightSetItems = useCallback(async () => {
+  const getHighlightSet = useCallback(async () => {
     try {
       const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID);
       const result = camelCaseObject(data);
-      setHighlightSetItems(result);
+      setHighlightSet(result);
     } catch (e) {
       setError(e);
       logError(e);
@@ -52,8 +52,8 @@ export function useHighlightSet(highlightSetUUID) {
   }, [highlightSetUUID]);
 
   useEffect(() => {
-    getHighlightSetItems();
-  }, [getHighlightSetItems]);
+    getHighlightSet();
+  }, [getHighlightSet]);
 
   return {
     highlightSet,
@@ -67,7 +67,8 @@ export function useHighlightSet(highlightSetUUID) {
  */
 export function useContentHighlightsContext() {
   const setState = useContextSelector(ContentHighlightsContext, v => v[1]);
-  const getState = useContextSelector(ContentHighlightsContext, v => v[0]);
+  // eslint-disable-next-line max-len
+  const currentSelectedRowState = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.currentSelectedRowIds);
   const openStepperModal = useCallback(() => {
     setState(s => ({
       ...s,
@@ -101,16 +102,18 @@ export function useContentHighlightsContext() {
   }, [setState]);
 
   const deleteSelectedRowId = useCallback((rowId) => {
-    const currentRowIds = getState.stepperModal.currentSelectedRowIds;
-    delete currentRowIds[rowId];
-    setState(s => ({
-      ...s,
-      stepperModal: {
-        ...s.stepperModal,
-        currentSelectedRowIds: currentRowIds,
-      },
-    }));
-  }, [setState, getState]);
+    setState(s => {
+      const currentRowIds = { ...currentSelectedRowState };
+      delete currentRowIds[rowId];
+      return {
+        ...s,
+        stepperModal: {
+          ...s.stepperModal,
+          currentSelectedRowIds: currentRowIds,
+        },
+      };
+    });
+  }, [setState, currentSelectedRowState]);
 
   const setHighlightTitle = useCallback(({ highlightTitle, titleStepValidationError }) => {
     setState(s => ({

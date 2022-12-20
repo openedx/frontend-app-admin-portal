@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Delete } from '@edx/paragon/icons';
 import { IconButton, Icon } from '@edx/paragon';
@@ -9,8 +9,6 @@ import { generateAboutPageUrl } from '../data/utils';
 
 const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
   const { deleteSelectedRowId } = useContentHighlightsContext();
-  const [deleteKey, setDeleteKey] = useState(null);
-  const [isDeleted, setIsDeleted] = useState(false);
   const {
     title,
     contentType,
@@ -19,23 +17,10 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
     originalImageUrl,
     firstEnrollablePaidSeatPrice,
     aggregationKey,
-    key,
   } = original;
-  // eslint-disable-next-line no-shadow
-  useEffect(() => {
-    if (deleteKey === aggregationKey) {
-      deleteSelectedRowId(deleteKey);
-      setIsDeleted(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteKey, aggregationKey]);
-  if (isDeleted) {
-    return (
-      null
-    );
-  }
+
   return (
-    <React.Fragment key={key}>
+    <div className="d-flex w-100">
       <ContentHighlightCardItem
         title={title}
         href={generateAboutPageUrl({
@@ -53,10 +38,10 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
         src={Delete}
         iconAs={Icon}
         alt={`Remove ${title} from highlight collection`}
-        onClick={() => setDeleteKey(aggregationKey)}
+        onClick={() => deleteSelectedRowId(aggregationKey)}
         className="ml-1 flex-shrink-0"
       />
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -70,7 +55,6 @@ ContentConfirmContentCard.propTypes = {
     originalImageUrl: PropTypes.string,
     firstEnrollablePaidSeatPrice: PropTypes.number,
     aggregationKey: PropTypes.string,
-    key: PropTypes.string,
   }).isRequired,
 };
 

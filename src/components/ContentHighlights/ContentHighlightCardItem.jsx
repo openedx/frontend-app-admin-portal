@@ -3,7 +3,6 @@ import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
 import { getContentHighlightCardFooter } from './data/utils';
-import SkeletonContentCard from './SkeletonContentCard';
 
 const ContentHighlightCardItem = ({
   isLoading,
@@ -14,17 +13,12 @@ const ContentHighlightCardItem = ({
   cardImageUrl,
   price,
 }) => {
-  if (isLoading) {
-    return (
-      <SkeletonContentCard />
-    );
-  }
   const cardInfo = {
     cardImgSrc: cardImageUrl,
-    cardLogoSrc: partners?.length === 1 ? partners[0].logoImageUrl : undefined,
-    cardLogoAlt: partners?.length === 1 ? `${partners[0].name}'s logo` : undefined,
+    cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
+    cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
     cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
-    cardSubtitle: partners?.map(p => p.name).join(', '),
+    cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
   if (href) {
@@ -35,7 +29,7 @@ const ContentHighlightCardItem = ({
     );
   }
   return (
-    <Card>
+    <Card isLoading={isLoading}>
       <Card.ImageCap
         src={cardInfo.cardImgSrc}
         srcAlt=""

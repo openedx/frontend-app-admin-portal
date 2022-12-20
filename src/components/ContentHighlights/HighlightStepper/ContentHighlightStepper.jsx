@@ -72,10 +72,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
-        // TODO: This is a temporary solution to get the content keys from the
-        // selected row ids based on content_type (uuid, key etc.).
         content_keys: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
-        // content_keys: ['edX+DemoX'],
       };
       const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
       const result = camelCaseObject(response.data);
@@ -84,7 +81,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         isPublished: result.isPublished,
         title: result.title,
         uuid: result.uuid,
-        highlightedContentUuids: result?.highlightedContentUuids || [],
+        highlightedContentUuids: result.highlightedContent || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
       dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightToast(transformedHighlightSet.uuid));
