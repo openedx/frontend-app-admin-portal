@@ -43,7 +43,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   } = useContext(EnterpriseAppContext);
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
-
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -58,6 +57,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
   );
+
   const closeStepperModal = useCallback(() => {
     resetStepperModal();
     setCurrentStep(steps[0]);
@@ -69,7 +69,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
-        // TODO: pass along the selected content keys!
+        content_keys: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
       };
       const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
       const result = camelCaseObject(response.data);
@@ -78,7 +78,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         isPublished: result.isPublished,
         title: result.title,
         uuid: result.uuid,
-        highlightedContentUuids: [],
+        highlightedContentUuids: result.highlightedContent || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
       closeStepperModal();

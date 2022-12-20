@@ -1,6 +1,21 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { faker } from '@faker-js/faker';
 
+// Default Card Grid columnSizes
+export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
+  xs: 12,
+  md: 6,
+  lg: 4,
+  xl: 3,
+};
+// Empty Content and Error Messages
+export const DEFAULT_ERROR_MESSAGE = {
+  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
+  // eslint-disable-next-line quotes
+  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
+};
+// Max highlight sets per enteprise curation
+export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 8;
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 // Max length of highlight title in stepper
@@ -28,7 +43,10 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
-// Test Data for Content Highlights
+// Test Data for Content Highlights From this point onwards
+// Test entepriseId for Content Highlights to display card selections and confirmation
+export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+// Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
     uuid: faker.datatype.uuid(),
@@ -306,3 +324,74 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
     ],
   },
 ];
+
+export const testCourseData = [
+  {
+    aggregationKey: 'course:HarvardX+CS50x',
+    title: 'CS50s Introduction to Computer Science',
+    contentType: 'course',
+    partners: [
+      {
+        name: 'Harvard University',
+        logoImageUrl: 'https://prod-discovery.edx-cdn.org/organization/logos/44022f13-20df-4666-9111-cede3e5dc5b6-2cc39992c67a.png',
+      },
+    ],
+    cardImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/da1b2400-322b-459b-97b0-0c557f05d017-3b9fb73b5d5d.small.jpg',
+    originalImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/da1b2400-322b-459b-97b0-0c557f05d017-a3d1899c3344.png',
+    firstEnrollablePaidSeatPrice: 149,
+  },
+  {
+    aggregationKey: 'course:HarvardX+CS50P',
+    title: 'CS50s Introduction to Programming with Python',
+    contentType: 'course',
+    partners: [
+      {
+        name: 'Harvard University',
+        logoImageUrl: 'https://prod-discovery.edx-cdn.org/organization/logos/44022f13-20df-4666-9111-cede3e5dc5b6-2cc39992c67a.png',
+      },
+    ],
+    originalImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/2cc794d0-316d-42f7-bbfd-25c34e4cd5df-033e46d516c0.png',
+    firstEnrollablePaidSeatPrice: 200,
+  },
+  {
+    aggregationKey: 'course:HarvardX+CS50W',
+    title: 'CS50s Web Programming with Python and JavaScript',
+    contentType: 'course',
+    partners: [
+      {
+        name: 'Harvard University',
+        logoImageUrl: 'https://prod-discovery.edx-cdn.org/organization/logos/44022f13-20df-4666-9111-cede3e5dc5b6-2cc39992c67a.png',
+      },
+    ],
+    cardImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/8f8e5124-1dab-47e6-8fa6-3fbdc0738f0a-762af069070e.small.jpg',
+    originalImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/8f8e5124-1dab-47e6-8fa6-3fbdc0738f0a-4978ad93b1c3.png',
+    firstEnrollablePaidSeatPrice: 249,
+  },
+  {
+    aggregationKey: 'course:HarvardX+CS50AI',
+    title: 'CS50s Introduction to Artificial Intelligence with Python',
+    contentType: 'course',
+    partners: [
+      {
+        name: 'Harvard University',
+        logoImageUrl: 'https://prod-discovery.edx-cdn.org/organization/logos/44022f13-20df-4666-9111-cede3e5dc5b6-2cc39992c67a.png',
+      },
+    ],
+    cardImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/3a31db71-de8f-45f1-ae65-11981ed9d680-31634d40b3bb.small.png',
+    originalImageUrl: 'https://prod-discovery.edx-cdn.org/media/course/image/3a31db71-de8f-45f1-ae65-11981ed9d680-b801bb328333.png',
+    firstEnrollablePaidSeatPrice: 199,
+  },
+];
+testCourseData.forEach((element, index) => {
+  if (!element.objectID) {
+    // added to mimic the objectID prop passed by `connectStateResults` with Algolia
+    testCourseData[index].objectID = index + 1;
+  }
+});
+
+export const testCourseAggregation = {
+  'course:HarvardX+CS50x': true,
+  'course:HarvardX+CS50P': true,
+  'course:HarvardX+CS50W': true,
+  'course:HarvardX+CS50AI': true,
+};

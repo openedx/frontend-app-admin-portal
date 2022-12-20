@@ -8,7 +8,12 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { BUTTON_TEXT, STEPPER_STEP_TEXT } from '../../data/constants';
+import {
+  BUTTON_TEXT,
+  STEPPER_STEP_TEXT,
+  testCourseAggregation,
+  testCourseData,
+} from '../../data/constants';
 import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -18,6 +23,7 @@ const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise',
+    enterpriseId: 'test-enterprise-id',
   },
 };
 
@@ -27,13 +33,6 @@ const initialEnterpriseAppContextValue = {
       highlightSets: [],
     },
   },
-};
-
-const testCourses = {
-  'course:HarvardX+CS50x': true,
-  'course:HarvardX+CS50P': true,
-  'course:HarvardX+CS50W': true,
-  'course:HarvardX+CS50AI': true,
 };
 
 const searchClient = algoliasearch(
@@ -52,7 +51,7 @@ const ContentHighlightStepperWrapper = ({
       isOpen: false,
       highlightTitle: null,
       titleStepValidationError: null,
-      currentSelectedRowIds: testCourses,
+      currentSelectedRowIds: testCourseAggregation,
     },
     contentHighlights: [],
     searchClient,
@@ -69,6 +68,29 @@ const ContentHighlightStepperWrapper = ({
     </IntlProvider>
   );
 };
+
+const mockCourseData = [...testCourseData];
+jest.mock('react-instantsearch-dom', () => ({
+  ...jest.requireActual('react-instantsearch-dom'),
+  connectStateResults: Component => function connectStateResults(props) {
+    return (
+      <Component
+        searchResults={{
+          hits: mockCourseData,
+          hitsPerPage: 25,
+          nbHits: 2,
+          nbPages: 1,
+          page: 1,
+        }}
+        isSearchStalled={false}
+        searchState={{
+          page: 1,
+        }}
+        {...props}
+      />
+    );
+  },
+}));
 
 describe('<ContentHighlightStepper>', () => {
   it('Displays the stepper', () => {

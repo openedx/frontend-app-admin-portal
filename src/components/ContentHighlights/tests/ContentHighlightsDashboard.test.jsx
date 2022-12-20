@@ -19,6 +19,7 @@ const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration: {
     enterpriseSlug: 'test-enterprise',
+    enterpriseId: 'test-enterprise-id',
   },
 };
 
