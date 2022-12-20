@@ -22,6 +22,7 @@ const HighlightSetSection = ({
           uuid,
           isPublished,
           highlightedContentUuids,
+          cardImageUrl,
         }) => (
           <ContentHighlightSetCard
             key={uuid}
@@ -29,7 +30,7 @@ const HighlightSetSection = ({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
-            imageCapSrc="https://picsum.photos/360/200/"
+            imageCapSrc={cardImageUrl}
           />
         ))}
       </CardGrid>

@@ -8,6 +8,7 @@ import HighlightSetSection from './HighlightSetSection';
 const ContentHighlightCardContainer = () => {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const highlightSets = useHighlightSetsForCuration(enterpriseCuration);
+
   return (
     <Stack gap={4}>
       <HighlightSetSection
