@@ -1,14 +1,15 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { configuration } from '../../config';
+import generateFormattedStatusUrl from './apiServiceUtils';
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
   static baseUrl = configuration.LMS_BASE_URL;
 
-  static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`
+  static reportingConfigUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_reporting/`;
 
-  static reportingConfigTypesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_report_types/`
+  static reportingConfigTypesUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_report_types/`;
 
   static enterpriseCustomerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer/`;
 
@@ -22,7 +23,9 @@ class LmsApiService {
 
   static lmsIntegrationUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1`;
 
-  static lmsSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+  static lmsContentSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/content_sync_status`;
+
+  static lmsLearnerSyncStatusUrl = `${LmsApiService.baseUrl}/integrated_channels/api/v1/logs/learner_sync_status`;
 
   static createPendingUsersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/link_pending_enterprise_users`;
 
@@ -124,15 +127,6 @@ class LmsApiService {
     return LmsApiService.apiClient().post(LmsApiService.providerDataSyncUrl, formData);
   }
 
-  static fetchSamlConfigurations() {
-    const samlConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/saml_configuration/`;
-    return LmsApiService.apiClient().get(samlConfigUrl);
-  }
-
-  static fetchMoodleConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static postNewMoodleConfig(formData) {
     return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/moodle/configuration/`, formData);
   }
@@ -147,10 +141,6 @@ class LmsApiService {
 
   static fetchSingleCanvasConfig(configId) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/${configId}/`);
-  }
-
-  static fetchCanvasConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/canvas/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewCanvasConfig(formData) {
@@ -169,10 +159,6 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/global-configuration/`);
   }
 
-  static fetchBlackboardConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static fetchSingleBlackboardConfig(configId) {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`);
   }
@@ -189,10 +175,6 @@ class LmsApiService {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/blackboard/configuration/${configId}/`);
   }
 
-  static fetchSuccessFactorsConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/?enterprise_customer=${uuid}`);
-  }
-
   static postNewSuccessFactorsConfig(formData) {
     return LmsApiService.apiClient().post(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/`, formData);
   }
@@ -203,10 +185,6 @@ class LmsApiService {
 
   static deleteSuccessFactorsConfig(configId) {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/sap_success_factors/configuration/${configId}/`);
-  }
-
-  static fetchDegreedConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/degreed/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewDegreedConfig(formData) {
@@ -231,10 +209,6 @@ class LmsApiService {
 
   static deleteDegreed2Config(configId) {
     return LmsApiService.apiClient().delete(`${LmsApiService.lmsIntegrationUrl}/degreed2/configuration/${configId}/`);
-  }
-
-  static fetchCornerstoneConfig(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/cornerstone/configuration/?enterprise_customer=${uuid}`);
   }
 
   static postNewCornerstoneConfig(formData) {
@@ -262,8 +236,16 @@ class LmsApiService {
     return LmsApiService.apiClient().get(`${LmsApiService.lmsIntegrationUrl}/configs/?${queryParams.toString()}`);
   }
 
-  static fetchContentMetadataItemTransmission(uuid, channelCode, configId) {
-    return LmsApiService.apiClient().get(`${LmsApiService.lmsSyncStatusUrl}/${uuid}/${channelCode}/${configId}`);
+  static fetchContentMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsContentSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
+  }
+
+  static fetchLearnerMetadataItemTransmission(uuid, channelCode, configId, currentPage, options) {
+    const syncStatusPath = `${LmsApiService.lmsLearnerSyncStatusUrl}/${uuid}/${channelCode}/${configId}`;
+    const getSyncStatusUrl = generateFormattedStatusUrl(syncStatusPath, currentPage, options);
+    return LmsApiService.apiClient().get(getSyncStatusUrl);
   }
 
   /**

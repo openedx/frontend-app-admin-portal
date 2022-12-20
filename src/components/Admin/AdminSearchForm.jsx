@@ -27,6 +27,10 @@ class AdminSearchForm extends React.Component {
     }
   }
 
+  handleSearch() {
+    this.props.searchEnrollmentsList();
+  }
+
   onCourseSelect(event) {
     const updateParams = {
       search_course: event.target.value,
@@ -36,10 +40,6 @@ class AdminSearchForm extends React.Component {
       updateParams.search_start_date = '';
     }
     updateUrl(updateParams);
-  }
-
-  handleSearch() {
-    this.props.searchEnrollmentsList();
   }
 
   render() {

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { useExistingSSOConfigs } from '../hooks';
 import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
-import { createSAMLURLs } from '../../../SamlProviderConfiguration/utils';
+import { createSAMLURLs } from '../utils';
 
 const SSOConfigConnectStep = ({
   enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError, setShowValidatedText, showValidatedText,
@@ -40,17 +40,15 @@ const SSOConfigConnectStep = ({
     <>
       {isLoading && <span>Loading SSO Configurations...</span>}
       {!isLoading && existingConfigs && existingConfigs.length > 0 && (
-        <>
-          <div>
-            <SSOConfigConfiguredCard
-              config={providerConfig}
-              testLink={testLink}
-              setConnectError={setConnectError}
-              setShowValidatedText={setShowValidatedText}
-              showValidatedText={showValidatedText}
-            />
-          </div>
-        </>
+        <div>
+          <SSOConfigConfiguredCard
+            config={providerConfig}
+            testLink={testLink}
+            setConnectError={setConnectError}
+            setShowValidatedText={setShowValidatedText}
+            showValidatedText={showValidatedText}
+          />
+        </div>
       )}
       {!isLoading && existingConfigs && existingConfigs.length === 0 && (
         <Alert variant="warning">

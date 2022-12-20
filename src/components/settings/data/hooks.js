@@ -54,7 +54,7 @@ export const useLinkManagement = (enterpriseUUID) => {
     };
   }, [enterpriseUUID]);
 
-  useEffect(loadLinks, []);
+  useEffect(loadLinks, [loadLinks]);
 
   return {
     links,
@@ -158,6 +158,9 @@ export const useStylesForCustomBrandColors = (branding) => {
       }
       .border-brand-primary {
         border-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .color-brand-tertiary {
+        color: ${brandColors.tertiary.regular.hex()} !important;
       }
     `),
   });

@@ -3,22 +3,24 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { faFile, faIdCard, faLifeRing } from '@fortawesome/free-regular-svg-icons';
+import { faFile, faLifeRing } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCreditCard, faTags, faChartLine, faChartBar, faUniversity, faCog,
+  faCreditCard, faTags, faChartLine, faChartBar, faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '@edx/paragon';
-import { MoneyOutline } from '@edx/paragon/icons';
+import { MoneyOutline, BookOpen } from '@edx/paragon/icons';
 
+import { getConfig } from '@edx/frontend-platform/config';
 import IconLink from './IconLink';
 
 import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const Sidebar = ({
   baseUrl,
@@ -30,16 +32,16 @@ const Sidebar = ({
   enableReportingConfigScreen,
   enableSubscriptionManagementScreen,
   enableAnalyticsScreen,
-  enableSamlConfigurationScreen,
-  enableLearnerPortal,
-  enableLmsConfigurationsScreen,
   onWidthChange,
   isMobile,
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
+  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+
+  const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -66,88 +68,73 @@ const Sidebar = ({
     }
   }, [getSidebarWidth, isExpandedByToggle, isMobile, onWidthChange]);
 
-  const getMenuItems = () => {
-    // Hide Settings link if there are no visible tabs
-    const shouldShowSettingsLink = (
-      features.SETTINGS_PAGE && (
-        enableLearnerPortal || (
-          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
-        ) || (
-          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
-        ) || (
-          features.SETTINGS_PAGE_APPEARANCE_TAB
-        )
-      )
-    );
-
-    return [
-      {
-        title: 'Learner Progress Report',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
-        icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
-      },
-      {
-        title: 'Analytics',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
-        icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
-        hidden: !features.ANALYTICS || !enableAnalyticsScreen,
-      },
-      {
-        title: 'Code Management',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
-        icon: <FontAwesomeIcon icon={faTags} fixedWidth />,
-        hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
-        notification: !!subsidyRequestsCounts.couponCodes,
-      },
-      {
-        title: 'Subscription Management',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-        icon: <FontAwesomeIcon icon={faCreditCard} fixedWidth />,
-        hidden: !enableSubscriptionManagementScreen,
-        notification: !!subsidyRequestsCounts.subscriptionLicenses,
-      },
-      {
-        title: 'Learner Credit Management',
-        id: TOUR_TARGETS.LEARNER_CREDIT,
-        to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
-        icon: <Icon src={MoneyOutline} className="d-inline-block" />,
-        hidden: !canManageLearnerCredit,
-      },
-      {
-        title: 'Reporting Configurations',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
-        icon: <FontAwesomeIcon icon={faFile} fixedWidth />,
-        hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
-      },
-      {
-        title: 'SAML Configuration',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.samlConfiguration}`,
-        icon: <FontAwesomeIcon icon={faIdCard} fixedWidth />,
-        hidden: !features.SAML_CONFIGURATION || !enableSamlConfigurationScreen,
-      },
-      {
-        title: 'LMS Integration Configuration',
-        to: `${baseUrl}/admin/${ROUTE_NAMES.lmsIntegrations}`,
-        icon: <FontAwesomeIcon icon={faUniversity} fixedWidth />,
-        hidden: !features.EXTERNAL_LMS_CONFIGURATION || !enableLmsConfigurationsScreen,
-      },
-      {
-        title: 'Settings',
-        id: TOUR_TARGETS.SETTINGS_SIDEBAR,
-        to: `${baseUrl}/admin/${ROUTE_NAMES.settings}`,
-        icon: <FontAwesomeIcon icon={faCog} fixedWidth />,
-        hidden: !shouldShowSettingsLink,
-      },
-      // NOTE: keep "Support" link the last nav item
-      {
-        title: 'Support',
-        to: configuration.ENTERPRISE_SUPPORT_URL,
-        icon: <FontAwesomeIcon icon={faLifeRing} fixedWidth />,
-        hidden: !features.SUPPORT,
-        external: true,
-      },
-    ];
-  };
+  const getMenuItems = () => [
+    {
+      title: 'Learner Progress Report',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
+      icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
+    },
+    {
+      title: 'Tableau Analytics',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`,
+      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+      hidden: !features.TABLEAU_ANALYTICS || !enableAnalyticsScreen,
+    },
+    {
+      title: 'Analytics',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
+      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+      hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+    },
+    {
+      title: 'Code Management',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
+      icon: <FontAwesomeIcon icon={faTags} fixedWidth />,
+      hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
+      notification: !!subsidyRequestsCounts.couponCodes,
+    },
+    {
+      title: 'Subscription Management',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+      icon: <FontAwesomeIcon icon={faCreditCard} fixedWidth />,
+      hidden: !enableSubscriptionManagementScreen,
+      notification: !!subsidyRequestsCounts.subscriptionLicenses,
+    },
+    {
+      title: 'Learner Credit Management',
+      id: TOUR_TARGETS.LEARNER_CREDIT,
+      to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
+      icon: <Icon src={MoneyOutline} className="d-inline-block" />,
+      hidden: !canManageLearnerCredit,
+    },
+    {
+      title: 'Highlights',
+      id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
+      to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
+      icon: <Icon src={BookOpen} className="d-inline-block" />,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
+    },
+    {
+      title: 'Reporting Configurations',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
+      icon: <FontAwesomeIcon icon={faFile} fixedWidth />,
+      hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
+    },
+    {
+      title: 'Settings',
+      id: TOUR_TARGETS.SETTINGS_SIDEBAR,
+      to: `${baseUrl}/admin/${ROUTE_NAMES.settings}`,
+      icon: <FontAwesomeIcon icon={faCog} fixedWidth />,
+    },
+    // NOTE: keep "Support" link the last nav item
+    {
+      title: 'Support',
+      to: configuration.ENTERPRISE_SUPPORT_URL,
+      icon: <FontAwesomeIcon icon={faLifeRing} fixedWidth />,
+      hidden: !features.SUPPORT,
+      external: true,
+    },
+  ];
 
   const isSidebarExpanded = isExpanded || isExpandedByToggle;
   // Only collapse sidebar if it's already expanded and wasn't expanded by the toggle
@@ -204,10 +191,7 @@ Sidebar.defaultProps = {
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
-  enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
-  enableLearnerPortal: false,
-  enableLmsConfigurationsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
 };
@@ -222,9 +206,6 @@ Sidebar.propTypes = {
   enableReportingConfigScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
-  enableSamlConfigurationScreen: PropTypes.bool,
-  enableLearnerPortal: PropTypes.bool,
-  enableLmsConfigurationsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
 };

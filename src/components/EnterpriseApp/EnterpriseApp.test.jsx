@@ -9,16 +9,28 @@ import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
+import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 
 features.SETTINGS_PAGE = true;
 
-const EnterpriseSubsidiesContextProvider = ({ children }) => (
-  <EnterpriseSubsidiesContext.Provider value={{
-    canManageLearnerCredit: true,
-  }}
-  >
-    {children}
-  </EnterpriseSubsidiesContext.Provider>
+const defaultEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: null,
+    isLoading: false,
+    fetchError: null,
+  },
+};
+
+const defaultEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
+const EnterpriseAppContextProvider = ({ children }) => (
+  <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
+    <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  </EnterpriseAppContext.Provider>
 );
 
 jest.mock('react-router-dom', () => ({
@@ -37,7 +49,8 @@ jest.mock('../ProductTours/ProductTours', () => ({
 
 jest.mock('./EnterpriseAppContextProvider', () => ({
   __esModule: true,
-  default: ({ children }) => <EnterpriseSubsidiesContextProvider>{children}</EnterpriseSubsidiesContextProvider>,
+  ...jest.requireActual('./EnterpriseAppContextProvider'),
+  default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../../containers/Sidebar', () => ({
@@ -88,11 +101,6 @@ describe('<EnterpriseApp />', () => {
   it('should show settings page if there is at least one visible tab', () => {
     render(<EnterpriseApp {...basicProps} />);
     expect(screen.getByText('/admin/settings'));
-  });
-
-  it('should hide settings page if there are no visible tabs', () => {
-    render(<EnterpriseApp {...basicProps} enableLearnerPortal={false} />);
-    expect(screen.queryByText('/admin/settings')).not.toBeInTheDocument();
   });
 
   it('should show error page if enterprise name is invalid', () => {

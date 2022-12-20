@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
@@ -11,7 +11,7 @@ import {
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import ManageCodesTab from './ManageCodesTab';
 import ManageRequestsTab from './ManageRequestsTab';
-import { ROUTE_NAMES } from '../EnterpriseApp/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import {
   MANAGE_CODES_TAB,
   MANAGE_REQUESTS_TAB,
@@ -54,13 +54,11 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
     }
   };
 
-  return (
-    <Tabs
-      id="tabs-coupon-code-management"
-      activeKey={couponCodesTab}
-      onSelect={handleTabSelect}
-    >
+  const visibleTabs = useMemo(() => {
+    const tabs = [];
+    tabs.push(
       <Tab
+        key={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
         eventKey={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
         title={COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]}
         className="pt-4"
@@ -72,9 +70,12 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
             exact
           />
         )}
-      </Tab>
-      {isRequestsTabShown && (
+      </Tab>,
+    );
+    if (isRequestsTabShown) {
+      tabs.push(
         <Tab
+          key={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
@@ -87,8 +88,19 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
               exact
             />
           )}
-        </Tab>
-      )}
+        </Tab>,
+      );
+    }
+    return tabs;
+  }, [couponCodesTab, isRequestsTabShown, requestsTabNotification]);
+
+  return (
+    <Tabs
+      id="tabs-coupon-code-management"
+      activeKey={couponCodesTab}
+      onSelect={handleTabSelect}
+    >
+      {visibleTabs}
     </Tabs>
   );
 };

@@ -11,10 +11,10 @@ import { features } from '../../config';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 import FeatureAnnouncementBanner from '../FeatureAnnouncementBanner';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
-import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
+import EnterpriseAppContent from './EnterpriseAppContent';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -82,9 +82,6 @@ class EnterpriseApp extends React.Component {
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
-      enableSamlConfigurationScreen,
-      enableLearnerPortal,
-      enableLmsConfigurationsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
       enterpriseId,
@@ -103,19 +100,6 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
-
-    // Hide Settings page if there are no visible tabs
-    const enableSettingsPage = (
-      features.SETTINGS_PAGE && (
-        enableLearnerPortal || (
-          features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen
-        ) || (
-          features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen
-        ) || (
-          features.SETTINGS_PAGE_APPEARANCE_TAB
-        )
-      )
-    );
 
     if (error) {
       return this.renderError(error);
@@ -138,6 +122,7 @@ class EnterpriseApp extends React.Component {
     return (
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
+        enterpriseName={enterpriseName}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
@@ -148,9 +133,6 @@ class EnterpriseApp extends React.Component {
                 <ProductTours />
                 <Sidebar
                   baseUrl={baseUrl}
-                  wrappedComponentRef={(node) => {
-                    this.sidebarRef = node && node.getWrappedInstance();
-                  }}
                   onWidthChange={(width) => {
                     this.setState({
                       sidebarWidth: width + defaultContentPadding,
@@ -166,8 +148,7 @@ class EnterpriseApp extends React.Component {
                     paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                   }}
                 >
-                  <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  <EnterpriseAppRoutes
+                  <EnterpriseAppContent
                     baseUrl={baseUrl}
                     email={email}
                     enterpriseId={enterpriseId}
@@ -176,10 +157,9 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
-                    enableSamlConfigurationPage={features.FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen}
-                    enableLmsConfigurationPage={features.SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen}
-                    enableSettingsPage={enableSettingsPage}
-                  />
+                  >
+                    <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
+                  </EnterpriseAppContent>
                 </div>
               </>
             )}
@@ -201,10 +181,7 @@ EnterpriseApp.defaultProps = {
   error: null,
   enableCodeManagementScreen: false,
   enableSubscriptionManagementScreen: false,
-  enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
-  enableLearnerPortal: false,
-  enableLmsConfigurationsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
   loading: true,
@@ -235,10 +212,7 @@ EnterpriseApp.propTypes = {
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
-  enableSamlConfigurationScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
-  enableLearnerPortal: PropTypes.bool,
-  enableLmsConfigurationsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
   error: PropTypes.instanceOf(Error),

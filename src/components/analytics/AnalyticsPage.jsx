@@ -9,7 +9,7 @@ import AnalyticsCharts from './AnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
 
-function AnalyticsPage({ enterpriseId }) {
+const AnalyticsPage = ({ enterpriseId }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -45,7 +45,7 @@ function AnalyticsPage({ enterpriseId }) {
       <AnalyticsCharts enterpriseId={enterpriseId} />
     </>
   );
-}
+};
 
 AnalyticsPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

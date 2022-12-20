@@ -67,14 +67,6 @@ class CodeSearchResults extends React.Component {
     />
   );
 
-  renderErrorMessage = options => (
-    <StatusAlert
-      alertType="danger"
-      iconClassName="fa fa-exclamation-circle"
-      {...options}
-    />
-  );
-
   render() {
     const { isOpen, searchQuery, onClose } = this.props;
     const {
@@ -86,26 +78,22 @@ class CodeSearchResults extends React.Component {
       <TransitionReplace>
         {isOpen ? (
           <div key="code-search-results" className="code-search-results border-bottom pb-4">
-            <>
-              <CodeSearchResultsHeading
-                searchQuery={searchQuery}
-                onClose={onClose}
-              />
-              <>
-                {isCodeReminderSuccessful && this.renderSuccessMessage({
-                  message: `A reminder was successfully sent to ${searchQuery}.`,
-                })}
-                {isCodeRevokeSuccessful && this.renderSuccessMessage({
-                  message: 'Successfully revoked code(s)',
-                })}
-                <CodeSearchResultsTable
-                  searchQuery={searchQuery}
-                  shouldRefreshTable={shouldRefreshTable}
-                  onRemindSuccess={this.handleRemindOnSuccess}
-                  onRevokeSuccess={this.handleRevokeOnSuccess}
-                />
-              </>
-            </>
+            <CodeSearchResultsHeading
+              searchQuery={searchQuery}
+              onClose={onClose}
+            />
+            {isCodeReminderSuccessful && this.renderSuccessMessage({
+              message: `A reminder was successfully sent to ${searchQuery}.`,
+            })}
+            {isCodeRevokeSuccessful && this.renderSuccessMessage({
+              message: 'Successfully revoked code(s)',
+            })}
+            <CodeSearchResultsTable
+              searchQuery={searchQuery}
+              shouldRefreshTable={shouldRefreshTable}
+              onRemindSuccess={this.handleRemindOnSuccess}
+              onRevokeSuccess={this.handleRevokeOnSuccess}
+            />
           </div>
         ) : null}
       </TransitionReplace>

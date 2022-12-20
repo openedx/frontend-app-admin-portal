@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
+  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
 import {
-  MoreVert, Sync,
+  CheckCircle, Error, MoreVert, Sync,
 } from '@edx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { features } from '../../../config';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
-import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
+import { getTimeAgo } from './ErrorReporting/utils';
+
+import { ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE } from '../data/constants';
 
 const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
 const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
@@ -28,6 +31,7 @@ const ExistingCard = ({
   setErrorModalText,
   getStatus,
 }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
 
   const openModalButton = () => {
@@ -50,7 +54,7 @@ const ExistingCard = ({
       setErrorModalText(errorToggleModalText);
       openError();
     } else {
-      onClick(TOGGLE_SUCCESS_LABEL);
+      onClick(toggle ? ACTIVATE_TOAST_MESSAGE : INACTIVATE_TOAST_MESSAGE);
     }
   };
 
@@ -65,7 +69,16 @@ const ExistingCard = ({
       setErrorModalText(errorDeleteModalText);
       openError();
     } else {
-      onClick(DELETE_SUCCESS_LABEL);
+      onClick(DELETE_TOAST_MESSAGE);
+      setShowDeleteModal(false);
+    }
+  };
+
+  const handleClickDelete = (isInactive) => {
+    if (isInactive) {
+      setShowDeleteModal(true);
+    } else {
+      deleteConfig(config.id, config.channelCode);
     }
   };
 
@@ -90,7 +103,7 @@ const ExistingCard = ({
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
-        if (isEdxStaff) {
+        if (isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) {
           return <Button variant="outline-primary" onClick={() => openModalButton(config)}>View sync history</Button>;
         }
         return null;
@@ -103,29 +116,73 @@ const ExistingCard = ({
     }
   };
 
+  const getLastSync = () => {
+    if (config.lastSyncErroredAt != null) {
+      const timeStamp = getTimeAgo(config.lastSyncErroredAt);
+      return <>Recent sync error:&nbsp; {timeStamp}<Icon className="small-icon text-danger-500" src={Error} /></>;
+    }
+    if (config.lastSyncAttemptedAt != null) {
+      const timeStamp = getTimeAgo(config.lastSyncAttemptedAt);
+      return <>Last sync:&nbsp; {timeStamp}<Icon className="small-icon text-success-500" src={CheckCircle} /></>;
+    }
+    return <>Sync not yet attempted</>;
+  };
+
+  const isActive = getStatus(config) === ACTIVE;
+  const isInactive = getStatus(config) === INACTIVE;
+  const isIncomplete = getStatus(config) === INCOMPLETE;
+
   return (
-    <Card
-      tabIndex="0"
-      className="p-3 existing-lms-card"
-      key={config.channelCode + config.id}
-    >
-      <Card.Header
-        className="lms-card-content"
-        actions={(
-          <Dropdown>
-            <Dropdown.Toggle
-              id="dropdown-toggle-with-iconbutton"
-              data-testid={`existing-lms-config-card-dropdown-${config.id}`}
-              as={IconButton}
-              src={MoreVert}
-              iconAs={Icon}
-              variant="primary"
-              alt="Actions dropdown"
-            />
-            <Dropdown.Menu>
-              {getStatus(config) === INACTIVE && (
-                <>
-                  {isEdxStaff && (
+    <>
+      <AlertModal
+        title="Delete integration?"
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        hasCloseButton
+        footerNode={(
+          <ActionRow>
+            <Button
+              variant="tertiary"
+              data-testid="cancel-delete-config"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              data-testid="confirm-delete-config"
+              onClick={() => deleteConfig(config.id, config.channelCode)}
+            >
+              Delete
+            </Button>
+          </ActionRow>
+        )}
+      >
+        <p>
+          Are you sure you want to delete this learning platform integration?
+          Once deleted, any saved integration data will be lost.
+        </p>
+      </AlertModal>
+      <Card
+        tabIndex="0"
+        className="p-3 existing-lms-card"
+        key={config.channelCode + config.id}
+      >
+        <Card.Header
+          className="lms-card-content"
+          actions={(
+            <Dropdown>
+              <Dropdown.Toggle
+                id="dropdown-toggle-with-iconbutton"
+                data-testid={`existing-lms-config-card-dropdown-${config.id}`}
+                as={IconButton}
+                src={MoreVert}
+                iconAs={Icon}
+                variant="primary"
+                alt="Actions dropdown"
+              />
+              <Dropdown.Menu>
+                {(isInactive && isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) && (
                   <div className="d-flex">
                     <Dropdown.Item
                       onClick={() => openModalButton(config)}
@@ -134,79 +191,86 @@ const ExistingCard = ({
                       View sync history
                     </Dropdown.Item>
                   </div>
-                  )}
-                </>
-              )}
-              {getStatus(config) === ACTIVE && (
-              <div className="d-flex">
-                <Dropdown.Item
-                  onClick={() => toggleConfig(config.id, config.channelCode, false)}
-                  data-testid="dropdown-disable-item"
-                >
-                  Disable
-                </Dropdown.Item>
+                )}
+                {isActive && (
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      onClick={() => toggleConfig(config.id, config.channelCode, false)}
+                      data-testid="dropdown-disable-item"
+                    >
+                      Disable
+                    </Dropdown.Item>
+                  </div>
+                )}
+                {(isInactive || isIncomplete) && (
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      // Ask before deleting an inactive project
+                      onClick={() => handleClickDelete(isInactive)}
+                      data-testid="dropdown-delete-item"
+                    >
+                      Delete
+                    </Dropdown.Item>
+                  </div>
+                )}
+                {!isIncomplete && (
+                  <div className="d-flex">
+                    <Dropdown.Item
+                      onClick={() => editExistingConfig(config, config.channelCode)}
+                    >
+                      Configure
+                    </Dropdown.Item>
+                  </div>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+        )}
+          title={(
+            <div className="ml-1 d-flex">
+              <Image
+                className="lms-icon mr-2"
+                src={channelMapping[config.channelCode].icon}
+              />
+              <div className="lms-card-title-overflow">
+                <span>{config.displayName}</span>
               </div>
-              )}
-              {getStatus(config) === INCOMPLETE && (
-              <div className="d-flex">
-                <Dropdown.Item
-                  onClick={() => deleteConfig(config.id, config.channelCode)}
-                  data-testid="dropdown-delete-item"
+              <h3 className="ml-2">
+                {/* Only incomplete badges will show hover */}
+                <OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  key={`${config.channelCode + config.id}hover`}
+                  placement="top"
+                  overlay={(
+                    <Popover className="popover-positioned-top" id="inc-popover">
+                      <Popover.Title as="h5">Next Steps</Popover.Title>
+                      <Popover.Content>
+                        {numIncorrectFields(config.isValid)}
+                      </Popover.Content>
+                    </Popover>
+            )}
                 >
-                  Delete
-                </Dropdown.Item>
-              </div>
-              )}
-              <Dropdown.Item
-                onClick={() => editExistingConfig(config, config.channelCode)}
-              >
-                Configure
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-      )}
-        title={(
-          <div className="ml-1 d-flex">
-            <Image
-              className="lms-icon mr-2"
-              src={channelMapping[config.channelCode].icon}
-            />
-            <div className="lms-card-title-overflow">
-              <span>{config.displayName}</span>
+                  <span>
+                    {isIncomplete && (
+                    <Badge variant="light">Incomplete</Badge>
+                    )}
+                  </span>
+                </OverlayTrigger>
+                {isInactive && (
+                <Badge variant="light">Disabled</Badge>
+                )}
+              </h3>
             </div>
-            <h3 className="ml-2">
-              {/* Only incomplete badges will show hover */}
-              <OverlayTrigger
-                trigger={['hover', 'focus']}
-                key={`${config.channelCode + config.id }hover`}
-                placement="top"
-                overlay={(
-                  <Popover className="popover-positioned-top" id="inc-popover">
-                    <Popover.Title as="h5">Next Steps</Popover.Title>
-                    <Popover.Content>
-                      {numIncorrectFields(config.isValid)}
-                    </Popover.Content>
-                  </Popover>
-          )}
-              >
-                <span>
-                  {getStatus(config) === INCOMPLETE && (
-                  <Badge variant="light">Incomplete</Badge>
-                  )}
-                </span>
-              </OverlayTrigger>
-              {getStatus(config) === INACTIVE && (
-              <Badge variant="light">Inactive</Badge>
-              )}
-            </h3>
+        )}
+        />
+        <Card.Footer className="pt-2 pb-2 justify-content-between">
+          <div className="x-small d-flex align-items-center">
+            <Icon className="small-icon" src={Sync} />
+            {getLastSync()}
           </div>
-      )}
-      />
-      <Card.Footer className="pt-2 pb-2 justify-content-between">
-        <div className="small"><Sync className="mr-1" style={{ height: '20px', width: '20px' }} />Last Sync: 36 minutes ago</div>
-        {getCardButton()}
-      </Card.Footer>
-    </Card>
+          {getCardButton()}
+        </Card.Footer>
+      </Card>
+    </>
   );
 };
 
@@ -222,6 +286,8 @@ ExistingCard.propTypes = {
     channelCode: PropTypes.string,
     id: PropTypes.number,
     displayName: PropTypes.string,
+    lastSyncAttemptedAt: PropTypes.string,
+    lastSyncErroredAt: PropTypes.string,
   }).isRequired,
   editExistingConfig: PropTypes.func.isRequired,
   enterpriseCustomerUuid: PropTypes.string.isRequired,

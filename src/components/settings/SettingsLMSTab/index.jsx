@@ -18,23 +18,20 @@ import {
   HELP_CENTER_LINK,
   MOODLE_TYPE,
   SAP_TYPE,
-  SUCCESS_LABEL,
-  DELETE_SUCCESS_LABEL,
-  TOGGLE_SUCCESS_LABEL,
+  ACTIVATE_TOAST_MESSAGE,
+  DELETE_TOAST_MESSAGE,
+  INACTIVATE_TOAST_MESSAGE,
+  SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-const SUBMIT_TOAST_MESSAGE = 'Configuration was submitted successfully.';
-const TOGGLE_TOAST_MESSAGE = 'Configuration was toggled successfully.';
-const DELETE_TOAST_MESSAGE = 'Configuration was successfully removed.';
-
-export default function SettingsLMSTab({
+const SettingsLMSTab = ({
   enterpriseId,
   enterpriseSlug,
   enableSamlConfigurationScreen,
   identityProvider,
   hasSSOConfig,
-}) {
+}) => {
   const [config, setConfig] = useState();
   const [showToast, setShowToast] = useState(false);
 
@@ -47,6 +44,7 @@ export default function SettingsLMSTab({
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
   const [displayNeedsSSOAlert, setDisplayNeedsSSOAlert] = useState(false);
+  const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
@@ -67,10 +65,10 @@ export default function SettingsLMSTab({
       .then((response) => {
         setShowNewConfigButtons(true);
         setConfigsLoading(false);
+        // Save all existing configs
+        setExistingConfigsData(camelCaseDictArray(response.data));
         // If the enterprise has existing configs
         if (response.data.length !== 0) {
-          // Save all existing configs
-          setExistingConfigsData(camelCaseDictArray(response.data));
           // toggle the existing configs bool
           setConfigsExist(true);
           // Hide the create cards and show the create button
@@ -89,26 +87,16 @@ export default function SettingsLMSTab({
     // back to the landing state from a form (submit or cancel was hit on the forms). In both cases,
     // we want to clear existing config form data.
     setExistingConfigFormData({});
-
     // If either the user has submit or canceled
-    if (input === '' || [SUCCESS_LABEL, DELETE_SUCCESS_LABEL, TOGGLE_SUCCESS_LABEL].includes(input)) {
+    if (input === '' || toastMessages.includes(input)) {
       // Re-fetch existing configs to get newly created ones
       fetchExistingConfigs();
     }
-    // If the user submitted
-    if (input === SUCCESS_LABEL) {
+    if (toastMessages.includes(input)) {
       // show the toast and reset the config state
       setShowToast(true);
       setConfig('');
-      setToastMessage(SUBMIT_TOAST_MESSAGE);
-    } else if (input === TOGGLE_SUCCESS_LABEL) {
-      setShowToast(true);
-      setConfig('');
-      setToastMessage(TOGGLE_TOAST_MESSAGE);
-    } else if (input === DELETE_SUCCESS_LABEL) {
-      setShowToast(true);
-      setConfig('');
-      setToastMessage(DELETE_TOAST_MESSAGE);
+      setToastMessage(input);
     } else {
       // Otherwise the user has clicked a create card and we need to set existing config bool to
       // false and set the config type to the card that was clicked type
@@ -144,7 +132,6 @@ export default function SettingsLMSTab({
     <div>
       <h2 className="py-2">Learning Platform Integrations
         <Hyperlink
-
           destination={HELP_CENTER_LINK}
           className="btn btn-outline-primary side-button"
           target="_blank"
@@ -232,7 +219,7 @@ export default function SettingsLMSTab({
       )}
     </div>
   );
-}
+};
 
 SettingsLMSTab.defaultProps = {
   identityProvider: null,
@@ -245,3 +232,5 @@ SettingsLMSTab.propTypes = {
   identityProvider: PropTypes.string,
   hasSSOConfig: PropTypes.bool.isRequired,
 };
+
+export default SettingsLMSTab;

@@ -282,12 +282,10 @@ describe('useSubsidyRequestConfiguration', () => {
     }));
 
     await waitFor(() => {
-      expect(EnterpriseAccessApiService.updateSubsidyRequestConfiguration).toHaveBeenCalledWith(
-        TEST_ENTERPRISE_UUID, {
-          subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
-          subsidy_requests_enabled: undefined,
-        },
-      );
+      expect(EnterpriseAccessApiService.updateSubsidyRequestConfiguration).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID, {
+        subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
+        subsidy_requests_enabled: undefined,
+      });
     });
   });
 });

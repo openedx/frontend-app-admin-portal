@@ -28,6 +28,14 @@ describe('email validation', () => {
       expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
     });
 
+    it('returns valid email addresses and indices when whitespace padding is in the picture', () => {
+      const validEmails = ['timmy@test.co ', ' bigsby@test.co', 'coolstorybro@gtest.com   '];
+      const expectedResult = { ...baseResults };
+      expectedResult.validEmails = ['timmy@test.co', 'bigsby@test.co', 'coolstorybro@gtest.com'];
+      expectedResult.validEmailIndices = _.range(validEmails.length);
+      expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
+    });
+
     it('returns invalid email addresses and indices', () => {
       const invalidEmails = ['bobbyb', 'yooooooo3.a.x.y', 'argh@', 'blargh@.co.uk'];
       const expectedResult = { ...baseResults };

@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { logError } from '@edx/frontend-platform/logging';
 import url from 'url';
+import { Container } from '@edx/paragon';
 import LoadingMessage from '../LoadingMessage';
-import ErrorPage from '../ErrorPage';
 import { configuration } from '../../config';
 
 import AnalyticsApiService from './data/service';
 
-export default function AnalyticsCharts({ enterpriseId }) {
+const AnalyticsCharts = ({ enterpriseId }) => {
   const [tokenUsedOnce, setTokenUsedOnce] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,9 +42,13 @@ export default function AnalyticsCharts({ enterpriseId }) {
   useEffect(() => {
     setIsLoading(true);
     AnalyticsApiService.fetchTableauToken({ enterpriseId })
-      .then((response) => {
+      .then((response) => { // eslint-disable-line consistent-return
         setIsLoading(false);
         setTokenUsedOnce(false);
+        if (response.data === '-1') {
+          // tableau returns '-1' when user cannot be assigned a valid ticket because of license issues or bad request
+          return Promise.reject(new Error('Ticket returned by tableau is invalid.'));
+        }
         initViz(response.data);
       })
       .catch((err) => {
@@ -59,16 +63,24 @@ export default function AnalyticsCharts({ enterpriseId }) {
   }
   if (error) {
     return (
-      <ErrorPage
-        status={error.response && error.response.status}
-        message={error.message}
-      />
+      <Container size="lg" className="mt-5">
+        <div style={{ textAlign: 'center' }}>
+          <h2>
+            We are updating our servers! We apologize for the interruption.
+          </h2>
+          <p>
+            If you need something from here urgently, reach out to your customer success representative.
+          </p>
+        </div>
+      </Container>
     );
   }
 
   return <div id="tableau_frame" ref={tableauRef} />;
-}
+};
 
 AnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
+
+export default AnalyticsCharts;
