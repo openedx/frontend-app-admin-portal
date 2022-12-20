@@ -100,8 +100,8 @@ describe('<HighlightStepperConfirmContent />', () => {
         <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
       </HighlightStepperConfirmContentWrapper>,
     );
-    container.querySelectorAll('div[class="pgn__card-header-title-md"]').forEach((element, index) => {
-      expect(new RegExp(sortedTestCourseTitles[index]).test(element.querySelectorAll('span')[0].textContent)).toBeTruthy();
+    container.querySelectorAll('div[data-testid="title-test"]').forEach((element, index) => {
+      expect(element).toHaveTextContent(sortedTestCourseTitles[index]);
       expect(screen.getByText(sortedTestCourseTitles[index])).toBeInTheDocument();
     });
   });
