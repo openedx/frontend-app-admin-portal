@@ -391,8 +391,8 @@ testCourseData.forEach((element, index) => {
 });
 
 export const testCourseAggregation = {
-  'course:HarvardX+CS50x': true,
-  'course:HarvardX+CS50P': true,
   'course:HarvardX+CS50W': true,
   'course:HarvardX+CS50AI': true,
+  'course:HarvardX+CS50P': true,
+  'course:HarvardX+CS50x': true,
 };
