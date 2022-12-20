@@ -25,12 +25,12 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {highlightedContent.map(({
-        uuid, title, contentType, authoringOrganizations, contentKey,
+        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl,
       }) => (
         <ContentHighlightCardItem
           isLoading={isLoading}
           key={uuid}
-          cardImageUrl="https://picsum.photos/200/300"
+          cardImageUrl={cardImageUrl}
           title={title}
           href={generateAboutPageUrl({
             enterpriseSlug,
