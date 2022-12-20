@@ -51,11 +51,14 @@ const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds
   );
 };
 
-testCourseData.forEach((element, index) => {
-  if (!element.objectID) {
-    testCourseData[index].objectID = index + 1;
-  }
-});
+// testCourseDataAggregation is the course keys coming from the Algolia search results
+const testCourseDataAggregation = testCourseData.map((element) => element.aggregationKey.split(':')[1]);
+// testCourseAggregationCourses is the course keys coming from the user's expected selection order
+const testCourseAggregationCourses = Object.keys(testCourseAggregation).map((element) => element.split(':')[1]);
+// returns titles of sorted course data
+const sortedTestCourseTitles = testCourseAggregationCourses.map(
+  element => testCourseData[testCourseDataAggregation.indexOf(element)].title,
+);
 
 const mockCourseData = [...testCourseData];
 jest.mock('react-instantsearch-dom', () => ({
@@ -89,6 +92,17 @@ describe('<HighlightStepperConfirmContent />', () => {
     );
     testCourseData.forEach((element) => {
       expect(screen.getByText(element.title)).toBeInTheDocument();
+    });
+  });
+  it('renders the content in the correct order based on testCourseAggregationCourses', () => {
+    const { container } = renderWithRouter(
+      <HighlightStepperConfirmContentWrapper currentSelectedRowIds={testCourseAggregation}>
+        <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
+      </HighlightStepperConfirmContentWrapper>,
+    );
+    container.querySelectorAll('div[class="pgn__card-header-title-md"]').forEach((element, index) => {
+      expect(new RegExp(sortedTestCourseTitles[index]).test(element.querySelectorAll('span')[0].textContent)).toBeTruthy();
+      expect(screen.getByText(sortedTestCourseTitles[index])).toBeInTheDocument();
     });
   });
 });
