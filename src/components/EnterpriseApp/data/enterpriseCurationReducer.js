@@ -26,10 +26,6 @@ export const enterpriseCurationActions = {
     type: SET_FETCH_ERROR,
     payload,
   }),
-  setHighlightToast: (payload) => ({
-    type: SET_TOAST_TEXT,
-    payload,
-  }),
   deleteHighlightSet: (payload) => ({
     type: DELETE_HIGHLIGHT_SET,
     payload,
@@ -52,19 +48,6 @@ function enterpriseCurationReducer(state, action) {
       return { ...state, enterpriseCuration: action.payload };
     case SET_FETCH_ERROR:
       return { ...state, fetchError: action.payload };
-    case SET_TOAST_TEXT: {
-      const existingHighlightSets = getHighlightSetsFromState(state);
-      const filteredHighlightSets = existingHighlightSets.filter(
-        highlightSet => highlightSet.uuid === action.payload,
-      );
-      return {
-        ...state,
-        enterpriseCuration: {
-          ...state.enterpriseCuration,
-          toastText: filteredHighlightSets[0].title,
-        },
-      };
-    }
     case DELETE_HIGHLIGHT_SET: {
       const existingHighlightSets = getHighlightSetsFromState(state);
       const filteredHighlightSets = existingHighlightSets.filter(

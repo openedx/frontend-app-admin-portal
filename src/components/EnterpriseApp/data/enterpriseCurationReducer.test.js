@@ -39,25 +39,6 @@ describe('enterpriseCurationReducer', () => {
     ).toMatchObject({ fetchError });
   });
 
-  it('should set toast text', () => {
-    const highlightSet = {
-      uuid: highlightSetUUID,
-      title: 'Hello World!',
-    };
-    const initialStateWithHighlights = {
-      ...initialState,
-      enterpriseCuration: {
-        highlightSets: [highlightSet],
-      },
-    };
-    expect(
-      enterpriseCurationReducer(
-        initialStateWithHighlights,
-        enterpriseCurationActions.setHighlightToast(highlightSetUUID),
-      ),
-    ).toMatchObject({ enterpriseCuration: { toastText: 'Hello World!' } });
-  });
-
   it('should delete highlight set', () => {
     const highlightSet = { uuid: highlightSetUUID };
     const initialStateWithHighlights = {
