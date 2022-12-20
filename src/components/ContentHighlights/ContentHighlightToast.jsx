@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 const ContentHighlightToast = ({ toastText }) => {
   /* Toast visibility state initially set to false to ensure the toast's
   fade-in animation occurs on mount once `showToast` set to true. */
-  const [showToast, isToastShown] = useState(false);
+  const [showToast, setIsToastShown] = useState(false);
   const handleClose = () => {
-    isToastShown(false);
+    setIsToastShown(false);
   };
   useEffect(() => {
-    isToastShown(true);
+    setIsToastShown(true);
   }, []);
   return (
     <Toast
-      onClose={() => handleClose()}
+      onClose={handleClose}
       show={showToast}
     >
       {toastText}
@@ -24,11 +24,7 @@ const ContentHighlightToast = ({ toastText }) => {
 };
 
 ContentHighlightToast.propTypes = {
-  toastText: PropTypes.string,
-};
-
-ContentHighlightToast.defaultProps = {
-  toastText: '',
+  toastText: PropTypes.string.isRequired,
 };
 
 export default ContentHighlightToast;
