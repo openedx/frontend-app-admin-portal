@@ -10,14 +10,17 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { camelCaseObject } from '@edx/frontend-platform';
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
+const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   portalConfiguration:
@@ -99,8 +102,10 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('confirming deletion in confirmation modal deletes via API', async () => {
-    EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
-
+    await EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: mockHighlightSetResponse,
+    });
+    await EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
     const { history } = renderWithRouter(
       <DeleteHighlightSetWrapper />,
       { route: initialRouterEntry },
@@ -109,11 +114,6 @@ describe('<DeleteHighlightSet />', () => {
     userEvent.click(screen.getByTestId('delete-confirmation-button'));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(mockDispatchFn).toHaveBeenCalledWith(
-        enterpriseCurationActions.setHighlightToast(highlightSetUUID),
-      );
-    });
     await waitFor(() => {
       expect(mockDispatchFn).toHaveBeenCalledWith(
         enterpriseCurationActions.deleteHighlightSet(highlightSetUUID),
@@ -130,7 +130,10 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
-    EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
+    await EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
+      data: mockHighlightSetResponse,
+    });
+    await EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
     renderWithRouter(
       <DeleteHighlightSetWrapper />,

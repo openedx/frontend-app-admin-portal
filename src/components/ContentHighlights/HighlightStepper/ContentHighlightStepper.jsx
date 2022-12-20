@@ -85,7 +85,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
       dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightToast(transformedHighlightSet.uuid));
-      history.push(location.pathname, { addHighlightSet: true });
+      history.push(location.pathname, {
+        addHighlightSet: true,
+        toastText: transformedHighlightSet.title,
+      });
       closeStepperModal();
     } catch (error) {
       logError(error);
