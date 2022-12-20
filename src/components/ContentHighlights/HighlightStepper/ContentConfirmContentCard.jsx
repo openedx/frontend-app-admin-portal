@@ -20,7 +20,7 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
   } = original;
 
   return (
-    <div className="d-flex w-100">
+    <div className="d-flex w-100" data-testid="title-test">
       <ContentHighlightCardItem
         title={title}
         href={generateAboutPageUrl({
