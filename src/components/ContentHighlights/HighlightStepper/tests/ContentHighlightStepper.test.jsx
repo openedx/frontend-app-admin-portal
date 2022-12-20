@@ -1,4 +1,5 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { useState } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -97,79 +98,79 @@ describe('<ContentHighlightStepper>', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper);
+    userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
     // open stepper --> title
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper);
+    userEvent.click(stepper);
     // title --> select content
     const nextButton1 = screen.getByText('Next');
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
-    fireEvent.click(nextButton1);
+    userEvent.click(nextButton1);
     // select content --> confirm content
     const nextButton2 = screen.getByText('Next');
-    fireEvent.click(nextButton2);
+    userEvent.click(nextButton2);
 
     // confirm content --> select content
     const backButton2 = screen.getByText('Back');
-    fireEvent.click(backButton2);
+    userEvent.click(backButton2);
     expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
     // select content --> title
     const backButton3 = screen.getByText('Back');
-    fireEvent.click(backButton3);
+    userEvent.click(backButton3);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
     // title --> closed stepper
     const backButton4 = screen.getByText('Back');
-    fireEvent.click(backButton4);
+    userEvent.click(backButton4);
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and exits on the X button', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper);
+    userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
-    fireEvent.click(closeButton);
+    userEvent.click(closeButton);
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper);
+    userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
     const nextButton1 = screen.getByText('Next');
-    fireEvent.click(nextButton1);
+    userEvent.click(nextButton1);
     expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
     const nextButton2 = screen.getByText('Next');
-    fireEvent.click(nextButton2);
+    userEvent.click(nextButton2);
     expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
 
     const confirmButton = screen.getByText('Publish');
-    fireEvent.click(confirmButton);
+    userEvent.click(confirmButton);
     await waitFor(() => expect(screen.getByText('Publishing...')).toBeInTheDocument());
   });
   it('Displays the stepper, closes, then displays stepper again', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
     const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper1);
+    userEvent.click(stepper1);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
-    fireEvent.click(closeButton);
+    userEvent.click(closeButton);
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
 
     const stepper2 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(stepper2);
+    userEvent.click(stepper2);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
   });
 });

@@ -39,7 +39,6 @@ export const BaseReviewContentSelections = ({
   if (!searchResults) {
     return (<div data-testid="base-content-no-results" />);
   }
-
   const { hits } = camelCaseObject(searchResults);
   // ensures content is persisted in the order it was selected from the previous step.
   const sortedHits = hits.sort(
