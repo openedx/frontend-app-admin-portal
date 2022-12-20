@@ -29,6 +29,7 @@ import SkeletonContentCardContainer from '../SkeletonContentCardContainer';
 export const BaseReviewContentSelections = ({
   searchResults,
   isSearchStalled,
+  currentSelectedRowIds,
 }) => {
   if (isSearchStalled) {
     return (
@@ -40,10 +41,14 @@ export const BaseReviewContentSelections = ({
   }
 
   const { hits } = camelCaseObject(searchResults);
+  // ensures content is persisted in the order it was selected from the previous step.
+  const sortedHits = hits.sort(
+    (a, b) => currentSelectedRowIds.indexOf(a.aggregationKey) - currentSelectedRowIds.indexOf(b.aggregationKey),
+  );
 
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
-      {hits.map((original) => (
+      {sortedHits.map((original) => (
         <ContentConfirmContentCard key={original.aggregationKey} original={original} />))}
     </CardGrid>
   );
@@ -57,6 +62,7 @@ BaseReviewContentSelections.propTypes = {
     })).isRequired,
   }),
   isSearchStalled: PropTypes.bool.isRequired,
+  currentSelectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 BaseReviewContentSelections.defaultProps = {
@@ -116,7 +122,7 @@ export const SelectedContent = ({ enterpriseId }) => {
         filters={algoliaFilters}
         hitsPerPage={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}
       />
-      <ReviewContentSelections />
+      <ReviewContentSelections currentSelectedRowIds={currentSelectedRowIds} />
     </InstantSearch>
   );
 };
