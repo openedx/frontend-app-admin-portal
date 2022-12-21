@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-
 import { Container } from '@edx/paragon';
-
 import ZeroStateHighlights from './ZeroState';
 import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
