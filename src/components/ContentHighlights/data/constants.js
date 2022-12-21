@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 /* eslint-enable import/no-extraneous-dependencies */
 
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
-export const TEST_FLAG = false;
+export const TEST_FLAG = true;
 // Test entepriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
@@ -18,10 +18,17 @@ export const ENABLE_TESTING = (enterpriseId) => {
 export const TRACK_EVENT_BASE = 'edx.ui.enterprise.admin_portal';
 export const TRACK_EVENT_NAMES = {
   NEW_HIGHLIHT: `${TRACK_EVENT_BASE}.create_new_content_highlight`,
-  SELECT_CONTENT_ABOUT_PAGE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_select_content_about_page`,
+  DELETE_HIGHLIGHT: `${TRACK_EVENT_BASE}.delete_content_highlight`,
+  DELETE_HIGHLIGHT_CONFIRM: `${TRACK_EVENT_BASE}.delete_content_highlight_confirm`,
+  DELETE_HIGHLIGHT_CANCEL: `${TRACK_EVENT_BASE}.delete_content_highlight_cancel`,
+  PUBLISH_HIGHLIGHT: `${TRACK_EVENT_BASE}.publish_content_highlight`,
+  STEPPER_SELECT_CONTENT_ABOUT_PAGE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_select_content_about_page`,
+  STEPPER_CONFIRM_CONTENT_ABOUT_PAGE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_confirm_content_about_page`,
   STEPPER_CLOSE_STEPPER_INCOMPLETE: `${TRACK_EVENT_BASE}.content_highlight_stepper_close_without_saving`,
   STEPPER_STEP_CREATE_TITLE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_create_title`,
   STEPPER_STEP_SELECT_CONTENT: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_select_content`,
+  STEPPER_STEP_CONFIRM_CONTENT: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_confirm_content`,
+  HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE: `${TRACK_EVENT_BASE}.content_highlight_dashboard_set_item_about_page`,
 };
 // Base data info for ContentHighlights
 export const CONTENT_HIGHLIGHTS_BASE_DATA = (enterpriseId, title, uuid, e = undefined) => {

@@ -23,7 +23,7 @@ const ContentHighlightCardItem = ({
   };
   if (href) {
     cardInfo.cardTitle = (
-      <Hyperlink onClick={(event) => href.onClick(event)} destination={href.destination} target={href.target}>
+      <Hyperlink onClick={() => href.onClick()} destination={href.destination} target={href.target}>
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );

@@ -21,7 +21,7 @@ import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
-import { CONTENT_HIGHLIGHTS_BASE_DATA, TRACK_EVENT_NAMES } from '../data/constants';
+import { TRACK_EVENT_NAMES } from '../data/constants';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -44,14 +44,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       dispatch: dispatchEnterpriseCuration,
     },
   } = useContext(EnterpriseAppContext);
-  const {
-    enterpriseCuration: {
-      enterpriseCuration: {
-        uuid, title,
-      },
-    },
-  } = useContext(EnterpriseAppContext);
-  // uuid ,created, modified
   const history = useHistory();
   const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
@@ -105,9 +97,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
-  const handleNext = (e) => {
+  const handleNext = () => {
     const trackInfo = {
-      ...CONTENT_HIGHLIGHTS_BASE_DATA(enterpriseId, title, uuid, e),
       stepperModal: {
         prev_step: currentStep,
         prev_step_position: steps.indexOf(currentStep) + 1,
@@ -138,7 +129,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const closeStepper = () => {
     closeStepperModal();
     const trackInfo = {
-      ...CONTENT_HIGHLIGHTS_BASE_DATA(enterpriseId, title, uuid),
       stepperModal: {
         current_step: steps[steps.indexOf(currentStep)],
         current_step_position: steps.indexOf(currentStep) + 1,
@@ -177,7 +167,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               </Button>
               <Button
                 variant="primary"
-                onClick={(event) => handleNext(event)}
+                onClick={() => handleNext()}
                 disabled={!!titleStepValidationError || !highlightTitle}
               >
                 Next
@@ -195,7 +185,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               </Button>
               <Button
                 variant="primary"
-                onClick={(event) => handleNext(event)}
+                onClick={() => handleNext()}
                 disabled={Object.keys(currentSelectedRowIds).length === 0}
               >
                 Next

@@ -2,14 +2,20 @@ import React from 'react';
 import { CardGrid, Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import {
-  DEFAULT_ERROR_MESSAGE, HIGHLIGHTS_CARD_GRID_COLUMN_SIZES, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+  DEFAULT_ERROR_MESSAGE,
+  HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
+  MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+  TRACK_EVENT_NAMES,
 } from './data/constants';
 import SkeletonContentCardContainer from './SkeletonContentCardContainer';
 import { generateAboutPageUrl } from './data/utils';
 
-const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highlightedContent }) => {
+const ContentHighlightsCardItemsContainer = ({
+  enterpriseId, enterpriseSlug, isLoading, highlightedContent,
+}) => {
   if (isLoading) {
     return (
       <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
@@ -22,6 +28,18 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
       </Alert>
     );
   }
+  const trackEvent = (metaData = {}) => {
+    const trackInfo = {
+      content_metadata: {
+        aggregation_key: `${metaData?.contentType}:${metaData?.contentKey}`,
+      },
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${TRACK_EVENT_NAMES.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}.clicked`,
+      trackInfo,
+    );
+  };
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {highlightedContent.map(({
@@ -40,9 +58,7 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
                 contentKey,
               }),
               target: '_blank',
-              onClick: () => {
-                console.log('test');
-              },
+              onClick: () => trackEvent({ contentType, contentKey }),
             }
         }
           contentType={contentType?.toLowerCase()}
@@ -54,6 +70,7 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
 };
 
 ContentHighlightsCardItemsContainer.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   highlightedContent: PropTypes.arrayOf(PropTypes.shape({
@@ -70,6 +87,7 @@ ContentHighlightsCardItemsContainer.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
