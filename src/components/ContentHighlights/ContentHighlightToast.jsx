@@ -14,7 +14,7 @@ const ContentHighlightToast = ({ toastText }) => {
   }, []);
   return (
     <Toast
-      onClose={handleClose}
+      onClose={() => handleClose()}
       show={showToast}
     >
       {toastText}
