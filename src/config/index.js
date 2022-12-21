@@ -22,7 +22,6 @@ const configuration = {
   USER_INFO_COOKIE_NAME: process.env.USER_INFO_COOKIE_NAME,
   NODE_ENV: process.env.NODE_ENV,
   CUSTOMER_SUPPORT_EMAIL: 'customersuccess@edx.org', // TODO: avoid using hardcoded email address here...
-  TABLEAU_URL: process.env.TABLEAU_URL,
   ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL,
   ALGOLIA: {
     APP_ID: process.env.ALGOLIA_APP_ID,
@@ -49,7 +48,6 @@ const features = {
   SETTINGS_PAGE_LMS_TAB: process.env.FEATURE_SETTINGS_PAGE_LMS_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_LMS_TAB'),
   SETTINGS_PAGE_APPEARANCE_TAB: process.env.FEATURE_SETTINGS_PAGE_APPEARANCE_TAB || hasFeatureFlagEnabled('SETTINGS_PAGE_APPEARANCE_TAB'),
   FEATURE_SSO_SETTINGS_TAB: process.env.FEATURE_SSO_SETTINGS_TAB || hasFeatureFlagEnabled('SSO_SETTINGS_TAB'),
-  TABLEAU_ANALYTICS: process.env.TABLEAU_ANALYTICS || hasFeatureFlagEnabled('TABLEAU_ANALYTICS'),
   FEATURE_INTEGRATION_REPORTING: process.env.FEATURE_INTEGRATION_REPORTING || hasFeatureFlagEnabled('FEATURE_INTEGRATION_REPORTING'),
 };
 
