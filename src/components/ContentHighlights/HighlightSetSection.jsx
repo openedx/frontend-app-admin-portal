@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { CardGrid } from '@edx/paragon';
 
 import ContentHighlightSetCard from './ContentHighlightSetCard';
+import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
 
 const HighlightSetSection = ({
   title: sectionTitle,
@@ -15,18 +16,13 @@ const HighlightSetSection = ({
   return (
     <div>
       <h3 className="mb-3">{sectionTitle}</h3>
-      <CardGrid
-        columnSizes={{
-          xs: 12,
-          lg: 6,
-          xl: 4,
-        }}
-      >
+      <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
         {highlightSets.map(({
           title,
           uuid,
           isPublished,
           highlightedContentUuids,
+          cardImageUrl,
         }) => (
           <ContentHighlightSetCard
             key={uuid}
@@ -34,7 +30,7 @@ const HighlightSetSection = ({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
-            imageCapSrc="https://picsum.photos/360/200/"
+            imageCapSrc={cardImageUrl}
           />
         ))}
       </CardGrid>

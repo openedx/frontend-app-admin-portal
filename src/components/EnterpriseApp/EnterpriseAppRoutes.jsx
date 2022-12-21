@@ -16,7 +16,6 @@ import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadP
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
-import { AnalyticsPage } from '../analytics';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -85,15 +84,6 @@ const EnterpriseAppRoutes = ({
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
           component={PlotlyAnalyticsPage}
         />
-      )}
-
-      {enableAnalyticsPage && (
-      <Route
-        key="tableau-analytics"
-        exact
-        path={`${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`}
-        component={AnalyticsPage}
-      />
       )}
 
       <Route

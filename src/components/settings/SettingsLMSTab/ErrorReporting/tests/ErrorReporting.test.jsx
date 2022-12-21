@@ -2,6 +2,7 @@ import React from 'react';
 import {
   act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -284,7 +285,7 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
     expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
     act(() => {
-      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
+      userEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
     });
 
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
@@ -390,7 +391,7 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitFor(() => expect(screen.getByText('spooooky')).toBeInTheDocument());
     expect(screen.getAllByLabelText('Next, Page 2')[1]).not.toBeDisabled();
     act(() => {
-      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[1]);
+      userEvent.click(screen.getAllByLabelText('Next, Page 2')[1]);
     });
     await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
   });

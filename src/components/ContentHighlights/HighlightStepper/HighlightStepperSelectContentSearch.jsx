@@ -40,7 +40,8 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
-
+    // TODO: replace testEnterpriseId with enterpriseID before push,
+    // uncomment out import and replace with testEnterpriseId to test
   const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
 
   return (
@@ -92,12 +93,9 @@ const BaseHighlightStepperSelectContentDataTable = ({
   searchResults,
 }) => {
   const [currentView, setCurrentView] = useState(defaultActiveStateValue);
-
   const tableData = useMemo(() => camelCaseObject(searchResults?.hits || []), [searchResults]);
-
   const searchResultsItemCount = searchResults?.nbHits || 0;
   const searchResultsPageCount = searchResults?.nbPages || 0;
-
   return (
     <DataTable
       isLoading={isSearchStalled}

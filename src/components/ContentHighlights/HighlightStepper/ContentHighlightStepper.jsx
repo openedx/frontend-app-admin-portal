@@ -11,6 +11,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useHistory } from 'react-router-dom';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import HighlightStepperTitle from './HighlightStepperTitle';
@@ -51,9 +52,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     },
   } = useContext(EnterpriseAppContext);
   // uuid ,created, modified
+  const history = useHistory();
+  const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
-
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -68,6 +70,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].stepperModal.currentSelectedRowIds,
   );
+
   const closeStepperModal = useCallback(() => {
     resetStepperModal();
     setCurrentStep(steps[0]);
@@ -79,7 +82,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       const newHighlightSet = {
         title: highlightTitle,
         isPublished: true,
-        // TODO: pass along the selected content keys!
+        content_keys: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
       };
       const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
       const result = camelCaseObject(response.data);
@@ -88,9 +91,13 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         isPublished: result.isPublished,
         title: result.title,
         uuid: result.uuid,
-        highlightedContentUuids: [],
+        highlightedContentUuids: result.highlightedContent || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
+      history.push(location.pathname, {
+        addHighlightSet: true,
+        toastText: transformedHighlightSet.title,
+      });
       closeStepperModal();
     } catch (error) {
       logError(error);

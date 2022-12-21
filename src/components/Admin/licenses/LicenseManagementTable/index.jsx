@@ -5,31 +5,28 @@ import {
   DataTable,
   TextFilter,
   CheckboxFilter,
-  useWindowSize,
-  breakpoints,
   Toast,
 } from '@edx/paragon';
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { getConfig } from '@edx/frontend-platform/config';
 
-import { SubscriptionContext } from '../../SubscriptionData';
-import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
+import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
+import { SubscriptionDetailContext, defaultStatusFilter } from '../../../subscriptions/SubscriptionDetailContextProvider';
 import {
-  PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
-} from '../../data/constants';
+  DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
+} from '../../../subscriptions/data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
 import { formatTimestamp } from '../../../../utils';
-import SubscriptionZeroStateMessage from '../../SubscriptionZeroStateMessage';
-import DownloadCsvButton from '../../buttons/DownloadCsvButton';
-import EnrollBulkAction from './bulk-actions/EnrollBulkAction';
-import RemindBulkAction from './bulk-actions/RemindBulkAction';
-import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
-import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
-import LicenseManagementUserBadge from './LicenseManagementUserBadge';
+import SubscriptionZeroStateMessage from '../../../subscriptions/SubscriptionZeroStateMessage';
+import DownloadCsvButton from '../../../subscriptions/buttons/DownloadCsvButton';
+import EnrollBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/EnrollBulkAction';
+import RemindBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RemindBulkAction';
+import RevokeBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RevokeBulkAction';
+import LicenseManagementTableActionColumn from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementTableActionColumn';
+import LicenseManagementUserBadge from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
-import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
+import { pushEvent, EVENTS } from '../../../../optimizely';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -58,10 +55,6 @@ const selectColumn = {
 const LicenseManagementTable = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const { width } = useWindowSize();
-  const showFiltersInSidebar = useMemo(() => width > breakpoints.medium.maxWidth, [width]);
-
-  const config = getConfig();
 
   const {
     forceRefresh: forceRefreshSubscription,
@@ -176,18 +169,14 @@ const LicenseManagementTable = () => {
 
   // Successful action modal callback
   const onRemindSuccess = () => {
-    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
-      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
-    }
+    pushEvent(EVENTS.LPR_SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
     setToastMessage('Users successfully reminded');
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
-    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
-      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REVOKE, { enterpriseUUID: subscription.enterpriseCustomerUuid });
-    }
+    pushEvent(EVENTS.LPR_SUBSCRIPTION_LICENSE_REVOKE, { enterpriseUUID: subscription.enterpriseCustomerUuid });
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
@@ -208,7 +197,7 @@ const LicenseManagementTable = () => {
     <>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
       <DataTable
-        showFiltersInSidebar={showFiltersInSidebar}
+        showFiltersInSidebar={false}
         isLoading={loadingUsers}
         isFilterable
         manualFilters
@@ -222,12 +211,13 @@ const LicenseManagementTable = () => {
         pageCount={users.numPages || 1}
         tableActions={tableActions}
         initialState={{
-          pageSize: PAGE_SIZE,
+          pageSize: 5,
           pageIndex: DEFAULT_PAGE - 1,
         }}
         initialTableOptions={{
           getRowId: row => row.id,
         }}
+        isSortable
         EmptyTableComponent={
           /* eslint-disable react/no-unstable-nested-components */
           () => {
@@ -247,6 +237,7 @@ const LicenseManagementTable = () => {
             /* eslint-disable react/prop-types */
             /* eslint-disable react/no-unstable-nested-components */
             Cell: ({ row }) => <span data-hj-suppress>{row.values.emailLabel}</span>,
+            disableFilters: true,
             /* eslint-enable react/prop-types */
             /* eslint-enable react/no-unstable-nested-components */
           },
@@ -256,20 +247,15 @@ const LicenseManagementTable = () => {
             Filter: CheckboxFilter,
             filter: 'includesValue',
             filterChoices: [{
-              name: 'Active',
-              number: overview.activated,
-              value: ACTIVATED,
-            },
-            {
               name: 'Pending',
               number: overview.assigned,
               value: ASSIGNED,
-            },
-            {
-              name: 'Revoked',
-              number: overview.revoked,
-              value: REVOKED,
+            }, {
+              name: 'Active',
+              number: overview.activated,
+              value: ACTIVATED,
             }],
+            disableFilters: true,
           },
           {
             Header: 'Recent action',
@@ -291,6 +277,7 @@ const LicenseManagementTable = () => {
                 onRemindSuccess={onRemindSuccess}
                 onRevokeSuccess={onRevokeSuccess}
               />
+              /* eslint-enable */
             ),
             /* eslint-enable react/prop-types */
             /* eslint-enable react/no-unstable-nested-components */
