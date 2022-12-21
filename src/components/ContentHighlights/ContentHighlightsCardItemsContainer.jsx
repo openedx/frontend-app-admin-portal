@@ -32,11 +32,19 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
           key={uuid}
           cardImageUrl={cardImageUrl}
           title={title}
-          href={generateAboutPageUrl({
-            enterpriseSlug,
-            contentType: contentType?.toLowerCase(),
-            contentKey,
-          })}
+          href={
+            {
+              destination: generateAboutPageUrl({
+                enterpriseSlug,
+                contentType: contentType?.toLowerCase(),
+                contentKey,
+              }),
+              target: '_blank',
+              onClick: () => {
+                console.log('test');
+              },
+            }
+        }
           contentType={contentType?.toLowerCase()}
           partners={authoringOrganizations}
         />

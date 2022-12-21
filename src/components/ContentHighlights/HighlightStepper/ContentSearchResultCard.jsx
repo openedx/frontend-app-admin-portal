@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { generateAboutPageUrl } from '../data/utils';
+import { CONTENT_HIGHLIGHTS_BASE_DATA, TRACK_EVENT_NAMES } from '../data/constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
-const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
+const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => {
+  const {
+    enterpriseCuration: {
+      enterpriseCuration,
+    },
+  } = useContext(EnterpriseAppContext);
   const {
     aggregationKey,
     title,
@@ -14,14 +22,39 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
     originalImageUrl,
     firstEnrollablePaidSeatPrice,
   } = original;
+  const trackEvent = (e) => {
+    e.persist();
+    const trackInfo = {
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(
+        enterpriseId,
+        enterpriseCuration.title,
+        enterpriseCuration.uuid,
+        e,
+      ),
+      content_metadata: {
+        aggregationKey,
+        contentKey: aggregationKey?.split(':')[1],
+        contentType,
+      },
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${TRACK_EVENT_NAMES.SELECT_CONTENT_ABOUT_PAGE}.clicked`,
+      trackInfo,
+    );
+  };
   return (
     <ContentHighlightCardItem
       title={title}
-      href={generateAboutPageUrl({
-        enterpriseSlug,
-        contentType: contentType?.toLowerCase(),
-        contentKey: aggregationKey?.split(':')[1],
-      })}
+      href={{
+        destination: generateAboutPageUrl({
+          enterpriseSlug,
+          contentType: contentType?.toLowerCase(),
+          contentKey: aggregationKey?.split(':')[1],
+        }),
+        target: '_blank',
+        onClick: trackEvent,
+      }}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}
@@ -31,6 +64,7 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
 };
 
 ContentSearchResultCard.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
     aggregationKey: PropTypes.string,
@@ -44,6 +78,7 @@ ContentSearchResultCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

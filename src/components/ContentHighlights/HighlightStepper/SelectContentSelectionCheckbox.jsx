@@ -29,6 +29,7 @@ const SelectContentSelectionCheckbox = ({ row }) => {
         isIndeterminate={indeterminate}
         disabled={isDisabled}
         style={{ cursor: !isDisabled ? 'pointer' : undefined }}
+        onClick={e => e.stopPropagation()}
       />
     </div>
   );

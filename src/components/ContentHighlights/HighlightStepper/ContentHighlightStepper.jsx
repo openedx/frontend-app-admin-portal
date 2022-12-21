@@ -47,7 +47,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const {
     enterpriseCuration: {
       enterpriseCuration: {
-        uuid, created, modified, title,
+        uuid, title,
       },
     },
   } = useContext(EnterpriseAppContext);
@@ -107,33 +107,52 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   };
   const handleNext = (e) => {
     const trackInfo = {
-      ...CONTENT_HIGHLIGHTS_BASE_DATA(e, enterpriseId, title, uuid, created, modified),
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(enterpriseId, title, uuid, e),
       stepperModal: {
         prev_step: currentStep,
         prev_step_position: steps.indexOf(currentStep) + 1,
         current_step: steps[steps.indexOf(currentStep) + 1],
         current_step_position: steps.indexOf(currentStep) + 2,
-        total_steps: steps.length,
         highlight_title: highlightTitle,
-        currentSelectedRowIds,
-        isOpen: isStepperModalOpen,
+        current_selected_row_ids: currentSelectedRowIds,
+        current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+        is_stepper_modal_open: isStepperModalOpen,
       },
     };
     if (currentStep === STEPPER_STEP_LABELS.CREATE_TITLE) {
       sendEnterpriseTrackEvent(
         enterpriseId,
-        `${TRACK_EVENT_NAMES.STEPPER_STEP_CREATE_TITLE}.${e.nativeEvent.type}`,
+        `${TRACK_EVENT_NAMES.STEPPER_STEP_CREATE_TITLE}.clicked`,
         trackInfo,
       );
     }
     if (currentStep === STEPPER_STEP_LABELS.SELECT_CONTENT) {
       sendEnterpriseTrackEvent(
         enterpriseId,
-        `${TRACK_EVENT_NAMES.STEPPER_STEP_SELECT_CONTENT}.${e.nativeEvent.type}`,
+        `${TRACK_EVENT_NAMES.STEPPER_STEP_SELECT_CONTENT}.clicked`,
         trackInfo,
       );
     }
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  const closeStepper = () => {
+    closeStepperModal();
+    const trackInfo = {
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(enterpriseId, title, uuid),
+      stepperModal: {
+        current_step: steps[steps.indexOf(currentStep)],
+        current_step_position: steps.indexOf(currentStep) + 1,
+        highlight_title: highlightTitle,
+        current_selected_row_ids: currentSelectedRowIds,
+        current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+        is_stepper_modal_open: !isStepperModalOpen,
+      },
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${TRACK_EVENT_NAMES.STEPPER_CLOSE_STEPPER_INCOMPLETE}.clicked`,
+      trackInfo,
+    );
   };
   return (
     <Stepper activeKey={currentStep}>
@@ -141,7 +160,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         title="New highlight"
         className="bg-light-200"
         isOpen={isStepperModalOpen}
-        onClose={closeStepperModal}
+        onClose={() => closeStepper()}
         beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
         footerNode={(
           <>

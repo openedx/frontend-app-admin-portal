@@ -2,26 +2,48 @@
 import { faker } from '@faker-js/faker';
 /* eslint-enable import/no-extraneous-dependencies */
 
+// Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
+export const TEST_FLAG = false;
+// Test entepriseId for Content Highlights to display card selections and confirmation
+export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+// function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
+export const ENABLE_TESTING = (enterpriseId) => {
+  if (TEST_FLAG) {
+    return testEnterpriseId;
+  }
+  return enterpriseId;
+};
+
 // TrackEventNamingScheme for ContentHighlights
 export const TRACK_EVENT_BASE = 'edx.ui.enterprise.admin_portal';
 export const TRACK_EVENT_NAMES = {
-  NEW_HIGHLIHT: `${TRACK_EVENT_BASE}.create_new_highlight`,
-  STEPPER_STEP_CREATE_TITLE: `${TRACK_EVENT_BASE}.stepper_create_title`,
-  STEPPER_STEP_SELECT_CONTENT: `${TRACK_EVENT_BASE}.stepper_select_content`,
+  NEW_HIGHLIHT: `${TRACK_EVENT_BASE}.create_new_content_highlight`,
+  SELECT_CONTENT_ABOUT_PAGE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_select_content_about_page`,
+  STEPPER_CLOSE_STEPPER_INCOMPLETE: `${TRACK_EVENT_BASE}.content_highlight_stepper_close_without_saving`,
+  STEPPER_STEP_CREATE_TITLE: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_create_title`,
+  STEPPER_STEP_SELECT_CONTENT: `${TRACK_EVENT_BASE}.content_highlight_stepper_step_select_content`,
 };
 // Base data info for ContentHighlights
-export const CONTENT_HIGHLIGHTS_BASE_DATA = (e, enterpriseId, title, uuid, created, modified) => ({
-  event: {
-    event_type: e.nativeEvent.type,
-    event_type_interaction: e.target.type,
-    event_type_interaction_label: e.target.textContent,
-  },
-  enterprise_id: enterpriseId,
-  enterprise_name: title,
-  enterprise_curation_uuid: uuid,
-  enterprise_curation_created: created,
-  enterprise_curation_modified: modified,
-});
+export const CONTENT_HIGHLIGHTS_BASE_DATA = (enterpriseId, title, uuid, e = undefined) => {
+  const enterpriseInformation = {
+    enterprise_id: enterpriseId,
+    enterprise_name: title,
+    enterprise_curation_uuid: uuid,
+  };
+  if (e) {
+    return {
+      enterprise_information: enterpriseInformation,
+      event_information: {
+        event_type: e.nativeEvent.type,
+        event_type_interaction: e.target.type || e.target.localName,
+        event_type_interaction_label: e.target.textContent,
+      },
+    };
+  }
+  return {
+    enterprise_information: enterpriseInformation,
+  };
+};
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
   xs: 12,
@@ -65,8 +87,6 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 };
 
 // Test Data for Content Highlights From this point onwards
-// Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {

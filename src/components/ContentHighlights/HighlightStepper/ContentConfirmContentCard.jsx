@@ -23,11 +23,17 @@ const ContentConfirmContentCard = ({ enterpriseSlug, original }) => {
     <div className="d-flex w-100" data-testid="title-test">
       <ContentHighlightCardItem
         title={title}
-        href={generateAboutPageUrl({
-          enterpriseSlug,
-          contentType: contentType?.toLowerCase(),
-          contentKey: aggregationKey?.split(':')[1],
-        })}
+        href={
+          {
+            destination: generateAboutPageUrl({
+              enterpriseSlug,
+              contentType: contentType?.toLowerCase(),
+              contentKey: aggregationKey?.split(':')[1],
+            }),
+            target: '_blank',
+            onClick: () => console.log('test1'),
+          }
+}
         contentType={contentType}
         partners={partners}
         cardImageUrl={cardImageUrl || originalImageUrl}

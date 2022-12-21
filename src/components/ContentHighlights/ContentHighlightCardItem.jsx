@@ -23,7 +23,7 @@ const ContentHighlightCardItem = ({
   };
   if (href) {
     cardInfo.cardTitle = (
-      <Hyperlink destination={href} target="_blank">
+      <Hyperlink onClick={(event) => href.onClick(event)} destination={href.destination} target={href.target}>
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
@@ -56,7 +56,11 @@ ContentHighlightCardItem.propTypes = {
   isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
-  href: PropTypes.string,
+  href: PropTypes.shape({
+    destination: PropTypes.string,
+    target: PropTypes.string,
+    onClick: PropTypes.func,
+  }),
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -68,7 +72,11 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
-  href: undefined,
+  href: {
+    destination: undefined,
+    target: undefined,
+    onClick: undefined,
+  },
   cardImageUrl: undefined,
   price: undefined,
 };

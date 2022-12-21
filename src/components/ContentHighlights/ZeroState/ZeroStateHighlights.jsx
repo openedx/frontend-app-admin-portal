@@ -24,7 +24,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const {
     enterpriseCuration: {
       enterpriseCuration: {
-        uuid, created, modified, highlightSets, title,
+        uuid, highlightSets, title,
       },
     },
   } = useContext(EnterpriseAppContext);
@@ -32,7 +32,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const handleNewHighlightClick = (e) => {
     e.preventDefault();
     const trackInfo = {
-      ...CONTENT_HIGHLIGHTS_BASE_DATA(e, enterpriseId, title, uuid, created, modified),
+      ...CONTENT_HIGHLIGHTS_BASE_DATA(enterpriseId, title, uuid, e),
       highlight_sets: highlightSets,
       number_of_highlight_sets: highlightSets.length,
       stepperModal: {
@@ -42,7 +42,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
     openStepperModal();
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.NEW_HIGHLIHT}.${e.nativeEvent.type}`,
+      `${TRACK_EVENT_NAMES.NEW_HIGHLIHT}.clicked`,
       trackInfo,
     );
   };
