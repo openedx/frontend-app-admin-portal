@@ -1,4 +1,9 @@
-export const EVENTS = {};
+export const EVENTS = {
+  SUBSCRIPTION_LICENSE_REMIND: 'enterprise_admin_portal_subscription_license_remind',
+  SUBSCRIPTION_LICENSE_REVOKE: 'enterprise_admin_portal_subscription_license_revoke',
+  LPR_SUBSCRIPTION_LICENSE_REMIND: 'enterprise_admin_portal_lpr_subscription_license_remind',
+  LPR_SUBSCRIPTION_LICENSE_REVOKE: 'enterprise_admin_portal_lpr_subscription_license_revoke',
+};
 
 export const getActiveExperiments = () => {
   if (!window.optimizely) {

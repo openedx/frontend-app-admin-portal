@@ -26,6 +26,7 @@ import RevokeBulkAction from '../../../subscriptions/licenses/LicenseManagementT
 import LicenseManagementTableActionColumn from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
+import { pushEvent, EVENTS } from '../../../../optimizely';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -168,12 +169,14 @@ const LicenseManagementTable = () => {
 
   // Successful action modal callback
   const onRemindSuccess = () => {
+    pushEvent(EVENTS.LPR_SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
     setToastMessage('Users successfully reminded');
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
+    pushEvent(EVENTS.LPR_SUBSCRIPTION_LICENSE_REVOKE, { enterpriseUUID: subscription.enterpriseCustomerUuid });
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
