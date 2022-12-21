@@ -54,14 +54,14 @@ function enterpriseCurationReducer(state, action) {
       return { ...state, fetchError: action.payload };
     case SET_TOAST_TEXT: {
       const existingHighlightSets = getHighlightSetsFromState(state);
-      const filteredHighlightSets = existingHighlightSets.filter(
+      const filteredHighlightSets = existingHighlightSets.find(
         highlightSet => highlightSet.uuid === action.payload,
       );
       return {
         ...state,
         enterpriseCuration: {
           ...state.enterpriseCuration,
-          toastText: filteredHighlightSets[0].title,
+          toastText: filteredHighlightSets?.title,
         },
       };
     }
