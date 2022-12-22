@@ -21,7 +21,7 @@ import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
-import { TRACK_EVENT_NAMES } from '../data/constants';
+import EVENT_NAMES from '../../../eventTracking';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -91,6 +91,27 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         addHighlightSet: true,
       });
       closeStepperModal();
+      const handlePublishTrackEvent = () => {
+        const trackInfo = {
+          stepper_modal: {
+            current_step: currentStep,
+            current_step_position: steps.indexOf(currentStep) + 1,
+          },
+          created_highligh_response_result_data: {
+            card_image_url: transformedHighlightSet.cardImageUrl,
+            is_published: transformedHighlightSet.isPublished,
+            highlight_set_title: transformedHighlightSet.title,
+            highlight_set_uuid: transformedHighlightSet.uuid,
+            highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids,
+          },
+        };
+        sendEnterpriseTrackEvent(
+          enterpriseId,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}.publish.clicked`,
+          trackInfo,
+        );
+      };
+      handlePublishTrackEvent();
     } catch (error) {
       logError(error);
     } finally {
@@ -99,7 +120,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   };
   const handleNext = () => {
     const trackInfo = {
-      stepperModal: {
+      stepper_modal: {
         prev_step: currentStep,
         prev_step_position: steps.indexOf(currentStep) + 1,
         current_step: steps[steps.indexOf(currentStep) + 1],
@@ -113,18 +134,47 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     if (currentStep === STEPPER_STEP_LABELS.CREATE_TITLE) {
       sendEnterpriseTrackEvent(
         enterpriseId,
-        `${TRACK_EVENT_NAMES.STEPPER_STEP_CREATE_TITLE}.clicked`,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
         trackInfo,
       );
     }
     if (currentStep === STEPPER_STEP_LABELS.SELECT_CONTENT) {
       sendEnterpriseTrackEvent(
         enterpriseId,
-        `${TRACK_EVENT_NAMES.STEPPER_STEP_SELECT_CONTENT}.clicked`,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
         trackInfo,
       );
     }
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  const handleBack = () => {
+    const trackInfo = {
+      stepper_modal: {
+        prev_step: currentStep,
+        prev_step_position: steps.indexOf(currentStep) + 1,
+        current_step: steps[steps.indexOf(currentStep) - 1],
+        current_step_position: steps.indexOf(currentStep),
+        highlight_title: highlightTitle,
+        current_selected_row_ids: currentSelectedRowIds,
+        current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+        is_stepper_modal_open: isStepperModalOpen,
+      },
+    };
+    if (currentStep === STEPPER_STEP_LABELS.SELECT_CONTENT) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
+        trackInfo,
+      );
+    }
+    if (currentStep === STEPPER_STEP_LABELS.CONFIRM_PUBLISH) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
+        trackInfo,
+      );
+    }
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
   const closeStepper = () => {
     closeStepperModal();
@@ -140,7 +190,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.STEPPER_CLOSE_STEPPER_INCOMPLETE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}.clicked`,
       trackInfo,
     );
   };
@@ -161,7 +211,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
               <Button
                 variant="tertiary"
-                onClick={() => closeStepperModal()}
+                onClick={() => closeStepper()}
               >
                 Back
               </Button>
@@ -179,7 +229,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               <Stepper.ActionRow.Spacer />
               <Button
                 variant="tertiary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
+                onClick={() => handleBack()}
+                // onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
               >
                 Back
               </Button>
@@ -197,7 +248,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               <Stepper.ActionRow.Spacer />
               <Button
                 variant="tertiary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                onClick={() => handleBack()}
+                // onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
               >
                 Back
               </Button>

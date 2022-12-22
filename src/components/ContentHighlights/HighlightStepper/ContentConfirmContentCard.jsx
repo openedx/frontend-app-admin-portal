@@ -7,7 +7,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { useContentHighlightsContext } from '../data/hooks';
 import { generateAboutPageUrl } from '../data/utils';
-import { TRACK_EVENT_NAMES } from '../data/constants';
+import EVENT_NAMES from '../../../eventTracking';
 
 const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) => {
   const { deleteSelectedRowId } = useContentHighlightsContext();
@@ -29,7 +29,7 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.STEPPER_CONFIRM_CONTENT_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CONFIRM_CONTENT_ABOUT_PAGE}.clicked`,
       trackInfo,
     );
   };

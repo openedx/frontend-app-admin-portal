@@ -8,10 +8,10 @@ import {
   DEFAULT_ERROR_MESSAGE,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
-  TRACK_EVENT_NAMES,
 } from './data/constants';
 import SkeletonContentCardContainer from './SkeletonContentCardContainer';
 import { generateAboutPageUrl } from './data/utils';
+import EVENT_NAMES from '../../eventTracking';
 
 const ContentHighlightsCardItemsContainer = ({
   enterpriseId, enterpriseSlug, isLoading, highlightedContent,
@@ -36,7 +36,7 @@ const ContentHighlightsCardItemsContainer = ({
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}.clicked`,
       trackInfo,
     );
   };

@@ -13,12 +13,14 @@ import { useParams, useHistory } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import EVENT_NAMES from '../../eventTracking';
 
-const DeleteHighlightSet = ({ enterpriseSlug }) => {
+const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const { highlightSetUUID } = useParams();
   const [isOpen, open, close] = useToggle(false);
   const [deletionState, setDeletionState] = useState('default');
@@ -27,6 +29,44 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionError, setDeletionError] = useState(null);
 
+  const trackEventOpenDelete = () => {
+    open();
+    const trackInfo = {
+      is_confirm_delete_highlight_set_modal_open: true,
+      highlight_set_uuid: highlightSetUUID,
+      is_highlight_deleted: false,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_BUTTON}.clicked`,
+      trackInfo,
+    );
+  };
+  const trackEventConfirmDelete = () => {
+    const trackInfo = {
+      is_confirm_delete_highlight_set_modal_open: true,
+      highlight_set_uuid: highlightSetUUID,
+      is_highlight_deleted: true,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_CONFIRM}.clicked`,
+      trackInfo,
+    );
+  };
+  const trackEventCloseDelete = () => {
+    close();
+    const trackInfo = {
+      is_confirm_delete_highlight_set_modal_open: false,
+      highlight_set_uuid: highlightSetUUID,
+      is_highlight_deleted: false,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_CANCEL}.clicked`,
+      trackInfo,
+    );
+  };
   const handleDeleteClick = () => {
     const deleteHighlightSet = async () => {
       setDeletionState('pending');
@@ -35,6 +75,7 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
         await EnterpriseCatalogApiService.deleteHighlightSet(highlightSetUUID);
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
         setIsDeleted(true);
+        trackEventConfirmDelete();
       } catch (error) {
         logError(error);
         setDeletionError(error);
@@ -55,14 +96,14 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
 
   return (
     <>
-      <Button variant="outline-primary" onClick={open}>Delete highlight</Button>
+      <Button variant="outline-primary" onClick={trackEventOpenDelete}>Delete highlight</Button>
       <AlertModal
         title="Delete highlight?"
         isOpen={isOpen}
         onClose={close}
         footerNode={(
           <ActionRow>
-            <Button variant="tertiary" onClick={close}>Cancel</Button>
+            <Button variant="tertiary" onClick={trackEventCloseDelete}>Cancel</Button>
             <StatefulButton
               labels={{
                 default: 'Delete highlight',
@@ -97,10 +138,12 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
 };
 
 DeleteHighlightSet.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

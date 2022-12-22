@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { generateAboutPageUrl } from '../data/utils';
-import { TRACK_EVENT_NAMES } from '../data/constants';
+import EVENT_NAMES from '../../../eventTracking';
 
 const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => {
   const {
@@ -25,7 +25,7 @@ const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => 
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.STEPPER_SELECT_CONTENT_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_SELECT_CONTENT_ABOUT_PAGE}.clicked`,
       trackInfo,
     );
   };

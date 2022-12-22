@@ -14,13 +14,12 @@ import ZeroStateCardFooter from './ZeroStateCardFooter';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { useContentHighlightsContext } from '../data/hooks';
-import { BUTTON_TEXT, TRACK_EVENT_NAMES } from '../data/constants';
+import { BUTTON_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import EVENT_NAMES from '../../../eventTracking';
 
 const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const { openStepperModal } = useContentHighlightsContext();
-  const getState = useContextSelector(ContentHighlightsContext, v => v[0]);
-  const { stepperModal: { isOpen } } = getState;
   const {
     enterpriseCuration: {
       enterpriseCuration: {
@@ -30,17 +29,17 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   } = useContext(EnterpriseAppContext);
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const handleNewHighlightClick = () => {
+    openStepperModal();
     const trackInfo = {
       highlight_sets: highlightSets,
       number_of_highlight_sets: highlightSets.length,
       stepperModal: {
-        isOpen,
+        is_stepper_modal_open: !isStepperModalOpen,
       },
     };
-    openStepperModal();
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${TRACK_EVENT_NAMES.NEW_HIGHLIHT}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}.clicked`,
       trackInfo,
     );
   };
