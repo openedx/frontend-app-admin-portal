@@ -70,7 +70,7 @@ export function useContentHighlightsContext() {
   const getState = useContextSelector(ContentHighlightsContext, v => v[0]);
   const getHighlightsState = useCallback(() => getState(), [getState]);
   // eslint-disable-next-line max-len
-  const currentSelectedRowState = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.currentSelectedRowIds);
+  const currentSelectedRowState = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal?.currentSelectedRowIds);
   const openStepperModal = useCallback(() => {
     setState(s => ({
       ...s,

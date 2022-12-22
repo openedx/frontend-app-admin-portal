@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 /* eslint-enable import/no-extraneous-dependencies */
 
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
-export const TEST_FLAG = true;
+export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId

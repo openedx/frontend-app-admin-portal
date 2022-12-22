@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -10,8 +11,16 @@ import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 const mockStore = configureMockStore([thunk]);
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      highlightSets: [],
+    },
+  },
+};
 
 const mockData = {
   title: 'Test Title',
@@ -20,10 +29,12 @@ const mockData = {
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
+  trackEvent: jest.fn(),
 };
 
 const initialState = {
   portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise',
   },
   highlightSetUUID: 'test-uuid',
@@ -34,7 +45,10 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const ContentHighlightSetCardWrapper = (props) => {
+const ContentHighlightSetCardWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  data = mockData,
+}) => {
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -46,18 +60,20 @@ const ContentHighlightSetCardWrapper = (props) => {
     searchClient,
   });
   return (
-    <ContentHighlightsContext.Provider value={contextValue}>
-      <Provider store={mockStore(initialState)}>
-        <CurrentContentHighlightHeader />
-        <ContentHighlightSetCard {...props} />
-      </Provider>
-    </ContentHighlightsContext.Provider>
+    <Provider store={mockStore(initialState)}>
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <ContentHighlightsContext.Provider value={contextValue}>
+          <CurrentContentHighlightHeader />
+          <ContentHighlightSetCard {...data} />
+        </ContentHighlightsContext.Provider>
+      </EnterpriseAppContext.Provider>
+    </Provider>
   );
 };
 
 describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {
-    renderWithRouter(<ContentHighlightSetCardWrapper {...mockData} />);
+    renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
 });
