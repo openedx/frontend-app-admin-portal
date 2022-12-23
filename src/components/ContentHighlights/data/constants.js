@@ -46,7 +46,8 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 
 // Test Data for Content Highlights From this point onwards
 // Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
