@@ -29,7 +29,7 @@ const ContentHighlightCardItem = ({
     );
   }
   return (
-    <Card isLoading={isLoading}>
+    <Card variant={contentType !== 'course' && 'dark'} isLoading={isLoading}>
       <Card.ImageCap
         src={cardInfo.cardImgSrc}
         srcAlt=""
