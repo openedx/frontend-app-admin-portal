@@ -156,7 +156,6 @@ const BaseHighlightStepperSelectContentDataTable = ({
       {currentView === 'list' && <DataTable.Table /> }
       <DataTable.EmptyTable content="No results found" />
       <DataTable.TableFooter>
-        <DataTable.RowStatus />
         <SelectContentSearchPagination />
       </DataTable.TableFooter>
     </DataTable>
