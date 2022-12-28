@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, ValidationFormGroup } from '@edx/paragon';
-import isEmpty from 'lodash/isEmpty';
+import { Form } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons'; import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 
 const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
@@ -10,16 +10,13 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   return (
     <div className="row">
       <div className="col">
-        <ValidationFormGroup
-          for="email"
-          helpText="The email(s), one per line, where the report should be sent"
-          invalidMessage="Required. One email per line. Emails must be formatted properly (email@domain.com)"
-          invalid={invalidFields.emailRaw}
+        <Form.Group
+          controlId="email"
+          isInvalid={invalidFields.emailRaw}
         >
-          <label htmlFor="email">Email(s)</label>
-          <Input
-            type="textarea"
-            id="email"
+          <Form.Label>Email(s)</Form.Label>
+          <Form.Control
+            as="textarea"
             name="emailRaw"
             defaultValue={config ? config.email.join('\n') : undefined}
             onBlur={e => handleBlur(e, () => {
@@ -28,36 +25,48 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               return !isEmpty(emails);
             })}
             data-hj-suppress
+            autoResize
           />
-        </ValidationFormGroup>
+          <Form.Text>The email(s), one per line, where the report should be sent</Form.Text>
+          {invalidFields.emailRaw && (
+            <Form.Control.Feedback icon={<Error className="mr-1" />}>
+              Required. One email per line. Emails must be formatted properly (email@domain.com)
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
         {config && (
-          <div className="form-group">
-            <label htmlFor="changePassword">Change Password</label>
-            <Input
-              type="checkbox"
-              id="changePassword"
-              className="ml-3"
+          <Form.Group controlId="changePassword">
+            <Form.Checkbox
+              name="changePassword"
               checked={checked}
               onChange={() => setChecked(!checked)}
-            />
-          </div>
+              floatLabelLeft
+            >
+              Change Password
+            </Form.Checkbox>
+          </Form.Group>
         )}
-        <ValidationFormGroup
-          for="encryptedPassword"
-          helpText="This password will be used to secure the zip file. It will be encrypted when stored in the database."
-          invalid={invalidFields.encryptedPassword}
-          invalidMessage="Required. Password must not be blank"
+        <Form.Group
+          controlId="encryptedPassword"
+          isInvalid={invalidFields.encryptedPassword}
         >
-          <label htmlFor="encryptedPassword">Password</label>
-          <Input
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
-            id="encryptedPassword"
             name="encryptedPassword"
             disabled={config && !checked}
             onBlur={e => handleBlur(e)}
             data-hj-suppress
           />
-        </ValidationFormGroup>
+          <Form.Text>
+            This password will be used to secure the zip file. It will be encrypted when stored in the database.
+          </Form.Text>
+          {invalidFields.emailRaw && (
+            <Form.Control.Feedback icon={<Error className="mr-1" />}>
+              Required. Password must not be blank
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
       </div>
     </div>
   );

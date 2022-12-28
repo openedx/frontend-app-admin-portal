@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, ValidationFormGroup } from '@edx/paragon';
+import { Form } from '@edx/paragon';
 
 const ReduxFormCheckbox = (props) => {
   const {
@@ -12,19 +12,16 @@ const ReduxFormCheckbox = (props) => {
   } = props;
 
   return (
-    <ValidationFormGroup
-      for={id}
-      helpText={helptext}
-    >
+    <Form.Group controlId={id}>
       <Form.Check
         {...input}
-        id={id}
         type="checkbox"
         defaultChecked={defaultChecked}
         checked={input.checked}
         label={label}
       />
-    </ValidationFormGroup>
+      {helptext && <Form.Text>{helptext}</Form.Text>}
+    </Form.Group>
   );
 };
 
