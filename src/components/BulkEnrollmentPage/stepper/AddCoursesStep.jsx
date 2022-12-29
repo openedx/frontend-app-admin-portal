@@ -6,7 +6,11 @@ import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-searc
 import DismissibleCourseWarning from './DismissibleCourseWarning';
 
 import { configuration } from '../../../config';
-import { ADD_COURSES_TITLE, ADD_COURSE_DESCRIPTION } from './constants';
+import {
+  ADD_COURSES_TITLE,
+  ADD_COURSE_DESCRIPTION,
+  NUM_CONTENT_ITEMS_PER_PAGE,
+} from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 import CourseSearchResults from '../CourseSearchResults';
@@ -19,9 +23,9 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-function AddCoursesStep({
+const AddCoursesStep = ({
   enterpriseId, enterpriseSlug, subscription,
-}) {
+}) => {
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
   return (
     <>
@@ -35,7 +39,7 @@ function AddCoursesStep({
         >
           <Configure
             filters={`enterprise_catalog_uuids:${subscription.enterpriseCatalogUuid} AND advertised_course_run.upgrade_deadline>${currentEpoch}`}
-            hitsPerPage={25}
+            hitsPerPage={NUM_CONTENT_ITEMS_PER_PAGE}
           />
           <SearchHeader variant="default" />
           <CourseSearchResults
@@ -47,7 +51,7 @@ function AddCoursesStep({
       </SearchData>
     </>
   );
-}
+};
 
 AddCoursesStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

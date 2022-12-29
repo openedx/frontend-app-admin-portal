@@ -30,22 +30,20 @@ jest.mock('../../data/services/LicenseManagerAPIService', () => ({
   },
 }));
 
-function BulkEnrollmentResultsDownloadPageWrapper({
+const BulkEnrollmentResultsDownloadPageWrapper = ({
   history,
   ...rest
-}) {
-  return (
-    <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
-      <Router history={history}>
-        <Route
-          exact
-          path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
-          render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
-        />
-      </Router>
-    </Provider>
-  );
-}
+}) => (
+  <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
+    <Router history={history}>
+      <Route
+        exact
+        path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
+        render={routeProps => <BulkEnrollmentResultsDownloadPage {...routeProps} {...rest} />}
+      />
+    </Router>
+  </Provider>
+);
 
 BulkEnrollmentResultsDownloadPageWrapper.defaultProps = {
   history: initialHistory,

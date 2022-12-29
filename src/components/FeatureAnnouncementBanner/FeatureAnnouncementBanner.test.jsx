@@ -21,13 +21,11 @@ const mockEnterpriseCustomerWithMarkdown = {
   },
 };
 
-function FeatureAnnouncementBannerWrapper(props) {
-  return (
-    <IntlProvider locale="en">
-      <FeatureAnnouncementBanner {...props} />
-    </IntlProvider>
-  );
-}
+const FeatureAnnouncementBannerWrapper = (props) => (
+  <IntlProvider locale="en">
+    <FeatureAnnouncementBanner {...props} />
+  </IntlProvider>
+);
 
 describe('<FeatureAnnouncementBanner />', () => {
   it('renders correctly', async () => {

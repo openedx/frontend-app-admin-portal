@@ -11,7 +11,7 @@ import {
   REVOKED,
 } from '../../data/constants';
 
-function LicenseManagementUserBadge({ userStatus }) {
+const LicenseManagementUserBadge = ({ userStatus }) => {
   const badgeLabel = USER_STATUS_BADGE_MAP[userStatus];
 
   if (badgeLabel) {
@@ -19,7 +19,7 @@ function LicenseManagementUserBadge({ userStatus }) {
   }
   // If userStatus is undefined return no badge
   return null;
-}
+};
 
 LicenseManagementUserBadge.propTypes = {
   userStatus: PropTypes.oneOf([ACTIVATED, ASSIGNED, REVOKED]).isRequired,

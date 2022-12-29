@@ -17,9 +17,9 @@ import { NoAvailableCodesBanner } from '../subsidy-request-management-alerts';
 import { SUPPORTED_SUBSIDY_TYPES, SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 
-function ManageRequestsTab({
+const ManageRequestsTab = ({
   enterpriseId, couponsData, loading: loadingCoupons, fetchCoupons,
-}) {
+}) => {
   useEffect(() => {
     fetchCoupons();
   }, [fetchCoupons]);
@@ -107,12 +107,12 @@ function ManageRequestsTab({
       )}
     </Stack>
   );
-}
+};
 
 ManageRequestsTab.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   couponsData: PropTypes.shape({
-    results: PropTypes.arrayOf(PropTypes.shape({})),
+    results: PropTypes.arrayOf(PropTypes.shape()),
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   fetchCoupons: PropTypes.func.isRequired,

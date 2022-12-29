@@ -10,6 +10,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
+import { features } from '../../config';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -37,36 +38,37 @@ const store = mockStore({
   },
 });
 
-function AdminWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <Admin
-          enterpriseId="test-enterprise"
-          enterpriseSlug="test-enterprise"
-          clearDashboardAnalytics={() => {}}
-          fetchDashboardAnalytics={() => {}}
-          fetchPortalConfiguration={() => {}}
-          fetchCsv={() => {}}
-          searchEnrollmentsList={() => {}}
-          tableData={[
-            {
-              course_title: 'Bears 101',
-              course_start: Date.now(),
-            },
-          ]}
-          match={{
-            params: {},
-            url: '/',
-          }}
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const AdminWrapper = props => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <Admin
+        enterpriseId="test-enterprise"
+        enterpriseSlug="test-enterprise"
+        clearDashboardAnalytics={() => {}}
+        fetchDashboardAnalytics={() => {}}
+        fetchPortalConfiguration={() => {}}
+        fetchCsv={() => {}}
+        searchEnrollmentsList={() => {}}
+        tableData={[
+          {
+            course_title: 'Bears 101',
+            course_start: Date.now(),
+          },
+        ]}
+        match={{
+          params: {},
+          url: '/',
+        }}
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<Admin />', () => {
+  beforeEach(() => {
+    features.SUBSCRIPTION_LPR = false;
+  });
   const baseProps = {
     activeLearners: {
       past_week: 1,
@@ -399,9 +401,11 @@ describe('<Admin />', () => {
         ));
         wrapper.find('.download-btn').hostNodes().simulate('click');
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
-        expect(
-          sendEnterpriseTrackEvent,
-        ).toHaveBeenCalledWith(enterpriseId, CSV_CLICK_SEGMENT_EVENT_NAME, { csvId: key });
+        expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+          enterpriseId,
+          CSV_CLICK_SEGMENT_EVENT_NAME,
+          { csvId: key },
+        );
       });
     });
   });

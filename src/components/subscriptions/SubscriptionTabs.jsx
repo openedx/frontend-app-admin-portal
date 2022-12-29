@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
@@ -21,23 +21,25 @@ import {
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
-function SubscriptionTabs({ enterpriseSlug }) {
+const SubscriptionTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
 
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
 
-  let requestsTabNotification;
-  const hasRequests = subsidyRequestsCounts.subscriptionLicenses > 0;
-  if (isRequestsTabShown && hasRequests) {
-    requestsTabNotification = (
-      <>
-        {subsidyRequestsCounts.subscriptionLicenses}
-        <span className="sr-only">outstanding enrollment requests</span>
-      </>
-    );
-  }
+  const requestsTabNotification = useMemo(() => {
+    const hasRequests = subsidyRequestsCounts.subscriptionLicenses > 0;
+    if (isRequestsTabShown && hasRequests) {
+      return (
+        <>
+          {subsidyRequestsCounts.subscriptionLicenses}
+          <span className="sr-only">outstanding enrollment requests</span>
+        </>
+      );
+    }
+    return null;
+  }, [isRequestsTabShown, subsidyRequestsCounts]);
 
   const history = useHistory();
   const params = useParams();
@@ -56,13 +58,11 @@ function SubscriptionTabs({ enterpriseSlug }) {
     }
   };
 
-  return (
-    <Tabs
-      id="tabs-subscription-management"
-      activeKey={subscriptionsTab}
-      onSelect={handleTabSelect}
-    >
+  const visibleTabs = useMemo(() => {
+    const tabs = [];
+    tabs.push(
       <Tab
+        key={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         title={SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]}
         className="pt-4"
@@ -70,9 +70,12 @@ function SubscriptionTabs({ enterpriseSlug }) {
         {SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] === subscriptionsTab && (
           <SubscriptionPlanRoutes />
         )}
-      </Tab>
-      {isRequestsTabShown && (
+      </Tab>,
+    );
+    if (isRequestsTabShown) {
+      tabs.push(
         <Tab
+          key={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
@@ -85,11 +88,22 @@ function SubscriptionTabs({ enterpriseSlug }) {
               exact
             />
           )}
-        </Tab>
-      )}
+        </Tab>,
+      );
+    }
+    return tabs;
+  }, [subscriptionsTab, isRequestsTabShown, requestsTabNotification]);
+
+  return (
+    <Tabs
+      id="tabs-subscription-management"
+      activeKey={subscriptionsTab}
+      onSelect={handleTabSelect}
+    >
+      {visibleTabs}
     </Tabs>
   );
-}
+};
 
 SubscriptionTabs.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

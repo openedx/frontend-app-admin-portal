@@ -4,7 +4,7 @@ import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 
-function SubscriptionZeroStateMessage() {
+const SubscriptionZeroStateMessage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { forceRefresh } = useContext(SubscriptionContext);
@@ -41,6 +41,6 @@ function SubscriptionZeroStateMessage() {
       </Toast>
     </>
   );
-}
+};
 
 export default SubscriptionZeroStateMessage;

@@ -5,35 +5,33 @@ import CodeRevokeModal from '../../containers/CodeRevokeModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 import { ACTIONS } from '../CouponDetails/constants';
 
-function RevokeButton({
+const RevokeButton = ({
   couponId,
   couponTitle,
   data,
   onSuccess,
   onClose,
-}) {
-  return (
-    <ActionButtonWithModal
-      buttonLabel={ACTIONS.revoke.label}
-      buttonClassName="revoke-btn btn-sm p-0"
-      variant="link"
-      renderModal={({ closeModal }) => (
-        <CodeRevokeModal
-          couponId={couponId}
-          title={couponTitle}
-          data={data}
-          onSuccess={onSuccess}
-          onClose={() => {
-            closeModal();
-            if (onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-    />
-  );
-}
+}) => (
+  <ActionButtonWithModal
+    buttonLabel={ACTIONS.revoke.label}
+    buttonClassName="revoke-btn btn-sm p-0"
+    variant="link"
+    renderModal={({ closeModal }) => (
+      <CodeRevokeModal
+        couponId={couponId}
+        title={couponTitle}
+        data={data}
+        onSuccess={onSuccess}
+        onClose={() => {
+          closeModal();
+          if (onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+  />
+);
 
 RevokeButton.propTypes = {
   couponId: PropTypes.number.isRequired,

@@ -28,15 +28,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 
 // PropType validation for state is done by SubscriptionManagementContext
 // eslint-disable-next-line react/prop-types
-function ExpirationBannerWrapper({ detailState, isSubscriptionPlanDetails = false }) {
-  return (
-    <IntlProvider locale="en">
-      <SubscriptionManagementContext detailState={detailState}>
-        <SubscriptionExpirationBanner isSubscriptionPlanDetails={isSubscriptionPlanDetails} />
-      </SubscriptionManagementContext>
-    </IntlProvider>
-  );
-}
+const ExpirationBannerWrapper = ({ detailState, isSubscriptionPlanDetails = false }) => (
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={detailState}>
+      <SubscriptionExpirationBanner isSubscriptionPlanDetails={isSubscriptionPlanDetails} />
+    </SubscriptionManagementContext>
+  </IntlProvider>
+);
 
 describe('<SubscriptionExpirationBanner />', () => {
   afterEach(() => jest.clearAllMocks());

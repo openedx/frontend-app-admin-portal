@@ -19,12 +19,12 @@ const BUTTON_PROPS = {
   variant: 'primary',
 };
 
-function SettingsAccessGenerateLinkButton({
+const SettingsAccessGenerateLinkButton = ({
   enterpriseUUID,
   formattedLinkExpirationDate,
   onSuccess,
   disabled,
-}) {
+}) => {
   const [loadingLinkCreation, setLoadingLinkCreation] = useState(false);
 
   const buttonState = loadingLinkCreation ? 'loading' : 'default';
@@ -56,7 +56,7 @@ function SettingsAccessGenerateLinkButton({
       onClick={handleGenerateLink}
     />
   );
-}
+};
 
 SettingsAccessGenerateLinkButton.defaultProps = {
   disabled: false,

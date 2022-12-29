@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormControl } from '@edx/paragon';
 
-function RenderField({
+const RenderField = ({
   input,
   label,
   type,
@@ -13,7 +13,7 @@ function RenderField({
   id,
   meta: { touched, error },
   ...props
-}) {
+}) => {
   const hasError = !!(touched && error);
   return (
     <Form.Group id={id} className={className}>
@@ -32,7 +32,7 @@ function RenderField({
       {description && <Form.Text>{description}</Form.Text>}
     </Form.Group>
   );
-}
+};
 
 RenderField.defaultProps = {
   description: null,

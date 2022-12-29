@@ -1,6 +1,5 @@
-/* eslint-disable react/function-component-definition */
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -20,29 +19,29 @@ import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
-const EnterpriseAppContextProvider = ({ children }) => {
-  const contextProvider = useMemo(() => ({
-    enterpriseCuration: {
-      enterpriseCuration: null,
-      isLoading: false,
-      fetchError: null,
-    },
-  }), []);
-  const subsidiesContextProvider = useMemo(() => ({
-    canManageLearnerCredit: true,
-  }), []);
-  return (
-    <EnterpriseAppContext.Provider
-      value={contextProvider}
-    >
-      <EnterpriseSubsidiesContext.Provider
-        value={subsidiesContextProvider}
-      >
-        {children}
-      </EnterpriseSubsidiesContext.Provider>
-    </EnterpriseAppContext.Provider>
-  );
+const defaultEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: null,
+    isLoading: false,
+    fetchError: null,
+  },
 };
+
+const defaultEnterpriseSubsidiesContextValue = {
+  canManageLearnerCredit: true,
+};
+
+const EnterpriseAppContextProvider = ({
+  initialEnterpriseAppContextValue = defaultEnterpriseAppContextValue,
+  initialEnterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  children,
+}) => (
+  <EnterpriseAppContext.Provider value={initialEnterpriseAppContextValue}>
+    <EnterpriseSubsidiesContext.Provider value={initialEnterpriseSubsidiesContextValue}>
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  </EnterpriseAppContext.Provider>
+);
 
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,
@@ -57,7 +56,9 @@ jest.mock('../Sidebar', () => ({
   default: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../components/ProductTours/ProductTours', () => () => null);
+jest.mock('../../components/ProductTours/ProductTours', () => function ProductTours() {
+  return null;
+});
 
 features.CODE_MANAGEMENT = true;
 

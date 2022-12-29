@@ -12,7 +12,7 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
-function UserActivationPage({ match }) {
+const UserActivationPage = ({ match }) => {
   const user = getAuthenticatedUser();
   const [showToast, setShowToast] = useState(false);
 
@@ -94,7 +94,7 @@ function UserActivationPage({ match }) {
       </Row>
     </Container>
   );
-}
+};
 
 UserActivationPage.propTypes = {
   match: PropTypes.shape({

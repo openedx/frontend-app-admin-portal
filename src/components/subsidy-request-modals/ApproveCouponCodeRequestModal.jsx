@@ -17,7 +17,7 @@ import { useApplicableCoupons } from './data/hooks';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
 import { formatTimestamp } from '../../utils';
 
-export function ApproveCouponCodeRequestModal({
+export const ApproveCouponCodeRequestModal = ({
   couponCodeRequest: {
     uuid,
     courseId,
@@ -27,7 +27,7 @@ export function ApproveCouponCodeRequestModal({
   isOpen,
   onSuccess,
   onClose,
-}) {
+}) => {
   const {
     applicableCoupons,
     isLoading: isLoadingApplicableCoupons,
@@ -180,7 +180,7 @@ export function ApproveCouponCodeRequestModal({
       </Form>
     </ModalDialog>
   );
-}
+};
 
 ApproveCouponCodeRequestModal.propTypes = {
   couponCodeRequest: PropTypes.shape({

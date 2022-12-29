@@ -8,11 +8,11 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 
-function CornerstoneConfig({
+const CornerstoneConfig = ({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) {
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [cornerstoneBaseUrl, setCornerstoneBaseUrl] = React.useState('');
@@ -65,7 +65,7 @@ function CornerstoneConfig({
     if (err) {
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 
@@ -143,7 +143,7 @@ function CornerstoneConfig({
       </Form>
     </span>
   );
-}
+};
 
 CornerstoneConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

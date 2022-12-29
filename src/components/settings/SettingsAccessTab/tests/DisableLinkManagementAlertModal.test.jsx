@@ -10,13 +10,11 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import DisableLinkManagementAlertModal from '../DisableLinkManagementAlertModal';
 
-function DisableLinkManagementAlertModalWrapper(props) {
-  return (
-    <IntlProvider locale="en">
-      <DisableLinkManagementAlertModal {...props} />
-    </IntlProvider>
-  );
-}
+const DisableLinkManagementAlertModalWrapper = (props) => (
+  <IntlProvider locale="en">
+    <DisableLinkManagementAlertModal {...props} />
+  </IntlProvider>
+);
 
 describe('<DisableLinkManagementAlertModal />', () => {
   afterEach(() => {

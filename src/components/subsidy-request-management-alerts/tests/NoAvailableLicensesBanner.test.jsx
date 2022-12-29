@@ -1,20 +1,17 @@
 import React from 'react';
 import {
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-
+import userEvent from '@testing-library/user-event';
 import NoAvailableLicensesBanner from '../NoAvailableLicensesBanner';
 
-function NoAvailableLicensesBannerWrapper(props) {
-  return (
-    <IntlProvider locale="en">
-      <NoAvailableLicensesBanner {...props} />
-    </IntlProvider>
-  );
-}
+const NoAvailableLicensesBannerWrapper = (props) => (
+  <IntlProvider locale="en">
+    <NoAvailableLicensesBanner {...props} />
+  </IntlProvider>
+);
 
 describe('<NoAvailableLicensesBanner />', () => {
   it('should render null if there are no subscriptions', () => {
@@ -86,7 +83,7 @@ describe('<NoAvailableLicensesBanner />', () => {
       />,
     );
     const dismissBtn = getByText('Dismiss');
-    fireEvent.click(dismissBtn);
+    userEvent.click(dismissBtn);
     await waitFor(() => {
       expect(container.childElementCount).toEqual(0);
     });

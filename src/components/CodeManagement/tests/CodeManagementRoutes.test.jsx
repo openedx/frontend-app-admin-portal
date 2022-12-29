@@ -17,21 +17,21 @@ const NOT_FOUND_MOCK_CONTENT = 'not found';
 
 jest.mock(
   '../CouponCodeTabs',
-  () => function () {
+  () => function CouponCodeTabs() {
     return <div>{COUPON_CODE_TABS_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../../NotFoundPage',
-  () => function () {
+  () => function NotFoundPage() {
     return <div>{NOT_FOUND_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../ManageCodesTab',
-  () => function () {
+  () => function ManageCodesTab() {
     return <div>{MANAGE_CODES_MOCK_CONTENT}</div>;
   },
 );
@@ -50,21 +50,19 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
-function CodeManagementRoutesWithRouter({
+const CodeManagementRoutesWithRouter = ({
   store: storeProp,
   initialEntries,
   routePath,
-}) {
-  return (
-    <MemoryRouter initialEntries={initialEntries}>
-      <Provider store={storeProp}>
-        <Route path={routePath}>
-          <CodeManagementRoutes />
-        </Route>
-      </Provider>
-    </MemoryRouter>
-  );
-}
+}) => (
+  <MemoryRouter initialEntries={initialEntries}>
+    <Provider store={storeProp}>
+      <Route path={routePath}>
+        <CodeManagementRoutes />
+      </Route>
+    </Provider>
+  </MemoryRouter>
+);
 
 CodeManagementRoutesWithRouter.propTypes = {
   store: PropTypes.shape(),

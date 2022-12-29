@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useCurrentSettingsTab } from '../data/hooks';
 
-function MockSettingsTabs({ match }) {
+const MockSettingsTabs = ({ match }) => {
   const tab = useCurrentSettingsTab();
 
   return (
@@ -11,7 +11,7 @@ function MockSettingsTabs({ match }) {
       <p>{tab}</p>
     </>
   );
-}
+};
 
 MockSettingsTabs.propTypes = {
   match: PropTypes.shape({

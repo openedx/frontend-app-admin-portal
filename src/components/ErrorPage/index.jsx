@@ -37,7 +37,7 @@ function renderErrorComponent(status, message) {
   );
 }
 
-function ErrorPage(props) {
+const ErrorPage = (props) => {
   const { status, message } = props;
   return (
     <main role="main">
@@ -46,7 +46,7 @@ function ErrorPage(props) {
       </div>
     </main>
   );
-}
+};
 
 ErrorPage.propTypes = {
   status: PropTypes.number,

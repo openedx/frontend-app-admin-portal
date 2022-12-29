@@ -25,13 +25,13 @@ import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 const revokeText = 'Revoke license';
 const remindText = 'Remind learner';
 
-function LicenseManagementTableActionColumn({
+const LicenseManagementTableActionColumn = ({
   user,
   subscription,
   onRemindSuccess,
   onRevokeSuccess,
   disabled,
-}) {
+}) => {
   const displayRemind = canRemindLicense(user.status);
   const displayRevoked = canRevokeLicense(user.status);
 
@@ -172,7 +172,7 @@ function LicenseManagementTableActionColumn({
       />
     </>
   );
-}
+};
 
 LicenseManagementTableActionColumn.defaultProps = {
   disabled: false,

@@ -19,7 +19,7 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
-function AppWrapper() {
+const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
 
@@ -114,6 +114,6 @@ function AppWrapper() {
       <Footer />
     </AppProvider>
   );
-}
+};
 
 export default AppWrapper;

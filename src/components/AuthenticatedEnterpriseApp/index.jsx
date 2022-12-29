@@ -4,14 +4,12 @@ import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
 import EnterpriseApp from '../../containers/EnterpriseApp';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
-function AuthenticatedEnterpriseApp() {
-  return (
-    <LoginRedirect
-      loadingDisplay={<EnterpriseAppSkeleton />}
-    >
-      <EnterpriseApp />
-    </LoginRedirect>
-  );
-}
+const AuthenticatedEnterpriseApp = () => (
+  <LoginRedirect
+    loadingDisplay={<EnterpriseAppSkeleton />}
+  >
+    <EnterpriseApp />
+  </LoginRedirect>
+);
 
 export default AuthenticatedEnterpriseApp;

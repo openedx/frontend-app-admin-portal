@@ -12,6 +12,7 @@ import {
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import { SubscriptionContext } from '../../SubscriptionData';
 import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
@@ -28,6 +29,7 @@ import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
+import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -53,11 +55,13 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-function LicenseManagementTable() {
+const LicenseManagementTable = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { width } = useWindowSize();
   const showFiltersInSidebar = useMemo(() => width > breakpoints.medium.maxWidth, [width]);
+
+  const config = getConfig();
 
   const {
     forceRefresh: forceRefreshSubscription,
@@ -172,12 +176,18 @@ function LicenseManagementTable() {
 
   // Successful action modal callback
   const onRemindSuccess = () => {
+    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
+      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
+    }
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
     setToastMessage('Users successfully reminded');
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
+    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
+      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REVOKE, { enterpriseUUID: subscription.enterpriseCustomerUuid });
+    }
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
@@ -193,25 +203,6 @@ function LicenseManagementTable() {
     }
     return [<DownloadCsvButton />];
   }, [showSubscriptionZeroStateMessage]);
-
-  const getEmptyTableComponent = () => {
-    if (loadingUsers) {
-      return null;
-    }
-    return <DataTable.EmptyTable content="No results found" />;
-  };
-
-  const getEmailCell = (row) => <span data-hj-suppress>{row.values.emailLabel}</span>;
-
-  const getLicenseManagementTableActionColumn = (row) => (
-    <LicenseManagementTableActionColumn
-      user={row.original}
-      subscription={subscription}
-      disabled={isExpired}
-      onRemindSuccess={onRemindSuccess}
-      onRevokeSuccess={onRevokeSuccess}
-    />
-  );
 
   return (
     <>
@@ -237,14 +228,27 @@ function LicenseManagementTable() {
         initialTableOptions={{
           getRowId: row => row.id,
         }}
-        EmptyTableComponent={getEmptyTableComponent}
+        EmptyTableComponent={
+          /* eslint-disable react/no-unstable-nested-components */
+          () => {
+            if (loadingUsers) {
+              return null;
+            }
+            return <DataTable.EmptyTable content="No results found" />;
+          }
+          /* eslint-enable react/no-unstable-nested-components */
+        }
         fetchData={fetchData}
         data={rows}
         columns={[
           {
             Header: 'Email address',
             accessor: 'emailLabel',
-            Cell: ({ row }) => getEmailCell(row),
+            /* eslint-disable react/prop-types */
+            /* eslint-disable react/no-unstable-nested-components */
+            Cell: ({ row }) => <span data-hj-suppress>{row.values.emailLabel}</span>,
+            /* eslint-enable react/prop-types */
+            /* eslint-enable react/no-unstable-nested-components */
           },
           {
             Header: 'Status',
@@ -277,7 +281,19 @@ function LicenseManagementTable() {
           {
             id: 'action',
             Header: '',
-            Cell: ({ row }) => getLicenseManagementTableActionColumn(row),
+            /* eslint-disable react/prop-types */
+            /* eslint-disable react/no-unstable-nested-components */
+            Cell: ({ row }) => (
+              <LicenseManagementTableActionColumn
+                user={row.original}
+                subscription={subscription}
+                disabled={isExpired}
+                onRemindSuccess={onRemindSuccess}
+                onRevokeSuccess={onRevokeSuccess}
+              />
+            ),
+            /* eslint-enable react/prop-types */
+            /* eslint-enable react/no-unstable-nested-components */
           },
         ]}
         bulkActions={[
@@ -306,6 +322,6 @@ function LicenseManagementTable() {
       )}
     </>
   );
-}
+};
 
 export default LicenseManagementTable;

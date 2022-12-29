@@ -64,17 +64,15 @@ const defaultSubscriptions = {
 const mockStore = configureMockStore([thunk]);
 
 // eslint-disable-next-line react/prop-types
-function MultipleSubscriptionsPageWrapper({ subscriptions = defaultSubscriptions, ...props }) {
-  return (
-    <Provider store={mockStore(fakeStore)}>
-      <IntlProvider locale="en">
-        <SubscriptionContext.Provider value={subscriptions}>
-          <MultipleSubscriptionsPage {...props} />
-        </SubscriptionContext.Provider>
-      </IntlProvider>
-    </Provider>
-  );
-}
+const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions, ...props }) => (
+  <Provider store={mockStore(fakeStore)}>
+    <IntlProvider locale="en">
+      <SubscriptionContext.Provider value={subscriptions}>
+        <MultipleSubscriptionsPage {...props} />
+      </SubscriptionContext.Provider>
+    </IntlProvider>
+  </Provider>
+);
 
 describe('MultipleSubscriptionsPage', () => {
   it('displays the MultipleSubscriptionPicker when there are multiple subscriptions', () => {

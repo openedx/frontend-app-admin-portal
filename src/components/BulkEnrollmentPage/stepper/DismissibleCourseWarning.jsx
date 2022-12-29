@@ -7,7 +7,7 @@ import { WARNING_ALERT_TITLE_TEXT, WARNING_ALERT_BODY_TEXT } from './constants';
 /**
  * Displays simple dismissible banner to remind admins.
  */
-function DismissibleCourseWarning() {
+const DismissibleCourseWarning = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <Alert
@@ -23,6 +23,6 @@ function DismissibleCourseWarning() {
       </p>
     </Alert>
   );
-}
+};
 
 export default DismissibleCourseWarning;

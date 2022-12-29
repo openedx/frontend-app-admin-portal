@@ -33,7 +33,7 @@ const formatDates = (start, end) => {
   return formattedDates;
 };
 
-function OfferDates({ start, end }) {
+const OfferDates = ({ start, end }) => {
   const formattedDates = formatDates(start, end);
   if (!formattedDates) {
     return null;
@@ -46,7 +46,7 @@ function OfferDates({ start, end }) {
       </span>
     </div>
   );
-}
+};
 
 OfferDates.propTypes = {
   start: PropTypes.string,

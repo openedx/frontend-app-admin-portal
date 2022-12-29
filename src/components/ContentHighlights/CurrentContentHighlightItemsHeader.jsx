@@ -1,10 +1,10 @@
 import React from 'react';
-import { ActionRow } from '@edx/paragon';
-import { useParams } from 'react-router-dom';
+import { ActionRow, Skeleton } from '@edx/paragon';
+import PropTypes from 'prop-types';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import DeleteHighlightSet from './DeleteHighlightSet';
 
-function CurrentContentHighlightItemsHeader() {
+const CurrentContentHighlightItemsHeader = () => {
   const { highlightSetUUID } = useParams();
 
   const highlightTitle = highlightSetUUID;
@@ -13,7 +13,7 @@ function CurrentContentHighlightItemsHeader() {
 
   return (
     <>
-      <ContentHighlightHelmet title={titleName} />
+      <ContentHighlightHelmet title={`${highlightTitle} - Highlights`} />
       <ActionRow className="mb-4.5">
         <h2 className="m-0">
           {highlightTitle}
@@ -23,6 +23,11 @@ function CurrentContentHighlightItemsHeader() {
       </ActionRow>
     </>
   );
-}
+};
+
+CurrentContentHighlightItemsHeader.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  highlightTitle: PropTypes.string.isRequired,
+};
 
 export default CurrentContentHighlightItemsHeader;

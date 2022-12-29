@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, Button, useToggle,
+  Alert, Button, useToggle, Skeleton,
 } from '@edx/paragon';
 import ReviewItem from './ReviewItem';
 
 export const MAX_ITEMS_DISPLAYED = 25;
 
-export function ShowHideButton({
+export const ShowHideButton = ({
   isShowingAll, showAll, show25, numRows, subject, ...props
-}) {
+}) => {
   if (numRows < MAX_ITEMS_DISPLAYED) {
     return null;
   }
@@ -18,7 +18,7 @@ export function ShowHideButton({
   }
 
   return <Button variant="link" size="inline" onClick={show25} {...props}>Hide {numRows - 25} {subject.plural}</Button>;
-}
+};
 
 ShowHideButton.propTypes = {
   /* User-facing words for the thing being displayed */
@@ -33,9 +33,14 @@ ShowHideButton.propTypes = {
   numRows: PropTypes.number.isRequired,
 };
 
-function ReviewList({
-  rows, accessor, dispatch, subject, returnToSelection,
-}) {
+const ReviewList = ({
+  rows,
+  accessor,
+  dispatch,
+  subject,
+  returnToSelection,
+  isLoading,
+}) => {
   const [isShowingAll, showAll, show25] = useToggle(false);
   const displayRows = useMemo(() => {
     if (isShowingAll) {
@@ -48,35 +53,49 @@ function ReviewList({
     <div className="col col-6">
       <h3>{subject.title}</h3>
       <p>{subject.title} selected: {rows.length}</p>
-      <ul className="be-review-list">
-        {rows.length < 1 && (
-          <Alert variant="danger" data-testid="no-rows-alert">
-            At least one {subject.singular} must be selected to enroll learners.
-            <Button
-              data-testid="return-to-selection-button"
-              variant="link"
-              size="inline"
-              onClick={returnToSelection}
-            >
-              Return to {subject.singular} selection
-            </Button>
-          </Alert>
-        )}
-        {displayRows.map((row) => (
-          <ReviewItem key={row.id} row={row} accessor={accessor} dispatch={dispatch} altText={subject.removal} />
-        ))}
-      </ul>
-      <ShowHideButton
-        data-testid="show-hide"
-        isShowingAll={isShowingAll}
-        show25={show25}
-        showAll={showAll}
-        numRows={rows.length}
-        subject={subject}
-      />
+      {isLoading ? (
+        <div data-testid="bulk-enrollment-review-list-loading-skeleton">
+          <Skeleton count={3} />
+        </div>
+      ) : (
+        <>
+          <ul className="be-review-list">
+            {rows.length < 1 && (
+              <Alert variant="danger" data-testid="no-rows-alert">
+                At least one {subject.singular} must be selected to enroll learners.
+                <Button
+                  data-testid="return-to-selection-button"
+                  variant="link"
+                  size="inline"
+                  onClick={returnToSelection}
+                >
+                  Return to {subject.singular} selection
+                </Button>
+              </Alert>
+            )}
+            {displayRows.map((row) => (
+              <ReviewItem
+                key={row.id}
+                row={row}
+                accessor={accessor}
+                dispatch={dispatch}
+                altText={subject.removal}
+              />
+            ))}
+          </ul>
+          <ShowHideButton
+            data-testid="show-hide"
+            isShowingAll={isShowingAll}
+            show25={show25}
+            showAll={showAll}
+            numRows={rows.length}
+            subject={subject}
+          />
+        </>
+      )}
     </div>
   );
-}
+};
 
 ReviewList.propTypes = {
   /* Selected rows from a DataTable instance */
@@ -94,6 +113,8 @@ ReviewList.propTypes = {
   }).isRequired,
   /* Function to return the user to the table where these rows were selected */
   returnToSelection: PropTypes.func.isRequired,
+  /* Whether the review list is loading */
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default ReviewList;

@@ -26,7 +26,7 @@ import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
 
-function SettingsTabs({
+const SettingsTabs = ({
   enterpriseId,
   enterpriseSlug,
   enableIntegratedCustomerLearnerPortalSearch,
@@ -37,7 +37,7 @@ function SettingsTabs({
   identityProvider,
   updatePortalConfiguration,
   enterpriseBranding,
-}) {
+}) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
   const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
 
@@ -158,7 +158,7 @@ function SettingsTabs({
       </Tabs>
     </Container>
   );
-}
+};
 
 const mapStateToProps = state => {
   const {

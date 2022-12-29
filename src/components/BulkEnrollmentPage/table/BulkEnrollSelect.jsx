@@ -1,79 +1,35 @@
-import React, { useContext, useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { CheckboxControl } from '@edx/paragon';
-import { checkForSelectedRows } from './helpers';
-
-import {
-  addSelectedRowAction, clearSelectionAction, deleteSelectedRowAction, setSelectedRowsAction,
-} from '../data/actions';
-import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 export const SELECT_ONE_TEST_ID = 'selectOne';
 export const SELECT_ALL_TEST_ID = 'selectAll';
 
-export function BaseSelectWithContext({ row, contextKey }) {
-  const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
-
-  const isSelected = useMemo(() => selectedRows.some((selection) => selection.id === row.id), [selectedRows, row]);
-
-  const toggleSelected = isSelected
-    ? () => { dispatch(deleteSelectedRowAction(row.id)); }
-    : () => { dispatch(addSelectedRowAction(row)); };
+export const BaseSelectWithContext = ({ row }) => {
+  const {
+    indeterminate,
+    checked,
+    ...toggleRowSelectedProps
+  } = row.getToggleRowSelectedProps();
 
   return (
     <div>
-      {/* eslint-disable-next-line react/prop-types */}
       <CheckboxControl
-        style={{ cursor: 'pointer' }}
+        {...toggleRowSelectedProps}
         title="Toggle row selected"
-        checked={isSelected}
-        onChange={toggleSelected}
+        checked={checked}
         isIndeterminate={false}
         data-testid={SELECT_ONE_TEST_ID}
       />
     </div>
   );
-}
+};
 
 BaseSelectWithContext.propTypes = {
   row: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    getToggleRowSelectedProps: PropTypes.func.isRequired,
   }).isRequired,
-  /* The key to get the required data from BulkEnrollContext */
-  contextKey: PropTypes.string.isRequired,
-};
-
-export function BaseSelectWithContextHeader({
-  rows, contextKey,
-}) {
-  const { [contextKey]: [selectedRows, dispatch] } = useContext(BulkEnrollContext);
-
-  const selectedRowIds = selectedRows.map(row => row.id);
-  const isAllRowsSelected = checkForSelectedRows(selectedRows.map(row => row.id), rows);
-  const anyRowsSelected = rows.some((row) => selectedRowIds.includes(row.id));
-  const toggleAllRowsSelectedBulkEn = isAllRowsSelected
-    ? () => dispatch(clearSelectionAction())
-    : () => dispatch(setSelectedRowsAction(rows));
-
-  return (
-    <div>
-      <CheckboxControl
-        style={{ cursor: 'pointer' }}
-        title="Toggle all rows selected"
-        checked={isAllRowsSelected}
-        onChange={toggleAllRowsSelectedBulkEn}
-        isIndeterminate={anyRowsSelected && !isAllRowsSelected}
-        data-testid={SELECT_ALL_TEST_ID}
-      />
-    </div>
-  );
-}
-
-BaseSelectWithContextHeader.propTypes = {
-  rows: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  })).isRequired,
   /* The key to get the required data from BulkEnrollContext */
   contextKey: PropTypes.string.isRequired,
 };

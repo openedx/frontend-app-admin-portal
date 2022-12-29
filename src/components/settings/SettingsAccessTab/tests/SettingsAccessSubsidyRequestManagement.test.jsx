@@ -1,10 +1,10 @@
 import {
   screen,
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequestManagement';
@@ -20,13 +20,11 @@ jest.mock('../SettingsAccessTabSection', () => ({
   )),
 }));
 
-function SettingsAccessSubsidyRequestManagementWrapper(props) {
-  return (
-    <IntlProvider locale="en">
-      <SettingsAccessSubsidyRequestManagement {...props} />
-    </IntlProvider>
-  );
-}
+const SettingsAccessSubsidyRequestManagementWrapper = (props) => (
+  <IntlProvider locale="en">
+    <SettingsAccessSubsidyRequestManagement {...props} />
+  </IntlProvider>
+);
 
 describe('<SettingsAccessSubsidyRequestManagement />', () => {
   const basicProps = {
@@ -48,7 +46,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
 
     const checkbox = screen.getByLabelText('Checkbox');
     expect(checkbox.checked).toBe(props.subsidyRequestConfiguration.subsidyRequestsEnabled);
-    fireEvent.click(checkbox);
+    userEvent.click(checkbox);
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
         { isSubsidyRequestsEnabled: !props.subsidyRequestConfiguration.subsidyRequestsEnabled },
@@ -105,7 +103,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
     render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
-    fireEvent.click(checkbox);
+    userEvent.click(checkbox);
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong'));

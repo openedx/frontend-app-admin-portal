@@ -12,7 +12,7 @@ export const CONFIRM_BUTTON_STATES = {
   errored: 'errored',
 };
 
-function ConfirmationModal({
+const ConfirmationModal = ({
   isOpen,
   disabled,
   confirmButtonLabels,
@@ -24,20 +24,19 @@ function ConfirmationModal({
   confirmText,
   cancelText,
   ...rest
-}) {
-  return (
-    <ModalDialog
-      title="Confirmation Modal"
-      variant="default"
-      isOpen={isOpen}
-      onClose={onClose}
-      {...rest}
-    >
-      <ModalDialog.Header>
-        <ModalDialog.Title>
-          {title}
-        </ModalDialog.Title>
-        {confirmButtonState === CONFIRM_BUTTON_STATES.errored && (
+}) => (
+  <ModalDialog
+    title="Confirmation Modal"
+    variant="default"
+    isOpen={isOpen}
+    onClose={onClose}
+    {...rest}
+  >
+    <ModalDialog.Header>
+      <ModalDialog.Title>
+        {title}
+      </ModalDialog.Title>
+      {confirmButtonState === CONFIRM_BUTTON_STATES.errored && (
         <Alert
           icon={Info}
           variant="danger"
@@ -47,28 +46,27 @@ function ConfirmationModal({
           </Alert.Heading>
           Please try again.
         </Alert>
-        )}
-      </ModalDialog.Header>
-      <ModalDialog.Body>
-        {body}
-      </ModalDialog.Body>
-      <ModalDialog.Footer>
-        <ActionRow>
-          <Button onClick={onClose} variant="outline-primary">
-            {cancelText}
-          </Button>
-          <StatefulButton
-            labels={confirmButtonLabels}
-            state={confirmButtonState}
-            variant="primary"
-            disabled={disabled}
-            onClick={onConfirm}
-          />
-        </ActionRow>
-      </ModalDialog.Footer>
-    </ModalDialog>
-  );
-}
+      )}
+    </ModalDialog.Header>
+    <ModalDialog.Body>
+      {body}
+    </ModalDialog.Body>
+    <ModalDialog.Footer>
+      <ActionRow>
+        <Button onClick={onClose} variant="outline-primary">
+          {cancelText}
+        </Button>
+        <StatefulButton
+          labels={confirmButtonLabels}
+          state={confirmButtonState}
+          variant="primary"
+          disabled={disabled}
+          onClick={onConfirm}
+        />
+      </ActionRow>
+    </ModalDialog.Footer>
+  </ModalDialog>
+);
 
 ConfirmationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

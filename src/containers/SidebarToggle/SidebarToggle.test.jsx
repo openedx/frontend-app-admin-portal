@@ -20,16 +20,14 @@ const initialState = {
   },
 };
 
-function SidebarToggleWrapper(props) {
-  return (
-    <Provider store={props.store}>
-      <SidebarToggle
-        baseUrl="/test-enterprise-slug"
-        {...props}
-      />
-    </Provider>
-  );
-}
+const SidebarToggleWrapper = (props) => (
+  <Provider store={props.store}>
+    <SidebarToggle
+      baseUrl="/test-enterprise-slug"
+      {...props}
+    />
+  </Provider>
+);
 
 SidebarToggleWrapper.defaultProps = {
   store: mockStore({

@@ -95,28 +95,6 @@ class NumberCard extends React.Component {
     }
   }
 
-  addEvents() {
-    document.addEventListener('click', this.handleDocumentClick, true);
-  }
-
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  closeDetails() {
-    this.setState({
-      detailsExpanded: false,
-    });
-  }
-
-  removeEvents() {
-    document.removeEventListener('click', this.handleDocumentClick, true);
-  }
-
-  formatTitle(title) {
-    if (typeof title === 'number') {
-      return title.toLocaleString();
-    }
-    return title;
-  }
-
   toggleDetails() {
     this.setState((state) => ({
       detailsExpanded: !state.detailsExpanded,
@@ -132,6 +110,21 @@ class NumberCard extends React.Component {
         this.removeEvents();
       }
     });
+  }
+
+  formatTitle(title) {
+    if (typeof title === 'number') {
+      return title.toLocaleString();
+    }
+    return title;
+  }
+
+  addEvents() {
+    document.addEventListener('click', this.handleDocumentClick, true);
+  }
+
+  removeEvents() {
+    document.removeEventListener('click', this.handleDocumentClick, true);
   }
 
   renderDetailActions() {

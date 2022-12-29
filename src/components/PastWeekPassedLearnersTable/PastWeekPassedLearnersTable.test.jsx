@@ -48,17 +48,15 @@ const store = mockStore({
   },
 });
 
-function PastWeekPassedLearnersWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <PastWeekPassedLearnersTable
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const PastWeekPassedLearnersWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <PastWeekPassedLearnersTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('PastWeekPassedLearnersTable', () => {
   let wrapper;

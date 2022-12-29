@@ -57,21 +57,19 @@ const saveTemplateData = {
 const templateType = saveTemplateData.email_type;
 const saveTemplateSpy = jest.spyOn(EcommerceApiService, 'saveTemplate');
 
-function SaveTemplateButtonWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <SaveTemplateButton
-          templateType={templateType}
-          emailTemplateSource={EMAIL_TEMPLATE_SOURCE_NEW_EMAIL}
-          setMode={() => {}}
-          handleSubmit={submitFunction => () => submitFunction(formData)}
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const SaveTemplateButtonWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <SaveTemplateButton
+        templateType={templateType}
+        emailTemplateSource={EMAIL_TEMPLATE_SOURCE_NEW_EMAIL}
+        setMode={() => {}}
+        handleSubmit={submitFunction => () => submitFunction(formData)}
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<SaveTemplateButton />', () => {
   it('renders correctly in disabled state', () => {
@@ -138,20 +136,18 @@ describe('<SaveTemplateButton />', () => {
       'email-template-greeting': 'G'.repeat(50001),
       'email-template-closing': 'C'.repeat(50001),
     };
-    function SaveTemplateButtonWrapperWithInvalidData(props) {
-      return (
-        <MemoryRouter>
-          <Provider store={store}>
-            <SaveTemplateButton
-              templateType={templateType}
-              setMode={() => {}}
-              handleSubmit={submitFunction => () => submitFunction(invalidFormData)}
-              {...props}
-            />
-          </Provider>
-        </MemoryRouter>
-      );
-    }
+    const SaveTemplateButtonWrapperWithInvalidData = (props) => (
+      <MemoryRouter>
+        <Provider store={store}>
+          <SaveTemplateButton
+            templateType={templateType}
+            setMode={() => {}}
+            handleSubmit={submitFunction => () => submitFunction(invalidFormData)}
+            {...props}
+          />
+        </Provider>
+      </MemoryRouter>
+    );
     const wrapper = mount((
       <SaveTemplateButtonWrapperWithInvalidData disabled={false} />
     ));

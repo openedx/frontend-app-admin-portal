@@ -4,7 +4,7 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 
-function LicenseAllocationHeader() {
+const LicenseAllocationHeader = () => {
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
@@ -25,6 +25,6 @@ function LicenseAllocationHeader() {
       </p>
     </>
   );
-}
+};
 
 export default LicenseAllocationHeader;

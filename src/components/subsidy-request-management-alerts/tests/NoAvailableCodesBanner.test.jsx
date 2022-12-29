@@ -1,21 +1,18 @@
 import React from 'react';
 import {
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
 import moment from 'moment';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-
+import userEvent from '@testing-library/user-event';
 import { NoAvailableCodesBanner } from '../NoAvailableCodesBanner';
 
-function NoAvailableCodesBannerWrapper(props) {
-  return (
-    <IntlProvider locale="en">
-      <NoAvailableCodesBanner {...props} />
-    </IntlProvider>
-  );
-}
+const NoAvailableCodesBannerWrapper = (props) => (
+  <IntlProvider locale="en">
+    <NoAvailableCodesBanner {...props} />
+  </IntlProvider>
+);
 
 describe('<NoAvailableCodesBanner />', () => {
   it('should render null if there are no coupons', () => {
@@ -84,7 +81,7 @@ describe('<NoAvailableCodesBanner />', () => {
       />
     ));
     const dismissBtn = getByText('Dismiss');
-    fireEvent.click(dismissBtn);
+    userEvent.click(dismissBtn);
     await waitFor(() => {
       expect(container.childElementCount).toEqual(0);
     });

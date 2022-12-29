@@ -12,7 +12,7 @@ import RequestStatusCell from './RequestStatusCell';
 import CourseTitleCell from './CourseTitleCell';
 import ActionCell from './ActionCell';
 
-function SubsidyRequestManagementTable({
+const SubsidyRequestManagementTable = ({
   onApprove,
   onDecline,
   data,
@@ -25,7 +25,7 @@ function SubsidyRequestManagementTable({
   initialState,
   disableApproveButton,
   ...rest
-}) {
+}) => {
   const columns = useMemo(
     () => ([
       {
@@ -57,15 +57,6 @@ function SubsidyRequestManagementTable({
     [requestStatusFilterChoices],
   );
 
-  const getActionCell = (props) => (
-    <ActionCell
-      {...props}
-      onApprove={onApprove}
-      onDecline={onDecline}
-      disableApproveButton={disableApproveButton}
-    />
-  );
-
   return (
     <DataTable
       isFilterable
@@ -82,7 +73,15 @@ function SubsidyRequestManagementTable({
       additionalColumns={[{
         id: 'action',
         Header: '',
-        Cell: (props) => getActionCell(props),
+        // eslint-disable-next-line react/no-unstable-nested-components
+        Cell: (props) => (
+          <ActionCell
+            {...props}
+            onApprove={onApprove}
+            onDecline={onDecline}
+            disableApproveButton={disableApproveButton}
+          />
+        ),
       }]}
       initialTableOptions={initialTableOptions}
       initialState={initialState}
@@ -96,7 +95,7 @@ function SubsidyRequestManagementTable({
       <DataTable.TableFooter />
     </DataTable>
   );
-}
+};
 
 SubsidyRequestManagementTable.propTypes = {
   fetchData: PropTypes.func.isRequired,

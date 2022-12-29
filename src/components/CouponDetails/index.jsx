@@ -81,6 +81,23 @@ class CouponDetails extends React.Component {
     }
   }
 
+  handleToggleSelect(newValue) {
+    const { selectedToggle } = this.state;
+
+    const value = newValue || selectedToggle;
+
+    this.resetCodeActionStatus();
+    updateUrl({ page: undefined });
+    this.setState({
+      tableColumns: this.getNewColumns(value),
+      selectedToggle: value,
+      selectedCodes: [],
+      hasAllCodesSelected: false,
+    }, () => {
+      this.updateSelectAllCheckBox();
+    });
+  }
+
   handleCodeActionSuccess(action, response) {
     let stateKey;
     let doesCodeActionHaveErrors;
@@ -159,23 +176,6 @@ class CouponDetails extends React.Component {
     this.setState({
       selectedCodes,
       hasAllCodesSelected,
-    }, () => {
-      this.updateSelectAllCheckBox();
-    });
-  }
-
-  handleToggleSelect(newValue) {
-    const { selectedToggle } = this.state;
-
-    const value = newValue || selectedToggle;
-
-    this.resetCodeActionStatus();
-    updateUrl({ page: undefined });
-    this.setState({
-      tableColumns: this.getNewColumns(value),
-      selectedToggle: value,
-      selectedCodes: [],
-      hasAllCodesSelected: false,
     }, () => {
       this.updateSelectAllCheckBox();
     });
@@ -437,12 +437,10 @@ class CouponDetails extends React.Component {
           }
           onChange={(checked) => {
             this.handleCodeSelection({ checked, code });
-            if (checked) {
-              if (this.selectedTableRows[code.code]) {
-                delete this.selectedTableRows[code.code];
-              } else {
-                this.selectedTableRows[code.code] = true;
-              }
+            if (checked && !this.selectedTableRows[code.code]) {
+              this.selectedTableRows[code.code] = true;
+            } else if (!checked && this.selectedTableRows[code.code]) {
+              delete this.selectedTableRows[code.code];
             }
           }}
           checked={selectedCodes.findIndex(selectedCode => selectedCode === code) !== -1}
@@ -736,8 +734,8 @@ CouponDetails.propTypes = {
   fetchCouponOrder: PropTypes.func.isRequired,
   couponDetailsTable: PropTypes.shape({
     data: PropTypes.shape({
-      count: null,
-      results: [],
+      count: PropTypes.number,
+      results: PropTypes.arrayOf(PropTypes.shape()),
     }),
     loading: PropTypes.bool,
   }),

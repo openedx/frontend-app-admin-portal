@@ -13,9 +13,7 @@ export function renderWithRouter(
   } = {},
 ) {
   // eslint-disable-next-line react/prop-types
-  function Wrapper({ children }) {
-    return <Router history={history}>{children}</Router>;
-  }
+  const Wrapper = ({ children }) => <Router history={history}>{children}</Router>;
   return {
     ...render(ui, { wrapper: Wrapper }),
     // adding `history` to the returned utilities to allow us

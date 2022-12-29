@@ -1,49 +1,36 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DataTableContext } from '@edx/paragon';
-import { checkForSelectedRows } from './helpers';
-
-import {
-  clearSelectionAction,
-  setSelectedRowsAction,
-} from '../data/actions';
 
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
-function BaseSelectionStatus({
+const BaseSelectionStatus = ({
   className,
   selectedRows,
-  dispatch,
-}) {
-  const { rows } = useContext(DataTableContext);
-  const selectedRowIds = selectedRows.map((row) => row.id);
-  const areAllDisplayedRowsSelected = checkForSelectedRows(selectedRowIds, rows);
+}) => {
+  const { page, toggleAllRowsSelected } = useContext(DataTableContext);
+  const numSelectedRowsOnPage = page.filter(r => r.isSelected).length;
 
   const numSelectedRows = selectedRows.length;
 
+  const handleClearSelection = () => {
+    toggleAllRowsSelected(false);
+  };
+
   return (
     <div className={className}>
-      <span>{numSelectedRows} selected </span>
-      {!areAllDisplayedRowsSelected && (
-        <Button
-          variant="link"
-          size="inline"
-          onClick={() => { dispatch(setSelectedRowsAction(rows)); }}
-        >
-          Select {rows.length}
-        </Button>
-      )}
+      <span>{numSelectedRows} selected ({numSelectedRowsOnPage} shown below)</span>
       {numSelectedRows > 0 && (
         <Button
           variant="link"
           size="inline"
-          onClick={() => { dispatch(clearSelectionAction()); }}
+          onClick={handleClearSelection}
         >
           Clear selection
         </Button>
       )}
     </div>
   );
-}
+};
 
 BaseSelectionStatus.defaultProps = {
   className: undefined,
@@ -51,8 +38,10 @@ BaseSelectionStatus.defaultProps = {
 
 BaseSelectionStatus.propTypes = {
   className: PropTypes.string,
-  selectedRows: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  selectedRows: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    values: PropTypes.shape().isRequired,
+  })).isRequired,
 };
 
 export default BaseSelectionStatus;

@@ -56,20 +56,17 @@ class Coupon extends React.Component {
     }
   }
 
-  // eslint-disable-next-line react/no-unused-class-component-methods
+  /* eslint-disable react/no-unused-class-component-methods */
+  /**
+   * [tech debt] This class method isn't used by the component itself, but rather by another component
+   * that reaches into the class methods of a rendered instance of this component, which should be avoided.
+   */
   setCouponOpacity(dimmedStatus) {
     this.setState({
       dimmed: dimmedStatus,
     });
   }
-
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  closeCouponDetails() {
-    this.setState({
-      isExpanded: false,
-      dimmed: false,
-    });
-  }
+  /* eslint-enable react/no-unused-class-component-methods */
 
   toggleCouponDetails() {
     this.setState((state) => ({

@@ -14,17 +14,15 @@ import IconLink from './IconLink';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({});
 
-function IconLinkWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <IconLink
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const IconLinkWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <IconLink
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 describe('<IconLink />', () => {
   it('renders with internal route when external is false (the default)', () => {
     const defaultProps = {

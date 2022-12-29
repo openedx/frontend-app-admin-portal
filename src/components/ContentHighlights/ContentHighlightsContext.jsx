@@ -1,21 +1,34 @@
-import React, { createContext, useMemo } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { createContext } from 'use-context-selector';
+import algoliasearch from 'algoliasearch/lite';
 
-import {
-  useStepperModalState,
-} from './data/hooks';
+import { configuration } from '../../config';
 
-export const ContentHighlightsContext = createContext({});
+export const ContentHighlightsContext = createContext(null);
 
-function ContentHighlightsContextProvider({ children }) {
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const value = useMemo(() => ({
-    setIsModalOpen,
-    isModalOpen,
-  }), [setIsModalOpen, isModalOpen]);
+const searchClient = algoliasearch(
+  configuration.ALGOLIA.APP_ID,
+  configuration.ALGOLIA.SEARCH_API_KEY,
+);
 
-  return <ContentHighlightsContext.Provider value={value}>{children}</ContentHighlightsContext.Provider>;
-}
+const ContentHighlightsContextProvider = ({ children }) => {
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: {},
+    },
+    contentHighlights: [],
+    searchClient,
+  });
+  return (
+    <ContentHighlightsContext.Provider value={contextValue}>
+      {children}
+    </ContentHighlightsContext.Provider>
+  );
+};
 
 ContentHighlightsContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

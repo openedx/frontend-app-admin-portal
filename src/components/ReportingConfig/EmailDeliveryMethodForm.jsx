@@ -4,7 +4,7 @@ import { Input, ValidationFormGroup } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 
-function EmailDeliveryMethodForm({ invalidFields, config, handleBlur }) {
+const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -61,7 +61,7 @@ function EmailDeliveryMethodForm({ invalidFields, config, handleBlur }) {
       </div>
     </div>
   );
-}
+};
 
 EmailDeliveryMethodForm.defaultProps = {
   invalidFields: {},

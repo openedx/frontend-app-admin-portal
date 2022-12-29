@@ -51,13 +51,11 @@ const initialStore = mockStore({
 });
 
 // eslint-disable-next-line react/prop-types
-function EnrollBulkActionWithProvider({ store = initialStore, ...rest }) {
-  return (
-    <Provider store={store}>
-      <EnrollBulkAction {...rest} />
-    </Provider>
-  );
-}
+const EnrollBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
+  <Provider store={store}>
+    <EnrollBulkAction {...rest} />
+  </Provider>
+);
 
 const mockOnEnrollSuccess = jest.fn();
 const basicProps = {

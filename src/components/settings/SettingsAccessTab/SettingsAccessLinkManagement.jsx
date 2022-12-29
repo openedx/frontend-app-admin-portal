@@ -24,11 +24,11 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
-function SettingsAccessLinkManagement({
+const SettingsAccessLinkManagement = ({
   enterpriseUUID,
   isUniversalLinkEnabled,
   updatePortalConfiguration,
-}) {
+}) => {
   const {
     links,
     loadingLinks,
@@ -114,14 +114,6 @@ function SettingsAccessLinkManagement({
     }
   };
 
-  const getActionsTableCell = (props) => (
-    <ActionsTableCell
-      {...props}
-      enterpriseUUID={enterpriseUUID}
-      onDeactivateLink={handleDeactivatedLink}
-    />
-  );
-
   return (
     <>
       {hasLinkManagementEnabledChangeError && !isLinkManagementAlertModalOpen && (
@@ -177,7 +169,14 @@ function SettingsAccessLinkManagement({
             {
               id: 'action',
               Header: '',
-              Cell: props => getActionsTableCell(props),
+              // eslint-disable-next-line react/no-unstable-nested-components
+              Cell: (props) => (
+                <ActionsTableCell
+                  {...props}
+                  enterpriseUUID={enterpriseUUID}
+                  onDeactivateLink={handleDeactivatedLink}
+                />
+              ),
             },
           ]}
           disableElevation
@@ -196,7 +195,7 @@ function SettingsAccessLinkManagement({
       />
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,

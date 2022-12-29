@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import Cookies from 'universal-cookie';
 
 import {
   HIGHLIGHTS_COOKIE_NAME,
@@ -9,19 +8,13 @@ import {
   HIGHLIGHTS_ON_END_EVENT_NAME,
   TOUR_TARGETS,
 } from './constants';
-import disableAll from './data/utils';
-
-const cookies = new Cookies();
+import { disableAll } from './data/utils';
 
 const highlightsTour = ({
   enterpriseSlug,
 }) => {
   const disableTour = () => {
-    cookies.set(
-      HIGHLIGHTS_COOKIE_NAME,
-      true,
-      { sameSite: 'strict' },
-    );
+    global.localStorage.setItem(HIGHLIGHTS_COOKIE_NAME, true);
   };
 
   const handleAdvanceTour = () => {

@@ -50,13 +50,11 @@ const sampleUser = {
   email: 'foo@bar.io',
 };
 
-function LicenseManagementRemindModalWithStore(props) {
-  return (
-    <Provider store={store}>
-      <LicenseManagementRemindModal {...props} />
-    </Provider>
-  );
-}
+const LicenseManagementRemindModalWithStore = (props) => (
+  <Provider store={store}>
+    <LicenseManagementRemindModal {...props} />
+  </Provider>
+);
 
 describe('<LicenseManagementRemindModal />', () => {
   afterEach(() => {

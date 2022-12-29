@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OverlayTrigger, Tooltip } from '@edx/paragon';
 import useWindowSize from '../../hooks/useWindowSize';
 
-function IconWithTooltip({
+const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',
-}) {
+}) => {
   const windowSize = useWindowSize();
   const placement = windowSize.width >= breakpoint ? placementSm : placementLg;
   return (
@@ -23,7 +23,7 @@ function IconWithTooltip({
       <FontAwesomeIcon className={iconClassNames} icon={icon} alt={altText} />
     </OverlayTrigger>
   );
-}
+};
 
 IconWithTooltip.propTypes = {
   icon: PropTypes.shape({}).isRequired,

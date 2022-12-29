@@ -11,23 +11,13 @@ import EmailAddressTableCell from './EmailAddressTableCell';
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
-function LearnerCreditAllocationTable({
+const LearnerCreditAllocationTable = ({
   isLoading,
   tableData,
   fetchTableData,
   enterpriseUUID,
-}) {
+}) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
-  const getEmailAddressTableCell = (row) => (
-    <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
-  );
-
-  const getEmptyTableComponent = () => {
-    if (isLoading) {
-      return null;
-    }
-    return <DataTable.EmptyTable content="No results found" />;
-  };
   return (
     <DataTable
       isSortable
@@ -43,8 +33,8 @@ function LearnerCreditAllocationTable({
         {
           Header: 'Email Address',
           accessor: 'userEmail',
-          // eslint-disable-next-line react/prop-types
-          Cell: ({ row }) => getEmailAddressTableCell(row),
+          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
+          Cell: ({ row }) => <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />,
         },
         {
           Header: 'Course Name',
@@ -77,10 +67,18 @@ function LearnerCreditAllocationTable({
       data={tableData.results}
       itemCount={tableData.itemCount}
       pageCount={tableData.pageCount}
-      EmptyTableComponent={getEmptyTableComponent}
+      EmptyTableComponent={
+        // eslint-disable-next-line react/no-unstable-nested-components
+        () => {
+          if (isLoading) {
+            return null;
+          }
+          return <DataTable.EmptyTable content="No results found" />;
+        }
+      }
     />
   );
-}
+};
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,

@@ -4,7 +4,7 @@ import TableContainer from '../../containers/TableContainer';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
 
-function PastWeekPassedLearnersTable() {
+const PastWeekPassedLearnersTable = () => {
   const tableColumns = [
     {
       label: 'Email',
@@ -45,6 +45,6 @@ function PastWeekPassedLearnersTable() {
       tableSortable
     />
   );
-}
+};
 
 export default PastWeekPassedLearnersTable;

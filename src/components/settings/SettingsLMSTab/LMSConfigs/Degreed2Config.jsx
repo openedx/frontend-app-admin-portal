@@ -8,11 +8,11 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 
-function Degreed2Config({
+const Degreed2Config = ({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) {
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [clientId, setClientId] = React.useState('');
   const [clientSecret, setClientSecret] = React.useState('');
@@ -73,7 +73,7 @@ function Degreed2Config({
     if (err) {
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 
@@ -204,7 +204,7 @@ function Degreed2Config({
       </Form>
     </span>
   );
-}
+};
 
 Degreed2Config.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

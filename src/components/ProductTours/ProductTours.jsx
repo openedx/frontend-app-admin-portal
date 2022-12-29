@@ -9,7 +9,7 @@ import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import highlightsTour from './highlightsTour';
-import disableAll, { filterCheckpoints } from './data/utils';
+import { disableAll, filterCheckpoints } from './data/utils';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -24,10 +24,10 @@ import {
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
  */
-function ProductTours({
+const ProductTours = ({
   enterpriseSlug,
   enableLearnerPortal,
-}) {
+}) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
@@ -71,7 +71,7 @@ function ProductTours({
       tours={tours}
     />
   );
-}
+};
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

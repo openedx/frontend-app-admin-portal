@@ -1,7 +1,4 @@
-import Cookies from 'universal-cookie';
 import { COOKIE_NAMES } from '../constants';
-
-const cookies = new Cookies();
 
 // Filter enabled features prescreened for cookie to populate tour array
 export function filterCheckpoints(checkpoints, enabledFeatures) {
@@ -16,9 +13,9 @@ export function filterCheckpoints(checkpoints, enabledFeatures) {
 }
 
 // Enable all cookies when onDismiss is called to ensure that the tour is not shown again
-export default function disableAll() {
+export function disableAll() {
   // set all cookies to true to ensure that the tour checkpoints are not shown again
   Object.keys(COOKIE_NAMES).forEach((key) => {
-    cookies.set(COOKIE_NAMES[key], true, { sameSite: 'strict' });
+    global.localStorage.setItem(COOKIE_NAMES[key], true);
   });
 }

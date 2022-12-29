@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
@@ -21,7 +21,7 @@ import {
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
 
-function CouponCodeTabs({ enterpriseSlug }) {
+const CouponCodeTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
@@ -54,13 +54,11 @@ function CouponCodeTabs({ enterpriseSlug }) {
     }
   };
 
-  return (
-    <Tabs
-      id="tabs-coupon-code-management"
-      activeKey={couponCodesTab}
-      onSelect={handleTabSelect}
-    >
+  const visibleTabs = useMemo(() => {
+    const tabs = [];
+    tabs.push(
       <Tab
+        key={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
         eventKey={COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB]}
         title={COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]}
         className="pt-4"
@@ -72,9 +70,12 @@ function CouponCodeTabs({ enterpriseSlug }) {
             exact
           />
         )}
-      </Tab>
-      {isRequestsTabShown && (
+      </Tab>,
+    );
+    if (isRequestsTabShown) {
+      tabs.push(
         <Tab
+          key={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           eventKey={COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           title={COUPON_CODE_TABS_LABELS[MANAGE_REQUESTS_TAB]}
           className="pt-4"
@@ -87,11 +88,22 @@ function CouponCodeTabs({ enterpriseSlug }) {
               exact
             />
           )}
-        </Tab>
-      )}
+        </Tab>,
+      );
+    }
+    return tabs;
+  }, [couponCodesTab, isRequestsTabShown, requestsTabNotification]);
+
+  return (
+    <Tabs
+      id="tabs-coupon-code-management"
+      activeKey={couponCodesTab}
+      onSelect={handleTabSelect}
+    >
+      {visibleTabs}
     </Tabs>
   );
-}
+};
 
 CouponCodeTabs.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

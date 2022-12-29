@@ -3,14 +3,16 @@ import {
   Hyperlink,
 } from '@edx/paragon';
 
-function HighlightStepperFooterHelpLink() {
-  return (
-    <div className="mr-1 p-0">
-      <Hyperlink target="_blank" destination={process.env.ENTERPRISE_SUPPORT_URL}>
-        Help Center
-      </Hyperlink>
-    </div>
-  );
-}
+const HighlightStepperFooterHelpLink = () => (
+  <div>
+    <Hyperlink
+      target="_blank"
+      destination={process.env.ENTERPRISE_SUPPORT_PROGRAM_OPTIMIZATION_URL}
+      className="small"
+    >
+      Help Center: Program Optimization
+    </Hyperlink>
+  </div>
+);
 
 export default HighlightStepperFooterHelpLink;

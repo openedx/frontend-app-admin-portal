@@ -3,7 +3,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import moment from 'moment';
 import {
   breakpoints,
@@ -28,22 +28,7 @@ const defaultProps = {
     total: 20,
   },
 };
-
-// eslint-disable-next-line react/prop-types
-function ResponsiveContextWrapper({ startDate }) {
-  const contextValue = useMemo(() => ({ width: breakpoints.extraSmall.maxWidth }), []);
-  return (
-    <ResponsiveContext.Provider value={contextValue}>
-      <SubscriptionCard
-        {...defaultProps}
-        subscription={{
-          ...defaultSubscription,
-          startDate,
-        }}
-      />
-    </ResponsiveContext.Provider>
-  );
-}
+const responsiveContextValue = { width: breakpoints.extraSmall.maxWidth };
 
 jest.mock('moment', () => (date) => {
   if (date) {
@@ -66,7 +51,15 @@ describe('SubscriptionCard', () => {
     [moment().add(3, 'hours').toISOString(), '3 hours'],
   ])('displays days until plan starts text if there are no actions and the plan is scheduled', (startDate, expectedText) => {
     renderWithRouter(
-      <ResponsiveContextWrapper startDate={startDate} />,
+      <ResponsiveContext.Provider value={responsiveContextValue}>
+        <SubscriptionCard
+          {...defaultProps}
+          subscription={{
+            ...defaultSubscription,
+            startDate,
+          }}
+        />
+      </ResponsiveContext.Provider>,
     );
 
     expect(screen.getByText(`Plan begins in ${expectedText}`));

@@ -12,7 +12,7 @@ import { getConfig } from '@edx/frontend-platform/config';
 
 import { useCourseDetails } from './data/hooks';
 
-function CourseDetailsPopoverContentBase({ enterpriseSlug, courseId }) {
+const CourseDetailsPopoverContentBase = ({ enterpriseSlug, courseId }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = getConfig();
   const [courseDetails, isCourseDetailsLoading] = useCourseDetails(courseId);
 
@@ -46,7 +46,7 @@ function CourseDetailsPopoverContentBase({ enterpriseSlug, courseId }) {
       </div>
     </div>
   );
-}
+};
 
 CourseDetailsPopoverContentBase.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
@@ -59,31 +59,29 @@ const mapStateToProps = (state) => ({
 
 const CourseDetailsPopoverContent = connect(mapStateToProps)(CourseDetailsPopoverContentBase);
 
-function CourseTitleCell({ row }) {
-  return (
-    <OverlayTrigger
-      trigger="click"
-      placement="top"
-      rootClose
-      overlay={(
-        <Popover id="popover-requests-table-course-details">
-          <Popover.Title as="h5">{row.original.courseTitle}</Popover.Title>
-          <Popover.Content>
-            <CourseDetailsPopoverContent courseId={row.original.courseId} />
-          </Popover.Content>
-        </Popover>
+const CourseTitleCell = ({ row }) => (
+  <OverlayTrigger
+    trigger="click"
+    placement="top"
+    rootClose
+    overlay={(
+      <Popover id="popover-requests-table-course-details">
+        <Popover.Title as="h5">{row.original.courseTitle}</Popover.Title>
+        <Popover.Content>
+          <CourseDetailsPopoverContent courseId={row.original.courseId} />
+        </Popover.Content>
+      </Popover>
     )}
+  >
+    <Button
+      variant="link"
+      className="text-left px-0"
+      size="sm"
     >
-      <Button
-        variant="link"
-        className="text-left px-0"
-        size="sm"
-      >
-        {row.original.courseTitle}
-      </Button>
-    </OverlayTrigger>
-  );
-}
+      {row.original.courseTitle}
+    </Button>
+  </OverlayTrigger>
+);
 
 CourseTitleCell.propTypes = {
   row: PropTypes.shape({

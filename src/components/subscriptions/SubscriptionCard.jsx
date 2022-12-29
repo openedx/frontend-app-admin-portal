@@ -15,10 +15,10 @@ import classNames from 'classnames';
 import { getSubscriptionStatus } from './data/utils';
 import { ACTIVE, SCHEDULED, SUBSCRIPTION_STATUS_BADGE_MAP } from './data/constants';
 
-function SubscriptionCard({
+const SubscriptionCard = ({
   subscription,
   createActions,
-}) {
+}) => {
   const {
     title,
     startDate,
@@ -91,10 +91,9 @@ function SubscriptionCard({
         title={title}
         subtitle={subtitle}
         actions={(
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <>
+          <div>
             {renderActions() || renderDaysUntilPlanStartText('mt-4')}
-          </>
+          </div>
         )}
       />
     );
@@ -137,7 +136,7 @@ function SubscriptionCard({
       </Card.Body>
     </Card>
   );
-}
+};
 
 SubscriptionCard.defaultProps = {
   createActions: null,

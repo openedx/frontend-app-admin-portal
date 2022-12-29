@@ -11,9 +11,9 @@ import { SubscriptionContext } from './SubscriptionData';
 export const SubscriptionDetailContext = createContext({});
 export const defaultStatusFilter = [ASSIGNED, ACTIVATED, REVOKED].join();
 
-function SubscriptionDetailContextProvider({
+const SubscriptionDetailContextProvider = ({
   children, subscription, disableDataFetching,
-}) {
+}) => {
   // Initialize state needed for the subscription detail view and provide in SubscriptionDetailContext
   const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
   const hasMultipleSubscriptions = subscriptions.count > 1;
@@ -74,7 +74,7 @@ function SubscriptionDetailContextProvider({
       {children}
     </SubscriptionDetailContext.Provider>
   );
-}
+};
 
 SubscriptionDetailContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

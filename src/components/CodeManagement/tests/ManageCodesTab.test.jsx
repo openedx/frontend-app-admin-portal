@@ -46,13 +46,16 @@ const initialState = {
   },
 };
 
-function ManageCodesTabWrapper({ store, subsidyRequestConfiguration, ...props }) {
-  const contextValue = useMemo(() => ({ subsidyRequestConfiguration }), [subsidyRequestConfiguration]);
+const ManageCodesTabWrapper = ({ store, subsidyRequestConfiguration, ...props }) => {
+  const subsidyRequestsContextValue = useMemo(() => ({
+    subsidyRequestConfiguration,
+  }), [subsidyRequestConfiguration]);
+
   return (
     <MemoryRouter>
       <Provider store={store}>
         <IntlProvider locale="en">
-          <SubsidyRequestsContext.Provider value={contextValue}>
+          <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
             <ManageCodesTab
               location={{}}
               match={{
@@ -68,7 +71,7 @@ function ManageCodesTabWrapper({ store, subsidyRequestConfiguration, ...props })
       </Provider>
     </MemoryRouter>
   );
-}
+};
 
 ManageCodesTabWrapper.defaultProps = {
   store: mockStore({ ...initialState }),

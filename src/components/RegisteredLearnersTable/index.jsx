@@ -5,7 +5,7 @@ import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-function RegisteredLearnersTable() {
+const RegisteredLearnersTable = () => {
   const tableColumns = [
     {
       label: 'Email',
@@ -37,6 +37,6 @@ function RegisteredLearnersTable() {
       tableSortable
     />
   );
-}
+};
 
 export default RegisteredLearnersTable;

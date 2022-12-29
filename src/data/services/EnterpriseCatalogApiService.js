@@ -42,6 +42,10 @@ class EnterpriseCatalogApiService {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
+  static fetchHighlightSet(highlightSetUUID) {
+    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}`);
+  }
+
   static createEnterpriseCurationConfig(enterpriseId, options = {}) {
     const payload = {
       enterprise_customer: enterpriseId,
@@ -49,6 +53,17 @@ class EnterpriseCatalogApiService {
     };
     return EnterpriseCatalogApiService.apiClient().post(
       EnterpriseCatalogApiService.enterpriseCurationUrl,
+      payload,
+    );
+  }
+
+  static createHighlightSet(enterpriseId, options = {}) {
+    const payload = {
+      enterprise_customer: enterpriseId,
+      ...snakeCaseObject(options),
+    };
+    return EnterpriseCatalogApiService.apiClient().post(
+      EnterpriseCatalogApiService.highlightSetUrl,
       payload,
     );
   }

@@ -27,21 +27,21 @@ jest.mock('../../../data/services/LmsApiService', () => ({
 
 jest.mock(
   '../SettingsAccessTab/',
-  () => function () {
+  () => function SettingsAccessTab() {
     return <div>{ACCESS_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../SettingsLMSTab/',
-  () => function () {
+  () => function SettingsLMSTab() {
     return <div>{LMS_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../SettingsSSOTab/',
-  () => function () {
+  () => function SettingsSSOTab() {
     return <div>{SSO_MOCK_CONTENT}</div>;
   },
 );
@@ -69,19 +69,17 @@ const getMockStore = store => mockStore(store);
 const defaultStore = getMockStore({ ...initialStore });
 
 // eslint-disable-next-line react/prop-types
-function SettingsTabsWithRouter({ store = defaultStore }) {
-  return (
-    <IntlProvider locale="en">
-      <MemoryRouter initialEntries={['settings/']}>
-        <Provider store={store}>
-          <Route path="settings/">
-            <SettingsTabs />
-          </Route>
-        </Provider>
-      </MemoryRouter>
-    </IntlProvider>
-  );
-}
+const SettingsTabsWithRouter = ({ store = defaultStore }) => (
+  <IntlProvider locale="en">
+    <MemoryRouter initialEntries={['settings/']}>
+      <Provider store={store}>
+        <Route path="settings/">
+          <SettingsTabs />
+        </Route>
+      </Provider>
+    </MemoryRouter>
+  </IntlProvider>
+);
 
 describe('<SettingsTabs />', () => {
   afterEach(() => {

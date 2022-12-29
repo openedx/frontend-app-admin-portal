@@ -6,20 +6,18 @@ import IconWithTooltip from '../IconWithTooltip';
 
 import './CheckboxWithTooltip.scss';
 
-function CheckboxWithTooltip({
+const CheckboxWithTooltip = ({
   className, icon, altText, tooltipText, ...props
-}) {
-  return (
-    <div className={classNames('checkbox-with-tooltip', { className })}>
-      <ReduxFormCheckbox {...props} />
-      <IconWithTooltip
-        icon={icon}
-        altText={altText}
-        tooltipText={tooltipText}
-      />
-    </div>
-  );
-}
+}) => (
+  <div className={classNames('checkbox-with-tooltip', { className })}>
+    <ReduxFormCheckbox {...props} />
+    <IconWithTooltip
+      icon={icon}
+      altText={altText}
+      tooltipText={tooltipText}
+    />
+  </div>
+);
 
 CheckboxWithTooltip.defaultProps = {
   className: '',

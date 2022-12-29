@@ -87,7 +87,7 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.props.setEmailAddress('', MODAL_TYPES.assign);
   }
 
-  handleModalSubmit(formData) {
+  getNumberOfSelectedCodes() {
     const {
       isBulkAssign,
       couponId,
@@ -179,6 +179,14 @@ export class BaseCodeAssignmentModal extends React.Component {
       });
   }
 
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
+  setNotify() {
+    this.setState(prevState => ({ notify: !prevState.notify }));
+  }
+
   getNumberOfSelectedCodes() {
     const {
       data: {
@@ -191,14 +199,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
 
     return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
-  }
-
-  setMode(mode) {
-    this.setState({ mode });
-  }
-
-  setNotify() {
-    this.setState(prevState => ({ notify: !prevState.notify }));
   }
 
   usersEmail(emails) {
@@ -331,6 +331,98 @@ export class BaseCodeAssignmentModal extends React.Component {
   hasIndividualAssignData() {
     const { data } = this.props;
     return ['code', 'remainingUses'].every(key => key in data);
+  }
+
+  handleModalSubmit(formData) {
+    const {
+      isBulkAssign,
+      couponId,
+      data: {
+        code,
+        selectedCodes,
+        hasAllCodesSelected,
+      },
+      sendCodeAssignment,
+      createPendingEnterpriseUsers,
+      enableLearnerPortal,
+      enterpriseSlug,
+      enterpriseUuid,
+    } = this.props;
+
+    this.setMode(MODAL_TYPES.assign);
+
+    const { notify } = this.state;
+
+    // Validate form data
+    this.validateFormData(formData);
+    // Configure the options to send to the assignment API endpoint
+    const options = {
+      template: formData[EMAIL_TEMPLATE_BODY_ID],
+      template_subject: formData[EMAIL_TEMPLATE_SUBJECT_KEY],
+      template_greeting: formData[EMAIL_TEMPLATE_GREETING_ID],
+      template_closing: formData[EMAIL_TEMPLATE_CLOSING_ID],
+      ...(features.FILE_ATTACHMENT && {
+        template_files: formData[EMAIL_TEMPLATE_FILES_ID],
+      }),
+      enable_nudge_emails: formData[EMAIL_TEMPLATE_NUDGE_EMAIL_ID],
+      notify_learners: notify,
+    };
+    // If the enterprise has a learner portal, we should direct users to it in our assignment email
+    if (enableLearnerPortal && configuration.ENTERPRISE_LEARNER_PORTAL_URL) {
+      options.base_enterprise_url = `${configuration.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}`;
+    }
+
+    if (formData['template-id']) {
+      options.template_id = formData['template-id'];
+    }
+
+    const hasTextAreaEmails = !!formData[EMAIL_ADDRESS_TEXT_FORM_DATA];
+    const emails = hasTextAreaEmails ? formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/) : formData[EMAIL_ADDRESS_CSV_FORM_DATA];
+    const { validEmails } = this.validateEmailAddresses(emails, !hasTextAreaEmails);
+
+    if (isBulkAssign) {
+      // Only includes `codes` in `options` if not all codes are selected.
+      if (!hasAllCodesSelected) {
+        options.codes = selectedCodes.map(selectedCode => selectedCode.code);
+      }
+    } else {
+      options.codes = [code.code];
+    }
+
+    let pendingEnterpriseUserData;
+    if (validEmails.length) {
+      pendingEnterpriseUserData = validEmails.map((email) => ({
+        user_email: email,
+        enterprise_customer: enterpriseUuid,
+      }));
+    } else {
+      pendingEnterpriseUserData = {
+        user_email: formData['email-address'],
+        enterprise_customer: enterpriseUuid,
+      };
+    }
+    const assignmentEmails = isBulkAssign ? validEmails : [formData['email-address']];
+    options.users = this.usersEmail(assignmentEmails);
+
+    return createPendingEnterpriseUsers(pendingEnterpriseUserData, enterpriseUuid)
+      .then(() => sendCodeAssignment(couponId, options))
+      .then((response) => {
+        this.props.onSuccess(response);
+      })
+      .catch((error) => {
+        const { response, message } = error;
+        const nonFieldErrors = response && response.data && response.data.non_field_errors;
+
+        let errors = [message];
+
+        if (nonFieldErrors) {
+          errors = [errors, ...nonFieldErrors];
+        }
+
+        throw new SubmissionError({
+          _error: errors,
+        });
+      });
   }
 
   renderBody() {

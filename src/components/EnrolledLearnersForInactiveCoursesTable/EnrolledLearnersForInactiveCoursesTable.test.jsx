@@ -92,29 +92,25 @@ const enrolledLearnersForInactiveCoursesStore = mockStore({
   },
 });
 
-function EnrolledLearnersForInactiveCoursesEmptyTableWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-        <EnrolledLearnersForInactiveCoursesTable
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
+      <EnrolledLearnersForInactiveCoursesTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
-function EnrolledLearnersForInactiveCoursesWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={enrolledLearnersForInactiveCoursesStore}>
-        <EnrolledLearnersForInactiveCoursesTable
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const EnrolledLearnersForInactiveCoursesWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={enrolledLearnersForInactiveCoursesStore}>
+      <EnrolledLearnersForInactiveCoursesTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('EnrolledLearnersForInactiveCoursesTable', () => {
   it('renders empty state correctly', () => {

@@ -9,7 +9,7 @@ import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';
 import LinkCopiedToast from './LinkCopiedToast';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 
-function ActionsTableCell({ row, onDeactivateLink, enterpriseUUID }) {
+const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
   const [isLinkDeactivationModalOpen, setIsLinkDeactivationModalOpen] = useState(false);
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const { isValid, uuid: inviteKeyUUID } = row.original;
@@ -83,7 +83,7 @@ function ActionsTableCell({ row, onDeactivateLink, enterpriseUUID }) {
       <LinkCopiedToast show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
     </>
   );
-}
+};
 
 ActionsTableCell.propTypes = {
   row: PropTypes.shape({

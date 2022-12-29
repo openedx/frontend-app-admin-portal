@@ -14,22 +14,20 @@ const initialHistory = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
 });
 
-function UserActivationPageWrapper({
+const UserActivationPageWrapper = ({
   history,
   ...rest
-}) {
-  return (
-    <Router history={history}>
-      <IntlProvider locale="en">
-        <Route
-          exact
-          path="/:enterpriseSlug/admin/register/activate"
-          render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-        />
-      </IntlProvider>
-    </Router>
-  );
-}
+}) => (
+  <Router history={history}>
+    <IntlProvider locale="en">
+      <Route
+        exact
+        path="/:enterpriseSlug/admin/register/activate"
+        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
+      />
+    </IntlProvider>
+  </Router>
+);
 
 UserActivationPageWrapper.defaultProps = {
   history: initialHistory,

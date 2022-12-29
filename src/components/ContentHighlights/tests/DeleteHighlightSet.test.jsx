@@ -38,23 +38,21 @@ const initialEnterpriseAppContextValue = {
 const initialRouterEntry = `/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`;
 
 /* eslint-disable react/prop-types */
-function DeleteHighlightSetWrapper({
+const DeleteHighlightSetWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
-}) {
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
-            render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
-          />
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-}
+}) => (
+  <IntlProvider locale="en">
+    <Provider store={mockStore(initialState)}>
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <Route
+          path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
+          render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
+        />
+      </EnterpriseAppContext.Provider>
+    </Provider>
+  </IntlProvider>
+);
 
 describe('<DeleteHighlightSet />', () => {
   const getDeleteHighlightBtn = () => {
@@ -112,6 +110,11 @@ describe('<DeleteHighlightSet />', () => {
 
     await waitFor(() => {
       expect(mockDispatchFn).toHaveBeenCalledWith(
+        enterpriseCurationActions.setHighlightToast(highlightSetUUID),
+      );
+    });
+    await waitFor(() => {
+      expect(mockDispatchFn).toHaveBeenCalledWith(
         enterpriseCurationActions.deleteHighlightSet(highlightSetUUID),
       );
     });
@@ -139,6 +142,7 @@ describe('<DeleteHighlightSet />', () => {
     await waitFor(() => {
       expect(logError).toHaveBeenCalled();
     });
+
     expect(mockDispatchFn).not.toHaveBeenCalledWith(
       enterpriseCurationActions.deleteHighlightSet(highlightSetUUID),
     );

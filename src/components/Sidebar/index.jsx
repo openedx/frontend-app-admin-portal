@@ -22,7 +22,7 @@ import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-function Sidebar({
+const Sidebar = ({
   baseUrl,
   expandSidebar,
   collapseSidebar,
@@ -34,7 +34,7 @@ function Sidebar({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
-}) {
+}) => {
   const navRef = useRef();
   const widthRef = useRef();
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
@@ -73,12 +73,6 @@ function Sidebar({
       title: 'Learner Progress Report',
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
-    },
-    {
-      title: 'Tableau Analytics',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`,
-      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
-      hidden: !features.TABLEAU_ANALYTICS || !enableAnalyticsScreen,
     },
     {
       title: 'Analytics',
@@ -185,7 +179,7 @@ function Sidebar({
       </div>
     </nav>
   );
-}
+};
 
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,

@@ -79,15 +79,13 @@ const bulkEnrollWithCoursesSelectedRows = {
 };
 
 // eslint-disable-next-line react/prop-types
-function BulkEnrollmentSubmitWrapper({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) {
-  return (
-    <IntlProvider locale="en">
-      <BulkEnrollContext.Provider value={bulkEnrollInfo}>
-        <BulkEnrollmentSubmit {...props} />
-      </BulkEnrollContext.Provider>
-    </IntlProvider>
-  );
-}
+const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) => (
+  <IntlProvider locale="en">
+    <BulkEnrollContext.Provider value={bulkEnrollInfo}>
+      <BulkEnrollmentSubmit {...props} />
+    </BulkEnrollContext.Provider>
+  </IntlProvider>
+);
 
 describe('generateSuccessMessage', () => {
   it('renders correct message based on enrollment count', () => {

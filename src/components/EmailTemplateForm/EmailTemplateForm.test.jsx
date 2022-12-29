@@ -23,15 +23,13 @@ const initialState = {
   allEmailTemplates: [],
 };
 
-function EmailTemplateFormWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={mockStore(initialState)}>
-        <ConnectedEmailTemplateForm {...props} />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const EmailTemplateFormWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={mockStore(initialState)}>
+      <ConnectedEmailTemplateForm {...props} />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('EmailTemplateForm', () => {
   it('renders a form', () => {

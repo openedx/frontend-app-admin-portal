@@ -152,7 +152,7 @@ export const mockUseSubscriptionUsers = (state) => [
   false,
 ];
 
-export function SubscriptionManagementContext({ children, detailState, store }) {
+export const SubscriptionManagementContext = ({ children, detailState, store }) => {
   jest.spyOn(hooks, 'useSubscriptionData').mockImplementation(() => mockUseSubscriptionData(detailState));
   jest.spyOn(hooks, 'useSubscriptionUsersOverview').mockImplementation(() => [detailState.overview, () => {}]);
   jest.spyOn(hooks, 'useSubscriptionUsers').mockImplementation(() => mockUseSubscriptionUsers(detailState));
@@ -170,7 +170,7 @@ export function SubscriptionManagementContext({ children, detailState, store }) 
       </Provider>
     </Router>
   );
-}
+};
 
 SubscriptionManagementContext.propTypes = {
   children: PropTypes.node.isRequired,
@@ -350,26 +350,24 @@ export const mockSubscriptionHooks = (
  * @param {Object: Settings} contextSettings
  * @returns {React.node} Wrapper component
  */
-export function MockSubscriptionContext({
+export const MockSubscriptionContext = ({
   subscriptionPlan,
   store = createMockStore(),
   children,
-}) {
-  return (
-    <Router history={initialHistory}>
-      <Provider store={store}>
-        <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
-          <SubscriptionDetailContextProvider
-            subscription={subscriptionPlan}
-            hasMultipleSubscriptions={false}
-          >
-            {children}
-          </SubscriptionDetailContextProvider>
-        </SubscriptionData>
-      </Provider>
-    </Router>
-  );
-}
+}) => (
+  <Router history={initialHistory}>
+    <Provider store={store}>
+      <SubscriptionData enterpriseId={TEST_ENTERPRISE_CUSTOMER_UUID}>
+        <SubscriptionDetailContextProvider
+          subscription={subscriptionPlan}
+          hasMultipleSubscriptions={false}
+        >
+          {children}
+        </SubscriptionDetailContextProvider>
+      </SubscriptionData>
+    </Provider>
+  </Router>
+);
 
 MockSubscriptionContext.propTypes = {
   children: PropTypes.node.isRequired,

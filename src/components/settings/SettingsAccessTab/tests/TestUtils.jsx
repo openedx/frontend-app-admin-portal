@@ -42,19 +42,17 @@ export const generateStore = ({
   },
 }));
 
-function MockSettingsContext({
+const MockSettingsContext = ({
   store,
   enterpriseSubsidiesContextValue,
   children,
-}) {
-  return (
-    <Provider store={store}>
-      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-        {children}
-      </EnterpriseSubsidiesContext.Provider>
-    </Provider>
-  );
-}
+}) => (
+  <Provider store={store}>
+    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+      {children}
+    </EnterpriseSubsidiesContext.Provider>
+  </Provider>
+);
 
 MockSettingsContext.propTypes = {
   children: PropTypes.node.isRequired,

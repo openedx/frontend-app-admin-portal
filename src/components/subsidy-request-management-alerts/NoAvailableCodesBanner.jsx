@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 
-export function NoAvailableCodesBanner({ coupons }) {
+export const NoAvailableCodesBanner = ({ coupons }) => {
   const [showBanner, setShowBanner] = useState(true);
 
   const dismissBanner = () => {
@@ -55,17 +55,13 @@ export function NoAvailableCodesBanner({ coupons }) {
   }
 
   return null;
-}
+};
 
 NoAvailableCodesBanner.propTypes = {
   coupons: PropTypes.arrayOf(PropTypes.shape({
     endDate: PropTypes.string.isRequired,
     numUnassigned: PropTypes.number.isRequired,
-  })),
-};
-
-NoAvailableCodesBanner.defaultProps = {
-  coupons: [],
+  })).isRequired,
 };
 
 export default NoAvailableCodesBanner;

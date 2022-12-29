@@ -5,35 +5,33 @@ import CodeReminderModal from '../../containers/CodeReminderModal';
 import ActionButtonWithModal from '../ActionButtonWithModal';
 import { ACTIONS } from '../CouponDetails/constants';
 
-function RemindButton({
+const RemindButton = ({
   couponId,
   couponTitle,
   data,
   onSuccess,
   onClose,
-}) {
-  return (
-    <ActionButtonWithModal
-      buttonLabel={ACTIONS.remind.label}
-      buttonClassName="remind-btn btn-sm p-0"
-      variant="link"
-      renderModal={({ closeModal }) => (
-        <CodeReminderModal
-          couponId={couponId}
-          title={couponTitle}
-          data={data}
-          onSuccess={onSuccess}
-          onClose={() => {
-            closeModal();
-            if (onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-    />
-  );
-}
+}) => (
+  <ActionButtonWithModal
+    buttonLabel={ACTIONS.remind.label}
+    buttonClassName="remind-btn btn-sm p-0"
+    variant="link"
+    renderModal={({ closeModal }) => (
+      <CodeReminderModal
+        couponId={couponId}
+        title={couponTitle}
+        data={data}
+        onSuccess={onSuccess}
+        onClose={() => {
+          closeModal();
+          if (onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+  />
+);
 
 RemindButton.propTypes = {
   couponId: PropTypes.number.isRequired,

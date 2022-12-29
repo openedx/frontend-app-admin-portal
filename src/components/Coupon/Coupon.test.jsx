@@ -44,18 +44,16 @@ const initialCouponData = {
   usage_limitation: MULTI_USE,
 };
 
-function CouponWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <Coupon
-          data={initialCouponData}
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const CouponWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <Coupon
+        data={initialCouponData}
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<Coupon />', () => {
   let wrapper;
@@ -189,19 +187,6 @@ describe('<Coupon />', () => {
     expect(instance.state.dimmed).toBeFalsy();
     instance.setCouponOpacity(true);
     expect(instance.state.dimmed).toBeTruthy();
-  });
-
-  it('sets state correctly on closeCouponDetails()', () => {
-    wrapper = shallow(<CouponWrapper />);
-    const instance = wrapper.find(Coupon).dive().instance();
-
-    instance.setState({
-      isExpanded: true,
-    });
-
-    expect(instance.state.isExpanded).toBeTruthy();
-    instance.closeCouponDetails(true);
-    expect(instance.state.isExpanded).toBeFalsy();
   });
 
   it('sets state correctly for isExpanded prop on componentDidMount', () => {

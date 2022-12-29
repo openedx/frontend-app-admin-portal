@@ -26,7 +26,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
  * @param {string} enterpriseId The UUID for an Enterprise Customer.
  * @returns Component containing modals related to subscription expiration.
  */
-function SubscriptionExpirationModals({ enterpriseId }) {
+const SubscriptionExpirationModals = ({ enterpriseId }) => {
   const {
     subscription: {
       agreementNetDaysUntilExpiration, showExpirationNotifications,
@@ -141,7 +141,7 @@ function SubscriptionExpirationModals({ enterpriseId }) {
     </>
     )
   );
-}
+};
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,

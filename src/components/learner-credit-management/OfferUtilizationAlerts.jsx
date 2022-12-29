@@ -10,12 +10,12 @@ import {
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from './data/constants';
 
-function OfferUtilizationAlerts({
+const OfferUtilizationAlerts = ({
   className,
   percentUtilized,
   remainingFunds,
   enterpriseUUID,
-}) {
+}) => {
   const [isWarningAlertShown, setIsWarningAlertShown] = useState(false);
 
   const hasPercentUtilizedAndRemainingFunds = (
@@ -97,7 +97,7 @@ function OfferUtilizationAlerts({
       </Alert>
     </>
   );
-}
+};
 
 OfferUtilizationAlerts.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,

@@ -103,18 +103,16 @@ const mockOfferSummary = {
   percentUtilized: 0.04,
 };
 
-function LearnerCreditManagementWrapper({
+const LearnerCreditManagementWrapper = ({
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
   ...rest
-}) {
-  return (
-    <Provider store={store}>
-      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-        <LearnerCreditManagement {...rest} />
-      </EnterpriseSubsidiesContext.Provider>
-    </Provider>
-  );
-}
+}) => (
+  <Provider store={store}>
+    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+      <LearnerCreditManagement {...rest} />
+    </EnterpriseSubsidiesContext.Provider>
+  </Provider>
+);
 
 describe('<LearnerCreditManagement />', () => {
   it('displays not found page with no enterprise offer', () => {

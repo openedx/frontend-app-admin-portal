@@ -17,17 +17,15 @@ import Img from '../../components/Img';
 
 const mockStore = configureMockStore([thunk]);
 
-function HeaderWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={props.store}>
-        <Header
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const HeaderWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={props.store}>
+      <Header
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),

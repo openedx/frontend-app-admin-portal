@@ -14,14 +14,14 @@ import {
   BLACKBOARD_OAUTH_REDIRECT_URL,
   INVALID_LINK,
   INVALID_NAME,
-  SUCCESS_LABEL,
+  SUBMIT_TOAST_MESSAGE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../data/constants';
 
-function BlackboardConfig({
+const BlackboardConfig = ({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs, setExistingConfigFormData,
-}) {
+}) => {
   const [displayName, setDisplayName] = React.useState('');
   const [nameValid, setNameValid] = React.useState(true);
   const [blackboardBaseUrl, setBlackboardBaseUrl] = React.useState('');
@@ -54,7 +54,7 @@ function BlackboardConfig({
           setOauthPollingTimeout(null);
           setOauthTimeout(false);
           // trigger a success call which will redirect the user back to the landing page
-          onClick(SUCCESS_LABEL);
+          onClick(SUBMIT_TOAST_MESSAGE);
         }
       } catch (error) {
         err = handleErrors(error);
@@ -202,7 +202,7 @@ function BlackboardConfig({
       setErrCode(errCode);
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 
@@ -296,7 +296,7 @@ function BlackboardConfig({
       </Form>
     </span>
   );
-}
+};
 
 BlackboardConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

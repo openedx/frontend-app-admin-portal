@@ -16,9 +16,8 @@ import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadP
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
-import { AnalyticsPage } from '../analytics';
 
-function EnterpriseAppRoutes({
+const EnterpriseAppRoutes = ({
   baseUrl,
   email,
   enterpriseId,
@@ -28,7 +27,7 @@ function EnterpriseAppRoutes({
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
   enableContentHighlightsPage,
-}) {
+}) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   return (
     <Switch>
@@ -87,15 +86,6 @@ function EnterpriseAppRoutes({
         />
       )}
 
-      {enableAnalyticsPage && (
-      <Route
-        key="tableau-analytics"
-        exact
-        path={`${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`}
-        component={AnalyticsPage}
-      />
-      )}
-
       <Route
         exact
         path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollmentResults}/:bulkEnrollmentJobId`}
@@ -125,7 +115,7 @@ function EnterpriseAppRoutes({
       <Route path="" component={NotFoundPage} />
     </Switch>
   );
-}
+};
 
 EnterpriseAppRoutes.propTypes = {
   baseUrl: PropTypes.string.isRequired,

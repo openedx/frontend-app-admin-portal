@@ -16,9 +16,9 @@ const errorToggleModalText = 'We were unable to toggle your configuration. Pleas
 const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
 const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
 
-function ExistingSSOConfigs({
+const ExistingSSOConfigs = ({
   configs, refreshBool, setRefreshBool, enterpriseId, providerData,
-}) {
+}) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [errorModalText, setErrorModalText] = useState();
   const { setProviderConfig, setCurrentStep } = useContext(SSOConfigContext);
@@ -91,7 +91,7 @@ function ExistingSSOConfigs({
         Enabling single sign-on for your edX account allows quick access to
         your organization’s learning catalog
       </p>
-      <h4 className="mt-5 mb-4">Existing configurationss</h4>
+      <h4 className="mt-5 mb-4">Existing configurations</h4>
       <CardGrid
         className="mb-3 mr-3"
         columnSizes={{
@@ -179,7 +179,7 @@ function ExistingSSOConfigs({
       </CardGrid>
     </span>
   );
-}
+};
 
 ExistingSSOConfigs.propTypes = {
   configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

@@ -13,11 +13,11 @@ const formatHeaderForLabel = (Header) => {
   return Header;
 };
 
-function TableTextFilter({
+const TableTextFilter = ({
   column: {
     filterValue, setFilter, Header,
   },
-}) {
+}) => {
   const inputText = `Search by ${formatHeaderForLabel(Header)}`;
   return (
     <Form.Group>
@@ -34,7 +34,7 @@ function TableTextFilter({
       />
     </Form.Group>
   );
-}
+};
 
 TableTextFilter.propTypes = {
   column: PropTypes.shape({

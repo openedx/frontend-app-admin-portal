@@ -60,13 +60,11 @@ const basicProps = {
   },
 };
 
-function LicenseManagementTableActionColumnWithContext(props) {
-  return (
-    <Provider store={store}>
-      <LicenseManagementTableActionColumn {...props} />
-    </Provider>
-  );
-}
+const LicenseManagementTableActionColumnWithContext = (props) => (
+  <Provider store={store}>
+    <LicenseManagementTableActionColumn {...props} />
+  </Provider>
+);
 
 describe('<LicenseManagementTableActionColumn />', () => {
   afterEach(() => {

@@ -8,7 +8,7 @@ import * as FontAwesome from '@fortawesome/free-solid-svg-icons/faTimes';
 import { getSizeInBytes, formatBytes } from './utils';
 import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';
 
-function MultipleFileInputField({
+const MultipleFileInputField = ({
   input,
   label,
   type,
@@ -19,7 +19,7 @@ function MultipleFileInputField({
   id,
   meta: { touched, error },
   ...props
-}) {
+}) => {
   const hasError = !!(touched && error);
   const [size, setSize] = useState('0');
   const [filesSizeError, setFilesSizeError] = useState(null);
@@ -90,14 +90,14 @@ function MultipleFileInputField({
       {
         inputValues?.map((e, i) => (
           <div className="border rounded p-1 m-1">
-            <small>{`${e.name } - ${ formatBytes(e.size)}`}</small>
+            <small>{`${e.name} - ${formatBytes(e.size)}`}</small>
             <IconButton className="mr-2" icon={FontAwesome.faTimes} onClick={() => handleFileRemoveClick(i)} variant="danger" />
           </div>
         ))
       }
     </Form.Group>
   );
-}
+};
 
 MultipleFileInputField.defaultProps = {
   disabled: false,
@@ -111,7 +111,10 @@ MultipleFileInputField.propTypes = {
   input: PropTypes.shape({
     onChange: PropTypes.func,
     name: PropTypes.string,
-    value: PropTypes.shape([]),
+    value: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      size: PropTypes.number,
+    })),
   }).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   type: PropTypes.string.isRequired,

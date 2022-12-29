@@ -1,17 +1,13 @@
 import _ from 'lodash';
-import React, {
-  useCallback, useEffect, useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  DataTable, TextFilter,
-} from '@edx/paragon';
+import { DataTable, TextFilter } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { createLookup, getSyncStatus, getSyncTime } from './utils';
+import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 import DownloadCsvButton from './DownloadCsvButton';
 
-function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
+const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
   const [currentFilters, setCurrentFilters] = useState();
   const [paginationData, setPaginationData] = useState({
@@ -20,17 +16,24 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
     data: [],
     sortBy: '',
   });
+  const [totalCount, setTotalCount] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
-      // eslint-disable-next-line function-paren-newline
       const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
-        enterpriseCustomerUuid, config.channelCode, config.id, currentPage, currentFilters);
+        enterpriseCustomerUuid,
+        config.channelCode,
+        config.id,
+        currentPage,
+        currentFilters,
+      );
+
       return response;
     };
 
     fetchData()
       .then((response) => {
+        setTotalCount(response.data.count);
         setPaginationData({
           itemCount: response.data.count,
           pageCount: response.data.pages_count,
@@ -40,25 +43,48 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
       .catch((err) => {
         logError(err);
       });
-  }, [config.channelCode, config.id, enterpriseCustomerUuid, currentPage, currentFilters]);
+  }, [
+    config.channelCode,
+    config.id,
+    enterpriseCustomerUuid,
+    currentPage,
+    currentFilters,
+  ]);
 
   const fetchData = useCallback(
     (args) => {
-      let newFilters = createLookup(args.filters, (filter) => filter.id, (filter) => filter.value);
-
+      let newFilters = createLookup(
+        args.filters,
+        (filter) => filter.id,
+        (filter) => filter.value,
+      );
       const sortBy = args.sortBy.at(-1);
       if (!_.isEmpty(sortBy)) {
         const newSortBys = { sort_by: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
         newFilters = { ...newFilters, ...newSortBys };
       }
-      setCurrentFilters(newFilters);
 
+      if (!_.isEqual(newFilters, currentFilters)) {
+        setCurrentFilters(newFilters);
+      }
       if (args.pageIndex !== currentPage) {
         setCurrentPage(args.pageIndex);
       }
     },
-    [setCurrentPage, currentPage],
+    [currentFilters, currentPage, setCurrentFilters, setCurrentPage],
   );
+
+  const fetchCsvData = async () => {
+    const csvFilters = { ...currentFilters, ...{ page_size: totalCount } };
+    const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
+      enterpriseCustomerUuid,
+      config.channelCode,
+      config.id,
+      false,
+      csvFilters,
+    );
+    return response;
+  };
 
   return (
     <div className="pt-4">
@@ -80,9 +106,12 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
           pageIndex: currentPage || 0,
           sortBy: [],
         }}
-        // eslint-disable-next-line no-unused-vars
         tableActions={[
-          <DownloadCsvButton data={paginationData.data} testId="learner-download" />,
+          <DownloadCsvButton
+            fetchData={fetchCsvData}
+            data={paginationData.data}
+            testId="learner-download"
+          />,
         ]}
         columns={[
           {
@@ -102,14 +131,17 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
           {
             Header: 'Sync status',
             accessor: 'sync_status',
-            Cell: ({ row }) => getSyncStatus(row.original.sync_status, row.original.friendly_status_message),
+            Cell: ({ row }) => getSyncStatus(
+              row.original.sync_status,
+              row.original.friendly_status_message,
+            ),
             sortable: true,
             disableFilters: true,
           },
           {
             Header: 'Sync attempt time',
             accessor: 'sync_last_attempted_at',
-            Cell: ({ row }) => getSyncTime(row.original.sync_last_attempted_at),
+            Cell: ({ row }) => getTimeAgo(row.original.sync_last_attempted_at),
             sortable: true,
             disableFilters: true,
           },
@@ -122,7 +154,7 @@ function LearnerMetadataTable({ config, enterpriseCustomerUuid }) {
       </DataTable>
     </div>
   );
-}
+};
 
 LearnerMetadataTable.defaultProps = {
   config: null,

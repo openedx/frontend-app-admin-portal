@@ -6,7 +6,7 @@ import {
 import { Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
-function DeclineSubsidyRequestModal({
+const DeclineSubsidyRequestModal = ({
   isOpen,
   subsidyRequest: {
     uuid,
@@ -15,7 +15,7 @@ function DeclineSubsidyRequestModal({
   declineRequestFn,
   onSuccess,
   onClose,
-}) {
+}) => {
   const [shouldNotifyLearner, setShouldNotifyLearner] = useState(true);
   const [shouldUnlinkLearnerFromEnterprise, setShouldUnlinkLearnerFromEnterprise] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -125,7 +125,7 @@ function DeclineSubsidyRequestModal({
       </ModalDialog.Footer>
     </ModalDialog>
   );
-}
+};
 
 DeclineSubsidyRequestModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

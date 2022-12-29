@@ -20,12 +20,12 @@ import { sortSubscriptionsByStatus } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { configuration } from '../../config';
 
-function MultipleSubscriptionsPage({
+const MultipleSubscriptionsPage = ({
   enterpriseSlug,
   redirectPage,
   leadText,
   createActions,
-}) {
+}) => {
   const { loading, data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
 
@@ -78,7 +78,7 @@ function MultipleSubscriptionsPage({
       />
     </>
   );
-}
+};
 
 MultipleSubscriptionsPage.defaultProps = {
   redirectPage: `${ROUTE_NAMES.subscriptionManagement}`,

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { CardGrid } from '@edx/paragon';
 
 import ContentHighlightSetCard from './ContentHighlightSetCard';
+import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
 
-function HighlightSetSection({
+const HighlightSetSection = ({
   title: sectionTitle,
   highlightSets,
-}) {
+}) => {
   if (highlightSets.length === 0) {
     return null;
   }
@@ -15,18 +16,13 @@ function HighlightSetSection({
   return (
     <div>
       <h3 className="mb-3">{sectionTitle}</h3>
-      <CardGrid
-        columnSizes={{
-          xs: 12,
-          lg: 6,
-          xl: 4,
-        }}
-      >
+      <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
         {highlightSets.map(({
           title,
           uuid,
           isPublished,
           highlightedContentUuids,
+          cardImageUrl,
         }) => (
           <ContentHighlightSetCard
             key={uuid}
@@ -34,13 +30,13 @@ function HighlightSetSection({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
-            imageCapSrc="https://source.unsplash.com/360x200/?cat,dog"
+            imageCapSrc={cardImageUrl}
           />
         ))}
       </CardGrid>
     </div>
   );
-}
+};
 
 HighlightSetSection.propTypes = {
   title: PropTypes.string.isRequired,

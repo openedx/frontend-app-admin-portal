@@ -19,7 +19,7 @@ import SSOConfigConnectStep from './steps/SSOConfigConnectStep';
 import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 
-function SSOStepper({ enterpriseSlug, enterpriseId, enterpriseName }) {
+const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
   const {
     ssoState,
     dispatchSsoState,
@@ -254,7 +254,7 @@ function SSOStepper({ enterpriseSlug, enterpriseId, enterpriseName }) {
       </Stepper>
     </div>
   );
-}
+};
 
 SSOStepper.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

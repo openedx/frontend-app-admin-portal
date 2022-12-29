@@ -5,9 +5,10 @@ import {
   Toast, StatefulButton, Icon, Spinner, useToggle,
 } from '@edx/paragon';
 import { Download, Check } from '@edx/paragon/icons';
+import { logError } from '@edx/frontend-platform/logging';
 import { isStrictlyArray } from './utils';
 
-function DownloadCsvButton({ data, testId }) {
+const DownloadCsvButton = ({ data, testId, fetchData }) => {
   const [buttonState, setButtonState] = useState('pageLoading');
 
   useEffect(() => {
@@ -24,25 +25,29 @@ function DownloadCsvButton({ data, testId }) {
     return `${year}-${month}-${day}-error-log.csv`;
   };
 
-  const getCsvData = () => {
-    if (isStrictlyArray(data)) {
+  const getCsvData = (csvData) => {
+    if (isStrictlyArray(csvData)) {
       return null;
     }
-    const heading = Object.keys(data[0]).join(',');
-    const body = data.map((j) => Object.values(j).join(',')).join('\n');
+    const heading = Object.keys(csvData[0]).join(',');
+    const body = csvData.map((j) => Object.values(j).join(',')).join('\n');
     return `${heading}\n${body}`;
   };
 
   const [isOpen, open, close] = useToggle(false);
 
-  const handleClick = () => {
-    setButtonState('pending');
-    const blob = new Blob([getCsvData()], {
-      type: 'text/csv',
+  const handleClick = async () => {
+    fetchData().then((response) => {
+      setButtonState('pending');
+      const blob = new Blob([getCsvData(response.data.results)], {
+        type: 'text/csv',
+      });
+      saveAs(blob, getCsvFileName());
+      open();
+      setButtonState('complete');
+    }).catch((err) => {
+      logError(err);
     });
-    saveAs(blob, getCsvFileName());
-    open();
-    setButtonState('complete');
   };
 
   const toastText = 'Downloaded. Note that download is a snapshot in time and does not auto update with new errors.';
@@ -75,7 +80,7 @@ function DownloadCsvButton({ data, testId }) {
       />
     </>
   );
-}
+};
 
 DownloadCsvButton.defaultProps = {
   data: null,
@@ -91,6 +96,7 @@ DownloadCsvButton.propTypes = {
       sync_status: PropTypes.string,
     }),
   ),
+  fetchData: PropTypes.func.isRequired,
   testId: PropTypes.string,
 };
 

@@ -87,13 +87,13 @@ const handleTableColumns = (searchQuery) => {
   return tableColumns;
 };
 
-function CodeSearchResultsTable({
+const CodeSearchResultsTable = ({
   searchQuery,
   shouldRefreshTable,
   onRemindSuccess,
   onRevokeSuccess,
   location,
-}) {
+}) => {
   const queryParams = new URLSearchParams(location.search);
   const formatSearchResultsData = (results) => {
     const transformedSearchResults = transformSearchResults(results);
@@ -160,7 +160,7 @@ function CodeSearchResultsTable({
       formatData={formatSearchResultsData}
     />
   );
-}
+};
 
 CodeSearchResultsTable.propTypes = {
   searchQuery: PropTypes.string.isRequired,

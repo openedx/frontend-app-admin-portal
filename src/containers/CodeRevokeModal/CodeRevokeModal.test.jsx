@@ -78,21 +78,19 @@ const codeRevokeRequestData = (numCodes) => {
   };
 };
 
-function CodeRevokeModalWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={props.store}>
-        <CodeRevokeModal
-          couponId={couponId}
-          title={couponTitle}
-          onClose={() => {}}
-          onSuccess={() => {}}
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const CodeRevokeModalWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={props.store}>
+      <CodeRevokeModal
+        couponId={couponId}
+        title={couponTitle}
+        onClose={() => {}}
+        onSuccess={() => {}}
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 const store = mockStore({ ...initialState });
 CodeRevokeModalWrapper.defaultProps = {

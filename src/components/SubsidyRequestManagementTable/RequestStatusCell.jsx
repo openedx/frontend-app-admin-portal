@@ -4,7 +4,7 @@ import { Badge } from '@edx/paragon';
 
 import { capitalizeFirstLetter } from '../../utils';
 
-function RequestStatusCell({ row }) {
+const RequestStatusCell = ({ row }) => {
   const { requestStatus } = row.original;
 
   const variant = useMemo(
@@ -24,7 +24,7 @@ function RequestStatusCell({ row }) {
       {capitalizeFirstLetter(row.original.requestStatus)}
     </Badge>
   );
-}
+};
 
 RequestStatusCell.propTypes = {
   row: PropTypes.shape({

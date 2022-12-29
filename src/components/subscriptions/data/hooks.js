@@ -69,8 +69,7 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
     loadCustomerAgreementData();
   }, [loadCustomerAgreementData]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(loadCustomerAgreementData, [enterpriseId]);
+  useEffect(loadCustomerAgreementData, [loadCustomerAgreementData]);
 
   return {
     subscriptions,

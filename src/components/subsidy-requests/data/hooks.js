@@ -57,20 +57,21 @@ export const useSubsidyRequestConfiguration = ({
     }
   }, [enterpriseId]);
 
-  const loadSubsidyRequestConfiguration = useCallback(async (
-    { clearCacheEntry = false } = { clearCacheEntry: false },
-  ) => {
-    try {
-      const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(
-        { enterpriseId, clearCacheEntry },
-      );
-      const customerConfiguration = camelCaseObject(response.data);
-      setSubsidyRequestConfiguration(customerConfiguration);
-    } catch (error) {
-      logError(error);
-      throw error;
-    }
-  }, [enterpriseId]);
+  const loadSubsidyRequestConfiguration = useCallback(
+    async ({ clearCacheEntry = false } = { clearCacheEntry: false }) => {
+      try {
+        const response = await EnterpriseAccessApiService.getSubsidyRequestConfiguration(
+          { enterpriseId, clearCacheEntry },
+        );
+        const customerConfiguration = camelCaseObject(response.data);
+        setSubsidyRequestConfiguration(customerConfiguration);
+      } catch (error) {
+        logError(error);
+        throw error;
+      }
+    },
+    [enterpriseId],
+  );
 
   useEffect(() => {
     if (!enterpriseId) {

@@ -34,9 +34,9 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
  * @param {function} args.onSuccess handler for successful enrollment
  * @returns Modal dialog from Paragon
  */
-function BulkEnrollStepper({
+const BulkEnrollStepper = ({
   enterpriseId, enterpriseSlug, subscription, isOpen, onClose, onSuccess,
-}) {
+}) => {
   const steps = [ADD_COURSES_STEP, REVIEW_STEP];
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
@@ -45,6 +45,7 @@ function BulkEnrollStepper({
     onClose();
     onSuccess();
   };
+
   return (
     <Stepper activeKey={currentStep}>
       <ModalDialog
@@ -107,7 +108,7 @@ function BulkEnrollStepper({
       </ModalDialog>
     </Stepper>
   );
-}
+};
 
 BulkEnrollStepper.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

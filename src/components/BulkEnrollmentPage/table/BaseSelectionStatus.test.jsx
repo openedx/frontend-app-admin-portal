@@ -4,86 +4,73 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { DataTableContext } from '@edx/paragon';
 import userEvent from '@testing-library/user-event';
-import BaseSelectionStatus from './BaseSelectionStatus';
-import { clearSelectionAction, setSelectedRowsAction } from '../data/actions';
 
-const selectedRows = [{ id: 'foo' }, { id: 'bar' }];
+import BaseSelectionStatus from './BaseSelectionStatus';
+
+const mockToggleAllRowsSelected = jest.fn();
+
 const defaultProps = {
   className: 'classy',
   selectedRows: [],
-  dispatch: jest.fn(),
 };
-
 const defaultDataTableInfo = {
   itemCount: 3,
-  rows: [{ id: 'foo' }, { id: 'bar' }, { id: 'baz' }],
+  page: [
+    { id: 'foo', isSelected: false },
+    { id: 'bar', isSelected: false },
+    { id: 'baz', isSelected: false },
+  ],
+  toggleAllRowsSelected: mockToggleAllRowsSelected,
 };
-function SelectionStatusWrapper({ dataTableInfo, ...props }) {
-  return (
-    <DataTableContext.Provider value={dataTableInfo}>
-      <BaseSelectionStatus {...props} />
-    </DataTableContext.Provider>
-  );
-}
+
+const selectedRows = [
+  { id: 'foo', values: { aggregationKey: 'foo' } },
+  { id: 'bar', values: { aggregationKey: 'bar' } },
+];
+const dataTableInfoWithSelections = {
+  ...defaultDataTableInfo,
+  page: defaultDataTableInfo.page.map((row) => {
+    if (selectedRows.find(selectedRow => selectedRow.id === row.id)) {
+      return {
+        ...row,
+        isSelected: true,
+      };
+    }
+    return row;
+  }),
+};
+
+const SelectionStatusWrapper = ({ dataTableInfo, ...props }) => (
+  <DataTableContext.Provider value={dataTableInfo}>
+    <BaseSelectionStatus {...props} />
+  </DataTableContext.Provider>
+);
 
 describe('BaseSelectionStatus', () => {
   beforeEach(() => {
-    defaultProps.dispatch.mockClear();
-  });
-  it('shows select all text when no rows are selected', () => {
-    render(<SelectionStatusWrapper dataTableInfo={defaultDataTableInfo} {...defaultProps} />);
-    expect(screen.getByText('Select 3')).toBeInTheDocument();
-  });
-  it('selects all when select all is clicked', () => {
-    render(<SelectionStatusWrapper dataTableInfo={defaultDataTableInfo} {...defaultProps} />);
-    const button = screen.getByText('Select 3');
-    userEvent.click(button);
-    expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
-    expect(defaultProps.dispatch).toHaveBeenCalledWith(setSelectedRowsAction(defaultDataTableInfo.rows));
-  });
-  it('shows both buttons when there are some selected rows', () => {
-    render(<SelectionStatusWrapper
-      dataTableInfo={defaultDataTableInfo}
-      {...defaultProps}
-      selectedRows={selectedRows}
-    />);
-    expect(screen.getByText('Select 3')).toBeInTheDocument();
-    expect(screen.getByText('Clear selection')).toBeInTheDocument();
+    jest.clearAllMocks();
   });
   it('shows selection status when some rows are selected', () => {
     render(<SelectionStatusWrapper
+      dataTableInfo={dataTableInfoWithSelections}
+      {...defaultProps}
+      selectedRows={selectedRows}
+    />);
+    const expectedSelectionsOnPage = dataTableInfoWithSelections.page.filter(r => r.isSelected).length;
+    expect(screen.getByText(
+      `${selectedRows.length} selected (${expectedSelectionsOnPage} shown below)`,
+      { exact: false },
+    )).toBeInTheDocument();
+  });
+  it('handle clearing of selections', () => {
+    render(<SelectionStatusWrapper
       dataTableInfo={defaultDataTableInfo}
       {...defaultProps}
       selectedRows={selectedRows}
     />);
-    expect(screen.getByText(`${selectedRows.length} selected`)).toBeInTheDocument();
-  });
-  it('shows clear all text when all rows are selected', () => {
-    render(<SelectionStatusWrapper
-      dataTableInfo={defaultDataTableInfo}
-      {...defaultProps}
-      selectedRows={defaultDataTableInfo.rows}
-    />);
-    expect(screen.getByText('Clear selection')).toBeInTheDocument();
-    expect(screen.queryByText('Select 3')).not.toBeInTheDocument();
-  });
-  it('clears all selections when clear all is clicked', () => {
-    render(<SelectionStatusWrapper
-      dataTableInfo={defaultDataTableInfo}
-      {...defaultProps}
-      selectedRows={defaultDataTableInfo.rows}
-    />);
-    const button = screen.getByText('Clear selection');
-    userEvent.click(button);
-    expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
-    expect(defaultProps.dispatch).toHaveBeenCalledWith(clearSelectionAction());
-  });
-  it('shows all selected text if all rows are selected', () => {
-    render(<SelectionStatusWrapper
-      dataTableInfo={{ ...defaultDataTableInfo }}
-      {...defaultProps}
-      selectedRows={defaultDataTableInfo.rows}
-    />);
-    expect(screen.getByText(`${defaultDataTableInfo.rows.length} selected`)).toBeInTheDocument();
+    const clearSelection = screen.getByText('Clear selection');
+    expect(clearSelection).toBeInTheDocument();
+    userEvent.click(clearSelection);
+    expect(mockToggleAllRowsSelected).toHaveBeenCalledTimes(1);
   });
 });

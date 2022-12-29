@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
@@ -23,20 +23,19 @@ const mockSubscription = {
 };
 const mockSubsidyRequestConfiguration = {};
 
-function LicenseAllocationHeaderWrapper({
-  subscription = mockSubscription,
-  subsidyRequestConfiguration = mockSubsidyRequestConfiguration,
-}) {
-  const detailContextValue = useMemo(() => ({ subscription }), [subscription]);
-  const requestContextValue = useMemo(() => ({ subsidyRequestConfiguration }), [subsidyRequestConfiguration]);
-  return (
-    <SubscriptionDetailContext.Provider value={detailContextValue}>
-      <SubsidyRequestsContext.Provider value={requestContextValue}>
-        <LicenseAllocationHeader />
-      </SubsidyRequestsContext.Provider>
-    </SubscriptionDetailContext.Provider>
-  );
-}
+const defaultSubscriptionDetailContextValue = { subscription: mockSubscription };
+const defaultSubsidyRequestContextValue = { subsidyRequestConfiguration: mockSubsidyRequestConfiguration };
+
+const LicenseAllocationHeaderWrapper = ({
+  initialSubscriptionDetailContextValue = defaultSubscriptionDetailContextValue,
+  initialSubsidyRequestContextValue = defaultSubsidyRequestContextValue,
+}) => (
+  <SubscriptionDetailContext.Provider value={initialSubscriptionDetailContextValue}>
+    <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
+      <LicenseAllocationHeader />
+    </SubsidyRequestsContext.Provider>
+  </SubscriptionDetailContext.Provider>
+);
 
 describe('<LicenseAllocationHeader />', () => {
   it('should render license allocation', () => {
@@ -67,7 +66,11 @@ describe('<LicenseAllocationHeader />', () => {
       shouldShowAlert: false,
     },
   ])('should render browse and request feature alert correctly', ({ subsidyRequestConfiguration, shouldShowAlert }) => {
-    render(<LicenseAllocationHeaderWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
+    render(
+      <LicenseAllocationHeaderWrapper
+        initialSubsidyRequestContextValue={{ subsidyRequestConfiguration }}
+      />,
+    );
 
     if (shouldShowAlert) {
       expect(screen.getByText(BNR_NEW_FEATURE_ALERT_TEXT));

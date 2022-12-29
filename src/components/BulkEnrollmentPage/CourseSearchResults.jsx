@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useContext,
   useMemo,
 } from 'react';
@@ -12,7 +13,9 @@ import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCe
 import { BulkEnrollContext } from './BulkEnrollmentContext';
 
 import BaseSelectionStatus from './table/BaseSelectionStatus';
-import { BaseSelectWithContext, BaseSelectWithContextHeader } from './table/BulkEnrollSelect';
+import { BaseSelectWithContext } from './table/BulkEnrollSelect';
+import { NUM_CONTENT_ITEMS_PER_PAGE } from './stepper/constants';
+import { setSelectedRowsAction } from './data/actions';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -24,28 +27,32 @@ export const TABLE_HEADERS = {
   enroll: '',
 };
 
-function AddCoursesSelectionStatus(props) {
+const AddCoursesSelectionStatus = (props) => {
   const { courses: [selectedCourses, dispatch] } = useContext(BulkEnrollContext);
 
   return <BaseSelectionStatus selectedRows={selectedCourses} dispatch={dispatch} {...props} />;
-}
+};
 
-function SelectWithContext(props) {
-  return <BaseSelectWithContext contextKey="courses" {...props} />;
-}
-
-function SelectWithContextHeader(props) {
-  return <BaseSelectWithContextHeader contextKey="courses" {...props} />;
-}
+const SelectWithContext = (props) => <BaseSelectWithContext contextKey="courses" {...props} />;
 
 const selectColumn = {
   id: 'selection',
-  Header: SelectWithContextHeader,
+  Header: () => null,
   Cell: SelectWithContext,
   disableSortBy: true,
 };
 
-export function BaseCourseSearchResults(props) {
+export const TitleCell = ({
+  value, row, enterpriseSlug,
+}) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />;
+
+TitleCell.propTypes = {
+  value: PropTypes.string.isRequired,
+  row: PropTypes.shape().isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+export const BaseCourseSearchResults = (props) => {
   const {
     searchResults,
     // algolia recommends this prop instead of searching
@@ -57,16 +64,15 @@ export function BaseCourseSearchResults(props) {
 
   const { refinements } = useContext(SearchContext);
 
-  const courseNameCell = (value, row) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />;
-
-  const formattedDateCell = (value) => <FormattedDateCell startValue={value.start} endValue={value.end} />;
-
-  const columns = [
-    selectColumn,
+  const columns = useMemo(() => [
     {
       Header: TABLE_HEADERS.courseName,
       accessor: 'title',
-      Cell: ({ value, row }) => courseNameCell(value, row),
+      /* eslint-disable react/prop-types */
+      /* eslint-disable react/no-unstable-nested-components */
+      Cell: ({ value, row }) => <CourseNameCell value={value} row={row} enterpriseSlug={enterpriseSlug} />,
+      /* eslint-enable react/prop-types */
+      /* eslint-enable react/no-unstable-nested-components */
     },
     {
       Header: TABLE_HEADERS.partnerName,
@@ -75,9 +81,13 @@ export function BaseCourseSearchResults(props) {
     {
       Header: TABLE_HEADERS.courseAvailability,
       accessor: 'advertised_course_run',
-      Cell: ({ value }) => formattedDateCell(value),
+      /* eslint-disable react/prop-types */
+      /* eslint-disable react/no-unstable-nested-components */
+      Cell: ({ value }) => <FormattedDateCell startValue={value.start} endValue={value.end} />,
+      /* eslint-enable react/prop-types */
+      /* eslint-enable react/no-unstable-nested-components */
     },
-  ];
+  ], [enterpriseSlug]);
 
   const page = useMemo(
     () => {
@@ -89,7 +99,31 @@ export function BaseCourseSearchResults(props) {
     [searchState, refinements],
   );
 
-  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
+  const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
+  const transformedSelectedRowIds = useMemo(
+    () => {
+      const selectedRowIds = {};
+      selectedCourses.forEach((row) => {
+        selectedRowIds[row.id] = true;
+      });
+      return selectedRowIds;
+    },
+    [selectedCourses],
+  );
+
+  const onSelectedRowsChanged = useCallback(
+    (selectedRowIds) => {
+      const selectedFlatRowIds = Object.keys(selectedRowIds).map(selectedRowId => selectedRowId);
+      const transformedSelectedFlatRowIds = selectedFlatRowIds.map(rowId => ({
+        id: rowId,
+        values: {
+          aggregationKey: rowId,
+        },
+      }));
+      coursesDispatch(setSelectedRowsAction(transformedSelectedFlatRowIds));
+    },
+    [coursesDispatch],
+  );
 
   if (isSearchStalled) {
     return (
@@ -125,12 +159,19 @@ export function BaseCourseSearchResults(props) {
         columns={columns}
         data={searchResults?.hits || []}
         itemCount={searchResults?.nbHits}
+        isSelectable
+        isPaginated
+        manualSelectColumn={selectColumn}
+        onSelectedRowsChanged={onSelectedRowsChanged}
         SelectionStatusComponent={AddCoursesSelectionStatus}
         pageCount={searchResults?.nbPages || 1}
-        pageSize={searchResults?.hitsPerPage || 0}
-        selectedFlatRows={selectedCourses}
+        initialState={{
+          pageIndex: 0,
+          pageSize: NUM_CONTENT_ITEMS_PER_PAGE,
+          selectedRowIds: transformedSelectedRowIds,
+        }}
         initialTableOptions={{
-          getRowId: (row) => row.key,
+          getRowId: row => row.aggregation_key,
         }}
       >
         <DataTable.TableControlBar />
@@ -142,7 +183,7 @@ export function BaseCourseSearchResults(props) {
       </DataTable>
     </div>
   );
-}
+};
 
 BaseCourseSearchResults.defaultProps = {
   searchResults: { nbHits: 0, hits: [] },

@@ -3,25 +3,23 @@ import PropTypes from 'prop-types';
 
 import { Form } from '@edx/paragon';
 
-function CouponFilters({
+const CouponFilters = ({
   selectedToggle, tableFilterSelectOptions, isTableLoading, handleToggleSelect,
-}) {
-  return (
-    <Form.Group controlId="codeStatus" name="table-view">
-      <Form.Control
-        floatingLabel="Filter by code status"
-        as="select"
-        onChange={(e) => handleToggleSelect(e.target.value)}
-        disabled={isTableLoading}
-        value={selectedToggle}
-      >
-        {tableFilterSelectOptions.map(
-          ({ label, value, disabled }) => <option key={value} value={value} disabled={disabled}>{label}</option>,
-        )}
-      </Form.Control>
-    </Form.Group>
-  );
-}
+}) => (
+  <Form.Group controlId="codeStatus" name="table-view">
+    <Form.Control
+      floatingLabel="Filter by code status"
+      as="select"
+      onChange={(e) => handleToggleSelect(e.target.value)}
+      disabled={isTableLoading}
+      value={selectedToggle}
+    >
+      {tableFilterSelectOptions.map(
+        ({ label, value, disabled }) => <option key={value} value={value} disabled={disabled}>{label}</option>,
+      )}
+    </Form.Control>
+  </Form.Group>
+);
 
 CouponFilters.propTypes = {
   selectedToggle: PropTypes.string.isRequired,

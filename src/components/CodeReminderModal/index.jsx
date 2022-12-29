@@ -226,10 +226,8 @@ export class BaseCodeReminderModal extends React.Component {
             className="code-remind-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            <>
-              {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              Remind
-            </>
+            {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            Remind
           </Button>,
           <SaveTemplateButton
             key="save-remind-template-btn"

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, ValidationFormGroup } from '@edx/paragon';
 
-function ReduxFormCheckbox(props) {
+const ReduxFormCheckbox = (props) => {
   const {
     id,
     label,
@@ -26,7 +26,7 @@ function ReduxFormCheckbox(props) {
       />
     </ValidationFormGroup>
   );
-}
+};
 
 ReduxFormCheckbox.defaultProps = {
   helptext: null,

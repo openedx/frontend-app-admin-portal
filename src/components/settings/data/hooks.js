@@ -54,7 +54,6 @@ export const useLinkManagement = (enterpriseUUID) => {
     };
   }, [enterpriseUUID]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(loadLinks, []);
 
   return {
@@ -159,6 +158,9 @@ export const useStylesForCustomBrandColors = (branding) => {
       }
       .border-brand-primary {
         border-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .color-brand-tertiary {
+        color: ${brandColors.tertiary.regular.hex()} !important;
       }
     `),
   });

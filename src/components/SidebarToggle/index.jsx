@@ -5,7 +5,7 @@ import { Close, Menu } from '@edx/paragon/icons';
 
 import './SidebarToggle.scss';
 
-function SidebarToggle(props) {
+const SidebarToggle = (props) => {
   const {
     isExpandedByToggle,
     expandSidebar,
@@ -27,7 +27,7 @@ function SidebarToggle(props) {
       </span>
     </Button>
   );
-}
+};
 
 SidebarToggle.propTypes = {
   expandSidebar: PropTypes.func.isRequired,

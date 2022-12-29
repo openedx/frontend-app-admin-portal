@@ -6,7 +6,7 @@ import { SCHOLAR_THEME } from '../settings/data/constants';
 
 import { configuration } from '../../config';
 
-function Hero({ title, enterpriseBranding }) {
+const Hero = ({ title, enterpriseBranding }) => {
   const edxWhiteSemiTransparentLogo = configuration.LOGO_WHITE_URL;
   const edxLogoDark = configuration.LOGO_URL;
 
@@ -23,7 +23,7 @@ function Hero({ title, enterpriseBranding }) {
       </div>
     </div>
   );
-}
+};
 
 Hero.defaultProps = {
   enterpriseBranding: {

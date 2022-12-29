@@ -7,20 +7,18 @@ import NumberCard from './index';
 
 const getNumberCard = wrapper => wrapper.find('NumberCard');
 
-function NumberCardWrapper(props) {
-  return (
-    <MemoryRouter>
-      <NumberCard
-        id="test-id"
-        className="test-class"
-        title={10}
-        description="This describes the data!"
-        iconClassName="fa fa-users"
-        {...props}
-      />
-    </MemoryRouter>
-  );
-}
+const NumberCardWrapper = (props) => (
+  <MemoryRouter>
+    <NumberCard
+      id="test-id"
+      className="test-class"
+      title={10}
+      description="This describes the data!"
+      iconClassName="fa fa-users"
+      {...props}
+    />
+  </MemoryRouter>
+);
 
 describe('<NumberCard />', () => {
   let wrapper;
@@ -82,12 +80,6 @@ describe('<NumberCard />', () => {
 
       wrapper.setProps({ detailsExpanded: false });
       expect(getNumberCard(wrapper).find('.details-btn-text').text()).toEqual('Details');
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
-    });
-
-    it('closeDetails closes the detail actions', () => {
-      wrapper.setProps({ detailsExpanded: true });
-      getNumberCard(wrapper).instance().closeDetails();
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
     });
 

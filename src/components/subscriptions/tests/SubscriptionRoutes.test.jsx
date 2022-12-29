@@ -17,21 +17,21 @@ const NOT_FOUND_MOCK_CONTENT = 'not found';
 
 jest.mock(
   '../SubscriptionTabs',
-  () => function () {
+  () => function SubscriptionTabs() {
     return <div>{SUBSCRIPTION_TABS_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../../NotFoundPage',
-  () => function () {
+  () => function NotFoundPage() {
     return <div>{NOT_FOUND_MOCK_CONTENT}</div>;
   },
 );
 
 jest.mock(
   '../SubscriptionPlanRoutes',
-  () => function () {
+  () => function SubscriptionPlanRoutes() {
     return <div>{SUBSCRIPTION_PLAN_ROUTES_MOCK_CONTENT}</div>;
   },
 );
@@ -50,21 +50,19 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
-function SubscriptionRoutesWithRouter({
+const SubscriptionRoutesWithRouter = ({
   store: storeProp,
   initialEntries,
   routePath,
-}) {
-  return (
-    <MemoryRouter initialEntries={initialEntries}>
-      <Provider store={storeProp}>
-        <Route path={routePath}>
-          <SubscriptionRoutes />
-        </Route>
-      </Provider>
-    </MemoryRouter>
-  );
-}
+}) => (
+  <MemoryRouter initialEntries={initialEntries}>
+    <Provider store={storeProp}>
+      <Route path={routePath}>
+        <SubscriptionRoutes />
+      </Route>
+    </Provider>
+  </MemoryRouter>
+);
 
 SubscriptionRoutesWithRouter.propTypes = {
   store: PropTypes.shape(),

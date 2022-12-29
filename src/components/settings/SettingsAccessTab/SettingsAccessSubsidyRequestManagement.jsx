@@ -7,11 +7,11 @@ import {
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 
-function SettingsAccessSubsidyRequestManagement({
+const SettingsAccessSubsidyRequestManagement = ({
   subsidyRequestConfiguration,
   updateSubsidyRequestConfiguration,
   disabled,
-}) {
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isInitiallyDisabled, setIsInitiallyDisabled] = useState(disabled);
@@ -68,7 +68,7 @@ function SettingsAccessSubsidyRequestManagement({
       />
     </>
   );
-}
+};
 
 SettingsAccessSubsidyRequestManagement.propTypes = {
   subsidyRequestConfiguration: PropTypes.shape({

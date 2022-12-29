@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 
-function ActionButtonWithModal({
+const ActionButtonWithModal = ({
   buttonClassName,
   buttonLabel,
   renderModal,
   variant,
   disabled,
-}) {
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
@@ -25,7 +25,7 @@ function ActionButtonWithModal({
       })}
     </>
   );
-}
+};
 
 ActionButtonWithModal.propTypes = {
   buttonLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,

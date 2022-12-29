@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 
 import { deleteSelectedRowAction } from '../data/actions';
 
-function ReviewItem({
+const ReviewItem = ({
   row, accessor, dispatch, altText,
-}) {
+}) => {
   const onClick = () => {
     dispatch(deleteSelectedRowAction(row.id));
   };
@@ -33,7 +33,7 @@ function ReviewItem({
       </Card>
     </li>
   );
-}
+};
 
 ReviewItem.propTypes = {
   /* Selected row from a DataTable instance */

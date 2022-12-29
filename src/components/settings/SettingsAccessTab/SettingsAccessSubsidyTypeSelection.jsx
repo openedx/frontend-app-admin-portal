@@ -7,11 +7,11 @@ import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests
 import ConfirmationModal, { CONFIRM_BUTTON_STATES } from '../../ConfirmationModal';
 import { SUBSIDY_TYPE_LABELS } from '../data/constants';
 
-function SettingsAccessSubsidyTypeSelection({
+const SettingsAccessSubsidyTypeSelection = ({
   subsidyRequestConfiguration,
   updateSubsidyRequestConfiguration,
   subsidyTypes,
-}) {
+}) => {
   const [selectedSubsidyType, setSelectedSubsidyType] = useState(subsidyRequestConfiguration?.subsidyType);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +96,7 @@ function SettingsAccessSubsidyTypeSelection({
       />
     </>
   );
-}
+};
 
 SettingsAccessSubsidyTypeSelection.propTypes = {
   subsidyRequestConfiguration: PropTypes.shape({

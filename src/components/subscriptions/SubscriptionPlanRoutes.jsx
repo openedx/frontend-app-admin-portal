@@ -9,7 +9,7 @@ import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-function SubscriptionPlanRoutes({ enterpriseSlug }) {
+const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
   const multipleSubsCreateActions = (subscription) => {
     const now = moment();
     const isScheduled = now.isBefore(subscription.startDate);
@@ -54,7 +54,7 @@ function SubscriptionPlanRoutes({ enterpriseSlug }) {
       />
     </>
   );
-}
+};
 
 SubscriptionPlanRoutes.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

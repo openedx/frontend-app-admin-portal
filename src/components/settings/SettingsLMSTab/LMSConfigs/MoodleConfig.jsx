@@ -8,11 +8,11 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 import { snakeCaseDict, urlValidation } from '../../../../utils';
 import ConfigError from '../../ConfigError';
 import ConfigModal from '../ConfigModal';
-import { INVALID_LINK, INVALID_NAME, SUCCESS_LABEL } from '../../data/constants';
+import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 
-function MoodleConfig({
+const MoodleConfig = ({
   enterpriseCustomerUuid, onClick, existingData, existingConfigs,
-}) {
+}) => {
   const [moodleBaseUrl, setMoodleBaseUrl] = React.useState('');
   const [urlValid, setUrlValid] = React.useState(true);
   const [serviceShortName, setServiceShortName] = React.useState('');
@@ -87,7 +87,7 @@ function MoodleConfig({
     if (err) {
       openError();
     } else {
-      onClick(SUCCESS_LABEL);
+      onClick(SUBMIT_TOAST_MESSAGE);
     }
   };
 
@@ -224,7 +224,7 @@ function MoodleConfig({
       </Form>
     </span>
   );
-}
+};
 
 MoodleConfig.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,

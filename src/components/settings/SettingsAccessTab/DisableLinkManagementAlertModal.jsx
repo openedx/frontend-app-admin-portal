@@ -9,13 +9,13 @@ import {
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
 
-function DisableLinkManagementAlertModal({
+const DisableLinkManagementAlertModal = ({
   isOpen,
   onClose,
   onDisable,
   isLoading,
   error,
-}) {
+}) => {
   const modalDisableButtonState = isLoading ? 'pending' : 'default';
 
   const disableButtonProps = {
@@ -52,7 +52,7 @@ function DisableLinkManagementAlertModal({
       </p>
     </AlertModal>
   );
-}
+};
 
 DisableLinkManagementAlertModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

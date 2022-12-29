@@ -8,12 +8,12 @@ import ConfigError from '../ConfigError';
 import ErrorReportingModal from './ErrorReporting/ErrorReportingModal';
 import ExistingCard from './ExistingCard';
 
-function ExistingLMSCardDeck({
+const ExistingLMSCardDeck = ({
   configData,
   editExistingConfig,
   enterpriseCustomerUuid,
   onClick,
-}) {
+}) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
   const [errorReportIsOpen, openReport, closeReport] = useToggle(false);
   const [reportConfig, setReportConfig] = useState();
@@ -113,7 +113,7 @@ function ExistingLMSCardDeck({
       )}
     </span>
   );
-}
+};
 
 ExistingLMSCardDeck.propTypes = {
   onClick: PropTypes.func.isRequired,

@@ -27,17 +27,15 @@ const store = mockStore({
   },
 });
 
-function CompletedLearnersWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={store}>
-        <CompletedLearnersTable
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const CompletedLearnersWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <CompletedLearnersTable
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('CompletedLearnersTable', () => {
   it('renders empty state correctly', () => {

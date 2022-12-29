@@ -11,17 +11,15 @@ import {
   SubscriptionManagementContext,
 } from '../TestUtilities';
 
-function ExpiredModalWithContext({
+const ExpiredModalWithContext = ({
   detailState,
   store,
   isOpen,
-}) {
-  return (
-    <SubscriptionManagementContext detailState={detailState} store={store}>
-      <SubscriptionExpiredModal isOpen={isOpen} onClose={() => {}} />
-    </SubscriptionManagementContext>
-  );
-}
+}) => (
+  <SubscriptionManagementContext detailState={detailState} store={store}>
+    <SubscriptionExpiredModal isOpen={isOpen} onClose={() => {}} />
+  </SubscriptionManagementContext>
+);
 
 ExpiredModalWithContext.propTypes = {
   detailState: PropTypes.shape().isRequired,

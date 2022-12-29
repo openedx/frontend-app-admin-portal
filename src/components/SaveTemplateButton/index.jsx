@@ -175,12 +175,7 @@ SaveTemplateButton.propTypes = {
   saveTemplate: PropTypes.func.isRequired,
   setMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  emailTemplates: PropTypes.shape({
-    allTemplates: PropTypes.shape([]),
-    assign: PropTypes.shape({}),
-    remind: PropTypes.shape({}),
-    revoke: PropTypes.shape({}),
-  }),
+  emailTemplates: PropTypes.shape(),
   disabled: PropTypes.bool,
 };
 

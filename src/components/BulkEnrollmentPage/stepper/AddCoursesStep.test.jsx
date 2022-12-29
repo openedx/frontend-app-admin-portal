@@ -18,13 +18,15 @@ const defaultProps = {
   enterpriseId: 'fancyEnt',
 };
 
-function StepperWrapper(props) {
-  const selectedCourses = [...Array(8).keys()].map(n => `course-${n}`);
+const selectedCourses = [...Array(8).keys()].map(n => `course-${n}`);
+const selectedEmails = [];
+
+const StepperWrapper = (props) => {
   const value = useMemo(() => ({
     courses: [selectedCourses, () => {}],
-    emails: [[], () => {}],
+    emails: [selectedEmails, () => {}],
     subscription: [{}, () => {}],
-  }), [selectedCourses]);
+  }), []);
 
   return (
     <IntlProvider locale="en">
@@ -33,7 +35,7 @@ function StepperWrapper(props) {
       </BulkEnrollContext.Provider>
     </IntlProvider>
   );
-}
+};
 
 describe('AddCoursesStep', () => {
   it('displays a title', () => {

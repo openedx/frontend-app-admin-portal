@@ -7,7 +7,7 @@ import RemindButton from '../RemindButton';
 import RevokeButton from '../RevokeButton';
 import { ACTIONS, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';
 
-function ActionButton({
+const ActionButton = ({
   couponData: {
     id,
     errors,
@@ -18,7 +18,7 @@ function ActionButton({
   code,
   handleCodeActionSuccess,
   setModalState,
-}) {
+}) => {
   const {
     assigned_to: assignedTo,
     is_public: isPublic,
@@ -95,7 +95,7 @@ function ActionButton({
       {ACTIONS.assign.label}
     </Button>
   );
-}
+};
 
 ActionButton.propTypes = {
   couponData: PropTypes.shape({

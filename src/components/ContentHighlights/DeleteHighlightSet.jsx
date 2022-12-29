@@ -18,7 +18,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
-function DeleteHighlightSet({ enterpriseSlug }) {
+const DeleteHighlightSet = ({ enterpriseSlug }) => {
   const { highlightSetUUID } = useParams();
   const [isOpen, open, close] = useToggle(false);
   const [deletionState, setDeletionState] = useState('default');
@@ -31,6 +31,7 @@ function DeleteHighlightSet({ enterpriseSlug }) {
     const deleteHighlightSet = async () => {
       setDeletionState('pending');
       try {
+        dispatch(enterpriseCurationActions.setHighlightToast(highlightSetUUID));
         await EnterpriseCatalogApiService.deleteHighlightSet(highlightSetUUID);
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
         setIsDeleted(true);
@@ -43,15 +44,10 @@ function DeleteHighlightSet({ enterpriseSlug }) {
     };
     deleteHighlightSet();
   };
-
   useEffect(() => {
     if (isDeleted) {
       close();
       history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
-        // TODO: expose the highlight set name here so it can be
-        // displayed in the Toast notification. once ContentHighlights has
-        // a reducer in its context value, we can use that to communicate between
-        // components instead of history's location state.
         deletedHighlightSet: true,
       });
     }
@@ -98,7 +94,7 @@ function DeleteHighlightSet({ enterpriseSlug }) {
       </AlertModal>
     </>
   );
-}
+};
 
 DeleteHighlightSet.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,

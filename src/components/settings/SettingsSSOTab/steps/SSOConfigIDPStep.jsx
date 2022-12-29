@@ -11,7 +11,7 @@ import { SSOConfigContext } from '../SSOConfigContext';
  *    this is done in the backend. However, in this case, we don't yet know the entityId unless we read the file
  *    therefore, we want the user to also enter their entityID
  */
-function SSOConfigIDPStep({ enterpriseId }) {
+const SSOConfigIDPStep = ({ enterpriseId }) => {
   const {
     metadataURL, entityID, handleMetadataURLUpdate, handleEntityIDUpdate,
   } = useIdpState();
@@ -84,7 +84,7 @@ function SSOConfigIDPStep({ enterpriseId }) {
       </div>
     </>
   );
-}
+};
 
 SSOConfigIDPStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

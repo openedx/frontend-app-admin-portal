@@ -184,12 +184,7 @@ class CodeRevokeModal extends React.Component {
           />
           )}
         <div className="assignment-details mb-4">
-          {isBulkRevoke && (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
-            <>
-              {data.selectedCodes.length > 0 && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
-            </>
-          )}
+          {(isBulkRevoke && data.selectedCodes.length > 0) && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>
               <p className="code">{displayCode(data.code)}</p>
@@ -245,10 +240,8 @@ class CodeRevokeModal extends React.Component {
             className="code-revoke-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            <>
-              {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              Revoke
-            </>
+            {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            Revoke
           </Button>,
           <SaveTemplateButton
             key="save-revoke-template-btn"

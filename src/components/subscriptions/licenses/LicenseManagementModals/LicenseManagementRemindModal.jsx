@@ -48,7 +48,7 @@ const generateRemindModalSubmitLabel = (totalToRemind) => {
   };
 };
 
-function LicenseManagementRemindModal({
+const LicenseManagementRemindModal = ({
   isOpen,
   onClose,
   onSuccess,
@@ -59,7 +59,7 @@ function LicenseManagementRemindModal({
   totalToRemind,
   contactEmail,
   activeFilters,
-}) {
+}) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail));
@@ -226,7 +226,7 @@ function LicenseManagementRemindModal({
       </ModalDialog.Footer>
     </ModalDialog>
   );
-}
+};
 
 LicenseManagementRemindModal.defaultProps = {
   remindAllUsers: false,

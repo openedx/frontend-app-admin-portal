@@ -7,7 +7,7 @@ import {
 import { BULK_ACTION, COUPON_FILTERS, COUPON_FILTER_TYPES } from './constants';
 import { getBASelectOptions, getFirstNonDisabledOption } from './helpers';
 
-function CouponBulkActions({
+const CouponBulkActions = ({
   handleBulkAction,
   selectedToggle,
   numSelectedCodes,
@@ -15,7 +15,7 @@ function CouponBulkActions({
   couponAvailable,
   isTableLoading,
   hasTableData,
-}) {
+}) => {
   const isAssignView = selectedToggle === COUPON_FILTERS.unassigned.value;
   const isRedeemedView = selectedToggle === COUPON_FILTERS.redeemed.value;
 
@@ -74,7 +74,7 @@ function CouponBulkActions({
       </Button>
     </>
   );
-}
+};
 
 CouponBulkActions.propTypes = {
   selectedToggle: PropTypes.oneOf(Object.values(COUPON_FILTER_TYPES)).isRequired,

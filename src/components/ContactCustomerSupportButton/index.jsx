@@ -5,11 +5,11 @@ import classNames from 'classnames';
 
 import { configuration } from '../../config';
 
-function ContactCustomerSupportButton({
+const ContactCustomerSupportButton = ({
   variant,
   children,
   ...rest
-}) {
+}) => {
   const destinationUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
   return (
@@ -22,7 +22,7 @@ function ContactCustomerSupportButton({
       {children}
     </Hyperlink>
   );
-}
+};
 
 ContactCustomerSupportButton.propTypes = {
   children: PropTypes.node,

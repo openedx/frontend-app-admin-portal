@@ -24,8 +24,8 @@ describe('LmsApiService', () => {
     );
 
     expect(axios.patch).toBeCalledWith(
-        `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer/${mockEnterpriseUUID}/`,
-        { slug: 'test-slug' },
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer/${mockEnterpriseUUID}/`,
+      { slug: 'test-slug' },
     );
   });
   test('updateEnterpriseCustomerBranding calls the LMS to update the enterprise customer', () => {
@@ -37,8 +37,8 @@ describe('LmsApiService', () => {
     );
 
     expect(axios.patch).toBeCalledWith(
-        `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-branding/update-branding/${mockEnterpriseUUID}/`,
-        { primary_color: '#A8DABC' },
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-branding/update-branding/${mockEnterpriseUUID}/`,
+      { primary_color: '#A8DABC' },
     );
   });
 });

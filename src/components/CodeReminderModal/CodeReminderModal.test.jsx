@@ -115,18 +115,16 @@ const initialState = {
 };
 
 /* eslint-disable react/prop-types */
-function CodeReminderModalWrapper(props) {
-  return (
-    <MemoryRouter>
-      <Provider store={mockStore(initialState)}>
-        <BaseCodeReminderModal
-          {...initialProps}
-          {...props}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const CodeReminderModalWrapper = (props) => (
+  <MemoryRouter>
+    <Provider store={mockStore(initialState)}>
+      <BaseCodeReminderModal
+        {...initialProps}
+        {...props}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 /* eslint-enable react/prop-types */
 
 describe('CodeReminderModal component', () => {

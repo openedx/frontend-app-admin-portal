@@ -36,37 +36,32 @@ const historyMock = { push: useHistoryPush, location: {}, listen: jest.fn() };
 
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
 
-function NewFeatureAlertBrowseAndRequestWrapper() {
-  return (
-    <Router history={historyMock}>
-      <Provider store={store}>
-        <IntlProvider locale="en">
-          <NewFeatureAlertBrowseAndRequest />
-        </IntlProvider>
-      </Provider>
-    </Router>
-  );
-}
+const NewFeatureAlertBrowseAndRequestWrapper = () => (
+  <Router history={historyMock}>
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <NewFeatureAlertBrowseAndRequest />
+      </IntlProvider>
+    </Provider>
+  </Router>
+);
 
 describe('<NewFeatureAlertBrowseAndRequest/>', () => {
+  beforeEach(() => {
+    global.localStorage.clear();
+    jest.clearAllMocks();
+  });
+
   afterEach(() => { cleanup(); });
 
-  it('if cookie is found, alert is hidden', () => {
-    const cookieName = generateBrowseAndRequestAlertCookieName(ENTERPRISE_ID);
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: `${cookieName}=true`,
-    });
+  it('if localStorage record is found, alert is hidden', () => {
+    const localStorageItemName = generateBrowseAndRequestAlertCookieName(ENTERPRISE_ID);
+    global.localStorage.setItem(localStorageItemName, true);
     render(<NewFeatureAlertBrowseAndRequestWrapper />);
     expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeFalsy();
   });
 
-  it('show alert, if no cookie is found', () => {
-    const wrongCookieName = generateBrowseAndRequestAlertCookieName('foo');
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: `${wrongCookieName}=true`,
-    });
+  it('show alert, if no localStorage record is found', () => {
     render(<NewFeatureAlertBrowseAndRequestWrapper />);
     expect(screen.queryByText(BROWSE_AND_REQUEST_ALERT_TEXT)).toBeTruthy();
   });

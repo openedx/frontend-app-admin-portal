@@ -43,13 +43,11 @@ const initialStore = mockStore({
 });
 
 // eslint-disable-next-line react/prop-types
-function RevokeBulkActionWithProvider({ store = initialStore, ...rest }) {
-  return (
-    <Provider store={store}>
-      <RevokeBulkAction {...rest} />
-    </Provider>
-  );
-}
+const RevokeBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
+  <Provider store={store}>
+    <RevokeBulkAction {...rest} />
+  </Provider>
+);
 
 const mockOnRevokeSuccess = jest.fn();
 const basicProps = {

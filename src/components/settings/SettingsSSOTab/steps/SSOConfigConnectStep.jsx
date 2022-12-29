@@ -8,9 +8,9 @@ import SSOConfigConfiguredCard from '../SSOConfigConfiguredCard';
 import { SSOConfigContext } from '../SSOConfigContext';
 import { createSAMLURLs } from '../utils';
 
-function SSOConfigConnectStep({
+const SSOConfigConnectStep = ({
   enterpriseId, enterpriseSlug, learnerPortalEnabled, setConnectError, setShowValidatedText, showValidatedText,
-}) {
+}) => {
   // When we render this component, we need to re-fetch provider configs and update the store
   // so that we can correctly show latest state of providers
   // also, apply latest version of config to ssoState
@@ -59,7 +59,7 @@ function SSOConfigConnectStep({
       {error && !isLoading && <Alert variant="warning">{error}</Alert>}
     </>
   );
-}
+};
 
 SSOConfigConnectStep.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

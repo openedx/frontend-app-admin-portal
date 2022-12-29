@@ -35,22 +35,20 @@ const store = mockStore({
 });
 
 // eslint-disable-next-line react/prop-types
-function EnterpriseListWrapper({ initialEntries, ...rest }) {
-  return (
-    <MemoryRouter initialEntries={initialEntries}>
-      <Provider store={store}>
-        <EnterpriseList
-          enterpriseList={{
-            results: [],
-          }}
-          searchEnterpriseList={() => {}}
-          clearPortalConfiguration={() => {}}
-          {...rest}
-        />
-      </Provider>
-    </MemoryRouter>
-  );
-}
+const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
+  <MemoryRouter initialEntries={initialEntries}>
+    <Provider store={store}>
+      <EnterpriseList
+        enterpriseList={{
+          results: [],
+        }}
+        searchEnterpriseList={() => {}}
+        clearPortalConfiguration={() => {}}
+        {...rest}
+      />
+    </Provider>
+  </MemoryRouter>
+);
 
 describe('<EnterpriseList />', () => {
   let wrapper;

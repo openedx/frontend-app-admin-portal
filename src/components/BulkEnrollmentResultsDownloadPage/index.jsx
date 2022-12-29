@@ -8,7 +8,7 @@ import { Toast } from '@edx/paragon';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
-function BulkEnrollmentResultsDownloadPage({ enterpriseId }) {
+const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
   const { enterpriseSlug, bulkEnrollmentJobId } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [redirectUrl, setRedirectUrl] = useState(null);
@@ -73,7 +73,7 @@ function BulkEnrollmentResultsDownloadPage({ enterpriseId }) {
   }
   global.location.href = redirectUrl;
   return <h1>redirecting...</h1>;
-}
+};
 
 BulkEnrollmentResultsDownloadPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

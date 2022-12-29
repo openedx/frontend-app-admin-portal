@@ -16,7 +16,7 @@ import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL,
 } from '../../data/constants';
 
-function SSOConfigConfigureStep({
+const SSOConfigConfigureStep = ({
   setConfigValues,
   connectError,
   showExitModal,
@@ -30,7 +30,7 @@ function SSOConfigConfigureStep({
   setConfigNextButtonDisabled,
   isUsingSap,
   setIsUsingSap,
-}) {
+}) => {
   const [nameValid, setNameValid] = React.useState(true);
   const [odataApiRootUrlValid, setOdataApiRootUrlValid] = React.useState(true);
   const [sapsfOauthRootUrlValid, setSapsfOauthRootUrlValid] = React.useState(true);
@@ -516,7 +516,7 @@ function SSOConfigConfigureStep({
       </div>
     </>
   );
-}
+};
 
 SSOConfigConfigureStep.defaultProps = {
   existingConfigData: {

@@ -57,7 +57,7 @@ describe('EnterpriseAccessApiService', () => {
       search: 'edx',
     });
     expect(axios.get).toBeCalledWith(
-          `${enterpriseAccessBaseUrl}/api/v1/license-requests/overview/?enterprise_customer_uuid=${mockEnterpriseUUID}&search=edx`,
+      `${enterpriseAccessBaseUrl}/api/v1/license-requests/overview/?enterprise_customer_uuid=${mockEnterpriseUUID}&search=edx`,
     );
   });
 
@@ -95,15 +95,15 @@ describe('EnterpriseAccessApiService', () => {
       search: 'edx',
     });
     expect(axios.get).toBeCalledWith(
-          `${enterpriseAccessBaseUrl}/api/v1/coupon-code-requests/overview/?enterprise_customer_uuid=${mockEnterpriseUUID}&search=edx`,
+      `${enterpriseAccessBaseUrl}/api/v1/coupon-code-requests/overview/?enterprise_customer_uuid=${mockEnterpriseUUID}&search=edx`,
     );
   });
 
   test('getSubsidyRequestConfiguration calls enterprise-access to fetch subsidy request configuration', () => {
     EnterpriseAccessApiService.getSubsidyRequestConfiguration({ enterpriseId: mockEnterpriseUUID });
     expect(axios.get).toBeCalledWith(
-          `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`,
-          { clearCacheEntry: false },
+      `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`,
+      { clearCacheEntry: false },
     );
   });
 
