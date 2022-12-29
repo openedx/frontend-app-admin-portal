@@ -163,7 +163,7 @@ class ReportingConfigForm extends React.Component {
   renderSelect = data => {
     const { config, reportingConfigTypes } = this.props;
     const { invalidFields } = this.state;
-    const options = data.options.map(userType => (
+    const options = data.options?.map(userType => (
       <option value={userType.value} key={userType.value} hidden={userType.hidden}>
         {userType.label}
       </option>
