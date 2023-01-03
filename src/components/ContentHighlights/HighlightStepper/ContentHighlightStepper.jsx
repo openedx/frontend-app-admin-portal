@@ -22,12 +22,7 @@ import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalo
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
-
-const STEPPER_STEP_LABELS = {
-  CREATE_TITLE: 'Create a title',
-  SELECT_CONTENT: 'Select content',
-  CONFIRM_PUBLISH: 'Confirm and publish',
-};
+import { STEPPER_STEP_LABELS } from '../data/constants';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -230,7 +225,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               <Button
                 variant="tertiary"
                 onClick={() => handleBack()}
-                // onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
               >
                 Back
               </Button>
@@ -249,7 +243,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               <Button
                 variant="tertiary"
                 onClick={() => handleBack()}
-                // onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
               >
                 Back
               </Button>

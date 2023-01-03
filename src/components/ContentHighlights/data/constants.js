@@ -2,6 +2,7 @@
 import { faker } from '@faker-js/faker';
 /* eslint-enable import/no-extraneous-dependencies */
 
+/* START LOCAL TESTING CONSTANTS */
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
 export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
@@ -13,6 +14,7 @@ export const ENABLE_TESTING = (enterpriseId) => {
   }
   return enterpriseId;
 };
+/* END LOCAL TESTING CONSTANTS */
 
 // Base data info for ContentHighlights
 export const CONTENT_HIGHLIGHTS_BASE_DATA = (enterpriseId, title, uuid, e = undefined) => {
@@ -35,6 +37,7 @@ export const CONTENT_HIGHLIGHTS_BASE_DATA = (enterpriseId, title, uuid, e = unde
     enterprise_information: enterpriseInformation,
   };
 };
+
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
   xs: 12,
@@ -42,24 +45,33 @@ export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
   lg: 4,
   xl: 3,
 };
-// Empty Content and Error Messages
-export const DEFAULT_ERROR_MESSAGE = {
-  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
-  // eslint-disable-next-line quotes
-  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
-};
+
+// Max length of highlight title in stepper
+export const MAX_HIGHLIGHT_TITLE_LENGTH = 60;
+
 // Max highlight sets per enteprise curation
 export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 8;
+
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
-// Max length of highlight title in stepper
-export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
+
+// Max number of content items displayed from search results
+export const MAX_PAGE_SIZE = 24;
+
+// Stepper Step Labels
+export const STEPPER_STEP_LABELS = {
+  CREATE_TITLE: 'Create a title',
+  SELECT_CONTENT: 'Select content',
+  CONFIRM_PUBLISH: 'Confirm and publish',
+};
+
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
   createTitle: 'Create a title for your highlight',
   selectContent: 'Add content to your highlight',
   confirmContent: 'Confirm your content selections',
 };
+
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
@@ -68,6 +80,7 @@ export const HEADER_TEXT = {
     maxHighlightsReached: `You have reached the maximum number of highlights (${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION}).`,
   },
 };
+
 // Button text extracted from constant to maintain passing test on changes
 export const BUTTON_TEXT = {
   createNewHighlight: 'New',
@@ -81,6 +94,13 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
+// Empty Content and Error Messages
+export const DEFAULT_ERROR_MESSAGE = {
+  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
+  // eslint-disable-next-line quotes
+  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
+  EXCEEDS_HIGHLIGHT_TITLE_LENGTH: `Titles may only be ${MAX_HIGHLIGHT_TITLE_LENGTH} characters or less`,
+};
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {

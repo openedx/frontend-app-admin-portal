@@ -23,7 +23,7 @@ const ContentHighlightCardItem = ({
   };
   if (href) {
     cardInfo.cardTitle = (
-      <Hyperlink onClick={() => href.onClick()} destination={href.destination} target={href.target}>
+      <Hyperlink onClick={() => href.onClick()} destination={href.destination} target={href.target} data-testid="hyperlink-title">
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
@@ -72,11 +72,7 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
-  href: {
-    destination: undefined,
-    target: undefined,
-    onClick: undefined,
-  },
+  href: undefined,
   cardImageUrl: undefined,
   price: undefined,
 };
