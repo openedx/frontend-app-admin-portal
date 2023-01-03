@@ -286,26 +286,6 @@ describe('<ReportingConfigForm />', () => {
       wrapper.find('select#enterpriseCustomerCatalogs').instance().value,
     ).toEqual('test-enterprise-customer-catalog');
   });
-  it('Submit enterprise uuid upon report config creation', async () => {
-    const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
-    ));
-    const flushPromises = () => new Promise(setImmediate);
-    const formData = new FormData();
-    Object.entries(defaultConfig).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    wrapper.instance().handleSubmit(formData, null);
-    await act(() => flushPromises());
-    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
-  });
   it('handles API response errors correctly.', async () => {
     defaultConfig.pgpEncryptionKey = 'invalid-key';
     const mock = jest.fn();
@@ -341,5 +321,71 @@ describe('<ReportingConfigForm />', () => {
 
     wrapper.instance().handleAPIErrorResponse(null);
     expect(mock).not.toHaveBeenCalled();
+  });
+  it('Submit if PGP key is present and password is empty and delivery method is email', async () => {
+    const config = { ...defaultConfig };
+    config.deliveryMethod = 'email';
+    config.pgpEncryptionKey = 'some-pgp-key';
+    config.encryptedPassword = '';
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={config}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
+    const flushPromises = () => new Promise(setImmediate);
+    const formData = new FormData();
+    Object.entries(config).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    wrapper.instance().handleSubmit(formData, null);
+    await act(() => flushPromises());
+    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
+  });
+  it('Do not Submit if PGP key and password is empty and delivery method is email', async () => {
+    const config = { ...defaultConfig };
+    config.pgpEncryptionKey = '';
+    config.encryptedPassword = '';
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={config}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
+    const formData = new FormData();
+    Object.entries(config).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    wrapper.instance().handleSubmit(formData, null);
+    wrapper.find('.form-control').forEach(input => input.simulate('blur'));
+    expect(wrapper.find('input#encryptedPassword').hasClass('is-invalid')).toBeTruthy();
+  });
+  it('Submit enterprise uuid upon report config creation', async () => {
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={defaultConfig}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
+    const flushPromises = () => new Promise(setImmediate);
+    const formData = new FormData();
+    Object.entries(defaultConfig).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    wrapper.instance().handleSubmit(formData, null);
+    await act(() => flushPromises());
+    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
   });
 });
