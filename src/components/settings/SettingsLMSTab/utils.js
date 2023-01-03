@@ -1,3 +1,5 @@
+import isEmpty from 'lodash/isEmpty';
+
 export default function buttonBool(config) {
   let returnVal = true;
   Object.entries(config).forEach(entry => {
@@ -17,4 +19,16 @@ export const isExistingConfig = (configs, value, existingInput) => {
     }
   }
   return false;
+};
+
+export const getStatus = (config) => {
+  if (!isEmpty(config.isValid[0].missing)
+      || !isEmpty(config.isValid[1].incorrect)) {
+    return 'Incomplete';
+  }
+
+  if (config.active) {
+    return 'Active';
+  }
+  return 'Inactive';
 };

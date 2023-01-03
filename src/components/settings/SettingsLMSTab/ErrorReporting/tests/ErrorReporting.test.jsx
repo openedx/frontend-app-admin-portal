@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, fireEvent, render, screen, waitFor,
+  act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -10,6 +10,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import ExistingLMSCardDeck from '../../ExistingLMSCardDeck';
 import LmsApiService from '../../../../../data/services/LmsApiService';
 import { features } from '../../../../../config';
+import SyncHistory from '../SyncHistory';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
 const mockEditExistingConfigFn = jest.fn();
@@ -20,15 +21,23 @@ jest.mock('file-saver', () => ({ saveAs: jest.fn() }));
 // eslint-disable-next-line func-names
 global.Blob = function (content, options) { return ({ content, options }); };
 
-const configData = [
-  {
+const configData = {
+  data: {
     channelCode: 'BLACKBOARD',
     id: 1,
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: true,
     displayName: 'foobar',
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
-];
+};
+
+// const mockResponse = { data: {$(configData)}};
 
 const contentSyncData = {
   data: {
@@ -201,6 +210,12 @@ const learnerSyncData = {
   status: 200,
   statusText: 'OK',
 };
+const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('<ExistingLMSCardDeck />', () => {
   beforeEach(() => {
@@ -209,21 +224,24 @@ describe('<ExistingLMSCardDeck />', () => {
       administrator: true,
     });
     features.FEATURE_INTEGRATION_REPORTING = true;
+    const url = 'http://dummy.com/test-enterprise/admin/settings/lms/';
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: `${url}/${configData.data.channelCode}/${configData.data.id}`,
+      },
+      writable: true,
+    });
   });
-  it('opens error reporting modal', () => {
+  it('basic lms config detail screen', async () => {
     render(
       <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
+        <SyncHistory />
       </IntlProvider>,
     );
-    userEvent.click(screen.queryByText('View sync history'));
-    expect(screen.getByText('foobar Sync History')).toBeInTheDocument();
-    expect(screen.getAllByText('Course')).toHaveLength(2);
+
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
     expect(screen.getByText('Course key')).toBeInTheDocument();
     expect(screen.getAllByText('Sync status')).toHaveLength(2);
     expect(screen.getAllByText('Sync attempt time')).toHaveLength(2);

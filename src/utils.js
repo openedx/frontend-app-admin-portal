@@ -245,44 +245,51 @@ const channelMapping = {
   [BLACKBOARD_TYPE]: {
     displayName: 'Blackboard',
     icon: BlackboardIcon,
+    get: LmsApiService.fetchSingleBlackboardConfig,
     update: LmsApiService.updateBlackboardConfig,
     delete: LmsApiService.deleteBlackboardConfig,
   },
   [CANVAS_TYPE]: {
     displayName: 'Canvas',
     icon: CanvasIcon,
+    get: LmsApiService.fetchSingleCanvasConfig,
     update: LmsApiService.updateCanvasConfig,
     delete: LmsApiService.deleteCanvasConfig,
   },
   [CORNERSTONE_TYPE]: {
     displayName: 'Cornerstone',
     icon: CornerstoneIcon,
+    get: LmsApiService.fetchSingleCornerstoneConfig,
     update: LmsApiService.updateCornerstoneConfig,
     delete: LmsApiService.deleteCornerstoneConfig,
+  },
+  [DEGREED_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    get: LmsApiService.fetchSingleDegreedConfig,
+    update: LmsApiService.updateDegreedConfig,
+    delete: LmsApiService.deleteDegreedConfig,
+  },
+  [DEGREED2_TYPE]: {
+    displayName: 'Degreed2',
+    icon: DegreedIcon,
+    get: LmsApiService.fetchSingleDegreed2Config,
+    update: LmsApiService.updateDegreed2Config,
+    delete: LmsApiService.deleteDegreed2Config,
   },
   [MOODLE_TYPE]: {
     displayName: 'Moodle',
     icon: MoodleIcon,
+    get: LmsApiService.fetchSingleMoodleConfig,
     update: LmsApiService.updateMoodleConfig,
     delete: LmsApiService.deleteMoodleConfig,
   },
   [SAP_TYPE]: {
     displayName: 'SAP',
     icon: SAPIcon,
+    get: LmsApiService.fetchSingleSuccessFactorsConfig,
     update: LmsApiService.updateSuccessFactorsConfig,
     delete: LmsApiService.deleteSuccessFactorsConfig,
-  },
-  [DEGREED2_TYPE]: {
-    displayName: 'Degreed',
-    icon: DegreedIcon,
-    update: LmsApiService.updateDegreed2Config,
-    delete: LmsApiService.deleteDegreed2Config,
-  },
-  [DEGREED_TYPE]: {
-    displayName: 'Degreed',
-    icon: DegreedIcon,
-    update: LmsApiService.updateDegreedConfig,
-    delete: LmsApiService.deleteDegreedConfig,
   },
 };
 
