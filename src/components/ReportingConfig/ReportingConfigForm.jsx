@@ -33,7 +33,6 @@ const REQUIRED_NEW_SFTP_FEILDS = [
 ];
 const REQUIRED_NEW_EMAIL_FIELDS = [
   ...REQUIRED_EMAIL_FIELDS,
-  'encryptedPassword',
 ];
 const MONTHLY_MAX = 31;
 const MONTHLY_MIN = 1;
@@ -59,6 +58,14 @@ class ReportingConfigForm extends React.Component {
     const invalidFields = requiredFields
       .filter(field => !formData.get(field))
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
+
+    // Password is conditionally required only when pgp key will not be present
+    // and delivery method is email
+    if (!formData.get('pgpEncryptionKey') && formData.get('deliveryMethod') === 'email') {
+      if (!formData.get('encryptedPassword')) {
+        invalidFields.encryptedPassword = true;
+      }
+    }
     return invalidFields;
   };
 

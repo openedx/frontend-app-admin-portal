@@ -26,10 +26,6 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const currentEpoch = Math.round((new Date()).getTime() / 1000);
-// remove before final PR
-// const prodEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
-
 const HighlightStepperSelectContent = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
@@ -42,7 +38,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
     // TODO: replace testEnterpriseId with enterpriseID before push,
     // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
+  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
 
   return (
     <SearchData>

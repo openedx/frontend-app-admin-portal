@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
 export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
 export const ENABLE_TESTING = (enterpriseId) => {
   if (TEST_FLAG) {
@@ -81,7 +81,6 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
-// Test Data for Content Highlights From this point onwards
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
