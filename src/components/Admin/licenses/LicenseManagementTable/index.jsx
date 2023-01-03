@@ -12,7 +12,7 @@ import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
-import { SubscriptionDetailContext, defaultStatusFilter } from '../../../subscriptions/SubscriptionDetailContextProvider';
+import { SubscriptionDetailContext } from '../../../subscriptions/SubscriptionDetailContextProvider';
 import {
   DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
 } from '../../../subscriptions/data/constants';
@@ -44,6 +44,8 @@ const userRecentAction = (user) => {
     }
   }
 };
+
+const defaultLPRStatusFilter = [ASSIGNED, ACTIVATED].join();
 
 const selectColumn = {
   id: 'selection',
@@ -106,7 +108,7 @@ const LicenseManagementTable = () => {
   const updateFilters = useCallback((filters) => {
     if (filters.length < 1) {
       setSearchQuery(null);
-      setUserStatusFilter(defaultStatusFilter);
+      setUserStatusFilter(defaultLPRStatusFilter);
     } else {
       filters.forEach((filter) => {
         switch (filter.id) {
@@ -217,7 +219,6 @@ const LicenseManagementTable = () => {
         initialTableOptions={{
           getRowId: row => row.id,
         }}
-        isSortable
         EmptyTableComponent={
           /* eslint-disable react/no-unstable-nested-components */
           () => {
