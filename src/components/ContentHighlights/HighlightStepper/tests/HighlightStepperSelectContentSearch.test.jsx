@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import userEvent from '@testing-library/user-event';
 import {
   testCourseAggregation,
   testCourseData,
@@ -16,6 +17,13 @@ import { configuration } from '../../../../config';
 import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearch';
 
 const mockStore = configureMockStore([thunk]);
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 const enterpriseId = 'test-enterprise-id';
 const initialState = {
   portalConfiguration:
@@ -95,5 +103,15 @@ describe('HighlightStepperSelectContentSearch', () => {
     );
     expect(screen.getByText(`${mockCourseData.length} selected (${mockCourseData.length} shown below)`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText('Clear selection')).toBeInTheDocument();
+  });
+  test('sends track event on click', async () => {
+    renderWithRouter(
+      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+        <HighlightStepperSelectContent />
+      </HighlightStepperSelectContentSearchWrapper>,
+    );
+    const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
+    userEvent.click(hyperlinkTitle);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

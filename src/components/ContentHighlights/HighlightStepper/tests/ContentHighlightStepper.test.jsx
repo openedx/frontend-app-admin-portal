@@ -13,6 +13,7 @@ import {
   BUTTON_TEXT,
   DEFAULT_ERROR_MESSAGE,
   MAX_HIGHLIGHT_TITLE_LENGTH,
+  STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT,
   STEPPER_STEP_TEXT,
   testCourseAggregation,
   testCourseData,
@@ -206,5 +207,14 @@ describe('<ContentHighlightStepper>', () => {
 
     expect(screen.getByText(`${reallyLongTitleLength}/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).toBeInTheDocument();
+  });
+  it('sends segment event from footer link', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper);
+    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
+    userEvent.click(footerLink);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });

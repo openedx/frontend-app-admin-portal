@@ -8,6 +8,7 @@ import { useContextSelector } from 'use-context-selector';
 import { connect } from 'react-redux';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import EVENT_NAMES from '../../../eventTracking';
+import { STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT } from '../data/constants';
 
 const HighlightStepperFooterHelpLink = ({ enterpriseId }) => {
   const stepperModal = useContextSelector(
@@ -37,7 +38,7 @@ const HighlightStepperFooterHelpLink = ({ enterpriseId }) => {
         destination={process.env.ENTERPRISE_SUPPORT_PROGRAM_OPTIMIZATION_URL}
         className="small"
       >
-        Help Center: Program Optimization
+        {STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT}
       </Hyperlink>
     </div>
   );

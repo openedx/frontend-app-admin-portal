@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 
 /* START LOCAL TESTING CONSTANTS */
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
+// Test will fail as additional check to ensure this is set to false before pushing PR
 export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
@@ -54,7 +55,7 @@ export const STEPPER_STEP_TEXT = {
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
   SUB_TEXT: {
-    maxHighlights: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION}  highlights for your learners.`,
+    maxHighlights: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
     maxHighlightsReached: `You have reached the maximum number of highlights (${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION}).`,
   },
 };
@@ -64,6 +65,9 @@ export const BUTTON_TEXT = {
   createNewHighlight: 'New',
   zeroStateCreateNewHighlight: 'New highlight',
 };
+
+// Button text for stepper help center button
+export const STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT = 'Help Center: Program Optimization';
 
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
@@ -79,6 +83,21 @@ export const DEFAULT_ERROR_MESSAGE = {
   EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
   EXCEEDS_HIGHLIGHT_TITLE_LENGTH: `Titles may only be ${MAX_HIGHLIGHT_TITLE_LENGTH} characters or less`,
 };
+
+// Test Highlight Set
+export const TEST_HIGHLIGHT_SET = {
+  uuid: '8d6503dd-105e-42b8-b1bf-d39ab4981003',
+  isPublished: true,
+  title: 'test123',
+  cardImageUrl: 'https://picsum.photos/360/200',
+  highlightedContentUuids: [
+    '12a2b4c2-6f97-418d-bf5e-bddb91fd63da',
+    '0d05a912-f235-48f7-88f1-b4d59ba2e76b',
+    '9ae53631-ba7a-4260-be75-dba39f123d60',
+    'bff7c78a-ea9b-45b7-9a71-0326a6d5ccb2',
+  ],
+};
+
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {

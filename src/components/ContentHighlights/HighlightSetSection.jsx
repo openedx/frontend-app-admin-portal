@@ -33,7 +33,7 @@ const HighlightSetSection = ({
     );
   };
   return (
-    <div>
+    <div data-testid="highlight-set-section">
       <h3 className="mb-3">{sectionTitle}</h3>
       <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
         {highlightSets.map(({
