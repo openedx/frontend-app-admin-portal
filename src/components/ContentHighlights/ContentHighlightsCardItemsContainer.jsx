@@ -31,7 +31,7 @@ const ContentHighlightsCardItemsContainer = ({
   const trackEvent = (metaData = {}) => {
     const trackInfo = {
       content_metadata: {
-        aggregation_key: `${metaData?.contentType}:${metaData?.contentKey}`,
+        aggregation_key: `${metaData?.aggregationKey}`,
       },
     };
     sendEnterpriseTrackEvent(
@@ -43,7 +43,7 @@ const ContentHighlightsCardItemsContainer = ({
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {highlightedContent.map(({
-        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl,
+        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl, aggregationKey,
       }) => (
         <ContentHighlightCardItem
           isLoading={isLoading}
@@ -58,7 +58,7 @@ const ContentHighlightsCardItemsContainer = ({
                 contentKey,
               }),
               target: '_blank',
-              onClick: () => trackEvent({ contentType, contentKey }),
+              onClick: () => trackEvent({ aggregationKey }),
             }
         }
           contentType={contentType?.toLowerCase()}

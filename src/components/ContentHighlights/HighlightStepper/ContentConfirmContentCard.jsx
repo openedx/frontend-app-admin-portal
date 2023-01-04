@@ -20,8 +20,7 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
     firstEnrollablePaidSeatPrice,
     aggregationKey,
   } = original;
-  const trackEvent = (e) => {
-    e.persist();
+  const trackEvent = () => {
     const trackInfo = {
       content_metadata: {
         aggregation_key: aggregationKey,

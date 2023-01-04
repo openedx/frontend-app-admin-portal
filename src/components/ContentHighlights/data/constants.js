@@ -8,35 +8,13 @@ export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
-export const ENABLE_TESTING = (enterpriseId) => {
-  if (TEST_FLAG) {
+export const ENABLE_TESTING = (enterpriseId, enableTest = TEST_FLAG) => {
+  if (enableTest) {
     return testEnterpriseId;
   }
   return enterpriseId;
 };
 /* END LOCAL TESTING CONSTANTS */
-
-// Base data info for ContentHighlights
-export const CONTENT_HIGHLIGHTS_BASE_DATA = (enterpriseId, title, uuid, e = undefined) => {
-  const enterpriseInformation = {
-    enterprise_id: enterpriseId,
-    enterprise_name: title,
-    enterprise_curation_uuid: uuid,
-  };
-  if (e) {
-    return {
-      enterprise_information: enterpriseInformation,
-      event_information: {
-        event_type: e.nativeEvent.type,
-        event_type_interaction: e.target.type || e.target.localName,
-        event_type_interaction_label: e.target.textContent,
-      },
-    };
-  }
-  return {
-    enterprise_information: enterpriseInformation,
-  };
-};
 
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {

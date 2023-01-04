@@ -16,8 +16,7 @@ const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => 
     originalImageUrl,
     firstEnrollablePaidSeatPrice,
   } = original;
-  const trackEvent = (e) => {
-    e.persist();
+  const trackEvent = () => {
     const trackInfo = {
       content_metadata: {
         aggregation_key: aggregationKey,
