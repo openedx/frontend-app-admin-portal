@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import algoliasearch from 'algoliasearch/lite';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
@@ -20,7 +20,6 @@ import {
 import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
-// import EVENT_NAMES from '../../../../eventTracking';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -51,19 +50,6 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
-// To be used to check if expected data was passed on next
-// const testTrackInfo = {
-//   stepper_modal: {
-//     prev_step: 1,
-//     prev_step_position: STEPPER_STEP_TEXT.createTitle,
-//     current_step: 2,
-//     current_step_position: STEPPER_STEP_TEXT.selectContent,
-//     highlight_title: 'test-title',
-//     current_selected_row_ids: testCourseAggregation,
-//     current_selected_row_ids_length: Object.keys(testCourseAggregation).length,
-//     is_stepper_modal_open: true,
-//   },
-// };
 
 /* eslint-disable react/prop-types */
 const ContentHighlightStepperWrapper = ({
@@ -118,6 +104,10 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('<ContentHighlightStepper>', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('Displays the stepper', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
@@ -130,27 +120,31 @@ describe('<ContentHighlightStepper>', () => {
     // open stepper --> title
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    // expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     // title --> select content
     const nextButton1 = screen.getByText('Next');
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
     userEvent.click(nextButton1);
-    // expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     // select content --> confirm content
     const nextButton2 = screen.getByText('Next');
     userEvent.click(nextButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
     // confirm content --> select content
     const backButton2 = screen.getByText('Back');
     userEvent.click(backButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
     expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
     // select content --> title
     const backButton3 = screen.getByText('Back');
     userEvent.click(backButton3);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(5);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
     // title --> closed stepper
     const backButton4 = screen.getByText('Back');
     userEvent.click(backButton4);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(6);
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and exits on the X button', () => {
@@ -158,10 +152,12 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
