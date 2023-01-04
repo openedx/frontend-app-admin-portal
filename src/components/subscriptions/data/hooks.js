@@ -155,6 +155,8 @@ export const useSubscriptionUsers = ({
   setErrors,
   userStatusFilter,
   isDisabled = false,
+  pageSize,
+  licenseStatusOrdering,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -168,12 +170,13 @@ export const useSubscriptionUsers = ({
       const options = {
         status: userStatusFilter,
         page: currentPage,
+        license_status_lpr_ordering: licenseStatusOrdering,
       };
       if (searchQuery) {
         options.search = searchQuery;
       }
       try {
-        const response = await LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options);
+        const response = await LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID, options, pageSize);
         setSubscriptionUsers(camelCaseObject(response.data));
         setLoadingUsers(false);
       } catch (err) {
@@ -187,7 +190,16 @@ export const useSubscriptionUsers = ({
       }
     };
     fetchUsers();
-  }, [currentPage, errors, searchQuery, setErrors, subscriptionUUID, userStatusFilter]);
+  }, [
+    currentPage,
+    errors,
+    searchQuery,
+    setErrors,
+    subscriptionUUID,
+    userStatusFilter,
+    pageSize,
+    licenseStatusOrdering,
+  ]);
 
   const forceRefresh = useCallback(() => {
     loadSubscriptionUsers();
