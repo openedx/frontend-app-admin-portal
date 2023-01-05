@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ApproveCouponCodeRequestModal } from '../ApproveCouponCodeRequestModal';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import * as hooks from '../data/hooks';
@@ -113,12 +113,12 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
-    fireEvent.click(couponChoiceRadio);
+    userEvent.click(couponChoiceRadio);
 
     const approveBtn = getByTestId('approve-coupon-code-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    fireEvent.click(approveBtn);
+    userEvent.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveCouponCodeRequests).toHaveBeenCalledWith({
@@ -138,12 +138,12 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
-    fireEvent.click(couponChoiceRadio);
+    userEvent.click(couponChoiceRadio);
 
     let approveBtn = getByTestId('approve-coupon-code-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    fireEvent.click(approveBtn);
+    userEvent.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveCouponCodeRequests).toHaveBeenCalledWith({

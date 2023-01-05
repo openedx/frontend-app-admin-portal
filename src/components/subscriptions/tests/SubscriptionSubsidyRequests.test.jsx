@@ -6,11 +6,10 @@ import {
   screen,
   render,
   cleanup,
-  fireEvent,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import '@testing-library/jest-dom/extend-expect';
-
+import userEvent from '@testing-library/user-event';
 import SubscriptionSubsidyRequests from '../SubscriptionSubsidyRequests';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SubscriptionContext } from '../SubscriptionData';
@@ -252,7 +251,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const approveButton = screen.getByText('Approve');
-    fireEvent.click(approveButton);
+    userEvent.click(approveButton);
     expect(screen.getByText('Approve license request modal'));
   });
 
@@ -283,11 +282,11 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const approveButton = screen.getByText('Approve');
-    fireEvent.click(approveButton);
+    userEvent.click(approveButton);
     expect(screen.getByText('Approve license request modal'));
 
     const approveInModalButton = screen.getByText('Approve in modal');
-    fireEvent.click(approveInModalButton);
+    userEvent.click(approveInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
@@ -299,7 +298,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
     render(<SubsidySubsidyRequestsWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    fireEvent.click(declineButton);
+    userEvent.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
   });
 
@@ -307,11 +306,11 @@ describe('<SubscriptionSubsidyRequests />', () => {
     render(<SubsidySubsidyRequestsWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    fireEvent.click(declineButton);
+    userEvent.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
 
     const closeButton = screen.getByText('Close');
-    fireEvent.click(closeButton);
+    userEvent.click(closeButton);
 
     expect(screen.queryByText('Decline license request modal')).not.toBeInTheDocument();
   });
@@ -343,11 +342,11 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const declineButton = screen.getByText('Decline');
-    fireEvent.click(declineButton);
+    userEvent.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
 
     const declineInModalButton = screen.getByText('Decline in modal');
-    fireEvent.click(declineInModalButton);
+    userEvent.click(declineInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
     );
