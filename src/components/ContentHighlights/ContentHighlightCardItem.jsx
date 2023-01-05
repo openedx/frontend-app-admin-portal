@@ -1,36 +1,50 @@
 import React from 'react';
-import { Card } from '@edx/paragon';
+import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { FOOTER_TEXT_BY_CONTENT_TYPE } from './data/constants';
+import { getContentHighlightCardFooter } from './data/utils';
 
 const ContentHighlightCardItem = ({
+  isLoading,
   title,
+  href,
   contentType,
   partners,
   cardImageUrl,
+  price,
 }) => {
-  const cardLogoSrc = partners?.length === 1 ? partners[0].logoImageUrl : undefined;
-  const cardLogoAlt = partners?.length === 1 ? `${partners[0].name}'s logo` : undefined;
-  const cardSubtitle = partners?.map(p => p.name).join(', ');
-
+  const cardInfo = {
+    cardImgSrc: cardImageUrl,
+    cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
+    cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
+    cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
+    cardSubtitle: partners.map(p => p.name).join(', '),
+    cardFooter: getContentHighlightCardFooter({ price, contentType }),
+  };
+  if (href) {
+    cardInfo.cardTitle = (
+      <Hyperlink destination={href} target="_blank">
+        <Truncate lines={3} title={title}>{title}</Truncate>
+      </Hyperlink>
+    );
+  }
   return (
-    <Card>
+    <Card variant={contentType !== 'course' && 'dark'} isLoading={isLoading}>
       <Card.ImageCap
-        src={cardImageUrl}
+        src={cardInfo.cardImgSrc}
         srcAlt=""
-        logoSrc={cardLogoSrc}
-        logoAlt={cardLogoAlt}
+        logoSrc={cardInfo.cardLogoSrc}
+        logoAlt={cardInfo.cardLogoAlt}
       />
       <Card.Header
-        title={<Truncate lines={3} title={title}>{title}</Truncate>}
-        subtitle={<Truncate lines={2} title={cardSubtitle}>{cardSubtitle}</Truncate>}
+        title={cardInfo.cardTitle}
+        subtitle={<Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>}
       />
       {contentType && (
         <>
           <Card.Section />
           <Card.Footer
-            textElement={FOOTER_TEXT_BY_CONTENT_TYPE[contentType.toLowerCase()]}
+            textElement={cardInfo.cardFooter}
           />
         </>
       )}
@@ -39,18 +53,24 @@ const ContentHighlightCardItem = ({
 };
 
 ContentHighlightCardItem.propTypes = {
+  isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
+  href: PropTypes.string,
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     uuid: PropTypes.string,
     logoImageUrl: PropTypes.string,
   })).isRequired,
+  price: PropTypes.number,
 };
 
 ContentHighlightCardItem.defaultProps = {
+  isLoading: false,
+  href: undefined,
   cardImageUrl: undefined,
+  price: undefined,
 };
 
 export default ContentHighlightCardItem;

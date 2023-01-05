@@ -1,4 +1,5 @@
 export const PAGE_SIZE = 20;
+export const LPR_SUBSCRIPTION_PAGE_SIZE = 5;
 
 // Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';

@@ -3,7 +3,7 @@ import {
   render, fireEvent, screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import userEvent from '@testing-library/user-event';
 import CornerstoneConfig from '../LMSConfigs/CornerstoneConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -96,7 +96,7 @@ describe('<CornerstoneConfig />', () => {
       target: { value: 'https://www.test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
-    fireEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       cornerstone_base_url: 'https://www.test1.com',
@@ -121,7 +121,7 @@ describe('<CornerstoneConfig />', () => {
       target: { value: 'https://www.test1.com' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
-    fireEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
@@ -143,8 +143,8 @@ describe('<CornerstoneConfig />', () => {
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
-    fireEvent.click(screen.getByText('Cancel'));
-    fireEvent.click(screen.getByText('Save'));
+    userEvent.click(screen.getByText('Cancel'));
+    userEvent.click(screen.getByText('Save'));
     const expectedConfig = {
       active: false,
       display_name: 'displayName',
