@@ -15,7 +15,7 @@ import {
   DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
 } from '../../data/constants';
 
-import { channelMapping, formatTimestamp } from '../../../../utils';
+import { channelMapping } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
 
 const SyncHistory = () => {
@@ -32,7 +32,6 @@ const SyncHistory = () => {
   const [toastMessage, setToastMessage] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
 
-  const getTimeStamp = () => `Created ${formatTimestamp({ timestamp: config.created })}`;
   const getActiveStatus = status => (status === 'Active' ? `${status} •` : '');
 
   useEffect(() => {
@@ -73,7 +72,7 @@ const SyncHistory = () => {
       const timeStamp = getTimeAgo(config.lastSyncErroredAt);
       return (
         <Card.Status icon={Sync} variant="danger">
-          <span className="d-flex h4">Recent Sync Error:&nbsp; {timeStamp}
+          <span className="d-flex h4">Recent sync error:&nbsp; {timeStamp}
             <Icon src={Error} className="ml-2" />
           </span>
         </Card.Status>
@@ -184,17 +183,17 @@ const SyncHistory = () => {
         close={closeError}
         configTextOverride={errorModalText}
       />
-      <Breadcrumb
-        links={[
-          { label: 'Learning Platform', url: `${redirectPath}` },
-        ]}
-        activeLabel="LMS Detail Page"
-      />
       {!config && (
         <span data-testid="skeleton"><Skeleton count={4} /></span>
       )}
       {config && (
         <>
+          <Breadcrumb
+            links={[
+              { label: 'Learning Platform', url: `${redirectPath}` },
+            ]}
+            activeLabel={config.displayName}
+          />
           <Card className="mt-4">
             <Card.Section
               actions={(
@@ -208,9 +207,8 @@ const SyncHistory = () => {
                 />
                 {config.displayName}
               </h2>
-              <p className="small pt-3">
-                <span style={{ wordSpacing: '7px' }}>{getActiveStatus(getStatus(config))} {config.channelCode} • </span>
-                {getTimeStamp()}
+              <p className="small pt-3" style={{ wordSpacing: '7px' }}>
+                {getActiveStatus(getStatus(config))} {config.channelCode}
               </p>
             </Card.Section>
             {getLastSync()}
