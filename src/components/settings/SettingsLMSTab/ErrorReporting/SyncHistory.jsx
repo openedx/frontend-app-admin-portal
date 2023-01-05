@@ -8,8 +8,12 @@ import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';
 import ConfigError from '../../ConfigError';
+import LmsApiService from '../../../../data/services/LmsApiService';
 
-import { ACTIVATE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, errorToggleModalText } from '../../data/constants';
+import {
+  ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE,
+  DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
+} from '../../data/constants';
 
 import { channelMapping, formatTimestamp } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
@@ -18,8 +22,9 @@ const SyncHistory = () => {
   const vars = (window.location.pathname).split('lms/');
   const redirectPath = `${vars[0]}lms/`;
   const configInfo = vars[1].split('/');
-  const configChannel = configInfo[1];
-  const configId = configInfo[2];
+  const configChannel = configInfo[0];
+  const configId = configInfo[1];
+
   const [config, setConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
   const [errorIsOpen, openError, closeError] = useToggle(false);
@@ -31,7 +36,25 @@ const SyncHistory = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await channelMapping[configChannel].get(configId);
+      let response;
+      switch (configChannel) {
+        case BLACKBOARD_TYPE:
+          response = await LmsApiService.fetchSingleBlackboardConfig(configId); break;
+        case CANVAS_TYPE:
+          response = await LmsApiService.fetchSingleCanvasConfig(configId); break;
+        case CORNERSTONE_TYPE:
+          response = await LmsApiService.fetchSingleCornerstoneConfig(configId); break;
+        case DEGREED_TYPE:
+          response = await LmsApiService.fetchSingleDegreedConfig(configId); break;
+        case DEGREED2_TYPE:
+          response = await LmsApiService.fetchSingleDegreed2Config(configId); break;
+        case MOODLE_TYPE:
+          response = await LmsApiService.fetchSingleMoodleConfig(configId); break;
+        case SAP_TYPE:
+          response = await LmsApiService.fetchSingleSuccessFactorsConfig(configId); break;
+        default:
+          break;
+      }
       return camelCaseObject(response);
     };
     fetchData()
@@ -42,12 +65,7 @@ const SyncHistory = () => {
         handleErrors(error);
       });
     setReloadPage(false);
-  }, [configChannel, configId, reloadPage, vars]);
-
-  // useEffect(() => {
-  //   console.log("hello love <3");
-  //   console.log(config);
-  // }, [config]);
+  }, [configChannel, configId, reloadPage]);
 
   const getLastSync = () => {
     if (config.lastSyncErroredAt != null) {
