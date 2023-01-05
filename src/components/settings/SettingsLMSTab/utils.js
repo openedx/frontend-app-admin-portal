@@ -22,13 +22,10 @@ export const isExistingConfig = (configs, value, existingInput) => {
 };
 
 export const getStatus = (config) => {
-  if (!isEmpty(config.isValid[0].missing)
-      || !isEmpty(config.isValid[1].incorrect)) {
+  // config.isValid has two arrays (missing and incorrect) which details which specific
+  // fields are needed for the user to complete the configuration
+  if (!isEmpty([...config.isValid[0].missing, ...config.isValid[1].incorrect])) {
     return 'Incomplete';
   }
-
-  if (config.active) {
-    return 'Active';
-  }
-  return 'Inactive';
+  return config.active ? 'Active' : 'Inactive';
 };
