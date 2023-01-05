@@ -33,6 +33,7 @@ const SyncHistory = () => {
   const [reloadPage, setReloadPage] = useState(false);
 
   const getTimeStamp = () => `Created ${formatTimestamp({ timestamp: config.created })}`;
+  const getActiveStatus = status => (status === 'Active' ? `${status} •` : '');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -208,7 +209,7 @@ const SyncHistory = () => {
                 {config.displayName}
               </h2>
               <p className="small pt-3">
-                <span style={{ wordSpacing: '7px' }}>{getStatus(config)} • {config.channelCode} • </span>
+                <span style={{ wordSpacing: '7px' }}>{getActiveStatus(getStatus(config))} {config.channelCode} • </span>
                 {getTimeStamp()}
               </p>
             </Card.Section>
