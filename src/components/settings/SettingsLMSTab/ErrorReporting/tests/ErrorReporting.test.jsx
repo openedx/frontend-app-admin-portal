@@ -2,6 +2,7 @@ import React from 'react';
 import {
   act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -113,8 +114,8 @@ const contentSyncData = {
 
 const learnerSyncData = {
   data: {
-    count: 2,
-    pages_count: 1,
+    count: 11,
+    pages_count: 2,
     results: [
       {
         user_email: 'totallynormalemail@example.com',
@@ -128,6 +129,70 @@ const learnerSyncData = {
         user_email: 'jlantern@example.com',
         content_title: 'spooooky',
         progress_status: 'Passed',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooookier',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooookiest',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooki-some',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spookilittle',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'mega-spooky',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spook',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooky?',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spork',
+        progress_status: 'pending',
         sync_status: 'error',
         sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
         friendly_status_message: 'The server is temporarily unavailable.',
@@ -201,7 +266,7 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitFor(() => userEvent.click(readLinks[1]));
     expect(screen.getByText(/Something went wrong.*Please contact enterprise customer support/)).toBeInTheDocument();
   });
-  it('paginates over data', async () => {
+  it('paginates over metadata data', async () => {
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
     mockFetchCmits.mockResolvedValue(contentSyncData);
 
@@ -220,7 +285,7 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
     expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
     act(() => {
-      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
+      userEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
     });
 
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
@@ -304,7 +369,68 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
-    await waitFor(() => userEvent.click(screen.queryByText('Read')));
+    await waitFor(() => userEvent.click(screen.queryAllByText('Read')[1]));
     expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
+  });
+  it('paginates over learner data', async () => {
+    const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
+    mockFetchLmits.mockResolvedValue(learnerSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    await waitFor(() => userEvent.click(screen.queryByText('View sync history')));
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await waitFor(() => expect(screen.getByText('spooooky')).toBeInTheDocument());
+    expect(screen.getAllByLabelText('Next, Page 2')[1]).not.toBeDisabled();
+    act(() => {
+      userEvent.click(screen.getAllByLabelText('Next, Page 2')[1]);
+    });
+    await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
+  });
+  it('metadata data reporting modal calls fetchContentMetadataItemTransmission with extended page size', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    await waitFor(() => userEvent.click(screen.queryByText('View sync history')));
+    await waitFor(() => userEvent.click(screen.getByTestId('content-download')));
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: contentSyncData.data.count }));
+  });
+  it('learner data reporting modal calls fetchLearnerMetadataItemTransmission with extended page size', async () => {
+    const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
+    mockFetchLmits.mockResolvedValue(learnerSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <ExistingLMSCardDeck
+          configData={configData}
+          editExistingConfig={mockEditExistingConfigFn}
+          onClick={mockOnClick}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>,
+    );
+    await waitFor(() => userEvent.click(screen.queryByText('View sync history')));
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await waitFor(() => userEvent.click(screen.getByTestId('learner-download')));
+
+    await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: learnerSyncData.data.count }));
   });
 });

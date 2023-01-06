@@ -5,6 +5,7 @@ import { Icon, Alert } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
+import { getConfig } from '@edx/frontend-platform/config';
 import Hero from '../Hero';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
@@ -22,6 +23,10 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 import { formatTimestamp } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
+import { SubscriptionData } from '../subscriptions';
+import EmbeddedSubscription from './EmbeddedSubscription';
+import { features } from '../../config';
+import { isExperimentVariant } from '../../optimizely';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -298,6 +303,12 @@ class Admin extends React.Component {
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
     };
+    const { SUBSCRIPTION_LPR } = features;
+
+    const config = getConfig();
+
+    // Only users buckted in `Variation 1` can see the Subscription Management UI on LPR.
+    const isExperimentVariation1 = isExperimentVariant(config.EXPERIMENT_1_ID, config.EXPERIMENT_1_VARIANT_1_ID);
 
     return (
       <main role="main" className="learner-progress-report">
@@ -321,6 +332,18 @@ class Admin extends React.Component {
                   <AdminCards />
                 )}
               </div>
+
+              {SUBSCRIPTION_LPR && isExperimentVariation1
+                  && (
+                  <div className="row">
+                    <div className="col mb-4.5">
+                      <SubscriptionData enterpriseId={enterpriseId}>
+                        <EmbeddedSubscription />
+                      </SubscriptionData>
+                    </div>
+                  </div>
+                  )}
+
               <div className="row mt-4">
                 <div className="col">
                   <div className="row">

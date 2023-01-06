@@ -31,6 +31,7 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
     const deleteHighlightSet = async () => {
       setDeletionState('pending');
       try {
+        dispatch(enterpriseCurationActions.setHighlightToast(highlightSetUUID));
         await EnterpriseCatalogApiService.deleteHighlightSet(highlightSetUUID);
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
         setIsDeleted(true);
@@ -43,15 +44,10 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
     };
     deleteHighlightSet();
   };
-
   useEffect(() => {
     if (isDeleted) {
       close();
       history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
-        // TODO: expose the highlight set name here so it can be
-        // displayed in the Toast notification. once ContentHighlights has
-        // a reducer in its context value, we can use that to communicate between
-        // components instead of history's location state.
         deletedHighlightSet: true,
       });
     }

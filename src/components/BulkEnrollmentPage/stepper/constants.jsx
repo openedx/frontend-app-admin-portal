@@ -1,3 +1,4 @@
+export const NUM_CONTENT_ITEMS_PER_PAGE = 25;
 export const STEPPER_TITLE = 'Learner enrollment';
 export const ADD_LEARNERS_TITLE = 'Add learners';
 export const REVIEW_TITLE = 'Review selections';

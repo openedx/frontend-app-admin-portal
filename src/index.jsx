@@ -39,6 +39,8 @@ initialize({
         ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL || null,
         FEATURE_LEARNER_CREDIT_MANAGEMENT: process.env.FEATURE_LEARNER_CREDIT_MANAGEMENT || hasFeatureFlagEnabled('LEARNER_CREDIT_MANAGEMENT') || null,
         FEATURE_CONTENT_HIGHLIGHTS: process.env.FEATURE_CONTENT_HIGHLIGHTS || hasFeatureFlagEnabled('CONTENT_HIGHLIGHTS') || null,
+        EXPERIMENT_1_ID: process.env.EXPERIMENT_1_ID || null,
+        EXPERIMENT_1_VARIANT_1_ID: process.env.EXPERIMENT_1_VARIANT_1_ID || null,
       });
     },
   },

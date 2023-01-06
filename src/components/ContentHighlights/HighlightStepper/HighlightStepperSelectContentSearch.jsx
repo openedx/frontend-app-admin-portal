@@ -4,6 +4,7 @@ import { useContextSelector } from 'use-context-selector';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 import { DataTable, CardView } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
@@ -25,8 +26,6 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const currentEpoch = Math.round((new Date()).getTime() / 1000);
-
 const HighlightStepperSelectContent = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
@@ -37,22 +36,27 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
+    // TODO: replace testEnterpriseId with enterpriseID before push,
+    // uncomment out import and replace with testEnterpriseId to test
+  const searchFilters = `enterprise_customer_uuids:${enterpriseId}`;
 
-  const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
   return (
-    <InstantSearch
-      indexName={configuration.ALGOLIA.INDEX_NAME}
-      searchClient={searchClient}
-    >
-      <Configure
-        filters={searchFilters}
-        hitsPerPage={pageSize}
-      />
-      <HighlightStepperSelectContentDataTable
-        selectedRowIds={currentSelectedRowIds}
-        onSelectedRowsChanged={setCurrentSelectedRowIds}
-      />
-    </InstantSearch>
+    <SearchData>
+      <InstantSearch
+        indexName={configuration.ALGOLIA.INDEX_NAME}
+        searchClient={searchClient}
+      >
+        <Configure
+          filters={searchFilters}
+          hitsPerPage={pageSize}
+        />
+        <SearchHeader variant="default" />
+        <HighlightStepperSelectContentDataTable
+          selectedRowIds={currentSelectedRowIds}
+          onSelectedRowsChanged={setCurrentSelectedRowIds}
+        />
+      </InstantSearch>
+    </SearchData>
   );
 };
 
@@ -85,12 +89,9 @@ const BaseHighlightStepperSelectContentDataTable = ({
   searchResults,
 }) => {
   const [currentView, setCurrentView] = useState(defaultActiveStateValue);
-
   const tableData = useMemo(() => camelCaseObject(searchResults?.hits || []), [searchResults]);
-
   const searchResultsItemCount = searchResults?.nbHits || 0;
   const searchResultsPageCount = searchResults?.nbPages || 0;
-
   return (
     <DataTable
       isLoading={isSearchStalled}
@@ -105,14 +106,14 @@ const BaseHighlightStepperSelectContentDataTable = ({
       isPaginated
       manualPagination
       initialState={{
-        pageSize,
         pageIndex: 0,
+        pageSize,
         selectedRowIds,
       }}
       pageCount={searchResultsPageCount}
       itemCount={searchResultsItemCount}
       initialTableOptions={{
-        getRowId: row => row.aggregationKey,
+        getRowId: row => row?.aggregationKey,
         autoResetSelectedRows: false,
       }}
       data={tableData}
@@ -153,7 +154,6 @@ const BaseHighlightStepperSelectContentDataTable = ({
       {currentView === 'list' && <DataTable.Table /> }
       <DataTable.EmptyTable content="No results found" />
       <DataTable.TableFooter>
-        <DataTable.RowStatus />
         <SelectContentSearchPagination />
       </DataTable.TableFooter>
     </DataTable>

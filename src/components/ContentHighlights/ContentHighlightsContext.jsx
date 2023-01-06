@@ -23,7 +23,6 @@ const ContentHighlightsContextProvider = ({ children }) => {
     contentHighlights: [],
     searchClient,
   });
-
   return (
     <ContentHighlightsContext.Provider value={contextValue}>
       {children}
