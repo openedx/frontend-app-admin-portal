@@ -89,7 +89,7 @@ const DeleteHighlightSet = ({ enterpriseSlug }) => {
         </Alert>
         <p>
           Deleting this highlight will remove it from your
-          learners&apos; &quot;Find a Course&quot; This action is permanent and cannot be undone.
+          learners&apos; &quot;Find a Course&quot;. This action is permanent and cannot be undone.
         </p>
       </AlertModal>
     </>
