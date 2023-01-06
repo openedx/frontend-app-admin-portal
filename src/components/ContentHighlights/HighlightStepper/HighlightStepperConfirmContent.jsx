@@ -136,7 +136,7 @@ const HighlightStepperConfirmContent = ({ enterpriseId }) => (
       <Col xs={12} md={8} lg={6}>
         <h3 className="mb-3 d-flex align-items-center">
           <Icon src={Assignment} className="mr-2 color-brand-tertiary" />
-          {STEPPER_STEP_TEXT.confirmContent}
+          {STEPPER_STEP_TEXT.HEADER_TEXT.confirmContent}
         </h3>
       </Col>
     </Row>

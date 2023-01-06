@@ -11,10 +11,7 @@ const CurrentContentHighlightHeader = () => {
   const { openStepperModal } = useContentHighlightsContext();
 
   return (
-    <ActionRow>
-      <h2 className="m-0">
-        {HEADER_TEXT.currentContent}
-      </h2>
+    <ActionRow data-testid={HEADER_TEXT.currentContent}>
       <ActionRow.Spacer />
       <Button
         iconBefore={Add}

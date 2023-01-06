@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Container } from '@edx/paragon';
-import ZeroStateHighlights from './ZeroState';
+import { Container, Tabs, Tab } from '@edx/paragon';
+import { camelCaseObject } from '@edx/frontend-platform';
 import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { TAB_TITLES } from './data/constants';
+import ContentHighlightCatalogVisibility from './ContentHighlightCatalogVisibility';
 
 const ContentHighlightsDashboardBase = ({ children }) => (
   <Container className="my-5">
@@ -19,20 +21,36 @@ ContentHighlightsDashboardBase.propTypes = {
 
 const ContentHighlightsDashboard = () => {
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
-
   const highlightSets = enterpriseCuration?.highlightSets;
-  const hasContentHighlights = highlightSets?.length > 0;
-  if (!hasContentHighlights) {
-    return (
-      <ContentHighlightsDashboardBase>
-        <ZeroStateHighlights />
-      </ContentHighlightsDashboardBase>
-    );
-  }
-
+  const [activeTab, setActiveTab] = useState(highlightSets?.length > 0 ? 'Highlights' : 'Catalog Visibility');
+  const [isHighlightSetCreated, setIsHighlightSetCreated] = useState(false);
+  useEffect(() => {
+    if (highlightSets.length > 0) {
+      setActiveTab(TAB_TITLES.highlights);
+      setIsHighlightSetCreated(true);
+    }
+  }, [highlightSets]);
   return (
     <ContentHighlightsDashboardBase>
-      <CurrentContentHighlights />
+      <Tabs
+        className="mb-2"
+        activeKey={activeTab}
+        onSelect={(k) => setActiveTab(k)}
+      >
+        <Tab
+          eventKey={camelCaseObject(TAB_TITLES.highlights)}
+          title={TAB_TITLES.highlights}
+          disabled={!isHighlightSetCreated}
+        >
+          <CurrentContentHighlights />
+        </Tab>
+        <Tab
+          eventKey={camelCaseObject(TAB_TITLES.catalogVisibility)}
+          title={TAB_TITLES.catalogVisibility}
+        >
+          <ContentHighlightCatalogVisibility createdSet={isHighlightSetCreated} />
+        </Tab>
+      </Tabs>
     </ContentHighlightsDashboardBase>
   );
 };
