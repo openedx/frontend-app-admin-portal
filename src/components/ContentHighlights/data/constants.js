@@ -25,7 +25,8 @@ export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
 export const STEPPER_STEP_TEXT = {
   createTitle: 'Create a title for your highlight',
   selectContent: 'Add content to your highlight',
-  confirmContent: 'Confirm your content selections',
+  confirmContent: 'Confirm your selections',
+  getConfirmContentSubtitle: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
 };
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {

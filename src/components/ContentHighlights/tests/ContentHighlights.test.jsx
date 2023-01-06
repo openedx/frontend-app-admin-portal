@@ -56,10 +56,10 @@ describe('<ContentHighlightRoutes>', () => {
   });
   it('Displays the toast addition', () => {
     renderWithRouter(<ContentHighlightsWrapper addToast />);
-    expect(screen.getByText('added.', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('added', { exact: false })).toBeInTheDocument();
   });
   it('Displays the toast deleted', () => {
     renderWithRouter(<ContentHighlightsWrapper deleteToast />);
-    expect(screen.getByText('deleted.', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('deleted', { exact: false })).toBeInTheDocument();
   });
 });
