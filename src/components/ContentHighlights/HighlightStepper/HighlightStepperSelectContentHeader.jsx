@@ -10,7 +10,7 @@ const HighlightStepperSelectContentTitle = () => {
   return (
     <>
       <h3 className="mb-3 d-flex align-items-center">
-        <Icon src={AddCircle} className="mr-2 color-brand-tertiary" />
+        <Icon src={AddCircle} className="mr-2 text-brand" />
         {STEPPER_STEP_TEXT.HEADER_TEXT.selectContent}
       </h3>
       <p>

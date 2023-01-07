@@ -16,7 +16,7 @@ const ContentHighlights = () => {
   useEffect(() => {
     if (locationState?.deletedHighlightSet) {
       setToasts((prevState) => [...prevState, {
-        toastText: `"${enterpriseCuration?.toastText}" deleted.`,
+        toastText: `"${enterpriseCuration?.toastText}" deleted`,
         uuid: uuidv4(),
       }]);
       const newState = { ...locationState };
@@ -25,7 +25,7 @@ const ContentHighlights = () => {
     }
     if (locationState?.addHighlightSet) {
       setToasts((prevState) => [...prevState, {
-        toastText: `"${enterpriseCuration?.toastText}" added.`,
+        toastText: `"${enterpriseCuration?.toastText}" added`,
         uuid: uuidv4(),
       }]);
       const newState = { ...locationState };

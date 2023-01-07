@@ -33,11 +33,14 @@ export const STEPPER_STEP_TEXT = {
   HEADER_TEXT: {
     createTitle: 'Create a title for your highlight',
     selectContent: 'Add content to your highlight',
-    confirmContent: 'Confirm your content selections',
+    confirmContent: 'Confirm your selections',
   },
   SUB_TEXT: {
-    createTitle: 'Create a unique title for your highlight. This title is visible to your learners and helps them discovery relevant content.',
-    selectContent: (highlightTitle) => parse(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> items for "${highlightTitle}".`),
+    createTitle: `Create a unique title for your highlight. This title is visible
+                  to your learners and helps them navigate to relevant content.`,
+    selectContent: (highlightTitle) => parse(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> items for "${highlightTitle}".
+                                              Courses in learners&apos; portal appear in the order of selection.`),
+    confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
   },
   PRO_TIP_TEXT: {
     createTitle: `Pro tip: we recommend naming your highlight collection to reflect skills
