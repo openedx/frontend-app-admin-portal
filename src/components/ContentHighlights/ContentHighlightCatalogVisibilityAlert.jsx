@@ -24,7 +24,10 @@ const ContentHighlightCatalogVisibilityAlert = () => {
             </Button>,
           ]}
         >
-          <div className="w-80"><Alert.Heading>{ALERT_TEXT.HEADER_TEXT.catalogVisibility}</Alert.Heading>
+          <div className="w-80">
+            <Alert.Heading>
+              {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
+            </Alert.Heading>
             <p>
               {ALERT_TEXT.SUB_TEXT.catalogVisibility}
             </p>
