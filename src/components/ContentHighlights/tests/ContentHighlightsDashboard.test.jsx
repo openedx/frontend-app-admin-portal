@@ -9,11 +9,14 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
-import { BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT } from '../data/constants';
+import {
+  BUTTON_TEXT, STEPPER_STEP_TEXT, ALERT_TEXT,
+} from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { configuration } from '../../../config';
+import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -66,6 +69,7 @@ const ContentHighlightsDashboardWrapper = ({
         <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
           <ContentHighlightsContext.Provider value={contextValue}>
             <ContentHighlightsDashboard {...props} />
+            <ContentHighlightStepper />
           </ContentHighlightsContext.Provider>
         </EnterpriseAppContext.Provider>
       </Provider>
@@ -76,12 +80,13 @@ const ContentHighlightsDashboardWrapper = ({
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    expect(screen.getByText('You haven\'t created any highlights yet.')).toBeTruthy();
+    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeInTheDocument();
+    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeInTheDocument();
   });
 
   it('Displays New highlight Modal on button click with no highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const newHighlight = screen.getByText(BUTTON_TEXT.catalogVisibility);
     userEvent.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
@@ -98,12 +103,43 @@ describe('<ContentHighlightsDashboard>', () => {
         }}
       />,
     );
-    expect(screen.getByText(HEADER_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+  });
+  it('Allows selection between tabs of dashboard, when highlight set exist', () => {
+    renderWithRouter(
+      <ContentHighlightsDashboardWrapper
+        enterpriseAppContextValue={{
+          enterpriseCuration: {
+            enterpriseCuration: {
+              highlightSets: [exampleHighlightSet],
+            },
+          },
+        }}
+      />,
+    );
+    const [highlightTab, catalogVisibilityTab] = screen.getAllByRole('tab');
+
+    expect(highlightTab.classList.contains('active')).toBeTruthy();
+    expect(catalogVisibilityTab.classList.contains('active')).toBeFalsy();
+
+    userEvent.click(catalogVisibilityTab);
+    expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
+    expect(highlightTab.classList.contains('active')).toBeFalsy();
+  });
+  it('Disabled Highlight tab when no highlight sets exist', () => {
+    renderWithRouter(
+      <ContentHighlightsDashboardWrapper />,
+    );
+    const [highlightTab, catalogVisibilityTab] = screen.getAllByRole('tab');
+
+    expect(highlightTab.classList.contains('active')).toBeFalsy();
+    expect(highlightTab.classList.contains('disabled')).toBeTruthy();
+    expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
   });
 
   it('Displays New highlight modal on button click with highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText('New highlight');
+    const newHighlight = screen.getByText(BUTTON_TEXT.catalogVisibility, { exact: false });
     userEvent.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
