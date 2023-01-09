@@ -171,7 +171,7 @@ export const BaseCourseSearchResults = (props) => {
           selectedRowIds: transformedSelectedRowIds,
         }}
         initialTableOptions={{
-          getRowId: row => row.aggregation_key,
+          getRowId: row => row.aggregation_key.split(':')[1],
         }}
       >
         <DataTable.TableControlBar />
