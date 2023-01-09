@@ -24,7 +24,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
-    "@edx/brand": "npm:@edx/brand-openedx@1.2.0",
+    "@edx/brand": "npm:@edx/brand-openedx@2.1.0",
     "@edx/frontend-enterprise-catalog-search": "3.1.5",
     "@edx/frontend-enterprise-hotjar": "1.2.0",
     "@edx/frontend-enterprise-logistration": "2.1.0",
