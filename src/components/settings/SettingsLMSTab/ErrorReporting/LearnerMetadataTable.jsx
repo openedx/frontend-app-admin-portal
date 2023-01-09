@@ -6,7 +6,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import { createLookup, getSyncStatus, getTimeAgo } from './utils';
 import DownloadCsvButton from './DownloadCsvButton';
-import { CORNERSTONE_TYPE } from '../../data/constants';
 
 const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
   const [currentPage, setCurrentPage] = useState();
@@ -21,10 +20,9 @@ const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const correctedChannelCode = config.channelCode === CORNERSTONE_TYPE ? 'cornerstone' : config.channelCode;
       const response = await LmsApiService.fetchLearnerMetadataItemTransmission(
         enterpriseCustomerUuid,
-        correctedChannelCode,
+        config.channelCode,
         config.id,
         currentPage,
         currentFilters,

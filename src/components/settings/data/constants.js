@@ -20,10 +20,6 @@ export const DELETE_TOAST_MESSAGE = 'Learning platform integration successfully 
 export const INACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully disabled.';
 export const SUBMIT_TOAST_MESSAGE = 'Learning platform integration successfully submitted.';
 
-export const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-export const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-export const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
-
 export const BLACKBOARD_TYPE = 'BLACKBOARD';
 export const CANVAS_TYPE = 'CANVAS';
 export const CORNERSTONE_TYPE = 'CSOD';
