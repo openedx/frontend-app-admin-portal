@@ -29,13 +29,6 @@
       top: 0;
 
       .nav-link {
-        color: $gray-700;
-
-        &.active {
-          background: $primary;
-          color: $white;
-        }
-
         &:not(.active):hover,
         &:not(.active):focus {
           background: $gray-200;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle,
+  Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle, StatefulButton,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
 
@@ -21,6 +21,7 @@ export const SettingsAppearanceTab = ({
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const [customModalIsOpen, openCustomModal, closeCustomModal] = useToggle(false);
+  const [saveButtonState, setSaveButtonState] = useState('default');
   const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
 
   function getStartingTheme() {
@@ -63,6 +64,7 @@ export const SettingsAppearanceTab = ({
 
   const saveChanges = () => {
     const sendThemeData = async (formData) => {
+      setSaveButtonState('pending');
       const response = await LmsApiService.updateEnterpriseCustomerBranding(enterpriseId, formData);
       if (response.status === 204) {
         const updatedBranding = {
@@ -76,6 +78,7 @@ export const SettingsAppearanceTab = ({
       } else {
         setConfigChangeSuccess(false);
       }
+      setSaveButtonState('default');
     };
     try {
       const formData = new FormData();
@@ -87,6 +90,7 @@ export const SettingsAppearanceTab = ({
       setConfigChangeSuccess(false);
     }
   };
+
   return (
     <>
       <h2 className="py-2">Portal Appearance</h2>
@@ -177,7 +181,15 @@ export const SettingsAppearanceTab = ({
         customColors={theme[1]}
         setTheme={setTheme}
       />
-      <Button className="d-flex ml-auto" onClick={saveChanges}>Save changes</Button>
+      <StatefulButton
+        className="d-flex ml-auto"
+        labels={{
+          default: 'Save changes',
+          pending: 'Saving changes...',
+        }}
+        state={saveButtonState}
+        onClick={saveChanges}
+      />
     </>
   );
 };
