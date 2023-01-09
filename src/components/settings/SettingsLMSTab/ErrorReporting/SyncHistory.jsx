@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
@@ -21,7 +19,7 @@ import {
 import { channelMapping } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
 
-const SyncHistory = ({ enterpriseId }) => {
+const SyncHistory = () => {
   const vars = (window.location.pathname).split('lms/');
   const redirectPath = `${vars[0]}lms/`;
   const configInfo = vars[1].split('/');
@@ -67,7 +65,7 @@ const SyncHistory = ({ enterpriseId }) => {
       .catch((error) => {
         handleErrors(error);
       });
-  }, [enterpriseId, configChannel, configId, reloadPage]);
+  }, [configChannel, configId, reloadPage]);
 
   const getLastSync = () => {
     if (config.lastSyncErroredAt != null) {
@@ -227,12 +225,4 @@ const SyncHistory = ({ enterpriseId }) => {
   );
 };
 
-SyncHistory.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
-});
-
-export default connect(mapStateToProps)(SyncHistory);
+export default SyncHistory;
