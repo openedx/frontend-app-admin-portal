@@ -118,6 +118,7 @@ export const BaseCourseSearchResults = (props) => {
         id: rowId,
         values: {
           aggregationKey: rowId,
+          contentKey: rowId.split(':')[1],
         },
       }));
       coursesDispatch(setSelectedRowsAction(transformedSelectedFlatRowIds));
@@ -171,7 +172,7 @@ export const BaseCourseSearchResults = (props) => {
           selectedRowIds: transformedSelectedRowIds,
         }}
         initialTableOptions={{
-          getRowId: row => row.aggregation_key.split(':')[1],
+          getRowId: row => row.aggregation_key,
         }}
       >
         <DataTable.TableControlBar />
