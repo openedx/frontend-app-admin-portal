@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, AlertModal, Breadcrumb, Button, Card, Icon, Image, Skeleton, Toast, useToggle,
@@ -18,7 +21,7 @@ import {
 import { channelMapping } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
 
-const SyncHistory = () => {
+const SyncHistory = ({ enterpriseId }) => {
   const vars = (window.location.pathname).split('lms/');
   const redirectPath = `${vars[0]}lms/`;
   const configInfo = vars[1].split('/');
@@ -55,17 +58,16 @@ const SyncHistory = () => {
         default:
           break;
       }
-      return camelCaseObject(response);
+      return camelCaseObject(response.data);
     };
     fetchData()
       .then((response) => {
-        setConfig(response.data);
+        setConfig(response);
       })
       .catch((error) => {
         handleErrors(error);
       });
-    setReloadPage(false);
-  }, [configChannel, configId, reloadPage]);
+  }, [enterpriseId, configChannel, configId, reloadPage]);
 
   const getLastSync = () => {
     if (config.lastSyncErroredAt != null) {
@@ -126,7 +128,7 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => toggleConfig(false)} variant="tertiary">Disable</Button>
-          <Button variant="outline-primary">Configure</Button>
+          {/* <Button variant="outline-primary">Configure</Button>  */}
         </ActionRow>
       );
     }
@@ -134,7 +136,7 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-          <Button variant="tertiary">Configure</Button>
+          {/* <Button variant="tertiary">Configure</Button> */}
           <Button onClick={() => toggleConfig(true)} variant="outline-primary">Enable</Button>
         </ActionRow>
       );
@@ -142,7 +144,7 @@ const SyncHistory = () => {
     return ( // if incomplete
       <ActionRow>
         <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-        <Button variant="outline-primary">Configure</Button>
+        {/* <Button variant="outline-primary">Configure</Button> */}
       </ActionRow>
     );
   };
@@ -225,4 +227,12 @@ const SyncHistory = () => {
   );
 };
 
-export default SyncHistory;
+SyncHistory.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(SyncHistory);
