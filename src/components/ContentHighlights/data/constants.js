@@ -1,7 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { faker } from '@faker-js/faker';
 import parse from 'html-react-parser';
+import sanitizeHTML from 'sanitize-html';
 /* eslint-enable import/no-extraneous-dependencies */
+
+// Sanitizes HTML and parses the string as HTML
+export const sanitizeAndParseHTML = (htmlString) => {
+  const sanitizedHTML = sanitizeHTML(htmlString);
+  return parse(sanitizedHTML);
+};
 
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
@@ -38,7 +45,7 @@ export const STEPPER_STEP_TEXT = {
   SUB_TEXT: {
     createTitle: `Create a unique title for your highlight. This title is visible
                   to your learners and helps them navigate to relevant content.`,
-    selectContent: (highlightTitle) => parse(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> items for "${highlightTitle}".
+    selectContent: (highlightTitle) => sanitizeAndParseHTML(`Select up to <strong>${MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</strong> items for "${highlightTitle}".
                                               Courses in learners&apos; portal appear in the order of selection.`),
     confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
   },

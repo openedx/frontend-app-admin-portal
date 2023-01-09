@@ -14,23 +14,25 @@ const ContentHighlightCatalogVisibilityAlert = () => {
         <Alert
           variant="danger"
           icon={Info}
-          actions={[
-            <Button
-              onClick={openStepperModal}
-              iconBefore={Add}
-              block
-            >
-              {BUTTON_TEXT.catalogVisibility}
-            </Button>,
-          ]}
         >
-          <div className="w-80">
-            <Alert.Heading>
-              {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
-            </Alert.Heading>
-            <p>
-              {ALERT_TEXT.SUB_TEXT.catalogVisibility}
-            </p>
+          <div className="d-flex">
+            <div style={{ flex: '0 0 80%' }}>
+              <Alert.Heading>
+                {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
+              </Alert.Heading>
+              <p>
+                {ALERT_TEXT.SUB_TEXT.catalogVisibility}
+              </p>
+            </div>
+            <div className="align-self-center">
+              <Button
+                onClick={openStepperModal}
+                iconBefore={Add}
+                block
+              >
+                {BUTTON_TEXT.catalogVisibility}
+              </Button>
+            </div>
           </div>
         </Alert>
       </Col>
