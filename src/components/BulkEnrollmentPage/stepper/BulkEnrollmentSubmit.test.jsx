@@ -63,7 +63,7 @@ const selectedEmails = userEmails.map(
   (email, index) => ({ id: index, values: { userEmail: email } }),
 );
 const selectedCourses = courseNames.map(
-  (course) => ({ id: course }),
+  (course) => ({ values: { contentKey: course } }),
 );
 const bulkEnrollWithAllSelectedRows = {
   emails: [selectedEmails, emailsDispatch],
