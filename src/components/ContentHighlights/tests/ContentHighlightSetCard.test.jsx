@@ -1,15 +1,21 @@
-import { useState } from 'react';
-import { screen } from '@testing-library/react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
+import userEvent from '@testing-library/user-event';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import {
+  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+} from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -20,10 +26,28 @@ const mockData = {
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
+  trackEvent: jest.fn(),
 };
 
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    enterpriseCuration: {
+      highlightSets: mockData,
+    },
+  },
+};
+
+const mockMultipleData = [];
+for (let i = 0; i < MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION; i++) {
+  mockMultipleData.push({
+    ...mockData,
+    title: `Test Title ${i}`,
+    highlightSetUUID: `test-uuid-${i}`,
+  });
+}
 const initialState = {
   portalConfiguration: {
+    enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise',
   },
   highlightSetUUID: 'test-uuid',
@@ -34,7 +58,11 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const ContentHighlightSetCardWrapper = (props) => {
+const ContentHighlightSetCardWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  data = mockData,
+}) => {
+  const [isArray, setIsArray] = useState(false);
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -45,19 +73,65 @@ const ContentHighlightSetCardWrapper = (props) => {
     contentHighlights: [],
     searchClient,
   });
+  useEffect(() => {
+    if (data.length > 0) {
+      setIsArray(true);
+    }
+  }, [data.length]);
   return (
-    <ContentHighlightsContext.Provider value={contextValue}>
-      <Provider store={mockStore(initialState)}>
-        <CurrentContentHighlightHeader />
-        <ContentHighlightSetCard {...props} />
-      </Provider>
-    </ContentHighlightsContext.Provider>
+    <Provider store={mockStore(initialState)}>
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <ContentHighlightsContext.Provider value={contextValue}>
+          <CurrentContentHighlightHeader />
+          {!isArray && <ContentHighlightSetCard {...data} />}
+          {isArray && data.map((highlight) => (
+            <ContentHighlightSetCard {...highlight} />
+          ))}
+        </ContentHighlightsContext.Provider>
+      </EnterpriseAppContext.Provider>
+    </Provider>
   );
 };
 
 describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {
-    renderWithRouter(<ContentHighlightSetCardWrapper {...mockData} />);
+    renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();
+  });
+  it('renders correct text when less then max curations', () => {
+    renderWithRouter(<ContentHighlightSetCardWrapper />);
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
+    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+  });
+  it('renders correct text when more then or equal to max curations', async () => {
+    const updatedEnterpriseAppContextValue = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          highlightSets: mockMultipleData,
+        },
+      },
+    };
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper
+        enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+        data={mockMultipleData}
+      />,
+    );
+    const createNewHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
+    expect(createNewHighlightButton).toBeInTheDocument();
+    // Trigger Alert
+    userEvent.click(createNewHighlightButton);
+    // Verify Alert
+    expect(screen.queryByText(STEPPER_STEP_TEXT.createTitle)).not.toBeInTheDocument();
+    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+
+    const dismissButton = screen.getByText('Dismiss');
+    expect(dismissButton).toBeInTheDocument();
+    // Trigger Dismiss
+    userEvent.click(dismissButton);
+    // Verify Dismiss
+    await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
+    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
 });
