@@ -1,11 +1,17 @@
 import React, {
-  useCallback, useState, useContext,
+  useCallback, useState, useContext, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { connect } from 'react-redux';
 import {
-  Stepper, FullscreenModal, Button, StatefulButton,
+  Stepper,
+  FullscreenModal,
+  Button,
+  StatefulButton,
+  useToggle,
+  AlertModal,
+  ActionRow,
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -20,6 +26,7 @@ import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const STEPPER_STEP_LABELS = {
   CREATE_TITLE: 'Create a title',
@@ -46,6 +53,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isOpen, open, close] = useToggle(false);
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -62,9 +70,12 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   );
 
   const closeStepperModal = useCallback(() => {
+    if (isOpen) {
+      close();
+    }
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [resetStepperModal]);
+  }, [resetStepperModal, isOpen, close]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -95,103 +106,137 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
+  const closeStepper = () => {
+    open();
+  };
+  useEffect(() => {
+    const preventUnload = () => {
+      /* eslint-disable no-restricted-globals */
+      event.preventDefault();
+      event.returnValue = 'Are you sure? Your data will not be saved.';
+      /* eslint-enable no-restricted-globals */
+    };
+    if (isStepperModalOpen) {
+      window.addEventListener('beforeunload', preventUnload);
+    }
+    return () => {
+      window.removeEventListener('beforeunload', preventUnload);
+    };
+  }, [isStepperModalOpen]);
   return (
-    <Stepper activeKey={currentStep}>
-      <FullscreenModal
-        title="New highlight"
-        className="bg-light-200"
-        isOpen={isStepperModalOpen}
-        onClose={closeStepperModal}
-        beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
-        footerNode={(
-          <>
-            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}>
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              {/* TODO: Eventually would need a check to see if the user has made any changes
+    <>
+      <Stepper activeKey={currentStep}>
+        <FullscreenModal
+          id="test"
+          title="New highlight"
+          className="bg-light-200"
+          isOpen={isStepperModalOpen}
+          onClose={() => closeStepper()}
+          beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
+          footerNode={(
+            <>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                {/* TODO: Eventually would need a check to see if the user has made any changes
                 to the form before allowing them to close the modal without saving. */}
-              <Button
-                variant="tertiary"
-                onClick={() => closeStepperModal()}
-              >
-                Back
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
-                disabled={!!titleStepValidationError || !highlightTitle}
-              >
-                Next
-              </Button>
-            </Stepper.ActionRow>
+                <Button
+                  variant="tertiary"
+                  onClick={() => closeStepper()}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                  disabled={!!titleStepValidationError || !highlightTitle}
+                >
+                  Next
+                </Button>
+              </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}>
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button
-                variant="tertiary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
-              >
-                Back
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
-                disabled={Object.keys(currentSelectedRowIds).length === 0}
-              >
-                Next
-              </Button>
-            </Stepper.ActionRow>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                <Button
+                  variant="tertiary"
+                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+                  disabled={Object.keys(currentSelectedRowIds).length === 0}
+                >
+                  Next
+                </Button>
+              </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button
-                variant="tertiary"
-                onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
-              >
-                Back
-              </Button>
-              <StatefulButton
-                labels={{
-                  default: 'Publish',
-                  pending: 'Publishing...',
-                }}
-                variant="primary"
-                onClick={handlePublish}
-                state={isPublishing ? 'pending' : 'default'}
-              />
-            </Stepper.ActionRow>
-          </>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                <Button
+                  variant="tertiary"
+                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                >
+                  Back
+                </Button>
+                <StatefulButton
+                  labels={{
+                    default: 'Publish',
+                    pending: 'Publishing...',
+                  }}
+                  variant="primary"
+                  onClick={handlePublish}
+                  state={isPublishing ? 'pending' : 'default'}
+                />
+              </Stepper.ActionRow>
+            </>
           )}
+        >
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
+            title={STEPPER_STEP_LABELS.CREATE_TITLE}
+            hasError={!!titleStepValidationError}
+            description={titleStepValidationError || ''}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
+          >
+            <HighlightStepperTitle />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            title={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+          >
+            <HighlightStepperSelectContent enterpriseId={enterpriseId} />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+          >
+            <HighlightStepperConfirmContent />
+          </Stepper.Step>
+        </FullscreenModal>
+      </Stepper>
+      {/* Alert Modal for StepperModal Close Confirmation */}
+      <AlertModal
+        title={STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title}
+        isOpen={isOpen}
+        onClose={close}
       >
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
-          title={STEPPER_STEP_LABELS.CREATE_TITLE}
-          hasError={!!titleStepValidationError}
-          description={titleStepValidationError || ''}
-          index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
-        >
-          <HighlightStepperTitle />
-        </Stepper.Step>
-
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
-          title={STEPPER_STEP_LABELS.SELECT_CONTENT}
-          index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
-        >
-          <HighlightStepperSelectContent enterpriseId={enterpriseId} />
-        </Stepper.Step>
-
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
-          title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
-          index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
-        >
-          <HighlightStepperConfirmContent />
-        </Stepper.Step>
-      </FullscreenModal>
-    </Stepper>
+        <p>
+          {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
+        </p>
+        <ActionRow>
+          <Button variant="tertiary" onClick={close}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
+        </ActionRow>
+      </AlertModal>
+    </>
   );
 };
 

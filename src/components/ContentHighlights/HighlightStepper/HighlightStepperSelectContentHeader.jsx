@@ -11,7 +11,7 @@ const HighlightStepperSelectContentTitle = () => {
     <>
       <h3 className="mb-3 d-flex align-items-center">
         <Icon src={AddCircle} className="mr-2 text-brand" />
-        {STEPPER_STEP_TEXT.selectContent}
+        {STEPPER_STEP_TEXT.HEADER_TEXT.selectContent}
       </h3>
       <p>
         Select up to <b>{MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}</b> items for &quot;{highlightTitle}&quot;. Courses

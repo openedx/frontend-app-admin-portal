@@ -83,7 +83,7 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(newHighlight);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 
   it('Displays current highlights when data is populated', () => {
@@ -105,6 +105,6 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText('New highlight');
     userEvent.click(newHighlight);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });

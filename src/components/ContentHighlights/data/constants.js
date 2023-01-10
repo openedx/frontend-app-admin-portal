@@ -23,10 +23,22 @@ export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
-  createTitle: 'Create a title for your highlight',
-  selectContent: 'Add content to your highlight',
-  confirmContent: 'Confirm your selections',
-  getConfirmContentSubtitle: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
+  HEADER_TEXT: {
+    createTitle: 'Create a title for your highlight',
+    selectContent: 'Add content to your highlight',
+    confirmContent: 'Confirm your selections',
+  },
+  SUB_TEXT: {
+    confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
+  },
+  ALERT_MODAL_TEXT: {
+    title: 'Lose Progress?',
+    content: 'If you exit now, any changes you\'ve made will be lost.',
+    buttons: {
+      exit: 'Exit',
+      cancel: 'Cancel',
+    },
+  },
 };
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {

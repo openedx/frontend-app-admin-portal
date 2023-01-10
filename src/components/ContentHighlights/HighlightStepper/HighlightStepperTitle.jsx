@@ -13,7 +13,7 @@ const HighlightStepperTitle = () => (
       <Col xs={12} md={8} lg={6}>
         <h3 className="mb-3 d-flex align-items-center">
           <Icon src={EditCircle} className="mr-2 text-brand" />
-          {STEPPER_STEP_TEXT.createTitle}
+          {STEPPER_STEP_TEXT.HEADER_TEXT.createTitle}
         </h3>
         <div className="mb-4.5">
           <p>
