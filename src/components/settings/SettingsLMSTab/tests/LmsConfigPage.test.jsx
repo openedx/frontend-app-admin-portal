@@ -15,7 +15,6 @@ import {
   BLACKBOARD_TYPE,
   CANVAS_TYPE,
   CORNERSTONE_TYPE,
-  DEGREED_TYPE,
   DEGREED2_TYPE,
   MOODLE_TYPE,
   SAP_TYPE,
@@ -140,8 +139,8 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
-    userEvent.click(degreedCard);
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    fireEvent.click(degreedCard);
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
@@ -216,8 +215,8 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
-    await waitFor(() => userEvent.click(degreedCard));
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    await waitFor(() => fireEvent.click(degreedCard));
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
@@ -228,15 +227,15 @@ describe('<SettingsLMSTab />', () => {
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
     await waitFor(() => {
-      expect(screen.findByText(channelMapping[DEGREED_TYPE].displayName));
+      expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
     });
-    const degreedCard = screen.getByText(channelMapping[DEGREED_TYPE].displayName);
-    await waitFor(() => userEvent.click(degreedCard));
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
+    await waitFor(() => fireEvent.click(degreedCard));
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
-    expect(screen.queryByText('Connect Degreed')).toBeFalsy();
+    expect(screen.queryByText('Connect Degreed2')).toBeFalsy();
   });
   test('No action Cornerstone card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
