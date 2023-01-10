@@ -109,20 +109,32 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const closeStepper = () => {
     open();
   };
+
+  /* Start beforeunload event */
+  // This section triggers browser response to unsaved items when the stepper modal is open/active
   useEffect(() => {
     const preventUnload = () => {
       /* eslint-disable no-restricted-globals */
+      /* Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
+      A return value is required to trigger the browser unsaved data blocking modal response */
       event.preventDefault();
       event.returnValue = 'Are you sure? Your data will not be saved.';
       /* eslint-enable no-restricted-globals */
     };
+
+    /* Conditional MUST be set on event listener initialization.
+    Failure to provide conditional will trigger browser event on
+    all elements within ContentHighlightRoutes.jsx (essentially all of highlights) */
     if (isStepperModalOpen) {
       window.addEventListener('beforeunload', preventUnload);
     }
+    /* Added safety to force remove the 'beforeunload' event on the window */
     return () => {
       window.removeEventListener('beforeunload', preventUnload);
     };
   }, [isStepperModalOpen]);
+  /* End beforeunload event */
+
   return (
     <>
       <Stepper activeKey={currentStep}>
