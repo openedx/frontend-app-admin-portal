@@ -31,13 +31,24 @@ export const STEPPER_STEP_TEXT = {
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
+  SUB_TEXT: {
+    currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
+  },
 };
 // Button text extracted from constant to maintain passing test on changes
 export const BUTTON_TEXT = {
   createNewHighlight: 'New',
   zeroStateCreateNewHighlight: 'New highlight',
 };
-
+// Alert Text extracted from constant to maintain passing test on changes
+export const ALERT_TEXT = {
+  HEADER_TEXT: {
+    currentContent: 'Highlight limit reached',
+  },
+  SUB_TEXT: {
+    currentContent: 'Delete at least one highlight to create a new one.',
+  },
+};
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
