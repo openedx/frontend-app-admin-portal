@@ -80,11 +80,6 @@ const ContentHighlightSetCardWrapper = ({
     contentHighlights: [],
     searchClient,
   });
-  useEffect(() => {
-    if (data.length > 0) {
-      setIsArray(true);
-    }
-  }, [data.length]);
   return (
     <Provider store={mockStore(initialState)}>
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
@@ -109,11 +104,6 @@ describe('<ContentHighlightSetCard>', () => {
     const newHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
     userEvent.click(newHighlightButton);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-  });
-  it('renders correct text when less then max curations', () => {
-    renderWithRouter(<ContentHighlightSetCardWrapper />);
-    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
-    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.maxHighlights)).toBeInTheDocument();
   });
   it('renders correct text when less then max curations', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);

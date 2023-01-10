@@ -1,4 +1,3 @@
-
 import React, { useContext, useState, useEffect } from 'react';
 
 import {
@@ -9,13 +8,12 @@ import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import { useContextSelector } from 'use-context-selector';
+import { Add, Info } from '@edx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
 import { ContentHighlightsContext } from './ContentHighlightsContext';
 import EVENT_NAMES from '../../eventTracking';
 
-import { Add, Info } from '@edx/paragon/icons';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { useContentHighlightsContext } from './data/hooks';
 import {
   BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT,
 } from './data/constants';
@@ -40,17 +38,17 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
     } else {
       openStepperModal();
       const trackInfo = {
-      highlight_sets: highlightSets,
-      number_of_highlight_sets: highlightSets.length,
-      stepperModal: {
-        is_stepper_modal_open: !isStepperModalOpen,
-      },
-    };
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}.clicked`,
-      trackInfo,
-    );
+        highlight_sets: highlightSets,
+        number_of_highlight_sets: highlightSets.length,
+        stepperModal: {
+          is_stepper_modal_open: !isStepperModalOpen,
+        },
+      };
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}.clicked`,
+        trackInfo,
+      );
     }
   };
   useEffect(() => {
