@@ -118,6 +118,7 @@ export const BaseCourseSearchResults = (props) => {
         id: rowId,
         values: {
           aggregationKey: rowId,
+          contentKey: rowId.split(':')[1],
         },
       }));
       coursesDispatch(setSelectedRowsAction(transformedSelectedFlatRowIds));
