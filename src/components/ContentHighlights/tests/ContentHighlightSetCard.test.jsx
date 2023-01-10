@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
-import { screen } from '@testing-library/react';
+import { useState } from 'react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -8,16 +8,19 @@ import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
+import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import { BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION } from '../data/constants';
+import {
+  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+} from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
-const mockData = {
+const mockData = [{
   title: 'Test Title',
   highlightSetUUID: 'test-uuid',
   enterpriseSlug: 'test-enterprise-slug',
@@ -25,7 +28,7 @@ const mockData = {
   imageCapSrc: 'http://fake.image',
   isPublished: true,
   trackEvent: jest.fn(),
-};
+}];
 
 const initialEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -34,7 +37,6 @@ const initialEnterpriseAppContextValue = {
     },
   },
 };
-
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -68,7 +70,6 @@ const ContentHighlightSetCardWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   data = mockData,
 }) => {
-  const [isArray, setIsArray] = useState(false);
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -89,9 +90,8 @@ const ContentHighlightSetCardWrapper = ({
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
         <ContentHighlightsContext.Provider value={contextValue}>
           <CurrentContentHighlightHeader />
-          {!isArray && <ContentHighlightSetCard {...data} />}
-          {isArray && data.map((highlight) => (
-            <ContentHighlightSetCard {...highlight} />
+          {data.map((highlight) => (
+            <ContentHighlightSetCard key={uuidv4()} {...highlight} />
           ))}
         </ContentHighlightsContext.Provider>
       </EnterpriseAppContext.Provider>
@@ -115,7 +115,12 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
     expect(screen.getByText(HEADER_TEXT.SUB_TEXT.maxHighlights)).toBeInTheDocument();
   });
-  it('renders correct text when more then or equal to max curations', () => {
+  it('renders correct text when less then max curations', () => {
+    renderWithRouter(<ContentHighlightSetCardWrapper />);
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
+    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+  });
+  it('renders correct text when more then or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
@@ -129,9 +134,21 @@ describe('<ContentHighlightSetCard>', () => {
         data={mockMultipleData}
       />,
     );
+    const createNewHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
+    expect(createNewHighlightButton).toBeInTheDocument();
+    // Trigger Alert
+    userEvent.click(createNewHighlightButton);
+    // Verify Alert
+    expect(screen.queryByText(STEPPER_STEP_TEXT.createTitle)).not.toBeInTheDocument();
+    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
 
-    expect(screen.queryByText(BUTTON_TEXT.createNewHighlight)).not.toBeInTheDocument();
-    expect(screen.queryByText(HEADER_TEXT.SUB_TEXT.maxHighlights)).not.toBeInTheDocument();
-    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.maxHighlightsReached)).toBeInTheDocument();
+    const dismissButton = screen.getByText('Dismiss');
+    expect(dismissButton).toBeInTheDocument();
+    // Trigger Dismiss
+    userEvent.click(dismissButton);
+    // Verify Dismiss
+    await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
+    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
 });

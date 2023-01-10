@@ -48,15 +48,15 @@ export const STEPPER_STEP_LABELS = {
 export const STEPPER_STEP_TEXT = {
   createTitle: 'Create a title for your highlight',
   selectContent: 'Add content to your highlight',
-  confirmContent: 'Confirm your content selections',
+  confirmContent: 'Confirm your selections',
+  getConfirmContentSubtitle: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
 };
 
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
   SUB_TEXT: {
-    maxHighlights: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
-    maxHighlightsReached: `You have reached the maximum number of highlights (${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION}).`,
+    currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
   },
 };
 
@@ -68,6 +68,16 @@ export const BUTTON_TEXT = {
 
 // Button text for stepper help center button
 export const STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT = 'Help Center: Program Optimization';
+
+// Alert Text extracted from constant to maintain passing test on changes
+export const ALERT_TEXT = {
+  HEADER_TEXT: {
+    currentContent: 'Highlight limit reached',
+  },
+  SUB_TEXT: {
+    currentContent: 'Delete at least one highlight to create a new one.',
+  },
+};
 
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {

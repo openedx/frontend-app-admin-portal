@@ -131,19 +131,29 @@ SelectedContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-const HighlightStepperConfirmContent = ({ enterpriseId }) => (
-  <Container>
-    <Row>
-      <Col xs={12} md={8} lg={6}>
-        <h3 className="mb-3 d-flex align-items-center">
-          <Icon src={Assignment} className="mr-2 color-brand-tertiary" />
-          {STEPPER_STEP_TEXT.confirmContent}
-        </h3>
-      </Col>
-    </Row>
-    <SelectedContent enterpriseId={enterpriseId} />
-  </Container>
-);
+const HighlightStepperConfirmContent = ({ enterpriseId }) => {
+  const highlightTitle = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.highlightTitle,
+  );
+
+  return (
+    <Container>
+      <Row>
+        <Col xs={12} md={8} lg={6}>
+          <h3 className="mb-3 d-flex align-items-center">
+            <Icon src={Assignment} className="mr-2 text-brand" />
+            {STEPPER_STEP_TEXT.confirmContent}
+          </h3>
+          <p>
+            {STEPPER_STEP_TEXT.getConfirmContentSubtitle(highlightTitle)}.
+          </p>
+        </Col>
+      </Row>
+      <SelectedContent enterpriseId={enterpriseId} />
+    </Container>
+  );
+};
 
 HighlightStepperConfirmContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

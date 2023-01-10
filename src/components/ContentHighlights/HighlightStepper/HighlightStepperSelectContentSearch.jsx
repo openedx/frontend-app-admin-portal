@@ -35,7 +35,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
-    // TODO: replace testEnterpriseId with enterpriseID before push,
+    // TODO: replace testEnterpriseId with enterpriseId before push,
     // uncomment out import and replace with testEnterpriseId to test
   const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
 
