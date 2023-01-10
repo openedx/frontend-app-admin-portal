@@ -12,6 +12,13 @@ import { features } from '../../../../config';
 
 jest.mock('../../../../data/services/LmsApiService');
 
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useRouteMatch: () => ({
+    url: 'https://www.test.com/',
+  }),
+}));
+
 const enterpriseCustomerUuid = 'test-enterprise-id';
 const mockEditExistingConfigFn = jest.fn();
 const mockOnClick = jest.fn();
@@ -355,5 +362,20 @@ describe('<ExistingLMSCardDeck />', () => {
       />,
     );
     expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
+  });
+  it('viewing sync history redirects to detail page', () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
+    render(
+      <ExistingLMSCardDeck
+        configData={configData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    const link = 'https://www.test.com/BLACKBOARD/1';
+    expect(screen.getByText('View sync history')).toHaveAttribute('href', link);
   });
 });

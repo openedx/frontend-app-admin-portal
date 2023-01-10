@@ -6,7 +6,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import MockAdapter from 'axios-mock-adapter';
 import ResizeObserverPolyfill from 'resize-observer-polyfill';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import 'jest-canvas-mock';
 import 'jest-localstorage-mock';
 
 Enzyme.configure({ adapter: new Adapter() });
