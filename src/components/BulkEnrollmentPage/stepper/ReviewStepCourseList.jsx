@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { InstantSearch, Configure, connectStateResults } from 'react-instantsearch-dom';
 import algoliasearch from 'algoliasearch/lite';
@@ -7,6 +7,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import ReviewList from './ReviewList';
 import { configuration } from '../../../config';
+import { setSelectedRowsAction } from '../data/actions';
 
 const COURSES = {
   singular: 'course',
@@ -26,19 +27,32 @@ const BaseContentSelections = ({
   returnToSelection,
 }) => {
   const {
-    courses: [, coursesDispatch],
+    courses: [selectedCourses, coursesDispatch],
   } = useContext(BulkEnrollContext);
 
-  const selectedRows = camelCaseObject(searchResults?.hits || []);
-  // NOTE: The current implementation of `ReviewItem` relies on the data schema
-  // from `DataTable` where each selected row has a `values` object containing
-  // the metadata about each row and an `id` field representing the
-  // `aggregationKey`. Transforming the data here allows us to avoid needing to
-  // modify `ReviewItem`.
-  const transformedSelectedRows = selectedRows.map((row) => ({
-    values: row,
-    id: row.aggregationKey,
-  }));
+  const transformedSelectedRows = useMemo(() => {
+    const selectedRows = camelCaseObject(searchResults?.hits || []);
+    // NOTE: The current implementation of `ReviewItem` relies on the data schema
+    // from `DataTable` where each selected row has a `values` object containing
+    // the metadata about each row and an `id` field representing the
+    // `aggregationKey`. Transforming the data here allows us to avoid needing to
+    // modify `ReviewItem`.
+    return selectedRows.map((row) => ({
+      values: row,
+      id: row.aggregationKey,
+    }));
+  }, [searchResults]);
+
+  /**
+   * Update the data in the reducer keeping track of course selections
+   * with additional metadata for each selected row from Algolia.
+   */
+  useEffect(() => {
+    if (transformedSelectedRows.length === 0) {
+      return;
+    }
+    coursesDispatch(setSelectedRowsAction(transformedSelectedRows));
+  }, [coursesDispatch, transformedSelectedRows, selectedCourses]);
 
   return (
     <ReviewList
