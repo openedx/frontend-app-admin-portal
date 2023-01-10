@@ -14,7 +14,6 @@ import {
   SETTINGS_PARAM_MATCH,
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
-import SyncHistory from './SettingsLMSTab/ErrorReporting/SyncHistory';
 
 const PAGE_TILE = 'Settings';
 
@@ -38,10 +37,6 @@ const SettingsPage = () => {
           exact
           path={`${path}/${SETTINGS_PARAM_MATCH}`}
           component={SettingsTabs}
-        />
-        <Route
-          path={`${path}/lms/:lms/:configId`}
-          component={SyncHistory}
         />
         <Route path="" component={NotFoundPage} />
       </Switch>

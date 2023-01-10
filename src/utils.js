@@ -260,18 +260,6 @@ const channelMapping = {
     update: LmsApiService.updateCornerstoneConfig,
     delete: LmsApiService.deleteCornerstoneConfig,
   },
-  [DEGREED_TYPE]: {
-    displayName: 'Degreed',
-    icon: DegreedIcon,
-    update: LmsApiService.updateDegreedConfig,
-    delete: LmsApiService.deleteDegreedConfig,
-  },
-  [DEGREED2_TYPE]: {
-    displayName: 'Degreed2',
-    icon: DegreedIcon,
-    update: LmsApiService.updateDegreed2Config,
-    delete: LmsApiService.deleteDegreed2Config,
-  },
   [MOODLE_TYPE]: {
     displayName: 'Moodle',
     icon: MoodleIcon,
@@ -283,6 +271,18 @@ const channelMapping = {
     icon: SAPIcon,
     update: LmsApiService.updateSuccessFactorsConfig,
     delete: LmsApiService.deleteSuccessFactorsConfig,
+  },
+  [DEGREED2_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    update: LmsApiService.updateDegreed2Config,
+    delete: LmsApiService.deleteDegreed2Config,
+  },
+  [DEGREED_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    update: LmsApiService.updateDegreedConfig,
+    delete: LmsApiService.deleteDegreedConfig,
   },
 };
 
