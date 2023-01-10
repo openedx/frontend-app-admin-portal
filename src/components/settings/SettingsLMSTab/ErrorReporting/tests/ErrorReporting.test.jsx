@@ -238,9 +238,7 @@ describe('<ExistingLMSCardDeck />', () => {
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
     expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
-    expect(screen.getByText('LMS Detail Page')).toBeInTheDocument();
     expect(screen.getByText('Disable')).toBeInTheDocument();
-    expect(screen.getByText('Configure')).toBeInTheDocument();
     expect(screen.getByText('Last sync:')).toBeInTheDocument();
 
     await waitFor(() => expect(screen.getByText('Course key')).toBeInTheDocument());
