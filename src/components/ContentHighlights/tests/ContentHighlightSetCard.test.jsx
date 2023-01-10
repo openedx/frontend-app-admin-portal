@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
+import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
@@ -19,15 +20,14 @@ import {
 
 const mockStore = configureMockStore([thunk]);
 
-const mockData = {
+const mockData = [{
   title: 'Test Title',
   highlightSetUUID: 'test-uuid',
   enterpriseSlug: 'test-enterprise-slug',
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
-  trackEvent: jest.fn(),
-};
+}];
 
 const initialEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -36,7 +36,6 @@ const initialEnterpriseAppContextValue = {
     },
   },
 };
-
 const mockMultipleData = [];
 for (let i = 0; i < MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION; i++) {
   mockMultipleData.push({
@@ -62,7 +61,6 @@ const ContentHighlightSetCardWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   data = mockData,
 }) => {
-  const [isArray, setIsArray] = useState(false);
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -73,19 +71,13 @@ const ContentHighlightSetCardWrapper = ({
     contentHighlights: [],
     searchClient,
   });
-  useEffect(() => {
-    if (data.length > 0) {
-      setIsArray(true);
-    }
-  }, [data.length]);
   return (
     <Provider store={mockStore(initialState)}>
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
         <ContentHighlightsContext.Provider value={contextValue}>
           <CurrentContentHighlightHeader />
-          {!isArray && <ContentHighlightSetCard {...data} />}
-          {isArray && data.map((highlight) => (
-            <ContentHighlightSetCard {...highlight} />
+          {data.map((highlight) => (
+            <ContentHighlightSetCard key={uuidv4()} {...highlight} />
           ))}
         </ContentHighlightsContext.Provider>
       </EnterpriseAppContext.Provider>

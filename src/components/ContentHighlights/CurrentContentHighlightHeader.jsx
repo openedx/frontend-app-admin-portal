@@ -20,11 +20,11 @@ const CurrentContentHighlightHeader = () => {
   const { openStepperModal } = useContentHighlightsContext();
   // Preliminiary logic for the header text given max sets reached
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
 
   const createNewHighlight = () => {
     if (maxHighlightsReached) {
-      setShowAlert(true);
+      setShowMaxHighlightsAlert(true);
     } else {
       openStepperModal();
     }
@@ -36,7 +36,7 @@ const CurrentContentHighlightHeader = () => {
     } else {
       setMaxHighlightsReached(false);
     }
-  }, [highlightSets, setMaxHighlightsReached]);
+  }, [highlightSets]);
 
   return (
     <>
@@ -60,8 +60,8 @@ const CurrentContentHighlightHeader = () => {
         icon={Info}
         dismissible
         closeLabel="Dismiss"
-        show={showAlert}
-        onClose={() => setShowAlert(false)}
+        show={showMaxHighlightsAlert}
+        onClose={() => setShowMaxHighlightsAlert(false)}
       >
         <Alert.Heading>
           {ALERT_TEXT.HEADER_TEXT.currentContent}
