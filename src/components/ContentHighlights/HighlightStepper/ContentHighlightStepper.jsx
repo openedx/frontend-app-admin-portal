@@ -115,7 +115,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
-  const handleNext = () => {
+
+  const handleNavigateToSelectContent = () => {
     const trackInfo = {
       prev_step: currentStep,
       prev_step_position: steps.indexOf(currentStep) + 1,
@@ -125,28 +126,14 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       current_selected_row_ids: currentSelectedRowIds,
       current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
     };
-    const createTitle = () => {
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
-        trackInfo,
-      );
-      setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
-    };
-    const selectContent = () => {
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
-        trackInfo,
-      );
-      setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
-    };
-    return {
-      createTitle,
-      selectContent,
-    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
   };
-  const handleBack = () => {
+  const handleNavigateFromSelectContent = () => {
     const trackInfo = {
       prev_step: currentStep,
       prev_step_position: steps.indexOf(currentStep) + 1,
@@ -156,27 +143,48 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       current_selected_row_ids: currentSelectedRowIds,
       current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
     };
-    const selectContent = () => {
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
-        trackInfo,
-      );
-      setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
-    };
-    const confirmContent = () => {
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
-        trackInfo,
-      );
-      setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
-    };
-    return {
-      selectContent,
-      confirmContent,
-    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
+  const handleNavigateToConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) + 1],
+      current_step_position: steps.indexOf(currentStep) + 2,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  const handleNavigateFromConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+
   const closeStepper = () => {
     openCloseAlert();
     const trackInfo = {
@@ -192,7 +200,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       trackInfo,
     );
   };
-    /**
+
+  /**
    * This section triggers browser response to unsaved items when the stepper modal is open/active
    *
    * Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
@@ -241,7 +250,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 </Button>
                 <Button
                   variant="primary"
-                  onClick={handleNext().createTitle}
+                  onClick={handleNavigateToSelectContent}
                   disabled={!!titleStepValidationError || !highlightTitle}
                 >
                   Next
@@ -253,13 +262,13 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 <Stepper.ActionRow.Spacer />
                 <Button
                   variant="tertiary"
-                  onClick={handleBack().selectContent}
+                  onClick={handleNavigateFromSelectContent}
                 >
                   Back
                 </Button>
                 <Button
                   variant="primary"
-                  onClick={handleNext().selectContent}
+                  onClick={handleNavigateToConfirmContent}
                   disabled={Object.keys(currentSelectedRowIds).length === 0}
                 >
                   Next
@@ -271,7 +280,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 <Stepper.ActionRow.Spacer />
                 <Button
                   variant="tertiary"
-                  onClick={handleBack().confirmContent}
+                  onClick={handleNavigateFromConfirmContent}
                 >
                   Back
                 </Button>
