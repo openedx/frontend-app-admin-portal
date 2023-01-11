@@ -15,20 +15,18 @@ const HighlightSetSection = ({
   if (highlightSets.length === 0) {
     return null;
   }
-  const trackEvent = ({
+  const trackClickEvent = ({
     uuid, title, isPublished, highlightedContentUuids,
   }) => {
     const trackInfo = {
-      content_metadata: {
-        highlight_set_uuid: uuid,
-        highlight_set_title: title,
-        highlight_set_is_published: isPublished,
-        highlight_set_item_count: highlightedContentUuids.length,
-      },
+      highlight_set_uuid: uuid,
+      highlight_set_title: title,
+      highlight_set_is_published: isPublished,
+      highlight_set_item_count: highlightedContentUuids.length,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_PUBLISHED_HIGHLIGHT_SET_CARD}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_PUBLISHED_HIGHLIGHT_SET_CARD}`,
       trackInfo,
     );
   };
@@ -50,7 +48,7 @@ const HighlightSetSection = ({
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
             imageCapSrc={cardImageUrl}
-            trackEvent={() => trackEvent({
+            onClick={() => trackClickEvent({
               uuid, title, isPublished, highlightedContentUuids,
             })}
           />

@@ -28,15 +28,13 @@ const ContentHighlightsCardItemsContainer = ({
       </Alert>
     );
   }
-  const trackEvent = (metaData = {}) => {
+  const trackClickEvent = ({ aggregationKey }) => {
     const trackInfo = {
-      content_metadata: {
-        aggregation_key: `${metaData?.aggregationKey}`,
-      },
+      aggregation_key: aggregationKey,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}`,
       trackInfo,
     );
   };
@@ -50,18 +48,18 @@ const ContentHighlightsCardItemsContainer = ({
           key={uuid}
           cardImageUrl={cardImageUrl}
           title={title}
-          href={
+          hyperlinkAttrs={
             {
-              destination: generateAboutPageUrl({
+              href: generateAboutPageUrl({
                 enterpriseSlug,
-                contentType: contentType?.toLowerCase(),
+                contentType: contentType.toLowerCase(),
                 contentKey,
               }),
               target: '_blank',
-              onClick: () => trackEvent({ aggregationKey }),
+              onClick: () => trackClickEvent({ aggregationKey }),
             }
         }
-          contentType={contentType?.toLowerCase()}
+          contentType={contentType.toLowerCase()}
           partners={authoringOrganizations}
         />
       ))}

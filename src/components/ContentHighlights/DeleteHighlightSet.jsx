@@ -30,7 +30,6 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const [deletionError, setDeletionError] = useState(null);
 
   const trackEventOpenDelete = () => {
-    open();
     const trackInfo = {
       is_confirm_delete_highlight_set_modal_open: true,
       highlight_set_uuid: highlightSetUUID,
@@ -38,7 +37,19 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_BUTTON}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_MODAL}.opened`,
+      trackInfo,
+    );
+  };
+  const trackEventCloseDelete = () => {
+    const trackInfo = {
+      is_confirm_delete_highlight_set_modal_open: false,
+      highlight_set_uuid: highlightSetUUID,
+      is_highlight_deleted: false,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_MODAL}.closed`,
       trackInfo,
     );
   };
@@ -50,22 +61,17 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_CONFIRM}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_MODAL}.confirmed`,
       trackInfo,
     );
   };
-  const trackEventCloseDelete = () => {
+  const openDeleteConfirmation = () => {
+    open();
+    trackEventOpenDelete();
+  };
+  const closeDeleteConfirmation = () => {
     close();
-    const trackInfo = {
-      is_confirm_delete_highlight_set_modal_open: false,
-      highlight_set_uuid: highlightSetUUID,
-      is_highlight_deleted: false,
-    };
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.DELETE_HIGHLIGHT_CANCEL}.clicked`,
-      trackInfo,
-    );
+    trackEventCloseDelete();
   };
   const handleDeleteClick = () => {
     const deleteHighlightSet = async () => {
@@ -96,14 +102,14 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
 
   return (
     <>
-      <Button variant="outline-primary" onClick={trackEventOpenDelete}>Delete highlight</Button>
+      <Button variant="outline-primary" onClick={openDeleteConfirmation}>Delete highlight</Button>
       <AlertModal
         title="Delete highlight?"
         isOpen={isOpen}
         onClose={close}
         footerNode={(
           <ActionRow>
-            <Button variant="tertiary" onClick={trackEventCloseDelete}>Cancel</Button>
+            <Button variant="tertiary" onClick={closeDeleteConfirmation}>Cancel</Button>
             <StatefulButton
               labels={{
                 default: 'Delete highlight',

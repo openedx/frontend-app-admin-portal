@@ -147,7 +147,7 @@ describe('<ContentHighlightStepper>', () => {
     const backButton4 = screen.getByText('Back');
     userEvent.click(backButton4);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(6);
-    
+
     // Confirm stepper close confirmation modal
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
@@ -273,7 +273,7 @@ describe('<ContentHighlightStepper>', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
     const reallyLongTitle = 'test-title-test-title-test-title-test-title-test-title-test-title';
     const reallyLongTitleLength = reallyLongTitle.length;
@@ -286,7 +286,7 @@ describe('<ContentHighlightStepper>', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
     userEvent.click(footerLink);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);

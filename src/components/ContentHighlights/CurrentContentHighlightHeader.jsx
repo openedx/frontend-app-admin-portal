@@ -7,10 +7,8 @@ import {
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
-import { useContextSelector } from 'use-context-selector';
 import { Add, Info } from '@edx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
-import { ContentHighlightsContext } from './ContentHighlightsContext';
 import EVENT_NAMES from '../../eventTracking';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -27,30 +25,9 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
     },
   } = useContext(EnterpriseAppContext);
   const { openStepperModal } = useContentHighlightsContext();
-  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
-
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
   const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
 
-  const createNewHighlight = () => {
-    if (maxHighlightsReached) {
-      setShowMaxHighlightsAlert(true);
-    } else {
-      openStepperModal();
-      const trackInfo = {
-        highlight_sets: highlightSets,
-        number_of_highlight_sets: highlightSets.length,
-        stepperModal: {
-          is_stepper_modal_open: !isStepperModalOpen,
-        },
-      };
-      sendEnterpriseTrackEvent(
-        enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}.clicked`,
-        trackInfo,
-      );
-    }
-  };
   useEffect(() => {
     // using greater than or equal as an additional buffer as opposed to exactly equal
     if (highlightSets.length >= MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION) {
@@ -60,6 +37,22 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
     }
   }, [highlightSets]);
 
+  const createNewHighlight = () => {
+    if (maxHighlightsReached) {
+      setShowMaxHighlightsAlert(true);
+    } else {
+      openStepperModal();
+      const trackInfo = {
+        existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+        existing_highlight_set_count: highlightSets.length,
+      };
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}`,
+        trackInfo,
+      );
+    }
+  };
   return (
     <>
       <ActionRow>

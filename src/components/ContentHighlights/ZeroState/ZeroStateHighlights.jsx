@@ -31,15 +31,12 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const handleNewHighlightClick = () => {
     openStepperModal();
     const trackInfo = {
-      highlight_sets: highlightSets,
-      number_of_highlight_sets: highlightSets.length,
-      stepperModal: {
-        is_stepper_modal_open: !isStepperModalOpen,
-      },
+      existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+      existing_highlight_set_count: highlightSets.length,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}`,
       trackInfo,
     );
   };

@@ -16,29 +16,27 @@ const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => 
     originalImageUrl,
     firstEnrollablePaidSeatPrice,
   } = original;
-  const trackEvent = () => {
+  const trackClickEvent = () => {
     const trackInfo = {
-      content_metadata: {
-        aggregation_key: aggregationKey,
-      },
+      aggregation_key: aggregationKey,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_SELECT_CONTENT_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_SELECT_CONTENT_ABOUT_PAGE}`,
       trackInfo,
     );
   };
   return (
     <ContentHighlightCardItem
       title={title}
-      href={{
-        destination: generateAboutPageUrl({
+      hyperlinkAttrs={{
+        href: generateAboutPageUrl({
           enterpriseSlug,
-          contentType: contentType?.toLowerCase(),
-          contentKey: aggregationKey?.split(':')[1],
+          contentType: contentType.toLowerCase(),
+          contentKey: aggregationKey.split(':')[1],
         }),
         target: '_blank',
-        onClick: trackEvent,
+        onClick: trackClickEvent,
       }}
       contentType={contentType}
       partners={partners}

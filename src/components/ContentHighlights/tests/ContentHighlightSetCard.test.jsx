@@ -27,7 +27,7 @@ const mockData = [{
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
-  trackEvent: jest.fn(),
+  onClick: jest.fn(),
 }];
 
 const initialEnterpriseAppContextValue = {

@@ -14,7 +14,7 @@ const ContentHighlightSetCard = ({
   isPublished,
   enterpriseSlug,
   itemCount,
-  trackEvent,
+  onClick,
 }) => {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
@@ -22,7 +22,7 @@ const ContentHighlightSetCard = ({
   /* Stepper Draft Logic (See Hook) - End */
   const handleHighlightSetClick = () => {
     if (isPublished) {
-      trackEvent();
+      onClick();
       // redirect to individual highlighted set based on uuid
       history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
       return;
@@ -52,7 +52,7 @@ ContentHighlightSetCard.propTypes = {
   isPublished: PropTypes.bool.isRequired,
   itemCount: PropTypes.number.isRequired,
   imageCapSrc: PropTypes.string.isRequired,
-  trackEvent: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

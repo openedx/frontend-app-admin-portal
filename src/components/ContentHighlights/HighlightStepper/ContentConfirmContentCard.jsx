@@ -20,15 +20,13 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
     firstEnrollablePaidSeatPrice,
     aggregationKey,
   } = original;
-  const trackEvent = () => {
+  const trackClickEvent = () => {
     const trackInfo = {
-      content_metadata: {
-        aggregation_key: aggregationKey,
-      },
+      aggregation_key: aggregationKey,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CONFIRM_CONTENT_ABOUT_PAGE}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CONFIRM_CONTENT_ABOUT_PAGE}`,
       trackInfo,
     );
   };
@@ -36,15 +34,15 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
     <div className="d-flex w-100" data-testid="title-test">
       <ContentHighlightCardItem
         title={title}
-        href={
+        hyperlinkAttrs={
           {
-            destination: generateAboutPageUrl({
+            href: generateAboutPageUrl({
               enterpriseSlug,
-              contentType: contentType?.toLowerCase(),
-              contentKey: aggregationKey?.split(':')[1],
+              contentType: contentType.toLowerCase(),
+              contentKey: aggregationKey.split(':')[1],
             }),
             target: '_blank',
-            onClick: trackEvent,
+            onClick: trackClickEvent,
           }
 }
         contentType={contentType}
