@@ -53,7 +53,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [isOpen, open, close] = useToggle(false);
+  const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -70,12 +70,12 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   );
 
   const closeStepperModal = useCallback(() => {
-    if (isOpen) {
-      close();
+    if (isCloseAlertOpen) {
+      closeCloseAlert();
     }
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [resetStepperModal, isOpen, close]);
+  }, [resetStepperModal, isCloseAlertOpen, closeCloseAlert]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -107,43 +107,42 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     }
   };
   const closeStepper = () => {
-    open();
+    openCloseAlert();
   };
 
-  /* Start beforeunload event */
-  // This section triggers browser response to unsaved items when the stepper modal is open/active
+  /**
+   * This section triggers browser response to unsaved items when the stepper modal is open/active
+   *
+   * Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
+   * A return value is required to trigger the browser unsaved data blocking modal response
+   *
+   * Conditional MUST be set on event listener initialization.
+   * Failure to provide conditional will trigger browser event on all elements
+   * within ContentHighlightRoutes.jsx (essentially all of highlights)
+   * */
   useEffect(() => {
-    const preventUnload = () => {
-      /* eslint-disable no-restricted-globals */
-      /* Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
-      A return value is required to trigger the browser unsaved data blocking modal response */
-      event.preventDefault();
-      event.returnValue = 'Are you sure? Your data will not be saved.';
-      /* eslint-enable no-restricted-globals */
+    const preventUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = 'Are you sure? Your data will not be saved.';
     };
 
-    /* Conditional MUST be set on event listener initialization.
-    Failure to provide conditional will trigger browser event on
-    all elements within ContentHighlightRoutes.jsx (essentially all of highlights) */
     if (isStepperModalOpen) {
-      window.addEventListener('beforeunload', preventUnload);
+      global.addEventListener('beforeunload', preventUnload);
     }
-    /* Added safety to force remove the 'beforeunload' event on the window */
+    // Added safety to force remove the 'beforeunload' event on the global window
     return () => {
-      window.removeEventListener('beforeunload', preventUnload);
+      global.removeEventListener('beforeunload', preventUnload);
     };
   }, [isStepperModalOpen]);
-  /* End beforeunload event */
 
   return (
     <>
       <Stepper activeKey={currentStep}>
         <FullscreenModal
-          id="test"
           title="New highlight"
           className="bg-light-200"
           isOpen={isStepperModalOpen}
-          onClose={() => closeStepper()}
+          onClose={closeStepper}
           beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
           footerNode={(
             <>
@@ -154,7 +153,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
                 <Button
                   variant="tertiary"
-                  onClick={() => closeStepper()}
+                  onClick={closeStepper}
                 >
                   Back
                 </Button>
@@ -237,14 +236,14 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       {/* Alert Modal for StepperModal Close Confirmation */}
       <AlertModal
         title={STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title}
-        isOpen={isOpen}
-        onClose={close}
+        isOpen={isCloseAlertOpen}
+        onClose={closeCloseAlert}
       >
         <p>
           {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
         </p>
         <ActionRow>
-          <Button variant="tertiary" onClick={close}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="tertiary" onClick={closeCloseAlert}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
           <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
         </ActionRow>
       </AlertModal>
