@@ -1,11 +1,17 @@
 import React, {
-  useCallback, useState, useContext,
+  useCallback, useState, useContext, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { connect } from 'react-redux';
 import {
-  Stepper, FullscreenModal, Button, StatefulButton,
+  Stepper,
+  FullscreenModal,
+  Button,
+  StatefulButton,
+  useToggle,
+  AlertModal,
+  ActionRow,
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -23,6 +29,7 @@ import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCu
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { STEPPER_STEP_LABELS } from '../data/constants';
+import { STEPPER_STEP_TEXT } from '../data/constants';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -43,6 +50,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
   const { resetStepperModal } = useContentHighlightsContext();
   const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const titleStepValidationError = useContextSelector(
@@ -59,9 +67,12 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   );
 
   const closeStepperModal = useCallback(() => {
+    if (isCloseAlertOpen) {
+      closeCloseAlert();
+    }
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [resetStepperModal]);
+  }, [resetStepperModal, isCloseAlertOpen, closeCloseAlert]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -172,7 +183,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
   const closeStepper = () => {
-    closeStepperModal();
+    openCloseAlert();
     const trackInfo = {
       stepperModal: {
         current_step: steps[steps.indexOf(currentStep)],
@@ -189,13 +200,38 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       trackInfo,
     );
   };
+    /**
+   * This section triggers browser response to unsaved items when the stepper modal is open/active
+   *
+   * Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
+   * A return value is required to trigger the browser unsaved data blocking modal response
+   *
+   * Conditional MUST be set on event listener initialization.
+   * Failure to provide conditional will trigger browser event on all elements
+   * within ContentHighlightRoutes.jsx (essentially all of highlights)
+   * */
+  useEffect(() => {
+    const preventUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = 'Are you sure? Your data will not be saved.';
+    };
+
+    if (isStepperModalOpen) {
+      global.addEventListener('beforeunload', preventUnload);
+    }
+    // Added safety to force remove the 'beforeunload' event on the global window
+    return () => {
+      global.removeEventListener('beforeunload', preventUnload);
+    };
+  }, [isStepperModalOpen]);
+  
   return (
     <Stepper activeKey={currentStep}>
       <FullscreenModal
         title="New highlight"
         className="bg-light-200"
         isOpen={isStepperModalOpen}
-        onClose={() => closeStepper()}
+        onClose={closeStepper}
         beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
         footerNode={(
           <>
@@ -206,7 +242,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
               <Button
                 variant="tertiary"
-                onClick={() => closeStepper()}
+                onClick={closeStepper}
               >
                 Back
               </Button>
@@ -257,35 +293,51 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
               />
             </Stepper.ActionRow>
           </>
+
           )}
+        >
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
+            title={STEPPER_STEP_LABELS.CREATE_TITLE}
+            hasError={!!titleStepValidationError}
+            description={titleStepValidationError || ''}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
+          >
+            <HighlightStepperTitle />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            title={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+          >
+            <HighlightStepperSelectContent enterpriseId={enterpriseId} />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+          >
+            <HighlightStepperConfirmContent />
+          </Stepper.Step>
+        </FullscreenModal>
+      </Stepper>
+      {/* Alert Modal for StepperModal Close Confirmation */}
+      <AlertModal
+        title={STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title}
+        isOpen={isCloseAlertOpen}
+        onClose={closeCloseAlert}
       >
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
-          title={STEPPER_STEP_LABELS.CREATE_TITLE}
-          hasError={!!titleStepValidationError}
-          description={titleStepValidationError || ''}
-          index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
-        >
-          <HighlightStepperTitle />
-        </Stepper.Step>
-
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
-          title={STEPPER_STEP_LABELS.SELECT_CONTENT}
-          index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
-        >
-          <HighlightStepperSelectContent enterpriseId={enterpriseId} />
-        </Stepper.Step>
-
-        <Stepper.Step
-          eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
-          title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
-          index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
-        >
-          <HighlightStepperConfirmContent />
-        </Stepper.Step>
-      </FullscreenModal>
-    </Stepper>
+        <p>
+          {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
+        </p>
+        <ActionRow>
+          <Button variant="tertiary" onClick={closeCloseAlert}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
+        </ActionRow>
+      </AlertModal>
+    </>
   );
 };
 

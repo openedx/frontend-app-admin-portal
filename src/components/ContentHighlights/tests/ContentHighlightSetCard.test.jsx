@@ -129,7 +129,7 @@ describe('<ContentHighlightSetCard>', () => {
     // Trigger Alert
     userEvent.click(createNewHighlightButton);
     // Verify Alert
-    expect(screen.queryByText(STEPPER_STEP_TEXT.createTitle)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.currentContent)).toBeInTheDocument();
     expect(screen.getByText(ALERT_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
 
