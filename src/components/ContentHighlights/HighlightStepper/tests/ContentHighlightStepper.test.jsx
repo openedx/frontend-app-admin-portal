@@ -99,7 +99,7 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
@@ -118,14 +118,24 @@ describe('<ContentHighlightStepper>', () => {
     // confirm content --> select content
     const backButton2 = screen.getByText('Back');
     userEvent.click(backButton2);
-    expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.selectContent)).toBeInTheDocument();
     // select content --> title
     const backButton3 = screen.getByText('Back');
     userEvent.click(backButton3);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     // title --> closed stepper
     const backButton4 = screen.getByText('Back');
     userEvent.click(backButton4);
+
+    // Confirm stepper close confirmation modal
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
+    userEvent.click(confirmCloseButton);
+
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and exits on the X button', () => {
@@ -133,10 +143,27 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+
+    // Confirm stepper close confirmation modal
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
+    userEvent.click(confirmCloseButton);
+
+    // Confirm stepper confirmation modal closed
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+
+    expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
@@ -144,15 +171,15 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
     const nextButton1 = screen.getByText('Next');
     userEvent.click(nextButton1);
-    expect(screen.getByText(STEPPER_STEP_TEXT.selectContent)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.selectContent)).toBeInTheDocument();
     const nextButton2 = screen.getByText('Next');
     userEvent.click(nextButton2);
-    expect(screen.getByText(STEPPER_STEP_TEXT.confirmContent)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.confirmContent)).toBeInTheDocument();
 
     const confirmButton = screen.getByText('Publish');
     userEvent.click(confirmButton);
@@ -163,14 +190,60 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper1);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+
+    // Confirm stepper close confirmation modal
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
+    userEvent.click(confirmCloseButton);
+
+    // Confirm stepper confirmation modal closed
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+
+    expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
 
     const stepper2 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper2);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+  });
+  it('opens the stepper modal close confirmation modal and cancels the modal', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+
+    const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper1);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    userEvent.click(closeButton);
+
+    // Confirm stepper close confirmation modal
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+    const confirmCancelButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel);
+    userEvent.click(confirmCancelButton);
+
+    // Confirm stepper confirmation modal closed
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+
+    // Confirm modal still open
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });
