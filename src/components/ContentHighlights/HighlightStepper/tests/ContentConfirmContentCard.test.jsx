@@ -91,8 +91,6 @@ describe('<ContentConfirmContentCard />', () => {
   });
   it('sends track event on click', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
-    // const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
-    // userEvent.click(hyperlinkTitle);
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);

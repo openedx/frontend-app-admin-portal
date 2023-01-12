@@ -115,7 +115,9 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       setIsPublishing(false);
     }
   };
-
+  /**
+   * Handles the navigation to the next step in the stepper from the createTitle step of the stepper.
+   */
   const handleNavigateToSelectContent = () => {
     const trackInfo = {
       prev_step: currentStep,
@@ -133,6 +135,9 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
   };
+  /**
+   * Handles the navigation to the previous step in the stepper from the selectContent step of the stepper.
+   */
   const handleNavigateFromSelectContent = () => {
     const trackInfo = {
       prev_step: currentStep,
@@ -150,6 +155,9 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
+  /**
+   * Handles the navigation to the next step in the stepper from the selectContent step of the stepper.
+   */
   const handleNavigateToConfirmContent = () => {
     const trackInfo = {
       prev_step: currentStep,
@@ -167,6 +175,9 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
   };
+  /**
+   * Handles the navigation to the previous step in the stepper from the confirmContent step of the stepper.
+   */
   const handleNavigateFromConfirmContent = () => {
     const trackInfo = {
       prev_step: currentStep,

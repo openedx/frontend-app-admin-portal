@@ -14,7 +14,7 @@ import { generateAboutPageUrl } from '../data/utils';
 
 const mockStore = configureMockStore([thunk]);
 
-const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent[0];
+const testHighlightedContent = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent[0];
 
 const initialState = {
   portalConfiguration: {
@@ -32,9 +32,9 @@ describe('<ContentHighlightCardItem>', () => {
   it('Does not render a hyperlink if href is not specified', () => {
     renderWithRouter(<ContentHighlightCardItemContainerWrapper
       isLoading={false}
-      title={testHighlightSet.title}
-      contentType={testHighlightSet.contentType.toLowerCase()}
-      partners={testHighlightSet.authoringOrganizations}
+      title={testHighlightedContent.title}
+      contentType={testHighlightedContent.contentType.toLowerCase()}
+      partners={testHighlightedContent.authoringOrganizations}
     />);
     expect(screen.queryByTestId('hyperlink-title')).not.toBeInTheDocument();
   });
@@ -42,15 +42,15 @@ describe('<ContentHighlightCardItem>', () => {
     const trackClickEvent = jest.fn();
     renderWithRouter(<ContentHighlightCardItemContainerWrapper
       isLoading={false}
-      title={testHighlightSet.title}
-      contentType={testHighlightSet.contentType.toLowerCase()}
-      partners={testHighlightSet.authoringOrganizations}
+      title={testHighlightedContent.title}
+      contentType={testHighlightedContent.contentType.toLowerCase()}
+      partners={testHighlightedContent.authoringOrganizations}
       hyperlinkAttrs={
         {
           href: generateAboutPageUrl({
             enterpriseSlug: initialState.portalConfiguration.enterpriseSlug,
-            contentType: testHighlightSet.contentType.toLowerCase(),
-            contentKey: testHighlightSet.contentKey,
+            contentType: testHighlightedContent.contentType.toLowerCase(),
+            contentKey: testHighlightedContent.contentKey,
           }),
           target: '_blank',
           onClick: () => trackClickEvent(),
@@ -60,7 +60,7 @@ describe('<ContentHighlightCardItem>', () => {
     />);
     const hyperlink = screen.getByTestId('hyperlink-title');
     expect(hyperlink).toBeInTheDocument();
-    expect(hyperlink.href).toContain(`${initialState.portalConfiguration.enterpriseSlug}/${testHighlightSet.contentType.toLowerCase()}/${testHighlightSet.contentKey}`);
+    expect(hyperlink.href).toContain(`${initialState.portalConfiguration.enterpriseSlug}/${testHighlightedContent.contentType.toLowerCase()}/${testHighlightedContent.contentKey}`);
     userEvent.click(hyperlink);
     expect(trackClickEvent).toHaveBeenCalled();
   });
