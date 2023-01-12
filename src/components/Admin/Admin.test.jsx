@@ -10,7 +10,6 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
-import { features } from '../../config';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -66,9 +65,6 @@ const AdminWrapper = props => (
 );
 
 describe('<Admin />', () => {
-  beforeEach(() => {
-    features.SUBSCRIPTION_LPR = false;
-  });
   const baseProps = {
     activeLearners: {
       past_week: 1,

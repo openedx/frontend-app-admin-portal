@@ -27,6 +27,7 @@ const ContentHighlightCatalogVisibilityAlert = () => {
             <div className="align-self-center">
               <Button
                 onClick={openStepperModal}
+                data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
                 iconBefore={Add}
                 block
               >

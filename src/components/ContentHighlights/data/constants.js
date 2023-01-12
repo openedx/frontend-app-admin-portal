@@ -55,6 +55,15 @@ export const STEPPER_STEP_TEXT = {
               For example, "Recommended for Marketing" or "Develop Leadership Skills".`,
     selectContent: `Pro tip: a highlight can include courses similar to each other for your learners to choose from,
                     or courses that vary in subtopics to help your learners master a larger topic`,
+    confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
+  },
+  ALERT_MODAL_TEXT: {
+    title: 'Lose Progress?',
+    content: 'If you exit now, any changes you\'ve made will be lost.',
+    buttons: {
+      exit: 'Exit',
+      cancel: 'Cancel',
+    },
   },
 };
 
@@ -64,18 +73,10 @@ export const HEADER_TEXT = {
   catalogVisibility: 'Catalog Visibility',
   SUB_TEXT: {
     catalogVisibility: 'Choose a visibility for your catalog.',
+    currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
   },
   PRO_TIP_TEXT: {
     catalogVisibility: 'Pro tip: regardless of your choice, learners will be able to see all highlight collections.',
-  },
-};
-// Text for alerts in catalog visibility
-export const ALERT_TEXT = {
-  HEADER_TEXT: {
-    catalogVisibility: 'No highlights created',
-  },
-  SUB_TEXT: {
-    catalogVisibility: 'At least one highlight has to be created to make a selection',
   },
 };
 
@@ -86,7 +87,17 @@ export const BUTTON_TEXT = {
   catalogVisibilityRadio1: 'Learners can view and enroll into all courses in your catalog',
   catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses only  ',
 };
-
+// Alert Text extracted from constant to maintain passing test on changes
+export const ALERT_TEXT = {
+  HEADER_TEXT: {
+    catalogVisibility: 'No highlights created',
+    currentContent: 'Highlight limit reached',
+  },
+  SUB_TEXT: {
+    catalogVisibility: 'At least one highlight has to be created to make a selection',
+    currentContent: 'Delete at least one highlight to create a new one.',
+  },
+};
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',

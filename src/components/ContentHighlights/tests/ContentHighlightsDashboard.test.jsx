@@ -143,4 +143,10 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(highlightTab.classList.contains('disabled')).toBeTruthy();
     expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
   });
+  it('Displays New highlight modal on button click with highlighted content list', () => {
+    renderWithRouter(<ContentHighlightsDashboardWrapper />);
+    const newHighlight = screen.getByText('New highlight');
+    userEvent.click(newHighlight);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+  });
 });

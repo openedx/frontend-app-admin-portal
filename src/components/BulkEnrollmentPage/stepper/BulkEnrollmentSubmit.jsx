@@ -93,8 +93,9 @@ const BulkEnrollmentSubmit = ({
   const [toastMessage, setToastMessage] = useState('');
 
   const courseKeys = selectedCourses.map(
-    ({ original, id }) => original?.advertised_course_run?.key || id,
+    ({ values, id }) => values.advertisedCourseRun?.key || id,
   );
+
   const emails = selectedEmails.map(({ values }) => values.userEmail);
   const [isErrorModalOpen, toggleErrorModalOpen, toggleErrorModalClose] = useToggle();
   const hasSelectedCoursesAndEmails = selectedEmails.length > 0 && selectedCourses.length > 0;

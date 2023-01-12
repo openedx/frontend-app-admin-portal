@@ -11,10 +11,7 @@ import { SSOConfigContext } from './SSOConfigContext';
 import ConfigError from '../ConfigError';
 import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
-
-const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
+import { errorToggleModalText, errorDeleteConfigModalText, errorDeleteDataModalText } from '../data/constants';
 
 const ExistingSSOConfigs = ({
   configs, refreshBool, setRefreshBool, enterpriseId, providerData,
