@@ -29,6 +29,7 @@ import SkeletonContentCardContainer from '../SkeletonContentCardContainer';
 export const BaseReviewContentSelections = ({
   searchResults,
   isSearchStalled,
+  currentSelectedRowIds,
 }) => {
   if (isSearchStalled) {
     return (
@@ -38,12 +39,15 @@ export const BaseReviewContentSelections = ({
   if (!searchResults) {
     return (<div data-testid="base-content-no-results" />);
   }
-
   const { hits } = camelCaseObject(searchResults);
+  // ensures content is persisted in the order it was selected from the previous step.
+  const sortedHits = hits.sort(
+    (a, b) => currentSelectedRowIds.indexOf(a.aggregationKey) - currentSelectedRowIds.indexOf(b.aggregationKey),
+  );
 
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
-      {hits.map((original) => (
+      {sortedHits.map((original) => (
         <ContentConfirmContentCard key={original.aggregationKey} original={original} />))}
     </CardGrid>
   );
@@ -57,6 +61,7 @@ BaseReviewContentSelections.propTypes = {
     })).isRequired,
   }),
   isSearchStalled: PropTypes.bool.isRequired,
+  currentSelectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 BaseReviewContentSelections.defaultProps = {
@@ -116,7 +121,7 @@ export const SelectedContent = ({ enterpriseId }) => {
         filters={algoliaFilters}
         hitsPerPage={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET}
       />
-      <ReviewContentSelections />
+      <ReviewContentSelections currentSelectedRowIds={currentSelectedRowIds} />
     </InstantSearch>
   );
 };
@@ -125,19 +130,29 @@ SelectedContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-const HighlightStepperConfirmContent = ({ enterpriseId }) => (
-  <Container>
-    <Row>
-      <Col xs={12} md={8} lg={6}>
-        <h3 className="mb-3 d-flex align-items-center">
-          <Icon src={Assignment} className="mr-2 color-brand-tertiary" />
-          {STEPPER_STEP_TEXT.confirmContent}
-        </h3>
-      </Col>
-    </Row>
-    <SelectedContent enterpriseId={enterpriseId} />
-  </Container>
-);
+const HighlightStepperConfirmContent = ({ enterpriseId }) => {
+  const highlightTitle = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.highlightTitle,
+  );
+
+  return (
+    <Container>
+      <Row>
+        <Col xs={12} md={8} lg={6}>
+          <h3 className="mb-3 d-flex align-items-center">
+            <Icon src={Assignment} className="mr-2 text-brand" />
+            {STEPPER_STEP_TEXT.HEADER_TEXT.confirmContent}
+          </h3>
+          <p>
+            {STEPPER_STEP_TEXT.SUB_TEXT.confirmContent(highlightTitle)}.
+          </p>
+        </Col>
+      </Row>
+      <SelectedContent enterpriseId={enterpriseId} />
+    </Container>
+  );
+};
 
 HighlightStepperConfirmContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,

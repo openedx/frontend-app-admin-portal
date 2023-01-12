@@ -44,6 +44,28 @@ describe('ReviewStepCourseList', () => {
     expect(screen.getByTestId('algolia__Configure')).toBeInTheDocument();
     expect(screen.getByTestId('review-list')).toBeInTheDocument();
   });
+
+  it('updates `selectedCourses` in `BulkEnrollContext` with Algolia metadata', () => {
+    render(<ReviewStepCourseListWrapper />);
+
+    expect(mockCoursesDispatch).toHaveBeenCalledTimes(1);
+    const expectedCourseSelection = {
+      id: expect.any(String),
+      values: expect.objectContaining({
+        advertisedCourseRun: expect.any(Object),
+        aggregationKey: expect.any(String),
+        key: expect.any(String),
+        objectId: expect.any(String),
+        title: expect.any(String),
+      }),
+    };
+    expect(mockCoursesDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payload: [expectedCourseSelection, expectedCourseSelection],
+        type: 'SET SELECTED ROWS',
+      }),
+    );
+  });
 });
 
 describe('useSearchFiltersForSelectedCourses', () => {

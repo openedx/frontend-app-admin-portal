@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
+import { Card, Hyperlink } from '@edx/paragon';
+import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
+
 import { getContentHighlightCardFooter } from './data/utils';
 
 const ContentHighlightCardItem = ({
@@ -28,11 +30,11 @@ const ContentHighlightCardItem = ({
       </Hyperlink>
     );
   }
-
   return (
-    <Card isLoading={isLoading}>
+    <Card variant={contentType !== 'course' && 'dark'} isLoading={isLoading}>
       <Card.ImageCap
         src={cardInfo.cardImgSrc}
+        fallbackSrc={cardImageCapFallbackSrc}
         srcAlt=""
         logoSrc={cardInfo.cardLogoSrc}
         logoAlt={cardInfo.cardLogoAlt}

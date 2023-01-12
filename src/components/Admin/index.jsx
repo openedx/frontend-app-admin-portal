@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { Icon } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
+import { getConfig } from '@edx/frontend-platform/config';
 import Hero from '../Hero';
 import StatusAlert from '../StatusAlert';
 import EnrollmentsTable from '../EnrollmentsTable';
@@ -22,6 +23,9 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 import { formatTimestamp } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
+import { SubscriptionData } from '../subscriptions';
+import EmbeddedSubscription from './EmbeddedSubscription';
+import { isExperimentVariant } from '../../optimizely';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -293,6 +297,11 @@ class Admin extends React.Component {
       searchDateQuery: queryParams.get('search_start_date') || '',
     };
 
+    const config = getConfig();
+
+    // Only users buckted in `Variation 1` can see the Subscription Management UI on LPR.
+    const isExperimentVariation1 = isExperimentVariant(config.EXPERIMENT_1_ID, config.EXPERIMENT_1_VARIANT_1_ID);
+
     return (
       <main role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
@@ -315,6 +324,18 @@ class Admin extends React.Component {
                   <AdminCards />
                 )}
               </div>
+
+              {isExperimentVariation1
+                  && (
+                  <div className="row">
+                    <div className="col mb-4.5">
+                      <SubscriptionData enterpriseId={enterpriseId}>
+                        <EmbeddedSubscription />
+                      </SubscriptionData>
+                    </div>
+                  </div>
+                  )}
+
               <div className="row mt-4">
                 <div className="col">
                   <div className="row">

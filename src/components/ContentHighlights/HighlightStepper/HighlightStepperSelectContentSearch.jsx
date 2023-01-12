@@ -26,8 +26,6 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const currentEpoch = Math.round((new Date()).getTime() / 1000);
-
 const HighlightStepperSelectContent = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
@@ -38,9 +36,9 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
-    // TODO: replace testEnterpriseId with enterpriseID before push,
+    // TODO: replace testEnterpriseId with enterpriseId before push,
     // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${enterpriseId} AND advertised_course_run.upgrade_deadline > ${currentEpoch}`;
+  const searchFilters = `enterprise_customer_uuids:${enterpriseId}`;
 
   return (
     <SearchData>
@@ -156,7 +154,6 @@ const BaseHighlightStepperSelectContentDataTable = ({
       {currentView === 'list' && <DataTable.Table /> }
       <DataTable.EmptyTable content="No results found" />
       <DataTable.TableFooter>
-        <DataTable.RowStatus />
         <SelectContentSearchPagination />
       </DataTable.TableFooter>
     </DataTable>

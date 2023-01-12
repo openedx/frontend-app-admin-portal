@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { faker } from '@faker-js/faker';
+/* eslint-enable import/no-extraneous-dependencies */
 
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
@@ -22,20 +23,44 @@ export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
 export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
-  createTitle: 'Create a title for your highlight',
-  selectContent: 'Add content to your highlight',
-  confirmContent: 'Confirm your content selections',
+  HEADER_TEXT: {
+    createTitle: 'Create a title for your highlight',
+    selectContent: 'Add content to your highlight',
+    confirmContent: 'Confirm your selections',
+  },
+  SUB_TEXT: {
+    confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
+  },
+  ALERT_MODAL_TEXT: {
+    title: 'Lose Progress?',
+    content: 'If you exit now, any changes you\'ve made will be lost.',
+    buttons: {
+      exit: 'Exit',
+      cancel: 'Cancel',
+    },
+  },
 };
 // Header text extracted into constant to maintain passing test on changes
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
+  SUB_TEXT: {
+    currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
+  },
 };
 // Button text extracted from constant to maintain passing test on changes
 export const BUTTON_TEXT = {
   createNewHighlight: 'New',
   zeroStateCreateNewHighlight: 'New highlight',
 };
-
+// Alert Text extracted from constant to maintain passing test on changes
+export const ALERT_TEXT = {
+  HEADER_TEXT: {
+    currentContent: 'Highlight limit reached',
+  },
+  SUB_TEXT: {
+    currentContent: 'Delete at least one highlight to create a new one.',
+  },
+};
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
@@ -45,7 +70,8 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 
 // Test Data for Content Highlights From this point onwards
 // Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'e783bb19-277f-479e-9c41-8b0ed31b4060';
+export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
@@ -390,8 +416,8 @@ testCourseData.forEach((element, index) => {
 });
 
 export const testCourseAggregation = {
-  'course:HarvardX+CS50x': true,
-  'course:HarvardX+CS50P': true,
   'course:HarvardX+CS50W': true,
   'course:HarvardX+CS50AI': true,
+  'course:HarvardX+CS50P': true,
+  'course:HarvardX+CS50x': true,
 };

@@ -75,12 +75,6 @@ const Sidebar = ({
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
     },
     {
-      title: 'Tableau Analytics',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`,
-      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
-      hidden: !features.TABLEAU_ANALYTICS || !enableAnalyticsScreen,
-    },
-    {
       title: 'Analytics',
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,

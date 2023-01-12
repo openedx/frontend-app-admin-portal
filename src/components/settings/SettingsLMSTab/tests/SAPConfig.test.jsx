@@ -3,7 +3,7 @@ import {
   render, fireEvent, screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import userEvent from '@testing-library/user-event';
 import SAPConfig from '../LMSConfigs/SAPConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -119,7 +119,7 @@ describe('<SAPConfig />', () => {
       target: { value: 'displayName' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
-    fireEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       sapsf_base_url: 'https://www.test.com',
@@ -161,7 +161,7 @@ describe('<SAPConfig />', () => {
       target: { value: 'displayName' },
     });
     expect(screen.getByText('Submit')).not.toBeDisabled();
-    fireEvent.click(screen.getByText('Submit'));
+    userEvent.click(screen.getByText('Submit'));
 
     const expectedConfig = {
       active: false,
@@ -188,8 +188,8 @@ describe('<SAPConfig />', () => {
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
-    fireEvent.click(screen.getByText('Cancel'));
-    fireEvent.click(screen.getByText('Save'));
+    userEvent.click(screen.getByText('Cancel'));
+    userEvent.click(screen.getByText('Save'));
     const expectedConfig = {
       active: false,
       display_name: 'displayName',

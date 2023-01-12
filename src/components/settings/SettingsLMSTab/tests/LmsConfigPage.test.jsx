@@ -2,6 +2,7 @@ import React from 'react';
 import {
   fireEvent, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import configureMockStore from 'redux-mock-store';
 import { createMemoryHistory } from 'history';
@@ -14,7 +15,6 @@ import {
   BLACKBOARD_TYPE,
   CANVAS_TYPE,
   CORNERSTONE_TYPE,
-  DEGREED_TYPE,
   DEGREED2_TYPE,
   MOODLE_TYPE,
   SAP_TYPE,
@@ -79,16 +79,16 @@ describe('<SettingsLMSTab />', () => {
     await waitFor(() => {
       expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
     });
-    fireEvent.click(screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName));
+    userEvent.click(screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName));
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect Blackboard')).toBeFalsy();
   });
   test('Canvas card cancel flow', async () => {
@@ -99,16 +99,16 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
     });
     const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
-    fireEvent.click(canvasCard);
+    userEvent.click(canvasCard);
     expect(screen.queryByText('Connect Canvas')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect Canvas')).toBeFalsy();
   });
   test('Cornerstone card cancel flow', async () => {
@@ -119,16 +119,16 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CORNERSTONE_TYPE].displayName));
     });
     const cornerstoneCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
-    fireEvent.click(cornerstoneCard);
+    userEvent.click(cornerstoneCard);
     expect(screen.queryByText('Connect Cornerstone')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect Cornerstone')).toBeFalsy();
   });
   test('Degreed card cancel flow', async () => {
@@ -140,15 +140,15 @@ describe('<SettingsLMSTab />', () => {
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
     fireEvent.click(degreedCard);
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect Degreed')).toBeFalsy();
   });
   test('Moodle card cancel flow', async () => {
@@ -159,16 +159,16 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
     });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
-    fireEvent.click(moodleCard);
+    userEvent.click(moodleCard);
     expect(screen.queryByText('Connect Moodle')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect Moodle')).toBeFalsy();
   });
   test('SAP card cancel flow', async () => {
@@ -179,16 +179,16 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[SAP_TYPE].displayName));
     });
     const sapCard = screen.getByText(channelMapping[SAP_TYPE].displayName);
-    fireEvent.click(sapCard);
+    userEvent.click(sapCard);
     expect(screen.queryByText('Connect SAP')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
-    fireEvent.click(exitButton);
+    userEvent.click(exitButton);
     expect(screen.queryByText('Connect SAP')).toBeFalsy();
   });
   test('No action Moodle card cancel flow', async () => {
@@ -200,10 +200,10 @@ describe('<SettingsLMSTab />', () => {
     });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
 
-    await waitFor(() => fireEvent.click(moodleCard));
+    await waitFor(() => userEvent.click(moodleCard));
     await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeTruthy());
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     await waitFor(() => expect(screen.queryByText('Exit without saving')).toBeFalsy());
     await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeFalsy());
   });
@@ -216,9 +216,9 @@ describe('<SettingsLMSTab />', () => {
     });
     const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
     await waitFor(() => fireEvent.click(degreedCard));
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Degreed')).toBeFalsy();
   });
@@ -227,15 +227,15 @@ describe('<SettingsLMSTab />', () => {
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
     await waitFor(() => {
-      expect(screen.findByText(channelMapping[DEGREED_TYPE].displayName));
+      expect(screen.findByText(channelMapping[DEGREED2_TYPE].displayName));
     });
-    const degreedCard = screen.getByText(channelMapping[DEGREED_TYPE].displayName);
+    const degreedCard = screen.getByText(channelMapping[DEGREED2_TYPE].displayName);
     await waitFor(() => fireEvent.click(degreedCard));
-    expect(screen.queryByText('Connect Degreed')).toBeTruthy();
+    expect(screen.queryByText('Connect Degreed2')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
-    expect(screen.queryByText('Connect Degreed')).toBeFalsy();
+    expect(screen.queryByText('Connect Degreed2')).toBeFalsy();
   });
   test('No action Cornerstone card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
@@ -245,10 +245,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CORNERSTONE_TYPE].displayName));
     });
     const cornerstoneCard = screen.getByText(channelMapping[CORNERSTONE_TYPE].displayName);
-    await waitFor(() => fireEvent.click(cornerstoneCard));
+    await waitFor(() => userEvent.click(cornerstoneCard));
     expect(screen.queryByText('Connect Cornerstone')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Cornerstone')).toBeFalsy();
   });
@@ -260,10 +260,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
     });
     const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
-    await waitFor(() => fireEvent.click(canvasCard));
+    await waitFor(() => userEvent.click(canvasCard));
     expect(screen.queryByText('Connect Canvas')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Canvas')).toBeFalsy();
   });
@@ -275,10 +275,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
     });
     const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
-    await waitFor(() => fireEvent.click(blackboardCard));
+    await waitFor(() => userEvent.click(blackboardCard));
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    await waitFor(() => fireEvent.click(cancelButton));
+    await waitFor(() => userEvent.click(cancelButton));
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect Blackbard')).toBeFalsy();
   });
@@ -290,10 +290,10 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[SAP_TYPE].displayName));
     });
     const sapCard = screen.getByText(channelMapping[SAP_TYPE].displayName);
-    fireEvent.click(sapCard);
+    userEvent.click(sapCard);
     expect(screen.queryByText('Connect SAP')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
+    userEvent.click(cancelButton);
     expect(screen.queryByText('Exit without saving')).toBeFalsy();
     expect(screen.queryByText('Connect SAP')).toBeFalsy();
   });
@@ -324,7 +324,7 @@ describe('<SettingsLMSTab />', () => {
     expect(history.location.pathname).toEqual('/');
     await screen.findByText('No SSO configured');
     const configureSSOButton = screen.getByText('Configure SSO');
-    await waitFor(() => fireEvent.click(configureSSOButton));
+    await waitFor(() => userEvent.click(configureSSOButton));
     expect(history.location.pathname).toEqual(`/${enterpriseSlug}/admin/settings/sso`);
   });
   test('Expected behavior when customer has IDP configured', async () => {

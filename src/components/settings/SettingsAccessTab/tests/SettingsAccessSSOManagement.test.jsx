@@ -1,9 +1,9 @@
 import {
   screen,
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -54,7 +54,7 @@ describe('<SettingsAccessSSOManagement />', () => {
     const checkbox = screen.getByLabelText('Checkbox');
     const { enableIntegratedCustomerLearnerPortalSearch } = basicProps;
     expect(checkbox.checked).toEqual(enableIntegratedCustomerLearnerPortalSearch);
-    fireEvent.click(checkbox);
+    userEvent.click(checkbox);
 
     await waitFor(() => {
       expect(LmsApiService.updateEnterpriseCustomer).toHaveBeenCalledWith('test-enterprise-uuid', {
@@ -71,7 +71,7 @@ describe('<SettingsAccessSSOManagement />', () => {
     render(<SettingsAccessSSOManagementWrapper {...basicProps} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
-    fireEvent.click(checkbox);
+    userEvent.click(checkbox);
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong'));

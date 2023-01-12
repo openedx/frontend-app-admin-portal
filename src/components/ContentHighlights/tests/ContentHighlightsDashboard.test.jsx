@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
@@ -81,8 +82,8 @@ describe('<ContentHighlightsDashboard>', () => {
   it('Displays New highlight Modal on button click with no highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
-    fireEvent.click(newHighlight);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    userEvent.click(newHighlight);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 
   it('Displays current highlights when data is populated', () => {
@@ -103,7 +104,7 @@ describe('<ContentHighlightsDashboard>', () => {
   it('Displays New highlight modal on button click with highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByText('New highlight');
-    fireEvent.click(newHighlight);
-    expect(screen.getByText(STEPPER_STEP_TEXT.createTitle)).toBeInTheDocument();
+    userEvent.click(newHighlight);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });
