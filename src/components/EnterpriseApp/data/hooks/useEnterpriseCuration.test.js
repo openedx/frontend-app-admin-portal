@@ -13,6 +13,7 @@ const mockEnterpriseCurationConfig = {
   uuid: 'fake-uuid',
   title: TEST_ENTERPRISE_NAME,
   isHighlightFeatureActive: true,
+  canOnlyViewHighlightSets: false,
   highlightSets: [],
   created: '2022-10-31',
   modified: '2022-10-31',
@@ -40,6 +41,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
@@ -59,6 +61,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
@@ -78,6 +81,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -93,6 +97,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -117,6 +122,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -132,6 +138,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -149,6 +156,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -161,6 +169,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -184,6 +193,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -196,6 +206,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
   });

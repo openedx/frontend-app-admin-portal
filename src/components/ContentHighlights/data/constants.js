@@ -71,9 +71,11 @@ export const STEPPER_STEP_TEXT = {
 export const HEADER_TEXT = {
   currentContent: 'Highlights',
   catalogVisibility: 'Catalog Visibility',
+  zeroStateHighlights: 'You haven\'t created any highlights yet.',
   SUB_TEXT: {
     catalogVisibility: 'Choose a visibility for your catalog.',
     currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
+    zeroStateHighlights: 'Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.',
   },
   PRO_TIP_TEXT: {
     catalogVisibility: 'Pro tip: regardless of your choice, learners will be able to see all highlight collections.',
@@ -84,6 +86,7 @@ export const HEADER_TEXT = {
 export const BUTTON_TEXT = {
   createNewHighlight: 'New',
   catalogVisibility: 'New highlight',
+  zeroStateCreateNewHighlight: 'New highlight',
   catalogVisibilityRadio1: 'Learners can view and enroll into all courses in your catalog',
   catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses only  ',
 };
@@ -103,6 +106,17 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
   program: 'Program',
   learnerpathway: 'Pathway',
+};
+
+export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
+  ALL_CONTENT: {
+    value: 'ALL_CONTENT',
+    canOnlyViewHighlightSets: false,
+  },
+  HIGHLIGHTED_CONTENT: {
+    value: 'HIGHLIGHTED_CONTENT',
+    canOnlyViewHighlightSets: true,
+  },
 };
 
 // Test Data for Content Highlights From this point onwards

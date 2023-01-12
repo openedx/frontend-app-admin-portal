@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import {
-  BUTTON_TEXT, STEPPER_STEP_TEXT, ALERT_TEXT,
+  BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT,
 } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -80,24 +80,16 @@ const ContentHighlightsDashboardWrapper = ({
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeInTheDocument();
-    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeInTheDocument();
+    expect(screen.getByText(HEADER_TEXT.zeroStateHighlights)).toBeInTheDocument();
+    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.zeroStateHighlights)).toBeInTheDocument();
   });
 
   it('Displays New highlight Modal on button click with no highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText(BUTTON_TEXT.catalogVisibility);
+    const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
-
-  it('Displays New highlight modal on button click with highlighted content list', () => {
-    renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText(BUTTON_TEXT.catalogVisibility, { exact: false });
-    userEvent.click(newHighlight);
-    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
-  });
-
   it('Displays current highlights when data is populated', () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
@@ -133,19 +125,9 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
     expect(highlightTab.classList.contains('active')).toBeFalsy();
   });
-  it('Disabled Highlight tab when no highlight sets exist', () => {
-    renderWithRouter(
-      <ContentHighlightsDashboardWrapper />,
-    );
-    const [highlightTab, catalogVisibilityTab] = screen.getAllByRole('tab');
-
-    expect(highlightTab.classList.contains('active')).toBeFalsy();
-    expect(highlightTab.classList.contains('disabled')).toBeTruthy();
-    expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
-  });
   it('Displays New highlight modal on button click with highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByText('New highlight');
+    const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
