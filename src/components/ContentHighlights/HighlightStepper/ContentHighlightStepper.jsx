@@ -16,6 +16,7 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useHistory } from 'react-router-dom';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -26,13 +27,8 @@ import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import { useContentHighlightsContext } from '../data/hooks';
-import { STEPPER_STEP_TEXT } from '../data/constants';
-
-const STEPPER_STEP_LABELS = {
-  CREATE_TITLE: 'Create a title',
-  SELECT_CONTENT: 'Select content',
-  CONFIRM_PUBLISH: 'Confirm and publish',
-};
+import EVENT_NAMES from '../../../eventTracking';
+import { STEPPER_STEP_LABELS, STEPPER_STEP_TEXT } from '../data/constants';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -100,14 +96,120 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         addHighlightSet: true,
       });
       closeStepperModal();
+      const handlePublishTrackEvent = () => {
+        const trackInfo = {
+          is_published: transformedHighlightSet.isPublished,
+          highlight_set_uuid: transformedHighlightSet.uuid,
+          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids,
+        };
+        sendEnterpriseTrackEvent(
+          enterpriseId,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}`,
+          trackInfo,
+        );
+      };
+      handlePublishTrackEvent();
     } catch (error) {
       logError(error);
     } finally {
       setIsPublishing(false);
     }
   };
+  /**
+   * Handles the navigation to the next step in the stepper from the createTitle step of the stepper.
+   */
+  const handleNavigateToSelectContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) + 1],
+      current_step_position: steps.indexOf(currentStep) + 2,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  /**
+   * Handles the navigation to the previous step in the stepper from the selectContent step of the stepper.
+   */
+  const handleNavigateFromSelectContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+  /**
+   * Handles the navigation to the next step in the stepper from the selectContent step of the stepper.
+   */
+  const handleNavigateToConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) + 1],
+      current_step_position: steps.indexOf(currentStep) + 2,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  /**
+   * Handles the navigation to the previous step in the stepper from the confirmContent step of the stepper.
+   */
+  const handleNavigateFromConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+
   const closeStepper = () => {
     openCloseAlert();
+    const trackInfo = {
+      current_step: steps[steps.indexOf(currentStep)],
+      current_step_position: steps.indexOf(currentStep) + 1,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+      trackInfo,
+    );
   };
 
   /**
@@ -159,7 +261,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 </Button>
                 <Button
                   variant="primary"
-                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                  onClick={handleNavigateToSelectContent}
                   disabled={!!titleStepValidationError || !highlightTitle}
                 >
                   Next
@@ -171,13 +273,13 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 <Stepper.ActionRow.Spacer />
                 <Button
                   variant="tertiary"
-                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CREATE_TITLE)}
+                  onClick={handleNavigateFromSelectContent}
                 >
                   Back
                 </Button>
                 <Button
                   variant="primary"
-                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+                  onClick={handleNavigateToConfirmContent}
                   disabled={Object.keys(currentSelectedRowIds).length === 0}
                 >
                   Next
@@ -189,7 +291,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 <Stepper.ActionRow.Spacer />
                 <Button
                   variant="tertiary"
-                  onClick={() => setCurrentStep(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+                  onClick={handleNavigateFromConfirmContent}
                 >
                   Back
                 </Button>
@@ -204,6 +306,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 />
               </Stepper.ActionRow>
             </>
+
           )}
         >
           <Stepper.Step
