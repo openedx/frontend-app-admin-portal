@@ -100,7 +100,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         const trackInfo = {
           is_published: transformedHighlightSet.isPublished,
           highlight_set_uuid: transformedHighlightSet.uuid,
-          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids,
+          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids.map(highlight => ({
+            uuid: highlight.uuid,
+            aggregationKey: highlight.aggregationKey,
+          })),
         };
         sendEnterpriseTrackEvent(
           enterpriseId,
@@ -190,7 +193,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}.back.clicked`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
