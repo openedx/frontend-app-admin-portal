@@ -68,11 +68,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const closeStepperModal = useCallback(() => {
     if (isCloseAlertOpen) {
       closeCloseAlert();
-      const trackInfo = {};
       sendEnterpriseTrackEvent(
         enterpriseId,
         `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
-        trackInfo,
+        {},
       );
     }
     resetStepperModal();
@@ -113,7 +112,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         };
         sendEnterpriseTrackEvent(
           enterpriseId,
-          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}.publish_button.clicked`,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_PUBLISH}`,
           trackInfo,
         );
       };
@@ -139,7 +138,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE_NEXT}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
@@ -159,7 +158,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_BACK}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
@@ -179,7 +178,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_NEXT}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
@@ -199,13 +198,13 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}.back.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_BACK}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
 
-  const openCloseStepper = () => {
+  const openCloseConfirmationModal = () => {
     openCloseAlert();
     const trackInfo = {
       current_step: steps[steps.indexOf(currentStep)],
@@ -216,18 +215,17 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}`,
       trackInfo,
     );
   };
 
   const cancelCloseModal = () => {
     closeCloseAlert();
-    const trackInfo = {};
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}.cancel.clicked`,
-      trackInfo,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL_CANCEL}`,
+      {},
     );
   };
   /**
@@ -262,7 +260,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           title="New highlight"
           className="bg-light-200"
           isOpen={isStepperModalOpen}
-          onClose={openCloseStepper}
+          onClose={openCloseConfirmationModal}
           beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
           footerNode={(
             <>
@@ -273,7 +271,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
                 <Button
                   variant="tertiary"
-                  onClick={openCloseStepper}
+                  onClick={openCloseConfirmationModal}
                 >
                   Back
                 </Button>
