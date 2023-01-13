@@ -68,10 +68,16 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const closeStepperModal = useCallback(() => {
     if (isCloseAlertOpen) {
       closeCloseAlert();
+      const trackInfo = {};
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+        trackInfo,
+      );
     }
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [resetStepperModal, isCloseAlertOpen, closeCloseAlert]);
+  }, [isCloseAlertOpen, resetStepperModal, closeCloseAlert, enterpriseId]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -107,7 +113,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         };
         sendEnterpriseTrackEvent(
           enterpriseId,
-          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}`,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}.publish_button.clicked`,
           trackInfo,
         );
       };
@@ -199,7 +205,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
 
-  const closeStepper = () => {
+  const openCloseStepper = () => {
     openCloseAlert();
     const trackInfo = {
       current_step: steps[steps.indexOf(currentStep)],
@@ -210,11 +216,20 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}.clicked`,
       trackInfo,
     );
   };
 
+  const cancelCloseModal = () => {
+    closeCloseAlert();
+    const trackInfo = {};
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}.cancel.clicked`,
+      trackInfo,
+    );
+  };
   /**
    * This section triggers browser response to unsaved items when the stepper modal is open/active
    *
@@ -247,7 +262,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           title="New highlight"
           className="bg-light-200"
           isOpen={isStepperModalOpen}
-          onClose={closeStepper}
+          onClose={openCloseStepper}
           beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
           footerNode={(
             <>
@@ -258,7 +273,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
                 <Button
                   variant="tertiary"
-                  onClick={closeStepper}
+                  onClick={openCloseStepper}
                 >
                   Back
                 </Button>
@@ -349,7 +364,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
         </p>
         <ActionRow>
-          <Button variant="tertiary" onClick={closeCloseAlert}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="tertiary" onClick={cancelCloseModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
           <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
         </ActionRow>
       </AlertModal>

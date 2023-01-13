@@ -30,6 +30,18 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
       trackInfo,
     );
   };
+  const trackDeleteEvent = (e) => {
+    e.persist();
+    const trackInfo = {
+      aggregation_key: aggregationKey,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_DELETE}`,
+      trackInfo,
+    );
+    deleteSelectedRowId(aggregationKey);
+  };
   return (
     <div className="d-flex w-100" data-testid="title-test">
       <ContentHighlightCardItem
@@ -55,7 +67,7 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
         src={Delete}
         iconAs={Icon}
         alt={`Remove ${title} from highlight collection`}
-        onClick={() => deleteSelectedRowId(aggregationKey)}
+        onClick={trackDeleteEvent}
         className="ml-1 flex-shrink-0"
       />
     </div>
