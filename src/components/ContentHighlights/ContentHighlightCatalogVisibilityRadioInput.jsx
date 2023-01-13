@@ -1,5 +1,8 @@
-import { Form, Container, Spinner } from '@edx/paragon';
+import {
+  Form, Container, Spinner, ActionRow,
+} from '@edx/paragon';
 import { useState, useContext, useEffect } from 'react';
+import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
 import { BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
@@ -16,13 +19,13 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
     e.persist();
     if (e.target.dataset.spinnerUi) {
       document.getElementById(e.target.dataset.spinnerUi).hidden = false;
-      e.target.hidden = true;
+      // e.target.hidden = true;
     }
     const data = await updateEnterpriseCuration({
       canOnlyViewHighlightSets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
     });
     if (data) {
-      e.target.hidden = false;
+      // e.target.hidden = false;
       document.getElementById(e.target.dataset.spinnerUi).hidden = true;
     }
     setValue(e.target.value);
@@ -40,38 +43,48 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
           onChange={handleChange}
           value={value}
         >
-          <Form.Radio
-            value={LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}
-            type="radio"
-            disabled={radioGroupVisibility}
-            data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
-          >
+          <ActionRow direction="horizontal">
             <Spinner
               hidden
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
-              size="sm"
-              animation="grow"
-              className="mie-2.5"
+              style={{
+                width: '24px',
+                height: '24px',
+              }}
+              animation="border"
               screenReaderText="loading"
             />
-            {BUTTON_TEXT.catalogVisibilityRadio1}
-          </Form.Radio>
-          <Form.Radio
-            value={LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}
-            type="radio"
-            disabled={radioGroupVisibility}
-            data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
-          >
+            <ActionRowSpacer />
+            <Form.Radio
+              value={LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}
+              type="radio"
+              disabled={radioGroupVisibility}
+              data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+            >
+              {BUTTON_TEXT.catalogVisibilityRadio1}
+            </Form.Radio>
+          </ActionRow>
+          <ActionRow>
             <Spinner
               hidden
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
-              size="sm"
-              animation="grow"
-              className="mie-2.5"
+              style={{
+                width: '24px',
+                height: '24px',
+              }}
+              animation="border"
               screenReaderText="loading"
             />
-            {BUTTON_TEXT.catalogVisibilityRadio2}
-          </Form.Radio>
+            <ActionRowSpacer />
+            <Form.Radio
+              value={LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}
+              type="radio"
+              disabled={radioGroupVisibility}
+              data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+            >
+              {BUTTON_TEXT.catalogVisibilityRadio2}
+            </Form.Radio>
+          </ActionRow>
         </Form.RadioSet>
       </Form.Group>
     </Container>

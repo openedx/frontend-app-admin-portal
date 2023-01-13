@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useContextSelector } from 'use-context-selector';
 import {
   Card, Button, Col, Row,
 } from '@edx/paragon';
@@ -25,7 +24,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
       },
     },
   } = useContext(EnterpriseAppContext);
-  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+  // const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
   const handleNewHighlightClick = () => {
     openStepperModal();
     const trackInfo = {

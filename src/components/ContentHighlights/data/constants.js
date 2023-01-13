@@ -4,7 +4,6 @@ import parse from 'html-react-parser';
 import sanitizeHTML from 'sanitize-html';
 /* eslint-enable import/no-extraneous-dependencies */
 
-
 // Sanitizes HTML and parses the string as HTML
 export const sanitizeAndParseHTML = (htmlString) => {
   const sanitizedHTML = sanitizeHTML(htmlString);
@@ -136,7 +135,6 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   program: 'Program',
   learnerpathway: 'Pathway',
 };
-
 
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
   ALL_CONTENT: {

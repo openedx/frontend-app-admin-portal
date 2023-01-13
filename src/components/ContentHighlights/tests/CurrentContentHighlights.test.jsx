@@ -11,7 +11,6 @@ import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { BUTTON_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { configuration } from '../../../config';
-import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -55,7 +54,6 @@ const CurrentContentHighlightsWrapper = ({
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
         <ContentHighlightsContext.Provider value={contextValue}>
           <CurrentContentHighlights {...props} />
-          <ContentHighlightStepper />
         </ContentHighlightsContext.Provider>
       </EnterpriseAppContext.Provider>
     </Provider>

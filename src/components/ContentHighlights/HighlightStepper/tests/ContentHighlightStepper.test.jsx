@@ -107,7 +107,7 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('<ContentHighlightStepper>', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -151,7 +151,6 @@ describe('<ContentHighlightStepper>', () => {
 
     expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(6);
-
 
     // Confirm stepper close confirmation modal
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
@@ -279,7 +278,7 @@ describe('<ContentHighlightStepper>', () => {
   });
   it('Displays error message in title page when highlight set name exceeds maximum value', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
@@ -292,7 +291,7 @@ describe('<ContentHighlightStepper>', () => {
   });
   it('sends segment event from footer link', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
