@@ -9,7 +9,7 @@ import { getContentHighlightCardFooter } from './data/utils';
 const ContentHighlightCardItem = ({
   isLoading,
   title,
-  href,
+  hyperlinkAttrs,
   contentType,
   partners,
   cardImageUrl,
@@ -23,9 +23,9 @@ const ContentHighlightCardItem = ({
     cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
-  if (href) {
+  if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
-      <Hyperlink destination={href} target="_blank">
+      <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
@@ -59,7 +59,11 @@ ContentHighlightCardItem.propTypes = {
   isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
-  href: PropTypes.string,
+  hyperlinkAttrs: PropTypes.shape({
+    href: PropTypes.string,
+    target: PropTypes.string,
+    onClick: PropTypes.func,
+  }),
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -71,7 +75,7 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
-  href: undefined,
+  hyperlinkAttrs: undefined,
   cardImageUrl: undefined,
   price: undefined,
 };

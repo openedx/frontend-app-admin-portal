@@ -4,11 +4,27 @@ import parse from 'html-react-parser';
 import sanitizeHTML from 'sanitize-html';
 /* eslint-enable import/no-extraneous-dependencies */
 
+
 // Sanitizes HTML and parses the string as HTML
 export const sanitizeAndParseHTML = (htmlString) => {
   const sanitizedHTML = sanitizeHTML(htmlString);
   return parse(sanitizedHTML);
 };
+
+/* START LOCAL TESTING CONSTANTS */
+// Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
+// Test will fail as additional check to ensure this is set to false before pushing PR
+export const TEST_FLAG = false;
+// Test entepriseId for Content Highlights to display card selections and confirmation
+export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+// function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
+export const ENABLE_TESTING = (enterpriseId, enableTest = TEST_FLAG) => {
+  if (enableTest) {
+    return testEnterpriseId;
+  }
+  return enterpriseId;
+};
+/* END LOCAL TESTING CONSTANTS */
 
 // Default Card Grid columnSizes
 export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
@@ -17,24 +33,32 @@ export const HIGHLIGHTS_CARD_GRID_COLUMN_SIZES = {
   lg: 4,
   xl: 3,
 };
-// Empty Content and Error Messages
-export const DEFAULT_ERROR_MESSAGE = {
-  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
-  // eslint-disable-next-line quotes
-  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
-};
 
 // Tab titles
 export const TAB_TITLES = {
   highlights: 'Highlights',
   catalogVisibility: 'Catalog Visibility',
 };
+
+// Max length of highlight title in stepper
+export const MAX_HIGHLIGHT_TITLE_LENGTH = 60;
+
 // Max highlight sets per enteprise curation
 export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 8;
+
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
-// Max length of highlight title in stepper
-export const HIGHLIGHT_TITLE_MAX_LENGTH = 60;
+
+// Max number of content items displayed from search results
+export const MAX_PAGE_SIZE = 24;
+
+// Stepper Step Labels
+export const STEPPER_STEP_LABELS = {
+  CREATE_TITLE: 'Create a title',
+  SELECT_CONTENT: 'Select content',
+  CONFIRM_PUBLISH: 'Confirm and publish',
+};
+
 // Stepper Step Text that match testing components
 export const STEPPER_STEP_TEXT = {
   HEADER_TEXT: {
@@ -90,6 +114,10 @@ export const BUTTON_TEXT = {
   catalogVisibilityRadio1: 'Learners can view and enroll into all courses in your catalog',
   catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses only  ',
 };
+
+// Button text for stepper help center button
+export const STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT = 'Help Center: Program Optimization';
+
 // Alert Text extracted from constant to maintain passing test on changes
 export const ALERT_TEXT = {
   HEADER_TEXT: {
@@ -101,12 +129,14 @@ export const ALERT_TEXT = {
     currentContent: 'Delete at least one highlight to create a new one.',
   },
 };
+
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   course: 'Course',
   program: 'Program',
   learnerpathway: 'Pathway',
 };
+
 
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
   ALL_CONTENT: {
@@ -119,9 +149,27 @@ export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
   },
 };
 
-// Test Data for Content Highlights From this point onwards
-// Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+// Empty Content and Error Messages
+export const DEFAULT_ERROR_MESSAGE = {
+  EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
+  // eslint-disable-next-line quotes
+  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
+  EXCEEDS_HIGHLIGHT_TITLE_LENGTH: `Titles may only be ${MAX_HIGHLIGHT_TITLE_LENGTH} characters or less`,
+};
+
+// Test Highlight Set
+export const TEST_HIGHLIGHT_SET = {
+  uuid: '8d6503dd-105e-42b8-b1bf-d39ab4981003',
+  isPublished: true,
+  title: 'test123',
+  cardImageUrl: 'https://picsum.photos/360/200',
+  highlightedContentUuids: [
+    '12a2b4c2-6f97-418d-bf5e-bddb91fd63da',
+    '0d05a912-f235-48f7-88f1-b4d59ba2e76b',
+    '9ae53631-ba7a-4260-be75-dba39f123d60',
+    'bff7c78a-ea9b-45b7-9a71-0326a6d5ccb2',
+  ],
+};
 
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
