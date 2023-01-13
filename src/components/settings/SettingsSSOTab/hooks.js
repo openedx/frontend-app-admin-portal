@@ -59,7 +59,6 @@ const useIdpState = () => {
     const formData = new FormData();
     formData.append('name', enterpriseName);
     formData.append('slug', enterpriseSlug);
-    formData.append('enabled', true);
     formData.append('enterprise_customer_uuid', enterpriseId);
     formData.append('metadata_source', metadataURL);
     formData.append('entity_id', entityID);
@@ -71,6 +70,10 @@ const useIdpState = () => {
     formData.append('send_to_registration_first', true);
     formData.append('sync_learner_profile_data', false);
     formData.append('enable_sso_id_verification', true);
+
+    formData.append('enabled', providerConfig?.enabled || true);
+    formData.append('automatic_refresh_enabled', providerConfig?.automatic_refresh_enabled || false);
+    formData.append('debug_mode', providerConfig?.debug_mode || false);
 
     try {
       let response;

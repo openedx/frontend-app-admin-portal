@@ -3,7 +3,7 @@ import { useContextSelector } from 'use-context-selector';
 import { Form } from '@edx/paragon';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { HIGHLIGHT_TITLE_MAX_LENGTH } from '../data/constants';
+import { DEFAULT_ERROR_MESSAGE, MAX_HIGHLIGHT_TITLE_LENGTH } from '../data/constants';
 import { useContentHighlightsContext } from '../data/hooks';
 
 const HighlightStepperTitleInput = () => {
@@ -13,11 +13,11 @@ const HighlightStepperTitleInput = () => {
   const [isInvalid, setIsInvalid] = useState(false);
 
   const handleChange = (e) => {
-    if (e.target.value.length > 60) {
+    if (e.target.value.length > MAX_HIGHLIGHT_TITLE_LENGTH) {
       setIsInvalid(true);
       setHighlightTitle({
         highlightTitle: e.target.value,
-        titleStepValidationError: 'Titles may only be 60 characters or less',
+        titleStepValidationError: DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH,
       });
     } else {
       setIsInvalid(false);
@@ -41,7 +41,7 @@ const HighlightStepperTitleInput = () => {
         autoComplete="off"
       />
       <Form.Control.Feedback type={isInvalid ? 'invalid' : undefined}>
-        {titleLength}/{HIGHLIGHT_TITLE_MAX_LENGTH}
+        {titleLength}/{MAX_HIGHLIGHT_TITLE_LENGTH}
       </Form.Control.Feedback>
     </Form.Group>
   );

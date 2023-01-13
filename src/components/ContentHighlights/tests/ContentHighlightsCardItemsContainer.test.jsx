@@ -5,12 +5,21 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import userEvent from '@testing-library/user-event';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent;
 const initialState = {
@@ -74,5 +83,14 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
       highlightedContent={testHighlightSet}
     />);
     expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
+  });
+  it('sends track event on click', () => {
+    renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+      isLoading={false}
+      highlightedContent={testHighlightSet}
+    />);
+    const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
+    userEvent.click(hyperlinkTitle);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

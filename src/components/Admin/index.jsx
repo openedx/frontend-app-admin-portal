@@ -25,7 +25,6 @@ import { formatTimestamp } from '../../utils';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
-import { features } from '../../config';
 import { isExperimentVariant } from '../../optimizely';
 
 class Admin extends React.Component {
@@ -303,7 +302,6 @@ class Admin extends React.Component {
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
     };
-    const { SUBSCRIPTION_LPR } = features;
 
     const config = getConfig();
 
@@ -333,7 +331,7 @@ class Admin extends React.Component {
                 )}
               </div>
 
-              {SUBSCRIPTION_LPR && isExperimentVariation1
+              {isExperimentVariation1
                   && (
                   <div className="row">
                     <div className="col mb-4.5">

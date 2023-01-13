@@ -1,13 +1,15 @@
 import React from 'react';
-import { Card, Hyperlink } from '@edx/paragon';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
+import { Card, Hyperlink } from '@edx/paragon';
+import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
+
 import { getContentHighlightCardFooter } from './data/utils';
 
 const ContentHighlightCardItem = ({
   isLoading,
   title,
-  href,
+  hyperlinkAttrs,
   contentType,
   partners,
   cardImageUrl,
@@ -21,9 +23,9 @@ const ContentHighlightCardItem = ({
     cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
-  if (href) {
+  if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
-      <Hyperlink destination={href} target="_blank">
+      <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
         <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
@@ -32,6 +34,7 @@ const ContentHighlightCardItem = ({
     <Card variant={contentType !== 'course' && 'dark'} isLoading={isLoading}>
       <Card.ImageCap
         src={cardInfo.cardImgSrc}
+        fallbackSrc={cardImageCapFallbackSrc}
         srcAlt=""
         logoSrc={cardInfo.cardLogoSrc}
         logoAlt={cardInfo.cardLogoAlt}
@@ -56,7 +59,11 @@ ContentHighlightCardItem.propTypes = {
   isLoading: PropTypes.bool,
   cardImageUrl: PropTypes.string,
   title: PropTypes.string.isRequired,
-  href: PropTypes.string,
+  hyperlinkAttrs: PropTypes.shape({
+    href: PropTypes.string,
+    target: PropTypes.string,
+    onClick: PropTypes.func,
+  }),
   contentType: PropTypes.oneOf(['course', 'program', 'learnerpathway']).isRequired,
   partners: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -68,7 +75,7 @@ ContentHighlightCardItem.propTypes = {
 
 ContentHighlightCardItem.defaultProps = {
   isLoading: false,
-  href: undefined,
+  hyperlinkAttrs: undefined,
   cardImageUrl: undefined,
   price: undefined,
 };
