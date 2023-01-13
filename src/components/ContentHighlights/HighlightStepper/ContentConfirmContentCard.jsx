@@ -30,8 +30,7 @@ const ContentConfirmContentCard = ({ enterpriseId, enterpriseSlug, original }) =
       trackInfo,
     );
   };
-  const trackDeleteEvent = (e) => {
-    e.persist();
+  const trackDeleteEvent = () => {
     const trackInfo = {
       aggregation_key: aggregationKey,
     };
