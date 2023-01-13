@@ -20,7 +20,7 @@ const subscriptionInitState = {
  * This hook provides all customer agreement and subscription data
  * for the authenticated user and given enterprise customer UUID.
  */
-export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
+export const useSubscriptions = ({ enterpriseId, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({ ...subscriptionInitState });
 
   const [loading, setLoading] = useState(true);
@@ -54,16 +54,16 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
         setSubscriptions(subscriptionsData);
       } catch (err) {
         logError(err);
-        setErrors({
-          ...errors,
+        setErrors(s => ({
+          ...s,
           [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
-        });
+        }));
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [enterpriseId, errors, setErrors]);
+  }, [enterpriseId, setErrors]);
 
   const forceRefresh = useCallback(() => {
     loadCustomerAgreementData();
@@ -226,7 +226,7 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     subscriptions,
     forceRefresh,
     loading,
-  } = useSubscriptions({ enterpriseId, errors, setErrors });
+  } = useSubscriptions({ enterpriseId, setErrors });
 
   return {
     subscriptions,
