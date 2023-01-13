@@ -68,10 +68,15 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   const closeStepperModal = useCallback(() => {
     if (isCloseAlertOpen) {
       closeCloseAlert();
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+        {},
+      );
     }
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [resetStepperModal, isCloseAlertOpen, closeCloseAlert]);
+  }, [isCloseAlertOpen, resetStepperModal, closeCloseAlert, enterpriseId]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -100,11 +105,14 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         const trackInfo = {
           is_published: transformedHighlightSet.isPublished,
           highlight_set_uuid: transformedHighlightSet.uuid,
-          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids,
+          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids.map(highlight => ({
+            uuid: highlight.uuid,
+            aggregationKey: highlight.aggregationKey,
+          })),
         };
         sendEnterpriseTrackEvent(
           enterpriseId,
-          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT}`,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_PUBLISH}`,
           trackInfo,
         );
       };
@@ -130,7 +138,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE}.next.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE_NEXT}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
@@ -150,7 +158,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.back.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_BACK}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
@@ -170,7 +178,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT}.next.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_NEXT}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
@@ -190,13 +198,13 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_PUBLISH}.back.clicked`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_BACK}`,
       trackInfo,
     );
     setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
   };
 
-  const closeStepper = () => {
+  const openCloseConfirmationModal = () => {
     openCloseAlert();
     const trackInfo = {
       current_step: steps[steps.indexOf(currentStep)],
@@ -207,11 +215,19 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}`,
       trackInfo,
     );
   };
 
+  const cancelCloseModal = () => {
+    closeCloseAlert();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL_CANCEL}`,
+      {},
+    );
+  };
   /**
    * This section triggers browser response to unsaved items when the stepper modal is open/active
    *
@@ -244,7 +260,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           title="New highlight"
           className="bg-light-200"
           isOpen={isStepperModalOpen}
-          onClose={closeStepper}
+          onClose={openCloseConfirmationModal}
           beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
           footerNode={(
             <>
@@ -255,7 +271,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 to the form before allowing them to close the modal without saving. */}
                 <Button
                   variant="tertiary"
-                  onClick={closeStepper}
+                  onClick={openCloseConfirmationModal}
                 >
                   Back
                 </Button>
@@ -346,7 +362,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
         </p>
         <ActionRow>
-          <Button variant="tertiary" onClick={closeCloseAlert}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="tertiary" onClick={cancelCloseModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
           <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
         </ActionRow>
       </AlertModal>

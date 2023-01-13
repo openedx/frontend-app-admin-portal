@@ -40,6 +40,15 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   const createNewHighlight = () => {
     if (maxHighlightsReached) {
       setShowMaxHighlightsAlert(true);
+      const trackInfo = {
+        existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+        existing_highlight_set_count: highlightSets.length,
+      };
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIHT_MAX_REACHED}`,
+        trackInfo,
+      );
     } else {
       openStepperModal();
       const trackInfo = {

@@ -83,16 +83,17 @@ describe('<ContentConfirmContentCard />', () => {
       expect(screen.queryAllByText(testCourseData[i].partners[0].name)).toBeTruthy();
     }
   });
-  it('deletes the correct content', () => {
+  it('deletes the correct content and sends first track event of the mock', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
     const deleteButton = screen.getAllByRole('button', { 'aria-label': 'Delete' });
     userEvent.click(deleteButton[0]);
     expect(mockDeleteSelectedRowId).toHaveBeenCalledWith(testCourseData[0].aggregationKey);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
-  it('sends track event on click', () => {
+  it('sends second track event of the mock on click of hyperlink', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });
