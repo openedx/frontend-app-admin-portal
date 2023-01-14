@@ -1,111 +1,90 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, ValidationFormGroup } from '@edx/paragon';
+import { Form } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 
 const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);
 
+  const renderField = data => (
+    <Form.Group
+      key={data.key}
+      controlId={data.key}
+      isInvalid={invalidFields[data.key]}
+    >
+      <Form.Label>{data.label}</Form.Label>
+      <Form.Control
+        type={data.type || 'text'}
+        name={data.key}
+        // eslint-disable-next-line no-nested-ternary
+        defaultValue={config ? config[data.key] : data.type === 'number' ? 22 : ''}
+        data-hj-suppress
+        onBlur={event => handleBlur(event)}
+      />
+      <Form.Text>{data.helpText}</Form.Text>
+      {invalidFields[data.key] && data.invalidMessage && (
+        <Form.Control.Feedback icon={<Error className="mr-1" />}>
+          {data.invalidMessage}
+        </Form.Control.Feedback>
+      )}
+    </Form.Group>
+  );
   return (
     <>
       <div className="row">
         <div className="col">
-          <ValidationFormGroup
-            for="sftpHostname"
-            helpText="The host to deliver the report too"
-            invalidMessage="Required. Hostname cannot be blank"
-            invalid={invalidFields.sftpHostname}
-          >
-            <label htmlFor="sftpHostname">SFTP Hostname</label>
-            <Input
-              type="text"
-              id="sftpHostname"
-              name="sftpHostname"
-              defaultValue={config ? config.sftpHostname : undefined}
-              onBlur={e => handleBlur(e)}
-              data-hj-suppress
-            />
-          </ValidationFormGroup>
+          {renderField({
+            key: 'sftpHostname',
+            helpText: 'The host to deliver the report too',
+            invalidMessage: 'Required. Hostname cannot be blank',
+            label: 'SFTP Hostname',
+          })}
         </div>
         <div className="col col-2">
-          <ValidationFormGroup
-            for="sftpPort"
-            helpText="The port the sftp host connects too"
-            invalid={invalidFields.sftpPort}
-            invalidMessage="Required. Must be a valid port"
-          >
-            <label htmlFor="sftpPort">SFTP Port</label>
-            <Input
-              type="number"
-              id="sftpPort"
-              name="sftpPort"
-              defaultValue={config ? config.sftpPort : 22}
-              onBlur={e => handleBlur(e)}
-            />
-          </ValidationFormGroup>
+          {renderField({
+            key: 'sftpPort',
+            helpText: 'The port the sftp host connects too',
+            invalidMessage: 'Required. Must be a valid port',
+            label: 'SFTP Port',
+            type: 'number',
+            defaultValue: 22,
+          })}
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <ValidationFormGroup
-            for="sftpUsername"
-            helpText="the username to securely access the host"
-            invalidMessage="Required. Username cannot be blank"
-            invalid={invalidFields.sftpUsername}
-          >
-            <label htmlFor="sftpUsername">SFTP Username</label>
-            <Input
-              type="text"
-              id="sftpUsername"
-              name="sftpUsername"
-              defaultValue={config ? config.sftpUsername : undefined}
-              onBlur={e => handleBlur(e)}
-              data-hj-suppress
-            />
-          </ValidationFormGroup>
+          {renderField({
+            key: 'sftpUsername',
+            helpText: 'the username to securely access the host',
+            invalidMessage: 'Required. Username cannot be blank',
+            label: 'SFTP Username',
+          })}
           {config && (
-            <div className="form-group">
-              <label htmlFor="changePassword">Change Password</label>
-              <Input
-                type="checkbox"
-                id="changePassword"
-                className="ml-3"
+            <Form.Group controlId="changePassword">
+              <Form.Checkbox
+                name="changePassword"
                 checked={checked}
                 onChange={() => setChecked(!checked)}
-              />
-            </div>
+                floatLabelLeft
+              >
+                Change Password
+              </Form.Checkbox>
+            </Form.Group>
           )}
-          <ValidationFormGroup
-            for="encryptedSftpPassword"
-            helpText="The password to use to securely access the host. The password will be encrypted when stored in the database"
-            invalid={invalidFields.encryptedSftpPassword}
-            invalidMessage="Required. Password must not be blank"
-          >
-            <label htmlFor="encryptedSftpPassword">SFTP Password</label>
-            <Input
-              type="password"
-              id="encryptedSftpPassword"
-              name="encryptedSftpPassword"
-              onBlur={e => handleBlur(e)}
-              disabled={config && !checked}
-              data-hj-suppress
-            />
-          </ValidationFormGroup>
-          <ValidationFormGroup
-            for="sftpFilePath"
-            helpText="The path on the host to deliver the report too"
-            invalid={invalidFields.sftpFilePath}
-            invalidMessage="Required"
-          >
-            <label htmlFor="sftpFilePath">SFTP File Path</label>
-            <Input
-              type="text"
-              id="sftpFilePath"
-              name="sftpFilePath"
-              defaultValue={config ? config.sftpFilePath : undefined}
-              onBlur={e => handleBlur(e)}
-              data-hj-suppress
-            />
-          </ValidationFormGroup>
+          {renderField({
+            key: 'encryptedSftpPassword',
+            helpText: 'The password to use to securely access the host. The password will be encrypted when stored in the database',
+            invalidMessage: 'Required. Password must not be blank',
+            label: 'SFTP Password',
+            type: 'password',
+            disabled: config && !checked,
+          })}
+          {renderField({
+            key: 'sftpFilePath',
+            helpText: 'The path on the host to deliver the report too',
+            invalidMessage: 'Required',
+            label: 'SFTP File Path',
+          })}
         </div>
       </div>
     </>

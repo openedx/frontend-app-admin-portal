@@ -283,7 +283,7 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     expect(
-      wrapper.find('select#enterpriseCustomerCatalogs').instance().value,
+      wrapper.find('select#enterpriseCustomerCatalogUuids').instance().value,
     ).toEqual('test-enterprise-customer-catalog');
   });
   it('handles API response errors correctly.', async () => {
