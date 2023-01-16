@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { generateAboutPageUrl } from '../data/utils';
+import EVENT_NAMES from '../../../eventTracking';
 
-const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
+const ContentSearchResultCard = ({ enterpriseId, enterpriseSlug, original }) => {
   const {
     aggregationKey,
     title,
@@ -14,14 +16,28 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
     originalImageUrl,
     firstEnrollablePaidSeatPrice,
   } = original;
+  const trackClickEvent = () => {
+    const trackInfo = {
+      aggregation_key: aggregationKey,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_SELECT_CONTENT_ABOUT_PAGE}`,
+      trackInfo,
+    );
+  };
   return (
     <ContentHighlightCardItem
       title={title}
-      href={generateAboutPageUrl({
-        enterpriseSlug,
-        contentType: contentType?.toLowerCase(),
-        contentKey: aggregationKey?.split(':')[1],
-      })}
+      hyperlinkAttrs={{
+        href: generateAboutPageUrl({
+          enterpriseSlug,
+          contentType: contentType.toLowerCase(),
+          contentKey: aggregationKey.split(':')[1],
+        }),
+        target: '_blank',
+        onClick: trackClickEvent,
+      }}
       contentType={contentType}
       partners={partners}
       cardImageUrl={cardImageUrl || originalImageUrl}
@@ -31,6 +47,7 @@ const ContentSearchResultCard = ({ enterpriseSlug, original }) => {
 };
 
 ContentSearchResultCard.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
     aggregationKey: PropTypes.string,
@@ -44,6 +61,7 @@ ContentSearchResultCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

@@ -5,12 +5,15 @@ import { useState } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import algoliasearch from 'algoliasearch/lite';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
   BUTTON_TEXT,
+  DEFAULT_ERROR_MESSAGE,
+  MAX_HIGHLIGHT_TITLE_LENGTH,
+  STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT,
   STEPPER_STEP_TEXT,
   testCourseAggregation,
   testCourseData,
@@ -40,6 +43,14 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.APP_ID,
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 /* eslint-disable react/prop-types */
 const ContentHighlightStepperWrapper = ({
@@ -94,6 +105,10 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('<ContentHighlightStepper>', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('Displays the stepper', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
@@ -106,26 +121,32 @@ describe('<ContentHighlightStepper>', () => {
     // open stepper --> title
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     // title --> select content
     const nextButton1 = screen.getByText('Next');
     const input = screen.getByTestId('stepper-title-input');
     fireEvent.change(input, { target: { value: 'test-title' } });
     userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     // select content --> confirm content
     const nextButton2 = screen.getByText('Next');
     userEvent.click(nextButton2);
-
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
     // confirm content --> select content
     const backButton2 = screen.getByText('Back');
     userEvent.click(backButton2);
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.selectContent)).toBeInTheDocument();
     // select content --> title
     const backButton3 = screen.getByText('Back');
     userEvent.click(backButton3);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(5);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     // title --> closed stepper
     const backButton4 = screen.getByText('Back');
     userEvent.click(backButton4);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(6);
 
     // Confirm stepper close confirmation modal
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
@@ -143,10 +164,12 @@ describe('<ContentHighlightStepper>', () => {
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
 
     // Confirm stepper close confirmation modal
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
@@ -245,5 +268,27 @@ describe('<ContentHighlightStepper>', () => {
 
     // Confirm modal still open
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+  });
+  it('Displays error message in title page when highlight set name exceeds maximum value', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+    const input = screen.getByTestId('stepper-title-input');
+    const reallyLongTitle = 'test-title-test-title-test-title-test-title-test-title-test-title';
+    const reallyLongTitleLength = reallyLongTitle.length;
+    fireEvent.change(input, { target: { value: reallyLongTitle } });
+
+    expect(screen.getByText(`${reallyLongTitleLength}/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).toBeInTheDocument();
+  });
+  it('sends segment event from footer link', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+    const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
+    userEvent.click(footerLink);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });

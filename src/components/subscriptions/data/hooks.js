@@ -20,7 +20,7 @@ const subscriptionInitState = {
  * This hook provides all customer agreement and subscription data
  * for the authenticated user and given enterprise customer UUID.
  */
-export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
+export const useSubscriptions = ({ enterpriseId, setErrors }) => {
   const [subscriptions, setSubscriptions] = useState({ ...subscriptionInitState });
 
   const [loading, setLoading] = useState(true);
@@ -54,16 +54,16 @@ export const useSubscriptions = ({ enterpriseId, errors, setErrors }) => {
         setSubscriptions(subscriptionsData);
       } catch (err) {
         logError(err);
-        setErrors({
-          ...errors,
+        setErrors(s => ({
+          ...s,
           [SUBSCRIPTIONS]: NETWORK_ERROR_MESSAGE,
-        });
+        }));
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [enterpriseId, errors, setErrors]);
+  }, [enterpriseId, setErrors]);
 
   const forceRefresh = useCallback(() => {
     loadCustomerAgreementData();
@@ -92,7 +92,6 @@ const initialSubscriptionUsersOverview = {
 export const useSubscriptionUsersOverview = ({
   subscriptionUUID,
   search,
-  errors,
   setErrors,
   isDisabled = false,
 }) => {
@@ -117,15 +116,15 @@ export const useSubscriptionUsersOverview = ({
           setSubscriptionUsersOverview(camelCaseObject(subscriptionUsersOverviewData));
         } catch (err) {
           logError(err);
-          setErrors({
-            ...errors,
+          setErrors(s => ({
+            ...s,
             [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
-          });
+          }));
         }
       }
     };
     fetchOverview();
-  }, [errors, search, setErrors, subscriptionUUID]);
+  }, [search, setErrors, subscriptionUUID]);
 
   const forceRefresh = useCallback(() => {
     loadSubscriptionUsersOverview();
@@ -151,7 +150,6 @@ export const useSubscriptionUsers = ({
   currentPage,
   searchQuery,
   subscriptionUUID,
-  errors,
   setErrors,
   userStatusFilter,
   isDisabled = false,
@@ -181,10 +179,10 @@ export const useSubscriptionUsers = ({
         setLoadingUsers(false);
       } catch (err) {
         logError(err);
-        setErrors({
-          ...errors,
+        setErrors(s => ({
+          ...s,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-        });
+        }));
       } finally {
         setLoadingUsers(false);
       }
@@ -192,7 +190,6 @@ export const useSubscriptionUsers = ({
     fetchUsers();
   }, [
     currentPage,
-    errors,
     searchQuery,
     setErrors,
     subscriptionUUID,
@@ -226,7 +223,7 @@ export const useSubscriptionData = ({ enterpriseId }) => {
     subscriptions,
     forceRefresh,
     loading,
-  } = useSubscriptions({ enterpriseId, errors, setErrors });
+  } = useSubscriptions({ enterpriseId, setErrors });
 
   return {
     subscriptions,

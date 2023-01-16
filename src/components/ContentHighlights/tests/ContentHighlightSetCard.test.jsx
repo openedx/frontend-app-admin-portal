@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,6 +27,7 @@ const mockData = [{
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
+  onClick: jest.fn(),
 }];
 
 const initialEnterpriseAppContextValue = {
@@ -36,6 +37,14 @@ const initialEnterpriseAppContextValue = {
     },
   },
 };
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
+
 const mockMultipleData = [];
 for (let i = 0; i < MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION; i++) {
   mockMultipleData.push({
@@ -89,6 +98,12 @@ describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();
+  });
+  it('opens model and sends segment event', () => {
+    renderWithRouter(<ContentHighlightSetCardWrapper />);
+    const newHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
+    userEvent.click(newHighlightButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('renders correct text when less then max curations', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);

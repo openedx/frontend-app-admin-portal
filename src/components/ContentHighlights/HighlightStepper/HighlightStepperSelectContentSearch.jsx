@@ -7,7 +7,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
-import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../data/constants';
+import { ENABLE_TESTING, FOOTER_TEXT_BY_CONTENT_TYPE, MAX_PAGE_SIZE } from '../data/constants';
 import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SelectContentSelectionStatus from './SelectContentSelectionStatus';
@@ -17,7 +17,6 @@ import SkeletonContentCard from '../SkeletonContentCard';
 import { useContentHighlightsContext } from '../data/hooks';
 
 const defaultActiveStateValue = 'card';
-const pageSize = 24;
 
 const selectColumn = {
   id: 'selection',
@@ -38,7 +37,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
     // TODO: replace testEnterpriseId with enterpriseId before push,
     // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${enterpriseId}`;
+  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
 
   return (
     <SearchData>
@@ -48,7 +47,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
       >
         <Configure
           filters={searchFilters}
-          hitsPerPage={pageSize}
+          hitsPerPage={MAX_PAGE_SIZE}
         />
         <SearchHeader variant="default" />
         <HighlightStepperSelectContentDataTable
@@ -107,7 +106,7 @@ const BaseHighlightStepperSelectContentDataTable = ({
       manualPagination
       initialState={{
         pageIndex: 0,
-        pageSize,
+        pageSize: MAX_PAGE_SIZE,
         selectedRowIds,
       }}
       pageCount={searchResultsPageCount}
