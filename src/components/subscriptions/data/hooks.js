@@ -148,13 +148,13 @@ export const useSubscriptionUsersOverview = ({
  */
 export const useSubscriptionUsers = ({
   currentPage,
+  sortBy,
   searchQuery,
   subscriptionUUID,
   setErrors,
   userStatusFilter,
   isDisabled = false,
   pageSize,
-  licenseStatusOrdering,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -168,7 +168,7 @@ export const useSubscriptionUsers = ({
       const options = {
         status: userStatusFilter,
         page: currentPage,
-        license_status_lpr_ordering: licenseStatusOrdering,
+        ordering: sortBy,
       };
       if (searchQuery) {
         options.search = searchQuery;
@@ -190,12 +190,12 @@ export const useSubscriptionUsers = ({
     fetchUsers();
   }, [
     currentPage,
+    sortBy,
     searchQuery,
     setErrors,
     subscriptionUUID,
     userStatusFilter,
     pageSize,
-    licenseStatusOrdering,
   ]);
 
   const forceRefresh = useCallback(() => {

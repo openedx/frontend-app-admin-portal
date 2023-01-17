@@ -7,7 +7,6 @@ import {
 } from '@edx/paragon';
 
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SubscriptionDetailContext } from '../subscriptions/SubscriptionDetailContextProvider';
 import InviteLearnersButton from '../subscriptions/buttons/InviteLearnersButton';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
@@ -47,7 +46,6 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
               <div className="text-md-right">
                 <Link to={backToSubscriptionsPath}>
                   <Button variant="outline-primary mr-2">
-                    <FontAwesomeIcon className="mr-2" />
                     Manage All Learners
                   </Button>
                 </Link>
