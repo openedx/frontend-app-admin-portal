@@ -45,6 +45,7 @@ class ReportingConfigForm extends React.Component {
     invalidFields: {},
     APIErrors: {},
     active: this.props.config ? this.props.config.active : false,
+    enableCompression: this.props.config ? this.props.config.enableCompression : true,
     submitState: SUBMIT_STATES.DEFAULT,
   };
 
@@ -174,6 +175,7 @@ class ReportingConfigForm extends React.Component {
       APIErrors,
       deliveryMethod,
       active,
+      enableCompression,
       submitState,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
@@ -353,6 +355,24 @@ class ReportingConfigForm extends React.Component {
         )}
         <div className="col">
           <ValidationFormGroup
+            for="enableCompression"
+            helpText="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
+            invalid={!!APIErrors.enableCompression}
+            invalidMessage={APIErrors.enableCompression}
+          >
+            <label htmlFor="enableCompression">Enable Compression</label>
+            <Input
+              type="checkbox"
+              id="enableCompression"
+              name="enableCompression"
+              className="ml-3"
+              checked={enableCompression}
+              onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
+            />
+          </ValidationFormGroup>
+        </div>
+        <div className="col">
+          <ValidationFormGroup
             for="enterpriseCustomerCatalogs"
             helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
           >
@@ -423,6 +443,7 @@ ReportingConfigForm.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   config: PropTypes.shape({
     active: PropTypes.bool,
+    enableCompression: PropTypes.bool,
     dataType: PropTypes.string,
     dayOfMonth: PropTypes.number,
     dayOfWeek: PropTypes.number,

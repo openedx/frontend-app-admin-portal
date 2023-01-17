@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {
   useCallback, useMemo, useContext, useState,
 } from 'react';
@@ -11,10 +12,11 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import PropTypes from 'prop-types';
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
 import { SubscriptionDetailContext } from '../../../subscriptions/SubscriptionDetailContextProvider';
 import {
-  DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
+  DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED, API_FIELDS_BY_TABLE_COLUMN_ACCESSOR,
 } from '../../../subscriptions/data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
 import { formatTimestamp } from '../../../../utils';
@@ -54,20 +56,21 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const LicenseManagementTable = () => {
+const LicenseManagementTable = ({ subscriptionUUID }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-
   const {
     forceRefresh: forceRefreshSubscription,
   } = useContext(SubscriptionContext);
 
   const {
     currentPage,
+    sortBy,
     overview,
     forceRefreshDetailView,
     setSearchQuery,
     setCurrentPage,
+    setSortBy,
     subscription,
     users,
     forceRefreshUsers,
@@ -104,6 +107,17 @@ const LicenseManagementTable = () => {
     );
   }, [subscription.enterpriseCustomerUuid]);
 
+  const applySortBy = (requestedSortBy) => requestedSortBy.map(({ id, desc }) => {
+    const apiFieldForColumnAccessor = API_FIELDS_BY_TABLE_COLUMN_ACCESSOR[id];
+    if (!apiFieldForColumnAccessor) {
+      return id;
+    }
+    if (desc) {
+      return `-${apiFieldForColumnAccessor}`;
+    }
+    return apiFieldForColumnAccessor;
+  });
+
   // Filtering and pagination
   const updateFilters = useCallback((filters) => {
     if (filters.length < 1) {
@@ -134,22 +148,23 @@ const LicenseManagementTable = () => {
     DEBOUNCE_TIME_MILLIS,
   ), [updateFilters]);
 
-  const debouncedSetCurrentPage = useMemo(() => debounce(
-    setCurrentPage,
-    DEBOUNCE_TIME_MILLIS,
-  ), [setCurrentPage]);
-
   // Call back function, handles filters and page changes
   const fetchData = useCallback(
     (args) => {
+      if (args.sortBy?.length > 0) {
+        const sortByString = applySortBy(args.sortBy);
+        if (!_.isEqual(sortByString, sortBy)) {
+          setSortBy(sortByString);
+        }
+      }
       // pages index from 1 in backend, DataTable component index from 0
       if (args.pageIndex !== currentPage - 1) {
-        debouncedSetCurrentPage(args.pageIndex + 1);
+        setCurrentPage(args.pageIndex + 1);
         sendPaginationEvent(currentPage - 1, args.pageIndex);
       }
       debouncedUpdateFilters(args.filters);
     },
-    [currentPage, debouncedSetCurrentPage, debouncedUpdateFilters, sendPaginationEvent],
+    [currentPage, setCurrentPage, debouncedUpdateFilters, sortBy, setSortBy, sendPaginationEvent],
   );
 
   // Maps user to rows
@@ -196,9 +211,11 @@ const LicenseManagementTable = () => {
   }, [showSubscriptionZeroStateMessage]);
 
   return (
-    <>
+    <div key={subscriptionUUID}>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
       <DataTable
+        isSortable
+        manualSortBy
         showFiltersInSidebar={false}
         isLoading={loadingUsers}
         isFilterable
@@ -215,6 +232,9 @@ const LicenseManagementTable = () => {
         initialState={{
           pageSize: 5,
           pageIndex: DEFAULT_PAGE - 1,
+          sortBy: [
+            { id: 'statusBadge', desc: true },
+          ],
         }}
         initialTableOptions={{
           getRowId: row => row.id,
@@ -308,8 +328,11 @@ const LicenseManagementTable = () => {
       {toastMessage && (
       <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
       )}
-    </>
+    </div>
   );
 };
 
+LicenseManagementTable.propTypes = {
+  subscriptionUUID: PropTypes.string.isRequired,
+};
 export default LicenseManagementTable;
