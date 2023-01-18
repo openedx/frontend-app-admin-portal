@@ -78,7 +78,6 @@ export const STEPPER_STEP_TEXT = {
               For example, "Recommended for Marketing" or "Develop Leadership Skills".`,
     selectContent: `Pro tip: a highlight can include courses similar to each other for your learners to choose from,
                     or courses that vary in subtopics to help your learners master a larger topic`,
-    confirmContent: (highlightTitle) => `Review content selections for "${highlightTitle}"`,
   },
   ALERT_MODAL_TEXT: {
     title: 'Lose Progress?',
