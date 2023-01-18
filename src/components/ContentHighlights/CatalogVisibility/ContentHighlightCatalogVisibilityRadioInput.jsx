@@ -6,11 +6,11 @@ import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useHistory } from 'react-router-dom';
-import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from './data/constants';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
-import EVENT_NAMES from '../../eventTracking';
-import { useContentHighlightsContext } from './data/hooks';
+import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../data/constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
+import EVENT_NAMES from '../../../eventTracking';
+import { useContentHighlightsContext } from '../data/hooks';
 
 const ContentHighlightCatalogVisibilityRadioInput = () => {
   const { setCatalogVisibilityAlert } = useContentHighlightsContext();

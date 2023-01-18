@@ -6,7 +6,7 @@ import CurrentContentHighlights from './CurrentContentHighlights';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { TAB_TITLES } from './data/constants';
-import ContentHighlightCatalogVisibility from './ContentHighlightCatalogVisibility';
+import ContentHighlightCatalogVisibility from './CatalogVisibility/ContentHighlightCatalogVisibility';
 import ZeroStateHighlights from './ZeroState';
 
 const ContentHighlightsDashboardBase = ({ children }) => (
@@ -33,7 +33,7 @@ const ContentHighlightsDashboard = () => {
   return (
     <ContentHighlightsDashboardBase>
       <Tabs
-        className="mb-2"
+        className="mb-4.5"
         activeKey={activeTab}
         onSelect={(k) => setActiveTab(k)}
       >

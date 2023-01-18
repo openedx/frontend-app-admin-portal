@@ -13,7 +13,7 @@ import EVENT_NAMES from '../../eventTracking';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT,
+  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT,
 } from './data/constants';
 
 const CurrentContentHighlightHeader = ({ enterpriseId }) => {
@@ -65,7 +65,11 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   return (
     <>
       <ActionRow>
+        <h2 className="m-0">
+          {HEADER_TEXT.currentContent}
+        </h2>
         <ActionRow.Spacer />
+
         <Button
           iconBefore={Add}
           onClick={createNewHighlight}
@@ -73,6 +77,9 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
           {BUTTON_TEXT.createNewHighlight}
         </Button>
       </ActionRow>
+      <p>
+        {HEADER_TEXT.SUB_TEXT.currentContent}
+      </p>
       <Alert
         variant="danger"
         icon={Info}

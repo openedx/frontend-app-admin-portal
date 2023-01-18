@@ -5,11 +5,11 @@ import {
 import { Info, Add } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useContextSelector } from 'use-context-selector';
-import { ALERT_TEXT, BUTTON_TEXT } from './data/constants';
-import { useContentHighlightsContext } from './data/hooks';
-import EVENT_NAMES from '../../eventTracking';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { ContentHighlightsContext } from './ContentHighlightsContext';
+import { ALERT_TEXT, BUTTON_TEXT } from '../data/constants';
+import { useContentHighlightsContext } from '../data/hooks';
+import EVENT_NAMES from '../../../eventTracking';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { ContentHighlightsContext } from '../ContentHighlightsContext';
 
 const ContentHighlightCatalogVisibilityAlert = () => {
   const { openStepperModal } = useContentHighlightsContext();
