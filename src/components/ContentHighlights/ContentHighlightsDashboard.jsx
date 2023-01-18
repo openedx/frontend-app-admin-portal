@@ -27,7 +27,6 @@ const ContentHighlightsDashboard = () => {
   const [isHighlightSetCreated, setIsHighlightSetCreated] = useState(false);
   useEffect(() => {
     if (highlightSets.length > 0) {
-      // setActiveTab(TAB_TITLES.highlights);
       setIsHighlightSetCreated(true);
     }
   }, [highlightSets]);

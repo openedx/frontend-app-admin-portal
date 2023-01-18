@@ -127,6 +127,9 @@ export const ALERT_TEXT = {
     catalogVisibility: 'At least one highlight has to be created to make a selection',
     currentContent: 'Delete at least one highlight to create a new one.',
   },
+  TOAST_TEXT: {
+    catalogVisibility: 'Catalog visibility settings updated.',
+  },
 };
 
 // Default footer values based on API response for ContentHighlightCardItem

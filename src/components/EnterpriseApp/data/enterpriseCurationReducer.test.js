@@ -53,7 +53,7 @@ describe('enterpriseCurationReducer', () => {
     expect(
       enterpriseCurationReducer(
         initialStateWithHighlights,
-        enterpriseCurationActions.setHighlightToast(highlightSetUUID),
+        enterpriseCurationActions.setHighlightSetToast(highlightSetUUID),
       ),
     ).toMatchObject({ enterpriseCuration: { toastText: 'Hello World!' } });
   });

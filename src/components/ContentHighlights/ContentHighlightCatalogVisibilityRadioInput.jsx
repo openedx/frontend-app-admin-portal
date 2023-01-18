@@ -3,38 +3,73 @@ import {
 } from '@edx/paragon';
 import { useState, useContext, useEffect } from 'react';
 import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
-import { BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from './data/constants';
+import { logError } from '@edx/frontend-platform/logging';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useHistory } from 'react-router-dom';
+import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import EVENT_NAMES from '../../eventTracking';
 
 const ContentHighlightCatalogVisibilityRadioInput = () => {
-  const { enterpriseCuration: { enterpriseCuration, updateEnterpriseCuration } } = useContext(EnterpriseAppContext);
+  const {
+    enterpriseCuration: {
+      enterpriseCuration,
+      updateEnterpriseCuration,
+      dispatch,
+    },
+  } = useContext(EnterpriseAppContext);
   const { highlightSets, canOnlyViewHighlightSets } = enterpriseCuration;
+  const [radioGroupVisibility, setRadioGroupVisibility] = useState(true);
+  const history = useHistory();
+  const { location } = history;
+  // Sets default radio button based on number of highlight sets && catalog visibility setting
   const [value, setValue] = useState(
     !canOnlyViewHighlightSets || highlightSets.length < 1
       ? LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value
       : LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value,
   );
-  const [radioGroupVisibility, setRadioGroupVisibility] = useState(true);
   const handleChange = async (e) => {
-    e.persist();
-    if (e.target.dataset.spinnerUi) {
-      document.getElementById(e.target.dataset.spinnerUi).hidden = false;
-      // e.target.hidden = true;
+    try {
+      // persist ui changes on the dom to log event changes
+      e.persist();
+      // Show loading spinner
+      if (e.target.dataset.spinnerUi) {
+        document.getElementById(e.target.dataset.spinnerUi).hidden = false;
+      }
+      // Update enterprise curation setting
+      const data = await updateEnterpriseCuration({
+        canOnlyViewHighlightSets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
+      });
+      // Send Track Event
+      const trackInfo = {
+        can_only_view_highlight_sets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
+      };
+      sendEnterpriseTrackEvent(
+        enterpriseCuration.enterpriseCustomer,
+        EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_CATALOG_VISIBILITY,
+        trackInfo,
+      );
+      // Hide loading spinner
+      if (data) {
+        document.getElementById(e.target.dataset.spinnerUi).hidden = true;
+        dispatch(enterpriseCurationActions.setHighlightToast(ALERT_TEXT.TOAST_TEXT.catalogVisibility));
+        history.push(location.pathname, {
+          highlightToast: true,
+        });
+      }
+      // Set radio button value
+      setValue(e.target.value);
+    } catch (error) {
+      logError(error);
     }
-    const data = await updateEnterpriseCuration({
-      canOnlyViewHighlightSets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
-    });
-    if (data) {
-      // e.target.hidden = false;
-      document.getElementById(e.target.dataset.spinnerUi).hidden = true;
-    }
-    setValue(e.target.value);
   };
   useEffect(() => {
     if (highlightSets.length > 0) {
       setRadioGroupVisibility(false);
     }
   }, [highlightSets]);
+
   return (
     <Container>
       <Form.Group>
