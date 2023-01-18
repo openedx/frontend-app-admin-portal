@@ -109,6 +109,7 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
             <Spinner
               hidden
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+              data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
               style={{
                 width: '24px',
                 height: '24px',
@@ -122,6 +123,7 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               type="radio"
               disabled={radioGroupVisibility}
               data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+              data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`}
             >
               {BUTTON_TEXT.catalogVisibilityRadio1}
             </Form.Radio>
@@ -130,6 +132,7 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
             <Spinner
               hidden
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+              data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
               style={{
                 width: '24px',
                 height: '24px',
@@ -143,6 +146,7 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               type="radio"
               disabled={radioGroupVisibility}
               data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+              data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`}
             >
               {BUTTON_TEXT.catalogVisibilityRadio2}
             </Form.Radio>

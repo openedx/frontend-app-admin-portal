@@ -110,7 +110,7 @@ export const BUTTON_TEXT = {
   catalogVisibility: 'New highlight',
   zeroStateCreateNewHighlight: 'New highlight',
   catalogVisibilityRadio1: 'Learners can view and enroll into all courses in your catalog',
-  catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses only  ',
+  catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses',
 };
 
 // Button text for stepper help center button
