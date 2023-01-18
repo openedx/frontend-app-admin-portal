@@ -30,6 +30,7 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
       key={subscription.uuid}
       subscription={subscription}
       pageSize={LPR_SUBSCRIPTION_PAGE_SIZE}
+      lprSubscriptionPage
     >
       <SubscriptionExpirationModals />
       <SubscriptionDetails />
