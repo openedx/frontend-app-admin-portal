@@ -50,12 +50,15 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
         enterpriseCuration.uuid,
         options,
       );
-      const result = camelCaseObject(response.data);
+      const result = camelCaseObject(response?.data);
       setEnterpriseCuration(result);
       return result;
     } catch (error) {
       logError(error);
-      throw error;
+      setFetchError(error);
+      return error.message;
+    } finally {
+      setIsLoading(false);
     }
   }, [enterpriseCuration]);
 
