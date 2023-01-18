@@ -47,7 +47,7 @@ const ContentHighlightsDashboard = () => {
           eventKey={camelCaseObject(TAB_TITLES.catalogVisibility)}
           title={TAB_TITLES.catalogVisibility}
         >
-          <ContentHighlightCatalogVisibility createdSet={isHighlightSetCreated} />
+          <ContentHighlightCatalogVisibility />
         </Tab>
       </Tabs>
     </ContentHighlightsDashboardBase>

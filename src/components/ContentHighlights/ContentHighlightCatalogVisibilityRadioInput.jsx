@@ -10,8 +10,10 @@ import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from './da
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 import EVENT_NAMES from '../../eventTracking';
+import { useContentHighlightsContext } from './data/hooks';
 
 const ContentHighlightCatalogVisibilityRadioInput = () => {
+  const { setCatalogVisibilityAlert } = useContentHighlightsContext();
   const {
     enterpriseCuration: {
       enterpriseCuration,
@@ -23,6 +25,23 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
   const [radioGroupVisibility, setRadioGroupVisibility] = useState(true);
   const history = useHistory();
   const { location } = history;
+  /**
+   * Sets enterpriseCuration.canOnlyViewHighlightSets to false if there are no highlight sets
+   * when the user enters content highlights dashboard. Runs on mount if there are no highlight sets
+   */
+  const setDefault = async () => {
+    try {
+      await updateEnterpriseCuration({
+        canOnlyViewHighlightSets: false,
+      });
+    } catch (error) {
+      logError(`${error}: Error updating enterprise curation setting with no highlight sets,
+       ContentHighlightCatalogVsibiilityRadioInput`);
+    }
+  };
+  if (highlightSets.length < 1 && canOnlyViewHighlightSets) {
+    setDefault();
+  }
   // Sets default radio button based on number of highlight sets && catalog visibility setting
   const [value, setValue] = useState(
     !canOnlyViewHighlightSets || highlightSets.length < 1
@@ -50,9 +69,12 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
         EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_CATALOG_VISIBILITY,
         trackInfo,
       );
-      // Hide loading spinner
+      // Hide loading spinner and set toast and closes alert if open
       if (data) {
         document.getElementById(e.target.dataset.spinnerUi).hidden = true;
+        setCatalogVisibilityAlert({
+          isOpen: false,
+        });
         dispatch(enterpriseCurationActions.setHighlightToast(ALERT_TEXT.TOAST_TEXT.catalogVisibility));
         history.push(location.pathname, {
           highlightToast: true,
@@ -62,6 +84,11 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
       setValue(e.target.value);
     } catch (error) {
       logError(error);
+      // Hide loading spinner and set alert if error
+      document.getElementById(e.target.dataset.spinnerUi).hidden = true;
+      setCatalogVisibilityAlert({
+        isOpen: true,
+      });
     }
   };
   useEffect(() => {

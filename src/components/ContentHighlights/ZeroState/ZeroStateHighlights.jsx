@@ -24,7 +24,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
       },
     },
   } = useContext(EnterpriseAppContext);
-  // const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+
   const handleNewHighlightClick = () => {
     openStepperModal();
     const trackInfo = {

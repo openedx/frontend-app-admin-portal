@@ -121,10 +121,12 @@ export const STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT = 'Help Center: Program Opti
 export const ALERT_TEXT = {
   HEADER_TEXT: {
     catalogVisibility: 'No highlights created',
+    catalogVisibilityAPI: 'Catalog visibility not updated',
     currentContent: 'Highlight limit reached',
   },
   SUB_TEXT: {
     catalogVisibility: 'At least one highlight has to be created to make a selection',
+    catalogVisibilityAPI: 'Something went wrong when updating your setting. Please try again.',
     currentContent: 'Delete at least one highlight to create a new one.',
   },
   TOAST_TEXT: {

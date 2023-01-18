@@ -126,11 +126,19 @@ export function useContentHighlightsContext() {
     }));
   }, [setState]);
 
+  const setCatalogVisibilityAlert = useCallback(({ isOpen }) => {
+    setState(s => ({
+      ...s,
+      catalogVisibilityAlert: isOpen,
+    }));
+  }, [setState]);
+
   return {
     openStepperModal,
     resetStepperModal,
     deleteSelectedRowId,
     setCurrentSelectedRowIds,
     setHighlightTitle,
+    setCatalogVisibilityAlert,
   };
 }
