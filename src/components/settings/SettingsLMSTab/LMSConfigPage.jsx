@@ -14,13 +14,20 @@ import {
   SAP_TYPE,
 } from '../data/constants';
 import BlackboardConfig from './LMSConfigs/BlackboardConfig';
-import CanvasConfig from './LMSConfigs/CanvasConfig';
+import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
 import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
 import DegreedConfig from './LMSConfigs/DegreedConfig';
 import Degreed2Config from './LMSConfigs/Degreed2Config';
 import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
+import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 
+// TODO: Add remaining configs
+const flowConfigs = {
+  [CANVAS_TYPE]: CanvasFormConfig,
+};
+
+// TODO: Convert to TypeScript
 const LMSConfigPage = ({
   LMSType,
   onClick,
@@ -28,13 +35,20 @@ const LMSConfigPage = ({
   existingConfigFormData,
   existingConfigs,
   setExistingConfigFormData,
-}) => (
-  <span>
-    <h3 className="mt-4.5 mb-3.5">
-      <Image className="lms-icon" src={channelMapping[LMSType].icon} />
-      <span className="ml-2">Connect {channelMapping[LMSType].displayName}</span>
-    </h3>
-    {LMSType === BLACKBOARD_TYPE && (
+}) => {
+  const handleCloseWorkflow = (submitted, msg) => {
+    onClick(submitted ? msg : '');
+  };
+  return (
+    <span>
+      <h3 className="mt-4.5 mb-3.5">
+        <Image className="lms-icon" src={channelMapping[LMSType].icon} />
+        <span className="ml-2">
+          Connect {channelMapping[LMSType].displayName}
+        </span>
+      </h3>
+      {/* TODO: Replace giant switch */}
+      {LMSType === BLACKBOARD_TYPE && (
       <BlackboardConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
@@ -42,59 +56,63 @@ const LMSConfigPage = ({
         existingConfigs={existingConfigs}
         setExistingConfigFormData={setExistingConfigFormData}
       />
-    )}
-    {LMSType === CANVAS_TYPE && (
-      <CanvasConfig
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-        onClick={onClick}
-        existingData={existingConfigFormData}
-        existingConfigs={existingConfigs}
-        setExistingConfigFormData={setExistingConfigFormData}
+      )}
+      {LMSType === CANVAS_TYPE && (
+      <FormContextWrapper
+        formWorkflowConfig={flowConfigs[CANVAS_TYPE]({
+          enterpriseCustomerUuid,
+          onSubmit: setExistingConfigFormData,
+          onClickCancel: handleCloseWorkflow,
+          existingData: existingConfigFormData,
+        })}
+        onClickOut={handleCloseWorkflow}
+        onSubmit={setExistingConfigFormData}
+        formData={existingConfigFormData}
       />
-    )}
-    {LMSType === CORNERSTONE_TYPE && (
+      )}
+      {LMSType === CORNERSTONE_TYPE && (
       <CornerstoneConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === DEGREED2_TYPE && (
+      )}
+      {LMSType === DEGREED2_TYPE && (
       <Degreed2Config
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === DEGREED_TYPE && (
+      )}
+      {LMSType === DEGREED_TYPE && (
       <DegreedConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === MOODLE_TYPE && (
+      )}
+      {LMSType === MOODLE_TYPE && (
       <MoodleConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-    {LMSType === SAP_TYPE && (
+      )}
+      {LMSType === SAP_TYPE && (
       <SAPConfig
         enterpriseCustomerUuid={enterpriseCustomerUuid}
         onClick={onClick}
         existingData={existingConfigFormData}
         existingConfigs={existingConfigs}
       />
-    )}
-  </span>
-);
-
+      )}
+    </span>
+  );
+};
 const mapStateToProps = (state) => ({
   enterpriseCustomerUuid: state.portalConfiguration.enterpriseId,
 });

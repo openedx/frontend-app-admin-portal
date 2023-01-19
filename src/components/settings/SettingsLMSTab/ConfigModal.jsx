@@ -7,6 +7,7 @@ const MODAL_TEXT = 'Your changes will be lost without saving.';
 
 // will have to pass in individual saveDraft method and config when
 // drafting is allowed
+// TODO: Delete once UnsavedChangesModal fully replaces it
 const ConfigModal = ({
   isOpen, close, onClick, saveDraft,
 }) => (

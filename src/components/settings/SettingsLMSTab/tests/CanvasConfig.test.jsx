@@ -5,7 +5,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
-import CanvasConfig from '../LMSConfigs/CanvasConfig';
+// TODO: Rewrite for new Canvas workflow
+import CanvasConfig from '../LMSConfigs/Canvas/CanvasConfig.tsx';
 import { INVALID_LINK, INVALID_NAME, SUBMIT_TOAST_MESSAGE } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
