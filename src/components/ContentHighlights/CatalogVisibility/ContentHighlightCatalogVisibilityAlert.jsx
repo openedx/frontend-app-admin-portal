@@ -25,7 +25,6 @@ const ContentHighlightCatalogVisibilityAlert = () => {
     v => v[0].catalogVisibilityAlert,
   );
   const handleNewHighlightClick = () => {
-    openStepperModal();
     const trackInfo = {
       existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
       existing_highlight_set_count: highlightSets.length,
@@ -35,6 +34,8 @@ const ContentHighlightCatalogVisibilityAlert = () => {
       `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT}`,
       trackInfo,
     );
+
+    openStepperModal();
   };
   if (catalogVisibilityAlert) {
     return (
