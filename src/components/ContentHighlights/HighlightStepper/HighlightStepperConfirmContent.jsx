@@ -21,6 +21,7 @@ import {
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   DEFAULT_ERROR_MESSAGE,
+  ENABLE_TESTING,
 } from '../data/constants';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
@@ -90,7 +91,7 @@ export const SelectedContent = ({ enterpriseId }) => {
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
     // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
-    let filterString = `enterprise_customer_uuids:${enterpriseId}`;
+    let filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
     if (currentSelectedRowIds.length > 0) {
       filterString += ' AND (';
       currentSelectedRowIds.forEach((selectedRowId, index) => {
@@ -130,19 +131,29 @@ SelectedContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-const HighlightStepperConfirmContent = ({ enterpriseId }) => (
-  <Container>
-    <Row>
-      <Col xs={12} md={8} lg={6}>
-        <h3 className="mb-3 d-flex align-items-center">
-          <Icon src={Assignment} className="mr-2 color-brand-tertiary" />
-          {STEPPER_STEP_TEXT.confirmContent}
-        </h3>
-      </Col>
-    </Row>
-    <SelectedContent enterpriseId={enterpriseId} />
-  </Container>
-);
+const HighlightStepperConfirmContent = ({ enterpriseId }) => {
+  const highlightTitle = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.highlightTitle,
+  );
+
+  return (
+    <Container>
+      <Row>
+        <Col xs={12} md={8} lg={6}>
+          <h3 className="mb-3 d-flex align-items-center">
+            <Icon src={Assignment} className="mr-2 text-brand" />
+            {STEPPER_STEP_TEXT.HEADER_TEXT.confirmContent}
+          </h3>
+          <p>
+            {STEPPER_STEP_TEXT.SUB_TEXT.confirmContent(highlightTitle)}.
+          </p>
+        </Col>
+      </Row>
+      <SelectedContent enterpriseId={enterpriseId} />
+    </Container>
+  );
+};
 
 HighlightStepperConfirmContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
