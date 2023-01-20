@@ -135,7 +135,7 @@ class EnterpriseApp extends React.Component {
                   baseUrl={baseUrl}
                   onWidthChange={(width) => {
                     this.setState({
-                      sidebarWidth: () => width + defaultContentPadding,
+                      sidebarWidth: width + defaultContentPadding,
                     });
                   }}
                   isMobile={!matchesMediaQ}
